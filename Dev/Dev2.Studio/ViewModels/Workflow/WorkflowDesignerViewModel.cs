@@ -1,4 +1,50 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using Dev2.Activities;
+using Dev2.Activities.Designers2.Core;
+using Dev2.AppResources.Converters;
+using Dev2.Collections;
+using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Composition;
+using Dev2.CustomControls.Utils;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Parsers;
+using Dev2.Data.SystemTemplates.Models;
+using Dev2.Data.Util;
+using Dev2.DataList.Contract;
+using Dev2.Dialogs;
+using Dev2.Enums;
+using Dev2.Factories;
+using Dev2.Interfaces;
+using Dev2.Messages;
+using Dev2.Models;
+using Dev2.Providers.Errors;
+using Dev2.Providers.Logs;
+using Dev2.Services.Events;
+using Dev2.Services.Security;
+using Dev2.Studio.ActivityDesigners;
+using Dev2.Studio.AppResources.AttachedProperties;
+using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Services;
+using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Controller;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Utils;
+using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Factory;
+using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Threading;
+using Dev2.Utilities;
+using Dev2.Utils;
+using Dev2.Workspaces;
+using System;
 using System.Activities;
 using System.Activities.Core.Presentation;
 using System.Activities.Debugger;
@@ -21,56 +67,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xaml;
-using Caliburn.Micro;
-using Dev2.Activities;
-using Dev2.Activities.Designers2.Core;
-using Dev2.Collections;
-using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Composition;
-using Dev2.CustomControls.Utils;
-using Dev2.Data.Interfaces;
-using Dev2.Data.Parsers;
-using Dev2.Data.SystemTemplates.Models;
-using Dev2.Data.Util;
-using Dev2.DataList.Contract;
-using Dev2.Dialogs;
-using Dev2.Enums;
-using Dev2.Factories;
-using Dev2.Interfaces;
-using Dev2.Messages;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Logs;
-using Dev2.Services.Events;
-using Dev2.Services.Security;
-using Dev2.Studio.ActivityDesigners;
-using Dev2.Studio.AppResources.AttachedProperties;
-using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Activities.Services;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Utils;
-using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Factory;
-using Dev2.Studio.ViewModels.Navigation;
-using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Threading;
-using Dev2.Utilities;
-using Dev2.Utils;
-using Dev2.Workspaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
+// ReSharper restore CheckNamespace
 {
 
     public class WorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
@@ -412,7 +414,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                         DsfActivity activity = droppedActivity;
                         IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
-                            c => c.ResourceName == activity.ServiceName) as IContextualResourceModel;
+                            c => c.Category == activity.ServiceName) as IContextualResourceModel;
                         droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false);
                         modelProperty1.SetValue(droppedActivity);
                     }
@@ -420,24 +422,31 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         if(DataObject != null)
                         {
-                            var navigationItemViewModel = DataObject as ResourceTreeViewModel;
+                            var navigationItemViewModel = DataObject as ExplorerItemModel;
 
                             if(navigationItemViewModel != null)
                             {
-                                var resource = navigationItemViewModel.DataContext;
-
-                                if(resource != null)
+                                IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == navigationItemViewModel.EnvironmentId);
+                                if(environmentModel != null)
                                 {
-                                    var theResource = resource.Environment.ResourceRepository.FindSingle(c => c.ID == resource.ID) as IContextualResourceModel;
-
+                                    var theResource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
                                     //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                                     DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true);
-                                    d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.ResourceName;
-                                    d.IconPath = resource.IconPath;
-                                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource);
+                                    d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = navigationItemViewModel.ResourcePath;
+                                    ExplorerItemModelToIconConverter converter = new ExplorerItemModelToIconConverter();
+                                    var bitmapImage = converter.Convert(new object[] { navigationItemViewModel.ResourceType, false }, null, null, null) as BitmapImage;
+                                    if(bitmapImage != null)
+                                    {
+                                        d.IconPath = bitmapImage.UriSource.ToString();
+                                    }
+                                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, theResource);
                                     //08-07-2013 Removed for bug 9789 - droppedACtivity Is already the action
                                     //Setting it twice causes double connection to startnode
                                 }
+                                //var theResource = resource.Environment.ResourceRepository.FindSingle(c => c.ID == resource.ID) as IContextualResourceModel;
+
+
+
                             }
 
                             DataObject = null;
@@ -450,7 +459,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 IContextualResourceModel resource = _vm.SelectedResourceModel;
                                 if(resource != null)
                                 {
-                                    droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.ResourceName;
+                                    droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
                                     droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false);
                                     modelProperty1.SetValue(droppedActivity);
                                 }
@@ -1534,8 +1543,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             bool dropOccured = true;
             SetLastDroppedPoint(e);
-            DataObject = e.Data.GetData(typeof(ResourceTreeViewModel));
-            if(DataObject != null && DataObject.IsNew)
+            DataObject = e.Data.GetData(typeof(ExplorerItemModel));
+            if(DataObject != null)
             {
                 IsItemDragged.Instance.IsDragged = true;
             }
@@ -1557,6 +1566,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 ResourceModel.IsWorkflowSaved = false;
                 NotifyOfPropertyChange(() => DisplayName);
             }
+            _resourcePickerDialog = null;
         }
 
         // BUG 9143 - 2013.07.03 - TWR - added
@@ -1620,24 +1630,27 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if(DataObject != null)
                     {
-                        var navigationItemViewModel = DataObject as ResourceTreeViewModel;
+                        var navigationItemViewModel = DataObject as ExplorerItemModel;
+
                         ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
 
                         if(navigationItemViewModel != null && modelProperty != null)
                         {
-                            var resource = navigationItemViewModel.DataContext;
-
-                            if(resource != null)
+                            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == navigationItemViewModel.EnvironmentId);
+                            if(environmentModel != null)
                             {
-                                //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                                DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true);
-                                d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.ResourceName;
-                                d.IconPath = resource.IconPath;
+                                var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
+                                if(resource != null)
+                                {
+                                    //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
+                                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true);
+                                    d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
+                                    d.IconPath = resource.IconPath;
 
-                                modelProperty.SetValue(d);
+                                    modelProperty.SetValue(d);
+                                }
                             }
                         }
-
                         DataObject = null;
                     }
                     else
@@ -1654,7 +1667,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 {
                                     DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true);
 
-                                    droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.ResourceName;
+                                    droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
                                     droppedActivity.IconPath = resource.IconPath;
 
                                     modelProperty.SetValue(droppedActivity);

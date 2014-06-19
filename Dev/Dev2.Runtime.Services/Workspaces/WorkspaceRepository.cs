@@ -161,13 +161,6 @@ namespace Dev2.Workspaces
                 if(force || !_items.TryGetValue(workspaceID, out workspace))
                 {
                     workspace = Read(workspaceID);
-
-                    if(workspaceID != ServerWorkspaceID)
-                    {
-                        var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-                        _resourceCatalog.SyncTo(ServerWorkspacePath, workspacePath, false, false);
-                    }
-
                     if(loadResources)
                     {
                         _resourceCatalog.LoadWorkspace(workspaceID);

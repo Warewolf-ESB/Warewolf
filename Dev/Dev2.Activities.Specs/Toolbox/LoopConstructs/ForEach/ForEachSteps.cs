@@ -305,6 +305,17 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// Finds the service shape.
+        /// </summary>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="resourceID">Name of the service.</param>
+        /// <returns></returns>
+        public string FindServiceShape(Guid workspaceID, Guid resourceID)
+        {
+            return null;
+        }
+
         public IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubRequest(
             IDSFDataObject dataObject, string inputDefs, string outputDefs, out ErrorResultTO errors)
         {

@@ -10,6 +10,19 @@ namespace Dev2.Studio.Views.Navigation
         public NavigationView()
         {
             InitializeComponent();
+            Loaded += OnLoaded;
+            DataContextChanged += OnDataContextChanged;
+        }
+
+        void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
+        {
+            object newValue = dependencyPropertyChangedEventArgs.NewValue;
+
+        }
+
+        void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        {
+            var currentDataContext = DataContext;
         }
 
         #endregion Constructor

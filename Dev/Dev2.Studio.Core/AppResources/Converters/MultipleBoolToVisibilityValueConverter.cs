@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class MultipleBoolToVisibilityValueConverter : IMultiValueConverter
@@ -20,12 +21,23 @@ namespace Dev2.Studio.Core.AppResources.Converters
         /// <param name="values">The array of values that the source bindings in the <see cref="T:System.Windows.Data.MultiBinding"/> produces. The value <see cref="F:System.Windows.DependencyProperty.UnsetValue"/> indicates that the source binding has no value to provide for conversion.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if(values.Any(v => !(v is bool)))
+            List<bool> boolValues = new List<bool>();
+
+            foreach(object value in values)
             {
-                return Visibility.Visible;
+                bool? item = value as bool?;
+                if(item != null)
+                {
+                    boolValues.Add(item.GetValueOrDefault());
+                }
             }
 
-            return values.Cast<bool>().Any(b => b) ? Visibility.Visible : Visibility.Collapsed;
+            if(boolValues.Any(c => c == false))
+            {
+                return Visibility.Collapsed;
+            }
+
+            return Visibility.Visible;
         }
 
         /// <summary>

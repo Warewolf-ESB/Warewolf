@@ -101,7 +101,7 @@ namespace Dev2.Services.Execution
             object executeService;
             var result = SqlExecution(invokeErrors, out executeService) ? executeService : string.Empty;
 
-            _errorResult.MergeErrors(invokeErrors);
+            ErrorResult.MergeErrors(invokeErrors);
 
             return result;
         }

@@ -1,4 +1,4 @@
-﻿using Dev2.Studio.Core.Interfaces;
+﻿using System;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Messages
@@ -8,14 +8,14 @@ namespace Dev2.Studio.Core.Messages
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public SelectItemInDeployMessage(string displayName, IEnvironmentModel environment)
+        public SelectItemInDeployMessage(Guid resourceID, Guid environmentID)
         {
-            Environment = environment;
-            DisplayName = displayName;
+            EnvironmentID = environmentID;
+            ResourceID = resourceID;
         }
 
-        public string DisplayName { get; set; }
+        public Guid ResourceID { get; set; }
 
-        public IEnvironmentModel Environment { get; set; }
+        public Guid EnvironmentID { get; set; }
     }
 }

@@ -198,7 +198,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         static DbSource CreateDbSource()
         {
-            var dbSource = new DbSource { ResourceName = "Some Test DBSOUrce", ResourceID = Guid.NewGuid() };
+            var resourceID = Guid.NewGuid();
+            var dbSource = new DbSource { ResourcePath = "SQL Tests\\" + resourceID, ResourceName = resourceID.ToString(), ResourceID = resourceID };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
             return dbSource;
         }

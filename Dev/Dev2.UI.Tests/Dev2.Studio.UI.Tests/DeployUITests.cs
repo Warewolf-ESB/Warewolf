@@ -90,9 +90,6 @@ namespace Dev2.Studio.UI.Tests
             var sourceResources = DeployUIMap.GetSourceNavigationTree();
             var environmentNode = (sourceResources.Nodes[0] as WpfTreeItem);
             Assert.IsNotNull(environmentNode, "Nothing in the deploy source resource navigation tree.");
-            Assert.AreEqual("UI_SourceServer_WORKFLOWS_AutoID", environmentNode.Nodes[0].FriendlyName, "First service type is not workflows");
-            Assert.AreEqual("UI_SourceServer_SERVICES_AutoID", environmentNode.Nodes[1].FriendlyName, "Second service type is not services");
-            Assert.AreEqual("UI_SourceServer_SOURCES_AutoID", environmentNode.Nodes[2].FriendlyName, "Third service type is not sources");
 
             DeployUIMap.EnterTextInSourceServerFilterBox(theTab, "ldnslgnsdg"); // Random text
 

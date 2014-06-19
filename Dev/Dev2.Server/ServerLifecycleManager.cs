@@ -11,6 +11,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Xml;
+using System.Xml.Linq;
 using CommandLine;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -27,6 +28,7 @@ using Dev2.Services.Security.MoqInstallerActions;
 using Dev2.Workspaces;
 using SettingsProvider = Dev2.Runtime.Configuration.SettingsProvider;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2
 {
     /// <summary>
@@ -325,7 +327,6 @@ namespace Dev2
                 didBreak = true;
             }
 
-            // BUG 7850 - Resource catalog (TWR: 2013.03.13)
             if(!didBreak && !LoadResourceCatalog())
             {
                 result = 94;
@@ -1671,20 +1672,58 @@ namespace Dev2
         #region External Services
 
         /// <summary>
-        /// BUG 7850 - Loads the resource catalog.
         /// </summary>
         /// <returns></returns>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/03/13</date>
         bool LoadResourceCatalog()
         {
+            MigrateOldResources();
             Write("Loading resource catalog...  ");
             // First call initializes instance
 #pragma warning disable 168
+            // ReSharper disable UnusedVariable
             var catalog = ResourceCatalog.Instance;
+            // ReSharper restore UnusedVariable
 #pragma warning restore 168
             WriteLine("done.");
             return true;
+        }
+
+        static void MigrateOldResources()
+        {
+            var oldServicesFolder = Path.Combine(EnvironmentVariables.ApplicationPath, "Services");
+            var oldSourcesFolder = Path.Combine(EnvironmentVariables.ApplicationPath, "Sources");
+            if(Directory.Exists(oldServicesFolder))
+            {
+                Write("Migrating old services...  ");
+                MigrateResources(oldServicesFolder);
+                WriteLine("done.");
+            }
+            if(Directory.Exists(oldSourcesFolder))
+            {
+                Write("Migrating old sources...  ");
+                MigrateResources(oldSourcesFolder);
+                WriteLine("done.");
+            }
+        }
+
+        static void MigrateResources(string oldResourceFolder)
+        {
+            var oldResourceFiles = Directory.EnumerateFiles(oldResourceFolder);
+            try
+            {
+                foreach(var oldResourceFile in oldResourceFiles)
+                {
+                    var oldResourceXml = XElement.Load(oldResourceFile);
+                    ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, oldResourceXml.ToStringBuilder());
+                }
+                DirectoryHelper.CleanUp(oldResourceFolder);
+            }
+            catch(Exception ex)
+            {
+                ServerLogger.LogError("Dev2.ServerLifecycleManager - Error Migrating", ex);
+            }
         }
 
         /// <summary>

@@ -2,23 +2,14 @@
 
 namespace Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses
 {
-    using System;
-    using System.CodeDom.Compiler;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Text.RegularExpressions;
-    using System.Windows.Input;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
+    using System.CodeDom.Compiler;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
-    
+
     public partial class ResourceChangedPopUpUIMap : UIMapBase
     {
-        
+
         /// <summary>
         /// ClickViewDependancies
         /// </summary>
@@ -31,13 +22,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses
             // Click 'View Dependencies' button
             Mouse.Click(uIViewDependenciesButton);
         }
-        
+
         /// <summary>
         /// ClickCancel
         /// </summary>
         public void ClickCancel()
         {
-            Playback.Wait(150);
+            Playback.Wait(1150);
             SendKeys.SendWait("{ESC}");
             Playback.Wait(50);
 
@@ -51,13 +42,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses
             Playback.Wait(1500);
             return true;
         }
-        
+
         #region Properties
         public UIInputsOutputsChangedWindow UIInputsOutputsChangedWindow
         {
             get
             {
-                if ((this.mUIInputsOutputsChangedWindow == null))
+                if((this.mUIInputsOutputsChangedWindow == null))
                 {
                     this.mUIInputsOutputsChangedWindow = new UIInputsOutputsChangedWindow();
                 }
@@ -65,16 +56,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIInputsOutputsChangedWindow mUIInputsOutputsChangedWindow;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.60315.1")]
     public class UIInputsOutputsChangedWindow : WpfWindow
     {
-        
+
         public UIInputsOutputsChangedWindow()
         {
             #region Search Criteria
@@ -83,13 +74,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses
             this.WindowTitles.Add("Inputs / Outputs Changed");
             #endregion
         }
-        
+
         #region Properties
         public WpfButton UIViewDependenciesButton
         {
             get
             {
-                if ((this.mUIViewDependenciesButton == null))
+                if((this.mUIViewDependenciesButton == null))
                 {
                     this.mUIViewDependenciesButton = new WpfButton(this);
                     #region Search Criteria
@@ -100,12 +91,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses
                 return this.mUIViewDependenciesButton;
             }
         }
-        
+
         public WpfButton UICancelButton
         {
             get
             {
-                if ((this.mUICancelButton == null))
+                if((this.mUICancelButton == null))
                 {
                     this.mUICancelButton = new WpfButton(this);
                     #region Search Criteria
@@ -117,10 +108,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private WpfButton mUIViewDependenciesButton;
-        
+
         private WpfButton mUICancelButton;
         #endregion
     }

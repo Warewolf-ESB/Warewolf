@@ -5,7 +5,44 @@ using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Controller
 {
-    public class CommunicationController
+    public interface ICommunicationController
+    {
+        string ServiceName { get; set; }
+        EsbExecuteRequest ServicePayload { get; }
+
+        /// <summary>
+        /// Adds the payload argument.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        void AddPayloadArgument(string key, string value);
+
+        /// <summary>
+        /// Adds the payload argument.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        void AddPayloadArgument(string key, StringBuilder value);
+
+        /// <summary>
+        /// Executes the command.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <returns></returns>
+        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceID);
+
+        /// <summary>
+        /// Executes the command.
+        /// </summary>
+        /// <param name="connection">The connection.</param>
+        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="dataListID">The data list unique identifier.</param>
+        /// <returns></returns>
+        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceID, Guid dataListID);
+    }
+
+    public class CommunicationController : ICommunicationController
     {
         public string ServiceName { get; set; }
 

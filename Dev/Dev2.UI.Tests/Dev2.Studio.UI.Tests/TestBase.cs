@@ -77,7 +77,8 @@ namespace Dev2.CodedUI.Tests
             ResourceChangedPopUpUIMap.ClickViewDependancies();
             ResourceChangedPopUpUIMap.WaitForDependencyTab();
 
-            var result = TabManagerUIMap.GetActiveTabName().Contains("ForEachUpgradeTest");
+            string activeTabName = TabManagerUIMap.GetActiveTabName();  
+            var result = activeTabName.Contains("ForEachUpgradeTest");
             Assert.IsTrue(result, "Affected workflow not shown after show affected workflow button pressed.");
         }
 

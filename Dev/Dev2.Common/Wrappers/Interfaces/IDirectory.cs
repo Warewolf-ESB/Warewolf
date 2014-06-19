@@ -8,5 +8,8 @@
         bool Exists(string path);
         string[] GetFileSystemEntries(string path);
         string[] GetFileSystemEntries(string path, string searchPattern);
+        string[] GetDirectories(string workspacePath);
+        void Move(string directoryStructureFromPath, string directoryStructureToPath);
+        void Delete(string directoryStructureFromPath, bool recursive);
     }
 }

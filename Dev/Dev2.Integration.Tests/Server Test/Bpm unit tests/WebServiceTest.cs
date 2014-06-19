@@ -2,6 +2,7 @@
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 {
     /// <summary>
@@ -24,7 +25,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
 
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "WebServiceTest");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/WebServiceTest");
 
             const string expected = @"<result>PASS</result>";
 
@@ -41,7 +42,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
             var id = Guid.NewGuid();
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "11365_WebService");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "TEST/11365_WebService");
 
             //------------Execute Test---------------------------
             TestHelper.PostDataToWebserverAsRemoteAgent(postData, id);
@@ -66,7 +67,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
             var id = Guid.NewGuid();
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "11365AltSyntax");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "TEST/11365AltSyntax");
 
             //------------Execute Test---------------------------
             TestHelper.PostDataToWebserverAsRemoteAgent(postData, id);

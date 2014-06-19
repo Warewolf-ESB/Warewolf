@@ -16,6 +16,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.DynamicServices.Test
 {
     /// <summary>
@@ -137,7 +138,7 @@ namespace Dev2.DynamicServices.Test
         }
 
         [TestMethod]
-        public void CanUpdateWorkItemWithCommitActionAllSave()
+        public void CanUpdateWorkItemWithCommitActionAllNotSave()
         {
             //Lock because of access to resourcatalog
             lock(SyncRoot)
@@ -294,7 +295,7 @@ namespace Dev2.DynamicServices.Test
         [ExpectedException(typeof(ArgumentNullException))]
         public void WorkspaceRepositoryWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
-            var result = new WorkspaceRepository(null);
+            new WorkspaceRepository(null);
         }
 
         // PBI 9363 - 2013.05.29 - TWR: Added 
@@ -304,7 +305,7 @@ namespace Dev2.DynamicServices.Test
             var catalog = new Mock<IResourceCatalog>();
             catalog.Setup(c => c.LoadWorkspace(It.IsAny<Guid>())).Verifiable();
 
-            var result = new WorkspaceRepository(catalog.Object);
+            new WorkspaceRepository(catalog.Object);
 
             catalog.Verify(c => c.LoadWorkspace(It.IsAny<Guid>()), Times.Never());
         }
@@ -376,6 +377,7 @@ namespace Dev2.DynamicServices.Test
             workspaceID = Guid.NewGuid();
             List<IResource> resources;
             ResourceCatalogTests.SaveResources(Guid.Empty, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
+            ResourceCatalogTests.SaveResources(workspaceID, null, true, true, new string[0], new[] { "Calculate_RecordSet_Subtract" }, out resources, new Guid[0], new[] { Guid.NewGuid() });
 
             // Force reload of server workspace from _currentTestDir
             ResourceCatalog.Instance.LoadWorkspace(GlobalConstants.ServerWorkspaceID);

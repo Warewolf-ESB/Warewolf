@@ -3,6 +3,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
@@ -408,7 +409,7 @@ You need Administrator permission.", viewModel.Errors);
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockEventAgg = new Mock<IEventAggregator>();
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var server = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
+            var server = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             Assert.IsNull(viewModel.CurrentEnvironment);
             Assert.IsTrue(server.CanStudioExecute);

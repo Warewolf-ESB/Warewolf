@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
@@ -9,7 +10,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-
+using System.Linq;
 namespace Dev2.Runtime.ESB.Management.Services
 {
     /// <summary>
@@ -57,16 +58,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             var msgs = new CompileMessageList();
             if(thisService != null)
             {
-                var deps = ResourceCatalog.Instance.GetDependants(wGuid, thisService.ResourceName);
-
+                var deps = ResourceCatalog.Instance.GetDependants(wGuid, thisService.ResourceID).Select(a => ResourceCatalog.Instance.GetResource(wGuid,a).ResourcePath).ToList();
                 CompileMessageType[] filters = null; // TODO : Convert string list to enum array ;)
                 if(deps.Count > 0)
                 {
                     // ReSharper disable ExpressionIsAlwaysNull
-                    msgs = CompileMessageRepo.Instance.FetchMessages(wGuid, sGuid, deps, filters);
+                    msgs = CompileMessageRepo.Instance.FetchMessages(GlobalConstants.ServerWorkspaceID, sGuid, deps, filters);
                     // ReSharper restore ExpressionIsAlwaysNull
                     return serializer.SerializeToBuilder(msgs);
-
                 }
             }
             else

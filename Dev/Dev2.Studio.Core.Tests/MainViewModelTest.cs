@@ -5,6 +5,7 @@ using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
+using Dev2.Models;
 using Dev2.Providers.Events;
 using Dev2.Scheduler.Interfaces;
 using Dev2.Services.Events;
@@ -30,7 +32,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
@@ -38,7 +39,6 @@ using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Help;
-using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Webs;
@@ -1100,13 +1100,28 @@ namespace Dev2.Core.Tests
         public void NewResourceCommandExpectsWebControllerDisplayDialogue()
         {
             CreateFullExportsAndVm();
-            _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Verifiable();
+            int HitCounter = 0;
+            IContextualResourceModel payloadResourceModel = null;
+            _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Callback((IContextualResourceModel c, bool b1) =>
+                {
+                    HitCounter++;
+                    payloadResourceModel = c;
+                });
+
             Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
             mockAuthService.Setup(c => c.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
             _environmentModel.Setup(c => c.AuthorizationService).Returns(mockAuthService.Object);
             _mainViewModel.Handle(new SetActiveEnvironmentMessage(_environmentModel.Object));
             _mainViewModel.NewResourceCommand.Execute("Service");
-            _webController.Verify(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false), Times.Once());
+            Assert.AreEqual(1, HitCounter);
+            if(payloadResourceModel != null)
+            {
+                Assert.AreEqual(Guid.Empty, payloadResourceModel.ID);
+            }
+            else
+            {
+                Assert.Fail("The resource passed in was null");
+            }
         }
 
         [TestMethod]
@@ -1245,23 +1260,6 @@ namespace Dev2.Core.Tests
         //    _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
         //}
 
-        [TestMethod]
-        public void DeleteResourceConfirmedExpectRemoveNavigationResourceMessage()
-        {
-            CreateFullExportsAndVm();
-            SetupForDelete();
-
-            _eventAggregator.Setup(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
-                .Callback<object>((o =>
-                {
-                    var m = (RemoveNavigationResourceMessage)o;
-                    Assert.IsTrue(m.ResourceModel.Equals(_firstResource.Object));
-                }));
-
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
-            _mainViewModel.Handle(msg);
-            _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Once());
-        }
 
         [TestMethod]
         public void DeleteResourceConfirmedExpectContextRemoved()
@@ -1349,40 +1347,6 @@ namespace Dev2.Core.Tests
             //---------Verify------
             mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Never());
             _eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
-        }
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("MainViewModel_HandleDeleteResourceMessage")]
-        public void MainViewModel_HandleDeleteResourceMessage_PublishRemoveNavigationNodeWithContext()
-        {
-            var mockedEnvironment = new Mock<IEnvironmentModel>();
-            var mockedEnvironmentRepo = new Mock<IEnvironmentRepository>();
-            var mockedResourceRepo = new Mock<IResourceRepository>();
-            var mockedEventAggregator = new Mock<IEventAggregator>();
-            var resourceToDelete = new Mock<IContextualResourceModel>();
-
-            mockedEnvironment.Setup(env => env.ResourceRepository).Returns(mockedResourceRepo.Object);
-            mockedEnvironmentRepo.Setup(env => env.Source).Returns(mockedEnvironment.Object);
-            mockedResourceRepo.Setup(repo => repo.DeleteResource(It.IsAny<IResourceModel>()))
-                .Returns(MakeMsg("<DataList>Success</DataList>"));
-            RemoveNavigationResourceMessage msg = null;
-            mockedEventAggregator.Setup(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()))
-                .Callback<Object>(m =>
-                {
-                    msg = (RemoveNavigationResourceMessage)m;
-                })
-                .Verifiable();
-            var mainViewModel = new MainViewModel(mockedEventAggregator.Object, new Mock<IAsyncWorker>().Object, mockedEnvironmentRepo.Object, new VersionChecker());
-            resourceToDelete.Setup(res => res.Environment).Returns(mockedEnvironment.Object);
-
-            //------------Execute Test---------------------------
-            mainViewModel.Handle(new DeleteResourcesMessage(new Collection<IContextualResourceModel> { resourceToDelete.Object }, false));
-
-            // Assert Result
-            Assert.IsNotNull(msg, "Remove naviagtion node message not published");
-            Assert.AreEqual(mockedEnvironment.Object, msg.ResourceModel.Environment, "Message does not contain environment");
-
         }
 
         #endregion delete
@@ -2098,21 +2062,34 @@ namespace Dev2.Core.Tests
             SetupDefaultMef();
             #endregion
 
+            var resourceID = Guid.NewGuid();
+            var environmentID = Guid.NewGuid();
             var envRepo = new Mock<IEnvironmentRepository>();
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
-            var environmentModel = new Mock<IEnvironmentModel>().Object;
+            Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
+            Mock<IContextualResourceModel> mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceID);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.ID).Returns(environmentID);
+            mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
+            var environmentModel = mockEnvironmentModel.Object;
+            mockResourceModel.Setup(model => model.Environment).Returns(environmentModel);
             envRepo.Setup(e => e.Source).Returns(environmentModel);
+            envRepo.Setup(e => e.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(environmentModel);
             envRepo.Setup(e => e.Source.IsConnected).Returns(false);
             envRepo.Setup(e => e.Source.Connection.IsConnected).Returns(false);
             var vm = new MainViewModel(eventAggregator.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, new Mock<IBrowserPopupController>().Object);
-            var expected = new Mock<AbstractTreeViewModel>(new Mock<IEventAggregator>().Object, new Mock<ITreeNode>().Object);
-            expected.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            vm.AddDeployResourcesWorkSurface(mockResourceModel.Object);
+            var expected = new Mock<IExplorerItemModel>();
+            expected.Setup(model => model.ResourceId).Returns(resourceID);
+            expected.Setup(model => model.EnvironmentId).Returns(environmentModel.ID);
             var deployMessage = new DeployResourcesMessage(expected.Object);
             vm.Handle(deployMessage);
             eventAggregator.Verify(e => e.Publish(It.IsAny<object>()), "MainViewModel Handle DeployResourcesMessage did not publish message with the selected view model.");
             Assert.IsNotNull(actual, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected view model.");
-            Assert.AreSame(expected.Object.DisplayName, actual.DisplayName, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected display name.");
-            Assert.AreSame(expected.Object.EnvironmentModel, actual.Environment, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected environment.");
+            Assert.AreEqual(expected.Object.ResourceId, actual.ResourceID, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected display name.");
+            Assert.AreEqual(expected.Object.EnvironmentId, actual.EnvironmentID, "MainViewModel Handle DeployResourcesMessage did not publish message with the selected environment.");
         }
 
 

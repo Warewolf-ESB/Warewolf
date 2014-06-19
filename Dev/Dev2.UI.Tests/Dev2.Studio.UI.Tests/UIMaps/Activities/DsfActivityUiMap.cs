@@ -120,8 +120,14 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public List<UITestControl> GetInputMappingRows()
         {
-            VisualTreeWalker visualTreeWalker = new VisualTreeWalker();
+            var visualTreeWalker = new VisualTreeWalker();
             UITestControl table = visualTreeWalker.GetChildByAutomationIDPath(Activity, "LargeView", "Table");
+
+            if (table == null)
+            {
+                return new List<UITestControl>();
+            }
+
             UITestControlCollection tableChildren = table.GetChildren();
             List<UITestControl> rows = tableChildren.Where(c => c.ControlType == ControlType.Row).ToList();
             return rows;

@@ -90,7 +90,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         {
             VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
             {
-                new Tuple<string, string, AssertType>("CaseSP", @"<InnerError>Can only execute workflows from web browser</InnerError>", AssertType.Contains)
+                new Tuple<string, string, AssertType>("DATABASE/CaseSP", @"<InnerError>Can only execute workflows from web browser</InnerError>", AssertType.Contains)
             });
         }
 
@@ -102,7 +102,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
             const string Expected = "{ \"FatalError\": \"An internal error occurred while executing the service request\",\"errors\": [ \"Can only execute workflows from web browser\"]}";
             VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
             {
-                new Tuple<string, string, AssertType>("CaseSP.json", Expected, AssertType.Equals)
+                new Tuple<string, string, AssertType>("DATABASE/CaseSP.json", Expected, AssertType.Equals)
             });
         }
 
@@ -343,8 +343,6 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
             var requests = new List<Tuple<string, string>>
             {
                 new Tuple<string, string>("Service/Help/GetDictionary?SaveDialog?", @"{""default"":""Name cannot be blank."",""DuplicateFound"":""Name already exists.""}"),
-                new Tuple<string, string>("Service/Resources/PathsAndNames??", @"{""IsValid"":true,""ErrorMessage"":""Exception has been thrown by the target of an invocation."",""ErrorFields"":[],""Result"":""""}"),
-                new Tuple<string, string>("Service/Resources/PathsAndNames?WebSource?", AssertNotNull),
             };
 
             VerifyWebsiteRequests(requests, new[] { "services", "sources", "dialogs" });

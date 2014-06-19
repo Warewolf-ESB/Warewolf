@@ -206,7 +206,7 @@ namespace Dev2.Runtime.ESB.Control
 
                 try
                 {
-                    theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
+                    theShape = dataObject.ResourceID == Guid.Empty ? FindServiceShape(workspaceID, dataObject.ServiceName) : FindServiceShape(workspaceID, dataObject.ResourceID);
                 }
                 catch(Exception ex)
                 {
@@ -375,7 +375,7 @@ namespace Dev2.Runtime.ESB.Control
         {
             var clonedDataObject = dataObject.Clone();
             var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
-            var shapeOfData = FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName);
+            var shapeOfData = FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID);
             var executionContainer = invoker.GenerateInvokeContainer(clonedDataObject, clonedDataObject.ServiceName, isLocal, oldID);
             if(executionContainer != null)
             {
@@ -436,9 +436,9 @@ namespace Dev2.Runtime.ESB.Control
 
             string theShape;
 
-            if(IsServiceWorkflow(dataObject.WorkspaceID, dataObject.ServiceName))
+            if(IsServiceWorkflow(dataObject.WorkspaceID, dataObject.ResourceID))
             {
-                theShape = FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName);
+                theShape = FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID);
             }
             else
             {
@@ -494,12 +494,46 @@ namespace Dev2.Runtime.ESB.Control
         /// Finds the service shape.
         /// </summary>
         /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="serviceName">Name of the service.</param>
+        /// <param name="resourceID">Name of the service.</param>
         /// <returns></returns>
-        public string FindServiceShape(Guid workspaceID, string serviceName)
+        public string FindServiceShape(Guid workspaceID, Guid resourceID)
         {
             var result = "<DataList></DataList>";
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
+            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceID) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceID);
+
+            if(resource == null)
+            {
+                return result;
+            }
+
+            result = resource.DataList;
+
+            // Handle services ;)
+            if(result == "<DataList />" && resource.ResourceType != ResourceType.WorkflowService)
+            {
+                ErrorResultTO errors;
+                result = GlueInputAndOutputMappingSegments(resource.Outputs, resource.Inputs, out errors);
+            }
+
+
+            if(string.IsNullOrEmpty(result))
+            {
+                result = "<DataList></DataList>";
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Finds the service shape.
+        /// </summary>
+        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="resourceName">Name of the service.</param>
+        /// <returns></returns>
+        public string FindServiceShape(Guid workspaceID, string resourceName)
+        {
+            var result = "<DataList></DataList>";
+            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
 
             if(resource == null)
             {
@@ -534,7 +568,7 @@ namespace Dev2.Runtime.ESB.Control
         public string FetchExecutionPayload(IDSFDataObject dataObj, DataListFormat targetFormat, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            var targetShape = FindServiceShape(dataObj.WorkspaceID, dataObj.ServiceName);
+            var targetShape = FindServiceShape(dataObj.WorkspaceID, dataObj.ResourceID);
             var result = string.Empty;
 
             if(!string.IsNullOrEmpty(targetShape))
@@ -570,14 +604,14 @@ namespace Dev2.Runtime.ESB.Control
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
-                theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
+                theShape = FindServiceShape(workspaceID, dataObject.ResourceID);
                 dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 dataObject.RawPayload = string.Empty;
             }
 
             // force all items to exist in the DL ;)
-            theShape = FindServiceShape(workspaceID, dataObject.ServiceName);
+            theShape = FindServiceShape(workspaceID, dataObject.ResourceID);
             var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, theShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
@@ -634,9 +668,9 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        static bool IsServiceWorkflow(Guid workspaceID, string serviceName)
+        static bool IsServiceWorkflow(Guid workspaceID, Guid resourceID)
         {
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
+            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceID) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceID);
             if(resource == null)
             {
                 return false;

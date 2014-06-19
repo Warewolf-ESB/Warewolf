@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Services.Events;
@@ -22,7 +23,7 @@ namespace Dev2.Core.Tests
         public void ThrowsNullExceptionForEnvironmentRepo()
         {
             // ReSharper disable ObjectCreationAsStatement
-            new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null);
+            new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, new Mock<IStudioResourceRepository>().Object);
             // ReSharper restore ObjectCreationAsStatement
         }
 
@@ -33,7 +34,8 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo); vm.LoadEnvironments();
+            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo, new Mock<IStudioResourceRepository>().Object);
+            vm.LoadEnvironments();
 
             //-----Assert-----
             Assert.IsInstanceOfType(vm, typeof(IHandle<AddServerToExplorerMessage>));
@@ -47,7 +49,8 @@ namespace Dev2.Core.Tests
             // Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo); vm.LoadEnvironments();
+            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo, new Mock<IStudioResourceRepository>().Object);
+            vm.LoadEnvironments();
 
             //-----Assert-----
             Assert.IsInstanceOfType(vm, typeof(IHandle<RemoveEnvironmentMessage>));
@@ -60,7 +63,8 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo); vm.LoadEnvironments();
+            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo, new Mock<IStudioResourceRepository>().Object);
+            vm.LoadEnvironments();
 
             //-----Assert-----
             Assert.IsInstanceOfType(vm, typeof(IHandle<EnvironmentDeletedMessage>));
@@ -73,7 +77,8 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo); vm.LoadEnvironments();
+            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo, new Mock<IStudioResourceRepository>().Object);
+            vm.LoadEnvironments();
 
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
@@ -93,7 +98,8 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo); vm.LoadEnvironments();
+            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo, new Mock<IStudioResourceRepository>().Object);
+            vm.LoadEnvironments();
 
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
@@ -113,7 +119,8 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo); vm.LoadEnvironments();
+            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo, new Mock<IStudioResourceRepository>().Object);
+            vm.LoadEnvironments();
             mockEnvironment.Setup(e => e.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
 
             //------Assert---------
@@ -134,7 +141,8 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo); vm.LoadEnvironments();
+            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo, new Mock<IStudioResourceRepository>().Object);
+            vm.LoadEnvironments();
 
             //-----Assert-----
             Assert.IsInstanceOfType(vm, typeof(IHandle<UpdateExplorerMessage>));
@@ -147,7 +155,10 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo); vm.LoadEnvironments();
+            var async = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+   
+            var vm = new ExplorerViewModel(EventPublishers.Aggregator, async.Object, repo, new Mock<IStudioResourceRepository>().Object);
+            vm.LoadEnvironments();
 
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
@@ -160,7 +171,8 @@ namespace Dev2.Core.Tests
             vm.Handle(msg);
 
             //------Assert---------
-            Assert.AreEqual(2, vm.NavigationViewModel.Environments.Count);
+
+            secondEnvironment.Verify(c => c.Connect(), Times.Never());
         }
 
         [TestMethod]
@@ -170,7 +182,8 @@ namespace Dev2.Core.Tests
             //Setup();
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
             var repo = GetEnvironmentRepository(mockEnvironment);
-            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo); vm.LoadEnvironments();
+            var vm = new ExplorerViewModel(EventPublishers.Aggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, repo, new Mock<IStudioResourceRepository>().Object);
+            vm.LoadEnvironments();
 
             //------Assert---------
             Assert.AreEqual(vm.NavigationViewModel.Environments.Count, 1);
@@ -184,7 +197,7 @@ namespace Dev2.Core.Tests
             vm.Handle(msg);
 
             //------Assert---------
-            Assert.AreEqual(2, vm.NavigationViewModel.Environments.Count);
+    
             secondEnvironment.Verify(c => c.Connect(), Times.Once());
         }
 
@@ -218,7 +231,7 @@ namespace Dev2.Core.Tests
             });
 
             // Create view model with connected localhost - should invoke our action
-            var viewModel = new ExplorerViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, false, enDsfActivityType.All, action);
+            var viewModel = new ExplorerViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, new Mock<IStudioResourceRepository>().Object, false, enDsfActivityType.All, action);
             viewModel.LoadEnvironments();
             Assert.AreEqual(1, actionHitCount, "Constructor did not subscribe to NavigationViewModel.LoadResourcesCompleted.");
 

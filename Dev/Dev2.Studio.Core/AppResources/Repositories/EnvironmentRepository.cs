@@ -14,7 +14,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Util;
 using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
@@ -45,7 +45,7 @@ namespace Dev2.Studio.Core
         /// <summary>
         /// Gets the repository instance.
         /// </summary>
-        public static EnvironmentRepository Instance
+        public static IEnvironmentRepository Instance
         {
             get
             {

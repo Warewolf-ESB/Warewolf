@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             string dependsOnMeString = string.Empty;
             StringBuilder tmp;
             values.TryGetValue("ResourceNames", out tmp);
-            if (tmp != null)
+            if(tmp != null)
             {
                 resourceNamesString = tmp.ToString();
             }
@@ -111,7 +111,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var dependencies = resource.Dependencies;
                 if(dependencies != null)
                 {
-                    dependencies.ForEach(c => results.Add(c.ResourceName));
+                    dependencies.ForEach(c => results.Add(c.ResourceID.ToString()));
                     dependencies.ToList().ForEach(c => results.AddRange(FetchRecursiveDependancies(c.ResourceName, workspaceID)));
                 }
             }

@@ -13,8 +13,8 @@ namespace Dev2.Common.ExtMethods
         private static readonly Regex _isAlphaNumericRegex = new Regex("^[0-9a-zA-Z]*$", RegexOptions.Compiled);
         private static readonly Regex _isEmailRegex = new Regex(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly Regex _isBinary = new Regex("^[01]+$");
-        public static Regex IsValidCategoryname = new Regex(@"[^a-zA-Z0-9._\s-]+$");
-        public static Regex IsValidResourcename = new Regex(@"[^a-zA-Z0-9._\s-]+$");
+        public static Regex IsValidCategoryname = new Regex(@"[\\/?%*:|""<>\.]+$");
+        public static Regex IsValidResourcename = new Regex(@"[^a-zA-Z0-9._\s-]+");
         static readonly Regex _isHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
         static readonly Regex _isHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
 

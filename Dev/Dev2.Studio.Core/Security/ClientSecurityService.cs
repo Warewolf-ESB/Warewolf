@@ -42,8 +42,11 @@ namespace Dev2.Security
                 if(foundPermission != null)
                 {
                     foundPermission.Permissions = modifiedPermission.Permissions;
+                    
                 }
             }
+            RaisePermissionsModified(new PermissionsModifiedEventArgs(new List<WindowsGroupPermission> (modifiedPermissions)));
+            RaisePermissionsChanged();
         }
 
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs args)

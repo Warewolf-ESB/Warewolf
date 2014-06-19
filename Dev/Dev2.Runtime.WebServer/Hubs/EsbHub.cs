@@ -1,28 +1,31 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics;
+using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
     [AuthorizeHub]
     [HubName("esb")]
-    public class EsbHub : ServerHub, IDebugWriter
+    public class EsbHub : ServerHub, IDebugWriter, IExplorerRepositorySync
     {
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
 
@@ -30,6 +33,18 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
             ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
+            ServerExplorerRepository.Instance.MessageSubscription(this);
+            if(ResourceCatalog.Instance.ResourceSaved == null)
+            {
+                ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
+            }            
+        }
+
+        void ResourceSaved(IResource resource)
+        {
+            var factory = new ExplorerItemFactory(ResourceCatalog.Instance, new DirectoryWrapper(), ServerAuthorizationService.Instance);
+            var resourceItem = factory.CreateResourceItem(resource);
+            AddItemMessage(resourceItem);
         }
 
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
@@ -320,7 +335,6 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
         }
 
-
         protected virtual void WriteEventProviderClientMessage(IMemo memo)
         {
             SendMemo(memo as Memo);
@@ -341,6 +355,21 @@ namespace Dev2.Runtime.WebServer.Hubs
             SendDebugState(debugState as DebugState);
         }
 
+
+        #endregion
+
+        #region Implementation of IExplorerRepositorySync
+
+        public void AddItemMessage(IExplorerItem addedItem)
+        {
+            if(addedItem != null)
+            {
+                addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
+                var item = JsonConvert.SerializeObject(addedItem);
+                var hubCallerConnectionContext = Clients;
+                hubCallerConnectionContext.All.ItemAddedMessage(item);
+            }
+        }
 
         #endregion
     }

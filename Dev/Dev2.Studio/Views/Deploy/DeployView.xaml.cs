@@ -1,5 +1,6 @@
-﻿using Dev2.Studio.ViewModels.Deploy;
-using Dev2.Studio.ViewModels.Navigation;
+﻿using System.Collections.Generic;
+using Dev2.Models;
+using Dev2.Studio.ViewModels.Deploy;
 using System.Windows;
 
 // ReSharper disable once CheckNamespace
@@ -20,13 +21,13 @@ namespace Dev2.Studio.Views.Deploy
             FrameworkElement frameworkElement = sender as FrameworkElement;
             if(frameworkElement != null)
             {
-                ResourceTreeViewModel rtvm = frameworkElement.DataContext as ResourceTreeViewModel;
+                ExplorerItemModel rtvm = frameworkElement.DataContext as ExplorerItemModel;
                 if(rtvm != null)
                 {
                     DeployViewModel viewModel = DataContext as DeployViewModel;
                     if(viewModel != null)
                     {
-                        viewModel.SelectDependencies(rtvm.DataContext);
+                        viewModel.SelectDependencies(new List<ExplorerItemModel> { rtvm });
                     }
                 }
             }

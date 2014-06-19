@@ -13,5 +13,6 @@ namespace Dev2.Providers.Events
         void Publish<TEvent>(TEvent sampleEvent) where TEvent : class, new();
 
         void PublishObject(object sampleEvent);
+
     }
 }

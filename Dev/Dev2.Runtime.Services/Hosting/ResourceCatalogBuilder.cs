@@ -30,7 +30,7 @@ namespace Dev2.Runtime.Hosting
         private readonly List<IResource> _resources = new List<IResource>();
         private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
 
-        private readonly object addLock = new object();
+        private readonly object _addLock = new object();
 
         public IList<IResource> ResourceList { get { return _resources; } }
 
@@ -56,7 +56,7 @@ namespace Dev2.Runtime.Hosting
             try
             {
 
-                foreach(var path in folders.Where(f => !string.IsNullOrEmpty(f)).Select(f => Path.Combine(workspacePath, f)))
+                foreach(var path in folders.Where(f => !string.IsNullOrEmpty(f) && !f.EndsWith("VersionControl")).Select(f => Path.Combine(workspacePath, f)))
                 {
                     if(!Directory.Exists(path))
                     {
@@ -105,7 +105,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         var resource = new Resource(xml)
                         {
-                            FilePath = currentItem.FilePath
+                            FilePath = currentItem.FilePath                     
                         };
 
                         //2013.08.26: Prevent duplicate unassigned folder in save dialog and studio explorer tree by interpreting 'unassigned' as blank
@@ -128,7 +128,7 @@ namespace Dev2.Runtime.Hosting
                             signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8);
                         }
 
-                        lock(addLock)
+                        lock(_addLock)
                         {
                             AddResource(resource, currentItem.FilePath);
                         }

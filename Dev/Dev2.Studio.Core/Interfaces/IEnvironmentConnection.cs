@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Network;
 using System.Text;
+using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
@@ -44,5 +45,7 @@ namespace Dev2.Studio.Core.Interfaces
         void StartAutoConnect();
 
         bool IsLocalHost { get; }
+
+        Action<IExplorerItem> ItemAddedMessageAction { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
 using Dev2.Dialogs;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Enums;
@@ -29,8 +30,8 @@ namespace Dev2.Core.Tests.Dialogs
         {
         }
 
-        public TestResourcePickerDialog(enDsfActivityType activityType, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, bool isFromDrop)
-            : base(activityType, environmentRepository, eventPublisher, asyncWorker, isFromDrop)
+        public TestResourcePickerDialog(enDsfActivityType activityType, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, bool isFromDrop, IStudioResourceRepository studioResourceRepository)
+            : base(activityType, environmentRepository, eventPublisher, asyncWorker, isFromDrop, studioResourceRepository)
         {
         }
 

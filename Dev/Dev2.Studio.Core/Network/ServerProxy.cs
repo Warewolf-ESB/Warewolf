@@ -13,7 +13,9 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Diagnostics;
+using Dev2.Explorer;
 using Dev2.ExtMethods;
+using Dev2.Interfaces;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
@@ -85,6 +87,9 @@ namespace Dev2.Network
                 EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
                 EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIDReceived);
                 EsbProxy.On<Guid>("SendServerID", OnServerIDReceived);
+                EsbProxy.On<string>("ItemUpdatedMessage", OnItemUpdatedMessageReceived);
+                EsbProxy.On<string>("ItemDeletedMessage", OnItemDeletedMessageReceived);
+                EsbProxy.On<string>("ItemAddedMessage", OnItemAddedMessageReceived);
             }
         }
 
@@ -319,6 +324,40 @@ namespace Dev2.Network
                 Logger.LogError(this, e);
             }
             RaisePermissionsChanged();
+        }
+
+        public Action<IExplorerItem> ItemAddedMessageAction { get; set; }
+
+        void OnItemAddedMessageReceived(string obj)
+        {
+            var serverExplorerItem = JsonConvert.DeserializeObject<ServerExplorerItem>(obj);
+            if(ItemAddedMessageAction != null)
+            {
+                ItemAddedMessageAction(serverExplorerItem);
+            }
+            //Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
+        }
+
+        public Action<IExplorerItem> ItemItemDeletedMessageAction { get; set; }
+        void OnItemDeletedMessageReceived(string obj)
+        {
+            var serverExplorerItem = JsonConvert.DeserializeObject<ServerExplorerItem>(obj);
+            if(ItemItemDeletedMessageAction != null)
+            {
+                ItemItemDeletedMessageAction(serverExplorerItem);
+            }
+            //Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
+        }
+
+        public Action<IExplorerItem> ItemItemUpdatedMessageAction { get; set; }
+        void OnItemUpdatedMessageReceived(string obj)
+        {
+            var serverExplorerItem = JsonConvert.DeserializeObject<ServerExplorerItem>(obj);
+            if(ItemItemUpdatedMessageAction != null)
+            {
+                ItemItemUpdatedMessageAction(serverExplorerItem);
+            }
+            //Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
         }
 
         public Guid ServerID { get; protected set; }

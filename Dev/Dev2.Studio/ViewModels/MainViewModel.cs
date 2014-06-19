@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.IO;
-using System.Linq;
-using System.Security.Claims;
-using System.Windows;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
 using Dev2.Common.ExtMethods;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
@@ -40,7 +33,6 @@ using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Help;
-using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Studio.Webs;
@@ -48,6 +40,14 @@ using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Linq;
+using System.Security.Claims;
+using System.Windows;
+using System.Windows.Input;
 using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutModel;
 
 // ReSharper disable CheckNamespace
@@ -468,7 +468,7 @@ namespace Dev2.Studio.ViewModels
 
             if(ExplorerViewModel == null)
             {
-                ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, false, enDsfActivityType.All, AddWorkspaceItems);
+                ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, StudioResourceRepository.Instance, false, enDsfActivityType.All, AddWorkspaceItems);
                 ExplorerViewModel.LoadEnvironments();
             }
         }
@@ -584,33 +584,35 @@ namespace Dev2.Studio.ViewModels
             var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources);
 
             var exist = ActivateWorkSurfaceIfPresent(key);
-            DeployResource = message.ViewModel;
-            var abstractTreeViewModel = (message.ViewModel as AbstractTreeViewModel);
-            if(exist)
+            if(message.ViewModel != null)
             {
-                this.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
-                if(abstractTreeViewModel != null)
+                var environmentModel = EnvironmentRepository.FindSingle(model => model.ID == message.ViewModel.EnvironmentId);
+                if(environmentModel != null)
                 {
-                    EventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.DisplayName, abstractTreeViewModel.EnvironmentModel));
+                    var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == message.ViewModel.ResourceId);
+                    if(resourceModel != null)
+                    {
+                        DeployResource = resourceModel as IContextualResourceModel;
+                    }
                 }
-            }
-            else
-            {
-                AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateDeployViewModel(message.ViewModel));
-            }
-            this.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
-            if(abstractTreeViewModel != null)
-            {
-                EventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.DisplayName, abstractTreeViewModel.EnvironmentModel));
+                if(!exist)
+                {
+                    AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateDeployViewModel(message.ViewModel));
+                }
+                else
+                {
+                    this.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
+                    EventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.ResourceId, message.ViewModel.EnvironmentId));
+                }
             }
         }
 
-        public SimpleBaseViewModel DeployResource { get; set; }
+        public IContextualResourceModel DeployResource { get; set; }
 
         public void Handle(ShowNewResourceWizard message)
         {
             this.TraceInfo(message.GetType().Name);
-            ShowNewResourceWizard(message.ResourceType);
+            ShowNewResourceWizard(message.ResourceType, message.ResourcePath);
         }
 
         public void RefreshActiveEnvironment()
@@ -626,13 +628,13 @@ namespace Dev2.Studio.ViewModels
 
         #region Private Methods
 
-        private void TempSave(IEnvironmentModel activeEnvironment, string resourceType)
+        private void TempSave(IEnvironmentModel activeEnvironment, string resourceType, string resourcePath)
         {
             string newWorflowName = NewWorkflowNames.Instance.GetNext();
 
             IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, resourceType,
                                                                                               resourceType);
-            tempResource.Category = "Unassigned";
+            tempResource.Category = string.IsNullOrEmpty(resourcePath) ? "Unassigned\\" + newWorflowName : resourcePath + "\\" + newWorflowName;
             tempResource.ResourceName = newWorflowName;
             tempResource.DisplayName = newWorflowName;
             tempResource.IsNewWorkflow = true;
@@ -666,7 +668,7 @@ namespace Dev2.Studio.ViewModels
         private bool ShowRemovePopup(IWorkflowDesignerViewModel workflowVm)
         {
             var result = PopupProvider.Show(string.Format(StringResources.DialogBody_NotSaved, workflowVm.ResourceModel.ResourceName), StringResources.DialogTitle_NotSaved,
-                                            MessageBoxButton.YesNoCancel,MessageBoxImage.Question, null);
+                                            MessageBoxButton.YesNoCancel, MessageBoxImage.Question, null);
 
             switch(result)
             {
@@ -742,14 +744,21 @@ namespace Dev2.Studio.ViewModels
 
         private void ShowNewResourceWizard(string resourceType)
         {
+            ShowNewResourceWizard(resourceType, "");
+        }
+
+        private void ShowNewResourceWizard(string resourceType, string resourcePath)
+        {
             if(resourceType == "Workflow")
             {
                 //Massimo.Guerrera:23-04-2013 - Added for PBI 8723
-                TempSave(ActiveEnvironment, resourceType);
+                TempSave(ActiveEnvironment, resourceType, resourcePath);
             }
             else
             {
                 var resourceModel = ResourceModelFactory.CreateResourceModel(ActiveEnvironment, resourceType);
+                resourceModel.Category = string.IsNullOrEmpty(resourcePath) ? null : resourcePath;
+                resourceModel.ID = Guid.Empty;
                 DisplayResourceWizard(resourceModel, false);
             }
         }
@@ -1108,8 +1117,6 @@ namespace Dev2.Studio.ViewModels
                 }
 
                 DeleteContext(contextualModel);
-                this.TraceInfo("Publish message of type - " + typeof(RemoveNavigationResourceMessage));
-                EventPublisher.Publish(new RemoveNavigationResourceMessage(contextualModel));
 
                 if(contextualModel.Environment.ResourceRepository.DeleteResource(contextualModel).HasError)
                 {
@@ -1248,15 +1255,15 @@ namespace Dev2.Studio.ViewModels
         {
             WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources);
             bool exist = ActivateWorkSurfaceIfPresent(key);
-            DeployResource = input as SimpleBaseViewModel;
+            DeployResource = input as IContextualResourceModel;
             if(exist)
             {
                 if(input is IContextualResourceModel)
                 {
                     this.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
                     EventPublisher.Publish(
-                        new SelectItemInDeployMessage((input as IContextualResourceModel).DisplayName,
-                            (input as IContextualResourceModel).Environment));
+                        new SelectItemInDeployMessage((input as IContextualResourceModel).ID,
+                            (input as IContextualResourceModel).Environment.ID));
                 }
             }
             else

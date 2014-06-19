@@ -1,9 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Dev2.Common;
-using Dev2.Runtime.ServiceModel;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -61,44 +59,52 @@ namespace Dev2.Runtime.Hosting
 
         public void IterateAll(Guid workspaceID, Func<ResourceIteratorResult, bool> action, params ResourceDelimiter[] delimiters)
         {
-            Iterate(Resources.RootFolders.Values.Distinct(), workspaceID, action, delimiters);
+            Iterate("Resources", workspaceID, action, delimiters);
         }
 
         #endregion
 
         #region Iterate
 
-        public void Iterate(IEnumerable<string> folders, Guid workspaceID, Func<ResourceIteratorResult, bool> action, params ResourceDelimiter[] delimiters)
+        public void Iterate(string resourcePath, Guid workspaceID, Func<ResourceIteratorResult, bool> action, params ResourceDelimiter[] delimiters)
         {
-            if(delimiters == null || delimiters.Length == 0 || action == null || folders == null)
+            if(delimiters == null || delimiters.Length == 0 || action == null || string.IsNullOrEmpty(resourcePath))
             {
                 return;
             }
 
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var folders = Directory.EnumerateDirectories(workspacePath, "*", SearchOption.AllDirectories);
             foreach(var path in folders.Select(folder => Path.Combine(workspacePath, folder)))
             {
-                if (Directory.Exists(path))
+                if(Directory.Exists(path))
                 {
                     var files = Directory.GetFiles(path, "*.xml");
-                    foreach (var file in files)
+                    foreach(var file in files)
                     {
+                        if(!string.IsNullOrEmpty(resourcePath))
+                        {
+                            if(!file.Contains(resourcePath))
+                            {
+                                continue;
+                            }
+                        }
                         // XML parsing will add overhead - so just read file and use string ops instead
                         var content = File.ReadAllText(file);
-                        var iteratorResult = new ResourceIteratorResult {Content = content};
+                        var iteratorResult = new ResourceIteratorResult { Content = content };
                         var delimiterFound = false;
-                        foreach (var delimiter in delimiters)
+                        foreach(var delimiter in delimiters)
                         {
                             string value;
-                            if (delimiter.TryGetValue(content, out value))
+                            if(delimiter.TryGetValue(content, out value))
                             {
                                 delimiterFound = true;
                                 iteratorResult.Values.Add(delimiter.ID, value);
                             }
                         }
-                        if (delimiterFound)
+                        if(delimiterFound)
                         {
-                            if (!action(iteratorResult))
+                            if(!action(iteratorResult))
                             {
                                 return;
                             }

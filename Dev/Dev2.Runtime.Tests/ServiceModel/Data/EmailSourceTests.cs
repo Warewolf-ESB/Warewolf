@@ -21,8 +21,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public void SaveEmailSourceWithExistingSourceExpectedServerWorkspaceUpdated()
         {
             //Initialize test resource, save then change path
-            string uniquePathText = Guid.NewGuid().ToString();
-            var testResource = new Resource { ResourceName = "test email source", ResourcePath = "initialpath", ResourceType = ResourceType.EmailSource, ResourceID = Guid.NewGuid() };
+            string uniquePathText = Guid.NewGuid().ToString() + "\\test email source";
+            var testResource = new Resource { ResourceName = "test email source", ResourcePath = "initialpath\\test email source", ResourceType = ResourceType.EmailSource, ResourceID = Guid.NewGuid() };
             new EmailSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
             testResource.ResourcePath = uniquePathText;
 

@@ -1,4 +1,23 @@
-<Service ID="b7b0f0ee-add1-437b-bd3b-c7882f64e353" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug_9303" ResourceType="WorkflowService"><DisplayName>Bug_9303</DisplayName><Category>TestCategory</Category><IsNewWorkflow>false</IsNewWorkflow><AuthorRoles></AuthorRoles><Comment></Comment><Tags></Tags><IconPath></IconPath><HelpLink></HelpLink><UnitTestTargetWorkflowService></UnitTestTargetWorkflowService><DataList /><Action Name="InvokeWorkflow" Type="Workflow"><XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="Bug_9303"
+
+<Service ID="b7b0f0ee-add1-437b-bd3b-c7882f64e353" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug_9303" ResourceType="WorkflowService">
+  <DisplayName>Bug_9303</DisplayName>
+  <Category>TestCategory\Bug_9303</Category>
+  <IsNewWorkflow>false</IsNewWorkflow>
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <Tags>
+  </Tags>
+  <IconPath>
+  </IconPath>
+  <HelpLink>
+  </HelpLink>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DataList />
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="Bug_9303"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:dc="clr-namespace:Dev2.Common;assembly=Dev2.Common"
@@ -45,4 +64,23 @@
       &lt;x:Null /&gt;
     &lt;/Flowchart.StartNode&gt;
   &lt;/Flowchart&gt;
-&lt;/Activity&gt;</XamlDefinition></Action><BizRule /><WorkflowActivityDef /><Source /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>3bhlSi2AzpRAnwylW9IzJ4RCzaA=</DigestValue></Reference></SignedInfo><SignatureValue>hnZXXzvPlff+ta1vMqS97lTgUV/mDkUkPJMKP+wnAQ7ehczcf/hyRZQfIvakFlJNygTvl0u9fj/x7uOnTUGxLn8aipZ/w8tm764oDYFsiRND5cXN/kiYbRD2d8JrhWZpqxaCuQPTON6mfj7Hh9hdJlY48WDjYOEjqG0l2h5MspE=</SignatureValue></Signature></Service>
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <BizRule />
+  <WorkflowActivityDef />
+  <Source />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>HKxe99ynV77WVqNj7TAA/04lMmI=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>C/02aoduBj8XItW+DrRWUrdhEZ3ZzEt8IwH7a1IZ/+cuyaD9gp2cqG6HuP3HcZDEJOdegXHf5oPpivzldXWlN58MwXxqDXtz15LP+g7OLaPQ+VKQ5GmQa2ITDrpi2jeWAYctddR/6rGCvjJEAjUjzEiWF6U7iWT5umoyLtIgR7M=</SignatureValue>
+  </Signature>
+</Service>

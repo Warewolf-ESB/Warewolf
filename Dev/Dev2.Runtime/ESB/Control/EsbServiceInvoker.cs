@@ -222,7 +222,8 @@ namespace Dev2.Runtime.ESB
             if(isLocalInvoke)
             {
                 ServiceLocator sl = new ServiceLocator();
-                DynamicService theService = sl.FindService(serviceName, _workspace.ID);
+                var resourceID = dataObject.ResourceID;
+                DynamicService theService = GetService(serviceName, resourceID, sl);
                 EsbExecutionContainer executionContainer = null;
 
 
@@ -238,6 +239,22 @@ namespace Dev2.Runtime.ESB
             // we need a remote container ;)
             // TODO : Set Output description for shaping ;)
             return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
+        }
+
+        DynamicService GetService(string serviceName, Guid resourceID, ServiceLocator sl)
+        {
+            try
+            {
+                if(resourceID == Guid.Empty)
+                {
+                    return sl.FindService(serviceName, _workspace.ID) ?? sl.FindService(serviceName, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version
+                }
+                return sl.FindService(resourceID, _workspace.ID) ?? sl.FindService(resourceID, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version
+            }catch(Exception)
+            {
+                //Internal services
+                return null;
+            }
         }
 
         private EsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace)
@@ -279,18 +296,7 @@ namespace Dev2.Runtime.ESB
         private void MapServiceActionDependencies(ServiceAction serviceAction, ServiceLocator serviceLocator)
         {
 
-            if(serviceAction.ServiceID == Guid.Empty)
-            {
-                if(!string.IsNullOrWhiteSpace(serviceAction.ServiceName))
-                {
-                    serviceAction.Service = serviceLocator.FindService(serviceAction.ServiceName, _workspace.ID);
-                }
-            }
-            else
-            {
-                serviceAction.Service = serviceLocator.FindService(serviceAction.ServiceID, _workspace.ID);
-            }
-
+            serviceAction.Service = GetService(serviceAction.ServiceName, serviceAction.ServiceID, serviceLocator);
             if(!string.IsNullOrWhiteSpace(serviceAction.SourceName))
             {
                 serviceAction.Source = serviceLocator.FindSourceByName(serviceAction.SourceName, _workspace.ID);

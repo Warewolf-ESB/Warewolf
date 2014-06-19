@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Xml.Linq;
-using Dev2.Data.Binary_Objects;
+﻿using Dev2.Data.Binary_Objects;
 using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices;
+using Dev2.Interfaces;
 using Dev2.Runtime.Collections;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -13,6 +8,11 @@ using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceStack.Common.Extensions;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -22,16 +22,16 @@ namespace Dev2.Runtime.ServiceModel
 
         public static volatile Dictionary<ResourceType, string> RootFolders = new Dictionary<ResourceType, string>
         {
-            { ResourceType.Unknown, "Services" },
-            { ResourceType.Server, "Sources" },
-            { ResourceType.DbService, "Services" },
-            { ResourceType.DbSource, "Sources" },
-            { ResourceType.PluginService, "Services" },
-            { ResourceType.PluginSource, "Sources" },
-            { ResourceType.EmailSource, "Sources" },
-            { ResourceType.WebSource, "Sources" },
-            { ResourceType.WebService, "Services" },
-            { ResourceType.WorkflowService, "Services" },
+            { ResourceType.Unknown, "Resources" },
+            { ResourceType.Server, "Resources" },
+            { ResourceType.DbService, "Resources" },
+            { ResourceType.DbSource, "Resources" },
+            { ResourceType.PluginService, "Resources" },
+            { ResourceType.PluginSource, "Resources" },
+            { ResourceType.EmailSource, "Resources" },
+            { ResourceType.WebSource, "Resources" },
+            { ResourceType.WebService, "Resources" },
+            { ResourceType.WorkflowService, "Resources" },
         };
 
         #endregion
@@ -84,72 +84,29 @@ namespace Dev2.Runtime.ServiceModel
         // POST: Service/Resources/PathsAndNames
         public string PathsAndNames(string args, Guid workspaceID, Guid dataListID)
         {
-            var getSearchPath = GetWebsSensitiveServiceType((ResourceType)Enum.Parse(typeof(ResourceType), args));
-
-            var paths = new SortedSet<string>(new CaseInsensitiveStringComparer());
-            var names = new SortedSet<string>(new CaseInsensitiveStringComparer());
-
-            if(!String.IsNullOrEmpty(args))
-            {
-                ResourceIterator.Instance.Iterate(RootFolders.Select(c => c.Value).Distinct().ToArray(), workspaceID, iteratorResult =>
-                {
-                    string resourceType;
-                    if(iteratorResult.Values.TryGetValue(3, out resourceType))
-                    {
-                        string name;
-                        if(iteratorResult.Values.TryGetValue(1, out name))
-                        {
-                            names.Add(name);
-                        }
-                        string category;
-                        if(iteratorResult.Values.TryGetValue(2, out category))
-                        {
-                            if(GetWebsSensitiveServiceType((ResourceType)Enum.Parse(typeof(ResourceType), resourceType)) == getSearchPath)
-                            {
-                                //2013.05.20: Ashley Lewis for PBI 8858 - studio paths are in upper case in the explorer
-                                if(category.Trim().Length > 0)
-                                {
-                                paths.Add(category.ToUpper());
-                            }
-                        }
-                    }
-                    }
-                    return true;
-                }, new ResourceDelimiter
-                {
-                    ID = 1,
-                    Start = " Name=\"",
-                    End = "\""
-                }, new ResourceDelimiter
-                {
-                    ID = 2,
-                    Start = "<Category>",
-                    End = "</Category>"
-                }, new ResourceDelimiter
-                {
-                    ID = 3,
-                    Start = "ResourceType=\"",
-                    End = "\""
-                });
-            }
+            args = args.Replace("\\\\", "\\");
+            args = args.Replace("root", "");
+            var explorerItem = ServerExplorerRepository.Instance.Load(workspaceID);
+            var folders = explorerItem.Descendants().Where(item => item.ResourceType == ResourceType.Folder
+                                        && (args == "" ? item.ResourcePath == item.DisplayName : GetResourceParent(item.ResourcePath) == args))
+                                            .Select(item => item.DisplayName);
+            var paths = new SortedSet<string>(folders);
+            var resources = explorerItem.Descendants().Where(item => (item.ResourceType > ResourceType.Unknown && item.ResourceType < ResourceType.ServerSource)
+                                        && (args == "" ? item.ResourcePath == item.DisplayName : GetResourceParent(item.ResourcePath) == args))
+                                            .Select(item => item.DisplayName);
+            var names = new SortedSet<string>(resources);
             var pathsAndNames = JsonConvert.SerializeObject(new PathsAndNamesTO { Names = names, Paths = paths });
             return pathsAndNames;
         }
 
-        //2013.08.26: Ashley Lewis for bug 10208 - Workflows are stored in the same folder but are distinct to the save dialog
-        string GetWebsSensitiveServiceType(ResourceType type)
+
+
+        string GetResourceParent(string resourcePath)
         {
-            string gottenPath;
-            if(type != ResourceType.WorkflowService)
-            {
-                gottenPath = RootFolders[type];
-            }
-            else
-            {
-                gottenPath = "Workflow";
-            }
-            return gottenPath;
+            return resourcePath.Contains("\\") ? resourcePath.Substring(0, resourcePath.LastIndexOf("\\", StringComparison.Ordinal)) : resourcePath;
         }
+
+        //2013.08.26: Ashley Lewis for bug 10208 - Workflows are stored in the same folder but are distinct to the save dialog
 
         #endregion
 
@@ -186,98 +143,17 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Read
 
-        private static readonly object o = new object();
-
         public static ResourceList Read(Guid workspaceID, ResourceType resourceType)
         {
             var resources = new ResourceList();
-            var resourceTypeStr = resourceType.ToString();
-
-            lock(o)
+            var explorerItem = ServerExplorerRepository.Instance.Load(resourceType, workspaceID);
+            explorerItem.Descendants().ForEach(item =>
             {
-
-
-                ResourceIterator.Instance.Iterate(new[] { RootFolders[resourceType] }, workspaceID, iteratorResult =>
+                if(item.ResourceType == resourceType)
                 {
-                    var isResourceType = false;
-                    string value;
-
-                    if(iteratorResult.Values.TryGetValue(1, out value))
-                    {
-                        // Check ResourceType attribute
-                        isResourceType = value.Equals(resourceTypeStr, StringComparison.InvariantCultureIgnoreCase);
-                    }
-                    else if(iteratorResult.Values.TryGetValue(5, out value))
-                    {
-                        // This is here for legacy XML!
-                        #region Check Type attribute
-
-                        enSourceType sourceType;
-                        if(iteratorResult.Values.TryGetValue(5, out value) && Enum.TryParse(value, out sourceType))
-                        {
-                            switch(sourceType)
-                            {
-                                case enSourceType.SqlDatabase:
-                                case enSourceType.MySqlDatabase:
-                                    isResourceType = resourceType == ResourceType.DbSource;
-                                    break;
-                                case enSourceType.WebService:
-                                    break;
-                                case enSourceType.DynamicService:
-                                    isResourceType = resourceType == ResourceType.DbService;
-                                    break;
-                                case enSourceType.Plugin:
-                                    isResourceType = resourceType == ResourceType.PluginService;
-                                    break;
-                                case enSourceType.Dev2Server:
-                                    isResourceType = resourceType == ResourceType.Server;
-                                    break;
-                            }
-                        }
-
-                        #endregion
-                    }
-                    if(isResourceType)
-                    {
-                        // older resources may not have an ID yet!!
-                        iteratorResult.Values.TryGetValue(2, out value);
-                        Guid resourceID;
-                        Guid.TryParse(value, out resourceID);
-
-                        string resourceName;
-                        iteratorResult.Values.TryGetValue(3, out resourceName);
-                        string resourcePath;
-                        iteratorResult.Values.TryGetValue(4, out resourcePath);
-                        resources.Add(ReadResource(resourceID, resourceType, resourceName, resourcePath, iteratorResult.Content));
-                    }
-                    return true;
-                }, new ResourceDelimiter
-                {
-                    ID = 1,
-                    Start = " ResourceType=\"",
-                    End = "\""
-                }, new ResourceDelimiter
-                {
-                    ID = 2,
-                    Start = " ID=\"",
-                    End = "\""
-                }, new ResourceDelimiter
-                {
-                    ID = 3,
-                    Start = " Name=\"",
-                    End = "\""
-                }, new ResourceDelimiter
-                {
-                    ID = 4,
-                    Start = "<Category>",
-                    End = "</Category>"
-                }, new ResourceDelimiter
-                {
-                    ID = 5,
-                    Start = " Type=\"",
-                    End = "\""
-                });
-            }
+                    resources.Add(new Resource { ResourceID = item.ResourceId, ResourceType = resourceType, ResourceName = item.DisplayName, ResourcePath = item.ResourcePath });
+                }
+            });
             return resources;
         }
 
@@ -287,7 +163,7 @@ namespace Dev2.Runtime.ServiceModel
 
         public static string ReadXml(Guid workspaceID, ResourceType resourceType, string resourceID)
         {
-            return ReadXml(workspaceID, RootFolders[resourceType], resourceID);
+            return ReadXml(workspaceID, "Resources", resourceID);
         }
 
         public static string ReadXml(Guid workspaceID, string directoryName, string resourceID)
@@ -296,7 +172,7 @@ namespace Dev2.Runtime.ServiceModel
             Guid id;
             var delimiterStart = Guid.TryParse(resourceID, out id) ? " ID=\"" : " Name=\"";
 
-            ResourceIterator.Instance.Iterate(new[] { directoryName }, workspaceID, iteratorResult =>
+            ResourceIterator.Instance.Iterate(directoryName, workspaceID, iteratorResult =>
             {
                 string value;
                 if(iteratorResult.Values.TryGetValue(1, out value) && resourceID.Equals(value, StringComparison.InvariantCultureIgnoreCase))
@@ -312,37 +188,6 @@ namespace Dev2.Runtime.ServiceModel
         #endregion
 
         #region ReadResource
-
-        static Resource ReadResource(Guid resourceID, ResourceType resourceType, string resourceName, string resourcePath, string content)
-        {
-            ResourceDelimiter delimiter;
-
-            switch(resourceType)
-            {
-                case ResourceType.DbSource:
-                    delimiter = new ResourceDelimiter { ID = 1, Start = " ConnectionString=\"", End = "\"" };
-                    string delimiterValue;
-                    delimiter.TryGetValue(content, out delimiterValue);
-                    return new DbSource
-                    {
-                        ResourceID = resourceID,
-                        ResourceType = resourceType,
-                        ResourceName = resourceName,
-                        ResourcePath = resourcePath,
-                        ConnectionString = delimiterValue
-                    };
-                case ResourceType.PluginSource:
-                    string assemblyLocation;
-                    string assemblyName;
-                    delimiter = new ResourceDelimiter { ID = 1, Start = " AssemblyLocation=\"", End = "\" " };
-                    delimiter.TryGetValue(content, out assemblyLocation);
-                    delimiter = new ResourceDelimiter { ID = 1, Start = " AssemblyName=\"", End = "\" " };
-                    delimiter.TryGetValue(content, out assemblyName);
-                    return new PluginSource { ResourceID = resourceID, ResourceType = resourceType, ResourceName = resourceName, ResourcePath = resourcePath, AssemblyLocation = assemblyLocation, AssemblyName = assemblyName };
-            }
-
-            return new Resource { ResourceID = resourceID, ResourceType = resourceType, ResourceName = resourceName, ResourcePath = resourcePath };
-        }
 
         #endregion
 
@@ -437,5 +282,22 @@ namespace Dev2.Runtime.ServiceModel
     public class DataListVariable
     {
         public string Name { get; set; }
+    }
+
+    public static class TreeEx
+    {
+        public static IEnumerable<IExplorerItem> Descendants(this IExplorerItem root)
+        {
+            var nodes = new Stack<IExplorerItem>(new[] { root });
+            while(nodes.Any())
+            {
+                IExplorerItem node = nodes.Pop();
+                yield return node;
+                if(node.Children != null)
+                {
+                    foreach(var n in node.Children) nodes.Push(n);
+                }
+            }
+        }
     }
 }

@@ -22,7 +22,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void AllToolsTestExpectPass()
         {
-            string postData = String.Format("{0}{1}", _webserverUri, "Tool Testing");
+            string postData = String.Format("{0}{1}", _webserverUri, "TEST/Tool Testing");
 
             var responseData = string.Empty;
             try
@@ -38,7 +38,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             }
 
             // Find Record Index: PASS
-            const string Expected = @"<DataList><Test index=""1""><Result>ForEach: PASS</Result></Test><Test index=""2""><Result>Switch: PASS</Result></Test><Test index=""3""><Result>Decision: PASS</Result></Test><Test index=""4""><Result>Count Records: PASS</Result></Test><Test index=""5""><Result>Delete Record: PASS</Result></Test><Test index=""6""><Result>Sort Records: PASS</Result></Test><Test index=""7""><Result>Find Record Index: PASS</Result></Test><Test index=""8""><Result>Assign: PASS</Result></Test><Test index=""9""><Result>Base Conversion: PASS</Result></Test><Test index=""10""><Result>Case Convert: PASS</Result></Test><Test index=""11""><Result>Data Merge: PASS</Result></Test><Test index=""12""><Result>Data Split: PASS</Result></Test><Test index=""13""><Result>Date and Time: PASS</Result></Test><Test index=""14""><Result>Date and Time Difference: PASS</Result></Test><Test index=""15""><Result>Find Index: PASS</Result></Test><Test index=""16""><Result>Format Number: INCONCLUSIVE</Result></Test><Test index=""17""><Result>Javascript:PASS</Result></Test><Test index=""18""><Result>Unique: PASS</Result></Test><Test index=""19""><Result>XPath Tool: PASS</Result></Test><Test index=""20""><Result>GetWebRequest: PASS</Result></Test><Test index=""21""><Result>File Copy: Pass</Result></Test><Test index=""22""><Result>SQLBulk Insert: Success</Result></Test><Test index=""23""><Result>Find Record Index: PASS</Result></Test></DataList>";
+            const string Expected = @"<DataList><Test index=""1""><Result>PASS</Result></Test><Test index=""2""><Result>Switch: PASS</Result></Test><Test index=""3""><Result>Decision: PASS</Result></Test><Test index=""4""><Result>Count Records: PASS</Result></Test><Test index=""5""><Result>Delete Record: PASS</Result></Test><Test index=""6""><Result>Sort Records: PASS</Result></Test><Test index=""7""><Result>Find Record Index: PASS</Result></Test><Test index=""8""><Result>Assign: PASS</Result></Test><Test index=""9""><Result>Base Conversion: PASS</Result></Test><Test index=""10""><Result>Case Convert: PASS</Result></Test><Test index=""11""><Result>Data Merge: PASS</Result></Test><Test index=""12""><Result>Data Split: PASS</Result></Test><Test index=""13""><Result>Date and Time: PASS</Result></Test><Test index=""14""><Result>Date and Time Difference: PASS</Result></Test><Test index=""15""><Result>Find Index: PASS</Result></Test><Test index=""16""><Result>Format Number: INCONCLUSIVE</Result></Test><Test index=""17""><Result>Replace: INCONCLUSIVE</Result></Test><Test index=""18""><Result>Javascript:PASS</Result></Test><Test index=""19""><Result>Unique: PASS</Result></Test><Test index=""20""><Result>XPath Tool: PASS</Result></Test><Test index=""21""><Result>GetWebRequest: PASS</Result></Test><Test index=""22""><Result>File Copy: Pass</Result></Test><Test index=""23""><Result>SQLBulk Insert: Success</Result></Test><Test index=""24""><Result>Find Record Index: PASS</Result></Test></DataList>";
             StringAssert.Contains(responseData, Expected);
         }
 
@@ -47,7 +47,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ServiceExecutionTest()
         {
-            string postData = String.Format("{0}{1}", _webserverUri, "ServiceExecutionTest");
+            string postData = String.Format("{0}{1}", _webserverUri, "TestCategory/ServiceExecutionTest");
 
             var responseData = string.Empty;
             try

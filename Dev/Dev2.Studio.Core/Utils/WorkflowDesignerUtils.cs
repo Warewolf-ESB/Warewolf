@@ -247,9 +247,9 @@ namespace Dev2.Utils
 
         public static void ShowExampleWorkflow(string activityName, IEnvironmentModel environment, IPopupController popupController)
         {
-            var resourceName = GetExampleName(activityName);
+            var resourceID = GetExampleID(activityName);
             var resource = environment.ResourceRepository
-                      .FindSingle(r => r.DisplayName.Equals(resourceName));
+                      .FindSingle(r => r.ID.Equals(resourceID));
 
             if(resource == null)
             {
@@ -258,13 +258,13 @@ namespace Dev2.Utils
                     var message =
                         string.Format(
                             StringResources.ExampleWorkflowNotFound,
-                            resourceName);
+                            GetExampleName(activityName));
                     MessageBox.Show(message, "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
                     popupController.Buttons = MessageBoxButton.OK;
-                    popupController.Description = string.Format(StringResources.ExampleWorkflowNotFound, resourceName);
+                    popupController.Description = string.Format(StringResources.ExampleWorkflowNotFound, resourceID);
                     popupController.Header = "Example Workflow Not Found";
                     popupController.ImageType = MessageBoxImage.Information;
                     popupController.Show();
@@ -277,9 +277,19 @@ namespace Dev2.Utils
             }
         }
 
+        private static Guid GetExampleID(string activityName)
+        {
+            var exampleIDString = ResolveExampleResource
+                .ResourceManager
+                .GetString(activityName);
+            Guid exampleID;
+            Guid.TryParse(exampleIDString, out exampleID);
+            return exampleID;
+        }
+
         private static string GetExampleName(string activityName)
         {
-            return ResolveExampleResource
+            return ResolveExampleResourceNames
                 .ResourceManager
                 .GetString(activityName);
         }

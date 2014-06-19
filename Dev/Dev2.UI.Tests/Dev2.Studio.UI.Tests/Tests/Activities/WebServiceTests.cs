@@ -1,8 +1,8 @@
-﻿using System;
-using Dev2.Studio.UI.Tests.Enums;
+﻿using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 
 namespace Dev2.Studio.UI.Tests.Tests.Activities
@@ -52,6 +52,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
                 WebServiceWizardUIMap.ClickMappingTab();
                 WebServiceWizardUIMap.EnterDataIntoMappingTextBox(6, newMapping);
                 WebServiceWizardUIMap.ClickSaveButton(2);
+                
                 ResourceChangedPopUpUIMap.ClickCancel();
 
                 //Assert the the error button is there
@@ -93,7 +94,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             KeyboardCommands.SendTabs(3, tabWait);
             KeyboardCommands.SendKey(newWebserviceName);
             KeyboardCommands.SendTabs(1, tabWait);
-            KeyboardCommands.SendEnter(200);
+            KeyboardCommands.SendEnter(2000);
 
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
             UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
@@ -136,7 +137,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             KeyboardCommands.SendTabs(3, tabWait);
             KeyboardCommands.SendKey(newWebserviceName);
             KeyboardCommands.SendTabs(1, tabWait);
-            KeyboardCommands.SendEnter(200);
+            KeyboardCommands.SendEnter(2000);
 
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
             UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
@@ -174,7 +175,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             KeyboardCommands.SendTabs(3);
             KeyboardCommands.SendKey(newWebserviceName);
             KeyboardCommands.SendTabs(1);
-            KeyboardCommands.SendEnter(200);
+            KeyboardCommands.SendEnter(2000);
 
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
             UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
@@ -211,7 +212,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             KeyboardCommands.SendTabs(3);
             KeyboardCommands.SendKey(newWebserviceName);
             KeyboardCommands.SendTabs(1);
-            KeyboardCommands.SendEnter(200);
+            KeyboardCommands.SendEnter(2000);
 
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
             UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);

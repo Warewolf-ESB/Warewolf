@@ -1,4 +1,4 @@
-﻿using Dev2.Studio.Core.ViewModels.Navigation;
+﻿using Dev2.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
@@ -8,7 +8,9 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interactivity;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.AppResources.Behaviors
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// 
@@ -61,7 +63,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
             collection.CollectionChanged += ItemsSourceCollectionChanged;
 
-            var nodes = collection as ObservableCollection<ITreeNode>;
+            var nodes = collection as ObservableCollection<ExplorerItemModel>;
             if(nodes != null)
             {
                 nodes.ToList().ForEach(c => AttachSourceCollectionChangedHandler(c.Children));
@@ -74,7 +76,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 return;
             }
 
-            nodes = collectionView.SourceCollection as ObservableCollection<ITreeNode>;
+            nodes = collectionView.SourceCollection as ObservableCollection<ExplorerItemModel>;
             if(nodes != null)
             {
                 nodes.ToList().ForEach(c => AttachSourceCollectionChangedHandler(c.Children));
@@ -97,7 +99,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 return;
             }
 
-            var treenodes = e.NewItems.OfType<ITreeNode>();
+            var treenodes = e.NewItems.OfType<ExplorerItemModel>();
             treenodes.ToList().ForEach(n =>
                 {
                     n.Children.CollectionChanged += ItemsSourceCollectionChanged;
@@ -106,39 +108,41 @@ namespace Dev2.Studio.AppResources.Behaviors
                     {
                         return;
                     }
-                    ExpandToTop(n, new List<ITreeNode>());
-                    n.IsSelected = true;
+                    ExpandToTop(n, new List<ExplorerItemModel>());
+                    n.IsExplorerSelected = true;
                 });
         }
 
-        private void ExpandToTop(ITreeNode treeNode, IList<ITreeNode> childrenToExpandTo)
+        private void ExpandToTop(ExplorerItemModel treeNode, IList<ExplorerItemModel> childrenToExpandTo)
         {
-            if(treeNode == null || treeNode.IsExpanded)
+            if(treeNode == null || treeNode.IsExplorerExpanded)
             {
                 if(childrenToExpandTo != null && childrenToExpandTo.Count >= 1)
                 {
                     childrenToExpandTo.Reverse().ToList()
-                        .ForEach(c => c.IsExpanded = true);
+                        .ForEach(c => c.IsExplorerExpanded = true);
                 }
             }
-            else if(!treeNode.IsExpanded)
+            else if(!treeNode.IsExplorerExpanded)
             {
-                if(treeNode.TreeParent != null)
+                if(treeNode.Parent != null)
                 {
                     childrenToExpandTo.Add(treeNode);
-                    ExpandToTop(treeNode.TreeParent, childrenToExpandTo);
+                    ExpandToTop(treeNode.Parent, childrenToExpandTo);
                 }
                 else if(childrenToExpandTo != null && childrenToExpandTo.Count >= 1)
                 {
-                    childrenToExpandTo.ToList().ForEach(c => c.IsExpanded = true);
+                    childrenToExpandTo.ToList().ForEach(c => c.IsExplorerExpanded = true);
                 }
             }
         }
 
+        // ReSharper disable InconsistentNaming
         void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
+        // ReSharper restore InconsistentNaming
         {
             AttachSourceCollectionChangedHandler(AssociatedObject.Items);
-            foreach(var node in AssociatedObject.Items.OfType<ITreeNode>())
+            foreach(var node in AssociatedObject.Items.OfType<ExplorerItemModel>())
             {
                 AttachSourceCollectionChangedHandler(node.Children);
             }

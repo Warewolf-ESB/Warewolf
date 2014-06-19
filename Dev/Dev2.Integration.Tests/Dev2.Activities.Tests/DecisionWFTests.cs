@@ -7,6 +7,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     /// Summary description for DecisionWFTests
     /// </summary>
     [TestClass]
+    // ReSharper disable InconsistentNaming
     public class DecisionWFTests
     {
         private readonly string _webServerURI = ServerSettings.WebserverURI;
@@ -42,7 +43,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void MultipleDecision_Expected_TestReturnsInfoAsPass()
         {
-            string serviceName = "Decision Testing";
+            string serviceName = "BARNEY/Decision Testing";
             string expected = "Decision: PASS";
             string reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", _webServerURI, serviceName));
             StringAssert.Contains(reponseData, expected);

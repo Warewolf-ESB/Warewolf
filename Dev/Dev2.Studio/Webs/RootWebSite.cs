@@ -1,6 +1,4 @@
-﻿using System;
-using System.Web;
-using Dev2.AppResources.Enums;
+﻿using Dev2.AppResources.Enums;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
@@ -9,6 +7,8 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Webs.Callbacks;
 using Dev2.Webs.Callbacks;
+using System;
+using System.Web;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Webs
@@ -80,88 +80,44 @@ namespace Dev2.Studio.Webs
                 return false;
             }
 
-            string resourceID;
-            var resourceType = ResourceType.Unknown;
+            string resourceID = resourceModel.ID.ToString();
 
-            if(resourceModel.Category == null)
+            ResourceType resourceType;
+            Enum.TryParse(resourceModel.ServerResourceType, out resourceType);
+
+            if(resourceType == ResourceType.WorkflowService && resourceModel.ID == Guid.Empty)
             {
-                // ReSharper disable ImpureMethodCallOnReadonlyValueField
-                resourceID = Guid.Empty.ToString();
-                // ReSharper restore ImpureMethodCallOnReadonlyValueField
-                if(resourceModel.IsDatabaseService)
-                {
-                    resourceType = ResourceType.DbService;
-                }
-                else if(resourceModel.IsPluginService)
-                {
-                    Enum.TryParse(resourceModel.DisplayName, out resourceType);
-                }
-                else if(resourceModel.IsResourceService)
-                {
-                    resourceType = ResourceType.PluginSource;
-                }
-                else switch(resourceModel.DisplayName)  // see ResourceModelFactory.CreateResourceModel()
-                    {
-                        case "PluginSource":
-                            resourceType = ResourceType.PluginSource;
-                            break;
-                        case "DbSource":
-                            resourceType = ResourceType.DbSource;
-                            break;
-                        case "EmailSource": // PBI 953 - 2013.05.20 - TWR - Added
-                            resourceType = ResourceType.EmailSource;
-                            break;
-                        case "WebSource":   // PBI 5656 - 2013.05.20 - TWR - Added
-                            resourceType = ResourceType.WebSource;
-                            break;
-                        case "WebService":  // PBI 1220 - 2013.05.20 - TWR - Added
-                            resourceType = ResourceType.WebService;
-                            break;
-                        case "PluginService":
-                            resourceType = ResourceType.PluginService;
-                            break;
-                        case "DbService":
-                            resourceType = ResourceType.DbService;
-                            break;
-                        case "RemoteWarewolf":
-                        case "Server":
-                            resourceType = ResourceType.Server;
-                            break;
-                    }
+                ShowNewWorkflowSaveDialog(resourceModel);
             }
             else
             {
-                resourceID = resourceModel.ID.ToString();
-                Enum.TryParse(resourceModel.ServerResourceType, out resourceType);
-            }
-
-            // we need to take the SourceID out and pass along ;)
-            // ReSharper disable ImpureMethodCallOnReadonlyValueField
-            var srcID = Guid.Empty.ToString();
-            // ReSharper restore ImpureMethodCallOnReadonlyValueField
-            if(resourceModel.WorkflowXaml != null)
-            {
-                var workflowXaml = resourceModel.WorkflowXaml;
-
-                try
+                // we need to take the SourceID out and pass along ;)
+                var srcID = Guid.Empty.ToString();
+                if(resourceModel.WorkflowXaml != null)
                 {
-                    var xe = workflowXaml.Replace("&", "&amp;").ToXElement();
-                    srcID = xe.AttributeSafe("SourceID");
-                }
-                catch
-                {
-                    srcID = workflowXaml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
-                }
-            }
+                    var workflowXaml = resourceModel.WorkflowXaml;
 
-            return ShowDialog(resourceModel.Environment, resourceType, null, resourceID, srcID, ConnectControlInstanceType.Explorer, resourceModel.ResourceName);
+                    try
+                    {
+                        var xe = workflowXaml.Replace("&", "&amp;").ToXElement();
+                        srcID = xe.AttributeSafe("SourceID");
+                    }
+                    catch
+                    {
+                        srcID = workflowXaml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
+                    }
+                }
+
+                return ShowDialog(resourceModel.Environment, resourceType, null, resourceModel.Category, resourceID, srcID, ConnectControlInstanceType.Explorer, resourceModel.ResourceName);
+            }
+            return true;
         }
 
         #endregion
 
         #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
 
-        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string resourceID = null, string srcID = null, ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer, string resourceName = null)
+        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string cateogy, string resourceID = null, string srcID = null, ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer, string resourceName = null)
         {
             const int ServiceDialogHeight = 582;
             const int ServiceDialogWidth = 941;
@@ -189,7 +145,7 @@ namespace Dev2.Studio.Webs
 
             if(environment.Connection != null)
             {
-                var workspaceID = environment.Connection.WorkspaceID;
+                var workspaceID = GlobalConstants.ServerWorkspaceID;
 
                 string pageName;
                 WebsiteCallbackHandler pageHandler;
@@ -200,7 +156,22 @@ namespace Dev2.Studio.Webs
                 switch(resourceType)
                 {
                     case ResourceType.Server:
-                        workspaceID = GlobalConstants.ServerWorkspaceID; // MUST always save to the server!
+                        pageName = "sources/server";
+                        pageHandler = new ConnectCallbackHandler(connectControlInstanceType);
+                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        {
+                            leftTitle = "Edit - " + resourceName;
+                        }
+                        else
+                        {
+                            leftTitle = "New Server";
+                        }
+
+                        width = 704;
+                        height = 520;
+                        break;
+
+                    case ResourceType.ServerSource:
                         pageName = "sources/server";
                         pageHandler = new ConnectCallbackHandler(connectControlInstanceType);
                         if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
@@ -302,7 +273,20 @@ namespace Dev2.Studio.Webs
 
                 var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
                 resourcePath = HttpUtility.UrlEncode(resourcePath);
-                string relativeUriString = string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}&sourceID={5}", pageName, workspaceID, resourceID, envirDisplayName, resourcePath, srcID);
+
+                string selectedPath = "";
+                if(cateogy != null)
+                {
+                    selectedPath = cateogy.Equals("Unassigned") || string.IsNullOrEmpty(cateogy) ? "" : cateogy;
+                    var lastIndexOf = selectedPath.LastIndexOf("\\", StringComparison.Ordinal);
+                    if(lastIndexOf != -1)
+                    {
+                        selectedPath = selectedPath.Substring(0, lastIndexOf);
+                    }
+                    selectedPath = selectedPath.Replace("\\", "\\\\");
+                }
+
+                string relativeUriString = string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}&sourceID={5}&category={6}", pageName, workspaceID, resourceID, envirDisplayName, resourcePath, srcID, selectedPath);
 
                 if(!IsTestMode)
                 {
@@ -347,7 +331,24 @@ namespace Dev2.Studio.Webs
             const string LeftTitle = "Save";
             string rightTitle = environment.Name + " (" + environment.Connection.AppServerUri + ")";
             var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}", PageName, workspaceID, resourceID, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName), callbackHandler, Width, Height, LeftTitle, rightTitle);
+            var selectedPath = resourceModel.Category.Contains("Unassigned") || string.IsNullOrEmpty(resourceModel.Category) ? "" : resourceModel.Category;
+            var lastIndexOf = selectedPath.LastIndexOf("\\", StringComparison.Ordinal);
+            if(lastIndexOf != -1)
+            {
+                selectedPath = selectedPath.Substring(0, lastIndexOf);
+            }
+            selectedPath = selectedPath.Replace("\\", "\\\\");
+            var relativeUriString = string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}&category={6}", PageName, workspaceID, resourceID, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName, selectedPath);
+            if(!IsTestMode)
+            {
+                // this must be a property ;)
+                environment.ShowWebPageDialog(SiteName, relativeUriString, callbackHandler, Width, Height, LeftTitle, rightTitle);
+            }
+            else
+            {
+                // TODO : return the relativeUriString generated ;)
+                TestModeRelativeUri = relativeUriString;
+            }
         }
 
         #endregion

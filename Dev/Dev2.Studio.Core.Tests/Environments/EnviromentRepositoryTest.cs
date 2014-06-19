@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
@@ -425,9 +426,9 @@ namespace Dev2.Core.Tests.Environments
             c2.Setup(c => c.Disconnect()).Verifiable();
             c3.Setup(c => c.Disconnect()).Verifiable();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, false);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, false);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, false);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
+            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
+            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
 
             var repo = new TestEnvironmentRespository(source.Object, e1, e2, e3);
 
@@ -483,9 +484,9 @@ namespace Dev2.Core.Tests.Environments
             c2.Setup(c => c.Disconnect()).Verifiable();
             c3.Setup(c => c.Disconnect()).Verifiable();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, false);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, false);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, false);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
+            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
+            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
 
             var repo = new TestEnvironmentRespository(source.Object, e1, e2, e3);
 
@@ -511,9 +512,9 @@ namespace Dev2.Core.Tests.Environments
             var c2 = CreateMockConnection();
             var c3 = CreateMockConnection();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, false);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, false);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, false);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
+            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
+            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
 
             var repo = new TestEnvironmentRespository(source.Object, e1, e2, e3);
 
@@ -529,9 +530,9 @@ namespace Dev2.Core.Tests.Environments
             var c2 = CreateMockConnection();
             var c3 = CreateMockConnection();
 
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, false);
-            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, false);
-            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, false);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
+            var e2 = new EnvironmentModel(Guid.NewGuid(), c2.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
+            var e3 = new EnvironmentModel(Guid.NewGuid(), c3.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
 
             var repo = new TestEnvironmentRespository(source.Object, e1, e2);
             var startCount = repo.All().Count;
@@ -630,7 +631,7 @@ namespace Dev2.Core.Tests.Environments
             var bakPath = RetryUtility.RetryMethod(() => BackupFile(path), 15, 1000, null);
 
             var c1 = CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, false);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object, false);
             var repo = new TestEnvironmentRespository(e1) { IsReadWriteEnabled = true };
 
             // Create file
@@ -882,9 +883,9 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
-
+            var studiorepo = new Mock<IStudioResourceRepository>();
             //------------Setup for test--------------------------
-            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, repo.Object);
+            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, repo.Object,studiorepo.Object);
             //------------Execute Test---------------------------
             EnvironmentRepository.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------
@@ -941,11 +942,11 @@ namespace Dev2.Core.Tests.Environments
             // ReSharper disable AssignNullToNotNullAttribute
             var bakPath = Path.Combine(Path.GetDirectoryName(path), Path.GetFileName(path) + ".bak");
             // ReSharper restore AssignNullToNotNullAttribute
-            if (File.Exists(bakPath))
+            if(File.Exists(bakPath))
             {
                 File.Delete(bakPath);
             }
-            if (File.Exists(path))
+            if(File.Exists(path))
             {
                 File.Move(path, bakPath);
             }
@@ -954,11 +955,11 @@ namespace Dev2.Core.Tests.Environments
 
         static void RestoreFile(string path, string bakPath)
         {
-            if (File.Exists(path))
+            if(File.Exists(path))
             {
                 File.Delete(path);
             }
-            if (File.Exists(bakPath))
+            if(File.Exists(bakPath))
             {
                 File.Move(bakPath, path);
             }
@@ -994,7 +995,7 @@ namespace Dev2.Core.Tests.Environments
 
             ResourceModel rm = new ResourceModel(env.Object);
 
-            if (sources != null && sources.Length > 0)
+            if(sources != null && sources.Length > 0)
             {
                 rm.WorkflowXaml = new StringBuilder(sources[0]);
 
@@ -1007,7 +1008,7 @@ namespace Dev2.Core.Tests.Environments
 
 
                 con.Setup(c => c.IsConnected).Returns(true);
-                if (overrideExecuteCommand)
+                if(overrideExecuteCommand)
                 {
                     con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                        .Returns(new StringBuilder(sources[0]));
@@ -1042,7 +1043,7 @@ namespace Dev2.Core.Tests.Environments
 
             ResourceModel rm = new ResourceModel(env.Object);
 
-            if (sources != null && sources.Length > 0)
+            if(sources != null && sources.Length > 0)
             {
                 rm.WorkflowXaml = new StringBuilder(sources[0]);
 
@@ -1061,6 +1062,37 @@ namespace Dev2.Core.Tests.Environments
                 env.Setup(e => e.IsConnected).Returns(true);
                 env.Setup(e => e.Connection).Returns(con.Object);
                 env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+            }
+            else
+            {
+                return CreateMockEnviromentModel();
+            }
+
+            return env;
+
+        }
+
+        public static Mock<IEnvironmentModel> CreateMockEnvironment(IResourceRepository resourceRepository, params string[] sources)
+        {
+
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(e => e.IsAuthorized).Returns(true);
+            var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(true);
+            mockAuthorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(true);
+            env.Setup(model => model.AuthorizationService).Returns(mockAuthorizationService.Object);
+            var con = new Mock<IEnvironmentConnection>();
+
+
+            if(sources != null && sources.Length > 0)
+            {
+                con.Setup(c => c.IsConnected).Returns(true);
+                con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+                con.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+
+                env.Setup(e => e.IsConnected).Returns(true);
+                env.Setup(e => e.Connection).Returns(con.Object);
+                env.Setup(e => e.ResourceRepository).Returns(resourceRepository);
             }
             else
             {
@@ -1116,7 +1148,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-            if (sources != null && sources.Length > 0)
+            if(sources != null && sources.Length > 0)
             {
                 connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))
                           .Returns(new StringBuilder(sources[0]));

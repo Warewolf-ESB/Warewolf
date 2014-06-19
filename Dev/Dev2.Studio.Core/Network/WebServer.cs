@@ -22,7 +22,7 @@ namespace Dev2.Studio.Core.Network
     public static class WebServer
     {
 
-        public static void Send(WebServerMethod method, IContextualResourceModel resourceModel, string payload,IAsyncWorker asyncWorker)
+        public static void Send(WebServerMethod method, IContextualResourceModel resourceModel, string payload, IAsyncWorker asyncWorker)
         {
             if(resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
             {
@@ -37,11 +37,11 @@ namespace Dev2.Studio.Core.Network
             asyncWorker.Start(() =>
             {
                 var controller = new CommunicationController();
-                controller.ServiceName = resourceModel.ResourceName;
+                controller.ServiceName = resourceModel.Category;
                 controller.AddPayloadArgument("DebugPayload", payload);
                 controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
             }, () => { });
-            
+
         }
 
         public static bool IsServerUp(IContextualResourceModel resourceModel)
@@ -70,7 +70,7 @@ namespace Dev2.Studio.Core.Network
             {
                 return;
             }
-            var relativeUrl = string.Format("/services/{0}.xml?", resourceModel.ResourceName);
+            var relativeUrl = string.Format("/services/{0}.xml?", resourceModel.Category);
             if(isXml)
             {
                 relativeUrl += xmlData;

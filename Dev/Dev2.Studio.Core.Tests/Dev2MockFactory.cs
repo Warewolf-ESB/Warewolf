@@ -15,6 +15,7 @@ using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Providers.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
@@ -289,6 +290,8 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(AppSettings.LocalHost));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
+            var authService = new Mock<IAuthorizationService>();
+            mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(authService.Object);
             return mockEnvironmentModel;
         }
 
@@ -301,7 +304,8 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.Verify(It.IsAny<Action<ConnectResult>>(), false)).Callback(() => { });
-
+            var authService = new Mock<IAuthorizationService>();
+            mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(authService.Object);
             return mockEnvironmentModel;
         }
 
@@ -313,7 +317,8 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, returnResources, resourceRepositoryFakeBacker).Object);
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
-
+            var authService = new Mock<IAuthorizationService>();
+            mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(authService.Object);
             return mockEnvironmentModel;
         }
 

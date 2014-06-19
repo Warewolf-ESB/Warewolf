@@ -3,6 +3,8 @@ using System;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 {
     /// <summary>
@@ -24,7 +26,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         public void TestPluginNull_Expected_AnonymousSend()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-Testing/IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=");
             string result = TestHelper.PostDataToWebserver(postData);
 
             StringAssert.Contains(result, "Anonymous email sent");
@@ -33,7 +35,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         public void TestPluginNonNull_Expected_FromInResult()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=test@domain.local");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-Testing/IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=test@domain.local");
             string result = TestHelper.PostDataToWebserver(postData);
 
             StringAssert.Contains(result, "from test@domain.local");

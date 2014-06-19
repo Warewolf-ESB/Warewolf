@@ -1,6 +1,6 @@
 ﻿using Dev2.Studio.Core.Interfaces;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Messages
 {
     public class SetActiveEnvironmentMessage : IMessage

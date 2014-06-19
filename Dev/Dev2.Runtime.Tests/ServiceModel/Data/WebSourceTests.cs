@@ -22,8 +22,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public void SaveWebSourceWithExistingSourceExpectedServerWorkspaceUpdated()
         {
             //Initialize test resource, save then change path
-            string uniquePathText = Guid.NewGuid().ToString();
-            var testResource = new Resource { ResourceName = "test web source", ResourcePath = "initialpath", ResourceType = ResourceType.WebSource, ResourceID = Guid.NewGuid() };
+            string uniquePathText = Guid.NewGuid().ToString() + "\\test web source";
+            var testResource = new Resource { ResourceName = "test web source", ResourcePath = "initialpath\\test web source", ResourceType = ResourceType.WebSource, ResourceID = Guid.NewGuid() };
             new WebSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
             testResource.ResourcePath = uniquePathText;
 

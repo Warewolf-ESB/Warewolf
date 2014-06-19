@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.Ouput;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Runtime.ServiceModel
 {
     [TestClass]
@@ -126,8 +127,8 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             var args = svc.ToString();
             var workspaceID = Guid.NewGuid();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var path = Path.Combine(workspacePath, Resources.RootFolders[ResourceType.DbService]);
-            var fileName = String.Format("{0}\\{1}.xml", path, svc.ResourceName);
+            var path = workspacePath;
+            var fileName = String.Format("{0}\\{1}.xml", path, svc.ResourcePath);
             try
             {
                 var services = new TestDbServices();
@@ -514,7 +515,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         [TestMethod]
         public void CanExecuteDbServiceAndReturnItsOutput()
         {
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9139");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "TestCategory/Bug9139");
             const string expected = @"<DataList><result>PASS</result></DataList>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
@@ -525,7 +526,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         [TestMethod]
         public void CanReturnDataInCorrectCase()
         {
-            string postData = String.Format("{0}{1}", _webserverURI, "Bug9490");
+            string postData = String.Format("{0}{1}", _webserverURI, "TestCategory/Bug9490");
             const string expected = @"<result index=""1""><val>abc_def_hij</val></result><result index=""2""><val>ABC_DEF_HIJ</val></result>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
@@ -539,7 +540,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         public void DatabaseService_MappedOutputsFetchedInInnerWorkflow_WhenFetchedWithDiffernedColumnsThanFetched_DataReturned()
         {
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", _webserverURI, "Bug 10475 Outer WF");
+            string postData = String.Format("{0}{1}", _webserverURI, "QA/Bug 10475 Outer WF");
             const string expected = @"<Row index=""1""><ID>1</ID>";
 
             //------------Execute Test---------------------------
@@ -555,7 +556,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         public void DatabaseService_WithInputsAndNoOutputs_WhenInsertingFromDataList_SameDataReturned()
         {
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", _webserverURI, "DB Service With No Output");
+            string postData = String.Format("{0}{1}", _webserverURI, "INTEGRATION TEST SERVICES/DB Service With No Output");
             const string expected = @"<Result>PASS</Result>";
 
             //------------Execute Test---------------------------
@@ -592,7 +593,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         public void DatabaseService_Execute_CustomOutputMappings_DataReturned()
         {
             //------------Setup for test--------------------------
-            var postData = String.Format("{0}{1}", _webserverURI, "10638 - Service IO - TEST");
+            var postData = String.Format("{0}{1}", _webserverURI, "TWR/10638 - Service IO - TEST");
 
             var expectedXml = XmlResource.Fetch("BUG_10638_Result.xml");
             var expected = expectedXml.ToString(SaveOptions.None);
@@ -618,7 +619,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingService",
                 ResourceType = ResourceType.DbService,
-                ResourcePath = "Test",
+                ResourcePath = "Test\\Dev2TestingService",
                 Method = new ServiceMethod
                 {
                     Name = "dbo.Pr_CitiesGetCountries",

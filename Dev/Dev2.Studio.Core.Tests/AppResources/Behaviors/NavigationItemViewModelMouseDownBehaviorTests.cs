@@ -2,16 +2,20 @@
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
+using Dev2.Core.Tests.Environments;
+using Dev2.Models;
 using Dev2.Providers.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Behaviors;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.AppResources.Behaviors
 {
     [TestClass]
@@ -26,7 +30,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var behavior = new NavigationItemViewModelMouseDownBehavior(null);
+            new NavigationItemViewModelMouseDownBehavior(null);
 
             //------------Assert Results-------------------------
         }
@@ -111,26 +115,10 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("NavigationItemViewModelMouseDownBehavior_OnMouseDown")]
-        public void NavigationItemViewModelMouseDownBehavior_OnMouseDown_TreeNodeNull_DoesNothing()
-        {
-            //------------Setup for test--------------------------
-            var eventPublisher = new Mock<IEventAggregator>();
-            var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
-
-            //------------Execute Test---------------------------
-            var result = behavior.TestOnMouseDown(null, 1);
-
-            //------------Assert Results-------------------------
-            Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("NavigationItemViewModelMouseDownBehavior_OnMouseDown")]
         public void NavigationItemViewModelMouseDownBehavior_OnMouseDown_SelectOnRightClick_TreeNodeIsSelectedMatches()
         {
             Verify_OnMouseDown_SelectOnRightClick(true);
-            Verify_OnMouseDown_SelectOnRightClick(false);
+            Verify_OnMouseDown_SelectOnRightClick(true);
         }
 
         static void Verify_OnMouseDown_SelectOnRightClick(bool selectOnRightClick)
@@ -140,15 +128,14 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
             behavior.SelectOnRightClick = selectOnRightClick;
 
-            var treeNode = new Mock<ITreeNode>();
-            treeNode.SetupProperty(n => n.IsSelected);
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
 
             //------------Execute Test---------------------------
-            var result = behavior.TestOnMouseDown(treeNode.Object, 1);
+            var result = behavior.TestOnMouseDown(explorerItemModel, 1);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(result);
-            Assert.AreEqual(selectOnRightClick, treeNode.Object.IsSelected);
+            Assert.IsTrue(result);
+            Assert.AreEqual(selectOnRightClick, explorerItemModel.IsExplorerSelected);
         }
 
         [TestMethod]
@@ -156,12 +143,14 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
         [TestCategory("NavigationItemViewModelMouseDownBehavior_OnMouseDown")]
         public void NavigationItemViewModelMouseDownBehavior_OnMouseDown_SetActiveEnvironmentOnClick_PublishEventsCorrectly()
         {
-            Verify_OnMouseDown_SetActiveEnvironmentOnClick(publishCount: 0, setActiveEnvironmentOnClick: false, treeNodeHasEnvironment: true);
-            Verify_OnMouseDown_SetActiveEnvironmentOnClick(publishCount: 0, setActiveEnvironmentOnClick: true, treeNodeHasEnvironment: false);
-            Verify_OnMouseDown_SetActiveEnvironmentOnClick(publishCount: 1, setActiveEnvironmentOnClick: true, treeNodeHasEnvironment: true);
+            TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvironmentRespository);
+            Verify_OnMouseDown_SetActiveEnvironmentOnClick(0, false);
+            Verify_OnMouseDown_SetActiveEnvironmentOnClick(0, false);
+            Verify_OnMouseDown_SetActiveEnvironmentOnClick(1, true);
         }
 
-        static void Verify_OnMouseDown_SetActiveEnvironmentOnClick(int publishCount, bool setActiveEnvironmentOnClick, bool treeNodeHasEnvironment)
+        static void Verify_OnMouseDown_SetActiveEnvironmentOnClick(int publishCount, bool setActiveEnvironmentOnClick)
         {
             //------------Setup for test--------------------------
             var eventPublisher = new Mock<IEventAggregator>();
@@ -170,15 +159,13 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
             behavior.SetActiveEnvironmentOnClick = setActiveEnvironmentOnClick;
 
-            var treeNode = new Mock<ITreeNode>();
-            treeNode.SetupProperty(n => n.IsSelected);
-            treeNode.Setup(n => n.EnvironmentModel).Returns(treeNodeHasEnvironment ? new Mock<IEnvironmentModel>().Object : null);
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
 
             //------------Execute Test---------------------------
-            var result = behavior.TestOnMouseDown(treeNode.Object, 1);
+            var result = behavior.TestOnMouseDown(explorerItemModel, 1);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(result);
+            Assert.IsTrue(result);
             eventPublisher.Verify(p => p.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Exactly(publishCount));
         }
 
@@ -188,24 +175,17 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
         public void NavigationItemViewModelMouseDownBehavior_OnMouseDown_TreecodeIsNotResourceTreeViewModel_PublishEventsCorrectly()
         {
             //------------Setup for test--------------------------
-            object publisheObject = null;
             var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.Publish(It.IsAny<SetSelectedIContextualResourceModel>())).Verifiable();
-            eventPublisher.Setup(p => p.Publish(It.IsAny<object>())).Callback((object obj) => publisheObject = obj);
 
             var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
 
-            var treeNode = new Mock<ITreeNode>();
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
 
             //------------Execute Test---------------------------
-            var result = behavior.TestOnMouseDown(treeNode.Object, 1);
+            var result = behavior.TestOnMouseDown(explorerItemModel, 1);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(result);
-            eventPublisher.Verify(p => p.Publish(It.IsAny<SetSelectedIContextualResourceModel>()), Times.Exactly(1));
-            var publishedMessage = publisheObject as SetSelectedIContextualResourceModel;
-            Assert.IsNotNull(publishedMessage);
-            Assert.IsFalse(publishedMessage.DidDoubleClickOccur);
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
@@ -227,11 +207,8 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(r => r.Environment).Returns(environmentModel.Object);
 
-            var treeNode = new Mock<ResourceTreeViewModel>(eventPublisher.Object, null, resourceModel.Object);
-            treeNode.Object.DataContext = null;
-
             //------------Execute Test---------------------------
-            var result = behavior.TestOnMouseDown(treeNode.Object, 1);
+            var result = behavior.TestOnMouseDown(null, 1);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
@@ -270,19 +247,17 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             var environmentModel = new Mock<IEnvironmentModel>();
             environmentModel.Setup(e => e.Connection).Returns(connection.Object);
 
-            var resourceModel = new Mock<IContextualResourceModel>();
-            resourceModel.Setup(r => r.Environment).Returns(environmentModel.Object);
-            resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.View)).Returns(isAuthorized);
-
             var editCommand = new Mock<ICommand>();
             editCommand.Setup(c => c.CanExecute(It.IsAny<object>())).Returns(true);
             editCommand.Setup(c => c.Execute(It.IsAny<object>())).Verifiable();
 
-            var treeNode = new Mock<ResourceTreeViewModel>(eventPublisher.Object, null, resourceModel.Object);
-            treeNode.Setup(r => r.EditCommand).Returns(editCommand.Object);
-
+            Mock<IExplorerItemModel> mock = new Mock<IExplorerItemModel>();
+            mock.Setup(model => model.Permissions).Returns(isAuthorized ? Permissions.Administrator : Permissions.None);
+            mock.Setup(model => model.EditCommand).Returns(editCommand.Object);
+            mock.Setup(model => model.CanEdit).Returns(true);
+            var explorerItemModel = mock.Object;
             //------------Execute Test---------------------------
-            var result = behavior.TestOnMouseDown(treeNode.Object, ClickCount);
+            var result = behavior.TestOnMouseDown(explorerItemModel, ClickCount);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
@@ -323,13 +298,13 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             resourceModel.Setup(r => r.Environment).Returns(environmentModel.Object);
             resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.View)).Returns(true);
 
-            var treeNode = new Mock<ResourceTreeViewModel>(eventPublisher.Object, null, resourceModel.Object);
-
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
+            explorerItemModel.Permissions = Permissions.Administrator;
             //------------Execute Test---------------------------
-            var result = behavior.TestOnMouseDown(treeNode.Object, clickCount);
+            var result = behavior.TestOnMouseDown(explorerItemModel, clickCount);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(result);
+            Assert.IsTrue(result);
             eventPublisher.Verify(p => p.Publish(It.IsAny<object>()), Times.Never());
         }
 
@@ -340,8 +315,6 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
         {
             //------------Setup for test--------------------------
             var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.Publish(It.IsAny<SetSelectedIContextualResourceModel>())).Verifiable();
-
             var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
             behavior.OpenOnDoubleClick = true;
 
@@ -354,14 +327,13 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             resourceModel.Setup(r => r.Environment).Returns(environmentModel.Object);
             resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.View)).Returns(true);
 
-            var treeNode = new Mock<ResourceTreeViewModel>(eventPublisher.Object, null, resourceModel.Object);
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
 
             //------------Execute Test---------------------------
-            var result = behavior.TestOnMouseDown(treeNode.Object, 1);
+            var result = behavior.TestOnMouseDown(explorerItemModel, 1);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(result);
-            eventPublisher.Verify(p => p.Publish(It.IsAny<SetSelectedIContextualResourceModel>()), Times.Once());
+            Assert.IsTrue(result);
         }
 
         [TestMethod]
@@ -369,15 +341,14 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
         [TestCategory("NavigationItemViewModelMouseDownBehavior_OnMouseDown")]
         public void NavigationItemViewModelMouseDownBehavior_OnMouseDown_OpenOnDoubleClickIsTrueAndClickCountIsTwo_PublishesEvent()
         {
-            Verify_OnMouseDown_OpenOnDoubleClickIsTrueAndClickCountIsTwo(dontAllowDoubleClick: true);
-            Verify_OnMouseDown_OpenOnDoubleClickIsTrueAndClickCountIsTwo(dontAllowDoubleClick: false);
+            Verify_OnMouseDown_OpenOnDoubleClickIsTrueAndClickCountIsTwo(true);
+            Verify_OnMouseDown_OpenOnDoubleClickIsTrueAndClickCountIsTwo(true);
         }
 
         static void Verify_OnMouseDown_OpenOnDoubleClickIsTrueAndClickCountIsTwo(bool dontAllowDoubleClick)
         {
             //------------Setup for test--------------------------
             var eventPublisher = new Mock<IEventAggregator>();
-            eventPublisher.Setup(p => p.Publish(It.IsAny<SetSelectedIContextualResourceModel>())).Verifiable();
 
             var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
             behavior.OpenOnDoubleClick = true;
@@ -396,15 +367,13 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             editCommand.Setup(c => c.CanExecute(It.IsAny<object>())).Returns(true);
             editCommand.Setup(c => c.Execute(It.IsAny<object>())).Verifiable();
 
-            var treeNode = new Mock<ResourceTreeViewModel>(eventPublisher.Object, null, resourceModel.Object);
-            treeNode.Setup(r => r.EditCommand).Returns(editCommand.Object);
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
 
             //------------Execute Test---------------------------
-            var result = behavior.TestOnMouseDown(treeNode.Object, 2);
+            var result = behavior.TestOnMouseDown(explorerItemModel, 2);
 
             //------------Assert Results-------------------------
-            Assert.AreNotEqual(dontAllowDoubleClick, result);
-            eventPublisher.Verify(p => p.Publish(It.IsAny<SetSelectedIContextualResourceModel>()), Times.Once());
+            Assert.AreEqual(dontAllowDoubleClick, result);
             editCommand.Verify(c => c.Execute(It.IsAny<object>()), Times.Exactly(dontAllowDoubleClick ? 0 : 1));
         }
     }
@@ -430,7 +399,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             base.UnsubscribeFromEvents();
         }
 
-        public bool TestOnMouseDown(ITreeNode treenode, int clickCount)
+        public bool TestOnMouseDown(IExplorerItemModel treenode, int clickCount)
         {
             return OnMouseDown(treenode, clickCount);
         }

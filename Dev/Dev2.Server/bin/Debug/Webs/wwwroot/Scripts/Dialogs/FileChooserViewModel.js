@@ -89,7 +89,6 @@ function FileChooserViewModel(environment) {
                     },
                     onLazyRead: function(node) {
                         if (node.data.isFolder) {
-
                             $.post(baseUrl + "/Services/FindDirectoryService?DirectoryPath=" + self.resolvePath(node), "", function(lazyResult) {
                                 node.setLazyNodeStatus(DTNodeStatus_Ok);
                                 if (lazyResult.ErrorMessage == null) {

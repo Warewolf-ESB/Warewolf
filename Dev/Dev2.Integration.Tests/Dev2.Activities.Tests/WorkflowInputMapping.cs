@@ -4,6 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
+    // ReSharper disable InconsistentNaming
+
     /// <summary>
     /// Summary description for WorkflowInputMapping
     /// </summary>

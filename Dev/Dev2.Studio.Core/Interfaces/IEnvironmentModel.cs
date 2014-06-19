@@ -32,6 +32,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         // BUG: 8786 - TWR - 2013.02.20 - Added category
         string Category { get; set; }
+        string DisplayName { get; }
 
         StringBuilder ToSourceDefinition();
         void RaiseResourcesLoaded();

@@ -28,6 +28,7 @@ namespace Dev2.Services.Security
         EsbAddDebugWriter,
         EsbFetchExecutePayloadFragment,
         EsbExecuteCommand,
+        EsbAddItemMessage,
         EsbSendMemo,
         EsbSendDebugState,
         EsbWrite,

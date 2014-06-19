@@ -25,5 +25,6 @@ namespace Dev2.Studio.Core.Interfaces
         void Remove(Guid id);
 
         IEnvironmentModel Get(Guid id);
+       
     }
 }

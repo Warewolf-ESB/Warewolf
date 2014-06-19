@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ESB.WF
                 {
                     IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                     var com = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
-                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName), enDev2ColumnArgumentDirection.Input);
+                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
                     var inputs = GetDebugInputs(defs, com, out errors);
                     debugState.Inputs.AddRange(inputs);
                 }
@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ESB.WF
                 {
                     IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                     var com = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
-                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName), enDev2ColumnArgumentDirection.Output);
+                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
                     var inputs = GetDebugInputs(defs, com, out errors);
                     debugState.Outputs.AddRange(inputs);
                 }
@@ -149,6 +149,34 @@ namespace Dev2.Runtime.ESB.WF
         {
             var result = "<DataList></DataList>";
             var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
+
+            if(resource == null)
+            {
+                return result;
+            }
+
+            result = resource.DataList;
+
+
+
+            if(string.IsNullOrEmpty(result))
+            {
+                result = "<DataList></DataList>";
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Finds the service shape.
+        /// </summary>
+        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="resourceID">The ID of the resource</param>
+        /// <returns></returns>
+        public string FindServiceShape(Guid workspaceID, Guid resourceID)
+        {
+            var result = "<DataList></DataList>";
+            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceID);
 
             if(resource == null)
             {

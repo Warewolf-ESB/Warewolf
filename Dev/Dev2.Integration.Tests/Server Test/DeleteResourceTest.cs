@@ -31,7 +31,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
             coms.AddPayloadArgument("ResourceName", ServiceName);
             coms.AddPayloadArgument("ResourceType", ResourceType);
-
+            coms.AddPayloadArgument("ResourceID", "c25610b9-b28a-49f0-9074-d743ea729c6a");
             var result = coms.ExecuteCommand<ExecuteMessage>(connection, Guid.Empty);
 
             Assert.IsTrue(result.Message.Contains("Success"), "Got [ " + result.Message + " ]");
@@ -51,6 +51,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
 
             coms.AddPayloadArgument("ResourceName", ServiceName);
             coms.AddPayloadArgument("ResourceType", ResourceType);
+            coms.AddPayloadArgument("ResourceID", "f2b78836-91dd-44f0-a43f-b3ecf4c53cd5");
 
             // Execute
             var result = coms.ExecuteCommand<ExecuteMessage>(connection, Guid.Empty);
@@ -59,7 +60,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
             Assert.IsTrue(result.Message.Contains("Success"), "Got [ " + result.Message + " ]");
 
             result = coms.ExecuteCommand<ExecuteMessage>(connection, Guid.Empty);
-            StringAssert.Contains(result.Message.ToString(), "WorkflowService 'DeleteWorkflowTest2' was not found.");
+            StringAssert.Contains(result.Message.ToString(), "WorkflowService 'f2b78836-91dd-44f0-a43f-b3ecf4c53cd5' was not found.");
         }
 
         [TestMethod]

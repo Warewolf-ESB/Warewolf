@@ -4,9 +4,11 @@ using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
-using Dev2.Studio.Core.ViewModels.Navigation;
+using Dev2.Models;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.CustomControls.Behavior
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Exposes attached behaviors that can be
@@ -80,12 +82,11 @@ namespace Dev2.CustomControls.Behavior
 
         private void BringIntoView(TreeViewItem item)
         {
-            var treeNode = _item.DataContext as ITreeNode;
+            var treeNode = _item.DataContext as ExplorerItemModel;
             if(treeNode == null)
             {
                 return;
             }
-
             item.BringIntoView();
 
             if(!treeNode.IsNew)

@@ -129,7 +129,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             Playback.Wait(200);
 
-            var args = new string[] { serverName, serviceType, folderName, projectName };
+            var args = new string[] { serverName, folderName, projectName };
 
             var parent = _explorerTree;
 
@@ -147,8 +147,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                             var id = kid.GetProperty("AutomationID").ToString();
 
                             if(id.ToUpper().Contains(arg.ToUpper()) ||
-                                kid.FriendlyName.ToUpper().Contains(arg.ToUpper()) ||
-                                kid.ControlType.Name.ToUpper().Contains(arg.ToUpper()) ||
+                                kid.FriendlyName.ToUpper().Equals(arg.ToUpper()) ||
+                                kid.ControlType.Name.ToUpper().Equals(arg.ToUpper()) ||
                                 kid.ClassName.ToUpper().Contains(arg.ToUpper()))
                             {
                                 // we need to do extra filtering too now ;)
@@ -173,7 +173,10 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                         }
                     }
 
-                    parent = canidate;
+                   if (canidate != null)
+                    {
+                        parent = canidate;
+                    }
                 }
             }
 

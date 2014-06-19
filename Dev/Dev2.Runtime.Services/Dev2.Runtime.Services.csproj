@@ -118,6 +118,12 @@
     <Compile Include="Compiler\CompileRules\DBService_IsRequiredChangeRule.cs" />
     <Compile Include="Compiler\CompileRules\PluginService_IsRequiredChangeRule.cs" />
     <Compile Include="Compiler\CompileRules\WebService_IsRequiredChangeRule.cs" />
+    <Compile Include="ESB\Management\Services\AddFolderService.cs" />
+    <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
+    <Compile Include="ESB\Management\Services\GetDirectoriesRelativeToServer.cs" />
+    <Compile Include="ESB\Management\Services\FetchExplorerItems.cs" />
+    <Compile Include="ESB\Management\Services\RenameFolderService.cs" />
+    <Compile Include="ESB\Management\Services\RenameItemService.cs" />
     <Compile Include="ESB\Management\Services\SaveScheduledResource.cs" />
     <Compile Include="ESB\Management\Services\ClearLog.cs" />
     <Compile Include="ESB\Management\Services\DeleteResource.cs" />
@@ -154,6 +160,10 @@
     <Compile Include="Execution\ExecutionToken.cs" />
     <Compile Include="Execution\IExecutionToken.cs" />
     <Compile Include="Hosting\CompileMessageRepo.cs" />
+    <Compile Include="Hosting\ExplorerItemFactory.cs" />
+    <Compile Include="Hosting\ExplorerRepositoryResult.cs" />
+    <Compile Include="Interfaces\IExplorerItemFactory.cs" />
+    <Compile Include="Hosting\ServerExplorerRepository.cs" />
     <Compile Include="Network\IContextManager.cs" />
     <Compile Include="Collections\CaseInsensitiveComparer.cs" />
     <Compile Include="Diagnostics\DatabaseValidationResult.cs" />
@@ -187,7 +197,6 @@
     <Compile Include="Hosting\ManagementServiceResource.cs" />
     <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
     <Compile Include="Hosting\ResourceCatalogResult.cs" />
-    <Compile Include="Hosting\ExecStatus.cs" />
     <Compile Include="Network\IStudioNetworkSession.cs" />
     <Compile Include="Network\StudioAccount.cs" />
     <Compile Include="Network\StudioNetworkSession.cs" />

@@ -24,7 +24,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug_11889");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "BUGS/Bug_11889");
 
             //------------Execute Test---------------------------
             var result = TestHelper.PostDataToWebserver(postData);

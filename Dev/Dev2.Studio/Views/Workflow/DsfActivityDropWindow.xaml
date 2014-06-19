@@ -3,15 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-        xmlns:NavigationViews="clr-namespace:Dev2.Studio.Views.Navigation"
-        xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
+        xmlns:navigationViews="clr-namespace:Dev2.Studio.Views.Navigation"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:workflow="clr-namespace:Dev2.Studio.ViewModels.Workflow"
         xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
         xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
-        xmlns:help="clr-namespace:Dev2.Help"
-        Title="{Binding Title}"
+        xmlns:help="clr-namespace:Dev2.Help" xmlns:models="clr-namespace:Dev2.Models;assembly=Dev2.Studio.Core"
+    Title="{Binding Title}"
         Icon="{Binding ImageSource, Converter={StaticResource StringToResourceConverter}}"
         Width="350"
         Height="400"
@@ -32,18 +31,16 @@
             <RowDefinition />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <NavigationViews:NavigationView x:Name="TheNavigationView"
-                                        DataContext="{Binding Path=ExplorerViewModel.NavigationViewModel}"
+        <navigationViews:NavigationView x:Name="TheNavigationView"
+                                        DataContext="{Binding Path=NavigationViewModel}"
                                         Grid.Row="0">
-            <NavigationViews:NavigationView.ItemContainerStyle>
+            <navigationViews:NavigationView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}"
                        BasedOn="{StaticResource {x:Type TreeViewItem}}">
-                    <Setter Property="Visibility"
-                            Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
                     <Setter Property="IsExpanded"
-                            Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            Value="{Binding IsResourcePickerExpanded, Mode=TwoWay}" />
                     <Setter Property="IsSelected"
-                            Value="{Binding IsSelected, Mode=TwoWay}" />
+                            Value="{Binding IsResourcePickerSelected, Mode=TwoWay}" />
                     <Setter Property="AutomationProperties.AutomationId"
                             Value="{Binding Path=DataContext.DisplayName,RelativeSource={RelativeSource Self},Converter={StaticResource StringToAutomationIdConverter}}" />
                      
@@ -63,55 +60,30 @@
                         </Trigger>
                     </Style.Triggers>
                 </Style>
-            </NavigationViews:NavigationView.ItemContainerStyle>
-            <NavigationViews:NavigationView.ItemTemplate>
-                <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}"
+            </navigationViews:NavigationView.ItemContainerStyle>
+            <navigationViews:NavigationView.ItemTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type models:ExplorerItemModel}"
                                           ItemsSource="{Binding Path=Children}">
                     <Border IsHitTestVisible="True">
                         <StackPanel Orientation="Horizontal"
                                     AllowDrop="True">
-                            <i:Interaction.Behaviors>
-                                <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True"
-                                                                                OpenOnDoubleClick="True" />
-                                <local:NavigationItemViewModelDragDropBehavior />
-                            </i:Interaction.Behaviors>
                             <Image Width="17"
                                    Height="17"
                                    Margin="3,1,0,1">
                                 <Image.Source>
-                                    <MultiBinding Converter="{StaticResource NavigationViewModelToImageConverter}">
-                                        <MultiBinding.Bindings>
-                                            <Binding Path="IconPath" />
-                                            <Binding Path="." />
-                                        </MultiBinding.Bindings>
-                                    </MultiBinding>
-                                </Image.Source>
+                                            <MultiBinding Converter="{StaticResource ExplorerItemModelToIconConverter}">
+                                                <Binding Path="ResourceType"/>
+                                                <Binding Path="IsResourcePickerExpanded"/>
+                                            </MultiBinding>
+                                        </Image.Source>
                             </Image>
-                            <Button Visibility="{Binding Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=View}"
-                                    ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipView}"
-                                    Style="{StaticResource AuthButtonStyle}"
-                                    Command="{Binding EditCommand}">
-                                <Image Style="{StaticResource AuthViewIconStyle}" />
-                            </Button>
-                            <Button Visibility="{Binding Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=Execute}"
-                                    ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipExecute}"
-                                    Style="{StaticResource AuthButtonStyle}"
-                                    Command="{Binding ExecuteCommand}">
-                                <Image Style="{StaticResource AuthExecuteIconStyle}" />
-                            </Button>
                             <Image Style="{StaticResource AuthNoneIconStyle}"
                                    Visibility="{Binding Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=None}"
                                    ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipNone}" />
                         
                             <ContentControl Content="{Binding}">
-                                <ContentControl.Resources>
-                                    <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Text="{Binding DisplayName}"
-                                                       Padding="3,0,0,0" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                    <DataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}">
+                                <ContentControl.Resources>                                    
+                                    <DataTemplate DataType="{x:Type models:ExplorerItemModel}">
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding DisplayName}"
                                                        Padding="3,0,0,0" />
@@ -128,8 +100,8 @@
                         </StackPanel>
                     </Border>
                 </HierarchicalDataTemplate>
-            </NavigationViews:NavigationView.ItemTemplate>
-        </NavigationViews:NavigationView>
+            </navigationViews:NavigationView.ItemTemplate>
+        </navigationViews:NavigationView>
         <StackPanel Grid.Row="1"
                     Orientation="Horizontal"
                     HorizontalAlignment="Left">

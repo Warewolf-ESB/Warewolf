@@ -168,6 +168,7 @@
     <Compile Include="Activities\Services\DesignerManagementServiceTests.cs" />
     <Compile Include="Activities\WorkerServicePropertyInterigatorTest.cs" />
     <Compile Include="Activities\WorkflowPropertyInterigatorTest.cs" />
+    <Compile Include="ActivityDropView\DsfActivityDropViewModelTests.cs" />
     <Compile Include="AppResources\Behaviors\NavigationItemViewModelMouseDownBehaviorTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserHandlerTests.cs" />
     <Compile Include="AppResources\Browsers\BrowserPopupControllerTests.cs" />
@@ -182,6 +183,11 @@
     <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="AppResources\Converters\ExplorerItemModelToIconConverterTests.cs" />
+    <Compile Include="ClientExplorerRepositoryTest.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DeployNavigationViewModelTest.cs" />
     <Compile Include="IntellisenseProvider\CompositeIntellisenseProviderTests.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
     <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
@@ -192,7 +198,6 @@
     <Compile Include="ConverterTests\DeployViewConnectedToVisiblityConverterTests.cs" />
     <Compile Include="ConverterTests\NavigationViewModelPermissionVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\RowToIndexConverterTests.cs" />
-    <Compile Include="ConverterTests\TestNonResourceTreeViewModel.cs" />
     <Compile Include="ConverterTests\DateTimeToStringConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToVisibilityConverterTests.cs" />
     <Compile Include="ConverterTests\EmptyStringToBoolConverterTests.cs" />
@@ -206,7 +211,6 @@
     <Compile Include="IntellisenseProvider\DateTimeIntellisenseProviderTests.cs" />
     <Compile Include="DebugOutputViewModelTest.Append.cs" />
     <Compile Include="DependencyGraph\NodeTest.cs" />
-    <Compile Include="Deploy\DeployUnitTestIsolation.cs" />
     <Compile Include="Deploy\DeployViewModelTestBase.cs" />
     <Compile Include="Dialogs\ResourcePickerDialogTests.cs" />
     <Compile Include="Dialogs\TestResourcePickerDialog.cs" />
@@ -214,7 +218,6 @@
     <Compile Include="Environments\TestEnvironmentModel.cs" />
     <Compile Include="Environments\EnvironmentModelEqualityComparerTests.cs" />
     <Compile Include="EnvironmentTreeViewModelTests.cs" />
-    <Compile Include="Factories\WorkSurfaceContextFactoryTests.cs" />
     <Compile Include="FileSystemQueryTest.cs" />
     <Compile Include="Helpers\TypeSwitchTest.cs" />
     <Compile Include="IntellisenseProvider\CalculateIntellisenseProviderTest.cs" />
@@ -224,9 +227,11 @@
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
     <Compile Include="CompositionInitializer.cs" />
+    <Compile Include="ModelTests\ExplorerItemModelTest.cs" />
     <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
     <Compile Include="Network\ServerProxyTests.Specs.cs" />
     <Compile Include="PopupControllerTests.cs" />
+    <Compile Include="Repositories\StudioResourceRepositoryTests.cs" />
     <Compile Include="Security\ClientSecurityServiceTests.cs" />
     <Compile Include="Services\HelpConfigurationTests.cs" />
     <Compile Include="Services\ServerServiceConfigurationTest.cs" />
@@ -285,13 +290,11 @@
     <Compile Include="MainViewModelPersistenceMock.cs" />
     <Compile Include="MainViewModelTest.cs" />
     <Compile Include="Dev2MockFactory.cs" />
-    <Compile Include="MockResourceTreeViewModel.cs" />
     <Compile Include="MockUtils\MoqExtensions.cs" />
     <Compile Include="ModelTests\DataListItemModelTest.cs" />
     <Compile Include="Services\UserConfigurationServiceTests.cs" />
     <Compile Include="TestResourceRepository.cs" />
     <Compile Include="ThreadExecuter.cs" />
-    <Compile Include="TreeViewModelsTest.cs" />
     <Compile Include="NavigationViewModelTest.cs" />
     <Compile Include="ProperMoqs\MockBehaviourBase.cs" />
     <Compile Include="ProperMoqs\MoqPopup.cs" />
@@ -323,7 +326,6 @@
     <Compile Include="ViewModelTests\TestUtils.cs" />
     <Compile Include="ViewModelTests\BaseWorkSurfaceViewModelTests.cs" />
     <Compile Include="ViewModelTests\WorkSurfaceContextViewModelTests.cs" />
-    <Compile Include="ViewModelTests\ViewModelMocks\CategoryTreeViewModelMock.cs" />
     <Compile Include="Webs\ConnectCallbackHandlerTests.cs" />
     <Compile Include="TestResourceStringsTest.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -465,6 +467,7 @@
   <ItemGroup>
     <Folder Include="Diagnostics\Debug\" />
     <Folder Include="ViewModelTests\Configuration\" />
+    <Folder Include="ViewModelTests\ViewModelMocks\" />
     <Folder Include="Views\Global\" />
     <Folder Include="WizardTests\" />
   </ItemGroup>

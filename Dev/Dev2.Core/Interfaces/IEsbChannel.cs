@@ -44,9 +44,9 @@ namespace Dev2
         /// Finds the service shape.
         /// </summary>
         /// <param name="workspaceID">The workspace unique identifier.</param>
-        /// <param name="serviceName">Name of the service.</param>
+        /// <param name="resourceID">Name of the service.</param>
         /// <returns></returns>
-        string FindServiceShape(Guid workspaceID, string serviceName);
+        string FindServiceShape(Guid workspaceID, Guid resourceID);
 
         /// <summary>
         /// Shapes for sub request.

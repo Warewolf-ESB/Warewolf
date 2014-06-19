@@ -8,18 +8,19 @@
                 <button class="clear-filter" tabindex="101" type="button" name="clearSaveFilterButton" id="clearSaveFilterButton" data-bind="click: clearFilter, jEnable: hasFilter">Clear Filter</button>
             </span>
         </div>
-        <div class="field">
-            <div tabindex="102" id="resourceFoldersScrollBox" class="scrollable-y box-border" style="height: 270px; width: 564px; margin: 0px 5px">
-                <ol class="selectable" id="resourceFolders" data-bind="foreach: searchFolderResults">
-                    <li class="selectable">                        
-                        <a><img src="images/folder-closed.png" alt="Folder" width="16" height="16" class="icon" /><span style="margin-left: 0.5em" data-bind="html: $data"></span></a>
-                    </li>
-                </ol>
-            </div>
-        </div>
+       <div class="field">
+            <div id="savefileTree" tabindex="102" class="file-chooser-tree scrollIntoView"></div>
+           <!--            <div tabindex="102" id="resourceFoldersScrollBox" class="scrollable-y box-border" style="height: 270px; width: 564px; margin: 0px 5px">-->
+           <!--                <ol class="selectable" id="resourceFolders" data-bind="foreach: searchFolderResults">-->
+           <!--                    <li class="selectable">                        -->
+           <!--                        <a><img src="images/folder-closed.png" alt="Folder" width="16" height="16" class="icon" /><span style="margin-left: 0.5em" data-bind="html: $data"></span></a>-->
+           <!--                    </li>-->
+           <!--                </ol>-->
+           <!--            </div>-->
+       </div>
         <div>
             <label class="inline" style="font-weight: bold; margin-left: 5px; margin-right: 0;" for="resourceName">Name:</label>
-            <input tabindex="103" style="width: 485px; float:right; margin-right:7px;" class="required" maxlength="255" type="text" name="resourceName" id="resourceName" placeholder="" autocomplete="off" data-bind="value: attemptedResourceName, valueUpdate: 'afterkeydown', enable: !isEditing()" />
+            <input tabindex="103" style="width: 460px; float:right; margin-right:7px;" class="required" maxlength="255" type="text" name="resourceName" id="resourceName" placeholder="" autocomplete="off" data-bind="value: attemptedResourceName, valueUpdate: 'afterkeydown', enable: !isEditing()" />
         </div>
         <div id="saveDialogButtonBar" class="button-bar clear-fix" style="margin-top: 23px; margin-right: 3px;">
             <span id="inButtonBarHelpSpanStandalone" class="inSaveButtonBarSpan" style="float: none;" ></span>
@@ -31,6 +32,8 @@
         <input tabindex="104" style="width: 260px" maxlength="50" type="text" name="newFolderName" id="newFolderName" placeholder="" autocomplete="off" />
     </div>
 </div>
+
+<link href="Content/ui.dynatree.css" rel="stylesheet" type="text/css" id="skinSheet">
 
 <script type="text/javascript">
     // Make this available to chrome debugger

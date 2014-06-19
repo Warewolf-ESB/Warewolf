@@ -1,4 +1,12 @@
-﻿using Dev2.Util;
+﻿using System.Linq;
+using System.Windows.Threading;
+using Dev2.AppResources.Repositories;
+using Dev2.Core.Tests.Environments;
+using Dev2.Interfaces;
+using Dev2.Models;
+using Dev2.Services.Security;
+using Dev2.Threading;
+using Dev2.Util;
 
 #region
 
@@ -7,7 +15,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using System.Threading;
 using Caliburn.Micro;
 using Dev2.Communication;
@@ -18,8 +25,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Workspaces;
@@ -41,12 +46,11 @@ namespace Dev2.Core.Tests
         #region Test Variables
 
         Mock<IEnvironmentModel> _mockEnvironmentModel;
-        Mock<IEnvironmentModel> _disconnectedMockEnvironmentModel;
         Mock<IContextualResourceModel> _mockResourceModel;
         Mock<IContextualResourceModel> _mockResourceModel1;
         Mock<IContextualResourceModel> _mockResourceModel2;
-        NavigationViewModel _vm;
-
+        Mock<IContextualResourceModel> _mockResourceSourceModel;
+        Action<System.Action, DispatcherPriority> _Invoke = new Action<System.Action, DispatcherPriority>((a, b) => { });
         #endregion Test Variables
 
         #region Refresh Test Variables
@@ -73,11 +77,21 @@ namespace Dev2.Core.Tests
         public void TestInitialize()
         {
             AppSettings.LocalHost = "http://localhost:3142";
+            _mockEnvironmentModel = null;
+            _mockResourceModel = null;
+            _mockResourceModel1 = null;
+            _mockResourceModel2 = null;
+            _mockResourceSourceModel = null;
         }
 
         [TestCleanup]
         public void TestCleanUp()
         {
+            _mockEnvironmentModel = null;
+            _mockResourceModel = null;
+            _mockResourceModel1 = null;
+            _mockResourceModel2 = null;
+            _mockResourceSourceModel = null;
         }
 
         #endregion
@@ -91,13 +105,13 @@ namespace Dev2.Core.Tests
         public void NavigationViewModel_UnitTest_LoadResourcesAsync_InvokesEventHandler()
         {
             //isolate unit
-            Init();
+            var viewModel = Init();
 
-            _vm.LoadResourcesCompleted += (sender, args) => Assert.AreEqual(1, 1, "Navigation view model did not execute LoadResourcesCompleted event after async load");
+            viewModel.LoadResourcesCompleted += (sender, args) => Assert.AreEqual(1, 1, "Navigation view model did not execute LoadResourcesCompleted event after async load");
 
 
             //test unit
-            _vm.LoadEnvironmentResources(_mockEnvironmentModel.Object);
+            viewModel.LoadEnvironmentResources(_mockEnvironmentModel.Object);
 
             //test result
         }
@@ -106,7 +120,7 @@ namespace Dev2.Core.Tests
 
         #region Updating Resources
 
-        void Init()
+        NavigationViewModel Init()
         {
 
             _mockEnvironmentModel = new Mock<IEnvironmentModel>();
@@ -151,341 +165,134 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(mockResourceRepository.Object);
             _mockEnvironmentModel.Setup(x => x.LoadResources());
 
-            _vm = CreateViewModel();
-            _vm.AddEnvironment(_mockEnvironmentModel.Object);
+            var viewModel = CreateViewModel(mockResourceRepository);
+            viewModel.AddEnvironment(_mockEnvironmentModel.Object);
+            return viewModel;
+        }
+
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("NavigationViewModel_LoadEnvironments")]
+        public void NavigationViewModel_LoadEnvironments_WhenResourceRepositoryReturnsOnlyOneItem_ExplorerItemModelsOnlyHasOneItem()
+        {
+            //Arrange
+            const string displayName = "localhost";
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
+            mockEnvironment.Setup(model => model.CanStudioExecute).Returns(true);
+            var environmentRepository = GetEnvironmentRepository(mockEnvironment);
+            var mockStudioRepo = new Mock<IStudioResourceRepository>();
+
+            mockStudioRepo.SetupGet(p => p.ExplorerItemModels).Returns(
+                new ObservableCollection<ExplorerItemModel>
+                    {
+                        new ExplorerItemModel
+                        {
+                            ResourceType = Data.ServiceModel.ResourceType.Server,
+                            DisplayName = displayName,
+                            ResourceId = Guid.Empty,
+                            Permissions = Permissions.Administrator,
+                            EnvironmentId = Guid.Empty
+                        }
+                    });
+            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object);
+            //Act
+            viewmodel.LoadEnvironmentResources(mockEnvironment.Object);
+            //Assert
+            Assert.IsNotNull(viewmodel.ExplorerItemModels);
+            Assert.AreEqual(1, viewmodel.ExplorerItemModels.Count);
+            Assert.AreEqual(displayName, viewmodel.ExplorerItemModels[0].DisplayName);
+            Assert.AreEqual(Permissions.Administrator, viewmodel.ExplorerItemModels[0].Permissions);
+            Assert.AreEqual(Guid.Empty, viewmodel.ExplorerItemModels[0].EnvironmentId);
+            Assert.AreEqual(Guid.Empty, viewmodel.ExplorerItemModels[0].ResourceId);
+            Assert.AreEqual(Data.ServiceModel.ResourceType.Server, viewmodel.ExplorerItemModels[0].ResourceType);
         }
 
         [TestMethod]
-        public void UpdateResourceMessage_WhenResourceExistsOldCategory_Expects_ResourceChanged()
+        [Owner("Massimo Guerrera")]
+        [TestCategory("NavigationViewModel_UpdateWorkspaces")]
+        public void NavigationViewModel_UpdateWorkspaces_WhenSomeFoldersAreExpanded_FoldersAreStillExpandedAfter()
         {
-            Init(false, true);
-            _vm.Root.FindChild(_mockResourceModel.Object);
+            //Arrange
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
+            mockEnvironment.Setup(model => model.CanStudioExecute).Returns(true);
+            mockEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
+            var environmentRepository = GetEnvironmentRepository(mockEnvironment);
+            const string displayName = "localhost (https://localhost:3242/)";
 
-            _mockResourceModel.Setup(r => r.ResourceName).Returns("MockChangedName");
-            UpdateResourceMessage updatemsg = new UpdateResourceMessage(_mockResourceModel.Object);
+            ObservableCollection<ExplorerItemModel> explorerItemModels = new ObservableCollection<ExplorerItemModel>();
+            ExplorerItemModel server = new ExplorerItemModel { ResourceType = Data.ServiceModel.ResourceType.Server, DisplayName = displayName, IsExplorerExpanded = true, EnvironmentId = Guid.Empty };
+            ExplorerItemModel folder1 = new ExplorerItemModel { ResourceType = Data.ServiceModel.ResourceType.Folder, DisplayName = "Folder1", ResourcePath = "Folder1", IsExplorerExpanded = true, EnvironmentId = Guid.Empty };
+            ExplorerItemModel resource1 = new ExplorerItemModel { ResourceType = Data.ServiceModel.ResourceType.WorkflowService, DisplayName = "Resource1", ResourcePath = "Resource1", IsExplorerExpanded = false, EnvironmentId = Guid.Empty };
+            ExplorerItemModel resource2 = new ExplorerItemModel { ResourceType = Data.ServiceModel.ResourceType.WorkflowService, DisplayName = "Resource2", ResourcePath = "Resource2", IsExplorerExpanded = false, IsExplorerSelected = true, EnvironmentId = Guid.Empty };
+            ExplorerItemModel folder2 = new ExplorerItemModel { ResourceType = Data.ServiceModel.ResourceType.Folder, DisplayName = "Folder2", ResourcePath = "Folder2", IsExplorerExpanded = false, EnvironmentId = Guid.Empty };
 
-            _vm.Handle(updatemsg);
-            var updatedResource = _vm.Root.FindChild(_mockResourceModel.Object);
-            Assert.AreEqual("MockChangedName", updatedResource.DisplayName);
+            folder1.Children.Add(resource1);
+            folder1.Children.Add(resource2);
+            server.Children.Add(folder1);
+            server.Children.Add(folder2);
+            explorerItemModels.Add(server);
+
+            var mockStudioRepo = new Mock<IStudioResourceRepository>();
+            mockStudioRepo.SetupGet(p => p.ExplorerItemModels).Returns(explorerItemModels);
+
+            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object);
+
+            viewmodel.SelectedItem = resource2;
+            viewmodel.Environments.Add(mockEnvironment.Object);
+            viewmodel.ExplorerItemModels = explorerItemModels;
+            //Act
+            viewmodel.UpdateWorkspaces();
+            //Assert
+            Assert.IsNotNull(viewmodel.ExplorerItemModels);
+            Assert.AreEqual(1, viewmodel.ExplorerItemModels.Count);
+            Assert.AreEqual(displayName, viewmodel.ExplorerItemModels[0].DisplayName);
+            Assert.AreEqual(true, viewmodel.ExplorerItemModels[0].Children[0].IsExplorerExpanded);
+            Assert.AreEqual(false, viewmodel.ExplorerItemModels[0].Children[1].IsExplorerExpanded);
+            Assert.AreEqual(false, viewmodel.ExplorerItemModels[0].Children[0].Children[0].IsExplorerSelected);
+            Assert.AreEqual(true, viewmodel.ExplorerItemModels[0].Children[0].Children[1].IsExplorerSelected);
         }
 
         [TestMethod]
-        public void UpdateResourceMessage_WhenResourceUnchanged_Expects_UnchangedResource()
+        [Owner("Massimo Guerrera")]
+        [TestCategory("NavigationViewModel_LoadEnvironments")]
+        public void NavigationViewModel_LoadEnvironments_WillCallConnectEnvironmentOnce()
         {
-            Init(false, true);
-            var oldResoure = _vm.Root.FindChild(_mockResourceModel.Object);
+            //Arrange
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
+            mockEnvironment.Setup(model => model.CanStudioExecute).Returns(true);
+            var environmentRepository = GetEnvironmentRepository(mockEnvironment);
+            var mockStudioRepo = new Mock<IStudioResourceRepository>();
+            mockStudioRepo.Setup(m => m.Load(It.IsAny<Guid>(), It.IsAny<IAsyncWorker>())).Verifiable();
+            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object);
 
-            Assert.AreEqual("Mock", oldResoure.DisplayName);
 
-            var updatemsg = new UpdateResourceMessage(_mockResourceModel.Object);
 
-            _vm.Handle(updatemsg);
-            var updatedResource = _vm.Root.FindChild(_mockResourceModel.Object);
-            Assert.AreEqual("Mock", updatedResource.DisplayName);
+            //Act
+            viewmodel.LoadEnvironmentResources(mockEnvironment.Object);
+            //Assert
+            mockStudioRepo.Verify(m => m.Load(It.IsAny<Guid>(), It.IsAny<IAsyncWorker>()), Times.Once());
         }
 
-        [TestMethod]
-        public void UpdateResourceMessage_WhenResourceExistsChangedCategory_Expects_CategoryChanged()
+
+        private static IEnvironmentRepository GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
         {
-            Init(false, true);
-            var serviceTypeVM = _vm.Root.FindChild(ResourceType.WorkflowService);
-            var oldCategory = serviceTypeVM.FindChild("Testing");
-            var resourceVM = oldCategory.FindChild(_mockResourceModel.Object);
-
-            Assert.IsTrue(ReferenceEquals(oldCategory, resourceVM.TreeParent));
-            Assert.IsTrue(String.Compare(oldCategory.DisplayName, "Testing",
-                StringComparison.InvariantCultureIgnoreCase) ==
-                            0);
-
-            _mockResourceModel.Setup(r => r.Category).Returns("Testing2");
-
-            var updatemsg = new UpdateResourceMessage(_mockResourceModel.Object);
-
-            _vm.Handle(updatemsg);
-
-            var updatedCategory = serviceTypeVM.FindChild("Testing2");
-            resourceVM = updatedCategory.FindChild(_mockResourceModel.Object);
-            Assert.IsTrue(ReferenceEquals(updatedCategory, resourceVM.TreeParent));
-            Assert.IsTrue(String.Compare(updatedCategory.DisplayName, "Testing2",
-                StringComparison.InvariantCultureIgnoreCase) ==
-                          0);
-            Assert.AreEqual(updatedCategory.ChildrenCount, 2);
+            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object);
+            repo.IsLoaded = true;
+            return repo;
         }
 
-        [TestMethod]
-        public void UpdateResourceMessage_WhenNewCategory_Expects_CategoryAdded()
-        {
-            Init(false, true);
-            var serviceTypeVM = _vm.Root.FindChild(ResourceType.WorkflowService);
-
-            _mockResourceModel.Setup(r => r.Category).Returns("Testing5");
-
-            var updatemsg = new UpdateResourceMessage(_mockResourceModel.Object);
-
-            _vm.Handle(updatemsg);
-
-            var tryGetNewCategory = _vm.Root.Children[0].Children[0].Children.FirstOrDefault(child => child.DisplayName.ToUpper() == _mockResourceModel.Object.Category.ToUpper());
-
-            var updatedCategory = serviceTypeVM.FindChild("Testing5");
-            Assert.IsNotNull(updatedCategory);
-            Assert.IsTrue(ReferenceEquals(updatedCategory, tryGetNewCategory));
-            Assert.IsTrue(String.Compare(updatedCategory.DisplayName, "Testing5",
-                StringComparison.InvariantCultureIgnoreCase) ==
-                          0);
-            Assert.AreEqual(updatedCategory.ChildrenCount, 1);
-        }
-
-        [TestMethod]
-        public void UpdateResourceMessage_WhenOldCategoryBecomesEmpty_Expects_CategoryDeleted()
-        {
-            Init(false, true);
-            var serviceTypeVM = _vm.Root.FindChild(ResourceType.WorkflowService);
-
-            _mockResourceModel.Setup(r => r.Category).Returns("Testing5");
-
-            var updatemsg = new UpdateResourceMessage(_mockResourceModel.Object);
-
-            _vm.Handle(updatemsg);
-
-            var updatedCategory = serviceTypeVM.FindChild("Testing");
-            Assert.IsNull(updatedCategory);
-            Assert.IsTrue(_vm.Root.ChildrenCount == 3);
-        }
-
-        [TestMethod]
-        public void UpdateResourceMessage_WhenOldCategoryNotEmpty_Expects_CategoryNotDeleted()
-        {
-            Init(false, true);
-            var serviceTypeVM = _vm.Root.FindChild(ResourceType.WorkflowService);
-
-            _mockResourceModel.Setup(r => r.Category).Returns("Testing2");
-
-            var updatemsg = new UpdateResourceMessage(_mockResourceModel.Object);
-            _vm.Handle(updatemsg);
-
-            _mockResourceModel.Setup(r => r.Category).Returns("Testing3");
-
-            updatemsg = new UpdateResourceMessage(_mockResourceModel.Object);
-
-            _vm.Handle(updatemsg);
-
-            var updatedCategory = serviceTypeVM.FindChild("Testing2");
-
-            Assert.IsTrue(updatedCategory.ChildrenCount == 1);
-        }
-
-        [TestMethod]
-        public void UpdateResourceMessage_WhenNewResource_Expects_ResourceAdded()
-        {
-            Init(false, true);
-            var newResource = new Mock<IContextualResourceModel>();
-            newResource.Setup(r => r.ResourceType)
-                        .Returns(ResourceType.WorkflowService);
-            newResource.Setup(r => r.Category).Returns("Testing");
-            newResource.Setup(r => r.ResourceName).Returns("Cake");
-            newResource.Setup(r => r.Environment)
-                        .Returns(_mockEnvironmentModel.Object);
-
-            var updatemsg = new UpdateResourceMessage(newResource.Object);
-            _vm.Handle(updatemsg);
-
-            var serviceTypeVM = _vm.Root.FindChild(ResourceType.WorkflowService);
-            var categoryVM = serviceTypeVM.FindChild("Testing");
-            var resourceVM = _vm.Root.FindChild(newResource.Object);
-            Assert.IsTrue(resourceVM.DisplayName == "Cake");
-            Assert.IsTrue(categoryVM.ChildrenCount == 2);
-            Assert.IsTrue(_vm.Root.ChildrenCount == 4);
-        }
-
-        [TestMethod]
-        public void UpdateResourceMessage_WhenNewResourceAndNewCategory_Expects_CategoryAdded()
-        {
-            Init(false, true);
-            var newResource = new Mock<IContextualResourceModel>();
-            newResource.Setup(r => r.ResourceType)
-                       .Returns(ResourceType.WorkflowService);
-            newResource.Setup(r => r.Category).Returns("Testing4");
-            newResource.Setup(r => r.ResourceName).Returns("Cake");
-            newResource.Setup(r => r.Environment)
-                       .Returns(_mockEnvironmentModel.Object);
-
-            var updatemsg = new UpdateResourceMessage(newResource.Object);
-            _vm.Handle(updatemsg);
-
-            var serviceTypeVM = _vm.Root.FindChild(ResourceType.WorkflowService);
-            var categoryVM = serviceTypeVM.FindChild("Testing4");
-            Assert.IsTrue(String.Compare(categoryVM.DisplayName, "Testing4",
-                StringComparison.InvariantCultureIgnoreCase) ==
-                          0);
-
-            Assert.IsTrue(categoryVM.ChildrenCount == 1);
-            Assert.IsTrue(_vm.Root.ChildrenCount == 4);
-        }
 
         [TestMethod]
         public void AddEnvironmentWithShouldLoadResourcesTrueExpectedRootAndChildrenCreated()
         {
-            Init(false, true);
-            var workflowServiceTypeVM = _vm.Root.FindChild(ResourceType.WorkflowService);
-            var serviceTypeVM = _vm.Root.FindChild(ResourceType.Service);
-            var categoryVM = workflowServiceTypeVM.FindChild("Testing");
-            var resourceVM = categoryVM.FindChild(_mockResourceModel.Object);
-            Assert.IsTrue(ReferenceEquals(categoryVM, resourceVM.TreeParent));
-            Assert.IsTrue(String.Compare(categoryVM.DisplayName, "Testing",
-                StringComparison.InvariantCultureIgnoreCase) ==
-                          0);
-            Assert.IsTrue(workflowServiceTypeVM.ChildrenCount == 2);
-            Assert.IsTrue(serviceTypeVM.ChildrenCount == 1);
+            var viewModel = Init(false, true);
+            var explorerItemModels = viewModel.ExplorerItemModels;
+            Assert.IsNotNull(explorerItemModels);
+            Assert.AreEqual(1, explorerItemModels.Count);
+            Assert.AreEqual(2, explorerItemModels[0].Children.Count);
         }
 
-        [TestMethod]
-        public void AddEnvironmentWithShouldLoadResourcesFalseExpectedNoEnvironmentAdded()
-        {
-            Init(false, false);
-            Assert.AreEqual(0, _vm.Root.Children.Count());
-        }
-
-        [TestMethod]
-        public void AddEnvironmentWithShouldLoadResourcesTrueExpectedEnvironmentAdded()
-        {
-            Init(false, true);
-            Assert.AreEqual(1, _vm.Root.Children.Count());
-        }
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("NavigationViewModel_UpdateResource")]
-        public void NavigationViewModel_UpdateResource_ServiceTypeAndCategoryNotFound_ServiceTypeAndCategoryCreatedForNewResource()
-        {
-            // ReSharper disable ObjectCreationAsStatement
-            Init();
-            var eventAggregator = new Mock<IEventAggregator>().Object;
-
-            var environment = new Mock<IEnvironmentModel>();
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.Setup(conn => conn.Alias).Returns("Expected Environment");
-            mockConnection.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            mockConnection.Setup(conn => conn.AppServerUri).Returns(new Uri("http://10.0.0.1"));
-            environment.Setup(env => env.Connection).Returns(mockConnection.Object);
-            environment.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
-
-            new EnvironmentTreeViewModel(eventAggregator, _vm.Root, environment.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            var newResource = new Mock<IContextualResourceModel>();
-            newResource.Setup(res => res.Category).Returns("Expected Category");
-            newResource.Setup(res => res.ResourceName).Returns("Expected Resource Name");
-            newResource.Setup(res => res.Environment).Returns(environment.Object);
-            new ResourceTreeViewModel(eventAggregator, null, newResource.Object);
-            // ReSharper restore ObjectCreationAsStatement
-
-            // Pre-Assert
-            Assert.AreEqual(0, _vm.Root.Children[0].Children.Count);
-
-            //------------Execute Test---------------------------
-            _vm.UpdateResource(newResource.Object);
-
-            // Assert Category Node And Type Node Removed
-            Assert.AreEqual("WORKFLOWS", _vm.Root.Children[0].Children[0].DisplayName, "New service type not created for new resource");
-            Assert.AreEqual("EXPECTED CATEGORY", _vm.Root.Children[0].Children[0].Children[0].DisplayName, "New category not created for new resource");
-            Assert.AreEqual("Expected Resource Name", _vm.Root.Children[0].Children[0].Children[0].Children[0].DisplayName, "New resource not added to the tree");
-        }
-
-        [TestMethod]
-        [Owner("Travis Frisinger")]
-        [TestCategory("NavigationViewModel_UpdateResource")]
-        public void NavigationViewModel_UpdateResource_CategoryNotChanged_OriginalResource()
-        {
-            // ReSharper disable ObjectCreationAsStatement
-            Init();
-            var eventAggregator = new Mock<IEventAggregator>().Object;
-
-            var environment = new Mock<IEnvironmentModel>();
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.Setup(conn => conn.Alias).Returns("Expected Environment");
-            mockConnection.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            mockConnection.Setup(conn => conn.AppServerUri).Returns(new Uri("http://10.0.0.1"));
-            environment.Setup(env => env.Connection).Returns(mockConnection.Object);
-            environment.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
-
-            new EnvironmentTreeViewModel(eventAggregator, _vm.Root, environment.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            var newResource = new Mock<IContextualResourceModel>();
-            newResource.Setup(res => res.Category).Returns("Expected Category");
-            newResource.Setup(res => res.ResourceName).Returns("Expected Resource Name");
-            newResource.Setup(res => res.Environment).Returns(environment.Object);
-            new ResourceTreeViewModel(eventAggregator, null, newResource.Object);
-            // ReSharper restore ObjectCreationAsStatement
-
-            _vm.UpdateResource(newResource.Object);
-
-            // pre-assert it was inserted into tree ;)
-            Assert.AreEqual(1, _vm.Root.Children[0].Children[0].Children.Count);
-            var insertedNode = _vm.Root.Children[0].Children[0].Children[0];
-
-            //------------Execute Test---------------------------
-            _vm.UpdateResource(newResource.Object);
-
-            // Assert Category Node And Type Node Removed
-            Assert.AreEqual("WORKFLOWS", _vm.Root.Children[0].Children[0].DisplayName, "New service type not created for new resource");
-            Assert.AreEqual("EXPECTED CATEGORY", _vm.Root.Children[0].Children[0].Children[0].DisplayName, "New category not created for new resource");
-            Assert.AreEqual("Expected Resource Name", _vm.Root.Children[0].Children[0].Children[0].Children[0].DisplayName, "New resource not added to the tree");
-
-            // ensure same node remains
-            Assert.AreEqual(insertedNode, _vm.Root.Children[0].Children[0].Children[0]);
-        }
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("NavigationViewModel_UpdateResource")]
-        public void NavigationViewModel_UpdateResource_DeployView_DoesNotUpdateForDeleteRemoteResource()
-        {
-            const string expectedNodeName = "Expected Node Name";
-            const string expectedCategoryName = "Expected Category";
-            var expectedResourceId = Guid.NewGuid();
-            var remoteServerID = Guid.NewGuid();
-
-            //Remote resource (IContextualResourceModel)
-            Init();
-            var mockRemoteConnection = new Mock<IEnvironmentConnection>();
-            mockRemoteConnection.Setup(conn => conn.Alias).Returns("Remote Environment");
-            mockRemoteConnection.Setup(conn => conn.AppServerUri).Returns(new Uri("http://192.168.0.1"));
-            var remoteEnvironment = new Mock<IEnvironmentModel>();
-            remoteEnvironment.Setup(env => env.ID).Returns(remoteServerID);
-            remoteEnvironment.Setup(env => env.Connection).Returns(mockRemoteConnection.Object);
-
-            var remoteResource = new Mock<IContextualResourceModel>();
-            remoteResource.Setup(res => res.DisplayName).Returns(expectedNodeName);
-            remoteResource.Setup(res => res.ResourceName).Returns(expectedNodeName);
-            remoteResource.Setup(res => res.ID).Returns(expectedResourceId);
-            remoteResource.Setup(res => res.Environment).Returns(remoteEnvironment.Object);
-            remoteResource.Setup(res => res.Category).Returns(expectedCategoryName);
-            remoteResource.Setup(res => res.ServerID).Returns(remoteServerID);
-
-            //Local resource (ITreeNode)
-            var mockLocalConnection = new Mock<IEnvironmentConnection>();
-            mockLocalConnection.Setup(conn => conn.Alias).Returns("Local Environment");
-            mockLocalConnection.Setup(conn => conn.AppServerUri).Returns(new Uri("http://192.168.0.2"));
-            var localEnvironment = new Mock<IEnvironmentModel>();
-            localEnvironment.Setup(env => env.ID).Returns(Guid.NewGuid);
-            localEnvironment.Setup(env => env.Connection).Returns(mockLocalConnection.Object);
-
-            var localResource = new Mock<ITreeNode>();
-            localResource.Setup(res => res.DisplayName).Returns(expectedNodeName);
-            //localResource.Setup(res => res<IResourceModel>.DataContext.ID)
-
-            var eventAggregator = new Mock<IEventAggregator>().Object;
-
-            // ReSharper disable ObjectCreationAsStatement
-            new EnvironmentTreeViewModel(eventAggregator, _vm.Root, localEnvironment.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            new ServiceTypeTreeViewModel(eventAggregator, _vm.Root.Children[0], ResourceType.WorkflowService);
-            new CategoryTreeViewModel(eventAggregator, _vm.Root.Children[0].Children[0], expectedCategoryName, ResourceType.WorkflowService);
-            // ReSharper restore ObjectCreationAsStatement
-            _vm.Root.Children[0].Children[0].Children[0].Children.Add(localResource.Object);
-
-            //------------Execute Test---------------------------
-            _vm.UpdateResource(remoteResource.Object);
-
-            // Assert Does Not Update For Delete Remote Resource
-            Assert.IsNotNull(_vm.Root.Children[0].Children[0].Children[0].Children.FirstOrDefault(child => child.DisplayName == localResource.Object.DisplayName));
-        }
 
         #endregion Updating Resources
 
@@ -494,30 +301,86 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void FilteredNavigationViewModel_AfterReload_Expects_FilteredItemsInTreeWithIsFilteredTrue()
         {
-            Init(false, true);
-            var resourceVM = _vm.Root.FindChild(_mockResourceModel.Object);
+            var viewModel = Init(false, true);
+            var resourceVM = viewModel.FindChild(_mockResourceModel.Object);
 
-            Assert.AreEqual(3, _vm.Root.ChildrenCount);
-            Assert.IsTrue(resourceVM.IsFiltered == false);
+            Assert.IsNotNull(resourceVM);
 
-            _vm.UpdateSearchFilter("Mock2");
-            _vm.Root.NotifyOfFilterPropertyChanged(false);
+            Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
 
-            Assert.AreEqual(1, _vm.Root.ChildrenCount);
-            Assert.IsTrue(resourceVM.IsFiltered);
+            viewModel.UpdateSearchFilter("Mock2");
+            resourceVM = viewModel.FindChild(_mockResourceModel.Object);
+            Assert.AreEqual(1, viewModel.ExplorerItemModels[0].ChildrenCount);
+            Assert.IsNull(resourceVM);
 
-            _vm.LoadEnvironmentResources(_mockEnvironmentModel.Object);
-            _vm.Root.NotifyOfFilterPropertyChanged(false);
+            viewModel.LoadEnvironmentResources(_mockEnvironmentModel.Object);
+            resourceVM = viewModel.FindChild(_mockResourceModel.Object);
 
-            resourceVM = _vm.Root.FindChild(_mockResourceModel.Object);
+            Assert.AreEqual(1, viewModel.ExplorerItemModels[0].ChildrenCount);
+            Assert.IsNull(resourceVM);
+            viewModel.UpdateSearchFilter("Mock");
+            resourceVM = viewModel.FindChild(_mockResourceModel.Object);
+            Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
+            Assert.IsNotNull(resourceVM);
+        }
 
-            Assert.AreEqual(1, _vm.Root.ChildrenCount);
-            Assert.IsTrue(resourceVM.IsFiltered);
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("NavigationViewModel_Filter")]
+        public void NavigationViewModel_Filter_GivenFunction_ShouldFilter()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = Init(false, true);
+            //------------Preconditions---------------------------
+            Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
+            //------------Execute Test---------------------------
+            viewModel.Filter(model => model.ResourceType == Data.ServiceModel.ResourceType.WorkflowService);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, viewModel.ExplorerItemModels[0].ChildrenCount);
+            Assert.IsTrue(HasFolder(viewModel.ExplorerItemModels[0].Children));
+        }
 
-            _vm.UpdateSearchFilter("Mock");
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("NavigationViewModel_Filter")]
+        public void NavigationViewModel_Filter_GivenFunctionAndActivityTypeIsWorkflow_ShouldFilter()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = Init(false, true);
+            viewModel.DsfActivityType = enDsfActivityType.Workflow; 
+            //------------Preconditions---------------------------
+            Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
+            //------------Execute Test---------------------------
+            viewModel.Filter(model => model.ResourceType == Data.ServiceModel.ResourceType.WorkflowService);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(HasFolder(viewModel.ExplorerItemModels[0].Children));
+        }
+        
+        private bool HasFolder(IEnumerable<ExplorerItemModel> children)
+        {
+            if (children.Any(explorerItemModel => explorerItemModel.ResourceType == Data.ServiceModel.ResourceType.Folder))
+            {
+                return true;
+            }
 
-            Assert.AreEqual(3, _vm.Root.ChildrenCount);
-            Assert.IsFalse(resourceVM.IsFiltered);
+            return false;
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("NavigationViewModel_Filter")]
+        public void NavigationViewModel_Filter_GivenNull_ShouldOriginalCollection()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = Init(false, true);
+            //------------Preconditions---------------------------
+            Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
+            viewModel.Filter(model => model.ResourceType == Data.ServiceModel.ResourceType.WorkflowService);
+            Assert.AreEqual(2, viewModel.ExplorerItemModels[0].ChildrenCount);
+            //------------Execute Test---------------------------
+            viewModel.Filter(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
         }
 
         [TestMethod]
@@ -525,262 +388,80 @@ namespace Dev2.Core.Tests
         [TestCategory("NavigationViewModel_LoadResources")]
         public void NavigationViewModel_LoadResources_CausesOnLoadEventToBeFired()
         {
-            Init(false, true);
+            var viewModel = Init(false, true);
             bool called = false;
-            _vm.LoadResourcesCompleted += delegate { called = true; };
-            _vm.LoadEnvironmentResources(_mockEnvironmentModel.Object);
-
-            _vm.Root.NotifyOfFilterPropertyChanged(false);
-
+            viewModel.LoadResourcesCompleted += delegate { called = true; };
+            viewModel.LoadEnvironmentResources(_mockEnvironmentModel.Object);
 
             Assert.IsTrue(called);
         }
 
 
-
-
-        [TestMethod]
-        public void FilteredNavigationViewModel_WhereResourceNodeNotFiltered_Expects_CategoryExpanded()
-        {
-            ITreeNode resourceVM2_2 = null;
-
-            var reset = new AutoResetEvent(false);
-            ThreadExecuter.RunCodeAsSTA(reset,
-                () =>
-                {
-                    Init(false, true);
-                    var resourceVM = _vm.Root.FindChild(_mockResourceModel.Object);
-                    var resourceVM2_1 = _vm.Root.FindChild(_mockResourceModel1.Object);
-                    resourceVM2_2 = _vm.Root.FindChild(_mockResourceModel2.Object);
-
-                    Assert.IsTrue(resourceVM.IsFiltered == false);
-                    Assert.IsTrue(resourceVM2_1.IsFiltered == false);
-                    Assert.IsTrue(resourceVM2_2.IsFiltered == false);
-                    Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
-                    Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
-                    Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
-
-                    _vm.UpdateSearchFilter("Mock2");
-                    _vm.Root.NotifyOfFilterPropertyChanged(false);
-
-                    Thread.Sleep(100);
-
-                });
-            reset.WaitOne();
-
-            Assert.IsTrue(resourceVM2_2.IsFiltered == false);
-            Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded);
-        }
-
-        [TestMethod]
-        public void FilteredNavigationViewModel_WhereResourceNodeFiltered_Expects_CategoryCollapsed()
-        {
-            ITreeNode resourceVM = null;
-            var reset = new AutoResetEvent(false);
-            ThreadExecuter.RunCodeAsSTA(reset,
-                () =>
-                {
-                    Init(false, true);
-                    resourceVM = _vm.Root.FindChild(_mockResourceModel.Object);
-                    var resourceVM2_1 = _vm.Root.FindChild(_mockResourceModel1.Object);
-                    var resourceVM2_2 = _vm.Root.FindChild(_mockResourceModel2.Object);
-
-                    Assert.IsTrue(resourceVM.IsFiltered == false);
-                    Assert.IsTrue(resourceVM2_1.IsFiltered == false);
-                    Assert.IsTrue(resourceVM2_2.IsFiltered == false);
-                    Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
-                    Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
-                    Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
-
-                    _vm.UpdateSearchFilter("Mock2");
-                    _vm.Root.NotifyOfFilterPropertyChanged(false);
-
-                    Thread.Sleep(100);
-                });
-            reset.WaitOne();
-
-            Assert.IsTrue(resourceVM.IsFiltered);
-            Assert.IsTrue(!resourceVM.TreeParent.IsExpanded);
-        }
-
         [TestMethod]
         public void FilteredNavigationViewModel_WhereFilterReset_Expects_OriginalExpandState()
         {
-            ITreeNode resourceVM = null;
-            ITreeNode resourceVM2_1 = null;
-            ITreeNode resourceVM2_2 = null;
+            ExplorerItemModel resourceVM = null;
 
             var reset = new AutoResetEvent(false);
             ThreadExecuter.RunCodeAsSTA(reset,
                 () =>
                 {
-                    Init(false, true);
-                    resourceVM = _vm.Root.FindChild(_mockResourceModel.Object);
-                    resourceVM2_1 = _vm.Root.FindChild(_mockResourceModel1.Object);
-                    resourceVM2_2 = _vm.Root.FindChild(_mockResourceModel2.Object);
+                    var viewModel = Init(false, true);
+                    resourceVM = viewModel.FindChild(_mockResourceModel.Object);
+                    ExplorerItemModel resourceVM2_1 = viewModel.FindChild(_mockResourceModel1.Object);
+                    ExplorerItemModel resourceVM2_2 = viewModel.FindChild(_mockResourceModel2.Object);
 
-                    Assert.IsTrue(resourceVM.IsFiltered == false);
-                    Assert.IsTrue(resourceVM2_1.IsFiltered == false);
-                    Assert.IsTrue(resourceVM2_2.IsFiltered == false);
-                    Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
-                    Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
-                    Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
+                    Assert.IsTrue(resourceVM.Parent.IsExplorerExpanded == false);
+                    Assert.IsTrue(resourceVM2_1.Parent.IsExplorerExpanded == false);
+                    Assert.IsTrue(resourceVM2_2.Parent.IsExplorerExpanded == false);
 
-                    _vm.UpdateSearchFilter("Mock2");
+                    viewModel.UpdateSearchFilter("Mock2");
 
-                    _vm.UpdateSearchFilter("");
+                    viewModel.UpdateSearchFilter("");
                 });
             reset.WaitOne();
 
-            Assert.IsTrue(resourceVM.IsFiltered == false);
-            Assert.IsTrue(resourceVM2_1.IsFiltered == false);
-            Assert.IsTrue(resourceVM2_2.IsFiltered == false);
-            Assert.IsTrue(resourceVM.TreeParent.IsExpanded == false);
-            Assert.IsTrue(resourceVM2_1.TreeParent.IsExpanded == false);
-            Assert.IsTrue(resourceVM2_2.TreeParent.IsExpanded == false);
-        }
-
-        [TestMethod]
-        public void FilteredNavigationViewModel_WhereNoContent_Expects_RootAndEnvironmentNotFiltered()
-        {
-            var reset = new AutoResetEvent(false);
-            ThreadExecuter.RunCodeAsSTA(reset,
-                () =>
-                {
-                    Init(false, true);
-                    _vm.UpdateSearchFilter("ZD");
-                });
-            reset.WaitOne();
-
-            Assert.IsTrue(_vm.Root.IsFiltered == false);
-            Assert.IsTrue(_vm.Root.IsExpanded);
-            Assert.IsTrue(_vm.Root.Children.ToList().All(c => c.IsFiltered == false));
-        }
-
-        [TestMethod]
-        public void NavigationViewModel_WhereNoContent_Expects_RootAndEnvironmentNotFiltered()
-        {
-            var reset = new AutoResetEvent(false);
-            ThreadExecuter.RunCodeAsSTA(reset,
-                () =>
-                {
-                    Init(false, true);
-                    ITreeNode resourceVM = _vm.Root.FindChild(_mockResourceModel.Object);
-                    ITreeNode resourceVM2_1 = _vm.Root.FindChild(_mockResourceModel1.Object);
-                    ITreeNode resourceVM2_2 = _vm.Root.FindChild(_mockResourceModel2.Object);
-
-                    resourceVM.TreeParent.Remove(resourceVM);
-                    resourceVM2_1.TreeParent.Remove(resourceVM2_1);
-                    resourceVM2_2.TreeParent.Remove(resourceVM2_2);
-
-                    _vm.UpdateSearchFilter("");
-                });
-            reset.WaitOne();
-
-            Assert.IsTrue(_vm.Root.ChildrenCount == 0);
-            Assert.IsTrue(_vm.Root.IsFiltered == false);
-            Assert.IsTrue(_vm.Root.IsExpanded);
-            Assert.IsTrue(_vm.Root.Children.ToList().All(c => c.IsFiltered == false));
-            Assert.IsTrue(_vm.Root.Children.ToList().All(c => c.ChildrenCount == 0));
-        }
-
-        [TestMethod]
-        public void Filter_Expects_FilteredCategories_WithNoResources_IsFiltered()
-        {
-            ITreeNode resourceVM = null;
-            ITreeNode resourceVM2_1 = null;
-            ITreeNode resourceVM2_2 = null;
-
-            var reset = new AutoResetEvent(false);
-            ThreadExecuter.RunCodeAsSTA(reset,
-                () =>
-                {
-                    Init(false, true);
-                    _vm.UpdateSearchFilter("zd");
-                    _vm.Root.NotifyOfFilterPropertyChanged(false);
-
-                    resourceVM = _vm.Root.FindChild(_mockResourceModel.Object);
-                    resourceVM2_1 = _vm.Root.FindChild(_mockResourceModel1.Object);
-                    resourceVM2_2 = _vm.Root.FindChild(_mockResourceModel2.Object);
-
-                });
-            reset.WaitOne();
-
-            Assert.IsTrue(resourceVM.TreeParent.IsFiltered);
-            Assert.IsTrue(resourceVM2_1.TreeParent.IsFiltered);
-            Assert.IsTrue(resourceVM2_2.TreeParent.IsFiltered);
-        }
-
-        [TestMethod]
-        public void Filter_Expects_FilteredCategories_WithResources_IsNotFiltered_AndExpanded()
-        {
-            ITreeNode matchingNode = null;
-
-            var reset = new AutoResetEvent(false);
-            ThreadExecuter.RunCodeAsSTA(reset,
-                () =>
-                {
-                    Init(false, true);
-                    _vm.Root.FindChild(_mockResourceModel.Object);
-                    matchingNode = _vm.Root.FindChild(_mockResourceModel2.Object);
-
-                    _vm.UpdateSearchFilter("Mock2");
-
-                    Thread.Sleep(100);
-
-                });
-            reset.WaitOne();
-
-
-            Assert.IsFalse(matchingNode.IsFiltered);
-            Assert.IsTrue(matchingNode.TreeParent.IsExpanded);
-        }
-
-        [TestMethod]
-        public void Filter_Expects_UnFilteredCategories_NotFiltered_AndExpanded()
-        {
-            ITreeNode nonMatchingCategory = null;
-            ITreeNode matchingCategory = null;
-
-            var reset = new AutoResetEvent(false);
-            ThreadExecuter.RunCodeAsSTA(reset,
-                () =>
-                {
-                    Init(false, true);
-                    nonMatchingCategory =
-                        _vm.Root.FindChild(_mockResourceModel.Object).TreeParent;
-                    matchingCategory =
-                        _vm.Root.FindChild(_mockResourceModel1.Object).TreeParent;
-
-                    _vm.UpdateSearchFilter("Testing2");
-
-                    Thread.Sleep(100);
-
-                });
-            reset.WaitOne();
-
-            Assert.IsTrue(nonMatchingCategory.IsFiltered);
-            Assert.IsTrue(matchingCategory.IsFiltered == false);
-            Assert.IsTrue(matchingCategory.IsExpanded);
+            Assert.IsTrue(resourceVM.Parent.IsExplorerExpanded == false);
         }
 
         #endregion Filtering
 
-        #region remove
+        #region Rename
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("NavigationViewModel_RenameCommand")]
+        public void NavigationViewModel_RenameCommand_RenameKeyPressed_RenameCommandCalledOnSelectedItem()
+        {
+            //------------Setup for test--------------------------
+            Mock<IResourceRepository> mockResourceRepository;
+            SetupWithOutViewModel(false, true, out mockResourceRepository);
+            var viewModel = CreateViewModel(mockResourceRepository, true, enDsfActivityType.Workflow);
+            viewModel.SelectedItem = new ExplorerItemModel { DisplayName = "test1" };
+            //------------Execute Test---------------------------
+            Assert.IsFalse(viewModel.SelectedItem.IsRenaming);
+            viewModel.RenameCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(viewModel.SelectedItem.IsRenaming);
+        }
+
+        #endregion
+
+        #region Remove
 
         [TestMethod]
         public void RemoveEnvironmentsWhenEnvironmentConnected()
         {
-            Init(false, true);
+            var viewModel = Init(false, true);
             _mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
             _mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
 
-            Assert.IsTrue(_vm.Environments.Count == 1);
-            Assert.IsTrue(_vm.Root.ChildrenCount > 0);
+            Assert.IsTrue(viewModel.Environments.Count == 1);
+            Assert.IsTrue(viewModel.ExplorerItemModels[0].ChildrenCount > 0);
 
-            _vm.RemoveEnvironment(_mockEnvironmentModel.Object);
-            Assert.IsTrue(_vm.Environments.Count == 0);
-            Assert.IsTrue(_vm.Root.ChildrenCount == 0);
+            viewModel.RemoveEnvironment(_mockEnvironmentModel.Object);
+            Assert.IsTrue(viewModel.Environments.Count == 0);
+            Assert.IsTrue(viewModel.ExplorerItemModels.Count == 0);
 
         }
 
@@ -788,26 +469,26 @@ namespace Dev2.Core.Tests
         public void NoExceptionWhenEnvironmentNotInEnvironmentList()
         {
             var reset = new AutoResetEvent(false);
+            var viewModel = Init(false, true);
             ThreadExecuter.RunCodeAsSTA(reset,
                 () =>
                 {
-                    Init(false, true);
                     _mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
                     _mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
 
-                    Assert.IsTrue(_vm.Environments.Count == 1);
-                    Assert.IsTrue(_vm.Root.ChildrenCount > 0);
+                    Assert.IsTrue(viewModel.Environments.Count == 1);
+                    Assert.IsTrue(viewModel.ExplorerItemModels[0].ChildrenCount > 0);
 
                     var nonAddedMock = GetMockEnvironment();
                     nonAddedMock.Setup(m => m.ID).Returns(Guid.NewGuid);
 
-                    _vm.RemoveEnvironment(nonAddedMock.Object);
+                    viewModel.RemoveEnvironment(nonAddedMock.Object);
 
                 });
             reset.WaitOne();
 
-            Assert.IsTrue(_vm.Environments.Count == 1);
-            Assert.IsTrue(_vm.Root.ChildrenCount > 0);
+            Assert.IsTrue(viewModel.Environments.Count == 1);
+            Assert.IsTrue(viewModel.ExplorerItemModels[0].ChildrenCount > 0);
 
         }
 
@@ -815,7 +496,7 @@ namespace Dev2.Core.Tests
 
         #region Refresh Environments Tests
 
-        void RefreshTestsSetup()
+        NavigationViewModel RefreshTestsSetup()
         {
             var firstEnvId = Guid.NewGuid();
             _reMockEnvironmentModel = GetMockEnvironment();
@@ -868,107 +549,10 @@ namespace Dev2.Core.Tests
             _reMockEnvironmentModel1.SetupGet(x => x.ResourceRepository).Returns(_reMockResourceRepository.Object);
             _reMockEnvironmentModel1.Setup(x => x.LoadResources());
 
-            _vm = CreateViewModel();
-            _vm.AddEnvironment(_reMockEnvironmentModel.Object);
-            _vm.AddEnvironment(_reMockEnvironmentModel1.Object);
-        }
-
-        [TestMethod]
-        public void RefreshSingleEnvironmentTestExpectedRefreshOfOneEnvironmentOnly()
-        {
-            RefreshTestsSetup();
-
-            var eventAggregator = new Mock<IEventAggregator>().Object;
-
-            var rootTreeViewModel = new RootTreeViewModel(eventAggregator);
-            rootTreeViewModel.Parent = _vm;
-
-            var envConn = new Mock<IEnvironmentConnection>();
-            envConn.Setup(e => e.IsConnected).Returns(true);
-            envConn.Setup(e => e.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            envConn.Setup(e => e.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
-
-            var envModel = new EnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), envConn.Object, _reMockResourceRepository.Object);
-            var environmentTreeViewModel = new EnvironmentTreeViewModel(eventAggregator, rootTreeViewModel, envModel, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            environmentTreeViewModel.RefreshCommand.Execute(null);
-
-            _reMockResourceRepository.Verify(x => x.UpdateWorkspace(It.IsAny<IList<IWorkspaceItem>>()), Times.Exactly(1));
-
-        }
-
-        [TestMethod]
-        public void RefreshAllEnvironmentTestExpectedSecondEnvironmentStillNotConnected()
-        {
-            RefreshTestsSetup();
-            _vm.UpdateWorkspaces();
-            Assert.IsTrue(_vm.Environments[0].IsConnected);
-            Assert.IsTrue(!_vm.Environments[1].IsConnected);
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("NavigationViewModel")]
-        public void RefreshEnvironment_UnitTest_WhereTreeIsPopulatedAlready_ExpectedSameObjectsInTree()
-        {
-            RefreshTestsSetup();
-            _reMockEnvironmentModel.Setup(c => c.CanStudioExecute).Returns(true);
-            _vm.LoadEnvironmentResources(_reMockEnvironmentModel.Object);
-            ResourceTreeViewModel expected = _vm.Root.Children[0].Children[0].Children[0].Children[0] as ResourceTreeViewModel;
-            _vm.LoadEnvironmentResources(_reMockEnvironmentModel.Object);
-            ResourceTreeViewModel actual = _vm.Root.Children[0].Children[0].Children[0].Children[0] as ResourceTreeViewModel;
-            Assert.AreEqual(expected, actual, "The objects are not the same object");
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("NavigationViewModel")]
-        public void RefreshEnvironment_UnitTest_WhereOneExtraResource_ExpectedOneExtraResourceInTree()
-        {
-            RefreshTestsSetup();
-            _reMockEnvironmentModel.Setup(c => c.CanStudioExecute).Returns(true);
-            _vm.LoadEnvironmentResources(_reMockEnvironmentModel.Object);
-            var expected = _vm.Root.Children[0].Children[0].Children.Count;
-
-            Mock<IContextualResourceModel> mockResourceModel3 = new Mock<IContextualResourceModel>();
-            mockResourceModel3.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
-            mockResourceModel3.Setup(r => r.Category).Returns("Testing3");
-            mockResourceModel3.Setup(r => r.ResourceName).Returns("Mock3");
-            mockResourceModel3.Setup(r => r.Environment).Returns(_reMockEnvironmentModel.Object);
-
-            _reMockResourceRepository = new Mock<IResourceRepository>();
-            _reMockResourceRepository.Setup(r => r.All()).Returns(
-                new Collection<IResourceModel>
-                {
-                    _mockResourceModel.Object,
-                    _mockResourceModel1.Object,
-                    _mockResourceModel2.Object,
-                    mockResourceModel3.Object
-                });
-            _reMockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(_reMockResourceRepository.Object);
-            _vm.LoadEnvironmentResources(_reMockEnvironmentModel.Object);
-            var actual = _vm.Root.Children[0].Children[0].Children.Count;
-            Assert.IsTrue(actual == expected + 1, "The resource was not added to the tree");
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("NavigationViewModel")]
-        public void RefreshEnvironment_UnitTest_WhereOneLessResource_ExpectedOneLessResourceInTree()
-        {
-            RefreshTestsSetup();
-            _reMockEnvironmentModel.Setup(c => c.CanStudioExecute).Returns(true);
-            _vm.LoadEnvironmentResources(_reMockEnvironmentModel.Object);
-
-            _reMockResourceRepository = new Mock<IResourceRepository>();
-            _reMockResourceRepository.Setup(r => r.All()).Returns(
-                new Collection<IResourceModel>
-                {
-                    _mockResourceModel.Object
-                });
-            _reMockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(_reMockResourceRepository.Object);
-            _vm.LoadEnvironmentResources(_reMockEnvironmentModel.Object);
-
-            Assert.IsTrue(_vm.Root.Children[0].Children[0].Children[0].Children.Count == 0, "The resource was not removed to the tree");
+            var viewModel = CreateViewModel(_reMockResourceRepository);
+            viewModel.AddEnvironment(_reMockEnvironmentModel.Object);
+            viewModel.AddEnvironment(_reMockEnvironmentModel1.Object);
+            return viewModel;
         }
 
         [TestMethod]
@@ -978,15 +562,15 @@ namespace Dev2.Core.Tests
         public void NavigationViewModel_UpdateWorkspaces_DisconnectedLocalhostServer_LocalhostServerConnected()
         {
             //isolate UpdateWorkspaces as a functional unit
-            RefreshTestsSetup();
+            var viewModel = RefreshTestsSetup();
             _reMockEnvironmentModel.Setup(c => c.CanStudioExecute).Returns(true);
 
             //run unit
-            _vm.UpdateWorkspaces();
+            viewModel.UpdateWorkspaces();
 
             //assert both localhost servers are connected
-            Assert.IsTrue(_vm.Root.Children[0].Children[0].IsConnected, "Refresh does not autoconnect to localhost");
-            Assert.IsTrue(_vm.Root.Children[0].Children[1].IsConnected, "Refresh does not autoconnect to localhost");
+            Assert.IsTrue(viewModel.ExplorerItemModels[0].Children[0].IsConnected, "Refresh does not autoconnect to localhost");
+            Assert.IsTrue(viewModel.ExplorerItemModels[0].Children[1].IsConnected, "Refresh does not autoconnect to localhost");
         }
 
         #endregion
@@ -996,39 +580,40 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void EnvironmentNodeDisconnect_Expect_NodeRemovedFromRoot()
         {
-            Init(false, true);
+            var viewModel = Init(false, true);
             _mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
             _mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
 
-            Assert.IsTrue(_vm.Root.ChildrenCount != 0);
+            Assert.IsTrue(viewModel.ExplorerItemModels[0].ChildrenCount != 0);
 
             var message =
                 new EnvironmentDisconnectedMessage(_mockEnvironmentModel.Object);
-            _vm.Handle(message);
-            Assert.IsTrue(_vm.Root.ChildrenCount == 0);
+            viewModel.Handle(message);
+            Assert.IsTrue(viewModel.ExplorerItemModels[0].ChildrenCount == 0);
         }
 
         [TestMethod]
         public void EnvironmentNodeDisconnectExpectSetIsRefreshingToFalse()
         {
             var reset = new AutoResetEvent(false);
+            var viewModel = Init(false, true);
             ThreadExecuter.RunCodeAsSTA(reset,
                 () =>
                 {
-                    Init(false, true);
+
                     _mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
                     _mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
 
-                    Assert.IsTrue(_vm.Root.ChildrenCount != 0);
+                    Assert.IsTrue(viewModel.ExplorerItemModels[0].ChildrenCount != 0);
 
                     var message =
                         new EnvironmentDisconnectedMessage(_mockEnvironmentModel.Object);
-                    _vm.Handle(message);
-                    Assert.IsFalse(_vm.IsRefreshing);
+                    viewModel.Handle(message);
+                    Assert.IsFalse(viewModel.IsRefreshing);
                 });
             reset.WaitOne();
 
-            Assert.IsTrue(_vm.Root.ChildrenCount == 0);
+            Assert.IsTrue(viewModel.ExplorerItemModels[0].ChildrenCount == 0);
         }
 
         #endregion
@@ -1038,109 +623,59 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeWorkflowExpectedOnlyWorkflowsToBeInTree()
         {
-            Init(false, true);
-            _vm = CreateViewModel(true, enDsfActivityType.Workflow);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object);
-            Assert.AreEqual(1, _vm.Root.Children[0].Children.Count);
-            Assert.AreEqual("WORKFLOWS", _vm.Root.Children[0].Children[0].DisplayName);
+            Mock<IResourceRepository> mockResourceRepository;
+            SetupWithOutViewModel(false, true, out mockResourceRepository);
+            var viewModel = CreateViewModel(mockResourceRepository, true, enDsfActivityType.Workflow);
+            viewModel.AddEnvironment(_mockEnvironmentModel.Object);
+            Assert.AreEqual(1, viewModel.ExplorerItemModels[0].Children[0].Children.Count);
+            Assert.AreEqual("Mock", viewModel.ExplorerItemModels[0].Children[0].Children[0].DisplayName);
+            Assert.AreEqual(Data.ServiceModel.ResourceType.WorkflowService, viewModel.ExplorerItemModels[0].Children[0].Children[0].ResourceType);
         }
 
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeServiceExpectedOnlyServicesToBeInTree()
         {
-            Init(false, true);
-            _vm = CreateViewModel(true, enDsfActivityType.Service);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object);
-            Assert.AreEqual(1, _vm.Root.Children[0].Children.Count);
-            Assert.AreEqual("SERVICES", _vm.Root.Children[0].Children[0].DisplayName);
+
+            Mock<IResourceRepository> mockResourceRepository;
+            SetupWithOutViewModel(false, true, out mockResourceRepository);
+
+            var viewModel = CreateViewModel(mockResourceRepository, true, enDsfActivityType.Service);
+            viewModel.AddEnvironment(_mockEnvironmentModel.Object);
+            Assert.AreEqual(1, viewModel.ExplorerItemModels[0].Children[0].Children.Count);
+            Assert.AreEqual("Mock2", viewModel.ExplorerItemModels[0].Children[0].Children[0].DisplayName);
+            Assert.AreEqual(Data.ServiceModel.ResourceType.DbService, viewModel.ExplorerItemModels[0].Children[0].Children[0].ResourceType);
+        }
+
+        void SetupWithOutViewModel(bool addWizardChildToResource, bool shouldLoadResources, out Mock<IResourceRepository> mockResourceRepository)
+        {
+            SetupMockEnvironment(shouldLoadResources);
+            SetUpResources(addWizardChildToResource, out mockResourceRepository);
+            _mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
         }
 
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeSourceExpectedOnlySourcesToBeInTree()
         {
-            Init(false, true);
-            _vm = CreateViewModel(true, enDsfActivityType.Source);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object);
-            Assert.AreEqual(1, _vm.Root.Children[0].Children.Count);
-            Assert.AreEqual("SOURCES", _vm.Root.Children[0].Children[0].DisplayName);
+            Mock<IResourceRepository> mockResourceRepository;
+            SetupWithOutViewModel(false, true, out mockResourceRepository);
+            var viewModel = CreateViewModel(mockResourceRepository, true, enDsfActivityType.Source);
+            viewModel.AddEnvironment(_mockEnvironmentModel.Object);
+            Assert.AreEqual(1, viewModel.ExplorerItemModels[0].Children[0].Children.Count);
+            Assert.AreEqual("MockSource", viewModel.ExplorerItemModels[0].Children[0].Children[0].DisplayName);
+            Assert.AreEqual(Data.ServiceModel.ResourceType.WebSource, viewModel.ExplorerItemModels[0].Children[0].Children[0].ResourceType);
         }
 
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeAllExpectedAllItemsToBeInTree()
         {
-            Init(false, true);
-            _vm = CreateViewModel(true);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object);
-            Assert.AreEqual(3, _vm.Root.Children[0].Children.Count);
-            Assert.AreEqual("WORKFLOWS", _vm.Root.Children[0].Children[0].DisplayName);
-            Assert.AreEqual("SERVICES", _vm.Root.Children[0].Children[1].DisplayName);
-            Assert.AreEqual("SOURCES", _vm.Root.Children[0].Children[2].DisplayName);
-        }
-
-        [TestMethod]
-        public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeWorkflowExpectedWorkflowsWithNoChilrenToBeInTree()
-        {
-            Init(true, true);
-            _vm = CreateViewModel(true, enDsfActivityType.Workflow);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object);
-            Assert.AreEqual(1, _vm.Root.Children[0].Children.Count);
-            Assert.AreEqual(0, _vm.Root.Children[0].Children[0].Children[1].Children[0].Children.Count);
-        }
-
-        //2013.05.30: Ashley Lewis for bugs 9444+9445 - Dont show services from disconnected environments
-        [TestMethod]
-        public void CreateNavigationViewModelWithIsActivityDropTrueExpectedBothEnvironmentsVisibleOnlyResourcesForConnectedEnvironmentsToBeInTree()
-        {
-            InitTwoEnvironments(false, true);
-            _vm = CreateViewModel(true);
-            _vm.AddEnvironment(_mockEnvironmentModel.Object);
-            _vm.AddEnvironment(_disconnectedMockEnvironmentModel.Object);
-            Assert.AreEqual(2, _vm.Root.Children.Count, "Disconnected environment not added to NavigationViewModel");
-            Assert.AreEqual(3, _vm.Root.Children[0].Children.Count, "Resources for connected environment not visible in NavigationViewModel");
-            Assert.AreEqual(0, _vm.Root.Children[1].Children.Count, "Resources for disconnected environment are visible in NavigationViewModel");
+            var viewModel = Init(false, true);
+            Assert.AreEqual(1, viewModel.ExplorerItemModels[0].Children[0].Children.Count);
+            Assert.AreEqual(3, viewModel.ExplorerItemModels[0].Children[1].Children.Count);
         }
 
         #endregion
 
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("NavigationViewModel_SetNodeOverwrite")]
-        public void NavigationViewModel_SetNodeOverwrite_SetToFalse_FalseReturned()
-        {
-            Init(false, true);
-            var newResource = new Mock<IContextualResourceModel>();
-            newResource.Setup(r => r.ResourceType)
-                        .Returns(ResourceType.WorkflowService);
-            newResource.Setup(r => r.Category).Returns("Testing");
-            newResource.Setup(r => r.ResourceName).Returns("Cake");
-            newResource.Setup(r => r.Environment)
-                        .Returns(_mockEnvironmentModel.Object);
 
-            var updatemsg = new UpdateResourceMessage(newResource.Object);
-            _vm.Handle(updatemsg);
-
-            Assert.IsFalse(_vm.SetNodeOverwrite(newResource.Object, false));
-        }
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("NavigationViewModel_SetNodeOverwrite")]
-        public void NavigationViewModel_SetNodeOverwrite_SetToFalse_TrueReturned()
-        {
-            Init(false, true);
-            var newResource = new Mock<IContextualResourceModel>();
-            newResource.Setup(r => r.ResourceType)
-                        .Returns(ResourceType.WorkflowService);
-            newResource.Setup(r => r.Category).Returns("Testing");
-            newResource.Setup(r => r.ResourceName).Returns("Cake");
-            newResource.Setup(r => r.Environment)
-                        .Returns(_mockEnvironmentModel.Object);
-
-            var updatemsg = new UpdateResourceMessage(newResource.Object);
-            _vm.Handle(updatemsg);
-
-            Assert.IsTrue(_vm.SetNodeOverwrite(newResource.Object, true));
-        }
 
         [TestMethod]
         [TestCategory("NavigationViewModel_Constructor")]
@@ -1152,7 +687,7 @@ namespace Dev2.Core.Tests
             var eventPublisher = new Mock<IEventAggregator>();
 
             // ReSharper disable ObjectCreationAsStatement
-            new NavigationViewModel(eventPublisher.Object, null, null, null);
+            new NavigationViewModel(eventPublisher.Object, null, null, null, new Mock<IStudioResourceRepository>().Object);
             // ReSharper restore ObjectCreationAsStatement
         }
 
@@ -1166,7 +701,7 @@ namespace Dev2.Core.Tests
             var environmentRepository = new Mock<IEnvironmentRepository>();
             var asyncWorker = AsyncWorkerTests.CreateVerifiableAsyncWorker();
 
-            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object);
+            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object, new Mock<IStudioResourceRepository>().Object);
 
             var environmentModel = new Mock<IEnvironmentModel>();
 
@@ -1178,22 +713,24 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void NavigationViewModel_BringItemIntoView_Expects_SetTreeNodeIsSelectedTrueParentOpen()
         {
-            Init(false, true);
-            var resourceVm = _vm.Root.FindChild(_mockResourceModel.Object);
-            _vm.BringItemIntoView(_mockResourceModel.Object);
-            Assert.IsTrue(resourceVm.IsSelected);
-            Assert.IsTrue(resourceVm.TreeParent.IsExpanded);
+            var viewModel = Init(false, true);
+            var resourceVm = viewModel.FindChild(_mockResourceModel.Object);
+            viewModel.BringItemIntoView(_mockResourceModel.Object);
+            Assert.IsNotNull(resourceVm);
+            Assert.IsTrue(resourceVm.IsExplorerSelected);
+            Assert.IsTrue(resourceVm.Parent.IsExplorerExpanded);
         }
 
 
         [TestMethod]
         public void NavigationViewModel_BringItemIntoViewWithNull_Expects_DoesNothing()
         {
-            Init(false, true);
-            var resourceVm = _vm.Root.FindChild(_mockResourceModel.Object);
-            _vm.BringItemIntoView(null);
-            Assert.IsFalse(resourceVm.IsSelected);
-            Assert.IsFalse(resourceVm.TreeParent.IsExpanded);
+            var viewModel = Init(false, true);
+            var resourceVm = viewModel.FindChild(_mockResourceModel.Object);
+            viewModel.BringItemIntoView(null);
+            Assert.IsNotNull(resourceVm);
+            Assert.IsFalse(resourceVm.IsExplorerSelected);
+            Assert.IsFalse(resourceVm.Parent.IsExplorerExpanded);
         }
 
         [TestMethod]
@@ -1204,9 +741,11 @@ namespace Dev2.Core.Tests
         {
             var localhostConnection = new Mock<IEnvironmentConnection>();
             localhostConnection.Setup(e => e.StartAutoConnect()).Verifiable();
+            localhostConnection.Setup(e => e.WebServerUri).Returns(new Uri("https://localhost:3142/"));
 
             var localhost = new Mock<IEnvironmentModel>();
             localhost.Setup(e => e.ID).Returns(Guid.Empty);
+            localhost.Setup(e => e.Name).Returns("localhost");
             localhost.Setup(e => e.IsConnected).Returns(false);
             localhost.Setup(e => e.CanStudioExecute).Returns(false);
             localhost.Setup(e => e.Connection).Returns(localhostConnection.Object);
@@ -1218,7 +757,7 @@ namespace Dev2.Core.Tests
 
             ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(envRepo);
 
-            var viewModel = CreateViewModel(envRepo.Object);
+            var viewModel = CreateViewModel(envRepo.Object, new Mock<IResourceRepository>());
             viewModel.AddEnvironment(localhost.Object);
 
             localhostConnection.Verify(e => e.StartAutoConnect(), "AddEnvironment did not start localhost auto-connect heartbeat.");
@@ -1240,7 +779,7 @@ namespace Dev2.Core.Tests
 
             ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(envRepo);
 
-            var viewModel = CreateViewModel(envRepo.Object);
+            var viewModel = CreateViewModel(envRepo.Object, new Mock<IResourceRepository>());
 
             var otherConnection = new Mock<IEnvironmentConnection>();
             otherConnection.Setup(e => e.StartAutoConnect()).Verifiable();
@@ -1268,6 +807,9 @@ namespace Dev2.Core.Tests
             var localhost = new Mock<IEnvironmentModel>();
             localhost.Setup(e => e.ID).Returns(Guid.Empty);
             localhost.Setup(e => e.Name).Returns("localhost");
+            localhost.Setup(e => e.IsLocalHost).Returns(true);
+            localhost.Setup(e => e.IsConnected).Returns(true);
+            localhost.Setup(e => e.CanStudioExecute).Returns(true);
             localhost.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
 
             localhost.Setup(e => e.CanStudioExecute).Returns(true);
@@ -1284,8 +826,19 @@ namespace Dev2.Core.Tests
             envRepo.Setup(e => e.Source).Returns(localhost.Object);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(envRepo);
+            var localhostExplorerItemModel = new ExplorerItemModel();
+            localhostExplorerItemModel.EnvironmentId = Guid.Empty;
+            localhostExplorerItemModel.DisplayName = "localhost";
 
-            var viewModel = new NavigationViewModel(publisher.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, envRepo.Object);
+            ExplorerItemModel anotherEnvironment = new ExplorerItemModel();
+            anotherEnvironment.DisplayName = "Other Server";
+            anotherEnvironment.EnvironmentId = toBeRemoved.Object.ID;
+            var studioResourceRepository = new StudioResourceRepository(localhostExplorerItemModel,_Invoke);
+            studioResourceRepository.ExplorerItemModels.Add(anotherEnvironment);
+            studioResourceRepository.GetExplorerProxy = guid => new Mock<IExplorerResourceRepository>().Object;
+            var viewModel = new NavigationViewModel(publisher.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, envRepo.Object, studioResourceRepository);
+
+
             foreach(var env in envList)
             {
                 viewModel.AddEnvironment(env);
@@ -1296,73 +849,70 @@ namespace Dev2.Core.Tests
 
             //------------Assert Results-------------------------
             publisher.Verify(p => p.Publish(It.IsAny<SetActiveEnvironmentMessage>()));
-            Assert.IsTrue(viewModel.Root.Children[0].IsSelected);
-        }
-
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("EnvironmentTreeViewModel_Disconnect")]
-        public void EnvironmentTreeViewModel_Disconnect_InvokesNavigationViewModelSelectLocalhost()
-        {
-            //------------Setup for test--------------------------
-            var publisher = new Mock<IEventAggregator>();
-            publisher.Setup(p => p.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
-
-            var localhost = new Mock<IEnvironmentModel>();
-            localhost.Setup(e => e.ID).Returns(Guid.Empty);
-            localhost.Setup(e => e.Name).Returns("localhost");
-            localhost.Setup(e => e.IsConnected).Returns(true);
-            localhost.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.1/"));
-            localhost.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
-
-            localhost.Setup(e => e.CanStudioExecute).Returns(true);
-
-            var envModel = new Mock<IEnvironmentModel>();
-            envModel.Setup(e => e.ID).Returns(Guid.NewGuid());
-            envModel.Setup(e => e.Name).Returns("Other Server");
-            envModel.Setup(e => e.IsConnected).Returns(true);
-            envModel.Setup(e => e.CanStudioExecute).Returns(true);
-            envModel.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.2/"));
-            envModel.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
-
-            var envList = new List<IEnvironmentModel> { localhost.Object, envModel.Object };
-            var envRepo = new Mock<IEnvironmentRepository>();
-            envRepo.Setup(e => e.All()).Returns(envList);
-            envRepo.Setup(e => e.Source).Returns(localhost.Object);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(envRepo);
-
-            var viewModel = new NavigationViewModel(publisher.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, envRepo.Object);
-            foreach(var env in envList)
-            {
-                viewModel.AddEnvironment(env);
-            }
-
-            var rootTreeViewModel = new RootTreeViewModel(publisher.Object) { Parent = viewModel };
-
-            //------------Execute Test---------------------------
-
-
-            var environmentTreeViewModel = new EnvironmentTreeViewModel(publisher.Object, rootTreeViewModel, envModel.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            environmentTreeViewModel.DisconnectCommand.Execute(null);
-
-            //------------Assert Results-------------------------
-            publisher.Verify(p => p.Publish(It.IsAny<SetActiveEnvironmentMessage>()));
-            Assert.IsTrue(viewModel.Root.Children[0].IsSelected);
+            Assert.IsTrue(viewModel.ExplorerItemModels[0].IsExplorerSelected);
         }
 
         #region Private Test Methods
 
-        void Init(bool addWizardChildToResource, bool shouldLoadResources)
+        NavigationViewModel Init(bool addWizardChildToResource, bool shouldLoadResources)
         {
             SetupMockEnvironment(shouldLoadResources);
 
             Mock<IResourceRepository> mockResourceRepository;
             SetUpResources(addWizardChildToResource, out mockResourceRepository);
 
-            _vm = CreateViewModel();
-            _vm.AddEnvironment(_mockEnvironmentModel.Object);
+
+            var viewModel = CreateViewModel(mockResourceRepository);
+            _mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
+
+            viewModel.AddEnvironment(_mockEnvironmentModel.Object);
+            return viewModel;
+        }
+
+        IStudioResourceRepository BuildExplorerItems(IResourceRepository resourceRepository)
+        {
+            var resourceModels = resourceRepository.All();
+            var localhostItemModel = new ExplorerItemModel { DisplayName = "localhost", EnvironmentId = Guid.Empty, ResourceType = Data.ServiceModel.ResourceType.Server };
+
+            if(resourceModels != null)
+            {
+                foreach(var resourceModel in resourceModels)
+                {
+                    var resourceItemModel = new ExplorerItemModel { ResourceId = resourceModel.ID, ResourcePath = resourceModel.Category, EnvironmentId = Guid.Empty, DisplayName = resourceModel.ResourceName };
+                    Data.ServiceModel.ResourceType correctTyping = Data.ServiceModel.ResourceType.WorkflowService;
+                    switch(resourceModel.ResourceType)
+                    {
+                        case ResourceType.WorkflowService:
+                            correctTyping = Data.ServiceModel.ResourceType.WorkflowService;
+                            break;
+                        case ResourceType.Service:
+                            correctTyping = Data.ServiceModel.ResourceType.DbService;
+                            break;
+                        case ResourceType.Source:
+                            correctTyping = Data.ServiceModel.ResourceType.WebSource;
+                            break;
+                    }
+                    resourceItemModel.ResourceType = correctTyping;
+
+                    var categoryItem = localhostItemModel.Children.FirstOrDefault(model => model.DisplayName == resourceModel.Category);
+                    if(categoryItem == null)
+                    {
+                        categoryItem = new ExplorerItemModel();
+                        categoryItem.Parent = localhostItemModel;
+                        categoryItem.DisplayName = resourceModel.Category;
+                        categoryItem.EnvironmentId = Guid.Empty;
+                        categoryItem.ResourceType = Data.ServiceModel.ResourceType.Folder;
+                        categoryItem.ResourcePath = "";
+                        localhostItemModel.Children.Add(categoryItem);
+                    }
+                    resourceItemModel.Parent = categoryItem;
+                    categoryItem.Children.Add(resourceItemModel);
+                }
+            }
+            var studioResourceRepository = new StudioResourceRepository(localhostItemModel,_Invoke);
+            var explorerResourceRepository = new Mock<IExplorerResourceRepository>().Object;
+            studioResourceRepository.GetExplorerProxy = guid => explorerResourceRepository;
+            return studioResourceRepository;
         }
 
         void SetupMockEnvironment(bool shouldLoadResources)
@@ -1387,37 +937,6 @@ namespace Dev2.Core.Tests
             return mock;
         }
 
-        void InitTwoEnvironments(bool addWizardChildToResource, bool shouldLoadResources)
-        {
-            SetupTwoMockEnvironments(shouldLoadResources);
-
-            Mock<IResourceRepository> mockResourceRepository;
-            SetUpResources(addWizardChildToResource, out mockResourceRepository);
-
-            _vm = CreateViewModel();
-            _vm.AddEnvironment(_mockEnvironmentModel.Object);
-            _vm.AddEnvironment(_disconnectedMockEnvironmentModel.Object);
-        }
-
-        void SetupTwoMockEnvironments(bool shouldLoadResources)
-        {
-            _mockEnvironmentModel = GetMockEnvironment();
-            _mockEnvironmentModel.SetupGet(x => x.CanStudioExecute).Returns(shouldLoadResources);
-            _disconnectedMockEnvironmentModel = GetSecondMockEnvironment();
-            _disconnectedMockEnvironmentModel.SetupGet(x => x.CanStudioExecute).Returns(shouldLoadResources);
-        }
-
-        Mock<IEnvironmentModel> GetSecondMockEnvironment()
-        {
-            var mock = new Mock<IEnvironmentModel>();
-            mock.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
-            //mock.SetupGet(x => x.Connection.ServerID).Returns(Guid.NewGuid);
-            mock.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://127.0.0.2/"));
-            mock.SetupGet(x => x.ID).Returns(Guid.NewGuid);
-            mock.SetupGet(x => x.IsConnected).Returns(false);
-            return mock;
-        }
-
         void SetUpResources(bool addWizardChildToResource, out Mock<IResourceRepository> mockResourceRepository)
         {
             // setup env repo
@@ -1435,12 +954,14 @@ namespace Dev2.Core.Tests
             _mockResourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
             _mockResourceModel.Setup(r => r.Category).Returns("Testing");
             _mockResourceModel.Setup(r => r.ResourceName).Returns("Mock");
+            _mockResourceModel.Setup(model => model.ID).Returns(Guid.NewGuid());
             _mockResourceModel.Setup(r => r.Environment).Returns(_mockEnvironmentModel.Object);
 
             _mockResourceModel1 = new Mock<IContextualResourceModel>();
             _mockResourceModel1.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
             _mockResourceModel1.Setup(r => r.Category).Returns("Testing2");
             _mockResourceModel1.Setup(r => r.ResourceName).Returns("Mock1");
+            _mockResourceModel1.Setup(model => model.ID).Returns(Guid.NewGuid());
             _mockResourceModel1.Setup(r => r.Environment).Returns(_mockEnvironmentModel.Object);
             if(addWizardChildToResource)
             {
@@ -1455,13 +976,23 @@ namespace Dev2.Core.Tests
             _mockResourceModel2.Setup(r => r.ResourceType).Returns(ResourceType.Service);
             _mockResourceModel2.Setup(r => r.Category).Returns("Testing2");
             _mockResourceModel2.Setup(r => r.ResourceName).Returns("Mock2");
+            _mockResourceModel2.Setup(model => model.ID).Returns(Guid.NewGuid());
             _mockResourceModel2.Setup(r => r.Environment).Returns(_mockEnvironmentModel.Object);
+
+            _mockResourceSourceModel = new Mock<IContextualResourceModel>();
+            _mockResourceSourceModel.Setup(r => r.ResourceType).Returns(ResourceType.Source);
+            _mockResourceSourceModel.Setup(r => r.Category).Returns("Testing2");
+            _mockResourceSourceModel.Setup(r => r.ResourceName).Returns("MockSource");
+            _mockResourceSourceModel.Setup(model => model.ID).Returns(Guid.NewGuid());
+            _mockResourceSourceModel.Setup(r => r.Environment).Returns(_mockEnvironmentModel.Object);
 
             Collection<IResourceModel> mockResources = new Collection<IResourceModel>
             {
                 _mockResourceModel.Object,
                 _mockResourceModel1.Object,
-                _mockResourceModel2.Object
+                _mockResourceModel2.Object,
+                _mockResourceSourceModel.Object
+
             };
             if(addWizardChildToResource)
             {
@@ -1476,100 +1007,23 @@ namespace Dev2.Core.Tests
             _mockEnvironmentModel.Setup(x => x.LoadResources());
         }
 
-        static NavigationViewModel CreateViewModel(bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+        NavigationViewModel CreateViewModel(Mock<IResourceRepository> mockResourceRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
         {
             var importServiceContext = new ImportServiceContext();
             ImportService.CurrentContext = importServiceContext;
 
             ImportService.Initialize(new List<ComposablePartCatalog>());
 
-            return CreateViewModel(EnvironmentRepository.Instance, isFromActivityDrop, activityType);
+            return CreateViewModel(EnvironmentRepository.Instance, mockResourceRepository, isFromActivityDrop, activityType);
         }
 
-        static NavigationViewModel CreateViewModel(IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
+        NavigationViewModel CreateViewModel(IEnvironmentRepository environmentRepository, Mock<IResourceRepository> mockResourceRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
         {
-            return new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, isFromActivityDrop, activityType);
+            var studioResourceRepository = BuildExplorerItems(mockResourceRepository.Object);
+            var navigationViewModel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, studioResourceRepository, isFromActivityDrop, activityType);
+            return navigationViewModel;
         }
 
         #endregion
-
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("NavigationViewModel_UpdateResource")]
-        public void NavigationViewModel_UpdateResource_ServiceTypeFound_TreeViewModelItemWithActivityFullName()
-        {
-            //------------Setup for test--------------------------
-
-            var eventPublisher = new Mock<IEventAggregator>();
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-
-            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object);
-
-            var env = new Mock<IEnvironmentModel>();
-            env.Setup(e => e.Connection.Alias).Returns("Expected Environment");
-            env.Setup(e => e.Connection.AppServerUri).Returns(new Uri("http://10.0.0.1"));
-            env.Setup(e => e.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            env.Setup(m => m.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
-
-            var newResource = new Mock<IContextualResourceModel>();
-            newResource.Setup(res => res.Category).Returns("Expected Category");
-            newResource.Setup(res => res.ResourceName).Returns("Expected Resource Name");
-            newResource.Setup(res => res.Environment).Returns(env.Object);
-
-            nvm.Root.Children.Add(new CategoryTreeViewModel(eventPublisher.Object, nvm.Root, "Workflows", ResourceType.WorkflowService));
-
-            // ReSharper disable ObjectCreationAsStatement
-            new EnvironmentTreeViewModel(eventPublisher.Object, nvm.Root, env.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            // ReSharper restore ObjectCreationAsStatement
-
-            //------------Execute Test---------------------------
-            nvm.UpdateResource(newResource.Object);
-
-            //------------Assert Results-------------------------
-            var workflowsNode = nvm.Root.Children[2];
-            var serverNode = workflowsNode.Children[0];
-            var categoryNode = serverNode.Children[0];
-            var resourceNode = (ResourceTreeViewModel)categoryNode.Children[0];
-            Assert.IsNotNull(resourceNode.ActivityFullName);
-        }
-
-
-
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("EnvironmentTreeViewModel_Disconnect")]
-        [TestMethod]
-        public void ClearConflicts_Expects_AllItemsHaveNoConflicts()
-        {
-            // base case
-            Init(false, true);
-            _vm.Root.IsOverwrite = true;
-            _vm.Root.Children[0].IsOverwrite = true;
-            _vm.Root.IsOverwrite = true;
-            _vm.Root.Children[0].Children[0].IsOverwrite = true;
-            _vm.ClearConflictingNodesNodes();
-            Assert.AreEqual(false, _vm.Root.IsOverwrite);
-            Assert.AreEqual(false, _vm.Root.Children[0].IsOverwrite);
-            Assert.AreEqual(false, _vm.Root.Children[0].Children[0].IsOverwrite);
-
-
-
-        }
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("EnvironmentTreeViewModel_Disconnect")]
-        [TestMethod]
-        public void ClearConflicts_Expects_NoSideEffects()
-        {
-
-
-            // make sure no side effects 
-            Init(false, true);
-            _vm.ClearConflictingNodesNodes();
-            Assert.AreEqual(false, _vm.Root.IsOverwrite);
-            Assert.AreEqual(true, _vm.Root.Children.All(a => a.IsOverwrite == false));
-            Assert.AreEqual(true, _vm.Root.Children[0].Children.All(a => !a.IsOverwrite));
-
-        }
     }
 }

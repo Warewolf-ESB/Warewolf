@@ -91,6 +91,7 @@
       <Link>Converters\BoolToVisibilityConverter.cs</Link>
     </Compile>
     <Compile Include="Adorners\DragAdorner.cs" />
+    <Compile Include="Behavior\BindableSelectedItemBehavior.cs" />
     <Compile Include="Behavior\DataGridColumnSizeSynchronizationBehavior.cs" />
     <Compile Include="Behavior\DataGridWatermarkModifier.cs" />
     <Compile Include="Behavior\ThumbResizeBehavior.cs" />

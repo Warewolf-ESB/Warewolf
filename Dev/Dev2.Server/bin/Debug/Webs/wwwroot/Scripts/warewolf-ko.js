@@ -51,5 +51,5 @@ if (ko && ko.bindingHandlers) {
         }
     };
 
-    ko.applyBindings({});
+   // ko.applyBindings({});
 }

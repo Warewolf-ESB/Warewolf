@@ -4,12 +4,12 @@ using System.IO;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
-using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     [TestClass]
@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
                 var testResources = new Dev2.Runtime.ServiceModel.Resources();
                 var actual = testResources.Paths("", workspaceID, Guid.Empty);
-                Assert.AreEqual("[\"Integration Test Services\"]", actual);
+                Assert.AreEqual("[\"Integration Test Services\\\\Calculate_RecordSet_Subtract\"]", actual);
             }
             finally
             {
@@ -57,75 +57,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         #region private test methods
-
-        private void DeleteDirectory(string target_dir)
-        {
-            string[] files = Directory.GetFiles(target_dir);
-            string[] dirs = Directory.GetDirectories(target_dir);
-
-            foreach(string file in files)
-            {
-                File.SetAttributes(file, FileAttributes.Normal);
-                File.Delete(file);
-            }
-
-            foreach(string dir in dirs)
-            {
-                DeleteDirectory(dir);
-            }
-
-            DirectoryHelper.CleanUp(target_dir);
-        }
-
-        private Guid generateADLGuid()
-        {
-            var _compiler = DataListFactory.CreateDataListCompiler();
-            ErrorResultTO errors = new ErrorResultTO();
-            Guid exID = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), GetSimpleADL(), GetSimpleADLShape(), out errors);
-            if(errors.HasErrors())
-            {
-                string errorString = string.Empty;
-                foreach(string item in errors.FetchErrors())
-                {
-                    errorString += item;
-                }
-
-                throw new Exception(errorString);
-            }
-            return exID;
-        }
-
-        private string GetSimpleADL()
-        {
-            return @"<ADL>
-  <cRec>
-    <opt></opt>
-    <display />
-  </cRec>
-  <gRec>
-    <opt>Value1</opt>
-    <display>display1</display>
-  </gRec>
-  <recset></recset>
-  <field></field>
-</ADL>";
-        }
-
-        private string GetSimpleADLShape()
-        {
-            return @"<ADL>
-  <cRec>
-    <opt></opt>
-    <display />
-  </cRec>
-  <gRec>
-    <opt></opt>
-    <display></display>
-  </gRec>
-  <recset></recset>
-  <field></field>
-</ADL>";
-        }
 
         #endregion
 
@@ -198,8 +129,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     var resource = new Resource
                     {
                         ResourceID = Guid.NewGuid(),
+                        ResourcePath = (i % Modulo == 0) ? ResourceType.WorkflowService + "\\" + string.Format("My Name {0}", i) : string.Format("My Name {0}", i),
                         ResourceName = string.Format("My Name {0}", i),
-                        ResourcePath = string.Format("My Path {0}", i),
                         ResourceType = (i % Modulo == 0) ? ResourceType.WorkflowService : ResourceType.Unknown
                     };
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
@@ -265,20 +196,23 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var servicesPath = Path.Combine(workspacePath, "Services");
-            var sourcesPath = Path.Combine(workspacePath, "Sources");
-            var pluginsPath = Path.Combine(workspacePath, "Plugins");
             try
             {
-                Directory.CreateDirectory(servicesPath);
-                Directory.CreateDirectory(sourcesPath);
-                Directory.CreateDirectory(pluginsPath);
-
+                string completePath = Path.Combine(workspacePath, "Mo");
+                if(Directory.Exists(completePath))
+                {
+                    Directory.Delete(completePath);
+                }
                 var xml = XmlResource.Fetch("TestForEachOutput");
-                xml.Save(Path.Combine(servicesPath, "TestForEachOutput.xml"));
-
+                var resourcePath = xml.Element("Category");
+                Directory.CreateDirectory(completePath);
+                Assert.IsNotNull(resourcePath);
+                xml.Save(Path.Combine(workspacePath, resourcePath.Value + ".xml"));
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
-                var resource = ResourceCatalog.Instance.GetResource(workspaceID, "TestForEachOutput");
+                //---------------Assert Preconditions------------------------------
+                Assert.IsNotNull(resourcePath);
+                var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourcePath.Value);
+                Assert.IsNotNull(resource);
                 //------------Execute Test---------------------------
                 var dataListInputVariables = resources.DataListInputVariables(resource.ResourceID.ToString(), workspaceID, Guid.Empty);
                 //------------Assert Results-------------------------
@@ -299,21 +233,25 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
+
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var servicesPath = Path.Combine(workspacePath, "Services");
-            var sourcesPath = Path.Combine(workspacePath, "Sources");
-            var pluginsPath = Path.Combine(workspacePath, "Plugins");
             try
             {
-                Directory.CreateDirectory(servicesPath);
-                Directory.CreateDirectory(sourcesPath);
-                Directory.CreateDirectory(pluginsPath);
-
+                string completePath = Path.Combine(workspacePath, "Bugs");
+                if(Directory.Exists(completePath))
+                {
+                    Directory.Delete(completePath);
+                }
                 var xml = XmlResource.Fetch("Bug6619");
-                xml.Save(Path.Combine(servicesPath, "Bug6619.xml"));
-
+                var resourcePath = xml.Element("Category");
+                Directory.CreateDirectory(completePath);
+                Assert.IsNotNull(resourcePath);
+                xml.Save(Path.Combine(workspacePath, resourcePath.Value + ".xml"));
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
-                var resource = ResourceCatalog.Instance.GetResource(workspaceID, "Bug6619");
+                //-----------------Assert Preconditions-----------------------------
+                Assert.IsNotNull(resourcePath);
+                var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourcePath.Value);
+                Assert.IsNotNull(resource);
                 //------------Execute Test---------------------------
                 var dataListInputVariables = resources.DataListInputVariables(resource.ResourceID.ToString(), workspaceID, Guid.Empty);
                 //------------Assert Results-------------------------
@@ -336,50 +274,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [Description("Correct list of folder names returned for workflow type service")]
         [Owner("Ashley Lewis")]
         // ReSharper disable InconsistentNaming
-        public void Resources_UnitTest_WorkflowPathsAndNames_CorrectListReturned()
-        // ReSharper restore InconsistentNaming
-        {
-            //Isolate PathsAndNames for workflows as a functional unit
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            try
-            {
-                const int Modulo = 2;
-                const int totalResourceCount = 6;
-                for (var i = 0; i < totalResourceCount; i++)
-                {
-                    var resource = new Dev2.Runtime.ServiceModel.Data.Resource
-                    {
-                        ResourceID = Guid.NewGuid(),
-                        ResourceName = string.Format("My Name {0}", i),
-                        ResourcePath = string.Format("My Path {0}", i),
-                        ResourceType = (i % Modulo == 0) ? ResourceType.WorkflowService : ResourceType.Unknown
-                    };
-                    ResourceCatalog.Instance.SaveResource(workspaceID, resource);
-                }
-                var resources = new Dev2.Runtime.ServiceModel.Resources();
-                const string expectedJson = "{\"Names\":[\"My Name 0\",\"My Name 1\",\"My Name 2\",\"My Name 3\",\"My Name 4\",\"My Name 5\"],\"Paths\":[\"MY PATH 0\",\"MY PATH 2\",\"MY PATH 4\"]}";
-
-                //Run PathsAndNames
-                var actualJson = resources.PathsAndNames("WorkflowService", workspaceID, Guid.Empty);
-
-                //Assert CorrectListReturned
-                Assert.AreEqual(expectedJson, actualJson, "Incorrect list of names and paths for workflow services");
-            }
-            finally
-            {
-                if (Directory.Exists(workspacePath))
-                {
-                    DirectoryHelper.CleanUp(workspacePath);
-                }
-            }
-        }
-
-        [TestMethod]
-        [TestCategory("Resources_PathsAndNames")]
-        [Description("Correct list of folder names returned for workflow type service")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
         public void Resources_UnitTest_PluginPathsAndNames_AllServicePathsExeptWorkflows()
         // ReSharper restore InconsistentNaming
         {
@@ -389,91 +283,51 @@ namespace Dev2.Tests.Runtime.ServiceModel
             try
             {
                 const int Modulo = 3;
-                const int totalResourceCount = 9;
-                for (var i = 0; i < totalResourceCount; i++)
+                const int TotalResourceCount = 9;
+                for(var i = 0; i < TotalResourceCount; i++)
                 {
-                    var resource = new Dev2.Runtime.ServiceModel.Data.Resource
+                    var resource = new Resource
                     {
                         ResourceID = Guid.NewGuid(),
                         ResourceName = string.Format("My Name {0}", i),
-                        ResourcePath = string.Format("My Path {0}", i)
+                        ResourcePath = string.Format("My Path {0}\\{1}", i, string.Format("My Name {0}", i))
                     };
 
-                    switch (i % Modulo)
+                    switch(i % Modulo)
                     {
                         case 0:
+                            resource.ResourcePath = ResourceType.WorkflowService + "\\" + resource.ResourceName;
                             resource.ResourceType = ResourceType.WorkflowService;
                             break;
                         case 1:
+                            resource.ResourcePath = ResourceType.DbService + "\\" + resource.ResourceName;
                             resource.ResourceType = ResourceType.DbService;
                             break;
                         case 2:
+                            resource.ResourcePath = ResourceType.PluginService + "\\" + resource.ResourceName;
                             resource.ResourceType = ResourceType.PluginService;
                             break;
                     }
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
-                const string expectedJson = "{\"Names\":[\"My Name 0\",\"My Name 1\",\"My Name 2\",\"My Name 3\",\"My Name 4\",\"My Name 5\",\"My Name 6\",\"My Name 7\",\"My Name 8\"],\"Paths\":[\"MY PATH 1\",\"MY PATH 2\",\"MY PATH 4\",\"MY PATH 5\",\"MY PATH 7\",\"MY PATH 8\"]}";
+                const string ExpectedJson = "{\"Names\":[\"My Name 1\",\"My Name 4\",\"My Name 7\"],\"Paths\":[\"DbService\"]}";
 
                 //Run PathsAndNames
                 var actualJson = resources.PathsAndNames("DbService", workspaceID, Guid.Empty);
 
                 //Assert CorrectListReturned
-                Assert.AreEqual(expectedJson, actualJson, "Incorrect list of names and paths for workflow services");
+                Assert.AreEqual(ExpectedJson, actualJson, "Incorrect list of names and paths for workflow services");
             }
             finally
             {
-                if (Directory.Exists(workspacePath))
+                if(Directory.Exists(workspacePath))
                 {
                     DirectoryHelper.CleanUp(workspacePath);
                 }
             }
         }
 
-        [TestMethod]
-        [TestCategory("Resources_PathsAndNames")]
-        [Description("Correct list of folder names returned for workflow type service")]
-        [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
-        public void Resources_UnitTest_SourcePathsAndNames_AllSourcePathsReturned()
-        // ReSharper restore InconsistentNaming
-        {
-            //Isolate PathsAndNames for workflows as a functional unit
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            try
-            {
-                const int Modulo = 2;
-                const int totalResourceCount = 6;
-                for (var i = 0; i < totalResourceCount; i++)
-                {
-                    var resource = new Dev2.Runtime.ServiceModel.Data.Resource
-                    {
-                        ResourceID = Guid.NewGuid(),
-                        ResourceName = string.Format("My Name {0}", i),
-                        ResourcePath = string.Format("My Path {0}", i),
-                        ResourceType = (i % Modulo == 0) ? ResourceType.WebSource : ResourceType.Unknown
-                    };
-                    ResourceCatalog.Instance.SaveResource(workspaceID, resource);
-                }
-                var resources = new Dev2.Runtime.ServiceModel.Resources();
-                const string expectedJson = "{\"Names\":[\"My Name 0\",\"My Name 1\",\"My Name 2\",\"My Name 3\",\"My Name 4\",\"My Name 5\"],\"Paths\":[\"MY PATH 0\",\"MY PATH 2\",\"MY PATH 4\"]}";
-
-                //Run PathsAndNames
-                var actualJson = resources.PathsAndNames("EmailSource", workspaceID, Guid.Empty);
-
-                //Assert CorrectListReturned
-                Assert.AreEqual(expectedJson, actualJson, "Incorrect list of names and paths for workflow services");
-            }
-            finally
-            {
-                if (Directory.Exists(workspacePath))
-                {
-                    DirectoryHelper.CleanUp(workspacePath);
-                }
-            }
-        }
 
         #endregion
     }

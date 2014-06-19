@@ -43,11 +43,11 @@ namespace Dev2.Studio.UI.Tests.Tests.ResourcePicker
 
             Assert.IsFalse(ActivityDropUIMap.IsOkButtonEnabled());
 
-            ActivityDropUIMap.SingleClickFirstWorkflow();
+            ActivityDropUIMap.SingleClickResource("Example", "Control Flow - Decision");
 
             Assert.IsTrue(ActivityDropUIMap.IsOkButtonEnabled());
 
-            ActivityDropUIMap.SingleClickAFolder();
+            ActivityDropUIMap.SingleClickAFolder("Example");
 
             Assert.IsFalse(ActivityDropUIMap.IsOkButtonEnabled());
 
@@ -56,10 +56,11 @@ namespace Dev2.Studio.UI.Tests.Tests.ResourcePicker
             #region Checking the double click of a resource puts it on the design surface
 
             //Select a resource in the explorer view
-            ActivityDropUIMap.DoubleClickAResource();
+            ActivityDropUIMap.SelectAResourceAndClickOk("Example", "Control Flow - Decision");
 
             // Check if it exists on the designer
-            Assert.IsTrue(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(dsfActivityUiMap.TheTab, "ServiceDesigner"));
+            bool doesControlExistOnWorkflowDesigner = WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(dsfActivityUiMap.TheTab, "Control Flow - Decision");
+            Assert.IsTrue(doesControlExistOnWorkflowDesigner);
             SendKeys.SendWait("{DELETE}");
 
             #endregion
@@ -70,13 +71,13 @@ namespace Dev2.Studio.UI.Tests.Tests.ResourcePicker
             dsfActivityUiMap.DragToolOntoDesigner(ToolType.Workflow);
 
             // Single click a folder in the tree
-            ActivityDropUIMap.SingleClickFirstWorkflow();
+            ActivityDropUIMap.SingleClickResource("Example", "Control Flow - Decision");
 
             // Click the Ok button on the window
             ActivityDropUIMap.ClickCancelButton();
 
             // Check if it exists on the designer
-            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(dsfActivityUiMap.TheTab, "ServiceDesigner"));
+            Assert.IsFalse(WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(dsfActivityUiMap.TheTab, "Control Flow - Decision"));
 
             #endregion
         }

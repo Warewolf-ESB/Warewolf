@@ -40,7 +40,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             {
                 var magicPoint = new Point(control.BoundingRectangle.X + 75, control.BoundingRectangle.Y + 10);
                 Mouse.Move(magicPoint);
-                Mouse.DoubleClick();
+                Mouse.Click();
+                ActivityDropUIMap.ClickOkButton();
             }
             else
             {
@@ -61,7 +62,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             Playback.Wait(200);
 
-            var args = new List<string> { serverName, serviceType, folderName, projectName };
+            var args = new List<string> { serverName, folderName, projectName };
             var parent = StudioWindow.GetChildren()[0].FindByAutomationId("Navigation");
 
             foreach(var arg in args)
@@ -85,8 +86,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
 
                             if(id.ToUpper().Contains(arg.ToUpper()) ||
-                                kid.FriendlyName.ToUpper().Contains(arg.ToUpper()) ||
-                                kid.ControlType.Name.ToUpper().Contains(arg.ToUpper()) ||
+                                kid.FriendlyName.ToUpper().Equals(arg.ToUpper()) ||
+                                kid.ControlType.Name.ToUpper().Equals(arg.ToUpper()) ||
                                 kid.ClassName.ToUpper().Contains(arg.ToUpper()))
                             {
                                 canidate = kid;

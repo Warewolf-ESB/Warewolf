@@ -23,6 +23,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime
 {
     /// <summary>
@@ -283,9 +284,12 @@ namespace Dev2.Tests.Runtime
 
             var sourceXML = XmlResource.Fetch(SourceName);
             var nameAttribute = sourceXML.Attribute("Name");
+
+            var resourcePath = sourceXML.ElementSafe("Category");
+
             var serverIDAttribute = sourceXML.Attribute("ServerID");
             ResourceCatalog.Instance.SaveResource(_workspaceID, sourceXML.ToStringBuilder());
-            var resource = ResourceCatalog.Instance.GetResource(_workspaceID, SourceName);
+            var resource = ResourceCatalog.Instance.GetResource(_workspaceID, resourcePath + "\\" + SourceName);
             IEsbManagementEndpoint endPoint = new FetchResourceDefintition();
 
             Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
@@ -317,8 +321,11 @@ namespace Dev2.Tests.Runtime
             workspace.Setup(m => m.ID).Returns(_workspaceID);
 
             var xml = XmlResource.Fetch(serviceName);
+            var categoryElement = xml.Element("Category");
+            Assert.IsNotNull(categoryElement);
+            var resourcePath = categoryElement.Value;
             ResourceCatalog.Instance.SaveResource(_workspaceID, xml.ToStringBuilder());
-            var resource = ResourceCatalog.Instance.GetResource(_workspaceID, serviceName);
+            var resource = ResourceCatalog.Instance.GetResource(_workspaceID, resourcePath + "\\" + serviceName);
             IEsbManagementEndpoint endPoint = new FetchResourceDefintition();
 
             Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();

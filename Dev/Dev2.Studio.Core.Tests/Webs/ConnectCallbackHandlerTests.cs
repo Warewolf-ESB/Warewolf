@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Text;
 using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Providers.Events;
@@ -126,7 +127,7 @@ namespace Dev2.Core.Tests.Webs
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
             var mockEventAgg = new Mock<IEventAggregator>();
-            var env = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
+            var env = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(c => c.ActiveEnvironment).Returns(env);
@@ -149,7 +150,7 @@ namespace Dev2.Core.Tests.Webs
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
             var mockEventAgg = new Mock<IEventAggregator>();
-            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var aggregator = new Mock<IEventAggregator>();
 
@@ -183,7 +184,7 @@ namespace Dev2.Core.Tests.Webs
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
             var mockEventAgg = new Mock<IEventAggregator>();
-            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var aggregator = new Mock<IEventAggregator>();
 
@@ -221,7 +222,7 @@ namespace Dev2.Core.Tests.Webs
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
             var mockEventAgg = new Mock<IEventAggregator>();
-            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var aggregator = new Mock<IEventAggregator>();
 
@@ -261,7 +262,7 @@ namespace Dev2.Core.Tests.Webs
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
             var mockEventAgg = new Mock<IEventAggregator>();
-            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
@@ -304,7 +305,7 @@ namespace Dev2.Core.Tests.Webs
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
             var mockEventAgg = new Mock<IEventAggregator>();
-            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object);
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();

@@ -187,7 +187,7 @@ namespace Dev2.Settings.Security
                     }
                 }
             }
-            var hasResult = _resourcePicker.ShowDialog();
+            var hasResult = _resourcePicker.ShowDialog(_environment);
             return hasResult ? _resourcePicker.SelectedResource : null;
         }
 

@@ -20,7 +20,6 @@ namespace Dev2.Core.Tests.Dialogs
         {
             dataContext.DialogResult = ViewModelDialogResults.Okay;
             dataContext.SelectedResourceModel = new Mock<IContextualResourceModel>().Object;
-
             CreateDialogDataContext = dataContext;
 
             var dialog = new Mock<IDialog>();

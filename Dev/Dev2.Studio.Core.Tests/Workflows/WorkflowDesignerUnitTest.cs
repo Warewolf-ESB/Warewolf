@@ -26,6 +26,7 @@ using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Diagnostics;
 using Dev2.Messages;
+using Dev2.Models;
 using Dev2.Providers.Errors;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -40,7 +41,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
-using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;
 using Dev2.Utils;
@@ -185,7 +185,7 @@ namespace Dev2.Core.Tests.Workflows
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
             Assert.AreEqual("scalar", actual[0], "Find missing found an invalid variable in a decision");
-          
+
         }
 
         [TestMethod]
@@ -1188,7 +1188,7 @@ namespace Dev2.Core.Tests.Workflows
                     // verify CreateWorkflow called
                     Assert.IsTrue(ok2);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -1472,7 +1472,11 @@ namespace Dev2.Core.Tests.Workflows
             crm.Setup(r => r.ResourceName).Returns("Test");
             crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
             //, new Mock<IWizardEngine>().Object
-            var treeVM = new ResourceTreeViewModel(new Mock<IEventAggregator>().Object, null, crm.Object);
+            var explorerItem = new ExplorerItemModel();
+            IContextualResourceModel contextualResourceModel = crm.Object;
+            explorerItem.DisplayName = contextualResourceModel.ResourceName;
+            explorerItem.EnvironmentId = contextualResourceModel.Environment.ID;
+
 
             var wh = new Mock<IWorkflowHelper>();
 
@@ -1482,7 +1486,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true);
+            var testAct = DsfActivityFactory.CreateDsfActivity(contextualResourceModel, new DsfActivity(), true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -1508,8 +1512,8 @@ namespace Dev2.Core.Tests.Workflows
             #endregion
 
             //Execute
-            var wfd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object);
-            wfd.SetDataObject(treeVM);
+            var wfd = new WorkflowDesignerViewModelMock(contextualResourceModel, wh.Object);
+            wfd.SetDataObject(explorerItem);
             wfd.TestModelServiceModelChanged(args.Object);
 
             wfd.Dispose();
@@ -1943,12 +1947,12 @@ namespace Dev2.Core.Tests.Workflows
             //Assert Unique ID has changed
             Assert.IsNotNull(actual);
             Assert.IsNotNull(actual.Content);
-            if (actual.Content != null)
+            if(actual.Content != null)
             {
                 IDev2Activity dev2Activity = actual.Content.ComputedValue as IDev2Activity;
                 Assert.IsNotNull(dev2Activity);
                 // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                if (dev2Activity != null)
+                if(dev2Activity != null)
                 // ReSharper restore ConditionIsAlwaysTrueOrFalse
                 {
                     Assert.AreNotEqual(notExpected, dev2Activity.UniqueID, "Activity ID not changed");
@@ -1978,7 +1982,7 @@ namespace Dev2.Core.Tests.Workflows
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
-            foreach (var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
+            foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
             {
                 var prop = new Mock<ModelProperty>();
                 prop.Setup(p => p.ClearValue()).Verifiable();
@@ -2002,13 +2006,13 @@ namespace Dev2.Core.Tests.Workflows
 
             var wfd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object);
 
-            foreach (var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
+            foreach(var propertyName in WorkflowDesignerViewModel.SelfConnectProperties)
             {
                 info.Setup(i => i.PropertyName).Returns(propertyName);
                 wfd.TestModelServiceModelChanged(args.Object);
 
                 var prop = properties[propertyName];
-                if (isSelfReference)
+                if(isSelfReference)
                 {
                     prop.Verify(p => p.ClearValue(), Times.Once());
                 }
@@ -2092,7 +2096,7 @@ namespace Dev2.Core.Tests.Workflows
                     prop.Verify(p => p.SetValue(It.IsAny<DsfActivity>()), Times.Never());
                     Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -2182,7 +2186,7 @@ namespace Dev2.Core.Tests.Workflows
                     StringAssert.Contains(StringResources.xmlServiceDefinition, resourceModel.Object.WorkflowXaml.ToString());
                     Assert.AreEqual(StringResources.xmlServiceDefinition, resourceModel.Object.WorkflowXaml.ToString());
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -2270,7 +2274,7 @@ namespace Dev2.Core.Tests.Workflows
                     StringAssert.Contains("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
                     Assert.AreEqual("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -2358,7 +2362,7 @@ namespace Dev2.Core.Tests.Workflows
                     StringAssert.Contains("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
                     Assert.AreEqual("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -2405,7 +2409,7 @@ namespace Dev2.Core.Tests.Workflows
                     workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
 
                     var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-                   
+
                     #endregion
 
 
@@ -2443,7 +2447,7 @@ namespace Dev2.Core.Tests.Workflows
                     //Verify
                     Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     ok = false;
                     msg = e.Message + " -> " + e.StackTrace;
@@ -2753,7 +2757,7 @@ namespace Dev2.Core.Tests.Workflows
         {
             //----------------------- Setup -----------------------//
             var states = new List<DebugState> { new DebugState { DisplayName = "SelectionChangedTest1", ID = Guid.NewGuid() } };
-            if (selectionType == ActivitySelectionType.Add || selectionType == ActivitySelectionType.Remove)
+            if(selectionType == ActivitySelectionType.Add || selectionType == ActivitySelectionType.Remove)
             {
                 states.Add(new DebugState { DisplayName = "SelectionChangedTest2", ID = Guid.NewGuid() });
             }
@@ -2763,12 +2767,12 @@ namespace Dev2.Core.Tests.Workflows
             FlowNode prevNode = null;
 
             var nodes = new List<FlowNode>();
-            foreach (var node in states.Select(state => CreateFlowNode(state.ID, state.DisplayName, selectsModelItem, selectedActivityType)))
+            foreach(var node in states.Select(state => CreateFlowNode(state.ID, state.DisplayName, selectsModelItem, selectedActivityType)))
             {
-                if (prevNode != null)
+                if(prevNode != null)
                 {
                     var flowStep = prevNode as FlowStep;
-                    if (flowStep != null)
+                    if(flowStep != null)
                     {
                         flowStep.Next = node;
                     }
@@ -2806,15 +2810,15 @@ namespace Dev2.Core.Tests.Workflows
 
             //----------------------- Execute -----------------------//
             var i = 0;
-            foreach (var debugState in states)
+            foreach(var debugState in states)
             {
-                if (selectionType == ActivitySelectionType.None || selectionType == ActivitySelectionType.Remove)
+                if(selectionType == ActivitySelectionType.None || selectionType == ActivitySelectionType.Remove)
                 {
                     // Ensure we have something to clear/remove
                     EventPublishers.Studio.Publish(new DebugSelectionChangedEventArgs { DebugState = debugState, SelectionType = ActivitySelectionType.Add });
 
                     // Only issue change event after all have been added
-                    if (++i == states.Count)
+                    if(++i == states.Count)
                     {
                         var selectionBefore = viewModel.Designer.Context.Items.GetValue<Selection>();
                         Assert.AreEqual(states.Count, selectionBefore.SelectionCount);
@@ -2832,7 +2836,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var selection = viewModel.Designer.Context.Items.GetValue<Selection>();
 
-            switch (selectionType)
+            switch(selectionType)
             {
                 case ActivitySelectionType.None:
                     Assert.AreEqual(0, selection.SelectionCount);
@@ -2859,10 +2863,10 @@ namespace Dev2.Core.Tests.Workflows
                     break;
             }
 
-            foreach (var modelItem in selection.SelectedObjects)
+            foreach(var modelItem in selection.SelectedObjects)
             {
                 Assert.AreEqual(selectedActivityType, modelItem.ItemType);
-                if (selectsModelItem)
+                if(selectsModelItem)
                 {
                     var actualID = selectedActivityType == typeof(FlowDecision)
                         ? Guid.Parse(((TestDecisionActivity)modelItem.GetProperty("Condition")).UniqueID)
@@ -2878,7 +2882,7 @@ namespace Dev2.Core.Tests.Workflows
 
         static FlowNode CreateFlowNode(Guid id, string displayName, bool selectsModelItem, Type activityType)
         {
-            if (activityType == typeof(FlowDecision))
+            if(activityType == typeof(FlowDecision))
             {
                 return new FlowDecision(new TestDecisionActivity
                 {
@@ -3258,11 +3262,11 @@ namespace Dev2.Core.Tests.Workflows
 
             var popupController = new Mock<IPopupController>();
 
-            if (workflowHelper == null)
+            if(workflowHelper == null)
             {
                 var wh = new Mock<IWorkflowHelper>();
                 wh.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => new ActivityBuilder { Implementation = new DynamicActivity() });
-                if (helperText != null)
+                if(helperText != null)
                 {
                     wh.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(new StringBuilder(helperText));
                 }

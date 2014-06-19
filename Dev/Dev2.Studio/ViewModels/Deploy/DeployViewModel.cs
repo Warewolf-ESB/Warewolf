@@ -1,35 +1,35 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using Dev2.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.AppResources.Enums;
+using Dev2.AppResources.Repositories;
+using Dev2.Instrumentation;
+using Dev2.Messages;
+using Dev2.Models;
+using Dev2.Providers.Logs;
+using Dev2.Services.Events;
+using Dev2.Studio.Core.InterfaceImplementors;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Studio.Deploy;
+using Dev2.Studio.TO;
+using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Threading;
+using Dev2.ViewModels.Deploy;
+using Dev2.Views.Deploy;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
-using Caliburn.Micro;
-using Dev2.AppResources.DependencyInjection.EqualityComparers;
-using Dev2.AppResources.Enums;
-using Dev2.Instrumentation;
-using Dev2.Providers.Logs;
-using Dev2.Services.Events;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.InterfaceImplementors;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.Deploy;
-using Dev2.Studio.Enums;
-using Dev2.Studio.TO;
-using Dev2.Studio.ViewModels.Navigation;
-using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Threading;
-using Dev2.ViewModels.Deploy;
-using Dev2.Views.Deploy;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Deploy
+// ReSharper restore CheckNamespace
 {
     public class DeployViewModel : BaseWorkSurfaceViewModel,
-        IHandle<ResourceCheckedMessage>, IHandle<UpdateDeployMessage>,
+        IHandle<UpdateDeployMessage>,
         IHandle<SelectItemInDeployMessage>, IHandle<AddServerToDeployMessage>,
         IHandle<EnvironmentDeletedMessage>
     {
@@ -39,8 +39,8 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         private IEnvironmentModelProvider _serverProvider;
 
-        private NavigationViewModel _source;
-        private NavigationViewModel _target;
+        private DeployNavigationViewModel _source;
+        private DeployNavigationViewModel _target;
 
         private ObservableCollection<IEnvironmentModel> _servers;
         private IEnvironmentModel _selectedSourceServer;
@@ -49,16 +49,14 @@ namespace Dev2.Studio.ViewModels.Deploy
         private ObservableCollection<DeployStatsTO> _sourceStats;
         private ObservableCollection<DeployStatsTO> _targetStats;
 
-        private Dictionary<string, Func<ITreeNode, bool>> _sourceStatPredicates;
-        private Dictionary<string, Func<ITreeNode, bool>> _targetStatPredicates;
+        private Dictionary<string, Func<ExplorerItemModel, bool>> _sourceStatPredicates;
+        private Dictionary<string, Func<ExplorerItemModel, bool>> _targetStatPredicates;
 
-        private string _initialItemDisplayName;
-        readonly IAsyncWorker _asyncWorker;
-        private IEnvironmentModel _initialItemEnvironment;
+        private Guid _initialItemResourceID;
+        private Guid _initialItemEnvironmentID;
         private bool _isDeploying;
         private bool _deploySuccessfull;
         private bool _initialLoad = true;
-        private bool _selectingAndExpandingFromNavigationItem;
 
         private int _sourceDeployItemCount;
         private int _destinationDeployItemCount;
@@ -70,24 +68,27 @@ namespace Dev2.Studio.ViewModels.Deploy
         #region Constructor
 
         public DeployViewModel()
-            : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator)
+            : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, Dev2.AppResources.Repositories.StudioResourceRepository.Instance)
         {
         }
 
-        public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null, string displayName = null, IEnvironmentModel environment = null)
+        public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null)
             : base(eventAggregator)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
 
-            _asyncWorker = asyncWorker;
-            _initialItemEnvironment = environment;
-            _initialItemDisplayName = displayName;
+            if(environmentID.HasValue)
+            {
+                _initialItemEnvironmentID = environmentID.Value;
+            }
+            _initialItemResourceID = resourceID.GetValueOrDefault(Guid.Empty);
             DestinationServerHasDropped = false;
+            StudioResourceRepository = studioResourceRepository;
             Initialize(asyncWorker, serverProvider, environmentRepository, eventAggregator, deployStatsCalculator);
         }
 
-        public DeployViewModel(string displayName, IEnvironmentModel environment)
-            : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, null, displayName, environment)
+        public DeployViewModel(Guid resourceID, Guid environmentID)
+            : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, Dev2.AppResources.Repositories.StudioResourceRepository.Instance, null, resourceID, environmentID)
         {
         }
 
@@ -193,10 +194,9 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void SourceEnvironmentConnectedChanged(object sender, ConnectedEventArgs e)
         {
-            if(null != _selectedDestinationServer && null != _target && _sourceStatPredicates != null && _targetStatPredicates != null && !e.IsConnected)
+            if(null != SelectedDestinationServer && null != Target && _sourceStatPredicates != null && _targetStatPredicates != null && !e.IsConnected)
             {
-
-                _target.ClearConflictingNodesNodes();
+                Target.ClearConflictingNodesNodes();
             }
         }
 
@@ -258,7 +258,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
-        public NavigationViewModel Source
+        public DeployNavigationViewModel Source
         {
             get
             {
@@ -269,16 +269,16 @@ namespace Dev2.Studio.ViewModels.Deploy
                 if(value == _source) return;
 
                 _source = value;
-                if(null != _selectedDestinationServer && null != _target && _sourceStatPredicates != null &&
-                    _targetStatPredicates != null)
+                if(_selectedDestinationServer != null && _target != null && _sourceStatPredicates != null && _targetStatPredicates != null)
                 {
                     CalculateStats();
                 }
+
                 NotifyOfPropertyChange(() => Source);
             }
         }
 
-        public NavigationViewModel Target
+        public DeployNavigationViewModel Target
         {
             get
             {
@@ -300,6 +300,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
             set
             {
+                if(value == null) return;
 
                 if(null != _selectedSourceServer)
                 {
@@ -310,19 +311,20 @@ namespace Dev2.Studio.ViewModels.Deploy
                 if(value != _selectedSourceServer)
                 // ReSharper restore PossibleUnintendedReferenceComparison
                 {
-                    _target.ClearConflictingNodesNodes();
+                    Target.ClearConflictingNodesNodes();
                 }
                 _selectedSourceServer = value;
                 SourceServerHasDropped = false;
                 if(_selectedSourceServer != null)
                 {
+                    Source.Environment = _selectedSourceServer;
                     _selectedSourceServer.IsConnectedChanged -= SelectedSourceServerIsConnectedChanged;
                     _selectedSourceServer.IsConnectedChanged += SelectedSourceServerIsConnectedChanged;
                     _selectedSourceServer.IsConnectedChanged += SourceEnvironmentConnectedChanged;
 
                 }
-
                 LoadSourceEnvironment();
+
                 NotifyOfPropertyChange(() => SelectedSourceServer);
                 NotifyOfPropertyChange(() => SourceItemsSelected);
                 NotifyOfPropertyChange(() => CanDeploy);
@@ -373,11 +375,12 @@ namespace Dev2.Studio.ViewModels.Deploy
                     DestinationServerHasDropped = false;
                     if(_selectedDestinationServer != null)
                     {
+                        Target.Environment = _selectedSourceServer;
                         _selectedDestinationServer.IsConnectedChanged -= SelectedDestinationServerIsConnectedChanged;
                         _selectedDestinationServer.IsConnectedChanged += SelectedDestinationServerIsConnectedChanged;
                     }
-
                     LoadDestinationEnvironment();
+                    EventPublisher.Publish(new SetConnectControlSelectedServerMessage(SelectedDestinationServer, ConnectControlInstanceType.DeployTarget));
                     NotifyOfPropertyChange(() => SelectedDestinationServer);
                     NotifyOfPropertyChange(() => SourceItemsSelected);
                     NotifyOfPropertyChange(() => CanDeploy);
@@ -401,18 +404,43 @@ namespace Dev2.Studio.ViewModels.Deploy
             EnvironmentRepository = environmentRepository;
 
             _deployStatsCalculator = deployStatsCalculator ?? new DeployStatsCalculator();
-            // ReSharper disable once ObjectCreationAsStatement
             _serverProvider = serverProvider;
             _servers = new ObservableCollection<IEnvironmentModel>();
             _targetStats = new ObservableCollection<DeployStatsTO>();
             _sourceStats = new ObservableCollection<DeployStatsTO>();
 
-            Target = new NavigationViewModel(eventAggregator, asyncWorker, DestinationContext, environmentRepository, false, enDsfActivityType.All, NavigationViewModelType.DeployTo) { Parent = this };
-            Source = new NavigationViewModel(eventAggregator, asyncWorker, SourceContext, environmentRepository, false, enDsfActivityType.All, NavigationViewModelType.DeployFrom) { Parent = this };
+            Target = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, StudioResourceRepository, true);
+            Source = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, StudioResourceRepository, false);
 
             SetupPredicates();
             SetupCommands();
             LoadServers();
+            ExplorerItemModel.OnCheckedStateChangedAction += OnCheckedStateChangedAction;
+        }
+
+        void OnCheckedStateChangedAction(CheckStateChangedArgs checkStateChangedArgs)
+        {
+            if(checkStateChangedArgs != null && checkStateChangedArgs.PreviousState && checkStateChangedArgs.NewState == false)
+            {
+                if(Target != null)
+                {
+                    if(checkStateChangedArgs.ResourceID != Guid.Empty)
+                    {
+                        if(SelectedDestinationServer != null)
+                        {
+                            if(SelectedDestinationServer.ResourceRepository != null)
+                            {
+                                var resourceModel = SelectedDestinationServer.ResourceRepository.FindSingle(model => model.ID == checkStateChangedArgs.ResourceID) as IContextualResourceModel;
+                                if(resourceModel != null)
+                                {
+                                    Target.SetNodeOverwrite(resourceModel, false);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            CalculateStats();
         }
 
         /// <summary>
@@ -420,8 +448,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void RefreshEnvironments()
         {
-            Source.RefreshEnvironments();
-            Target.RefreshEnvironments();
+            Source.RefreshEnvironment();
+            Target.RefreshEnvironment();
 
         }
 
@@ -431,10 +459,18 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void CalculateStats()
         {
             DeploySuccessfull = false;
-            var items = _source.Root.GetChildren(null).OfType<ResourceTreeViewModel>().ToList();
-            _deployStatsCalculator.ConflictingResources = new ObservableCollection<DeployDialogTO>();
-            _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
-            _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
+
+            if(Source != null && Source.ExplorerItemModels != null && Source.ExplorerItemModels.Count > 0)
+            {
+                ExplorerItemModel explorerItemModel = Source.ExplorerItemModels[0];
+                if(explorerItemModel != null)
+                {
+                    var items = explorerItemModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false)).ToList();
+                    _deployStatsCalculator.ConflictingResources = new ObservableCollection<DeployDialogTO>();
+                    _deployStatsCalculator.CalculateStats(items, _sourceStatPredicates, _sourceStats, out _sourceDeployItemCount);
+                    _deployStatsCalculator.CalculateStats(items, _targetStatPredicates, _targetStats, out _destinationDeployItemCount);
+                }
+            }
             NotifyOfPropertyChange(() => CanDeploy);
             NotifyOfPropertyChange(() => SourceItemsSelected);
         }
@@ -445,44 +481,26 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void SetupPredicates()
         {
+            // ReSharper disable ImplicitlyCapturedClosure
+
             var exclusionCategories = new List<string> { "Website", "Human Interface Workflow", "Webpage" };
-            var websiteCategories = new List<string> { "Website" };
-            var webpageCategories = new List<string> { "Human Interface Workflow", "Webpage" };
             var blankCategories = new List<string>();
 
-            _sourceStatPredicates = new Dictionary<string, Func<ITreeNode, bool>>();
-            _targetStatPredicates = new Dictionary<string, Func<ITreeNode, bool>>();
+            _sourceStatPredicates = new Dictionary<string, Func<ExplorerItemModel, bool>>();
+            _targetStatPredicates = new Dictionary<string, Func<ExplorerItemModel, bool>>();
 
             _sourceStatPredicates.Add("Services",
-                // ReSharper disable ImplicitlyCapturedClosure
-                                      n => _deployStatsCalculator
-                                          // ReSharper restore ImplicitlyCapturedClosure
+                                            n => _deployStatsCalculator
                                           .SelectForDeployPredicateWithTypeAndCategories
-                                          (n, ResourceType.Service, blankCategories, exclusionCategories));
+                                          (n, Data.ServiceModel.ResourceType.DbService | Data.ServiceModel.ResourceType.PluginService | Data.ServiceModel.ResourceType.WebService, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Workflows",
-                // ReSharper disable ImplicitlyCapturedClosure
                                       n => _deployStatsCalculator.
-                                          // ReSharper restore ImplicitlyCapturedClosure
                                                SelectForDeployPredicateWithTypeAndCategories
-                                               (n, ResourceType.WorkflowService, blankCategories, exclusionCategories));
+                                               (n, Data.ServiceModel.ResourceType.WorkflowService, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Sources",
-                // ReSharper disable ImplicitlyCapturedClosure
                                       n => _deployStatsCalculator
-                                          // ReSharper restore ImplicitlyCapturedClosure
                                                .SelectForDeployPredicateWithTypeAndCategories
-                                               (n, ResourceType.Source, blankCategories, exclusionCategories));
-            _sourceStatPredicates.Add("Webpages",
-                // ReSharper disable ImplicitlyCapturedClosure
-                                      n => _deployStatsCalculator
-                                          // ReSharper restore ImplicitlyCapturedClosure
-                                               .SelectForDeployPredicateWithTypeAndCategories
-                                               (n, ResourceType.WorkflowService, webpageCategories, blankCategories));
-            _sourceStatPredicates.Add("Websites",
-                // ReSharper disable ImplicitlyCapturedClosure
-                                      n => _deployStatsCalculator
-                                          // ReSharper restore ImplicitlyCapturedClosure
-                                               .SelectForDeployPredicateWithTypeAndCategories
-                                               (n, ResourceType.WorkflowService, websiteCategories, blankCategories));
+                                               (n, Data.ServiceModel.ResourceType.DbSource | Data.ServiceModel.ResourceType.PluginSource | Data.ServiceModel.ResourceType.WebSource | Data.ServiceModel.ResourceType.ServerSource | Data.ServiceModel.ResourceType.EmailSource, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Unknown",
                                       n => _deployStatsCalculator.SelectForDeployPredicate(n));
             _targetStatPredicates.Add("New Resources",
@@ -491,6 +509,12 @@ namespace Dev2.Studio.ViewModels.Deploy
             _targetStatPredicates.Add("Override",
                                       n => _deployStatsCalculator
                                                .DeploySummaryPredicateExisting(n, Target));
+            //            if(Target.Environments.Any())
+            //            {
+            //                IEnvironmentModel env = Target.Environments[0];
+            //                _deployStatsCalculator.ConflictingResources.ToList().ForEach(r => env.ResourceRepository.DeleteResource(r.DestinationResource));
+            //            }
+            // ReSharper restore ImplicitlyCapturedClosure
         }
 
         /// <summary>
@@ -517,19 +541,22 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <param name="obj"></param>
         void SelectAllDependancies(object obj)
         {
-            List<ResourceTreeViewModel> resourceTreeViewModels = _source.Root.GetChildren(null).OfType<ResourceTreeViewModel>().ToList();
-            List<ResourceTreeViewModel> selectedResourcesTreeViewModels = resourceTreeViewModels.Where(c => c.IsChecked == true).ToList();
-            List<IContextualResourceModel> selectedResourceModels = selectedResourcesTreeViewModels.Select(resourceTreeViewModel => resourceTreeViewModel.DataContext).ToList();
-
-            List<string> dependancyNames = SelectedSourceServer.ResourceRepository.GetDependanciesOnList(selectedResourceModels, SelectedSourceServer);
-
-            foreach(var dependant in dependancyNames)
+            if(Source != null)
             {
-                string dependant1 = dependant;
-                ITreeNode treeNode = _source.Root.GetChildren(null).FirstOrDefault(c => c.DisplayName == dependant1);
-                if(treeNode != null)
+                if(Source.ExplorerItemModels != null)
                 {
-                    treeNode.IsChecked = true;
+                    List<ExplorerItemModel> resourceTreeViewModels = Source.ExplorerItemModels.ToList();
+                    List<ExplorerItemModel> selectedResourcesTreeViewModels = new List<ExplorerItemModel>();
+                    foreach(var resourceTreeViewModel in resourceTreeViewModels)
+                    {
+                        if(resourceTreeViewModel != null)
+                        {
+                            IEnumerable<ExplorerItemModel> checkedITems = resourceTreeViewModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false));
+                            selectedResourcesTreeViewModels.AddRange(checkedITems);
+                        }
+                    }
+
+                    SelectDependencies(selectedResourcesTreeViewModels);
                 }
             }
         }
@@ -557,7 +584,6 @@ namespace Dev2.Studio.ViewModels.Deploy
                 if(SelectedSourceServer == null && _initialLoad)
                 {
                     SelectSourceServerFromInitialValue();
-                    _initialLoad = false;
                 }
             }
         }
@@ -568,7 +594,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         private void AddServer(IEnvironmentModel server, ConnectControlInstanceType connectControlInstanceType)
         {
 
-            if(connectControlInstanceType == ConnectControlInstanceType.DeploySource)
+            if(connectControlInstanceType == ConnectControlInstanceType.DeploySource && !_initialLoad)
             {
                 SelectedSourceServer = server;
             }
@@ -576,30 +602,11 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 SelectedDestinationServer = server;
             }
-
-            //_asyncWorker.Start(
-            //    // ReSharper disable ImplicitlyCapturedClosure
-            //    // ReSharper disable ConvertClosureToMethodGroup
-            //    () =>
-            //    // ReSharper restore ImplicitlyCapturedClosure
-            //    {
-            //        server.Connect();
-            //    },
-            //    // ReSharper restore ConvertClosureToMethodGroup
-            //    () =>
-            //    {
-            //        Servers.Add(server);
-
-
-            //        if(connectSource)
-            //        {
-            //            SelectedSourceServer = server;
-            //        }
-            //        if(connectTarget)
-            //        {
-            //            SelectedDestinationServer = server;
-            //        }
-            //    });
+            if(_initialLoad)
+            {
+                _initialLoad = false;
+                EventPublisher.Publish(new SetConnectControlSelectedServerMessage(_selectedSourceServer, ConnectControlInstanceType.DeploySource));
+            }
         }
 
         /// <summary>
@@ -618,11 +625,6 @@ namespace Dev2.Studio.ViewModels.Deploy
                 {
                     return;
                 }
-                if(Target.Environments.Any())
-                {
-                    IEnvironmentModel env = Target.Environments[0];
-                    _deployStatsCalculator.ConflictingResources.ToList().ForEach(r => env.ResourceRepository.DeleteResource(r.DestinationResource));
-                }
             }
 
             //
@@ -630,12 +632,9 @@ namespace Dev2.Studio.ViewModels.Deploy
             //
             if(_deployStatsCalculator != null)
             {
-                var resourcesToDeploy = Source.Root.GetChildren
-                    (_deployStatsCalculator.SelectForDeployPredicate)
-                                              .Where(n => n is ResourceTreeViewModel).Cast<ResourceTreeViewModel>()
-                                              .Select(n => n.DataContext as IResourceModel).ToList();
-
                 var deployResourceRepo = SelectedSourceServer.ResourceRepository;
+
+                var resourcesToDeploy = Source.ExplorerItemModels.SelectMany(model => model.Descendants()).Where(_deployStatsCalculator.SelectForDeployPredicate).Select(model => deployResourceRepo.FindSingle(resourceModel => resourceModel.ID == model.ResourceId)).ToList();
 
                 if(HasNoResourcesToDeploy(resourcesToDeploy, deployResourceRepo))
                 {
@@ -655,8 +654,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                     //
                     // Reload the environments resources & update explorer
                     //
-                    LoadDestinationEnvironment();
-
+                    RefreshEnvironments();
                     DeploySuccessfull = true;
                 }
                 catch(Exception)
@@ -725,57 +723,36 @@ namespace Dev2.Studio.ViewModels.Deploy
         bool _destinationServerHasDropped;
         bool _sourceServerHasDropped;
 
+
+
         /// <summary>
         /// Loads an environment for the source navigation manager
         /// </summary>
         private void LoadSourceEnvironment()
         {
-
-
-            Source.RemoveAllEnvironments();
-
-            if(_selectedSourceServer != null)
+            //Source.RemoveAllEnvironments();
+            if(SelectedSourceServer != null)
             {
-                if(_selectingAndExpandingFromNavigationItem)
-                {
-                    Source.LoadResourcesCompleted += SourceOnResourcesLoaded;
-                }
+                Source.Environment = SelectedSourceServer;
 
-                Source.AddEnvironment(_selectedSourceServer);
+                SelectAndExpandFromInitialValue();
+                CalculateStats();
             }
         }
 
-        void SourceOnResourcesLoaded(object source, EventArgs args)
-        {
-            //2013.08.27: Ashley Lewis for bug 10225 - handle race condition and detach
-            SelectAndExpandFromInitialValue();
-            CalculateStats();
-            Source.LoadResourcesCompleted -= SourceOnResourcesLoaded;
-        }
 
         /// <summary>
         /// Loads an environment for the target navigation manager
         /// </summary>
         private void LoadDestinationEnvironment()
         {
-            // BUG 9276 : TWR : 2013.04.19
-
-
-            Target.RemoveAllEnvironments();
-
             if(SelectedDestinationServer != null)
             {
-                Target.LoadResourcesCompleted += DestinationOnResourcesLoaded;
-                Target.AddEnvironment(SelectedDestinationServer);
-            }
-        }
+                Target.Environment = SelectedDestinationServer;
 
-        void DestinationOnResourcesLoaded(object source, EventArgs args)
-        {
-            //2013.08.27: Ashley Lewis for bug 10225 - handle race condition and detach
-            SelectAndExpandFromInitialValue();
-            CalculateStats();
-            Target.LoadResourcesCompleted -= DestinationOnResourcesLoaded;
+                SelectAndExpandFromInitialValue();
+                CalculateStats();
+            }
         }
 
         /// <summary>
@@ -783,15 +760,11 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void SelectSourceServerFromInitialValue()
         {
-            _selectingAndExpandingFromNavigationItem = true;
-
             IEnvironmentModel environment = null;
-
-            if(_initialItemDisplayName != null && _initialItemEnvironment != null)
+            if(_initialItemResourceID != Guid.Empty)
             {
-                environment = _initialItemEnvironment;
+                environment = EnvironmentRepository.FindSingle(model => model.ID == _initialItemEnvironmentID);
             }
-
             if(environment != null)
             {
                 var server = Servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, environment));
@@ -801,7 +774,12 @@ namespace Dev2.Studio.ViewModels.Deploy
                 //
                 SelectedSourceServer = server;
             }
-            _selectingAndExpandingFromNavigationItem = false;
+        }
+
+        private IStudioResourceRepository StudioResourceRepository
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -809,12 +787,11 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void SelectAndExpandFromInitialValue()
         {
-            ITreeNode navigationItemViewModel = null;
+            ExplorerItemModel navigationItemViewModel = null;
 
-            if(_initialItemDisplayName != null)
+            if(_initialItemResourceID != Guid.Empty)
             {
-                navigationItemViewModel = Source.Root.GetChildren(n => n.DisplayName == _initialItemDisplayName)
-                    .FirstOrDefault();
+                navigationItemViewModel = StudioResourceRepository.FindItem(model => model.EnvironmentId == _initialItemEnvironmentID && model.ResourceId == _initialItemResourceID);
             }
 
             if(navigationItemViewModel == null) return;
@@ -824,10 +801,10 @@ namespace Dev2.Studio.ViewModels.Deploy
             //
             navigationItemViewModel.IsChecked = true;
 
-            var parent = navigationItemViewModel.TreeParent;
+            var parent = navigationItemViewModel.Parent;
             if(parent != null)
             {
-                parent.IsExpanded = true;
+                parent.IsDeploySourceExpanded = true;
             }
         }
 
@@ -848,16 +825,6 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #region IHandle
 
-        public void Handle(ResourceCheckedMessage message)
-        {
-            this.TraceInfo(message.GetType().Name);
-            if(message.PreCheckedState == true && message.PostCheckedState == false)
-            {
-                Target.SetNodeOverwrite(message.ResourceModel, false);
-            }
-            CalculateStats();
-        }
-
         public void Handle(UpdateDeployMessage message)
         {
             this.TraceInfo(message.GetType().Name);
@@ -867,8 +834,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         public void Handle(SelectItemInDeployMessage message)
         {
             this.TraceInfo(message.GetType().Name);
-            _initialItemDisplayName = message.DisplayName;
-            _initialItemEnvironment = message.Environment;
+            _initialItemResourceID = message.ResourceID;
+            _initialItemEnvironmentID = message.EnvironmentID;
             SelectSourceServerFromInitialValue();
         }
 
@@ -881,34 +848,52 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void Handle(EnvironmentDeletedMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
-            if(Source != null)
+            IEnvironmentModel sourceEnvironmentModel = Source.Environment;
+            IEnvironmentModel targetEnvironmentModel = Target.Environment;
+            if(Source != null && sourceEnvironmentModel != null)
             {
-                Source.RemoveEnvironment(message.EnvironmentModel);
+                if(sourceEnvironmentModel.ID == message.EnvironmentModel.ID)
+                {
+                    Source.Environment = null;
+                }
             }
 
-            if(Target != null)
+            if(Target != null && targetEnvironmentModel != null)
             {
-                Target.RemoveEnvironment(message.EnvironmentModel);
+                if(targetEnvironmentModel.ID == message.EnvironmentModel.ID)
+                {
+                    Target.Environment = null;
+                }
             }
         }
+
         #endregion
 
         #region Public Methods
 
-        public void SelectDependencies(IContextualResourceModel resource)
+        public void SelectDependencies(List<ExplorerItemModel> explorerItemModels)
         {
-            if(resource != null)
+            if(explorerItemModels != null)
             {
-                List<string> dependancyNames = SelectedSourceServer.ResourceRepository.GetDependanciesOnList(new List<IContextualResourceModel> { resource }, SelectedSourceServer);
-                dependancyNames.Add(resource.ResourceName);
-                foreach(var dependant in dependancyNames)
+                if(SelectedSourceServer != null)
                 {
-                    string dependant1 = dependant;
-                    ITreeNode treeNode = _source.Root.GetChildren(null).FirstOrDefault(c => c.DisplayName == dependant1);
-                    if(treeNode != null)
+                    IResourceRepository resourceRepository = SelectedSourceServer.ResourceRepository;
+                    if(resourceRepository != null)
                     {
-                        treeNode.IsChecked = true;
+                        List<IContextualResourceModel> selectedResourceModels = explorerItemModels.Select(resourceTreeViewModel => SelectedSourceServer.ResourceRepository.FindSingle(model => model.ID == resourceTreeViewModel.ResourceId) as IContextualResourceModel).ToList();
+                        if(selectedResourceModels.All(model => model != null))
+                        {
+                            List<string> dependancyNames = resourceRepository.GetDependanciesOnList(selectedResourceModels, SelectedSourceServer);
+                            foreach(var dependant in dependancyNames)
+                            {
+                                string dependant1 = dependant;
+                                var treeNode = StudioResourceRepository.FindItem(model => model.ResourceId.ToString() == dependant1);
+                                if(treeNode != null)
+                                {
+                                    treeNode.IsChecked = true;
+                                }
+                            }
+                        }
                     }
                 }
             }

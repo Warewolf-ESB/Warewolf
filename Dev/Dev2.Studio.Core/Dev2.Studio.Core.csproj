@@ -229,6 +229,7 @@
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ServerEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\WebsiteLayoutObjectViewModelEqualityComparer.cs" />
     <Compile Include="AppResources\Enums\ConnectControlInstanceType.cs" />
+    <Compile Include="AppResources\Enums\NavigationViewContextType.cs" />
     <Compile Include="AppResources\Enums\ReportType.cs" />
     <Compile Include="AppResources\Enums\ResourceType.cs" />
     <Compile Include="AppResources\Enums\WorkSurfaceContext.cs" />
@@ -247,6 +248,8 @@
     <Compile Include="AppResources\ExtensionMethods\TypeExtensionMethods.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\Repositories\DataListRepository.cs" />
+    <Compile Include="AppResources\Repositories\IStudioResourceRepository.cs" />
+    <Compile Include="AppResources\Repositories\StudioResourceRepository.cs" />
     <Compile Include="AppResources\Repositories\UserInterfaceLayoutRepository.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
@@ -256,7 +259,13 @@
     <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
     <Compile Include="AppResources\WindowManagers\XamDockManagerDockAwareWindowManager.cs" />
     <Compile Include="Controller\CommunicationController.cs" />
+    <Compile Include="Controller\ICommunicationControllerFactory.cs" />
     <Compile Include="Controller\IPopUp.cs" />
+    <Compile Include="ResolveExampleResourceNames.Designer.cs">
+      <DependentUpon>ResolveExampleResourceNames.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="CustomControls\CachingContentHost.cs" />
     <Compile Include="DataList\Actions\AutoMappingOutputAction.cs" />
     <Compile Include="DataList\ActivityDataMappingBuilder.cs" />
@@ -361,7 +370,6 @@
     <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\RefreshExplorerMessage.cs" />
     <Compile Include="Messages\RemoveEnvironmentMessage.cs" />
-    <Compile Include="Messages\RemoveNavigationResourceMessage.cs" />
     <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\RemoveResourceAndCloseTabMessage.cs" />
     <Compile Include="Messages\ResetLayoutMessage.cs" />
@@ -392,6 +400,8 @@
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Messages\UpdateWebpagePreviewMessage.cs" />
     <Compile Include="Messages\UpdateWorksurfaceFlowNodeDisplayName.cs" />
+    <Compile Include="Models\IExplorerItemModel.cs" />
+    <Compile Include="Models\ServerExplorerClientProxy.cs" />
     <Compile Include="Models\DataList\BaseDataListItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
     <Compile Include="Models\DataMapping\DataMappingDefinition.cs">
@@ -403,6 +413,7 @@
     <Compile Include="Interfaces\ITagCloudItemModel.cs" />
     <Compile Include="Interfaces\ITagModel.cs" />
     <Compile Include="Models\EnvironmentModel.cs" />
+    <Compile Include="Models\ExplorerItemModel.cs" />
     <Compile Include="Models\IWorkSurfaceObject.cs" />
     <Compile Include="Models\OperatorType.cs" />
     <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
@@ -463,6 +474,7 @@
     <Compile Include="Activities\TO\ActivityViewModelTO.cs" />
     <Compile Include="Activities\Interfaces\IServiceXmlTranslator.cs" />
     <Compile Include="Activities\Translators\ServiceXmlTranslator.cs" />
+    <Compile Include="TreeEx.cs" />
     <Compile Include="Utils\HelperUtils.cs" />
     <Compile Include="Utils\NewWorkflowNames.cs" />
     <Compile Include="Utils\ServerUtil.cs" />
@@ -480,7 +492,6 @@
     <Compile Include="ViewModels\DataList\InputOutputViewModelFactory.cs" />
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
     <Compile Include="ViewModels\Navigation\INavigationContext.cs" />
-    <Compile Include="ViewModels\Navigation\ITreeNode.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceWizardViewModel.cs" />
     <Compile Include="Interfaces\IResourceDesignerViewModel.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceDesignerViewModel.cs" />
@@ -503,6 +514,10 @@
     <None Include="SignalR.txt" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ResolveExampleResourceNames.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResolveExampleResourceNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="ResolveExampleResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ResolveExampleResource.Designer.cs</LastGenOutput>

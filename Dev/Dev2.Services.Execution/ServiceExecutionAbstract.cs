@@ -23,7 +23,7 @@ namespace Dev2.Services.Execution
         public IDSFDataObject DataObj { get; set; }
         public bool HandlesOutputFormatting { get; private set; }
         public bool RequiresFormatting { get; set; }
-        public readonly ErrorResultTO _errorResult;
+        public readonly ErrorResultTO ErrorResult;
 
         /// <summary>
         /// Construction for ServiceExecution
@@ -33,7 +33,7 @@ namespace Dev2.Services.Execution
         /// <param name="requiresFormatting">Has the execution been put into a DataList already or must its payload be put into the DataList</param>
         protected ServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = true, bool requiresFormatting = true)
         {
-            _errorResult = new ErrorResultTO();
+            ErrorResult = new ErrorResultTO();
             DataObj = dataObj;
             HandlesOutputFormatting = handlesOutputFormatting;
             RequiresFormatting = requiresFormatting;
@@ -48,7 +48,7 @@ namespace Dev2.Services.Execution
         {
             //This execution will throw errors from the constructor
             errors = new ErrorResultTO();
-            errors.MergeErrors(_errorResult);
+            errors.MergeErrors(ErrorResult);
             var compiler = DataListFactory.CreateDataListCompiler();
             ExecuteImpl(compiler, out errors);
             return DataObj.DataListID;
@@ -62,27 +62,27 @@ namespace Dev2.Services.Execution
 
         void GetSource(ResourceCatalog catalog)
         {
-            Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceID);
+            Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceID);
             if(Source == null)
             {
-                Source = catalog.GetResource<TSource>(DataObj.WorkspaceID, Service.Source.ResourceName);
+                Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceName);
             }
             if(Source == null)
             {
-                _errorResult.AddError(string.Format("Error retrieving DBSource for resource ID:{0} and Name:{1}", Service.Source.ResourceID, Service.Source.ResourceName));
+                ErrorResult.AddError(string.Format("Error retrieving DBSource for resource ID:{0} and Name:{1}", Service.Source.ResourceID, Service.Source.ResourceName));
             }
         }
 
         protected virtual bool GetService(ResourceCatalog catalog)
         {
-            Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ResourceID);
+            Service = catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ResourceID);
             if(Service == null)
             {
-                Service = catalog.GetResource<TService>(DataObj.WorkspaceID, DataObj.ServiceName);
+                Service = catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ServiceName);
             }
             if(Service == null)
             {
-                _errorResult.AddError(string.Format("Error loading resource with ID:{0}", DataObj.ResourceID));
+                ErrorResult.AddError(string.Format("Error loading resource with ID:{0}", DataObj.ResourceID));
                 return false;
             }
             return true;
@@ -180,7 +180,7 @@ namespace Dev2.Services.Execution
                 }
 
                 // ensure errors bubble up ;)
-                errors.MergeErrors(_errorResult);
+                errors.MergeErrors(ErrorResult);
             }
         }
 

@@ -239,7 +239,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void Handle(DebugResourceMessage message)
         {
             this.TraceInfo(message.GetType().Name);
-            Debug(message.Resource, true);
+            IContextualResourceModel contextualResourceModel = message.Resource;
+            if(contextualResourceModel != null && ContextualResourceModel != null && contextualResourceModel.ID == ContextualResourceModel.ID)
+            {
+                Debug(contextualResourceModel, true);
+            }
         }
 
         public void Handle(DebugOutputMessage message)
@@ -249,7 +253,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 DebugOutputViewModel.Clear();
                 var debugState = message.DebugStates.LastOrDefault();
-               
+
                 if(debugState != null)
                 {
                     debugState.StateType = StateType.Clear;
@@ -449,11 +453,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if(resourceModel.UserPermissions.IsContributor())
             {
 
-            var succesfulSave = Save(resourceModel, true);
-            if(!succesfulSave)
-            {
-                return;
-            }
+                var succesfulSave = Save(resourceModel, true);
+                if(!succesfulSave)
+                {
+                    return;
+                }
             }
 
             SetDebugStatus(DebugStatus.Configure);
@@ -655,13 +659,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             if(message != null && message.Message != null)
             {
-            var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
-            if(_debugOutputViewModel != null)
-            {
-                debugstate.SessionID = _debugOutputViewModel.SessionID;
-                _debugOutputViewModel.Append(debugstate);
+                var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
+                if(_debugOutputViewModel != null)
+                {
+                    debugstate.SessionID = _debugOutputViewModel.SessionID;
+                    _debugOutputViewModel.Append(debugstate);
+                }
             }
-        }
         }
 
         public virtual void Debug()

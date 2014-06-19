@@ -3,7 +3,8 @@ using System.Activities.Presentation;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Data.ServiceModel;
+using Dev2.Models;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
@@ -64,19 +65,19 @@ namespace Dev2.Studio.AppResources.Behaviors
                 return;
             }
 
-            var navigationItemViewModel = AssociatedObject.DataContext as ResourceTreeViewModel;
+            var navigationItemViewModel = AssociatedObject.DataContext as ExplorerItemModel;
 
             if(navigationItemViewModel == null)
             {
                 return;
             }
 
-            var resource = navigationItemViewModel.DataContext;
+            //var resource = navigationItemViewModel.DataContext;
 
-            if(resource == null)
-            {
-                return;
-            }
+            //if(resource == null)
+            //{
+            //    return;
+            //}
 
             AssociatedObject.MouseMove -= AssociatedObject_MouseMove;
             AssociatedObject.DragOver -= AssociatedObject_DragOver;
@@ -119,14 +120,14 @@ namespace Dev2.Studio.AppResources.Behaviors
                 var inputElement = sender as IInputElement;
                 var dependencyObject = sender as DependencyObject;
 
-                if(e.LeftButton == MouseButtonState.Pressed && inputElement != null && dependencyObject != null && _dragSource != null)
+                if(e.LeftButton == MouseButtonState.Pressed && inputElement != null && dependencyObject != null && AssociatedObject != null)
                 {
                     Point currentPosition = e.GetPosition(inputElement);
 
                     if((Math.Abs(currentPosition.X - _lastMouseDown.X) > 2) || (Math.Abs(currentPosition.Y - _lastMouseDown.Y) > 2))
                     {
                         var dragData = new DataObject();
-                        var dragSourceDataContext = _dragSource.DataContext as ResourceTreeViewModel;
+                        var dragSourceDataContext = AssociatedObject.DataContext as ExplorerItemModel;
                         if(dragSourceDataContext != null)
                         {
                             if(dragSourceDataContext.IsRenaming)
@@ -134,10 +135,10 @@ namespace Dev2.Studio.AppResources.Behaviors
                                 return;
                             }
 
-                            dragSourceDataContext.IsNew = true;
-                            if(!string.IsNullOrEmpty(dragSourceDataContext.ActivityFullName))
+                            //dragSourceDataContext.IsNew = true;
+                            if(dragSourceDataContext.ResourceType <= ResourceType.WebService)
                             {
-                                dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dragSourceDataContext.ActivityFullName);
+                                dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dragSourceDataContext.ActivityName);
                                 dragData.SetData(dragSourceDataContext);
                             }
 

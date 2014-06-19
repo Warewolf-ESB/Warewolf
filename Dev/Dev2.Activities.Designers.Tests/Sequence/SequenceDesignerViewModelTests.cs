@@ -2,10 +2,14 @@
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common;
+using Dev2.Core.Tests.Environments;
+using Dev2.Models;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -334,7 +338,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfMultiAssignActivity = new DsfMultiAssignActivity();
             dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObject = new DataObject(GlobalConstants.ResourceTreeViewModelFormat, new TestData());
+            var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new TestData());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
@@ -352,7 +356,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfMultiAssignActivity = new DsfMultiAssignActivity();
             dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObject = new DataObject(GlobalConstants.ResourceTreeViewModelFormat, new TestDataWithContext());
+            var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new TestDataWithContext());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
@@ -369,14 +373,36 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfSequenceActivity = new DsfSequenceActivity();
             var dsfMultiAssignActivity = new DsfMultiAssignActivity();
             dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
+            SetupEnvironmentRepo(Guid.Empty);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObject = new DataObject(GlobalConstants.ResourceTreeViewModelFormat, new TestDataWithContexResourceModel());
+            var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new ExplorerItemModel { DisplayName = "MyDBService", ResourceType = Data.ServiceModel.ResourceType.DbService, EnvironmentId = Guid.Empty });
             //------------Execute Test---------------------------
             bool added = sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
             Assert.IsTrue(added);
             Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
 
+        }
+
+        static void SetupEnvironmentRepo(Guid environmentId)
+        {
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            mockEnvironment.Setup(model => model.ID).Returns(environmentId);
+            Mock<IResourceRepository> mockResRepo = new Mock<IResourceRepository>();
+            mockResRepo.Setup(d => d.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(new TestDataWithContexResourceModel().DataContext);
+            mockEnvironment.Setup(c => c.ResourceRepository).Returns(mockResRepo.Object);
+            GetEnvironmentRepository(mockEnvironment);
+        }
+
+        private static void GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
+        {
+
+            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object);
+            repo.IsLoaded = true;
+            // ReSharper disable ObjectCreationAsStatement
+            new EnvironmentRepository(repo);
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         static ModelItem CreateModelItem()
@@ -393,6 +419,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             return modelItem;
         }
     }
+
 
     public class TestDataWithContexResourceModel
     {

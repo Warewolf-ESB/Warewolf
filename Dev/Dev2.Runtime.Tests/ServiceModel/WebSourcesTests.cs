@@ -250,7 +250,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "TestWeather",
-                ResourcePath = "Testing",
+                ResourcePath = "Testing\\TestWeather",
             };
         }
 

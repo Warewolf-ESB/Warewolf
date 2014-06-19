@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.CustomControls.Behavior
 {
     public class TextChangedRegexBehavior : Behavior<TextBox>

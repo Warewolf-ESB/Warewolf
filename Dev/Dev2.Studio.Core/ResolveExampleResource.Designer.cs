@@ -61,7 +61,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data - Base Conversion.
+        ///   Looks up a localized string similar to 93873aaa-3164-41d2-8903-04b9dd5ba71a.
         /// </summary>
         internal static string DsfBaseConvertActivity {
             get {
@@ -70,7 +70,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Calculate.
+        ///   Looks up a localized string similar to 5c607d06-68ce-497b-831e-435cbd236894.
         /// </summary>
         internal static string DsfCalculateActivity {
             get {
@@ -79,7 +79,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data - Case Conversion.
+        ///   Looks up a localized string similar to 9593b43b-e80f-4025-8948-3264864bcab5.
         /// </summary>
         internal static string DsfCaseConvertActivity {
             get {
@@ -88,7 +88,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Comment.
+        ///   Looks up a localized string similar to 9bbba03f-2352-4eee-bff7-05479ebbb3a7.
         /// </summary>
         internal static string DsfCommentActivity {
             get {
@@ -97,7 +97,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recordset - Count Records.
+        ///   Looks up a localized string similar to d9f2514c-5d28-4902-9178-029e7eaa35ec.
         /// </summary>
         internal static string DsfCountRecordsetActivity {
             get {
@@ -106,7 +106,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data - Data Merge.
+        ///   Looks up a localized string similar to c44dbf72-933b-41e9-aff5-d1b84ec23dcd.
         /// </summary>
         internal static string DsfDataMergeActivity {
             get {
@@ -115,7 +115,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Data - Data Split.
+        ///   Looks up a localized string similar to 3182dad0-339e-4a0c-926b-4417f7deea46.
         /// </summary>
         internal static string DsfDataSplitActivity {
             get {
@@ -124,7 +124,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Date and Time.
+        ///   Looks up a localized string similar to 1af8ab32-ebbf-451e-8228-eaec63d41a53.
         /// </summary>
         internal static string DsfDateTimeActivity {
             get {
@@ -133,7 +133,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Date and Time Difference.
+        ///   Looks up a localized string similar to 7771f2ed-abcc-4d68-bd14-50beec0927fd.
         /// </summary>
         internal static string DsfDateTimeDifferenceActivity {
             get {
@@ -142,7 +142,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recordset - Delete Records.
+        ///   Looks up a localized string similar to 2b8cf067-4522-4ec1-af93-e7a9c7030830.
         /// </summary>
         internal static string DsfDeleteRecordActivity {
             get {
@@ -151,7 +151,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scripting - CMD Line.
+        ///   Looks up a localized string similar to 636e8310-88ea-4737-8cdd-fdd1b9ab908d.
         /// </summary>
         internal static string DsfExecuteCommandLineActivity {
             get {
@@ -160,7 +160,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Read File.
+        ///   Looks up a localized string similar to 6275530a-86e7-4b07-ba47-cac4f7feeaab.
         /// </summary>
         internal static string DsfFileRead {
             get {
@@ -169,7 +169,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Write File.
+        ///   Looks up a localized string similar to ab9c75c8-feb6-4058-a3cc-b3e39a333532.
         /// </summary>
         internal static string DsfFileWrite {
             get {
@@ -178,7 +178,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recordset - Find Records.
+        ///   Looks up a localized string similar to 638915ed-0797-4d1a-bb79-d361a03e60d2.
         /// </summary>
         internal static string DsfFindRecordsMultipleCriteriaActivity {
             get {
@@ -187,7 +187,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Read Folder.
+        ///   Looks up a localized string similar to 39eb06b4-bf25-4190-b48b-b81ae153e2f5.
         /// </summary>
         internal static string DsfFolderRead {
             get {
@@ -196,7 +196,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loop Constructs - For Each.
+        ///   Looks up a localized string similar to 8ba79b49-226e-4c67-a732-4657fd0edb6b.
         /// </summary>
         internal static string DsfForEachActivity {
             get {
@@ -205,7 +205,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - System Information.
+        ///   Looks up a localized string similar to 68b7b87d-e11d-4bc6-962c-f45dfd763c9f.
         /// </summary>
         internal static string DsfGatherSystemInformationActivity {
             get {
@@ -214,7 +214,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Find Index.
+        ///   Looks up a localized string similar to 45b9a09f-6ae8-4f89-adee-39539235614d.
         /// </summary>
         internal static string DsfIndexActivity {
             get {
@@ -223,7 +223,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Assign.
+        ///   Looks up a localized string similar to 0bb174fb-e75a-4882-a4ef-169f0367fbad.
         /// </summary>
         internal static string DsfMultiAssignActivity {
             get {
@@ -232,7 +232,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Format Number.
+        ///   Looks up a localized string similar to 4eb6fdd7-f91d-4d7b-973f-644256549c75.
         /// </summary>
         internal static string DsfNumberFormatActivity {
             get {
@@ -241,7 +241,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Copy.
+        ///   Looks up a localized string similar to 73ff08e0-e643-4af8-b0e5-fb7c52cc8c3b.
         /// </summary>
         internal static string DsfPathCopy {
             get {
@@ -250,7 +250,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Create.
+        ///   Looks up a localized string similar to 105393fb-88a1-4e5d-a490-a164b5248170.
         /// </summary>
         internal static string DsfPathCreate {
             get {
@@ -259,7 +259,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Delete.
+        ///   Looks up a localized string similar to 5729d503-04ed-452c-941d-28136dcf8395.
         /// </summary>
         internal static string DsfPathDelete {
             get {
@@ -268,7 +268,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Move.
+        ///   Looks up a localized string similar to a9f614c4-fed7-4ace-8c02-5e5ddd0074fb.
         /// </summary>
         internal static string DsfPathMove {
             get {
@@ -277,7 +277,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Rename.
+        ///   Looks up a localized string similar to 8f633d15-ac17-4320-8b4e-b7e7c9e561bb.
         /// </summary>
         internal static string DsfPathRename {
             get {
@@ -286,7 +286,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Random.
+        ///   Looks up a localized string similar to cc9a7c9e-151e-4a6c-a85d-59640db99140.
         /// </summary>
         internal static string DsfRandomActivity {
             get {
@@ -295,7 +295,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recordset - Records Length.
+        ///   Looks up a localized string similar to c5e46491-0355-45de-9dd8-c813a00f5245.
         /// </summary>
         internal static string DsfRecordsetLengthActivity {
             get {
@@ -304,7 +304,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Replace.
+        ///   Looks up a localized string similar to b2006c93-d767-416e-92b8-832311bf3bb2.
         /// </summary>
         internal static string DsfReplaceActivity {
             get {
@@ -313,7 +313,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scripting  - Script.
+        ///   Looks up a localized string similar to 4fbb3584-dc4a-4f62-8de7-091f6535c0c6.
         /// </summary>
         internal static string DsfScriptingActivity {
             get {
@@ -322,7 +322,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Email.
+        ///   Looks up a localized string similar to 895a9228-f881-4a51-bffa-7c5666d5ec59.
         /// </summary>
         internal static string DsfSendEmailActivity {
             get {
@@ -331,7 +331,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recordset - Sort Records.
+        ///   Looks up a localized string similar to 13300af1-dcbf-4761-951c-b3ecf80f09b7.
         /// </summary>
         internal static string DsfSortRecordsActivity {
             get {
@@ -340,7 +340,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recordset - SQL Bulk Insert.
+        ///   Looks up a localized string similar to 96e09260-9b72-48c9-9fb6-67b7e50f3761.
         /// </summary>
         internal static string DsfSqlBulkInsertActivity {
             get {
@@ -349,7 +349,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Recordset - Unique Records.
+        ///   Looks up a localized string similar to 0612d271-eb67-4563-8ae2-128111d334a0.
         /// </summary>
         internal static string DsfUniqueActivity {
             get {
@@ -358,7 +358,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Unzip.
+        ///   Looks up a localized string similar to 996e0b56-b1cc-435e-b852-05bda9db9313.
         /// </summary>
         internal static string DsfUnZip {
             get {
@@ -367,7 +367,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - Web Request.
+        ///   Looks up a localized string similar to 06a414f6-cf60-4df1-9d48-017e06a8b972.
         /// </summary>
         internal static string DsfWebGetRequestActivity {
             get {
@@ -376,7 +376,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Utility - XPath.
+        ///   Looks up a localized string similar to b8e90a2b-6e79-4fd7-b606-47c0e313dfb6.
         /// </summary>
         internal static string DsfXPathActivity {
             get {
@@ -385,7 +385,7 @@ namespace Dev2 {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to File and Folder - Zip.
+        ///   Looks up a localized string similar to 8dbfe7c6-d44b-4232-b243-c6812460e2eb.
         /// </summary>
         internal static string DsfZip {
             get {

@@ -8,6 +8,7 @@ using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.WebServer.Controllers
 {
     [TestClass]
@@ -165,7 +166,6 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);
             CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
         }
-
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]

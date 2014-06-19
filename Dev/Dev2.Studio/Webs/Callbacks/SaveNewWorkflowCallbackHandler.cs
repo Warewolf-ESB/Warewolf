@@ -1,13 +1,13 @@
-﻿using System;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Webs.Callbacks;
+using System;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Webs.Callbacks
 {
     public class SaveNewWorkflowCallbackHandler
@@ -45,8 +45,7 @@ namespace Dev2.Studio.Webs.Callbacks
             try
             {
                 string resName = jsonObj.resourceName;
-                string resCat = jsonObj.resourcePath;
-
+                string resCat = SanitizePath((string)jsonObj.resourcePath, resName);
                 if(_resourceModel != null)
                 {
                     EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, _addToTabManager));
@@ -64,5 +63,33 @@ namespace Dev2.Studio.Webs.Callbacks
             }
         }
         #endregion
+
+        public string SanitizePath(string path, string resourceName = "")
+        {
+            if(string.IsNullOrEmpty(path))
+            {
+                return "";
+            }
+
+            if(path.ToLower().StartsWith("root\\\\"))
+            {
+                path = path.Remove(0, 6);
+            }
+
+            if(path.ToLower().Equals("root"))
+            {
+                path = path.Remove(0, 4);
+            }
+
+            if(path.StartsWith("\\"))
+            {
+                path = path.Remove(0, 1);
+            }
+
+            path = string.IsNullOrEmpty(path) ? resourceName : path + "\\" + resourceName;
+
+            return path.Replace("\\\\", "\\")
+                .Replace("\\\\", "\\");
+        }
     }
 }

@@ -5,6 +5,8 @@ using System.Windows;
 using System.Xml;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
+using Dev2.Communication;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
@@ -26,48 +28,50 @@ namespace Dev2.Studio.Core.Models
     {
         IEventAggregator _eventPublisher;
         bool _publishEventsOnDispatcherThread;
+        PermissionsModifiedService _permissionsModifiedService;
+        IStudioResourceRepository _studioResourceRepo;
 
         // BUG 9940 - 2013.07.29 - TWR - added
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
         public event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
-
+        //private IStudioResourceRepository _studioResourceRepository;
         #region CTOR
         //, IWizardEngine wizardEngine
         public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread = true)
-            : this(EventPublishers.Aggregator, id, environmentConnection, publishEventsOnDispatcherThread)
+            : this(EventPublishers.Aggregator, id, environmentConnection, StudioResourceRepository.Instance, publishEventsOnDispatcherThread)
         {
         }
 
-        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread = true)
-            : this(EventPublishers.Aggregator, id, environmentConnection, resourceRepository, publishEventsOnDispatcherThread)
+        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository,IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread = true)// seems to be for testing
+            : this(EventPublishers.Aggregator, id, environmentConnection, resourceRepository, studioResourceRepository, publishEventsOnDispatcherThread)
         {
         }
         //, IWizardEngine wizardEngine
-        public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread = true)
+        public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread = true) // seems to be for testing
         {
-            Initialize(eventPublisher, id, environmentConnection, null, publishEventsOnDispatcherThread);
+            Initialize(eventPublisher, id, environmentConnection, null ,studioResourceRepository,publishEventsOnDispatcherThread);
         }
 
-        public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread = true)
+        public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread = true) // seems to be for testing
         {
             VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
-            Initialize(eventPublisher, id, environmentConnection, resourceRepository, publishEventsOnDispatcherThread);
+            Initialize(eventPublisher, id, environmentConnection, resourceRepository,studioResourceRepository, publishEventsOnDispatcherThread);
         }
 
         //, IWizardEngine wizardEngine
-        void Initialize(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread)
+        void Initialize(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread)
         {
             VerifyArgument.IsNotNull("environmentConnection", environmentConnection);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
+            VerifyArgument.IsNotNull("studioResourceRepository", studioResourceRepository);
             _eventPublisher = eventPublisher;
-
+            _studioResourceRepo = studioResourceRepository;
             CanStudioExecute = true;
 
             ID = id; // The resource ID
             Connection = environmentConnection;
 
             // MUST set Connection before creating new ResourceRepository!!
-            ResourceRepository = resourceRepository ?? new ResourceRepository(this);
 
             _publishEventsOnDispatcherThread = publishEventsOnDispatcherThread;
 
@@ -77,6 +81,21 @@ namespace Dev2.Studio.Core.Models
             AuthorizationService = CreateAuthorizationService(environmentConnection);
             AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
             OnAuthorizationServicePermissionsChanged(this, EventArgs.Empty);
+            PermissionsModifiedService = new PermissionsModifiedService(Connection.ServerEvents);
+
+            // MUST subscribe to Guid.Empty as memo.InstanceID is NOT set by server!
+            PermissionsModifiedService.Subscribe(Guid.Empty, ReceivePermissionsModified);
+            ResourceRepository = resourceRepository ?? new ResourceRepository(this);
+        }
+
+        void ReceivePermissionsModified(PermissionsModifiedMemo memo)
+        {
+            if (memo.ServerID == Connection.ServerID && !Name.Contains("localhost") )
+            {
+                var resourcePermissions = AuthorizationService.GetResourcePermissions(Guid.Empty);
+                
+                _studioResourceRepo.UpdateRootAndFoldersPermissions(resourcePermissions,ID);
+            }
         }
 
         #endregion
@@ -123,6 +142,24 @@ namespace Dev2.Studio.Core.Models
         }
 
         public IResourceRepository ResourceRepository { get; private set; }
+        public string DisplayName
+        {
+            get
+            {
+                return Name + " (" + Connection.WebServerUri + ")";
+            }
+        }
+        public PermissionsModifiedService PermissionsModifiedService
+        {
+            get
+            {
+                return _permissionsModifiedService;
+            }
+            set
+            {
+                _permissionsModifiedService = value;
+            }
+        }
 
         #endregion
 
@@ -202,6 +239,8 @@ namespace Dev2.Studio.Core.Models
         {
             if(Connection.IsConnected && CanStudioExecute)
             {
+
+
                 ResourceRepository.UpdateWorkspace(WorkspaceItemRepository.Instance.WorkspaceItems);
                 HasLoadedResources = true;
 

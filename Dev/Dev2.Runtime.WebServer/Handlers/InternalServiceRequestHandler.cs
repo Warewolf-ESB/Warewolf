@@ -7,6 +7,7 @@ using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer.Handlers
@@ -83,6 +84,11 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
             dataObject.ServiceName = request.ServiceName;
+            var resource = ResourceCatalog.Instance.GetResource(workspaceID, request.ServiceName);
+            if(resource != null)
+            {
+                dataObject.ResourceID = resource.ResourceID;
+            }
             dataObject.ClientID = Guid.Parse(connectionId);
             dataObject.ExecutingUser = ExecutingUser;
             // we need to assign new ThreadID to request coming from here, because it is a fixed connection and will not change ID on its own ;)

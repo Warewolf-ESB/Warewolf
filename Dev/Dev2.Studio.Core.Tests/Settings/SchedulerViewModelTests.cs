@@ -1998,7 +1998,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker());
             schedulerViewModel.CurrentEnvironment = mockEnvironmentModel.Object;
             Mock<IResourcePickerDialog> mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
-            mockResourcePickerDialog.Setup(c => c.ShowDialog()).Returns(true);
+            mockResourcePickerDialog.Setup(c => c.ShowDialog(It.IsAny<IEnvironmentModel>())).Returns(true);
             mockResourcePickerDialog.Setup(c => c.SelectedResource).Returns(setupResourceModelMock.Object);
 
             schedulerViewModel.ResourcePickerDialog = mockResourcePickerDialog.Object;

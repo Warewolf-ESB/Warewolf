@@ -5,9 +5,15 @@
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:trigger2="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls"
-             xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance navigation:NavigationViewModel}"
              xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-             Name="NavigationViewUserControl">
+    xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+
+    Name="NavigationViewUserControl">
     <Grid cal:Bind.Model="{Binding .}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -22,8 +28,8 @@
 
             <customControls2:FilterTextBox x:Name="FilterTextBox"     
                                               Grid.Column="0"
-                                           Margin="0,0,-2,0"
-                                           cal:Message.Attach="[Event GotFocus] = [Action SetSelectedItemNull]">
+                                           Margin="0,0,-2,0">
+                                           <!--cal:Message.Attach="[Event GotFocus] = [Action SetSelectedItemNull]">-->
                 <i:Interaction.Triggers>
                     <trigger2:DelayTextChangedEventTrigger DelayInMilliSeconds="300">
                         <cal:ActionMessage MethodName="UpdateSearchFilter">
@@ -46,14 +52,17 @@
                 <Image  Source="{StaticResource Refresh-32}" Width="14" Height="14" HorizontalAlignment="Left"/>
             </Button>
         </Grid>
-        <TreeView x:Name="Navigation" ItemsSource="{Binding Path=Root.Children}" Grid.Row="1" Grid.ColumnSpan="2"
-                  Style="{StaticResource TreeViewStyle}"
-                  BorderThickness="0"
-                  ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"
-                  ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}">
+        <!--Style="{StaticResource TreeViewStyle}"
+        
+        ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"-->
+        <TreeView x:Name="Navigation" ItemsSource="{Binding Path=ExplorerItemModels}" Grid.Row="1" Grid.ColumnSpan="2"
+                  BorderThickness="0"                        
+                  ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}"
+                  ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}">
             <i:Interaction.Behaviors>
                 <behaviors:TreeViewFocusOnAddBehavior/>
-            </i:Interaction.Behaviors>
+                <behavior:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </i:Interaction.Behaviors>            
         </TreeView>
     </Grid>
 </UserControl>

@@ -3,6 +3,7 @@ using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.Test_utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Runtime.ServiceModel
 {
     [TestClass]

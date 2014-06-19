@@ -2,18 +2,19 @@
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Dev2.Activities.Tests
 {
     [TestClass]
     public class DsfActivityAbstractTest
     {
-        readonly string WebserverURI = ServerSettings.WebserverURI;
+        readonly string _webserverUri = ServerSettings.WebserverURI;
         // Created by: Michael
         // For: Bug 7840
         [TestMethod]
         public void LastRecordSetNotionUpdatesEntry_Expected_RecordsCreated()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "LastRecordSetNotationUpdatesEntry");
+            string PostData = String.Format("{0}{1}", _webserverUri, "INTEGRATION TEST SERVICES/LastRecordSetNotationUpdatesEntry");
             string expected = @"<nameSetindex=""1""><Name>Michael</Name><Surname>Cullen</Surname></nameSet>
                                 <nameSetindex=""2""><Name>Massimo</Name><Surname>Guerrera</Surname></nameSet>
                                 <nameSetindex=""3""><Name>MASSIMO</Name><Surname></Surname></nameSet>

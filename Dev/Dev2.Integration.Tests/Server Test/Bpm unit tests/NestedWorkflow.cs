@@ -4,6 +4,8 @@ using Dev2.Integration.Tests.Dev2.Application.Server.Tests.Workspace.XML;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 {
     /// <summary>
@@ -31,7 +33,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             //------------Setup for test--------------------------
             var expectedXML = XmlResource.Fetch("Bug_10528_Result.xml");
-            string PostData = String.Format("{0}{1}", WebserverURI, "Bug_10528");
+            string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/Bug_10528");
             string expected = expectedXML.ToString(SaveOptions.None);
             //------------Execute Test---------------------------
             string ResponseData = TestHelper.PostDataToWebserver(PostData);

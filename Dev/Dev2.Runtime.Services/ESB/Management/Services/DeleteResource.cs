@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -16,16 +17,20 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string resourceName = null;
             string type = null;
-
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             StringBuilder tmp;
-            values.TryGetValue("ResourceName", out tmp);
+            values.TryGetValue("ResourceID", out tmp);
+            Guid resourceID = Guid.Empty;
             if(tmp != null)
             {
-                resourceName = tmp.ToString();
+                if(!Guid.TryParse(tmp.ToString(), out resourceID))
+                {
+                    var failureResult = new ExecuteMessage { HasError = true };
+                    failureResult.SetMessage("Invalid guid passed for ResourceID");
+                    return serializer.SerializeToBuilder(failureResult);
+                }
             }
-
             values.TryGetValue("ResourceType", out tmp);
             if(tmp != null)
             {
@@ -34,34 +39,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 
 
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
-            var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceName, type);
+            var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceID, type);
 
             var result = new ExecuteMessage { HasError = false };
             result.SetMessage(msg.Message);
-
-            // Delete resource from server workspace
-            if(theWorkspace.ID != GlobalConstants.ServerWorkspaceID && msg.Status == ExecStatus.Success)
-            {
-                var serverResult = ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID,
-                                                                           resourceName, type);
-
-                if(serverResult.Status != ExecStatus.Success)
-                {
-                    // If delete from server workspace failed, then sync server workspace back to client workspace and return server result
-                    var workspacePath = EnvironmentVariables.GetWorkspacePath(theWorkspace.ID);
-                    var serverworkspacePath = EnvironmentVariables.GetWorkspacePath(theWorkspace.ID);
-                    ResourceCatalog.Instance.SyncTo(serverworkspacePath, workspacePath, false, false);
-
-                    result.SetMessage(serverResult.Message);
-                }
-            }
-            else
-            {
-                result.HasError = true;
-            }
-
-
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            result.HasError = msg.Status != ExecStatus.Success;
             return serializer.SerializeToBuilder(result);
         }
 

@@ -41,5 +41,20 @@ namespace Dev2.Common.Wrappers
         {
             return Directory.GetFileSystemEntries(path, searchPattern);
         }
+
+        public string[] GetDirectories(string path)
+        {
+            return Directory.GetDirectories(path);
+        }
+
+        public void Move(string directoryStructureFromPath, string directoryStructureToPath)
+        {
+             Directory.Move(directoryStructureFromPath, directoryStructureToPath);
+        }
+
+        public void Delete(string directoryStructureFromPath, bool recursive)
+        {
+            Directory.Delete(directoryStructureFromPath,recursive);
+        }
     }
 }

@@ -62,7 +62,7 @@ Using recordset () will add a new record and (*) will assign every record.";
             {
                 dsfActivityUiMap.DragWorkflowOntoDesigner("this name is so long the display name", "TEST");
                 dsfActivityUiMap.ClickCloseMapping();
-                Assert.AreEqual(174, dsfActivityUiMap.GetDisplayNameMaxWidth());
+                Assert.AreEqual(178, dsfActivityUiMap.GetDisplayNameMaxWidth());
             }
         }
     }

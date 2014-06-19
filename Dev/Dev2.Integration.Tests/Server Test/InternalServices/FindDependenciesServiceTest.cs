@@ -22,7 +22,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices 
 
         [TestMethod]
         public void FindDependencies_ExistingService_Expected_AllDependanciesReturned() {
-            string postData = String.Format("{0}{1}", _webserverURI, "FindDependencyService?ResourceName=Bug9245");
+            string postData = String.Format("{0}{1}", _webserverURI, "FindDependencyService?ResourceName=TestCategory\\Bug9245");
             XElement response = XElement.Parse(TestHelper.PostDataToWebserver(postData));
 
             IEnumerable<XNode> nodes = response.DescendantNodes();

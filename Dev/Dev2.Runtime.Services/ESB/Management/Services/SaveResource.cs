@@ -82,9 +82,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             if(compiledResources != null)
             {
-                var saveResult = ResourceCatalog.Instance.SaveResource(theWorkspace.ID, resourceDefinition);
+                var saveResult = ResourceCatalog.Instance.SaveResource(workspaceID, resourceDefinition);
                 // TMP FIX
-                ResourceCatalog.Instance.SaveResource(Guid.Empty, resourceDefinition);
+                //                ResourceCatalog.Instance.SaveResource(Guid.Empty, resourceDefinition);
                 res.SetMessage(saveResult.Message + " " + DateTime.Now);
             }
 
@@ -94,9 +94,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService();
-            newDs.Name = HandlesType();
-            newDs.DataListSpecification = "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
             ServiceAction sa = new ServiceAction();
             sa.Name = HandlesType();
             sa.ActionType = enActionType.InvokeManagementDynamicService;

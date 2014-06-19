@@ -11,7 +11,6 @@ using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.Core.ViewModels.Navigation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable once CheckNamespace
@@ -303,7 +302,6 @@ namespace Dev2.Studio.Core
                 TypeSwitch.Case<IContextualResourceModel>(x => resourceModel = x),
                 TypeSwitch.Case<IWorkflowDesignerViewModel>(x => resourceModel = x.ResourceModel),
                 TypeSwitch.Case<IServiceDebugInfoModel>(x => resourceModel = x.ResourceModel),
-                TypeSwitch.Case<ITreeNode<IContextualResourceModel>>(x => resourceModel = x.DataContext),
                 TypeSwitch.Case<ILayoutGridViewModel>(x => resourceModel = x.ResourceModel),
                 TypeSwitch.Case<IWebActivity>(x => resourceModel = x.ResourceModel));
 

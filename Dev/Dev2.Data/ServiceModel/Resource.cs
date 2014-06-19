@@ -74,6 +74,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceType = ParseResourceType(xml.AttributeSafe("ResourceType"));
             ResourceName = xml.AttributeSafe("Name");
             ResourcePath = xml.ElementSafe("Category");
+            ResourcePath = ResourcePath.Replace("\\\\", "\\");
             EnsureVersion(xml.AttributeSafe("Version"));
             AuthorRoles = xml.ElementSafe("AuthorRoles");
 
@@ -279,6 +280,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 switch(actionType)
                 {
+                    case enActionType.InvokeWebService:
+                        return ResourceType.WebService;
                     case enActionType.InvokeStoredProc:
                         return ResourceType.DbService;
                     case enActionType.Plugin:
@@ -489,7 +492,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 xml.SetAttributeValue("Version", Version.ToString());
                 xml.SetAttributeValue("Name", ResourceName ?? string.Empty);
                 xml.SetAttributeValue("ResourceType", ResourceType);
+                xml.SetAttributeValue("Category", ResourcePath);
             }
+
             return xml;
         }
 
@@ -670,6 +675,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                                 Guid.TryParse(uniqueIDAsString, out uniqueID);
                                 Guid resID;
                                 Guid.TryParse(resourceIDAsString, out resID);
+                                if(resourceType == ResourceType.WebService)
+                                {
+                                    resID = uniqueID;
+                                }
                                 Dependencies.Add(CreateResourceForTree(resID, uniqueID, resourceName, resourceType));
                             });
                     }

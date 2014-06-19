@@ -4,12 +4,12 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -36,12 +36,13 @@ namespace Dev2.Studio.ViewModels.Explorer
         private RelayCommand _environmentChangedCommand;
         private Guid? _context;
         System.Action _onLoadResourcesCompletedOnceOff;
+        NavigationViewModel _navigationViewModel;
 
         #endregion Class Members
 
         #region Constructor
 
-        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action onLoadResourcesCompletedOnceOff = null)
+        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,IStudioResourceRepository studioResourceRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action onLoadResourcesCompletedOnceOff = null)
             : base(eventPublisher)
         {
 
@@ -49,7 +50,7 @@ namespace Dev2.Studio.ViewModels.Explorer
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             _asyncWorker = asyncWorker;
             EnvironmentRepository = environmentRepository;
-            NavigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, Context, environmentRepository, isFromActivityDrop, activityType) { Parent = this };
+            NavigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, Context, environmentRepository,studioResourceRepository, isFromActivityDrop, activityType) { Parent = this };
             if(onLoadResourcesCompletedOnceOff != null)
             {
                 _onLoadResourcesCompletedOnceOff = onLoadResourcesCompletedOnceOff;
@@ -94,7 +95,17 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
-        public NavigationViewModel NavigationViewModel { get; set; }
+        public NavigationViewModel NavigationViewModel
+        {
+            get
+            {
+                return _navigationViewModel;
+            }
+            set
+            {
+                _navigationViewModel = value;
+            }
+        }
 
         public Guid? Context
         {
@@ -122,12 +133,6 @@ namespace Dev2.Studio.ViewModels.Explorer
                     },
                     () =>
                     {
-                        if(!NavigationViewModel.Environments.Contains(environmentModel))
-                        {
-                            NavigationViewModel.AddEnvironment(environmentModel);
-                            SaveEnvironment(environmentModel);
-                            this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
-                        }
                     });
             }
         }
@@ -200,28 +205,6 @@ namespace Dev2.Studio.ViewModels.Explorer
             }
         }
 
-        //2013.05.19: Ashley Lewis for PBI 8858 - Rename folder context menu item
-        public ICommand RenameCommand
-        {
-            get
-            {
-                return new RelayCommand(RenameFolder);
-            }
-        }
-
-        void RenameFolder(object obj)
-        {
-            var treeViewModel = NavigationViewModel.Root.GetChildren(null).FirstOrDefault(c => c.IsSelected);
-            if(treeViewModel != null)
-            {
-                var selectedItem = treeViewModel as AbstractTreeViewModel;
-                if(selectedItem != null)
-                {
-                    selectedItem.RenameCommand.Execute(null);
-                }
-            }
-        }
-
         #endregion Private Methods
 
         #region Dispose Handling
@@ -242,14 +225,14 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(SetSelectedItemInExplorerTree message)
         {
-            this.TraceInfo(message.GetType().Name);
-            // ReSharper disable OperatorIsCanBeUsed
-            List<ITreeNode> treeNodes = NavigationViewModel.Root.GetChildren(c => c.GetType() == typeof(EnvironmentTreeViewModel) && c.DisplayName.Contains(message.NodeNameToSelect)).ToList();
-            // ReSharper restore OperatorIsCanBeUsed
-            if(treeNodes.Count == 1)
-            {
-                treeNodes[0].IsSelected = true;
-            }
+            //            this.TraceInfo(message.GetType().Name);
+            //            // ReSharper disable OperatorIsCanBeUsed
+            //            List<ITreeNode> treeNodes = NavigationViewModel.Root.GetChildren(c => c.GetType() == typeof(EnvironmentTreeViewModel) && c.DisplayName.Contains(message.NodeNameToSelect)).ToList();
+            //            // ReSharper restore OperatorIsCanBeUsed
+            //            if(treeNodes.Count == 1)
+            //            {
+            //                treeNodes[0].IsSelected = true;
+            //            }
         }
 
         public void Handle(RefreshExplorerMessage message)
@@ -267,10 +250,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         public void Handle(RemoveEnvironmentMessage message)
         {
             this.TraceInfo(message.GetType().Name);
-            if(Context == message.Context)
-            {
-                RemoveEnvironment(message.EnvironmentModel);
-            }
+            RemoveEnvironment(message.EnvironmentModel);
         }
 
         public void Handle(AddServerToExplorerMessage message)

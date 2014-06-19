@@ -8,6 +8,8 @@ using Dev2.Network;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
 {
     [TestClass]
@@ -100,7 +102,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
             catch(WebException wex)
             {
                 var response = (HttpWebResponse)wex.Response;
-                Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+                Assert.AreEqual(HttpStatusCode.InternalServerError, response.StatusCode);
             }
 
         }
@@ -126,14 +128,14 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
             coms.AddPayloadArgument("ResourceXml", tmp);
             coms.AddPayloadArgument("WorkspaceID", Guid.Empty.ToString());
 
-            string expected = string.Format("Added DbService '{0}'",id);
+            string expected = string.Format("Added DbService '{0}'", id);
 
             //------------Execute Test---------------------------
             var result = coms.ExecuteCommand<ExecuteMessage>(_connection, Guid.Empty);
 
             //------------Assert Results-------------------------
             StringAssert.Contains(result.Message.ToString(), expected, "Got [ " + result.Message + " ]");
- 
+
         }
 
         /// <summary>
@@ -142,7 +144,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         [TestMethod]
         public void AppServer_Update_Resource_Correctly()
         {
-            CommunicationController coms = new CommunicationController {ServiceName = "SaveResourceService"};
+            CommunicationController coms = new CommunicationController { ServiceName = "SaveResourceService" };
 
             var tmp = new StringBuilder(TestResource.Service_Update_Request_String);
             var xe = tmp.ToXElement();
@@ -159,7 +161,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
             var result = coms.ExecuteCommand<ExecuteMessage>(_connection, Guid.Empty);
 
             StringAssert.Contains(result.Message.ToString(), expected, "Got [ " + result.Message + " ]");
-            
+
         }
 
         #endregion Studio Server Integration

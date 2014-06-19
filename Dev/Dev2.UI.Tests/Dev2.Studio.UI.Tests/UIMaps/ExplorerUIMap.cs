@@ -624,7 +624,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(50);
             SendKeys.SendWait(newName);
             Playback.Wait(50);
-            SendKeys.SendWait("{ENTER}");
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(150);
+            SendKeys.SendWait("{TAB}");
         }
 
         public void ClickNewServerButton(int waitAmt = 200)

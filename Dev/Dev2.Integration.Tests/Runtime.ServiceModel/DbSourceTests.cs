@@ -22,8 +22,8 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         public void DbSource_Save_ExistingSource_ServerWorkspaceUpdated()
         {
             //Initialize test resource, save then change path
-            string uniquePathText = Guid.NewGuid().ToString();
-            var testResource = new Resource { ResourceName = "test db source", ResourcePath = "initialpath", ResourceType = ResourceType.DbSource, ResourceID = Guid.NewGuid() };
+            string uniquePathText = Guid.NewGuid().ToString()+"\\test db source";
+            var testResource = new Resource { ResourceName = "test db source", ResourcePath = "initialpath\test db source", ResourceType = ResourceType.DbSource, ResourceID = Guid.NewGuid() };
             new DbSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
             testResource.ResourcePath = uniquePathText;
 

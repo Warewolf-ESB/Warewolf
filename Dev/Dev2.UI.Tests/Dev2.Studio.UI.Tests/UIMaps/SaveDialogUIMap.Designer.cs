@@ -95,6 +95,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses
         {
             Playback.Wait(1500);
             SendKeys.SendWait("{TAB}{TAB}{TAB}{ENTER}");
+            Playback.Wait(15000);
         }
 
         #region Properties

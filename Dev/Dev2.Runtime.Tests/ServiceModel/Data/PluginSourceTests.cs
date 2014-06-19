@@ -23,7 +23,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void SavePluginSourceWithExistingSourceExpectedServerWorkspaceUpdated()
         {
             //Initialize test resource, save then change path
-            string uniquePathText = Guid.NewGuid().ToString();
+            string uniquePathText = Guid.NewGuid().ToString()+"\\test plugin source";
             var testResource = new Resource { ResourceName = "test plugin source", ResourcePath = "initialpath", ResourceType = ResourceType.PluginSource, ResourceID = Guid.NewGuid() };
             new PluginSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
             testResource.ResourcePath = uniquePathText;

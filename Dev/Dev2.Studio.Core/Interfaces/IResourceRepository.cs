@@ -56,11 +56,15 @@ namespace Dev2.Studio.Core.Interfaces
         ICollection<IResourceModel> All();
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
         IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false);
+        IResourceModel FindSingleWithPayLoad(Expression<Func<IResourceModel, bool>> expression);
         ExecuteMessage Save(IResourceModel instanceObj);
+        ExecuteMessage Save(IResourceModel instanceObj, bool addToStudioRespotory);
         void Save(ICollection<IResourceModel> instanceObjs);
         event EventHandler ItemAdded;
         void Load();
         void Remove(IResourceModel instanceObj);
         void Remove(ICollection<IResourceModel> instanceObjs);
+
+        ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);
     }
 }

@@ -150,9 +150,15 @@
     <Compile Include="ESB\EsbServicesEndpointMock.cs" />
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
+    <Compile Include="Hosting\ExplorerItemFactoryTests.cs" />
+    <Compile Include="Hosting\ServerExplorerRepositoryTests.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
+    <Compile Include="Services\CreateFolderTest.cs" />
+    <Compile Include="Services\DeleteItemsTest.cs" />
     <Compile Include="Security\SecurityConfigFetcher.cs" />
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
+    <Compile Include="Services\FetchExplorerItemsTest.cs" />
+    <Compile Include="Services\GetDirectoriesRelativeToServerTests.cs" />
     <Compile Include="Services\GetScheduledResourceHistoryTest.cs" />
     <Compile Include="Services\GetScheduledResourcesTest.cs" />
     <Compile Include="Security\ServerSecurityServiceTests.cs" />
@@ -224,6 +230,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MockServiceExecutionAbstract.cs" />
     <Compile Include="Services\RenameCategoryResourceTests.cs" />
+    <Compile Include="Services\RenameItemsTest.cs" />
     <Compile Include="Services\SaveScheduledResourceTest.cs" />
     <Compile Include="Services\SchedulerTestBase.cs" />
     <Compile Include="Services\SecurityReadTests.cs" />
@@ -276,6 +283,10 @@
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Activities.Tests\Dev2.Activities.Tests.csproj">
+      <Project>{2A8088A6-8F8D-42FD-B877-D809C494C561}</Project>
+      <Name>Dev2.Activities.Tests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
       <Name>Dev2.Activities</Name>

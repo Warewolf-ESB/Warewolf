@@ -37,7 +37,6 @@
     <converters:DeployViewConnectedToVisiblityConverter x:Key="DeployViewConnectedToVisiblityConverter" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsVisible" NotNullVisibilityValue="Collapsed" NullVisibilityValue="Visible" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsCollapsed" NotNullVisibilityValue="Visible" NullVisibilityValue="Collapsed" />
-    <converters3:NavigationViewModelToImageConverter x:Key="NavigationViewModelToImageConverter" />
     <converters3:NavigationViewModelPermissionVisibilityConverter x:Key="NavigationViewModelPermissionVisibilityConverter" />
     <converters3:NavigationViewModelPermissionToBooleanConverter x:Key="NavigationViewModelPermissionToBooleanConverter" />
     <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
@@ -62,6 +61,7 @@
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <converters2:IsConnectedToTextConverter x:Key="IsConnectedToTextConverter" />
+    <converters5:ExplorerItemModelToIconConverter x:Key="ExplorerItemModelToIconConverter" />
     <converters1:ConnectControlMultiValueBoolConverter x:Key="ConnectControlMultiValueBoolConverter" />
     <converters:AllBoolToVisibilityValueConverter x:Key="AllBoolToVisibilityValueConverter" TrueValue="Visible" FalseValue="Collapsed" />
     <converters:AllBoolToVisibilityValueConverter x:Key="AllBoolToVisibilityValueConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />

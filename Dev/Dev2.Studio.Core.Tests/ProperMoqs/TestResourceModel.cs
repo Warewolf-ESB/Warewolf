@@ -177,14 +177,6 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         #endregion CTOR
 
-        #region Behaviour Overrides
-
-        internal override void ChangeReturnValue(string Name, Enums.enTestObjectBehaviourChangeType behaviourType, object ReturnValue)
-        {
-            base.ChangeReturnValue(Name, behaviourType, ReturnValue);
-        }
-
-        #endregion Behaviour Overrides
 
 
         Guid IContextualResourceModel.ServerID
@@ -216,7 +208,7 @@ namespace Dev2.Core.Tests.ProperMoqs
         public IObservableReadOnlyList<IErrorInfo> Errors { get; private set; }
         public IObservableReadOnlyList<IErrorInfo> FixedErrors { get; private set; }
 
-        public IList<IErrorInfo> GetErrors(Guid instanceID)
+        public IList<IErrorInfo> GetErrors(Guid instanceId)
         {
             return null;
         }

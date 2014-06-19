@@ -171,7 +171,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "TestGmail",
-                ResourcePath = "Testing",
+                ResourcePath = "Testing\\TestGmail",
             };
         }
 

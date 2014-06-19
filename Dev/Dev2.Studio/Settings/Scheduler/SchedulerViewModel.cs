@@ -866,7 +866,7 @@ You need Administrator permission.");
                         _resourcePicker.SelectedResource = resourceModel;
                     }
                 }
-                var hasResult = _resourcePicker.ShowDialog();
+                var hasResult = _resourcePicker.ShowDialog(CurrentEnvironment);
                 if(hasResult)
                 {
                     WorkflowName = _resourcePicker.SelectedResource.ResourceName;

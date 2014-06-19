@@ -254,6 +254,7 @@ namespace Dev2.Workspaces
 
             WorkspaceItems.Remove(itemToRemove);
             Write();
+            resourceModel.Environment.ResourceRepository.DeleteResourceFromWorkspace(resourceModel);
         }
 
         #endregion

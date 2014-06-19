@@ -21,7 +21,6 @@ namespace Dev2.Runtime.ESB.Execution
             _databaseServiceExecution = new DatabaseServiceExecution(dataObj);
         }
         public DatabaseServiceContainer(IServiceExecution databaseServiceExecution)
-            : base()
         {
             _databaseServiceExecution = databaseServiceExecution;
         }

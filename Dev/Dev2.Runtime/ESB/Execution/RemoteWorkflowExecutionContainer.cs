@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Data.Enums;
@@ -16,6 +11,11 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
 using enActionType = Dev2.DataList.Contract.enActionType;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -239,7 +239,7 @@ namespace Dev2.Runtime.ESB.Execution
                 localhostConnection.AuthenticationType = AuthenticationType.Windows;
                 return localhostConnection;
             }
-            var xml = _resourceCatalog.GetResourceContents(DataObject.WorkspaceID, environmentID);
+            var xml = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, environmentID);
 
             if(xml == null || xml.Length == 0)
             {

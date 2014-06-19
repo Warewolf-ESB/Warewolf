@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException("No value provided for ResourceType parameter.");
             }
 
-            var saveResult = ResourceCatalog.Instance.RenameCategory(Guid.Empty, oldCategory, newCategory, resourceType);
+            var saveResult = ResourceCatalog.Instance.RenameCategory(Guid.Empty, oldCategory, newCategory);
 
             ExecuteMessage msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(saveResult.Message);

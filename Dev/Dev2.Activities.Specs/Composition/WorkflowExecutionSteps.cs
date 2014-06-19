@@ -1,13 +1,4 @@
-﻿using System;
-using System.Activities;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Xml.Linq;
-using Dev2.Activities.Specs.BaseTypes;
+﻿using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -26,6 +17,15 @@ using Dev2.Threading;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
+using System;
+using System.Activities;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Xml.Linq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -52,7 +52,7 @@ namespace Dev2.Activities.Specs.Composition
             AppSettings.LocalHost = "http://localhost:3142";
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
-            var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests", ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
+            var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
 
             environmentModel.ResourceRepository.Add(resourceModel);
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
@@ -355,7 +355,6 @@ namespace Dev2.Activities.Specs.Composition
             StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
 
-            repository.Save(resourceModel);
             repository.SaveToServer(resourceModel);
 
             ExecuteWorkflow(resourceModel);

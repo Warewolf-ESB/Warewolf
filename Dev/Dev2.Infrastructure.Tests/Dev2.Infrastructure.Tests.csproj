@@ -141,6 +141,7 @@
     <Compile Include="Services\SubscriptionServiceTests.cs" />
     <Compile Include="Services\MemoSubscriptionServiceTests.cs" />
     <Compile Include="DbTableTests.cs" />
+    <Compile Include="SharedModels\ServerExplorerItemTest.cs" />
     <Compile Include="SharedModels\DbColumnTest.cs" />
     <Compile Include="VerifyArgumentsTest.cs" />
   </ItemGroup>
@@ -157,6 +158,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

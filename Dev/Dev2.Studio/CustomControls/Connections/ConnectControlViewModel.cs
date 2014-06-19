@@ -273,12 +273,12 @@ namespace Dev2.UI
 
         public virtual void OpenEditConnectionWizard(IEnvironmentModel localHost)
         {
-            RootWebSite.ShowDialog(localHost, ResourceType.Server, null, SelectedServer.ID.ToString(), null, ConnectControlInstanceType, SelectedServer.Name);
+            RootWebSite.ShowDialog(localHost, ResourceType.Server, null, string.Empty, SelectedServer.ID.ToString(), null, ConnectControlInstanceType, SelectedServer.Name);
         }
 
         public virtual void OpenNewConnectionWizard(IEnvironmentModel localHost)
         {
-            RootWebSite.ShowDialog(localHost, ResourceType.Server, null);
+            RootWebSite.ShowDialog(localHost, ResourceType.Server, null, string.Empty);
         }
 
         public void AddMissingServers()

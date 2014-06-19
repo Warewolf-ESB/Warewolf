@@ -1,5 +1,6 @@
 ﻿using System;
 using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
@@ -12,7 +13,7 @@ namespace Dev2.Core.Tests.Environments
         Mock<IAuthorizationService> _authorizationServiceMock;
 
         public TestEnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread = true)
-            : base(eventPublisher, id, environmentConnection, resourceRepository, publishEventsOnDispatcherThread)
+            : base(eventPublisher, id, environmentConnection, resourceRepository, new Mock<IStudioResourceRepository>().Object, publishEventsOnDispatcherThread)
         {
         }
 

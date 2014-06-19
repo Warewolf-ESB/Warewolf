@@ -19,7 +19,7 @@ namespace Dev2.Runtime.Hosting
             ResourceID = service.ID == Guid.Empty ? Guid.NewGuid() : service.ID;
             ResourceName = service.Name;
             ResourceType = ResourceType.ReservedService;
-            ResourcePath = "Management Services";
+            ResourcePath = service.Name;
             DataList = service.DataListSpecification;
         }
     }

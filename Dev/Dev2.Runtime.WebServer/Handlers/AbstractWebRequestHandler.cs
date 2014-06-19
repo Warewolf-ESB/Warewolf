@@ -14,6 +14,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
+using Dev2.Runtime.Hosting;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Server.DataList.Translators;
@@ -113,7 +114,14 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 dataObject.ServiceName = serviceName;
             }
-
+            if(!String.IsNullOrEmpty(dataObject.ServiceName))
+            {
+                var resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
+                if(resource != null)
+                {
+                    dataObject.ResourceID = resource.ResourceID;
+                }
+            }
             var esbEndpoint = new EsbServicesEndpoint();
 
             // Build EsbExecutionRequest - Internal Services Require This ;)

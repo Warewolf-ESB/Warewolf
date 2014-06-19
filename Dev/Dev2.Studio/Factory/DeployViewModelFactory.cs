@@ -1,7 +1,7 @@
-﻿using Dev2.Studio.Core.Helpers;
+﻿using Dev2.Models;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.ViewModels.Deploy;
-using Dev2.Studio.ViewModels.Navigation;
 
 namespace Dev2.Factory
 {
@@ -11,13 +11,13 @@ namespace Dev2.Factory
         {
             DeployViewModel deployViewModel = null;
 
-            if (input != null)
+            if(input != null)
             {
                 TypeSwitch.Do(input,
-                              TypeSwitch.Case<AbstractTreeViewModel>(
-                                  x => deployViewModel = new DeployViewModel(x.DisplayName, x.EnvironmentModel)),
+                              TypeSwitch.Case<ExplorerItemModel>(
+                                  x => deployViewModel = new DeployViewModel(x.ResourceId, x.EnvironmentId)),
                               TypeSwitch.Case<ResourceModel>(
-                                  x => deployViewModel = new DeployViewModel(x.ResourceName, x.Environment)),
+                                  x => deployViewModel = new DeployViewModel(x.ID, x.Environment.ID)),
                               TypeSwitch.Default(() => deployViewModel = new DeployViewModel()));
             }
             else

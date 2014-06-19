@@ -99,6 +99,11 @@
     <Compile Include="Communication\FutureReceipt.cs" />
     <Compile Include="Communication\PermissionsModifiedMemo.cs" />
     <Compile Include="Communication\Receipt.cs" />
+    <Compile Include="Hosting\ExecStatus.cs" />
+    <Compile Include="Interfaces\IExplorerItem.cs" />
+    <Compile Include="Interfaces\IExplorerRepositorySync.cs" />
+    <Compile Include="Interfaces\IExplorerResourceRepository.cs" />
+    <Compile Include="Interfaces\IExplorerServerResourceRepository.cs" />
     <Compile Include="Communication\ResultsCache.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Communication\Envelope.cs" />
@@ -184,6 +189,7 @@
     <Compile Include="Shared Models\DbColumnList.cs" />
     <Compile Include="Shared Models\DbTable.cs" />
     <Compile Include="Shared Models\DbTableList.cs" />
+    <Compile Include="Shared Models\Explorer\ServerExplorerItem.cs" />
     <Compile Include="Shared Models\ResourceType.cs" />
     <Compile Include="Shared Models\ResultList.cs" />
     <Compile Include="Shared Models\SerializableResource.cs" />

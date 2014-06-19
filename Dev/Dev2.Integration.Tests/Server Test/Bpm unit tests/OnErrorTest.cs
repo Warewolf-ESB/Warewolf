@@ -3,6 +3,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 {
     /// <summary>
@@ -22,12 +23,12 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestCategory("OnError_OnError")]
         public void OnError_OnError_WhenInvokingDifferentServiceTypes_ExpectPASS()
         {
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "OnError Test");
-            const string expected = @"<Result>PASS</Result>";
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/OnError Test");
+            const string Expected = @"<Result>PASS</Result>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
 
-            StringAssert.Contains(responseData.Unescape(), expected);
+            StringAssert.Contains(responseData.Unescape(), Expected);
         }
     }
 }

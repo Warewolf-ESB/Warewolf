@@ -4,12 +4,16 @@
              xmlns:nv="clr-namespace:Dev2.Studio.Views.Navigation"
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-             xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
-             xmlns:Dev2="clr-namespace:Dev2.UI"
+             xmlns:dev2="clr-namespace:Dev2.UI"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:help="clr-namespace:Dev2.Help"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:deploy="clr-namespace:Dev2.Studio.ViewModels.Deploy"
+             xmlns:models="clr-namespace:Dev2.Models;assembly=Dev2.Studio.Core"
              Name="DeployUserControl"
-             >
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance deploy:DeployViewModel}">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -36,34 +40,35 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Dev2:ConnectControl Grid.Row="0"
+                <dev2:ConnectControl Grid.Row="0"
                                      Margin="3"
-                                     LabelText="Source Server:"                                    
+                                     LabelText="Source Server:"
                                      ConnectButtonAutomationID="UI_SourceConnectServerbtn_AutoID"
-                                     EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"                                     
-                                     ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"                                     
+                                     EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
+                                     ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"
                                      BindToActiveEnvironment="False"
                                      ConnectControlInstanceType="DeploySource">
-                    <Dev2:ConnectControl.IsDropDownEnabled>
+                    <dev2:ConnectControl.IsDropDownEnabled>
                         <MultiBinding Converter="{StaticResource ConnectControlDisableConverter}">
-                            <Binding Path="DataContext.Target.IsRefreshing" ElementName="DeployUserControl"></Binding>
-                            <Binding Path="DataContext.Source.IsRefreshing" ElementName="DeployUserControl"></Binding>
+                            <Binding Path="DataContext.Target.IsRefreshing"
+                                     ElementName="DeployUserControl"></Binding>
+                            <Binding Path="DataContext.Source.IsRefreshing"
+                                     ElementName="DeployUserControl"></Binding>
                         </MultiBinding>
-                    </Dev2:ConnectControl.IsDropDownEnabled>
-                </Dev2:ConnectControl>
+                    </dev2:ConnectControl.IsDropDownEnabled>
+                </dev2:ConnectControl>
 
                 <nv:NavigationView Grid.Row="1"
                                    DataContext="{Binding Source}"
                                    x:Name="SourceNavigationView">
+
                     <nv:NavigationView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}"
                                BasedOn="{StaticResource {x:Type TreeViewItem}}">
                             <Setter Property="IsExpanded"
-                                    Value="{Binding IsExpanded, Mode=TwoWay}" />
+                                    Value="{Binding IsDeploySourceExpanded, Mode=TwoWay}" />
                             <Setter Property="IsSelected"
-                                    Value="{Binding IsSelected, Mode=TwoWay}" />
-                            <Setter Property="Visibility"
-                                    Value="{Binding IsFiltered, Converter={StaticResource BoolToVisibilityConverterNegative}, Mode=OneWay}" />
+                                    Value="{Binding IsDeploySourceSelected, Mode=TwoWay}" />
                             <Setter Property="AutomationProperties.AutomationId">
                                 <Setter.Value>
                                     <MultiBinding StringFormat="UI_SourceServer_{0}_AutoID">
@@ -92,9 +97,10 @@
                             </Style.Triggers>
                         </Style>
                     </nv:NavigationView.ItemContainerStyle>
+
                     <nv:NavigationView.ItemTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}"
-                                                  ItemsSource="{Binding Path=Children}">
+                        <HierarchicalDataTemplate  DataType="{x:Type models:ExplorerItemModel}"
+                                                   ItemsSource="{Binding Path=Children}">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal"
                                             AllowDrop="True"
@@ -104,14 +110,15 @@
                                         <ContextMenu Visibility="{Binding CanSelectDependencies, Converter={StaticResource BoolToVisConverter}}">
                                             <MenuItem Header="Select All Dependencies"
                                                       Click="MenuItem_OnClick"
-                                                      Visibility="{Binding CanSelectDependencies,Converter={StaticResource BoolToVisConverter}}"></MenuItem>
+                                                      Visibility="{Binding CanSelectDependencies,Converter={StaticResource BoolToVisConverter}}">
+                                            </MenuItem>
                                         </ContextMenu>
                                     </StackPanel.ContextMenu>
                                     <!--TODO i:Interaction.Behaviors>
                                     <local:NavigationItemViewModelMouseDownBehavior SelectOnClick="True" />
                                 </i:Interaction.Behaviors-->
 
-                                    <CheckBox IsChecked="{Binding IsChecked}"
+                                    <CheckBox IsChecked="{Binding IsChecked,Mode=TwoWay}"
                                               Margin="0,0,5,0">
                                         <AutomationProperties.AutomationId>
                                             <MultiBinding StringFormat="UI_CheckBox{0}_AutoID">
@@ -119,13 +126,10 @@
                                             </MultiBinding>
                                         </AutomationProperties.AutomationId>
                                     </CheckBox>
-
                                     <ContentControl Content="{Binding}">
                                         <!--2013.07.04: Ashley lewis for bug 9811 - moved to DataTemplates.xaml -->
                                     </ContentControl>
-
                                 </StackPanel>
-
                                 <ContentControl Content="{Binding}"
                                                 Height="20"
                                                 Visibility="{Binding IsAuthorizedDeployFrom, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
@@ -154,25 +158,28 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <Dev2:ConnectControl Grid.Row="0"
+                <dev2:ConnectControl Grid.Row="0"
                                      Margin="3"
-                                     LabelText="Destination Server:"                                     
+                                     LabelText="Destination Server:"
                                      ConnectButtonAutomationID="UI_DestinationServerConnectbtn_AutoID"
                                      EditButtonAutomationID="UI_DestinationServerEditbtn_AutoID"
                                      ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID"
                                      BindToActiveEnvironment="False"
                                      ConnectControlInstanceType="DeployTarget">
-                    <Dev2:ConnectControl.IsDropDownEnabled>
+                    <dev2:ConnectControl.IsDropDownEnabled>
                         <MultiBinding Converter="{StaticResource ConnectControlDisableConverter}">
-                            <Binding Path="DataContext.Target.IsRefreshing" ElementName="DeployUserControl"></Binding>
-                            <Binding Path="DataContext.Source.IsRefreshing" ElementName="DeployUserControl"></Binding>
+                            <Binding Path="DataContext.Target.IsRefreshing"
+                                     ElementName="DeployUserControl"></Binding>
+                            <Binding Path="DataContext.Source.IsRefreshing"
+                                     ElementName="DeployUserControl"></Binding>
                         </MultiBinding>
-                    </Dev2:ConnectControl.IsDropDownEnabled>
-                </Dev2:ConnectControl>
+                    </dev2:ConnectControl.IsDropDownEnabled>
+                </dev2:ConnectControl>
 
                 <nv:NavigationView Grid.Row="2"
                                    DataContext="{Binding Target}"
                                    x:Name="TargetNavigationView">
+
                     <nv:NavigationView.ItemContainerStyle>
                         <Style TargetType="{x:Type TreeViewItem}"
                                BasedOn="{StaticResource {x:Type TreeViewItem}}">
@@ -210,17 +217,18 @@
                             </Style.Triggers>
                         </Style>
                     </nv:NavigationView.ItemContainerStyle>
+
                     <nv:NavigationView.ItemTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}"
+                        <HierarchicalDataTemplate DataType="{x:Type models:ExplorerItemModel}"
                                                   ItemsSource="{Binding Path=Children}">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal"
                                             AllowDrop="True"
                                             Height="20"
                                             Visibility="{Binding IsAuthorizedDeployTo, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                                    <i:Interaction.Behaviors>
+                                    <!--<i:Interaction.Behaviors>
                                         <local:NavigationItemViewModelMouseDownBehavior />
-                                    </i:Interaction.Behaviors>
+                                    </i:Interaction.Behaviors>-->
 
                                     <ContentControl Content="{Binding}">
                                         <!--2013.07.04: Ashley lewis for bug 9811 - moved to DataTemplates.xaml -->
@@ -233,15 +241,11 @@
 
                                 <Border Style="{StaticResource UnauthorizedTreeViewBorderStyle}"
                                         Visibility="{Binding IsAuthorizedDeployTo, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                                    <!-- Fix some weird 1px issue on just the target  -->
-                                    <Border Background="{StaticResource TreeViewBackgroundBrush}"
-                                            Margin="-1,0">
-                                        <StackPanel Style="{StaticResource UnauthorizedTreeViewStackPanelStyle}">
-                                            <Image Style="{StaticResource AuthNoneIconRibbonStyle}" />
-                                            <TextBlock Style="{StaticResource UnauthorizedTreeViewTextBlockStyle}"
-                                                       Text="{x:Static help:HelpTextResources.DeploySecurityToUnauthorized}"></TextBlock>
-                                        </StackPanel>
-                                    </Border>
+                                    <StackPanel Style="{StaticResource UnauthorizedTreeViewStackPanelStyle}">
+                                        <Image Style="{StaticResource AuthNoneIconRibbonStyle}" />
+                                        <TextBlock Style="{StaticResource UnauthorizedTreeViewTextBlockStyle}"
+                                                   Text="{x:Static help:HelpTextResources.DeploySecurityToUnauthorized}"></TextBlock>
+                                    </StackPanel>
                                 </Border>
                             </StackPanel>
                         </HierarchicalDataTemplate>
@@ -437,7 +441,7 @@
                                    VerticalAlignment="Center"
                                    Margin="3,0,0,0" />
                     </StackPanel>
-                   
+
                     <customControls2:CircularProgressBar Height="15"
                                                          Width="15"
                                                          VerticalAlignment="Center"

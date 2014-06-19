@@ -1,32 +1,34 @@
-﻿using System.Windows.Input;
-using Caliburn.Micro;
-using Dev2.Providers.Logs;
+﻿using Dev2.Data.ServiceModel;
 using Dev2.Services.Events;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
-using Dev2.Studio.ViewModels.Explorer;
+using Dev2.Studio.ViewModels.Navigation;
+using System;
+using System.Windows.Input;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow
 {
-    public class DsfActivityDropViewModel : SimpleBaseViewModel, IHandle<SetSelectedIContextualResourceModel>
+    public class DsfActivityDropViewModel : SimpleBaseViewModel
     {
         #region Fields
 
         private RelayCommand _executeCommmand;
         private RelayCommand _cancelComand;
+
         private IContextualResourceModel _selectedResource;
 
         #endregion Fields
 
         #region Ctor
 
-        public DsfActivityDropViewModel(ExplorerViewModel explorerViewModel, enDsfActivityType dsfActivityType)
+        public DsfActivityDropViewModel(INavigationViewModel navigationViewModel, enDsfActivityType dsfActivityType)
         {
-            ExplorerViewModel = explorerViewModel;
+            NavigationViewModel = navigationViewModel;
             ActivityType = dsfActivityType;
+
             Init();
             EventPublishers.Aggregator.Subscribe(this);
         }
@@ -60,7 +62,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public enDsfActivityType ActivityType { get; private set; }
 
-        public ExplorerViewModel ExplorerViewModel { get; private set; }
+        public INavigationViewModel NavigationViewModel { get; private set; }
 
         public string SelectedResourceName { get; set; }
 
@@ -78,7 +80,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-
         #endregion Properties
 
         #region Commands
@@ -94,7 +95,45 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return _executeCommmand;
             }
         }
-        public bool CanOkay { get { return SelectedResourceModel != null; } }
+        public bool CanOkay { get { return CanSelect(); } }
+
+
+        private bool CanSelect()
+        {
+            bool isMatched = false;
+
+            var explorerItemModel = NavigationViewModel.SelectedItem;
+
+            if(explorerItemModel != null)
+            {
+                switch(ActivityType)
+                {
+                    case enDsfActivityType.Workflow:
+                        isMatched = explorerItemModel.ResourceType == ResourceType.WorkflowService;
+                        break;
+                    case enDsfActivityType.Service:
+                        isMatched = explorerItemModel.ResourceType == ResourceType.DbService ||
+                                    explorerItemModel.ResourceType == ResourceType.PluginService ||
+                                    explorerItemModel.ResourceType == ResourceType.WebService;
+                        break;
+                    case enDsfActivityType.All:
+                        isMatched = explorerItemModel.ResourceType != ResourceType.Folder &&
+                                    explorerItemModel.ResourceType != ResourceType.Server &&
+                                    explorerItemModel.ResourceType != ResourceType.ServerSource;
+                        break;
+                    default:
+                        isMatched = explorerItemModel.ResourceType != ResourceType.Folder &&
+                                    explorerItemModel.ResourceType != ResourceType.WorkflowService &&
+                                    explorerItemModel.ResourceType != ResourceType.DbService &&
+                                    explorerItemModel.ResourceType != ResourceType.PluginService &&
+                                    explorerItemModel.ResourceType != ResourceType.WebService;
+                        break;
+                }
+            }
+
+            return explorerItemModel != null
+                && isMatched;
+        }
 
         public ICommand CancelCommand
         {
@@ -112,60 +151,57 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Methods
 
+        public Func<IEnvironmentRepository> GetEnvironmentRepository = () => EnvironmentRepository.Instance;
+
         /// <summary>
         /// Used for saving the data input by the user to the file system and pushing the data back at the workflow
         /// </summary>
         public void Okay()
         {
-            RequestClose(ViewModelDialogResults.Okay);
-            //Dispose();
+            var selectedItem = NavigationViewModel.SelectedItem;
+            if(selectedItem == null)
+            {
+                return;
+            }
+
+            var environment = GetEnvironmentRepository().FindSingle(ev => ev.ID == selectedItem.EnvironmentId);
+
+            if(environment == null)
+            {
+                return;
+            }
+
+            SelectedResourceModel = environment.ResourceRepository.FindSingleWithPayLoad(r => r.ID == selectedItem.ResourceId) as IContextualResourceModel;
+
+            if(SelectedResourceModel != null)
+            {
+                RequestClose(ViewModelDialogResults.Okay);
+            }
         }
 
         /// <summary>
-        /// Used for canceling the drop of the design surface
+        /// Used for canceling the drop of t    he design surface
         /// </summary>
         public void Cancel()
         {
             RequestClose(ViewModelDialogResults.Cancel);
-            //Dispose();
         }
 
         #endregion Methods
-
-        #region Private Methods
-
-
-
-        #endregion Private Methods
-
-        #region Implementation of IHandle<SetSelectedIContextualResourceModel>
-
-        public void Handle(SetSelectedIContextualResourceModel message)
-        {
-            this.TraceInfo(message.GetType().Name);
-            SelectedResourceModel = message.SelectedResource;
-            if(message.DidDoubleClickOccur)
-            {
-                Okay();
-            }
-        }
-
-        #endregion
 
         #region Implementation of IDisposable
 
         protected override void OnDispose()
         {
-            if(ExplorerViewModel != null)
+            if(NavigationViewModel != null)
             {
-                ExplorerViewModel.Dispose();
-                ExplorerViewModel = null;
+                NavigationViewModel.Dispose();
+                NavigationViewModel = null;
             }
             EventPublishers.Aggregator.Unsubscribe(this);
 
             base.OnDispose();
         }
-
         #endregion
     }
 }

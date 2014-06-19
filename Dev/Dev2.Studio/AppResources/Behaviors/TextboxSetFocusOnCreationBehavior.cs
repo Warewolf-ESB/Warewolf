@@ -30,21 +30,24 @@ namespace Dev2.Studio.AppResources.Behaviors
         }
 
         public static readonly DependencyProperty IsRenamingProperty =
-            DependencyProperty.Register("IsRenaming", typeof(bool), typeof(TextboxSetFocusOnCreationBehavior), 
+            DependencyProperty.Register("IsRenaming", typeof(bool), typeof(TextboxSetFocusOnCreationBehavior),
             new PropertyMetadata(false, PropertyChangedCallback));
 
         private static void PropertyChangedCallback(DependencyObject o, DependencyPropertyChangedEventArgs args)
         {
-            var behavior = (TextboxSetFocusOnCreationBehavior) o;
+            var behavior = (TextboxSetFocusOnCreationBehavior)o;
             behavior.UpdateVisibility();
         }
 
         private void UpdateVisibility()
         {
-            if (IsRenaming)
+            if(IsRenaming)
             {
-                AssociatedObject.Visibility = Visibility.Visible;
-                AssociatedObject.Focus();
+                if(AssociatedObject != null)
+                {
+                    AssociatedObject.Visibility = Visibility.Visible;
+                    AssociatedObject.Focus();
+                }
             }
             else
             {

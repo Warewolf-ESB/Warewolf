@@ -7,10 +7,12 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
+using Dev2.Models;
 using Dev2.Providers.Logs;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Utils;
 using Microsoft.CSharp.RuntimeBinder;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -76,25 +78,34 @@ namespace Dev2.Activities.Designers2.Sequence
 
         public bool SetModelItemForServiceTypes(IDataObject dataObject)
         {
-            if(dataObject != null && dataObject.GetDataPresent(GlobalConstants.ResourceTreeViewModelFormat))
+            if(dataObject != null && dataObject.GetDataPresent(GlobalConstants.ExplorerItemModelFormat))
             {
-                dynamic resourceTreeViewModel = dataObject.GetData(GlobalConstants.ResourceTreeViewModelFormat);
+                var explorerItemModel = dataObject.GetData(GlobalConstants.ExplorerItemModelFormat);
                 try
                 {
-                    var resource = resourceTreeViewModel.DataContext as ResourceModel;
-                    if(resource != null)
+                    ExplorerItemModel itemModel = explorerItemModel as ExplorerItemModel;
+                    if(itemModel != null)
                     {
-                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true);
-                        d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.ResourceName;
-                        d.IconPath = resource.IconPath;
-                        WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource);
-                        ModelItem modelItem = ModelItemUtils.CreateModelItem(d);
-                        if(modelItem != null)
+                        IEnvironmentModel environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == itemModel.EnvironmentId);
+                        if(environmentModel != null)
                         {
-                            dynamic mi = ModelItem;
-                            ModelItemCollection activitiesCollection = mi.Activities;
-                            activitiesCollection.Insert(activitiesCollection.Count, d);
-                            return true;
+                            var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == itemModel.ResourceId) as IContextualResourceModel;
+
+                            if(resource != null)
+                            {
+                                DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true);
+                                d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
+                                d.IconPath = resource.IconPath;
+                                WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource);
+                                ModelItem modelItem = ModelItemUtils.CreateModelItem(d);
+                                if(modelItem != null)
+                                {
+                                    dynamic mi = ModelItem;
+                                    ModelItemCollection activitiesCollection = mi.Activities;
+                                    activitiesCollection.Insert(activitiesCollection.Count, d);
+                                    return true;
+                                }
+                            }
                         }
                     }
                 }

@@ -5,8 +5,7 @@
                     xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
                     xmlns:behavior2="clr-namespace:Dev2.CustomControls.Behavior"
                     xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"
-                    xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
-                    >
+    xmlns:explorer="clr-namespace:Dev2.Models;assembly=Dev2.Studio.Core">
 
     <DataTemplate x:Key="ErrorListTemplate">
         <Grid>
@@ -27,30 +26,9 @@
                        Margin="2"
                        Text="{Binding Path=Message}"></TextBlock>
         </Grid>
-    </DataTemplate>
+    </DataTemplate>    
 
-    <DataTemplate DataType="{x:Type navigation:CategoryTreeViewModel}">
-        <StackPanel Orientation="Horizontal">
-            <TextBox Text="{Binding DisplayName, Mode=TwoWay}" Padding="3,0,0,0"
-                                                     micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"
-                                                     Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}">
-                <i:Interaction.Behaviors>
-                    <behavior:ControlEnterToTabBehavior NumberOfMoves="1"/>
-                    <local:TextboxSelectAllOnFocusBehavior/>
-                    <local:TextboxSetFocusOnCreationBehavior IsRenaming="{Binding IsRenaming}"/>
-                    <behavior2:TextChangedRegexBehavior RegexOptions="{Binding DisplayNameValidationRegex}"/>
-                </i:Interaction.Behaviors>
-            </TextBox>
-            <TextBlock Text="{Binding DisplayName, Mode=OneWay}" Padding="3,0,0,0" Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}" >
-            </TextBlock>
-            <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-            <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" 
-                                                       Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-            <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
-        </StackPanel>
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type navigation:ResourceTreeViewModel}">
+    <DataTemplate DataType="{x:Type explorer:ExplorerItemModel}">
         <StackPanel Orientation="Horizontal">
             <TextBox Text="{Binding DisplayName, Mode=TwoWay}" Padding="3,0,0,0"
                                                      micro:Message.Attach="[Event LostFocus] = [Action CancelRename];[Event KeyDown] = [Action CancelRename($EventArgs)]"
@@ -75,23 +53,10 @@
                     </Binding>
                 </TextBlock.Text>
             </TextBlock>
+            <TextBlock Text=" (" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+            <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}" 
+                                                       Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
+            <TextBlock Text=")" Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}"/>
         </StackPanel>
-    </DataTemplate>
-
-    <DataTemplate DataType="{x:Type navigation:AbstractTreeViewModel}">
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="{Binding DisplayName, Mode=OneWay}"
-                       Padding="3,0,0,0"
-                       Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
-            <TextBox Text="{Binding DisplayName, Mode=OneWay}"
-                     Padding="3,0,0,0"
-                     Visibility="{Binding IsRenaming, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
-            <TextBlock Text=" ("
-                       Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}" />
-            <TextBlock Text="{Binding ChildrenCount, Mode=OneWay}"
-                       Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}" />
-            <TextBlock Text=")"
-                       Visibility="{Binding ChildrenCount, Converter={StaticResource IntToVisibilityConverter}}" />
-        </StackPanel>
-    </DataTemplate>
+    </DataTemplate>   
 </ResourceDictionary>

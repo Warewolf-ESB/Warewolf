@@ -73,24 +73,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
             return GetOkButtonOnActivityDropWindow().Enabled;
         }
 
-        /// <summary>
-        /// SingleClickAFolder
-        /// </summary>
-        public void SingleClickAFolder()
-        {
-            var localHostExplorerTree = GetLocalHostExplorerTree();
-            foreach(var treeChild in localHostExplorerTree.GetChildren())
-            {
-                var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
-                if(workflowsAutoID.Contains("WORKFLOW"))
-                {
-                    var firstFolder = treeChild.GetChildren().FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
-                    Mouse.Click(firstFolder, new Point(57, 9));
-                    return;
-                }
-            }
-            throw new UITestControlNotFoundException("Folder not found");
-        }
+        
 
         private UITestControl GetLocalHostExplorerTree()
         {
@@ -118,56 +101,42 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
             }
             throw new UITestControlNotFoundException("Localhost explorer tree not found, Activity Drop Window may not have openned yet.");
         }
-
+        
         /// <summary>
-        /// SingleClickAResource
+        /// SingleClickAFolder
         /// </summary>
-        public void SingleClickFirstResource()
+        public void SingleClickAFolder(string folderName)
         {
             var localHostExplorerTree = GetLocalHostExplorerTree();
-            foreach(var treeChild in localHostExplorerTree.GetChildren())
+            var resource = localHostExplorerTree.GetChildren()
+                                 .First(i => i.GetProperty("AutomationID").ToString().Contains(folderName));
+
+            if(resource == null)
             {
-                var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
-                if(workflowsAutoID.Contains("WORKFLOW"))
-                {
-                    var firstFolder = treeChild.GetChildren()[6];
-                    if(firstFolder.ControlType == "TreeItem")
-                    {
-                        var firstResource = firstFolder.GetChildren()[7];
-                        if(firstResource.ControlType == "TreeItem")
-                        {
-                            Mouse.Click(firstResource, new Point(73, 9));
-                            return;
-                        }
-                    }
-                }
+                throw new UITestControlNotFoundException("Resource not found");
             }
-            throw new UITestControlNotFoundException("No resources found");
+
+            Mouse.Click(resource, new Point(57, 9));
+            Playback.Wait(100);
         }
 
-        public void SingleClickFirstWorkflow()
+        public void SingleClickResource(string folderName, string resourceName)
         {
             var localHostExplorerTree = GetLocalHostExplorerTree();
-            foreach(var treeChild in localHostExplorerTree.GetChildren())
+
+            var resource = localHostExplorerTree.GetChildren()
+                                 .First(i => i.GetProperty("AutomationID").ToString().Contains(folderName))
+                                 .GetChildren()
+                                 .FirstOrDefault(i => i.GetProperty("AutomationID").ToString().Contains(resourceName));
+
+            if(resource == null)
             {
-                var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
-                if(workflowsAutoID.Contains("WORKFLOW"))
-                {
-                    UITestControlCollection uiTestControlCollection = treeChild.GetChildren();
-                    UITestControl firstFolder = uiTestControlCollection.FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
-
-                    Mouse.DoubleClick(firstFolder, new Point(57, 9));
-                    Playback.Wait(300);
-                    UITestControlCollection firstFolderChildren = firstFolder.GetChildren();
-                    UITestControl firstWorkflow = firstFolderChildren.FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
-                    Mouse.Click(firstWorkflow, new Point(57, 9));
-                    Playback.Wait(100);
-                    return;
-                }
+                throw new UITestControlNotFoundException("Resource not found");
             }
-            throw new UITestControlNotFoundException("Folder not found");
-        }
 
+            Mouse.Click(resource, new Point(57, 9));
+            Playback.Wait(100);
+        }
 
         /// <summary>
         /// DoubleClickAFolder
@@ -192,27 +161,25 @@ namespace Dev2.Studio.UI.Tests.UIMaps.ActivityDropWindowUIMapClasses
             throw new UITestControlNotFoundException("Folder not found");
         }
 
-        /// <summary>
-        /// DoubleClickAResource
-        /// </summary>
-        public void DoubleClickAResource(int idx = 0)
+        public void SelectAResourceAndClickOk(string folderName, string resourceName)
         {
             var localHostExplorerTree = GetLocalHostExplorerTree();
-            foreach(var treeChild in localHostExplorerTree.GetChildren())
+
+            var resource = localHostExplorerTree.GetChildren()
+                                 .First(i => i.GetProperty("AutomationID").ToString().Contains(folderName))
+                                 .GetChildren()
+                                 .FirstOrDefault(i => i.GetProperty("AutomationID").ToString().Contains(resourceName));
+
+            if(resource == null)
             {
-                var workflowsAutoID = treeChild.GetProperty("AutomationID").ToString();
-                if(workflowsAutoID.Contains("WORKFLOW"))
-                {
-                    var firstFolder = treeChild.GetChildren().FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
-                    var firstResource = firstFolder.GetChildren().FirstOrDefault(c => c.ControlType == ControlType.TreeItem);
-
-                    Mouse.DoubleClick(firstResource, new Point(73, 9));
-                    Playback.Wait(150);
-                    return;
-
-                }
+                throw new UITestControlNotFoundException("Resource not found");
             }
-            throw new UITestControlNotFoundException("No resources found");
+
+            Mouse.Click(resource, new Point(57, 9));
+            Playback.Wait(100);
+
+            ClickOkButton();
         }
+
     }
 }

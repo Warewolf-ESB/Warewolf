@@ -2,13 +2,18 @@
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using Caliburn.Micro;
+using Dev2.AppResources.Enums;
+using Dev2.Data.ServiceModel;
+using Dev2.Models;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Navigation;
-using Dev2.Studio.ViewModels.Navigation;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.AppResources.Behaviors
+// ReSharper restore CheckNamespace
 {
     public class NavigationItemViewModelMouseDownBehavior : Behavior<FrameworkElement>
     {
@@ -50,6 +55,26 @@ namespace Dev2.Studio.AppResources.Behaviors
         #endregion Override Methods
 
         #region Dependency Properties
+
+        #region NavigationViewContextType
+
+        public NavigationViewContextType NavigationViewContextType
+        {
+            get
+            {
+                return (NavigationViewContextType)GetValue(NavigationViewContextTypeProperty);
+            }
+            set
+            {
+                SetValue(NavigationViewContextTypeProperty, value);
+            }
+        }
+
+        // Using a DependencyProperty as the backing store for NavigationViewContextTypeProperty.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty NavigationViewContextTypeProperty =
+            DependencyProperty.Register("NavigationViewContextTypeProperty", typeof(NavigationViewContextType), typeof(NavigationItemViewModelDragDropBehavior), new PropertyMetadata(NavigationViewContextType.Explorer));
+
+        #endregion
 
         #region SetActiveEnvironmentOnClick
 
@@ -152,10 +177,10 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         protected void OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            e.Handled = OnMouseDown(AssociatedObject.DataContext as ITreeNode, e.ClickCount);
+            e.Handled = OnMouseDown(AssociatedObject.DataContext as ExplorerItemModel, e.ClickCount);
         }
 
-        protected bool OnMouseDown(ITreeNode treenode, int clickCount)
+        protected bool OnMouseDown(IExplorerItemModel treenode, int clickCount)
         {
             if(treenode == null)
             {
@@ -165,58 +190,80 @@ namespace Dev2.Studio.AppResources.Behaviors
             //Select on rightclick
             if(SelectOnRightClick)
             {
-                treenode.IsSelected = true;
+                SetIsSelected(treenode, true);
             }
 
             //
             // Active environment logic
             //
-            if(SetActiveEnvironmentOnClick && treenode.EnvironmentModel != null)
+            if(SetActiveEnvironmentOnClick)
             {
-                _eventPublisher.Publish(new SetActiveEnvironmentMessage(treenode.EnvironmentModel));
+                IEnvironmentModel environment = EnvironmentRepository.Instance.FindSingle(environmentModel => environmentModel.ID == treenode.EnvironmentId);
+                _eventPublisher.Publish(new SetActiveEnvironmentMessage(environment));
             }
 
-            var model = treenode as ResourceTreeViewModel;
-            if(model != null)
+            var model = treenode;
+            if(model.Permissions < Permissions.View)
             {
-                var resourceTreeViewModel = model;
-                if(resourceTreeViewModel.DataContext != null)
+                SetIsSelected(treenode, true);
+                return true;
+            }
+
+            //
+            // Double click logic
+            //
+            if(OpenOnDoubleClick && clickCount == 2)
+            {
+                if(model.ResourceType >= ResourceType.Folder)
                 {
-                    if(!resourceTreeViewModel.DataContext.IsAuthorized(AuthorizationContext.View))
-                    {
-                        return true;
-                    }
-
-                    //
-                    // Double click logic
-                    //
-                    if(OpenOnDoubleClick && clickCount == 2)
-                    {
-                        _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, true));
-                        if(!DontAllowDoubleClick)
-                        {
-                            if(resourceTreeViewModel.EditCommand.CanExecute(null))
-                            {
-                                resourceTreeViewModel.EditCommand.Execute(null);
-                            }
-
-                            //
-                            // Event is set as handled to stop expansion of the treeview item if the behaviour is attached to an item in the treeview
-                            //
-                            return true;
-                        }
-                    }
-                    else if(OpenOnDoubleClick && clickCount == 1)
-                    {
-                        _eventPublisher.Publish(new SetSelectedIContextualResourceModel(resourceTreeViewModel.DataContext, false));
-                    }
+                    SetIsExpanded(model);
+                }
+                if(model.CanEdit)
+                {
+                    model.EditCommand.Execute(null);
                 }
             }
-            else
+
+            SetIsSelected(treenode, true);
+            return true;
+        }
+
+        void SetIsExpanded(IExplorerItemModel treenode)
+        {
+            switch(NavigationViewContextType)
             {
-                _eventPublisher.Publish(new SetSelectedIContextualResourceModel(null, false));
+                case NavigationViewContextType.Explorer:
+                    treenode.IsExplorerExpanded = !treenode.IsExplorerExpanded;
+                    break;
+                case NavigationViewContextType.ResourcePicker:
+                    treenode.IsResourcePickerExpanded = !treenode.IsResourcePickerExpanded;
+                    break;
+                case NavigationViewContextType.DeploySource:
+                    treenode.IsDeploySourceExpanded = !treenode.IsDeploySourceExpanded;
+                    break;
+                case NavigationViewContextType.DeployTarget:
+                    treenode.IsDeployTargetExpanded = !treenode.IsDeployTargetExpanded;
+                    break;
             }
-            return false;
+        }
+
+        void SetIsSelected(IExplorerItemModel treenode, bool value)
+        {
+            switch(NavigationViewContextType)
+            {
+                case NavigationViewContextType.Explorer:
+                    treenode.IsExplorerSelected = value;
+                    break;
+                case NavigationViewContextType.ResourcePicker:
+                    treenode.IsResourcePickerSelected = value;
+                    break;
+                case NavigationViewContextType.DeploySource:
+                    treenode.IsDeploySourceSelected = value;
+                    break;
+                case NavigationViewContextType.DeployTarget:
+                    treenode.IsDeployTargetSelected = value;
+                    break;
+            }
         }
 
         #endregion Event Handler Methods

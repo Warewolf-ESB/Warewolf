@@ -29,13 +29,14 @@ namespace Dev2 {
          }
 
          /// <summary>
-         /// Verifies that the given string is not null or whitespace.
+         /// Verifies that the given string is not null, empty or whitespace.
          /// </summary>
          /// <param name="name">The argument name.</param>
          /// <param name="value">The value.</param>
         public static void IsNotNullOrWhitespace([NotNull]string name, string value) {
-            if (string.IsNullOrWhiteSpace(value)) {
-                throw new ArgumentOutOfRangeException(name, "The argument must not be null or empty and must contain non-whitespace characters must");
+            if(string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(name, "The argument must not be null or empty and must contain non-whitespace characters must");
             }
          }
     }

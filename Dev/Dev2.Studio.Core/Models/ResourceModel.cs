@@ -20,7 +20,6 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Utils;
 using Action = System.Action;
 
 // ReSharper disable CheckNamespace
@@ -55,8 +54,6 @@ namespace Dev2.Studio.Core.Models
         Guid _id;
 
         IDesignValidationService _validationService;
-        IPermissionsModifiedService _permissionsModifiedService;
-
         readonly ObservableReadOnlyList<IErrorInfo> _errors = new ObservableReadOnlyList<IErrorInfo>();
         readonly ObservableReadOnlyList<IErrorInfo> _fixedErrors = new ObservableReadOnlyList<IErrorInfo>();
         bool _isValid;
@@ -137,11 +134,6 @@ namespace Dev2.Studio.Core.Models
 
                     // BUG 9634 - 2013.07.17 - TWR : added
                     _validationService.Subscribe(_environment.ID, ReceiveEnvironmentValidation);
-
-                    _permissionsModifiedService = new PermissionsModifiedService(_environment.Connection.ServerEvents);
-
-                    // MUST subscribe to Guid.Empty as memo.InstanceID is NOT set by server!
-                    _permissionsModifiedService.Subscribe(Guid.Empty, ReceivePermissionsModified);
                 }
                 NotifyOfPropertyChange("Environment");
                 // ReSharper disable NotResolvedInText
@@ -150,31 +142,6 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public event EventHandler<PermissionsModifiedMemo> OnPermissionsModifiedReceived;
-
-        void ReceivePermissionsModified(PermissionsModifiedMemo memo)
-        {
-            if(memo.ServerID == Environment.Connection.ServerID)
-            {
-                var modifiedPermissions = memo.ModifiedPermissions.Where(p => p.ResourceID == ID || p.ResourceID == Guid.Empty).ToList();
-            if(modifiedPermissions.Count > 0)
-            {
-                try
-                {
-                    UserPermissions = Environment.AuthorizationService.GetResourcePermissions(ID);
-                }
-                catch(SystemException exception)
-                {
-                    HelperUtils.ShowTrustRelationshipError(exception);
-                }
-            }
-
-            if(OnPermissionsModifiedReceived != null)
-            {
-                OnPermissionsModifiedReceived(this, memo);
-            }
-        }
-        }
 
         public Guid ServerID { get; set; }
 
@@ -496,9 +463,9 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        public IList<IErrorInfo> GetErrors(Guid instanceID)
+        public IList<IErrorInfo> GetErrors(Guid instanceId)
         {
-            return _errors.Where(e => e.InstanceID == instanceID).ToList();
+            return _errors.Where(e => e.InstanceID == instanceId).ToList();
         }
 
         public void AddError(IErrorInfo error)
@@ -793,10 +760,10 @@ namespace Dev2.Studio.Core.Models
             {
                 _validationService.Dispose();
             }
-            if(_permissionsModifiedService != null)
-            {
-                _permissionsModifiedService.Dispose();
-            }
+//            if(_permissionsModifiedService != null)
+//            {
+//                _permissionsModifiedService.Dispose();
+//            }
             base.OnDispose();
         }
     }

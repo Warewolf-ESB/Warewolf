@@ -158,6 +158,10 @@
     <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Binaries\RibbonControlsLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="ServiceStack.Common, Version=3.9.37.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Activities" />
     <Reference Include="System.Activities.Core.Presentation" />
@@ -265,6 +269,7 @@
     <Compile Include="AppResources\Behaviors\WebControlTitleBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
     <Compile Include="AppResources\Behaviors\XamlDockManagerLayoutPersistenceBehavior.cs" />
+    <Compile Include="AppResources\Converters\ExplorerItemModelToIconConverter.cs" />
     <Compile Include="AppResources\Converters\NavigationViewModelPermissionToBooleanConverter.cs" />
     <Compile Include="AppResources\Converters\CustomIcons.cs" />
     <Compile Include="AppResources\Converters\EmailSourceToDisplayTextConverter.cs" />
@@ -371,9 +376,11 @@
     <Compile Include="ViewModels\DependencyVisualization\DependencyGraphGenerator.cs" />
     <Compile Include="ViewModels\Deploy\DeployDialogTO.cs" />
     <Compile Include="ViewModels\Deploy\DeployDialogViewModel.cs" />
+    <Compile Include="ViewModels\Deploy\DeployNavigationViewModel.cs" />
+    <Compile Include="ViewModels\Deploy\NavigationViewModelBase.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
-    <Compile Include="ViewModels\Navigation\CategoryTreeViewModel.cs" />
+    <Compile Include="ViewModels\Navigation\INavigationViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DataListConversionUtils.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceContextViewModel.cs" />
     <Compile Include="Views\Deploy\DeployViewDialog.xaml.cs">
@@ -446,9 +453,6 @@
     <Compile Include="Webs\WebSites.cs" />
     <Compile Include="Webs\Callbacks\Dev2DecisionCallbackHandler.cs" />
     <Compile Include="AppResources\Comparers\DeployStatsTOComparer.cs" />
-    <Compile Include="AppResources\Converters\NavigationViewModelToImageConverter.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="AppResources\DependencyVisualization\Arrows\ArrowEnds.cs" />
     <Compile Include="AppResources\DependencyVisualization\Arrows\ArrowLine.cs" />
     <Compile Include="AppResources\DependencyVisualization\Arrows\ArrowLineBase.cs" />
@@ -495,13 +499,8 @@
     <Compile Include="ViewModels\Diagnostics\IExceptionViewModel.cs" />
     <Compile Include="ViewModels\Help\FeedbackViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\Navigation\EnvironmentTreeViewModel.cs" />
     <Compile Include="ViewModels\Navigation\IContextCommands.cs" />
-    <Compile Include="ViewModels\Navigation\AbstractTreeViewModel.cs" />
     <Compile Include="ViewModels\Navigation\NavigationViewModel.cs" />
-    <Compile Include="ViewModels\Navigation\ResourceTreeViewModel.cs" />
-    <Compile Include="ViewModels\Navigation\RootTreeViewModel.cs" />
-    <Compile Include="ViewModels\Navigation\ServiceTypeTreeViewModel.cs" />
     <Compile Include="ViewModels\Navigation\TreeViewModelHelper.cs" />
     <Compile Include="ViewModels\UiAutomation\AutomationIdCreaterViewModel.cs" />
     <Compile Include="ViewModels\Workflow\WorkflowDesignerViewModel.cs" />
@@ -574,9 +573,6 @@
     </Compile>
     <Compile Include="Views\Wizards\DataListChangeNotificationView.xaml.cs">
       <DependentUpon>DataListChangeNotificationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Workflow\ChooseActivityWindow.xaml.cs">
-      <DependentUpon>ChooseActivityWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Workflow\ConfigureDecisionWindow.xaml.cs">
       <DependentUpon>ConfigureDecisionWindow.xaml</DependentUpon>
@@ -1013,10 +1009,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Workflow\ChooseActivityWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\Workflow\ConfigureDecisionWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1056,6 +1048,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <None Include="Achitecture\EnvironmentRepositoryRelationships.cd" />
     <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Warewolf Studio.exe.config">
@@ -1081,6 +1074,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\EmailSource-32.png" />
+    <Resource Include="Images\PluginSource-32.png" />
+    <Resource Include="Images\WebSource-32.png" />
+    <Resource Include="Images\DatabaseSource-32.png" />
     <Resource Include="Images\ToolCMDLine-32.png" />
     <Resource Include="Images\ToolCopyRecords-32.png" />
     <Resource Include="Images\ToolCreateJSON-32.png" />

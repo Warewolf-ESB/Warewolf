@@ -4,6 +4,7 @@ using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.WebServer.Controllers
 {
     [AuthorizeWeb]
@@ -142,7 +143,7 @@ namespace Dev2.Runtime.WebServer.Controllers
 
         [HttpGet]
         [HttpPost]
-        [Route("services/{__name__}")]
+        [Route("services/{*__name__}")]
         public HttpResponseMessage ExecuteWorkflow(string __name__)
         {
             var requestVariables = new NameValueCollection

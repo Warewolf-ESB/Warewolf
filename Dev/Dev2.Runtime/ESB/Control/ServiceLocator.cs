@@ -48,7 +48,16 @@ namespace Dev2.Runtime.ESB.Control
             }
 
             var services = ResourceCatalog.Instance.GetDynamicObjects<DynamicService>(workspaceID, serviceID);
-            return services.FirstOrDefault();
+            var firstOrDefault = services.FirstOrDefault();
+            if(firstOrDefault != null)
+            {
+                firstOrDefault.ServiceId = serviceID;
+                firstOrDefault.Actions.ForEach(action =>
+                {
+                    action.ServiceID = serviceID;
+                });
+            }
+            return firstOrDefault;
         }
 
         /// <summary>
@@ -61,7 +70,7 @@ namespace Dev2.Runtime.ESB.Control
         public Source FindSourceByName(string sourceName, Guid workspaceID)
         {
 
-            if (string.IsNullOrEmpty(sourceName))
+            if(string.IsNullOrEmpty(sourceName))
             {
                 throw new InvalidDataException("Empty or null service passed in");
             }

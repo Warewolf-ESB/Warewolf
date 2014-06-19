@@ -128,6 +128,7 @@
     <Compile Include="Wrappers\Interfaces\IDirectoryEntry.cs" />
     <Compile Include="Wrappers\Interfaces\IDirectoryEntryFactory.cs" />
     <Compile Include="Wrappers\Interfaces\IFile.cs" />
+    <Compile Include="Wrappers\Interfaces\IFileSystemFactory.cs" />
     <Compile Include="Wrappers\Interfaces\IPath.cs" />
     <Compile Include="Wrappers\Interfaces\IWrappedObject.cs" />
   </ItemGroup>

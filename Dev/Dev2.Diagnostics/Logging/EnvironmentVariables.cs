@@ -44,6 +44,16 @@ namespace Dev2.Common
             }
         }
 
+        public static string ResourcePath
+        {
+            get
+            {
+
+                return Path.Combine(ApplicationPath, "Resources");
+              
+            }
+        }
+
         /// <summary>
         /// Gets the workspace path.
         /// </summary>
@@ -66,8 +76,8 @@ namespace Dev2.Common
         public static string GetWorkspacePath(Guid workspaceID)
         {
             return workspaceID == Guid.Empty
-                       ? ApplicationPath
-                       : Path.Combine(WorkspacePath, workspaceID.ToString());
+                       ? Path.Combine(ApplicationPath, "Resources")
+                       : Path.Combine( Path.Combine(WorkspacePath, workspaceID.ToString()),"Resources");
         }
 
         public static bool IsServerOnline { get; set; }

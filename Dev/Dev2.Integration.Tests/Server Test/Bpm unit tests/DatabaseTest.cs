@@ -2,6 +2,8 @@
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
 {
     /// <summary>
@@ -24,7 +26,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         public void RecordsetMapping_NestedWorkflows_MixedInputAndOutput_ExpectValidResult()
         {
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug_10247_Outter");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "TestCategory/Bug_10247_Outter");
             string expected = @"<rs  index=""1""><result>2</result></rs><rs index=""2""><result>3</result></rs>";
 
             //------------Execute Test---------------------------
@@ -42,7 +44,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         [TestMethod]
         public void DataBaseTest_CanDbServiceReturnCorrectCase()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Bug9490");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "TestCategory/Bug9490");
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
             const string expected1 = "<result index=\"1\"><val>abc_def_hij</val></result><result index=\"2\"><val>ABC_DEF_HIJ</val></result>";
@@ -56,7 +58,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         public void DBervice_Execute_WhenForEachWithDifferentColumnMappings_ExpectPass()
         {
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "ForEach DB Test");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/ForEach DB Test");
 
             //------------Execute Test---------------------------
             string result = TestHelper.PostDataToWebserver(postData);
@@ -72,7 +74,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         public void DBervice_Execute_WhenDataTableUsedAndHtmlRetured_ExpectPass()
         {
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "Service Serialization Test", "");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/Service Serialization Test", "");
 
             //------------Execute Test---------------------------
             string result = TestHelper.PostDataToWebserver(postData);
@@ -85,7 +87,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         [TestMethod]
         public void TestDBNullInsert_Expected_clientID()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=insert");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-TESTING/IntegrationTestDBEmptyToNull", "testType=insert");
             string result = TestHelper.PostDataToWebserver(postData);
             StringAssert.Contains(result, "<userID>");
         }
@@ -97,7 +99,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
             // ensure we get the same result 10 times ;)
             for(int i = 0; i < 10; i++)
             {
-                string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
+                string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-TESTING/IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
                 string result = TestHelper.PostDataToWebserver(postData);
                 StringAssert.Contains(result, "<val>ZZZ</val>", "Got [ " + result + " ]");
             }
@@ -106,7 +108,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         [TestMethod]
         public void TestDBNullLogicNotNullValue_Expected_AAA()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=dummy");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-TESTING/IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=dummy");
             string result = TestHelper.PostDataToWebserver(postData);
             StringAssert.Contains(result, "<val>AAA</val>", "Got [ " + result + " ]");
         }
@@ -114,7 +116,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         [TestMethod]
         public void TestDBNullLogicEmptyNullConvertOffValue_Expected_AAA()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "IntegrationTestDBEmptyToNull", "testType=nullActive&nullLogicValue=");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-TESTING/IntegrationTestDBEmptyToNull", "testType=nullActive&nullLogicValue=");
             string result = TestHelper.PostDataToWebserver(postData);
             StringAssert.Contains(result, "<val>ZZZ</val>", "Got [ " + result + " ]");
         }

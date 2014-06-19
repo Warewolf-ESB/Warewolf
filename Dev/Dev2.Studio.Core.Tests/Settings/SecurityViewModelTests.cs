@@ -776,7 +776,7 @@ namespace Dev2.Core.Tests.Settings
             };
 
             var picker = new Mock<IResourcePickerDialog>();
-            picker.Setup(p => p.ShowDialog()).Returns(false);
+            picker.Setup(p => p.ShowDialog(null)).Returns(false);
 
             var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), picker.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
 
@@ -845,7 +845,7 @@ namespace Dev2.Core.Tests.Settings
             };
 
             var picker = new Mock<IResourcePickerDialog>();
-            picker.Setup(p => p.ShowDialog()).Returns(true);
+            picker.Setup(p => p.ShowDialog(null)).Returns(true);
             picker.Setup(p => p.SelectedResource).Returns((IResourceModel)null);
 
             var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), picker.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
@@ -888,7 +888,7 @@ namespace Dev2.Core.Tests.Settings
             resourceModel.Setup(r => r.Category).Returns("Category2");
 
             var picker = new Mock<IResourcePickerDialog>();
-            picker.Setup(p => p.ShowDialog()).Returns(true);
+            picker.Setup(p => p.ShowDialog(It.IsAny<IEnvironmentModel>())).Returns(true);
             picker.Setup(p => p.SelectedResource).Returns(resourceModel.Object);
 
             var viewModel = new SecurityViewModel(new SecuritySettingsTO(new[] { permission }), picker.Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
@@ -931,7 +931,7 @@ namespace Dev2.Core.Tests.Settings
             };
 
             var picker = new Mock<IResourcePickerDialog>();
-            picker.Setup(p => p.ShowDialog()).Returns(false);
+            picker.Setup(p => p.ShowDialog(null)).Returns(false);
             picker.SetupProperty(p => p.SelectedResource);
 
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();

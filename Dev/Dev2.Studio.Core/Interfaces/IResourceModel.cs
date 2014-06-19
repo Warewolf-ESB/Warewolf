@@ -7,7 +7,7 @@ using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Models;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface IResourceModel : IWorkSurfaceObject
@@ -51,11 +51,10 @@ namespace Dev2.Studio.Core.Interfaces
         IObservableReadOnlyList<IErrorInfo> Errors { get; }
         IObservableReadOnlyList<IErrorInfo> FixedErrors { get; }
 
-        IList<IErrorInfo> GetErrors(Guid instanceID);
+        IList<IErrorInfo> GetErrors(Guid instanceId);
         void AddError(IErrorInfo error);
         void RemoveError(IErrorInfo error);
         void Commit();
         void Rollback();
-
     }
 }

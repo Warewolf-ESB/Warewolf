@@ -231,6 +231,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
                 }
+                else
+                {
+                    ConvertCollection.RemoveAt(i);
+                }
             }
 
         }

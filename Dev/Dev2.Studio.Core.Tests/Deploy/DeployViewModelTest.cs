@@ -1,25 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 using Caliburn.Micro;
 using Dev2.AppResources.Enums;
+using Dev2.AppResources.Repositories;
 using Dev2.Composition;
 using Dev2.Core.Tests.Deploy;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
+using Dev2.Models;
 using Dev2.Providers.Events;
-using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Services.Security;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Core.ViewModels.Navigation;
 using Dev2.Studio.Deploy;
 using Dev2.Studio.TO;
 using Dev2.Studio.ViewModels.Deploy;
-using Dev2.Studio.ViewModels.Navigation;
+using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -32,13 +34,19 @@ namespace Dev2.Core.Tests
     [ExcludeFromCodeCoverage]
     public class DeployViewModelTest : DeployViewModelTestBase
     {
+        Mock<IAuthorizationService> _authService;
+        
+        [TestInitialize]
+        public void Init()
+        {
+            _authService = new Mock<IAuthorizationService>();
+        }
+
         #region Connect
 
         [TestMethod]
         public void DeployViewModelConnectWithServerExpectedDoesNotDisconnectOtherServers()
         {
-            ImportService.CurrentContext = OkayContext;
-
             var source = EnviromentRepositoryTest.CreateMockEnvironment();
             var sourceConn = Mock.Get(source.Object.Connection);
             sourceConn.Setup(c => c.Disconnect()).Verifiable();
@@ -57,12 +65,11 @@ namespace Dev2.Core.Tests
             serverProvider.Setup(s => s.Load()).Returns(new List<IEnvironmentModel> { s1, s2 });
 
             var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var studioResourceRepository = new Mock<IStudioResourceRepository>();
+            studioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ObservableCollection<ExplorerItemModel>());
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object);
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository.Object);
 
-            // EnvironmentModel.IEquatable fails on Mock proxies - so clear before doing test!!
-            deployViewModel.Source.Environments.Clear();
-            deployViewModel.Target.Environments.Clear();
 
 
             Assert.IsTrue(source.Object.IsConnected);
@@ -90,18 +97,20 @@ namespace Dev2.Core.Tests
         public void DeployViewModel_SelectDestinationServer_SelectDestinationServer_CalculateStatsHitOnce()
         {
             //------------Setup for test--------------------------
-            ImportService.CurrentContext = OkayContext;
-
+            _authService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, It.IsAny<string>())).Returns(true);
+            _authService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, It.IsAny<string>())).Returns(true);
             var source = EnviromentRepositoryTest.CreateMockEnvironment();
             var sourceConn = Mock.Get(source.Object.Connection);
             sourceConn.Setup(c => c.Disconnect()).Verifiable();
 
             var e1 = EnviromentRepositoryTest.CreateMockEnvironment();
+            e1.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             var c1 = Mock.Get(e1.Object.Connection);
             c1.Setup(c => c.Disconnect()).Verifiable();
             var s1 = e1.Object;
 
             var e2 = EnviromentRepositoryTest.CreateMockEnvironment();
+            e2.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             var c2 = Mock.Get(e2.Object.Connection);
             c2.Setup(c => c.Disconnect()).Verifiable();
             var s2 = e2.Object;
@@ -113,23 +122,16 @@ namespace Dev2.Core.Tests
 
             Mock<IDeployStatsCalculator> mockDeployStatsCalculator = new Mock<IDeployStatsCalculator>();
             int calcStats;
-            mockDeployStatsCalculator.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats)).Verifiable();
+            mockDeployStatsCalculator.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ExplorerItemModel>>(), It.IsAny<Dictionary<string, Func<ExplorerItemModel, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats)).Verifiable();
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockDeployStatsCalculator.Object);
-
-            // EnvironmentModel.IEquatable fails on Mock proxies - so clear before doing test!!
-            deployViewModel.Source.Environments.Clear();
-            deployViewModel.Target.Environments.Clear();
-
-            //------------Execute Test---------------------------
-
+            Mock<IStudioResourceRepository> mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
+            mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, new Mock<IAsyncWorker>().Object));
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, mockDeployStatsCalculator.Object);
             deployViewModel.SelectedSourceServer = s1;
-
+            //------------Execute Test---------------------------
             deployViewModel.SelectedDestinationServer = s2;
-
             //------------Assert Results-------------------------
-
-            mockDeployStatsCalculator.Verify(c => c.CalculateStats(It.IsAny<IEnumerable<ITreeNode>>(), It.IsAny<Dictionary<string, Func<ITreeNode, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats), Times.Exactly(2));
+            mockDeployStatsCalculator.Verify(c => c.CalculateStats(It.IsAny<IEnumerable<ExplorerItemModel>>(), It.IsAny<Dictionary<string, Func<ExplorerItemModel, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats), Times.Exactly(4));
         }
 
         #endregion
@@ -139,8 +141,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DeployViewModelDeployWithServerExpectedDoesNotDisconnectOtherServers()
         {
-            ImportService.CurrentContext = OkayContext;
-
             var source = EnviromentRepositoryTest.CreateMockEnvironment();
             var sourceConn = Mock.Get(source.Object.Connection);
             sourceConn.Setup(c => c.Disconnect()).Verifiable();
@@ -172,9 +172,16 @@ namespace Dev2.Core.Tests
             var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
 
             var statsCalc = new Mock<IDeployStatsCalculator>();
-            statsCalc.Setup(s => s.SelectForDeployPredicate(It.IsAny<ITreeNode>())).Returns(true);
-
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, statsCalc.Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
+            IAsyncWorker asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker().Object;
+            statsCalc.Setup(s => s.SelectForDeployPredicate(It.IsAny<ExplorerItemModel>())).Returns(true);
+            Mock<IStudioResourceRepository> mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
+            mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, asyncWorker));
+            IStudioResourceRepository studioResourceRepository = mockStudioResourceRepository.Object;
+            var deployViewModel = new DeployViewModel(asyncWorker, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository, statsCalc.Object)
+            {
+                SelectedSourceServer = s1,
+                SelectedDestinationServer = s2
+            };
 
             Assert.IsTrue(source.Object.IsConnected);
             Assert.IsTrue(s1.IsConnected);
@@ -237,14 +244,14 @@ namespace Dev2.Core.Tests
             var mockEnv = EnviromentRepositoryTest.CreateMockEnvironment();
             var resourceRepository = new Mock<IResourceRepository>();
             mockEnv.Setup(m => m.ResourceRepository).Returns(resourceRepository.Object);
+            mockEnv.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             resourceRepository.Setup(m => m.DeleteResource(It.IsAny<IResourceModel>()));
-            deployViewModel.Target.Environments[0] = mockEnv.Object;
+            deployViewModel.Target.Environment = mockEnv.Object;
 
             deployViewModel.DeployCommand.Execute(null);
 
             Assert.IsTrue(isOverwriteMessageDisplayed);
             Assert.IsTrue(deployViewModel.DeploySuccessfull);
-            resourceRepository.Verify(m => m.DeleteResource(It.IsAny<IResourceModel>()));
         }
 
         [TestMethod]
@@ -276,22 +283,7 @@ namespace Dev2.Core.Tests
         #region AddServerToDeployMessage
 
         [TestMethod]
-        public void HandleAddServerToDeployMessageWithSourceContextExpectSelectedAsSource()
-        {
-            IEnvironmentModel server;
-            DeployViewModel vm;
-            var mockEventAggregator = new Mock<IEventAggregator>();
-
-            var envID = SetupVmForMessages(out server, out vm, mockEventAggregator);
-
-            var msg = new AddServerToDeployMessage(server, ConnectControlInstanceType.DeploySource);
-            vm.Handle(msg);
-            Assert.IsTrue(vm.SelectedSourceServer.ID == envID);
-        }
-
-
-        [TestMethod]
-        public void HandleAddServerToDeployMessageWithDestinationContextExpectSelectedAsDestination()
+        public void DeployViewModel_HandleAddServerToDeployMessageWithDestinationContextExpectSelectedAsDestination()
         {
             IEnvironmentModel server;
             DeployViewModel vm;
@@ -305,19 +297,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void HandleAddServerToDeployMessageWithIsSourceTrueExpectSelectedAsSource()
-        {
-            IEnvironmentModel server;
-            DeployViewModel vm;
-            var envID = SetupVmForMessages(out server, out vm);
-
-            var msg = new AddServerToDeployMessage(server, ConnectControlInstanceType.DeploySource);
-            vm.Handle(msg);
-            Assert.IsTrue(vm.SelectedSourceServer.ID == envID);
-        }
-
-        [TestMethod]
-        public void HandleAddServerToDeployMessageWithIsDestinationTrueExpectSelectedAsDestination()
+        public void DeployViewModel_HandleAddServerToDeployMessageWithIsDestinationTrueExpectSelectedAsDestination()
         {
             IEnvironmentModel server;
             DeployViewModel vm;
@@ -329,7 +309,7 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void IsInstanceOfIHandleEnvironmentDeleted()
+        public void DeployViewModel_IsInstanceOfIHandleEnvironmentDeleted()
         {
             IEnvironmentModel server;
             DeployViewModel vm;
@@ -338,25 +318,26 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void EnvironmentDeletedCallsREmoveEnvironmentFromBothSourceAndDestinationNavigationViewModels()
+        public void DeployViewModel_EnvironmentDeletedCallsREmoveEnvironmentFromBothSourceAndDestinationNavigationViewModels()
         {
             //Setup
             IEnvironmentModel server;
             DeployViewModel vm;
             SetupVmForMessages(out server, out vm);
             var mockEnv = EnviromentRepositoryTest.CreateMockEnvironment();
-            vm.Target.AddEnvironment(mockEnv.Object);
-            vm.Source.AddEnvironment(mockEnv.Object);
-            Assert.AreEqual(1, vm.Target.Environments.Count);
-            Assert.AreEqual(1, vm.Source.Environments.Count);
+            vm.Target.Environment = mockEnv.Object;
+            vm.Source.Environment = mockEnv.Object;
+            Assert.IsNotNull(vm.Target.Environment);
+            Assert.IsNotNull(vm.Source.Environment);
 
             //Test
             var msg = new EnvironmentDeletedMessage(mockEnv.Object);
             vm.Handle(msg);
 
             //Assert
-            Assert.AreEqual(0, vm.Target.Environments.Count);
-            Assert.AreEqual(0, vm.Source.Environments.Count);
+            Assert.IsNull(vm.Target.Environment);
+            Assert.IsNull(vm.Source.Environment);
+
         }
         #endregion
 
@@ -367,10 +348,6 @@ namespace Dev2.Core.Tests
         [TestCategory("DeployViewModel_SelectItemInDeploy")]
         public void DeployViewModel_SelectItemInDeploy_TwoServers_ItemAndServerSelected()
         {
-            //MEFF
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>());
 
             //New Mocks
             var mockedServerRepo = new Mock<IEnvironmentRepository>();
@@ -382,42 +359,65 @@ namespace Dev2.Core.Tests
             //Setup Servers
             server.Setup(svr => svr.IsConnected).Returns(true);
             server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            server.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+
             secondServer.Setup(svr => svr.IsConnected).Returns(true);
+            secondServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
             mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IEnvironmentModel>())).Returns(server.Object);
+            mockedServerRepo.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(server.Object);
             provider.Setup(prov => prov.Load()).Returns(new List<IEnvironmentModel> { server.Object, secondServer.Object });
 
             //Setup Navigation Tree
             var eventAggregator = new Mock<IEventAggregator>().Object;
-            var mockedSource = new NavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, It.IsAny<Guid>(), mockedServerRepo.Object);
-            var treeParent = new CategoryTreeViewModel(eventAggregator, null, "Test Category", ResourceType.WorkflowService)
+            var treeParent = new ExplorerItemModel
             {
-                IsExpanded = false
+                DisplayName = "Test Category",
+                ResourceType = Data.ServiceModel.ResourceType.Folder,
+                IsDeploySourceExpanded = false
             };
             const string expectedResourceName = "Test Resource";
+            var resourceID = Guid.NewGuid();
             resourceNode.Setup(res => res.ResourceName).Returns(expectedResourceName);
+            resourceNode.Setup(model => model.ID).Returns(resourceID);
             resourceNode.Setup(res => res.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
 
-            var resourceTreeNode = new ResourceTreeViewModel(eventAggregator, treeParent, resourceNode.Object);
+            var resourceTreeNode = new ExplorerItemModel
+            {
+                Parent = treeParent,
+                DisplayName = resourceNode.Object.ResourceName,
+                ResourceId = resourceID,
+                EnvironmentId = server.Object.ID,
+                IsChecked = false
+            };
 
             //Setup Server Resources
-            server.Setup(svr => svr.LoadResources()).Callback(() => mockedSource.Root.Add(treeParent));
+            var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
+            mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(resourceTreeNode);
+            mockStudioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ObservableCollection<ExplorerItemModel>());
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object)
+            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object,true);
+            sourceDeployNavigationViewModel.ExplorerItemModels = new ObservableCollection<ExplorerItemModel>();
+            server.Setup(svr => svr.LoadResources()).Callback(() => sourceDeployNavigationViewModel.ExplorerItemModels.Add(treeParent));
+            sourceDeployNavigationViewModel.Environment = server.Object;
+
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object)
             {
-                Source = mockedSource
+                Source = sourceDeployNavigationViewModel
             };
 
             var initialResource = new Mock<IContextualResourceModel>();
             initialResource.Setup(res => res.Environment).Returns(server.Object);
-            initialResource.Setup(res => res.ResourceName).Returns(expectedResourceName);
+            initialResource.Setup(res => res.ID).Returns(resourceID);
 
             //------------Execute Test--------------------------- 
-            deployViewModel.Handle(new SelectItemInDeployMessage(initialResource.Object.ResourceName, initialResource.Object.Environment));
+            deployViewModel.Handle(new SelectItemInDeployMessage(initialResource.Object.ID, initialResource.Object.Environment.ID));
 
             // Assert item visible and selected
-            Assert.IsTrue(resourceTreeNode.IsChecked.GetValueOrDefault(), "Deployed item not selected in deploy");
-            Assert.IsTrue(treeParent.IsExpanded, "Item not visible in deploy view");
+            Assert.IsTrue(resourceTreeNode.IsChecked.GetValueOrDefault(false), "Deployed item not selected in deploy");
+            Assert.IsTrue(treeParent.IsDeploySourceExpanded, "Item not visible in deploy view");
+
+            mockStudioResourceRepository.Verify(r => r.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>()));
         }
 
         #endregion
@@ -433,7 +433,7 @@ namespace Dev2.Core.Tests
             mockSourceServer.Setup(server => server.IsConnected).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
-
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
@@ -462,7 +462,7 @@ namespace Dev2.Core.Tests
             mockSourceServer.Setup(server => server.IsConnected).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
-
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
@@ -494,13 +494,12 @@ namespace Dev2.Core.Tests
             mockSourceServer.Setup(server => server.IsConnected).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
-
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
 
 
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-
             deployViewModel.SelectedDestinationServer = destServer.Object;
 
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
@@ -516,8 +515,6 @@ namespace Dev2.Core.Tests
             deployViewModel.SourceEnvironmentConnectedChanged(this, connectedEventArgs);
 
             Assert.IsTrue(target.ClearCalled);
-
-
         }
 
         [TestMethod]
@@ -530,7 +527,7 @@ namespace Dev2.Core.Tests
             mockSourceServer.Setup(server => server.IsConnected).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
-
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
@@ -539,7 +536,7 @@ namespace Dev2.Core.Tests
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
             deployViewModel.HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => true;
             destEnv.Setup(e => e.IsAuthorizedDeployTo).Returns(true);
-
+            destEnv.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             Assert.IsFalse(deployViewModel.DestinationServerHasDropped);
             destEnv.Setup(server => server.IsConnected).Returns(false);
             var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
@@ -561,7 +558,7 @@ namespace Dev2.Core.Tests
             mockSourceServer.Setup(server => server.IsConnected).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
-
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
@@ -583,7 +580,6 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(deployViewModel.SourceServerHasDropped);
             Assert.IsTrue(deployViewModel.ShowServerDisconnectedMessage);
             Assert.AreEqual("Source and Destination servers have disconnected.", deployViewModel.ServerDisconnectedMessage);
-
         }
 
         [TestMethod]
@@ -593,8 +589,11 @@ namespace Dev2.Core.Tests
         {
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
+
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            
             destServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            destServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             deployViewModel.SelectedDestinationServer = destServer.Object;
             deployViewModel.SelectedSourceServer = destServer.Object;
 
@@ -613,35 +612,7 @@ namespace Dev2.Core.Tests
             Verify_CanDeploy_IsAuthorized(expectedCanDeploy: true, isAuthorizedDeployFrom: true, isAuthorizedDeployTo: true);
         }
 
-        void Verify_CanDeploy_IsAuthorized(bool expectedCanDeploy, bool isAuthorizedDeployFrom, bool isAuthorizedDeployTo)
-        {
-            var sourceConnection = new Mock<IEnvironmentConnection>();
-            sourceConnection.Setup(c => c.AppServerUri).Returns(new Uri("http://localhost"));
 
-            var mockSourceServer = new Mock<IEnvironmentModel>();
-            mockSourceServer.Setup(e => e.Connection).Returns(sourceConnection.Object);
-            mockSourceServer.Setup(server => server.IsConnected).Returns(true);
-            mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(isAuthorizedDeployFrom);
-            mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
-
-            var remoteConnection = new Mock<IEnvironmentConnection>();
-            remoteConnection.Setup(c => c.AppServerUri).Returns(new Uri("http://remote"));
-
-            var mockDestinationServer = new Mock<IEnvironmentModel>();
-            mockDestinationServer.Setup(e => e.Connection).Returns(remoteConnection.Object);
-            mockDestinationServer.Setup(server => server.IsConnected).Returns(true);
-            mockDestinationServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
-            mockDestinationServer.Setup(server => server.IsAuthorizedDeployTo).Returns(isAuthorizedDeployTo);
-
-            Mock<IEnvironmentModel> destEnv;
-            Mock<IEnvironmentModel> destServer;
-            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
-            deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
-            deployViewModel.HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => true;
-
-            Assert.AreEqual(expectedCanDeploy, deployViewModel.CanDeploy);
-        }
 
 
         [TestMethod]
@@ -661,13 +632,13 @@ namespace Dev2.Core.Tests
             mockSourceServer.Setup(server => server.IsConnected).Returns(true);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(isAuthorizedDeployFrom);
             mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
-
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             var mockDestinationServer = new Mock<IEnvironmentModel>();
             mockDestinationServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://remote"));
             mockDestinationServer.Setup(server => server.IsConnected).Returns(true);
             mockDestinationServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
             mockDestinationServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
-
+            mockDestinationServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
@@ -687,7 +658,9 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
             deployViewModel.SelectedSourceServer = null;
-            deployViewModel.SelectedDestinationServer = new Mock<IEnvironmentModel>().Object;
+      
+            destServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+            deployViewModel.SelectedDestinationServer = destServer.Object;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
             //------------Assert Results-------------------------
@@ -703,7 +676,10 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> destEnv;
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-            deployViewModel.SelectedSourceServer = new Mock<IEnvironmentModel>().Object;
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.DisplayName).Returns("localhost");
+            mockEnvironmentModel.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            deployViewModel.SelectedSourceServer = mockEnvironmentModel.Object;
             deployViewModel.SelectedDestinationServer = null;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
@@ -722,10 +698,11 @@ namespace Dev2.Core.Tests
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
             var mockSourceServer = new Mock<IEnvironmentModel>();
             mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockSourceServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
             var mockDestinationServer = new Mock<IEnvironmentModel>();
             mockDestinationServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://different"));
-
+            mockDestinationServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
             deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
@@ -743,10 +720,12 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
             var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
             var mockDestinationServer = new Mock<IEnvironmentModel>();
             mockDestinationServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://remote"));
+            mockDestinationServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
@@ -764,10 +743,13 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
             var mockSourceServer = new Mock<IEnvironmentModel>();
+
             mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockSourceServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
             var mockDestinationServer = new Mock<IEnvironmentModel>();
             mockDestinationServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://remote"));
+            mockDestinationServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
             deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
@@ -786,9 +768,11 @@ namespace Dev2.Core.Tests
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
             var mockSourceServer = new Mock<IEnvironmentModel>();
             mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockSourceServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
             var mockDestinationServer = new Mock<IEnvironmentModel>();
             mockDestinationServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockDestinationServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
             deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
             //------------Execute Test---------------------------
             var serversAreNotTheSame = deployViewModel.ServersAreNotTheSame;
@@ -796,14 +780,370 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(serversAreNotTheSame);
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_Constructor")]
+        public void DeployViewModel_Constructor_Default()
+        {
+            //------------Setup for test--------------------------
+            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
+            TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
+
+            new EnvironmentRepository(testEnvironmentRespository);
+            //------------Execute Test---------------------------
+            var deployViewModel = new DeployViewModel();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(deployViewModel);
+            Assert.IsNotNull(deployViewModel.EnvironmentRepository);
+            Assert.IsNotNull(deployViewModel.EventPublisher);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_Constructor")]
+        public void DeployViewModel_Constructor_GuidsPassed_SetsValues()
+        {
+            //------------Setup for test--------------------------
+            var a = Dev2MockFactory.SetupEnvironmentModel();
+            a.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            IEnvironmentModel environmentModel = a.Object;
+            
+            TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
+            new EnvironmentRepository(testEnvironmentRespository);
+
+
+            //------------Execute Test---------------------------
+            var deployViewModel = new DeployViewModel(Guid.NewGuid(), Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(deployViewModel);
+            Assert.IsNotNull(deployViewModel.EnvironmentRepository);
+            Assert.IsNotNull(deployViewModel.EventPublisher);
+            Assert.IsFalse(deployViewModel.DestinationServerHasDropped);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_SelectDependencies")]
+        public void DeployViewModel_SelectDependencies_NullExplorerItemModel_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockSourceServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            //------------Execute Test---------------------------
+            deployViewModel.SelectDependencies(null);
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_SelectDependencies")]
+        public void DeployViewModel_SelectDependencies_ResourceNotFound_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(model => model.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockSourceServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            ExplorerItemModel explorerItemModel = new ExplorerItemModel();
+            explorerItemModel.ResourceId = Guid.NewGuid();
+            //------------Execute Test---------------------------
+            deployViewModel.SelectDependencies(new List<ExplorerItemModel> { explorerItemModel });
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_SelectDependencies")]
+        public void DeployViewModel_SelectDependencies_NoDependencies_NothingSelected()
+        {
+            //------------Setup for test--------------------------
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            destEnv.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            destServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
+            Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
+            mockResource.Setup(model => model.ResourceName).Returns("resource");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string>());
+            mockSourceServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            mockSourceServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            ExplorerItemModel explorerItemModel;
+            IEnvironmentModel environmentModel;
+            deployViewModel.Source.ExplorerItemModels = CreateModels(false, out environmentModel, out explorerItemModel).ExplorerItemModels;
+            //------------Execute Test---------------------------
+            deployViewModel.SelectDependencies(new List<ExplorerItemModel> { explorerItemModel });
+            //------------Assert Results-------------------------
+            Assert.IsFalse(deployViewModel.Source.ExplorerItemModels[0].IsChecked.GetValueOrDefault(false));
+            Assert.IsFalse(deployViewModel.Source.ExplorerItemModels[0].Children[0].IsChecked.GetValueOrDefault(false));
+            Assert.IsFalse(deployViewModel.Source.ExplorerItemModels[0].Children[0].Children[0].IsChecked.GetValueOrDefault(false));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_SelectDependencies")]
+        public void DeployViewModel_SelectDependencies_DependencyFound_Selected()
+        {
+            //------------Setup for test--------------------------
+            ExplorerItemModel explorerItemModel;
+            IEnvironmentModel environmentModel;
+            StudioResourceRepository studioResourceRepository = CreateModels(false, out environmentModel, out explorerItemModel);
+            explorerItemModel.IsChecked = true;
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
+            Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
+            mockResource.Setup(model => model.ResourceName).Returns("resource");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string> { "TestResource" });
+            mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            deployViewModel.Source.ExplorerItemModels = studioResourceRepository.ExplorerItemModels;
+            //------------Execute Test---------------------------
+            deployViewModel.SelectDependencies(new List<ExplorerItemModel> { explorerItemModel });
+            //------------Assert Results-------------------------
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].IsChecked.GetValueOrDefault(false));
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].Children[0].IsChecked.GetValueOrDefault(false));
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].Children[0].Children[0].IsChecked.GetValueOrDefault(false));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_SelectAllDependencies")]
+        public void DeployViewModel_SelectAllDependenciesCommand_SourceNull_NothingHappens()
+        {
+            //------------Setup for test--------------------------
+            ExplorerItemModel explorerItemModel;
+            IEnvironmentModel environmentModel;
+            StudioResourceRepository studioResourceRepository = CreateModels(false, out environmentModel, out explorerItemModel);
+
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
+            Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
+            mockResource.Setup(model => model.ResourceName).Returns("resource");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string> { "TestResource" });
+            mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            deployViewModel.Source.ExplorerItemModels = studioResourceRepository.ExplorerItemModels;
+            deployViewModel.Source = null;
+            //------------Execute Test---------------------------
+            deployViewModel.SelectAllDependanciesCommand.Execute(null);
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_SelectAllDependencies")]
+        public void DeployViewModel_SelectAllDependenciesCommand_SourceExplorerItemModelsNull_NothingHappens()
+        {
+            //------------Setup for test--------------------------
+            ExplorerItemModel explorerItemModel;
+            IEnvironmentModel environmentModel;
+            CreateModels(false, out environmentModel, out explorerItemModel);
+
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
+            Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
+            mockResource.Setup(model => model.ResourceName).Returns("resource");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string> { "TestResource" });
+            mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            //------------Execute Test---------------------------
+            deployViewModel.SelectAllDependanciesCommand.Execute(null);
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DeployViewModel_SelectAllDependencies")]
+        public void DeployViewModel_SelectAllDependenciesCommand_DependencyCheckedItem_Selected()
+        {
+            //------------Setup for test--------------------------
+            ExplorerItemModel explorerItemModel;
+            IEnvironmentModel environmentModel;
+            StudioResourceRepository studioResourceRepository = CreateModels(false, out environmentModel, out explorerItemModel);
+            ExplorerItemModel secondResourceToCheck = new ExplorerItemModel();
+            explorerItemModel.IsChecked = true;
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            destEnv.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+            destServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+            Mock<IResourceRepository> mockResourceRepository = new Mock<IResourceRepository>();
+            Mock<IContextualResourceModel> mockResource = new Mock<IContextualResourceModel>();
+            mockResource.Setup(model => model.ResourceName).Returns("resource");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResource.Object);
+            mockResourceRepository.Setup(repository => repository.GetDependanciesOnList(It.IsAny<List<IContextualResourceModel>>(), It.IsAny<IEnvironmentModel>(), false)).Returns(new List<string> { "TestResource" });
+            mockSourceServer.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            studioResourceRepository.ExplorerItemModels[0].Children.Add(secondResourceToCheck);
+            deployViewModel.Source.ExplorerItemModels = studioResourceRepository.ExplorerItemModels;
+            //------------Execute Test---------------------------
+            deployViewModel.SelectAllDependanciesCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].IsChecked.GetValueOrDefault(false));
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].Children[0].IsChecked.GetValueOrDefault(false));
+            Assert.IsTrue(deployViewModel.Source.ExplorerItemModels[0].Children[0].Children[0].IsChecked.GetValueOrDefault(false));
+            Assert.IsFalse(deployViewModel.Source.ExplorerItemModels[0].Children[1].IsChecked.GetValueOrDefault(false));
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DeployViewModel_Deploy")]
+        public void DeployViewModel_Deploy_WhenDeployingResource_ResourceRepositoryDeployCalled()
+        {
+            //New Mocks
+            var mockedServerRepo = new Mock<IEnvironmentRepository>();
+            var server = new Mock<IEnvironmentModel>();
+    
+            server.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            _authService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, It.IsAny<string>())).Returns(true);
+            _authService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, It.IsAny<string>())).Returns(true);
+            var secondServer = new Mock<IEnvironmentModel>();
+            secondServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            var provider = new Mock<IEnvironmentModelProvider>();
+            var resourceNode = new Mock<IContextualResourceModel>();
+            var resRepo = new Mock<IResourceRepository>();
+            var resRepo2 = new Mock<IResourceRepository>();
+            var id = Guid.NewGuid();
+
+            const string expectedResourceName = "Test Resource";
+            resourceNode.Setup(res => res.ResourceName).Returns(expectedResourceName);
+            resourceNode.Setup(res => res.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            resourceNode.Setup(res => res.ID).Returns(id);
+
+            //Setup Servers
+            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Verifiable();
+            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceNode.Object);
+            resRepo.Setup(c => c.DeployResources(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnvironmentModel>(),
+                                       It.IsAny<IDeployDto>(), It.IsAny<IEventAggregator>())).Verifiable();
+
+            resRepo.Setup(c => c.All()).Returns(new List<IResourceModel>());
+            resRepo2.Setup(c => c.All()).Returns(new List<IResourceModel>());
+
+            server.Setup(svr => svr.IsConnected).Returns(true);
+            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            server.Setup(svr => svr.ResourceRepository).Returns(resRepo.Object);
+
+            secondServer.Setup(svr => svr.IsConnected).Returns(true);
+            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            secondServer.Setup(svr => svr.ResourceRepository).Returns(resRepo2.Object);
+
+            mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IEnvironmentModel>())).Returns(server.Object);
+
+            provider.Setup(prov => prov.Load()).Returns(new List<IEnvironmentModel> { server.Object, secondServer.Object });
+
+
+            var initialResource = new Mock<IContextualResourceModel>();
+            initialResource.Setup(res => res.Environment).Returns(server.Object);
+            initialResource.Setup(res => res.ResourceName).Returns(expectedResourceName);
+
+            //Setup Navigation Tree
+
+            var resourceTreeNode = new ExplorerItemModel();
+
+            //Setup Server Resources
+
+
+            var mockStudioResourceRepository = GetMockStudioResourceRepository();
+            mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(resourceTreeNode);
+            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object,true);
+
+            sourceDeployNavigationViewModel.Environment = server.Object;
+            sourceDeployNavigationViewModel.ExplorerItemModels = new ObservableCollection<ExplorerItemModel>();
+
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object)
+            {
+                Source = sourceDeployNavigationViewModel,
+                SelectedSourceServer = server.Object
+            };
+            resourceTreeNode.IsChecked = true;
+            //------------Execute Test--------------------------- 
+            deployViewModel.DeployCommand.Execute(null);
+
+            resRepo.Verify(
+                sender =>
+                sender.DeployResources(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnvironmentModel>(),
+                                       It.IsAny<IDeployDto>(), It.IsAny<IEventAggregator>()));
+        }
+
+        Mock<IStudioResourceRepository> GetMockStudioResourceRepository()
+        {
+            var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
+            return mockStudioResourceRepository;
+        }
+
+        void Verify_CanDeploy_IsAuthorized(bool expectedCanDeploy, bool isAuthorizedDeployFrom, bool isAuthorizedDeployTo)
+        {
+            var sourceConnection = new Mock<IEnvironmentConnection>();
+            sourceConnection.Setup(c => c.AppServerUri).Returns(new Uri("http://localhost"));
+
+            var mockSourceServer = new Mock<IEnvironmentModel>();
+            mockSourceServer.Setup(e => e.Connection).Returns(sourceConnection.Object);
+            mockSourceServer.Setup(server => server.IsConnected).Returns(true);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(isAuthorizedDeployFrom);
+            mockSourceServer.Setup(server => server.IsAuthorizedDeployTo).Returns(true);
+            mockSourceServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+            var remoteConnection = new Mock<IEnvironmentConnection>();
+            remoteConnection.Setup(c => c.AppServerUri).Returns(new Uri("http://remote"));
+
+            var mockDestinationServer = new Mock<IEnvironmentModel>();
+            mockDestinationServer.Setup(e => e.Connection).Returns(remoteConnection.Object);
+            mockDestinationServer.Setup(server => server.IsConnected).Returns(true);
+            mockDestinationServer.Setup(server => server.IsAuthorizedDeployFrom).Returns(true);
+            mockDestinationServer.Setup(server => server.IsAuthorizedDeployTo).Returns(isAuthorizedDeployTo);
+            mockDestinationServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
+            Mock<IEnvironmentModel> destEnv;
+            Mock<IEnvironmentModel> destServer;
+            var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
+            deployViewModel.SelectedSourceServer = mockSourceServer.Object;
+            deployViewModel.SelectedDestinationServer = mockDestinationServer.Object;
+            deployViewModel.HasItemsToDeploy = (sourceDeployItemCount, destinationDeployItemCount) => true;
+
+            Assert.AreEqual(expectedCanDeploy, deployViewModel.CanDeploy);
+        }
     }
 
-    public class PartialNaviationViewModel : NavigationViewModel
+    public class PartialNaviationViewModel : DeployNavigationViewModel
     {
         public bool ClearCalled { get; set; }
 
-        public PartialNaviationViewModel(NavigationViewModel model)
-            : base(model.EventAggregator, model.AsyncWorker, model.Context, model.EnvironmentRepository, model.IsFromActivityDrop, model.DsfActivityType)
+        public PartialNaviationViewModel(DeployNavigationViewModel model)
+            : base(model.EventAggregator, model.AsyncWorker, model.EnvironmentRepository, model.StudioResourceRepository,true)
         {
 
         }

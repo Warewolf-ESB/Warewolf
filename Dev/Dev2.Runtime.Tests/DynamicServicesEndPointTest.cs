@@ -22,7 +22,7 @@ namespace Dev2.Tests.Runtime
     {
         const int VersionNo = 9999;
 
-        const string ServiceName = "TestForEachOutput";
+        const string ServiceName = "Mo\\TestForEachOutput";
         readonly Guid _serviceID = Guid.NewGuid();
 
         const string ServiceShape = @"<DataList>
@@ -66,9 +66,9 @@ namespace Dev2.Tests.Runtime
             _workspaceID = Guid.NewGuid();
 
             List<IResource> resources;
-            ResourceCatalogTests.SaveResources(_workspaceID, VersionNo.ToString(CultureInfo.InvariantCulture), false, false,
+            ResourceCatalogTests.SaveResources(_workspaceID, VersionNo.ToString(CultureInfo.InvariantCulture), true, false,
                null,
-               new[] { ServiceName },
+               new[] { "TestForEachOutput" },
                out resources,
                null,
                new[] { _serviceID });
@@ -138,8 +138,8 @@ namespace Dev2.Tests.Runtime
             IDataListCompiler comp = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
             Guid dlID = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, ServiceShape, out errors);
-
-            IDSFDataObject dataObj = new DsfDataObject(string.Empty, dlID) { WorkspaceID = _workspaceID, DataListID = dlID, ServiceName = ServiceName };
+            var resource = ResourceCatalog.Instance.GetResource(_workspaceID, ServiceName);
+            IDSFDataObject dataObj = new DsfDataObject(string.Empty, dlID) { WorkspaceID = _workspaceID, DataListID = dlID, ServiceName = ServiceName, ResourceID = resource.ResourceID };
             EsbServicesEndpoint endPoint = new EsbServicesEndpoint();
             string result = endPoint.FetchExecutionPayload(dataObj, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), out errors);
 

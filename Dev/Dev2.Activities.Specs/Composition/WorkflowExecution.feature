@@ -1395,8 +1395,8 @@ Scenario: Simple workflow with 2 Assign tools evaluating recordset index variabl
 	  | 2 | [[rec(1).a]] =   | 2         |
 	  | 3 | [[index(1).a]] = | 2         |
 	  And the 'Data1' in Workflow 'WorkflowWithAssignandAssign' debug outputs as 
-	  | # |                    |
-	  | 1 | [[a]] = 1          |
+	  | # |                        |
+	  | 1 | [[a]] = 1              |
 	  | 2 | [[rec(1).a]] = 2   |
 	  | 3 | [[index(1).a]] = 2 |
 	   And the 'Data2' in WorkFlow 'WorkflowWithAssignandAssign' debug inputs as
