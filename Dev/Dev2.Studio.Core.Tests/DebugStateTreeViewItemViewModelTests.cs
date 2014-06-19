@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Composition;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.ViewModels.Diagnostics;
+using Dev2.ViewModels.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -15,9 +16,11 @@ namespace Dev2.Core.Tests
     [ExcludeFromCodeCoverage]
     public class DebugStateTreeViewItemViewModelTests
     {
+        // ReSharper disable NotAccessedField.Local
         static ImportServiceContext _importContext;
+        // ReSharper restore NotAccessedField.Local
 
-        [ClassInitialize()]
+        [ClassInitialize]
         public static void Initialize(TestContext testContext)
         {
             _importContext = CompositionInitializer.DefaultInitialize();
@@ -27,6 +30,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [TestCategory("DebugStateTreeViewItemViewModel_Constructor")]
         [Owner("Trevor Williams-Ros")]
+        // ReSharper disable InconsistentNaming
         public void DebugStateTreeViewItemViewModel_Constructor_IsExpanded_False()
         {
             //Setup
@@ -72,7 +76,9 @@ namespace Dev2.Core.Tests
             envRep.Setup(e => e.All()).Returns(() => new[] { env.Object, env2.Object });
 
             var content = new DebugState { EnvironmentID = environmentID };
-            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
+            // ReSharper disable ObjectCreationAsStatement
+            new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
+            // ReSharper restore ObjectCreationAsStatement
             Assert.AreEqual(ServerName, content.Server);
         }
 
@@ -195,7 +201,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DebugStateTreeViewItemViewModel_Constructor_ActivityTypeIsNotWorkflow_PublishesSelectionEventWithActivitySelectionTypeAdd()
         {
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Step, expectedSelectionType: ActivitySelectionType.Add, expectedCount: 2);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Step, ActivitySelectionType.Add, expectedCount: 2);
         }
 
         [TestMethod]
@@ -203,7 +209,7 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DebugStateTreeViewItemViewModel_Constructor_ActivityTypeIsWorkflow_DoesNotPublishSelectionEventWithActivitySelectionTypeAdd()
         {
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Workflow, expectedSelectionType: ActivitySelectionType.Add, expectedCount: 0);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Workflow, ActivitySelectionType.Add, expectedCount: 0);
         }
 
         [TestMethod]
@@ -231,11 +237,9 @@ namespace Dev2.Core.Tests
             var content = new DebugState { DisplayName = "Error Test", ID = Guid.NewGuid(), ActivityType = ActivityType.Workflow };
 
             var envRep = CreateEnvironmentRepository();
-            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
+            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content, SelectionType = ActivitySelectionType.Add, IsSelected = true };
 
             //------------Execute Test---------------------------
-            vm.SelectionType = ActivitySelectionType.Add;
-            vm.IsSelected = true;
 
             //------------Assert Results-------------------------
             Assert.AreEqual(ActivitySelectionType.Single, vm.SelectionType);
@@ -246,10 +250,10 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DebugStateTreeViewItemViewModel_IsSelected_PublishesSelectionEventWithSameActivitySelectionType()
         {
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, expectedSelectionType: ActivitySelectionType.None, expectedCount: 2, setIsSelected: true);
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, expectedSelectionType: ActivitySelectionType.Single, expectedCount: 2, setIsSelected: true);
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, expectedSelectionType: ActivitySelectionType.Add, expectedCount: 2, setIsSelected: true);
-            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, expectedSelectionType: ActivitySelectionType.Remove, expectedCount: 2, setIsSelected: false);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.None, expectedCount: 2, setIsSelected: true);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.Single, expectedCount: 2, setIsSelected: true);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.Add, expectedCount: 2, setIsSelected: true);
+            Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType.Service, ActivitySelectionType.Remove, expectedCount: 2);
         }
 
         static void Verify_IsSelected_PublishesDebugSelectionChangedEventArgs(ActivityType activityType, ActivitySelectionType expectedSelectionType, int expectedCount, bool setIsSelected = false)
@@ -297,7 +301,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var environmentID = Guid.NewGuid();
-            var serverName = "TestEnvironment";
+            const string serverName = "TestEnvironment";
 
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.ID).Returns(environmentID);
@@ -310,7 +314,9 @@ namespace Dev2.Core.Tests
 
 
             //------------Execute Test---------------------------
-            var vm = new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
+            // ReSharper disable ObjectCreationAsStatement
+            new DebugStateTreeViewItemViewModelMock(envRep.Object) { Content = content };
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
             Assert.AreEqual(serverName, content.Server);
@@ -346,7 +352,7 @@ namespace Dev2.Core.Tests
                 Assert.AreEqual(AppendError, content.ErrorMessage);
             }
             Assert.IsTrue(content.HasError);
-            Assert.IsTrue(vm.HasError.Value);
+            Assert.IsTrue(vm.HasError != null && vm.HasError.Value);
 
             CollectionAssert.AreEqual(expectedProps, actualProps);
         }
@@ -371,4 +377,6 @@ namespace Dev2.Core.Tests
         {
         }
     }
+
+    // ReSharper restore InconsistentNaming
 }

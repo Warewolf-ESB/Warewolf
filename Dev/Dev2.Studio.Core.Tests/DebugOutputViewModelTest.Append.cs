@@ -1,7 +1,9 @@
 ﻿using System;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Providers.Events;
 using Dev2.Studio.ViewModels.Diagnostics;
+using Dev2.ViewModels.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -88,7 +90,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_ContentStateTypeIsMessage_StringTreeViewItemAdded()
         {
-            DebugOutputViewModel_Append_ContentStateType(stateType: StateType.Message, expectedType: typeof(DebugStringTreeViewItemViewModel), isExpanded: false);
+            DebugOutputViewModel_Append_ContentStateType(StateType.Message, typeof(DebugStringTreeViewItemViewModel), isExpanded: false);
         }
 
         [TestMethod]
@@ -165,13 +167,17 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(2, viewModel.RootItems.Count);
             var child = viewModel.RootItems[0] as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(child);
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
             if(child != null)
+// ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 Assert.AreEqual("Content", child.Content.DisplayName);
             }
             var child2 = viewModel.RootItems[1] as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(child2);
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
             if(child2 != null)
+// ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 Assert.AreEqual("Content2", child2.Content.DisplayName);
             }

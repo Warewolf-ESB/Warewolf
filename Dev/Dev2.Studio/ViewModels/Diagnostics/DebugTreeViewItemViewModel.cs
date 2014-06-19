@@ -5,12 +5,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
 
-// ReSharper disable once CheckNamespace
-namespace Dev2.Studio.ViewModels.Diagnostics
+namespace Dev2.ViewModels.Diagnostics
 {
     public class DebugStringTreeViewItemViewModel : DebugTreeViewItemViewModel<string>
     {

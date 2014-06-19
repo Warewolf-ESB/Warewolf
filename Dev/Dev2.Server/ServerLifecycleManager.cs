@@ -19,7 +19,7 @@ using Dev2.Common.Reflection;
 using Dev2.Data;
 using Dev2.Data.Storage;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;

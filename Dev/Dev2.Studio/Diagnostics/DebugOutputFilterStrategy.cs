@@ -1,12 +1,10 @@
-﻿using Dev2.Diagnostics;
-using Dev2.Studio.Core.AppResources.Converters;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
+using Dev2.Diagnostics.Debug;
+using Dev2.Studio.Core.AppResources.Converters;
 
-
-// ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Diagnostics
+namespace Dev2.Diagnostics
 {
     public class DebugOutputFilterStrategy
     {

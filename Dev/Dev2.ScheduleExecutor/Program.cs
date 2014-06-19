@@ -9,6 +9,7 @@ using System.Security.Principal;
 using System.Threading;
 using Dev2.Communication;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 

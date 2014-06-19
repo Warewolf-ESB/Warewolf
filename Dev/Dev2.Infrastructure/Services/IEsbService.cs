@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Services
@@ -37,7 +37,7 @@ namespace Dev2.Services
         ExecuteMessage FetchCurrentServerLog(Guid workspaceID);
 
         /// <summary>
-        /// Fetches the dependant compile messages.
+        /// Fetches the dependent compile messages.
         /// </summary>
         /// <param name="workspaceID">The workspace unique identifier.</param>
         /// <param name="serviceID">The service unique identifier.</param>
@@ -46,7 +46,7 @@ namespace Dev2.Services
         CompileMessageList FetchDependantCompileMessages(Guid workspaceID, Guid serviceID, string filterList);
 
         /// <summary>
-        /// Fetches the dependant compile messages.
+        /// Fetches the dependent compile messages.
         /// </summary>
         /// <param name="workspaceID">The workspace unique identifier.</param>
         /// <param name="invokerID">The invoker unique identifier.</param>

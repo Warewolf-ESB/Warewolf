@@ -6,26 +6,26 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Diagnostics;
+using Dev2.Communication;
+using Dev2.Diagnostics.Debug;
 using Dev2.Integration.Tests.MEF.WebTester;
-using Newtonsoft.Json;
 
 namespace Dev2.Integration.Tests.Helpers
 {
     public static class TestHelper
     {
 
-        public static readonly string _tblStart = "<table>";
-        public static readonly string _tblEnd = "</table>";
+        public static readonly string TblStart = "<table>";
+        public static readonly string TblEnd = "</table>";
 
         static string _responseData;
         public static string ReturnFragment(string reponseData)
         {
             const string FragmentName = "Dev2System.Fragment";
             int datastart = reponseData.IndexOf("<" + FragmentName + ">", 0, StringComparison.Ordinal) + ("<" + FragmentName + ">").Length;
-            string DecodedFragment = reponseData.Substring(datastart, reponseData.IndexOf("</" + FragmentName + ">", StringComparison.Ordinal) - datastart);
-            string Fragment = DecodedFragment.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
-            return Fragment;
+            string decodedFragment = reponseData.Substring(datastart, reponseData.IndexOf("</" + FragmentName + ">", StringComparison.Ordinal) - datastart);
+            string fragment = decodedFragment.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
+            return fragment;
         }
 
 
@@ -47,12 +47,12 @@ namespace Dev2.Integration.Tests.Helpers
             return _responseData;
         }
 
-        public static string PostDataToWebserver(string postandUrl, out bool wasHTTPS)
+        public static string PostDataToWebserver(string postandUrl, out bool wasHttps)
         {
-            wasHTTPS = false;
+            wasHttps = false;
             if(postandUrl.Split('?').Count() == 1)
             {
-                wasHTTPS = ExecuteGetWorker(postandUrl);
+                wasHttps = ExecuteGetWorker(postandUrl);
             }
             else if(postandUrl.Split('?').Count() > 1)
             {
@@ -67,10 +67,10 @@ namespace Dev2.Integration.Tests.Helpers
         }
 
 
-        public static IList<DebugState> FetchRemoteDebugItems(string baseURL, Guid id)
+        public static IList<IDebugState> FetchRemoteDebugItems(string baseUrl, Guid id)
         {
-            var myURI = baseURL + "FetchRemoteDebugMessagesService?InvokerID=" + id.ToString();
-            WebRequest req = WebRequest.Create(myURI);
+            var myUri = baseUrl + "FetchRemoteDebugMessagesService?InvokerID=" + id.ToString();
+            WebRequest req = WebRequest.Create(myUri);
             req.Credentials = CredentialCache.DefaultCredentials;
             req.Method = "GET";
 
@@ -78,12 +78,18 @@ namespace Dev2.Integration.Tests.Helpers
             {
                 if(response != null)
                 {
+                    // ReSharper disable AssignNullToNotNullAttribute
                     using(StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    // ReSharper restore AssignNullToNotNullAttribute
                     {
+
                         var data = reader.ReadToEnd();
+                        // ReSharper disable ConditionIsAlwaysTrueOrFalse
                         if(data != null)
+                        // ReSharper restore ConditionIsAlwaysTrueOrFalse
                         {
-                            return JsonConvert.DeserializeObject<List<DebugState>>(data);
+                            var serializer = new Dev2JsonSerializer();
+                            return serializer.Deserialize<List<IDebugState>>(data);
                         }
                     }
                 }
@@ -157,16 +163,16 @@ namespace Dev2.Integration.Tests.Helpers
             return target.WasHTTPS;
         }
 
-        private static void ExecutePostWorker(string postDataWithURL)
+        private static void ExecutePostWorker(string postDataWithUrl)
         {
-            PostWorker target = new PostWorker(postDataWithURL);
+            PostWorker target = new PostWorker(postDataWithUrl);
             target.DoWork();
             _responseData = target.GetResponseData();
         }
 
-        public static List<string> BreakHTMLElement(string payload)
+        public static List<string> BreakHtmlElement(string payload)
         {
-            List<string> HTMLElems = new List<string>();
+            List<string> htmlElems = new List<string>();
             XElement elements = XElement.Parse(payload);
             if(elements.HasElements)
             {
@@ -180,21 +186,21 @@ namespace Dev2.Integration.Tests.Helpers
                         }
                         else
                         {
-                            HTMLElems.Add(elem.ToString());
+                            htmlElems.Add(elem.ToString());
                         }
                     }
                     else
                     {
-                        HTMLElems.Add(elem.ToString());
+                        htmlElems.Add(elem.ToString());
                     }
                 }
             }
             else
             {
-                HTMLElems.Add(elements.ToString());
+                htmlElems.Add(elements.ToString());
             }
 
-            return HTMLElems;
+            return htmlElems;
         }
 
         public static string RemoveWhiteSpaceBetweenTags(string payload)

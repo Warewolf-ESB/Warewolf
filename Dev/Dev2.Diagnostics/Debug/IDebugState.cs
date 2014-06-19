@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Dev2.Diagnostics
+namespace Dev2.Diagnostics.Debug
 {
     /// <summary>
     /// Defines the requirements for a class whose state can be written to a <see cref="IDebugWriter"/>
@@ -76,8 +76,8 @@ namespace Dev2.Diagnostics
         /// <summary>
         /// Gets or sets the environment ID.
         /// </summary>
-        Guid EnvironmentID { get; set; } 
-        
+        Guid EnvironmentID { get; set; }
+
         /// <summary>
         /// Gets or sets the client ID.
         /// </summary>
@@ -115,12 +115,6 @@ namespace Dev2.Diagnostics
         /// Gets the duration.
         /// </summary>
         TimeSpan Duration { get; }
-
-        /// <summary>
-        /// Writes this instance to the specified writer.
-        /// </summary>
-        /// <param name="writer">The writer to which this instance is written.</param>
-        void Write(IDebugWriter writer);
 
         /// <summary>
         /// Writes this instance to the specified writer.

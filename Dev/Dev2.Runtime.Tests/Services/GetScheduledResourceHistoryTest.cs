@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Communication;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
@@ -22,6 +22,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_GetHistory")]
         [TestMethod]
+        // ReSharper disable InconsistentNaming
         public void SaveScheduledResourceTest_ServiceName()
         {
             SchedulerTestBaseStaticMethods.SaveScheduledResourceTest_ServiceName("GetScheduledResourceHistoryService", new GetScheduledResourceHistory());
@@ -70,7 +71,7 @@ namespace Dev2.Tests.Runtime.Services
             var ws = new Mock<IWorkspace>();
             var history = new List<IResourceHistory>
                 {
-                    new ResourceHistory("", new List<DebugState> {new DebugState()},
+                    new ResourceHistory("", new List<IDebugState> {new DebugState()},
                                         new EventInfo(DateTime.MinValue, TimeSpan.MaxValue, DateTime.MaxValue, true, "115"),
                                         "leon")
                 };
@@ -98,6 +99,8 @@ namespace Dev2.Tests.Runtime.Services
             return serialiser.Deserialize<List<IResourceHistory>>(output);
 
         }
+
+        // ReSharper restore InconsistentNaming
 
     }
 }

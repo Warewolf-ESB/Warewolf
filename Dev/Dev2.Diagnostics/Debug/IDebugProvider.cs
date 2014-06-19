@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 
-namespace Dev2.Diagnostics
+namespace Dev2.Diagnostics.Debug
 {
     public interface IDebugProvider
     {
-        IEnumerable<DebugState> GetDebugStates(string serverWebUri, DirectoryPath directory, FilePath path);
+        IEnumerable<IDebugState> GetDebugStates(string serverWebUri, DirectoryPath directory, FilePath path);
     }
 }

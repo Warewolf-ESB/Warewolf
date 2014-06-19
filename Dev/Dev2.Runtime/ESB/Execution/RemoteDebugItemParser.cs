@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Dev2.Common;
 using Dev2.Communication;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 
 namespace Dev2.Runtime.ESB.Execution
 {
@@ -12,16 +12,18 @@ namespace Dev2.Runtime.ESB.Execution
         /// Parses the items.
         /// </summary>
         /// <param name="data">The data.</param>
-        public static IList<DebugState> ParseItems(string data)
+        public static IList<IDebugState> ParseItems(string data)
         {
             try
             {
+                // Amend for namespace change ;)
+                var parseData = data.Replace("Dev2.Diagnostics.DebugState", "Dev2.Diagnostics.Debug.DebugState");
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                IList<DebugState> debugItems = serializer.Deserialize<List<DebugState>>(data);
+                IList<IDebugState> debugItems = serializer.Deserialize<List<IDebugState>>(parseData);
 
                 return debugItems;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 ServerLogger.LogError("RemoteDebugItemParser", e);
             }

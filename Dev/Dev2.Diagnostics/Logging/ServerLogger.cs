@@ -10,6 +10,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using Dev2.Common.Common;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
 using Dev2.Runtime.Configuration.Settings;
 

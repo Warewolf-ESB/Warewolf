@@ -8,7 +8,9 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Common.ExtMethods;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
+using Dev2.Messages;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
 using Dev2.Services;
@@ -19,6 +21,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
+using Dev2.ViewModels.Diagnostics;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics

@@ -24,7 +24,8 @@ using Dev2.Core.Tests.ViewModelTests;
 using Dev2.CustomControls.Utils;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
+using Dev2.Factory;
 using Dev2.Messages;
 using Dev2.Models;
 using Dev2.Providers.Errors;
@@ -39,7 +40,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
-using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;
@@ -185,7 +185,7 @@ namespace Dev2.Core.Tests.Workflows
             //Assert
             Assert.AreEqual(1, actual.Count, "Find missing returned an unexpected number of results when finding variables in a decision");
             Assert.AreEqual("scalar", actual[0], "Find missing found an invalid variable in a decision");
-
+          
         }
 
         [TestMethod]
@@ -2409,7 +2409,7 @@ namespace Dev2.Core.Tests.Workflows
                     workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
 
                     var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
-
+                   
                     #endregion
 
 
@@ -2756,7 +2756,7 @@ namespace Dev2.Core.Tests.Workflows
         static void Verify_DebugSelectionChanged(ActivitySelectionType selectionType, Type selectedActivityType, bool selectsModelItem = true)
         {
             //----------------------- Setup -----------------------//
-            var states = new List<DebugState> { new DebugState { DisplayName = "SelectionChangedTest1", ID = Guid.NewGuid() } };
+            var states = new List<IDebugState> { new DebugState { DisplayName = "SelectionChangedTest1", ID = Guid.NewGuid() } };
             if(selectionType == ActivitySelectionType.Add || selectionType == ActivitySelectionType.Remove)
             {
                 states.Add(new DebugState { DisplayName = "SelectionChangedTest2", ID = Guid.NewGuid() });

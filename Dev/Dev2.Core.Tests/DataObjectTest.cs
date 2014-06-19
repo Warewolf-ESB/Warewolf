@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -85,7 +86,7 @@ namespace Dev2.Tests
             dataObject.ParentThreadID = 2;
             dataObject.ParentWorkflowInstanceId = "1233";
             dataObject.RawPayload = "<raw>a</raw>";
-            dataObject.RemoteDebugItems = new List<DebugState>();
+            dataObject.RemoteDebugItems = new List<IDebugState>();
             dataObject.RemoteInvoke = false;
             dataObject.RemoteInvokeResultShape = "<x/>";
             dataObject.RemoteInvokerID = "999";

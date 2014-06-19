@@ -1,4 +1,4 @@
-﻿using Dev2.Diagnostics;
+﻿using Dev2.Diagnostics.Debug;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -6,7 +6,7 @@ using Dev2.Studio.Core.Interfaces;
 using System;
 
 // ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Factory
+namespace Dev2.Factory
 {
     /// <summary>
     /// Used to generate unique keys for every work surface

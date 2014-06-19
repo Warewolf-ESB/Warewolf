@@ -1,6 +1,14 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -11,16 +19,10 @@ using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.Webs;
+using Dev2.ViewModels.Diagnostics;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 
 namespace Dev2.Core.Tests
 {
@@ -34,12 +36,12 @@ namespace Dev2.Core.Tests
         private static IEnvironmentRepository _environmentRepo;
         private static Mock<IWorkspaceItemRepository> _mockWorkspaceRepo;
         private static Mock<IContextualResourceModel> _firstResource;
-        private static string _resourceName = "TestResource";
-        private static string _displayName = "test2";
-        private static string _serviceDefinition = "<x/>";
+        const string _resourceName = "TestResource";
+        const string _displayName = "test2";
+        const string _serviceDefinition = "<x/>";
         private static ImportServiceContext _importServiceContext;
-        private static Guid _serverID = Guid.NewGuid();
-        private static Guid _workspaceID = Guid.NewGuid();
+        private static readonly Guid _serverID = Guid.NewGuid();
+        private static readonly Guid _workspaceID = Guid.NewGuid();
         private static readonly Guid _firstResourceID = Guid.NewGuid();
         public static Mock<IPopupController> _popupController;
         private static Mock<IFeedbackInvoker> _feedbackInvoker;
@@ -191,8 +193,7 @@ namespace Dev2.Core.Tests
             mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
             mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
 
-            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository());
-            vm.DebugStatus = DebugStatus.Stopping;
+            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository()) { DebugStatus = DebugStatus.Stopping };
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
             Assert.AreEqual(0, vm.RootItems.Count);
@@ -213,8 +214,7 @@ namespace Dev2.Core.Tests
             mock2.SetupGet(m => m.WorkspaceID).Returns(_workspaceID);
             mock2.SetupGet(m => m.ParentID).Returns(_firstResourceID);
 
-            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository());
-            vm.DebugStatus = DebugStatus.Finished;
+            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository()) { DebugStatus = DebugStatus.Finished };
             vm.Append(mock1.Object);
             vm.Append(mock2.Object);
             Assert.AreEqual(0, vm.RootItems.Count);
@@ -273,7 +273,7 @@ namespace Dev2.Core.Tests
             env.Setup(e => e.IsConnected).Returns(true);
 
             // If we get here then we've found the environment based on the environment ID!
-            env.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false)).Verifiable();
+            env.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Verifiable();
 
             envList.Add(env.Object);
 
@@ -336,8 +336,7 @@ namespace Dev2.Core.Tests
             ImportService.CurrentContext = _importServiceContext;
             var mock1 = new Mock<IDebugState>();
             mock1.Setup(m => m.IsFinalStep()).Returns(false);
-            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository());
-            vm.DebugStatus = DebugStatus.Ready;
+            var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository()) { DebugStatus = DebugStatus.Ready };
 
             //*********************Test********************
             vm.Append(mock1.Object);
@@ -396,7 +395,7 @@ namespace Dev2.Core.Tests
             state.Setup(s => s.Message).Returns("Some random message");
             state.Setup(s => s.SessionID).Returns(vm.SessionID);
             vm.Append(state.Object);
-           
+
             Assert.AreEqual(3, vm.RootItems.Count);
             Assert.IsInstanceOfType(vm.RootItems[0], typeof(DebugStringTreeViewItemViewModel));
             Assert.IsInstanceOfType(vm.RootItems[1], typeof(DebugStateTreeViewItemViewModel));
@@ -537,11 +536,10 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo) { DebugStatus = DebugStatus.Stopping };
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            viewModel.DebugStatus = DebugStatus.Stopping;
             Assert.IsTrue(viewModel.IsStopping);
 
             viewModel.DebugStatus = DebugStatus.Ready;
@@ -555,11 +553,10 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo) { DebugStatus = DebugStatus.Executing };
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            viewModel.DebugStatus = DebugStatus.Executing;
             Assert.IsTrue(viewModel.IsProcessing);
 
             viewModel.DebugStatus = DebugStatus.Configure;
@@ -584,11 +581,10 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo) { DebugStatus = DebugStatus.Executing };
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            viewModel.DebugStatus = DebugStatus.Executing;
             Assert.AreEqual("pack://application:,,,/Warewolf Studio;component/Images/ExecuteDebugStop-32.png", viewModel.DebugImage);
 
             viewModel.DebugStatus = DebugStatus.Ready;
@@ -603,11 +599,10 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo) { DebugStatus = DebugStatus.Executing };
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            viewModel.DebugStatus = DebugStatus.Executing;
             Assert.AreEqual("Stop", viewModel.DebugText);
 
             viewModel.DebugStatus = DebugStatus.Ready;
@@ -688,7 +683,7 @@ namespace Dev2.Core.Tests
                 var item = CreateItemViewModel<DebugStateTreeViewItemViewModel>(envRepo, i, isSelected: false, parent: null);
                 for(var j = 0; j < 2; j++)
                 {
-                    CreateItemViewModel<DebugStateTreeViewItemViewModel>(envRepo, j, isSelected: false, parent: item);
+                    CreateItemViewModel<DebugStateTreeViewItemViewModel>(envRepo, j, false, item);
                 }
                 viewModel.RootItems.Add(item);
             }
@@ -732,8 +727,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var mockedEnvRepo = new Mock<IEnvironmentRepository>();
-            var debugOutputViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object);
-            debugOutputViewModel.DebugStatus = DebugStatus.Finished;
+            var debugOutputViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object) { DebugStatus = DebugStatus.Finished };
             //------------Execute Test---------------------------
             string processingText = debugOutputViewModel.ProcessingText;
             //------------Assert Results-------------------------

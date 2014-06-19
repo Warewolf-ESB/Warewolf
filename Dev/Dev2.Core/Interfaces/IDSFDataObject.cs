@@ -4,6 +4,7 @@ using System.Security.Principal;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Web;
 
 namespace Dev2
@@ -52,7 +53,7 @@ namespace Dev2
         string RemoteInvokeResultShape { get; set; }
         bool RemoteInvoke { get; set; }
         string RemoteInvokerID { get; set; }
-        IList<DebugState> RemoteDebugItems { get; set; }
+        IList<IDebugState> RemoteDebugItems { get; set; }
         string RemoteServiceType { get; set; }
 
         // Massimo.Guerrera :15-04-2013 - Added for the detection of webpages in the webserver so that the system tags dont get striped

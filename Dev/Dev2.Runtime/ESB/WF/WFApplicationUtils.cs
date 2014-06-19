@@ -1,19 +1,21 @@
+using System;
+using System.Collections.Generic;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.Hosting;
-using System;
-using System.Collections.Generic;
 
 namespace Dev2.Runtime.ESB.WF
 {
     public sealed class WfApplicationUtils
     {
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false)
         {
+            errors = new ErrorResultTO();
             if(dataObject != null)
             {
                 Guid parentInstanceID;
@@ -39,8 +41,8 @@ namespace Dev2.Runtime.ESB.WF
                     EnvironmentID = dataObject.EnvironmentID,
                     ClientID = dataObject.ClientID,
                     Name = GetType().Name,
-                    HasError = errors.HasErrors(),
-                    ErrorMessage = errors.MakeDisplayReady(),
+                    HasError = hasErrors,
+                    ErrorMessage = existingErrors,
 
 
                 };
@@ -48,17 +50,23 @@ namespace Dev2.Runtime.ESB.WF
                 if(interrogateInputs)
                 {
                     IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                    var com = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
-                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
-                    var inputs = GetDebugInputs(defs, com, out errors);
+                    ErrorResultTO invokeErrors;
+                    var com = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
+                    errors.MergeErrors(invokeErrors);
+                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName), enDev2ColumnArgumentDirection.Input);
+                    var inputs = GetDebugInputs(defs, com, out invokeErrors);
+                    errors.MergeErrors(invokeErrors);
                     debugState.Inputs.AddRange(inputs);
                 }
                 if(interrogateOutputs)
                 {
                     IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                    var com = compiler.FetchBinaryDataList(dataObject.DataListID, out errors);
-                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
-                    var inputs = GetDebugInputs(defs, com, out errors);
+                    ErrorResultTO invokeErrors;
+                    var com = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
+                    errors.MergeErrors(invokeErrors);
+                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName), enDev2ColumnArgumentDirection.Output);
+                    var inputs = GetDebugInputs(defs, com, out invokeErrors);
+                    errors.MergeErrors(invokeErrors);
                     debugState.Outputs.AddRange(inputs);
                 }
                 if(stateType == StateType.End)
@@ -77,7 +85,7 @@ namespace Dev2.Runtime.ESB.WF
                 {
                     if(debugState.StateType == StateType.End)
                     {
-                        GetDebugDispatcher().Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID);
+                        GetDebugDispatcher().Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID,dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
                     }
                     else
                     {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Dev2.Common;
 
-namespace Dev2.Diagnostics
+namespace Dev2.Diagnostics.Debug
 {
     public class DebugDispatcher : IDebugDispatcher
     {
@@ -118,9 +118,9 @@ namespace Dev2.Diagnostics
             _shutdownRequested = true;
             lock(WaitHandleGuard)
             {
-                IDebugState debugState;
                 while(WriterQueue.Count > 0)
                 {
+                    IDebugState debugState;
                     WriterQueue.TryDequeue(out debugState);
                 }
                 WriteWaithandle.Set();
@@ -132,7 +132,7 @@ namespace Dev2.Diagnostics
         #region Write
 
         // BUG 9706 - 2013.06.22 - TWR : extracted from DsfNativeActivity.DispatchDebugState
-        public void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerID = null, string parentInstanceID = null, IList<DebugState> remoteDebugItems = null)
+        public void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerID = null, string parentInstanceID = null, IList<IDebugState> remoteDebugItems = null)
         {
             if(debugState == null)
             {
@@ -142,7 +142,7 @@ namespace Dev2.Diagnostics
             // Serialize debugState to a local repo so calling server can manage the data 
             if(isRemoteInvoke)
             {
-                RemoteDebugMessageRepo.Instance.AddDebugItem(remoteInvokerID, (debugState as DebugState));
+                RemoteDebugMessageRepo.Instance.AddDebugItem(remoteInvokerID, debugState);
                 return;
             }
 
@@ -209,7 +209,7 @@ namespace Dev2.Diagnostics
                         IDebugWriter writer;
                         if((writer = Instance.Get(debugState.WorkspaceID)) != null)
                         {
-                            debugState.Write(writer);
+                            writer.Write(debugState);
                         }
                     }
                 }
@@ -230,9 +230,9 @@ namespace Dev2.Diagnostics
         {
             lock(WaitHandleGuard)
             {
-                IDebugState debugState;
                 while(WriterQueue.Count > 0)
                 {
+                    IDebugState debugState;
                     WriterQueue.TryDequeue(out debugState);
                 }
             }

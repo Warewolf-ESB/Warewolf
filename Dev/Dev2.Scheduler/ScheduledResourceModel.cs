@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using Dev2.Common.Common;
-using Dev2.Diagnostics;
+using Dev2.Communication;
+using Dev2.Diagnostics.Debug;
 using Dev2.Scheduler.Interfaces;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.Win32.TaskScheduler;
-using Newtonsoft.Json;
 
 namespace Dev2.Scheduler
 {
@@ -260,15 +260,22 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
 
         private string GetUserName(string debugHistoryPath, string correlationId)
         {
-            string file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
+            var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
             if(file != null) return file.Split(new[] { '_' }).Last();
             return "";
         }
 
-        private IList<DebugState> CreateDebugHistory(string debugHistoryPath, string correlationId)
+        private IList<IDebugState> CreateDebugHistory(string debugHistoryPath, string correlationId)
         {
-            string file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
-            return null == file ? new List<DebugState>() : JsonConvert.DeserializeObject<List<DebugState>>(FileHelper.ReadAllText(file));
+            var serializer = new Dev2JsonSerializer();
+            var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
+
+            if(file == null)
+            {
+                return new List<IDebugState>();
+            }
+
+            return serializer.Deserialize<List<IDebugState>>(FileHelper.ReadAllText(file));
         }
 
         private IDev2TaskDefinition CreateNewTask(IScheduledResource resource)

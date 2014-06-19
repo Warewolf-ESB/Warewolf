@@ -9,6 +9,7 @@ using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices.Objects;
 using Dev2.Web;
 
@@ -235,7 +236,7 @@ namespace Dev2.DynamicServices
         public string RemoteInvokeResultShape { get; set; }
         public bool RemoteInvoke { get; set; }
         public string RemoteInvokerID { get; set; }
-        public IList<DebugState> RemoteDebugItems { get; set; }
+        public IList<IDebugState> RemoteDebugItems { get; set; }
         public string RemoteServiceType { get; set; }
 
         public int ParentThreadID { get; set; }
@@ -406,7 +407,9 @@ namespace Dev2.DynamicServices
             DatalistOutMergeID = datalistOutMergeID;
 
             enDataListMergeTypes datalistOutMergeType;
+            // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
             if(Enum.TryParse(ExtractValue(xe, "DatalistOutMergeType"), true, out datalistOutMergeType))
+            // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
             {
                 DatalistOutMergeType = datalistOutMergeType;
             }

@@ -14,7 +14,7 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.AppResources.Enums;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Dialogs;
 using Dev2.Interfaces;
 using Dev2.Messages;
@@ -371,7 +371,7 @@ namespace Dev2.Settings.Scheduler
             {
                 if(null == value)
                 {
-                    EventPublisher.Publish(new DebugOutputMessage(new List<DebugState>()));
+                    EventPublisher.Publish(new DebugOutputMessage(new List<IDebugState>()));
                     return;
                 }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Dev2.Diagnostics
+namespace Dev2.Diagnostics.Debug
 {
     /// <summary>
     /// Defines the requirements for a dispatcher of <see cref="IDebugState"/> messages.
@@ -48,6 +48,6 @@ namespace Dev2.Diagnostics
         /// <param name="parentInstanceID">The parent instance ID.</param>
         /// <param name="remoteDebugItems">The remote debug items.</param>       
         // BUG 9706 - 2013.06.22 - TWR : added remote invoke parameters
-        void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerID = null, string parentInstanceID = null, IList<DebugState> remoteDebugItems = null);
+        void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerID = null, string parentInstanceID = null, IList<IDebugState> remoteDebugItems = null);
     }
 }

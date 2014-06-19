@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 
 namespace Dev2.Tests.Diagnostics
 {

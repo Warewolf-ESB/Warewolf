@@ -1,9 +1,9 @@
 ﻿using System;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Studio.Core.Interfaces;
 
-// ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Factory
+namespace Dev2.Factory
 {
     public static class DebugStateFactory
     {
@@ -14,7 +14,7 @@ namespace Dev2.Studio.Factory
                     Message = message,
                 };
 
-            if (resourceModel != null)
+            if(resourceModel != null)
             {
                 state.ServerID = resourceModel.ServerID;
                 state.OriginatingResourceID = resourceModel.ID;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net;
 using Dev2.Data.ServiceModel;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
@@ -38,10 +38,10 @@ namespace Dev2.Tests.Runtime.ESB
 
         #endregion
 
-        protected override IList<DebugState> FetchRemoteDebugItems(Connection connection)
+        protected override IList<IDebugState> FetchRemoteDebugItems(Connection connection)
         {
             FetchRemoteDebugItemsUri = connection.Address;
-            return new List<DebugState>();
+            return new List<IDebugState>();
         }
 
     }

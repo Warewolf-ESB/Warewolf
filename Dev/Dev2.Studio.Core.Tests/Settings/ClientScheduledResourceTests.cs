@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Text;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Scheduler.Interfaces;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.Core.Interfaces;
@@ -50,8 +50,7 @@ namespace Dev2.Core.Tests.Settings
             var scheduledResourceForTest = new ScheduledResourceForTest();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(scheduledResourceForTest);
-            var esbPayLoad = new EsbExecuteRequest();
-            esbPayLoad.ServiceName = "DeleteScheduledResourceService";
+            var esbPayLoad = new EsbExecuteRequest { ServiceName = "DeleteScheduledResourceService" };
             esbPayLoad.AddArgument("Resource", serializeObject);
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
@@ -75,8 +74,7 @@ namespace Dev2.Core.Tests.Settings
             var scheduledResourceForTest = new ScheduledResourceForTest();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(scheduledResourceForTest);
-            var esbPayLoad = new EsbExecuteRequest();
-            esbPayLoad.ServiceName = "AddScheduledResourceService";
+            var esbPayLoad = new EsbExecuteRequest { ServiceName = "AddScheduledResourceService" };
             esbPayLoad.AddArgument("Resource", serializeObject);
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
@@ -102,12 +100,9 @@ namespace Dev2.Core.Tests.Settings
             var scheduledResourceForTest = new ScheduledResourceForTest();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(scheduledResourceForTest);
-            var esbPayLoad = new EsbExecuteRequest();
-            esbPayLoad.ServiceName = "AddScheduledResourceService";
+            var esbPayLoad = new EsbExecuteRequest { ServiceName = "AddScheduledResourceService" };
             esbPayLoad.AddArgument("Resource", serializeObject);
-            var returnMessage = new ExecuteMessage();
-            returnMessage.HasError = true;
-            returnMessage.Message = new StringBuilder("Error occured");
+            var returnMessage = new ExecuteMessage { HasError = true, Message = new StringBuilder("Error occurred") };
             var serializedReturnMessage = serializer.SerializeToBuilder(returnMessage);
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
@@ -123,7 +118,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             mockConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
             Assert.IsFalse(saved);
-            Assert.AreEqual("Error occured", errorMessage);
+            Assert.AreEqual("Error occurred", errorMessage);
         }
 
         [TestMethod]
@@ -161,7 +156,9 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             // ReSharper disable AssignNullToNotNullAttribute
+            // ReSharper disable ObjectCreationAsStatement
             new ClientScheduledResourceModel(null);
+            // ReSharper restore ObjectCreationAsStatement
             // ReSharper restore AssignNullToNotNullAttribute
             //------------Assert Results-------------------------
         }
@@ -173,7 +170,7 @@ namespace Dev2.Core.Tests.Settings
 
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         public string WorkflowOutput { get; private set; }
-        public IList<DebugState> DebugOutput { get; private set; }
+        public IList<IDebugState> DebugOutput { get; private set; }
         public IEventInfo TaskHistoryOutput { get; private set; }
         public string UserName { get; set; }
 

@@ -1,7 +1,7 @@
-﻿using Dev2.Diagnostics;
+﻿using Dev2.Diagnostics.Debug;
+using Dev2.Studio.Core.Messages;
 
-// ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Core.Messages
+namespace Dev2.Messages
 {
     public class DebugWriterWriteMessage : IMessage
     {

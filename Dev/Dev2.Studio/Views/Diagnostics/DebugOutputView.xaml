@@ -11,7 +11,8 @@
              xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
-             mc:Ignorable="d"
+    xmlns:diagnostics2="clr-namespace:Dev2.ViewModels.Diagnostics"
+    mc:Ignorable="d"
              Name="DebugOutput"
              d:DataContext="{d:DesignInstance localDiagnostics:DebugOutputViewModel}">
     <Grid>
@@ -570,14 +571,14 @@
                     </DataTemplate>
 
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}" 
-                                              DataType="{x:Type localDiagnostics:DebugStringTreeViewItemViewModel}">
+                                              DataType="{x:Type diagnostics2:DebugStringTreeViewItemViewModel}">
                             <TextBlock Grid.Row="0"
                                        Text="{Binding Content}"
                                        HorizontalAlignment="Stretch" />
                     </HierarchicalDataTemplate>                    
 
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}" 
-                                              DataType="{x:Type localDiagnostics:DebugStateTreeViewItemViewModel}">
+                                              DataType="{x:Type diagnostics2:DebugStateTreeViewItemViewModel}">
                             <Grid HorizontalAlignment="Stretch"
                                   KeyboardNavigation.DirectionalNavigation="Continue">
                                 <Grid.ColumnDefinitions>

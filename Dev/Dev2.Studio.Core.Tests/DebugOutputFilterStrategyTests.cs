@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Diagnostics;
-using Dev2.Studio.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 
@@ -20,16 +20,10 @@ namespace Dev2.Core.Tests
 
         #region Initialization
 
-        [ClassInitialize()]
+        [ClassInitialize]
         public static void MyTestClassInitialize(TestContext testContext)
         {
             _debugOutputFilterStrategy = new DebugOutputFilterStrategy();
-        }
-
-        [TestInitialize()]
-        public void TestInitialize()
-        {
-            //MediatorMessageTrapper.DeregUserInterfaceLayoutProvider();
         }
 
         #endregion Initialization
@@ -37,39 +31,36 @@ namespace Dev2.Core.Tests
         #region Tests
 
         [TestMethod]
+        // ReSharper disable InconsistentNaming
         public void Filter_Where_ContentIsNull_Expected_False()
         {
-            bool expected = false;
             bool actual = _debugOutputFilterStrategy.Filter(null, "");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(false, actual);
         }
 
         [TestMethod]
         public void Filter_Where_FilterTextIsNull_Expected_False()
         {
-            bool expected = false;
             bool actual = _debugOutputFilterStrategy.Filter("", null);
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(false, actual);
         }
 
         [TestMethod]
         public void Filter_Where_ContentIsString_And_FilterTextContainsMatch_Expected_True()
         {
-            bool expected = true;
             bool actual = _debugOutputFilterStrategy.Filter("cake", "ak");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
         }
 
         [TestMethod]
         public void Filter_Where_ContentIsString_And_FilterTextDoesntContainMatch_Expected_false()
         {
-            bool expected = false;
             bool actual = _debugOutputFilterStrategy.Filter("cake", "123");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(false, actual);
         }
 
         [TestMethod]
@@ -77,114 +68,86 @@ namespace Dev2.Core.Tests
         {
             DebugState debugState = new DebugState();
 
-            bool expected = false;
             bool actual = _debugOutputFilterStrategy.Filter(debugState, "cake");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(false, actual);
         }
 
         [TestMethod]
         public void Filter_Where_ContentIsDebugState_And_FilterTextMatchesActivityType_Expected_True()
         {
-            DebugState debugState = new DebugState();
-            debugState.ActivityType = ActivityType.Workflow;
+            DebugState debugState = new DebugState { ActivityType = ActivityType.Workflow };
 
-            bool expected = true;
             bool actual = _debugOutputFilterStrategy.Filter(debugState, "work");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
         }
 
         [TestMethod]
         public void Filter_Where_ContentIsDebugState_And_FilterTextMatchesDisplayName_Expected_True()
         {
-            DebugState debugState = new DebugState();
-            debugState.DisplayName = "Cake";
+            DebugState debugState = new DebugState { DisplayName = "Cake" };
 
-            bool expected = true;
             bool actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
         }
 
         [TestMethod]
         public void Filter_Where_ContentIsDebugState_And_ActivityTypeIsStep_And_FilterTextMatchesName_Expected_True()
         {
-            DebugState debugState = new DebugState();
-            debugState.ActivityType = ActivityType.Step;
-            debugState.DisplayName = "Cake";
+            DebugState debugState = new DebugState { ActivityType = ActivityType.Step, DisplayName = "Cake" };
 
-            bool expected = true;
             bool actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
         }
 
         [TestMethod]
         public void Filter_Where_ContentIsDebugState_And_ActivityTypeIsWorkflow_And_FilterTextMatchesServer_Expected_True()
         {
-            DebugState debugState = new DebugState();
-            debugState.ActivityType = ActivityType.Workflow;
-            debugState.DisplayName = "Cake";
-
-            bool expected = true;
+            DebugState debugState = new DebugState { ActivityType = ActivityType.Workflow, DisplayName = "Cake" };
             bool actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
         }
 
         [TestMethod]
         public void Filter_Where_ContentIsDebugState_And_FilterTextMatchesVersion_Expected_True()
         {
-            DebugState debugState = new DebugState();
-            debugState.DisplayName = "Cake";
-
-            bool expected = true;
+            DebugState debugState = new DebugState { DisplayName = "Cake" };
             bool actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
         }
 
         [TestMethod]
         public void Filter_Where_ContentIsDebugState_And_ActivityTypeIsStep_And_FilterTextMatchesDurration_Expected_True()
         {
-            DebugState debugState = new DebugState();
-            debugState.ActivityType = ActivityType.Step;
-            debugState.StartTime = new DateTime(2012, 01, 02, 1, 2, 3);
-            debugState.EndTime = new DateTime(2012, 01, 02, 2, 2, 3);
+            DebugState debugState = new DebugState { ActivityType = ActivityType.Step, StartTime = new DateTime(2012, 01, 02, 1, 2, 3), EndTime = new DateTime(2012, 01, 02, 2, 2, 3) };
 
-            bool expected = true;
             bool actual = _debugOutputFilterStrategy.Filter(debugState, "01:");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
         }
 
         [TestMethod]
         public void Filter_Where_ContentIsDebugState_And_ActivityTypeIsWorkflow_And_FilterTextMatchesStartTime_Expected_True()
         {
-            DebugState debugState = new DebugState();
-            debugState.ActivityType = ActivityType.Workflow;
-            debugState.StateType = StateType.Before;
-            debugState.StartTime = new DateTime(2012, 01, 02, 1, 2, 3);
-
-            bool expected = true;
+            DebugState debugState = new DebugState { ActivityType = ActivityType.Workflow, StateType = StateType.Before, StartTime = new DateTime(2012, 01, 02, 1, 2, 3) };
             bool actual = _debugOutputFilterStrategy.Filter(debugState, "2012");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
         }
 
         [TestMethod]
         public void Filter_Where_ContentIsDebugState_And_ActivityTypeIsWorkflow_And_FilterTextMatchesEndTime_Expected_True()
         {
-            DebugState debugState = new DebugState();
-            debugState.ActivityType = ActivityType.Workflow;
-            debugState.StateType = StateType.After;
-            debugState.EndTime = new DateTime(2012, 01, 02, 2, 2, 3);
+            DebugState debugState = new DebugState { ActivityType = ActivityType.Workflow, StateType = StateType.After, EndTime = new DateTime(2012, 01, 02, 2, 2, 3) };
 
-            bool expected = true;
             bool actual = _debugOutputFilterStrategy.Filter(debugState, "2012");
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(true, actual);
         }
 
         [TestMethod]
@@ -216,5 +179,7 @@ namespace Dev2.Core.Tests
         }
 
         #endregion Tests
+
+        // ReSharper restore InconsistentNaming
     }
 }

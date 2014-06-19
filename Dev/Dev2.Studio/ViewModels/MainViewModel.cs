@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.ExtMethods;
+using Dev2.Factory;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
 using Dev2.Providers.Logs;
@@ -593,15 +594,15 @@ namespace Dev2.Studio.ViewModels
                     if(resourceModel != null)
                     {
                         DeployResource = resourceModel as IContextualResourceModel;
-                    }
                 }
+            }
                 if(!exist)
-                {
-                    AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateDeployViewModel(message.ViewModel));
-                }
+            {
+                AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateDeployViewModel(message.ViewModel));
+            }
                 else
                 {
-                    this.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
+            this.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
                     EventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.ResourceId, message.ViewModel.EnvironmentId));
                 }
             }

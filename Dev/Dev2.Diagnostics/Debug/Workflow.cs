@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Dev2.Diagnostics
+namespace Dev2.Diagnostics.Debug
 {
     public class Workflow : IXmlSerializable
     {

@@ -14,14 +14,15 @@ using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Explorer;
+using Dev2.Diagnostics.Debug;
 using Dev2.ExtMethods;
 using Dev2.Interfaces;
+using Dev2.Messages;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
@@ -123,6 +124,7 @@ namespace Dev2.Network
 
         void OnDebugStateReceived(string objString)
         {
+
             var obj = JsonConvert.DeserializeObject<DebugState>(objString);
             Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });

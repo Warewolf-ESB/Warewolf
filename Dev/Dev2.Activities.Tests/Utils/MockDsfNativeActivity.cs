@@ -1,8 +1,9 @@
-﻿using Dev2.Activities;
-using Dev2.Diagnostics;
-using System;
+﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using Dev2.Activities;
+using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.Utils
@@ -58,12 +59,12 @@ namespace Dev2.Tests.Activities.Utils
         protected override void OnExecutedCompleted(NativeActivityContext context, bool hasError, bool isResumable)
         {
             IDebugState state = base.GetDebugState();
-            if (state == null)
+            if(state == null)
             {
                 IsDebugStateNull = true;
-            }         
+            }
             base.OnExecutedCompleted(context, hasError, isResumable);
-            
+
         }
 
         #endregion

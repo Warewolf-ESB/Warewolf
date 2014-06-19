@@ -15,6 +15,7 @@ using Dev2.DataList.Contract;
 using Dev2.Dialogs;
 using Dev2.Enums;
 using Dev2.Factories;
+using Dev2.Factory;
 using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Models;
@@ -1640,16 +1641,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                             if(environmentModel != null)
                             {
                                 var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
-                                if(resource != null)
-                                {
-                                    //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true);
+                            if(resource != null)
+                            {
+                                //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
+                                DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true);
                                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
-                                    d.IconPath = resource.IconPath;
+                                d.IconPath = resource.IconPath;
 
-                                    modelProperty.SetValue(d);
-                                }
+                                modelProperty.SetValue(d);
                             }
+                        }
                         }
                         DataObject = null;
                     }

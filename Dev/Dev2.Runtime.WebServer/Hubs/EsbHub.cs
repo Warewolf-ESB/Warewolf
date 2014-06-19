@@ -5,6 +5,7 @@ using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -37,7 +38,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             if(ResourceCatalog.Instance.ResourceSaved == null)
             {
                 ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
-            }
+            }            
         }
 
         void ResourceSaved(IResource resource)

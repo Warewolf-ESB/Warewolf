@@ -12,7 +12,7 @@ using Dev2.Common.ExtMethods;
 
 #endregion
 
-namespace Dev2.Diagnostics
+namespace Dev2.Diagnostics.Debug
 {
     /// <summary>
     ///     A default debug state
@@ -123,7 +123,9 @@ namespace Dev2.Diagnostics
             {
                 return XmlConvert.ToString(Duration);
             }
+            // ReSharper disable ValueParameterNotUsed
             set
+            // ReSharper restore ValueParameterNotUsed
             {
             }
         }
@@ -242,23 +244,6 @@ namespace Dev2.Diagnostics
         public string ExecutingUser { get; set; }
 
         public Guid SessionID { get; set; }
-
-        #endregion
-
-        #region IDebugState - Write
-
-        /// <summary>
-        ///     Writes this instance to the specified writer.
-        /// </summary>
-        /// <param name="writer">The writer to which this instance is written.</param>
-        public void Write(IDebugWriter writer)
-        {
-            if(writer == null)
-            {
-                return;
-            }
-            writer.Write(this);
-        }
 
         #endregion
 

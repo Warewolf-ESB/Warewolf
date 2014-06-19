@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Dev2.Diagnostics
+namespace Dev2.Diagnostics.Debug
 {
     /// <summary>
     /// Used to store remote debug data ;)
     /// </summary>
     public class RemoteDebugMessageRepo
     {
-        readonly IDictionary<Guid, IList<DebugState>> _data = new Dictionary<Guid, IList<DebugState>>();
+        readonly IDictionary<Guid, IList<IDebugState>> _data = new Dictionary<Guid, IList<IDebugState>>();
         static readonly object Lock = new object();
 
         private static RemoteDebugMessageRepo _instance;
@@ -29,7 +29,7 @@ namespace Dev2.Diagnostics
         /// </summary>
         /// <param name="remoteInvokeID">The remote invoke ID.</param>
         /// <param name="ds">The ds.</param>
-        public void AddDebugItem(string remoteInvokeID, DebugState ds)
+        public void AddDebugItem(string remoteInvokeID, IDebugState ds)
         {
             Guid id;
             Guid.TryParse(remoteInvokeID, out id);
@@ -37,7 +37,7 @@ namespace Dev2.Diagnostics
             {
                 lock(Lock)
                 {
-                    IList<DebugState> list;
+                    IList<IDebugState> list;
                     if(_data.TryGetValue(id, out list))
                     {
                         if(list.Contains(ds)) return;
@@ -45,7 +45,7 @@ namespace Dev2.Diagnostics
                     }
                     else
                     {
-                        list = new List<DebugState> { ds };
+                        list = new List<IDebugState> { ds };
                         _data[id] = list;
                     }
                 }
@@ -57,12 +57,12 @@ namespace Dev2.Diagnostics
         /// </summary>
         /// <param name="remoteInvokeID">The remote invoke ID.</param>
         /// <returns></returns>
-        public IList<DebugState> FetchDebugItems(Guid remoteInvokeID)
+        public IList<IDebugState> FetchDebugItems(Guid remoteInvokeID)
         {
 
             lock(Lock)
             {
-                IList<DebugState> list;
+                IList<IDebugState> list;
                 if(_data.TryGetValue(remoteInvokeID, out list))
                 {
                     _data.Remove(remoteInvokeID); // clear out all messages ;)

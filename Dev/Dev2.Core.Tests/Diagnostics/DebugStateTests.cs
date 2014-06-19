@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Tests.Weave;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -12,10 +13,6 @@ namespace Dev2.Tests.Diagnostics
     [ExcludeFromCodeCoverage]
     public class DebugStateTests
     {
-        const string LongText = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-            + "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. "
-            + "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. "
-            + "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
         #region Constructor
 
@@ -45,7 +42,9 @@ namespace Dev2.Tests.Diagnostics
             reader.Setup(w => w.ReadGuid()).Verifiable();
             reader.Setup(w => w.ReadDateTime()).Verifiable();
 
+            // ReSharper disable ObjectCreationAsStatement
             new DebugState(reader.Object);
+            // ReSharper restore ObjectCreationAsStatement
 
             reader.Verify(w => w.ReadInt32());
             reader.Verify(w => w.ReadString());
@@ -56,32 +55,6 @@ namespace Dev2.Tests.Diagnostics
         #endregion
 
         #region Write
-
-        [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
-        public void Write_With_NullDebugWriter_Expected_DoesNothing()
-        // ReSharper restore InconsistentNaming
-        {
-            var debugState = new DebugState();
-            debugState.Write((IDebugWriter)null);
-        }
-
-        [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
-        public void Write_With_DebugWriter_Expected_InvokesDebugWriterWithThisState()
-        // ReSharper restore InconsistentNaming
-        {
-            var debugState = new DebugState();
-
-            var writer = new Mock<IDebugWriter>();
-            writer.Setup(w => w.Write(It.IsAny<IDebugState>())).Verifiable();
-
-            debugState.Write(writer.Object);
-
-            // ReSharper disable PossibleUnintendedReferenceComparison
-            writer.Verify(w => w.Write(It.Is<IDebugState>(state => state == debugState)));
-            // ReSharper restore PossibleUnintendedReferenceComparison
-        }
 
         [TestMethod]
         // ReSharper disable InconsistentNaming - Unit Test

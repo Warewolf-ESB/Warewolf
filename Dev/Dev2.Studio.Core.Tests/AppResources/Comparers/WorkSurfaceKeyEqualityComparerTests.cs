@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Core.Tests.Environments;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
+using Dev2.Factory;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Factory;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -128,7 +128,9 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             connection2.Setup(connection => connection.WorkspaceID).Returns(enviroId2);
             e2.Setup(model => model.Connection).Returns(connection2.Object);
             var repo = new TestLoadEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(repo);
+            // ReSharper restore ObjectCreationAsStatement
             var debugState = new Mock<IDebugState>();
             debugState.Setup(c => c.OriginatingResourceID).Returns(resId);
             debugState.Setup(c => c.ServerID).Returns(serverId);

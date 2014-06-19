@@ -4,6 +4,7 @@ using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Simulation;
 using Dev2.Tests.Activities.XML;
@@ -448,12 +449,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         static void VerifyDispatcherWriteCount(DsfDataObject dataObject, int expectedCount)
         {
             var dispatcher = new Mock<IDebugDispatcher>();
-            dispatcher.Setup(d => d.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<DebugState>>())).Verifiable();
+            dispatcher.Setup(d => d.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>())).Verifiable();
 
             var activity = new TestActivity(dispatcher.Object);
 
             Run(activity, dataObject,
-                () => dispatcher.Verify(d => d.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<DebugState>>()), Times.Exactly(expectedCount)));
+                () => dispatcher.Verify(d => d.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()), Times.Exactly(expectedCount)));
         }
 
         #endregion

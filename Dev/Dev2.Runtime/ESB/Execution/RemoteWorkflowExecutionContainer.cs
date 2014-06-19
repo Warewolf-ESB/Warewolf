@@ -5,7 +5,7 @@ using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Value_Objects;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -104,7 +104,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 // Invoke Remote WF Here ;)
                 result = ExecuteGetRequest(connection, serviceName, dataListFragment);
-                IList<DebugState> msg = FetchRemoteDebugItems(connection);
+                IList<IDebugState> msg = FetchRemoteDebugItems(connection);
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
             catch(Exception e)
@@ -129,13 +129,13 @@ namespace Dev2.Runtime.ESB.Execution
             return Guid.Empty;
         }
 
-        protected virtual IList<DebugState> FetchRemoteDebugItems(Connection connection)
+        protected virtual IList<IDebugState> FetchRemoteDebugItems(Connection connection)
         {
             var data = ExecuteGetRequest(connection, "FetchRemoteDebugMessagesService", "InvokerID=" + DataObject.RemoteInvokerID);
 
             if(data != null)
             {
-                IList<DebugState> fetchRemoteDebugItems = RemoteDebugItemParser.ParseItems(data);
+                IList<IDebugState> fetchRemoteDebugItems = RemoteDebugItemParser.ParseItems(data);
                 fetchRemoteDebugItems.ForEach(state => state.SessionID = DataObject.DebugSessionID);
                 return fetchRemoteDebugItems;
             }

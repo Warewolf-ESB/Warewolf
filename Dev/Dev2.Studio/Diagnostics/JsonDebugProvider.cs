@@ -1,15 +1,14 @@
-﻿using Dev2.Diagnostics;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using Dev2.Diagnostics.Debug;
+using Newtonsoft.Json;
 
-// ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Diagnostics
+namespace Dev2.Diagnostics
 {
     public class JsonDebugProvider : IDebugProvider
     {
-        public IEnumerable<DebugState> GetDebugStates(string serverWebUri, DirectoryPath directory, FilePath filePath)
+        public IEnumerable<IDebugState> GetDebugStates(string serverWebUri, DirectoryPath directory, FilePath filePath)
         {
             var webclient = new WebClient { Credentials = CredentialCache.DefaultCredentials };
             var address = String.Format(serverWebUri + "{0}/{1}?DirectoryPath={2}&FilePath={3}",

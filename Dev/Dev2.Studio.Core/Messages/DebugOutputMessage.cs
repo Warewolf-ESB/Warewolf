@@ -1,8 +1,5 @@
-﻿
-// ReSharper disable once CheckNamespace
-
-using System.Collections.Generic;
-using Dev2.Diagnostics;
+﻿using System.Collections.Generic;
+using Dev2.Diagnostics.Debug;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Messages
@@ -13,11 +10,11 @@ namespace Dev2.Studio.Core.Messages
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public DebugOutputMessage(IList<DebugState> debugStates)
+        public DebugOutputMessage(IList<IDebugState> debugStates)
         {
             DebugStates = debugStates;
         }
 
-        public IList<DebugState> DebugStates { get; set; }
+        public IList<IDebugState> DebugStates { get; set; }
     }
-}   
+}

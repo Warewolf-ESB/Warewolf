@@ -1,7 +1,14 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Activities.Presentation.View;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Diagnostics;
+using Dev2.Factory;
 using Dev2.Messages;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
@@ -21,18 +28,11 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Workspaces;
-using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Webs;
 using Dev2.Utils;
 using Dev2.Workspaces;
-using System;
-using System.Activities.Presentation.View;
-using System.Linq;
-using System.Threading;
-using System.Windows;
-using System.Windows.Input;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface
@@ -253,7 +253,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 DebugOutputViewModel.Clear();
                 var debugState = message.DebugStates.LastOrDefault();
-
+               
                 if(debugState != null)
                 {
                     debugState.StateType = StateType.Clear;
@@ -453,11 +453,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if(resourceModel.UserPermissions.IsContributor())
             {
 
-                var succesfulSave = Save(resourceModel, true);
-                if(!succesfulSave)
-                {
-                    return;
-                }
+            var succesfulSave = Save(resourceModel, true);
+            if(!succesfulSave)
+            {
+                return;
+            }
             }
 
             SetDebugStatus(DebugStatus.Configure);
@@ -659,13 +659,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             if(message != null && message.Message != null)
             {
-                var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
-                if(_debugOutputViewModel != null)
-                {
-                    debugstate.SessionID = _debugOutputViewModel.SessionID;
-                    _debugOutputViewModel.Append(debugstate);
-                }
+            var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
+            if(_debugOutputViewModel != null)
+            {
+                debugstate.SessionID = _debugOutputViewModel.SessionID;
+                _debugOutputViewModel.Append(debugstate);
             }
+        }
         }
 
         public virtual void Debug()

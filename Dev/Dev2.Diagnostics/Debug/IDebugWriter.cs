@@ -1,5 +1,5 @@
 ﻿
-namespace Dev2.Diagnostics
+namespace Dev2.Diagnostics.Debug
 {
     /// <summary>
     /// Defines the requirements for a debug writer

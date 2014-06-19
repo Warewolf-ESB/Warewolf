@@ -5,6 +5,7 @@ using System.Text;
 using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Messages;
 using Dev2.Providers.Events;
 using Dev2.Services.Security;
@@ -20,7 +21,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.ViewModelTests
@@ -96,8 +96,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             CompositionInitializer.InitializeForMeflessBaseViewModel();
-            var workSurfaceKey = new WorkSurfaceKey();
-            workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.Scheduler;
+            var workSurfaceKey = new WorkSurfaceKey { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var mockWorkSurfaceViewModel = new SchedulerViewModel();
             //------------Execute Test---------------------------
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, mockWorkSurfaceViewModel);
@@ -137,8 +136,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             CompositionInitializer.InitializeForMeflessBaseViewModel();
-            var workSurfaceKey = new WorkSurfaceKey();
-            workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.Scheduler;
+            var workSurfaceKey = new WorkSurfaceKey { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -148,9 +146,10 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
+            const string msg = "[{\"$type\":\"Dev2.Diagnostics.Debug.DebugState, Dev2.Diagnostics\",\"ID\":\"cd902be2-a202-4d54-8c07-c5f56bae97fe\",\"ParentID\":\"00000000-0000-0000-0000-000000000000\",\"ServerID\":\"00000000-0000-0000-0000-000000000000\",\"EnvironmentID\":\"00000000-0000-0000-0000-000000000000\",\"ClientID\":\"00000000-0000-0000-0000-000000000000\",\"StateType\":64,\"DisplayName\":\"dave\",\"HasError\":true,\"ErrorMessage\":\"Service [ dave ] not found.\",\"Version\":\"\",\"Name\":\"DynamicServicesInvoker\",\"ActivityType\":0,\"Duration\":\"00:00:00\",\"DurationString\":\"PT0S\",\"StartTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"EndTime\":\"2014-03-20T17:23:14.0224329+02:00\",\"Inputs\":[],\"Outputs\":[],\"Server\":\"\",\"WorkspaceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginalInstanceID\":\"00000000-0000-0000-0000-000000000000\",\"OriginatingResourceID\":\"00000000-0000-0000-0000-000000000000\",\"IsSimulation\":false,\"Message\":null,\"NumberOfSteps\":0,\"Origin\":\"\",\"ExecutionOrigin\":0,\"ExecutionOriginDescription\":null,\"ExecutingUser\":null,\"SessionID\":\"00000000-0000-0000-0000-000000000000\"}]";
 
-            const string message = @"[{""ID"":""db2bd5e6-6894-44ca-8ce4-f99441a4e612"",""ParentID"":""00000000-0000-0000-0000-000000000000"",""ServerID"":""b2037c1e-5482-4d5d-9e9a-bd8023385cb7"",""EnvironmentID"":""00000000-0000-0000-0000-000000000000"",""ClientID"":""00000000-0000-0000-0000-000000000000"",""StateType"":2,""DisplayName"":""Count Records"",""HasError"":false,""ErrorMessage"":"""",""Version"":"""",""Name"":""Count Records"",""ActivityType"":1,""Duration"":""00:00:00.0390000"",""DurationString"":""PT0.039S"",""StartTime"":""2014-03-20T15:10:58.3312466+02:00"",""EndTime"":""2014-03-20T15:10:58.3702466+02:00"",""Inputs"":[],""Outputs"":[{""ResultsList"":[{""Type"":1,""Label"":"""",""Variable"":""[[res]]"",""Operator"":""="",""Value"":""10"",""GroupName"":null,""GroupIndex"":0,""MoreLink"":null}]}],""Server"":""5852ba5d-434c-4866-91cf-b7c1ebf38747"",""WorkspaceID"":""00000000-0000-0000-0000-000000000000"",""OriginalInstanceID"":""14e13cb3-9868-45ef-908c-a6fb960697f8"",""OriginatingResourceID"":""00000000-0000-0000-0000-000000000000"",""IsSimulation"":false,""Message"":null,""NumberOfSteps"":0,""Origin"":"""",""ExecutionOrigin"":0,""ExecutionOriginDescription"":null,""ExecutingUser"":null,""SessionID"":""00000000-0000-0000-0000-000000000000""}]";
-            var tmp = JsonConvert.DeserializeObject<IList<DebugState>>(message);
+            var serializer = new Dev2JsonSerializer();
+            var tmp = serializer.Deserialize<List<IDebugState>>(msg);
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new DebugOutputMessage(tmp));
             //------------Assert Results-------------------------
@@ -163,8 +162,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             CompositionInitializer.InitializeForMeflessBaseViewModel();
-            var workSurfaceKey = new WorkSurfaceKey();
-            workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.Scheduler;
+            var workSurfaceKey = new WorkSurfaceKey { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -175,7 +173,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>().Object;
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
             //------------Execute Test---------------------------
-            workSurfaceContextViewModel.Handle(new DebugOutputMessage(new List<DebugState>()));
+            workSurfaceContextViewModel.Handle(new DebugOutputMessage(new List<IDebugState>()));
             //------------Assert Results-------------------------
             Assert.AreEqual(0, workSurfaceContextViewModel.DebugOutputViewModel.RootItems.Count);
         }

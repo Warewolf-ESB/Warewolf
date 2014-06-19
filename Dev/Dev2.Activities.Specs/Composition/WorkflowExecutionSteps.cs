@@ -1,23 +1,4 @@
-﻿using Dev2.Activities.Specs.BaseTypes;
-using Dev2.Activities.Specs.Composition.DBSource;
-using Dev2.Data.Util;
-using Dev2.Diagnostics;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services;
-using Dev2.Session;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.AppResources.Repositories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
-using Dev2.Studio.Core.Network;
-using Dev2.Studio.ViewModels.DataList;
-using Dev2.Threading;
-using Dev2.TO;
-using Dev2.Util;
-using Dev2.Utilities;
-using System;
+﻿using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -26,6 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
+using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Activities.Specs.Composition.DBSource;
+using Dev2.Data.Util;
+using Dev2.Diagnostics.Debug;
+using Dev2.Messages;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services;
+using Dev2.Session;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.AppResources.Repositories;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Models;
+using Dev2.Studio.Core.Network;
+using Dev2.Studio.ViewModels.DataList;
+using Dev2.Threading;
+using Dev2.TO;
+using Dev2.Util;
+using Dev2.Utilities;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -491,9 +491,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an Sort ""(.*)"" as")]
         public void GivenContainsAnSortAs(string parentName, string activityName, Table table)
         {
-            var dsfSequence = new DsfSortRecordsActivity() { DisplayName = activityName };
-            dsfSequence.SortField = table.Rows[0][0];
-            dsfSequence.SelectedSort = table.Rows[0][1];
+            var dsfSequence = new DsfSortRecordsActivity { DisplayName = activityName, SortField = table.Rows[0][0], SelectedSort = table.Rows[0][1] };
             CommonSteps.AddActivityToActivityList(parentName, activityName, dsfSequence);
         }
 

@@ -1,10 +1,11 @@
-﻿using Dev2.DataList.Contract;
+﻿using System;
+using System.Collections.Generic;
+using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.WF;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
 
 namespace Dev2.Tests.Runtime.WF
 {
@@ -25,16 +26,19 @@ namespace Dev2.Tests.Runtime.WF
             mockDataObject.Setup(d => d.IsDebugMode()).Returns(false);
             mockDataObject.Setup(d => d.IsFromWebServer).Returns(false);
             mockDataObject.Setup(d => d.RunWorkflowAsync).Returns(true);
-            mockDispatcher.Setup(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<DebugState>>()))
+            mockDispatcher.Setup(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()))
                 .Verifiable();
-            IDSFDataObject dataObject = mockDataObject.Object;
+            var dataObject = mockDataObject.Object;
             const StateType StateType = StateType.All;
+            // ReSharper disable RedundantAssignment
             ErrorResultTO errors = new ErrorResultTO();
+            // ReSharper restore RedundantAssignment
             DateTime? workflowStartTime = DateTime.Now;
             //------------Execute Test---------------------------
-            wfUtils.DispatchDebugState(dataObject, StateType, errors, workflowStartTime);
+            wfUtils.DispatchDebugState(dataObject, StateType, false, string.Empty, out errors, workflowStartTime);
             //------------Assert Results-------------------------
-            mockDispatcher.Verify(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<DebugState>>()), Times.Once());
+            mockDispatcher.Verify(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()), Times.Once());
+            Assert.IsFalse(errors.HasErrors());
         }
 
         [TestMethod]
@@ -50,16 +54,19 @@ namespace Dev2.Tests.Runtime.WF
             mockDataObject.Setup(d => d.IsDebugMode()).Returns(false);
             mockDataObject.Setup(d => d.IsFromWebServer).Returns(false);
             mockDataObject.Setup(d => d.RunWorkflowAsync).Returns(false);
-            mockDispatcher.Setup(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<DebugState>>()))
+            mockDispatcher.Setup(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()))
                 .Verifiable();
-            IDSFDataObject dataObject = mockDataObject.Object;
+            var dataObject = mockDataObject.Object;
             const StateType StateType = StateType.All;
+            // ReSharper disable RedundantAssignment
             ErrorResultTO errors = new ErrorResultTO();
+            // ReSharper restore RedundantAssignment
             DateTime? workflowStartTime = DateTime.Now;
             //------------Execute Test---------------------------
-            wfUtils.DispatchDebugState(dataObject, StateType, errors, workflowStartTime);
+            wfUtils.DispatchDebugState(dataObject, StateType, false, string.Empty, out errors, workflowStartTime);
             //------------Assert Results-------------------------
-            mockDispatcher.Verify(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<DebugState>>()), Times.Never());
+            mockDispatcher.Verify(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()), Times.Never());
+            Assert.IsFalse(errors.HasErrors());
         }
     }
 }

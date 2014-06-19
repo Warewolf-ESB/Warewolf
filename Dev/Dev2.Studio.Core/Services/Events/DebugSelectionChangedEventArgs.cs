@@ -1,4 +1,4 @@
-﻿using Dev2.Diagnostics;
+﻿using Dev2.Diagnostics.Debug;
 
 namespace Dev2.Services.Events
 {

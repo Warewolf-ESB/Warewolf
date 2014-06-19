@@ -7,7 +7,7 @@ using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Enums;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Enums;
 using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

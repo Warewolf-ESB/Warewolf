@@ -17,6 +17,7 @@ using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
 using Dev2.Models;
+using Dev2.Factory;
 using Dev2.Providers.Events;
 using Dev2.Scheduler.Interfaces;
 using Dev2.Services.Events;

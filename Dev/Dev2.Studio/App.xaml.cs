@@ -11,7 +11,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
-using Dev2.Diagnostics;
+using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
 // ReSharper disable RedundantUsingDirective
 using Dev2.Network;
