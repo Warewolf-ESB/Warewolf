@@ -1867,7 +1867,7 @@ Scenario: Workflow with Assign Calculate
 #	  | [[rec(1).a]] = Warewolf |
 #	  | [[rec(3).a]] = 2        |
 
-Scenario: Workflow with Assign and Sort to test gaps
+Scenario: Workflow with Assign and Sort Forward to test gaps
       Given I have a workflow "workflowithAssignandsortrec"
       And "workflowithAssignandsortrec" contains an Assign "sortval" as
 	  | variable    | value |
@@ -1909,6 +1909,47 @@ Scenario: Workflow with Assign and Sort to test gaps
 	  | [[rs(5).a]] = 20 |
 	  | [[rs(7).a]] = 30 |
 
+Scenario: Workflow with Assign and Sort Backward to test gaps
+      Given I have a workflow "workflowithAssignandsortrec"
+      And "workflowithAssignandsortrec" contains an Assign "sortval" as
+	  | variable    | value |
+	  | [[rs(1).a]] | 10    |
+	  | [[rs(5).a]] | 20    |
+	  | [[rs(7).a]] | 30    |
+	  | [[rs(2).b]] | 6     |
+	  | [[rs(4).b]] | 4     |
+	  | [[rs(6).b]] | 2     |
+	  And "workflowithAssignandsortrec" contains an Sort "sortRec" as
+	  | Sort Field | Sort Order |
+	  | [[rec(*).a | Backward   |
+	  When "workflowithAssignandsortrec" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs(1).a]] = | 10        |
+	  | 2 | [[rs(5).a]] = | 20        |
+	  | 3 | [[rs(7).a]] = | 30        |
+	  | 4 | [[rs(2).b]] = | 6         |
+	  | 5 | [[rs(4).b]] = | 4         |
+	  | 6 | [[rs(6).b]] = | 2         |
+	  And the 'sortval' in Workflow 'workflowithAssignandsortrec' debug outputs as    
+	  | # |                  |
+	  | 1 | [[rs(1).a]] = 10 |
+	  | 2 | [[rs(5).a]] = 20 |
+	  | 3 | [[rs(7).a]] = 30 |
+	  | 4 | [[rs(2).b]] = 6  |
+	  | 5 | [[rs(4).b]] = 4  |
+	  | 6 | [[rs(6).b]] = 2  |
+	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
+	  | Sort Field       | Sort Order |
+	  | [[rs(1).a]] = 30 |            |
+	  | [[rs(5).a]] = 20 |            |
+	  | [[rs(7).a]] = 10 | Backward   |
+	  And the 'sortRec' in Workflow 'workflowithAssignandsortrec' debug outputs as
+	  |                  |
+	  | [[rs(1).a]] = 30 |
+	  | [[rs(5).a]] = 20 |
+	  | [[rs(7).a]] = 10 |
 
 
 

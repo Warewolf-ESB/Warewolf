@@ -4257,11 +4257,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with Assign and Sort to test gaps")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with Assign and Sort Forward to test gaps")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
-        public virtual void WorkflowWithAssignAndSortToTestGaps()
+        public virtual void WorkflowWithAssignAndSortForwardToTestGaps()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign and Sort to test gaps", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign and Sort Forward to test gaps", ((string[])(null)));
 #line 1870
 this.ScenarioSetup(scenarioInfo);
 #line 1871
@@ -4384,6 +4384,138 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rs(7).a]] = 30"});
 #line 1906
    testRunner.And("the \'sortRec\' in Workflow \'workflowithAssignandsortrec\' debug outputs as", ((string)(null)), table253, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with Assign and Sort Backward to test gaps")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        public virtual void WorkflowWithAssignAndSortBackwardToTestGaps()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with Assign and Sort Backward to test gaps", ((string[])(null)));
+#line 1912
+this.ScenarioSetup(scenarioInfo);
+#line 1913
+      testRunner.Given("I have a workflow \"workflowithAssignandsortrec\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table254 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table254.AddRow(new string[] {
+                        "[[rs(1).a]]",
+                        "10"});
+            table254.AddRow(new string[] {
+                        "[[rs(5).a]]",
+                        "20"});
+            table254.AddRow(new string[] {
+                        "[[rs(7).a]]",
+                        "30"});
+            table254.AddRow(new string[] {
+                        "[[rs(2).b]]",
+                        "6"});
+            table254.AddRow(new string[] {
+                        "[[rs(4).b]]",
+                        "4"});
+            table254.AddRow(new string[] {
+                        "[[rs(6).b]]",
+                        "2"});
+#line 1914
+      testRunner.And("\"workflowithAssignandsortrec\" contains an Assign \"sortval\" as", ((string)(null)), table254, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table255 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table255.AddRow(new string[] {
+                        "[[rec(*).a",
+                        "Backward"});
+#line 1922
+   testRunner.And("\"workflowithAssignandsortrec\" contains an Sort \"sortRec\" as", ((string)(null)), table255, "And ");
+#line 1925
+   testRunner.When("\"workflowithAssignandsortrec\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1926
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table256 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table256.AddRow(new string[] {
+                        "1",
+                        "[[rs(1).a]] =",
+                        "10"});
+            table256.AddRow(new string[] {
+                        "2",
+                        "[[rs(5).a]] =",
+                        "20"});
+            table256.AddRow(new string[] {
+                        "3",
+                        "[[rs(7).a]] =",
+                        "30"});
+            table256.AddRow(new string[] {
+                        "4",
+                        "[[rs(2).b]] =",
+                        "6"});
+            table256.AddRow(new string[] {
+                        "5",
+                        "[[rs(4).b]] =",
+                        "4"});
+            table256.AddRow(new string[] {
+                        "6",
+                        "[[rs(6).b]] =",
+                        "2"});
+#line 1927
+   testRunner.And("the \'sortval\' in WorkFlow \'workflowithAssignandsortrec\' debug inputs as", ((string)(null)), table256, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table257 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table257.AddRow(new string[] {
+                        "1",
+                        "[[rs(1).a]] = 10"});
+            table257.AddRow(new string[] {
+                        "2",
+                        "[[rs(5).a]] = 20"});
+            table257.AddRow(new string[] {
+                        "3",
+                        "[[rs(7).a]] = 30"});
+            table257.AddRow(new string[] {
+                        "4",
+                        "[[rs(2).b]] = 6"});
+            table257.AddRow(new string[] {
+                        "5",
+                        "[[rs(4).b]] = 4"});
+            table257.AddRow(new string[] {
+                        "6",
+                        "[[rs(6).b]] = 2"});
+#line 1935
+   testRunner.And("the \'sortval\' in Workflow \'workflowithAssignandsortrec\' debug outputs as", ((string)(null)), table257, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table258 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Sort Field",
+                        "Sort Order"});
+            table258.AddRow(new string[] {
+                        "[[rs(1).a]] = 30",
+                        ""});
+            table258.AddRow(new string[] {
+                        "[[rs(5).a]] = 20",
+                        ""});
+            table258.AddRow(new string[] {
+                        "[[rs(7).a]] = 10",
+                        "Backward"});
+#line 1943
+   testRunner.And("the \'sortRec\' in WorkFlow \'workflowithAssignandsortrec\' debug inputs as", ((string)(null)), table258, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table259 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table259.AddRow(new string[] {
+                        "[[rs(1).a]] = 30"});
+            table259.AddRow(new string[] {
+                        "[[rs(5).a]] = 20"});
+            table259.AddRow(new string[] {
+                        "[[rs(7).a]] = 10"});
+#line 1948
+   testRunner.And("the \'sortRec\' in Workflow \'workflowithAssignandsortrec\' debug outputs as", ((string)(null)), table259, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
