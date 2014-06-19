@@ -106,63 +106,6 @@ namespace Dev2.CodedUI.Tests
         }
 
         [TestMethod]
-        [Ignore] // Faulty Logic - Needs to be unit test ;)
-        public void TypeInCalcBoxExpectedTooltipAppears()
-        {
-            //Create the Workflow for the test
-            RibbonUIMap.CreateNewWorkflow();
-
-            // For later
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 200);
-            Point clickPint = new Point(theStartButton.BoundingRectangle.X, theStartButton.BoundingRectangle.Y + 20);
-
-            // Drag a Calculate control on
-            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Calculate, workflowPoint1);
-
-            Playback.Wait(500);
-            KeyboardCommands.SendTabs(3, 200);
-            KeyboardCommands.SendKey("sum{(}");
-
-            // Find the control
-            UITestControl calculateOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Calculate");
-
-            // Find the fxBox - This seemed resilient to filter properties for some odd reason...
-            WpfEdit fxBox = new WpfEdit(calculateOnWorkflow);
-
-            UITestControlCollection boxCollection = fxBox.FindMatchingControls();
-            Playback.Wait(550);
-            WpfEdit realfxBox = new WpfEdit();
-            foreach(WpfEdit theBox in boxCollection)
-            {
-                string autoId = theBox.AutomationId;
-                if(autoId == "UI__fxtxt_AutoID")
-                {
-                    realfxBox = theBox;
-                }
-            }
-
-            Mouse.Click(clickPint);
-            Playback.Wait(200);
-
-            // now back to the text box to get the tool-tip to appear
-            var boundingRect = calculateOnWorkflow.BoundingRectangle;
-
-            Point magicPoint = new Point(boundingRect.X + 100, boundingRect.Y + 35);
-            Mouse.Click(magicPoint);
-            Playback.Wait(550);
-
-
-            string helpText = realfxBox.GetProperty("Helptext").ToString();
-
-            if(!helpText.Contains("sum(number{0}, number{N})") || (!helpText.Contains("Sums all the numbers given as arguments and returns the sum.")))
-            {
-                Assert.Fail("The tooltip for the Sum box does not appear.");
-            }
-        }
-
-        [TestMethod]
         public void CheckAddMissingIsWorkingWhenManuallyAddingVariableExpectedToShowVariablesAsUnUsed()
         {
             //Open the correct workflow

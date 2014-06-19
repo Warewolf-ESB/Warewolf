@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Management;
 using System.Threading;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
@@ -26,11 +27,11 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static string LogLocation = @"C:\Builds\UITestRunWorkspace\UI_Test.log";
 
-        public static string RootSourceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Sources\";
-        public static string RootServiceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Services\";
+        public static string RootSourceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Resources\";
+        public static string RootServiceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Resources\";
 
-        public static string ShadowSourceLocation = @"C:\Builds\UITestRunWorkspace\Sources\";
-        public static string ShadowServiceLocation = @"C:\Builds\UITestRunWorkspace\Services\";
+        public static string ShadowSourceLocation = @"C:\Builds\UITestRunWorkspace\Resources\";
+        public static string ShadowServiceLocation = @"C:\Builds\UITestRunWorkspace\Resources\";
 
         public static string WorkspaceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Workspaces\";
 
@@ -38,6 +39,7 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         // must be removed to have proper codedui runs
         public static string ServerSourceToDelete = @"Remote Connection Integration.xml";
+        public static string ServerSourceToDeleteCategory = @"REMOTECODEDUI";
         public static string RemoteServer = RemoteServerLocation + "Warewolf Server.exe";
         public static string RemoteServerConfig = RemoteServerLocation + "Warewolf Server.exe.config";
 
@@ -50,10 +52,40 @@ namespace Dev2.Studio.UI.Tests.Utils
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext testCtx)
         {
-            if(!File.Exists(ServerLocation) && !File.Exists(StudioLocation))
+            if(File.Exists(ServerLocation) || File.Exists(StudioLocation))
             {
-                ServerLocation = Path.Combine(testCtx.DeploymentDirectory, "Warewolf Server.exe");
-                StudioLocation = Path.Combine(testCtx.DeploymentDirectory, "Warewolf Studio.exe");
+                return;
+            }
+            if(testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901")
+            {
+                ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
+                StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
+                RootSourceLocation = StudioLocation.Replace("Warewolf Server.exe", "Resources\\");
+                RootServiceLocation = StudioLocation.Replace("Warewolf Server.exe", "Resources\\");
+                return;
+            }
+            CopyDirectory(testCtx.DeploymentDirectory, ServerLocation.Replace("Warewolf Server.exe", string.Empty));
+            CopyDirectory(testCtx.DeploymentDirectory, RemoteServerLocation);
+        }
+
+        private static string GetProcessPath(ManagementObjectCollection processes)
+        {
+            if(processes == null || processes.Count == 0)
+            {
+                return null;
+            }
+            return (from ManagementObject process in processes select (process.Properties["ExecutablePath"].Value ?? string.Empty).ToString()).FirstOrDefault();
+        }
+
+        private static void CopyDirectory(string from, string to)
+        {
+            foreach(var dirPath in Directory.GetDirectories(from, "*", SearchOption.AllDirectories))
+            {
+                Directory.CreateDirectory(dirPath.Replace(from, to));
+            }
+            foreach(var newPath in Directory.GetFiles(from, "*.*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(from, to), true);
             }
         }
 
@@ -81,7 +113,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                 // remove hanging source that causes issues
                 RemoveProblemServerSources();
 
-                StartServer();
+                StartServer(ServerLocation);
                 StartStudio();
 
                 Thread.Sleep(WaitMS);
@@ -120,19 +152,15 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 LogTestRunMessage("Could not locate CodedUI Binaries", true);
             }
-
-            // Now clean up next test run ;)
-            CloseAllInstancesOfIE();
-
         }
 
         /// <summary>
         /// Deletes the source.
         /// </summary>
         /// <param name="sourceName">Name of the source.</param>
-        public static void DeleteSource(string sourceName)
+        public static void DeleteSource(string sourceName, string serviceCategory = null)
         {
-            var path = RootSourceLocation + sourceName;
+            var path = RootServiceLocation + (serviceCategory != null ? (serviceCategory + "\\") : string.Empty) + sourceName;
             if(File.Exists(path))
             {
                 File.Delete(path);
@@ -143,9 +171,9 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// Deletes the service.
         /// </summary>
         /// <param name="serviceName">Name of the service.</param>
-        public static void DeleteService(string serviceName)
+        public static void DeleteService(string serviceName, string serviceCategory = null)
         {
-            var path = RootServiceLocation + serviceName;
+            var path = RootServiceLocation + (serviceCategory != null ? (serviceCategory + "\\") : string.Empty) + serviceName;
             if(File.Exists(path))
             {
                 File.Delete(path);
@@ -159,7 +187,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                 // Just needs the remote resources now ;(
                 AmendRemoteConfigForTest();
 
-                StartServer();
+                StartServer(RemoteServer);
 
                 Thread.Sleep(WaitMS);
             }
@@ -190,7 +218,7 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         static void RemoveProblemServerSources()
         {
-            DeleteSource(ServerSourceToDelete);
+            DeleteSource(ServerSourceToDelete, ServerSourceToDeleteCategory);
         }
 
         static void CloseAllInstancesOfIE()
@@ -264,11 +292,11 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
         }
 
-        static void StartServer()
+        static void StartServer(string location)
         {
             const string args = "-t";
 
-            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args, FileName = ServerLocation };
+            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, Arguments = args, FileName = location };
 
             var started = false;
             var startCnt = 0;

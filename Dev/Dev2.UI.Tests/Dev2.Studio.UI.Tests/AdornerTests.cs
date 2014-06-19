@@ -656,6 +656,17 @@ namespace Dev2.Studio.UI.Tests
                                                                                 "Prefix contains invalid characters");
             Assert.IsNotNull(errorControl, "No error displayed for incorrect QVI input");
 
+            #region Scroll Right
+
+            var scrollBarH = WorkflowDesignerUIMap.ScrollViewer_GetHorizontalScrollBar(theTab);
+            WorkflowDesignerUIMap.ScrollViewer_GetHorizontalScrollBar(theTab);
+
+            // Look far right
+            Mouse.StartDragging(scrollBarH);
+            Mouse.StopDragging(WorkflowDesignerUIMap.ScrollViewer_GetScrollRight(theTab)); 
+
+            #endregion
+
             // Assert clicking an error focuses the correct text-box
             MouseCommands.ClickControl(errorControl.GetChildren()[0]);
 
