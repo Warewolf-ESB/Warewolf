@@ -20,31 +20,18 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM ** Kill The Studio **
-
 taskkill /im "Warewolf Studio.exe"
 
 REM  Wait 10 seconds ;)
 ping -n 10 127.0.0.1 > nul
 
 REM ** Kill The Server **
-
 taskkill /im "Warewolf Server.exe"
 
 REM  Wait 7 seconds ;)
 ping -n 7 127.0.0.1 > nul
 
-REM ** Start The Server **
-
-START "%DeploymentDirectory%\Warewolf Server.exe" /D %DeploymentDirectory% "Warewolf Server.exe"
-
-REM  Wait 40 seconds ;)
-ping -n 40 127.0.0.1 > nul
-
-REM ** Start The Studio **
-
-START "%DeploymentDirectory%\Warewolf Studio.exe" /D %DeploymentDirectory% "Warewolf Studio.exe"
-
-REM  Wait a minute ;)
-ping -n 60 127.0.0.1 > nul
+REM ** Delete Old Binaries **
+RD /S /Q "C:\Builds\UITestRunWorkspace\Binaries"
 
 exit 0
