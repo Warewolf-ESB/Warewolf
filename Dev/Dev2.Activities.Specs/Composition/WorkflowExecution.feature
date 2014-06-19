@@ -1837,14 +1837,6 @@ Scenario: Workflow with Assign Calculate
 #	  | [[a]] =         |
 #	  | [[b]] =         |   
 
-
-
-
-
-
-
-
-
 #This Test scenario should be passed after the bug 12016 is fixed
 # Scenario: Workflow with Assign and Replace by using recordset star
 # Given I have a workflow "workflowithAssignandreplaces"
@@ -1874,3 +1866,79 @@ Scenario: Workflow with Assign Calculate
 #	  | [[rec(1).a]] = Warewolf |
 #	  | [[rec(1).a]] = Warewolf |
 #	  | [[rec(3).a]] = 2        |
+
+Scenario: Workflow with Assign and Sort to test gaps
+      Given I have a workflow "workflowithAssignandsortrec"
+      And "workflowithAssignandsortrec" contains an Assign "sortval" as
+	  | variable    | value |
+	  | [[rs(1).a]] | 10    |
+	  | [[rs(5).a]] | 20    |
+	  | [[rs(7).a]] | 30    |
+	  | [[rs(2).b]] | 6     |
+	  | [[rs(4).b]] | 4     |
+	  | [[rs(6).b]] | 2     |
+	  And "workflowithAssignandsortrec" contains an Sort "sortRec" as
+	  | Sort Field | Sort Order |
+	  | [[rec(*).a | Forward    |
+	  When "workflowithAssignandsortrec" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs(1).a]] = | 10        |
+	  | 2 | [[rs(5).a]] = | 20        |
+	  | 3 | [[rs(7).a]] = | 30        |
+	  | 4 | [[rs(2).b]] = | 6         |
+	  | 5 | [[rs(4).b]] = | 4         |
+	  | 6 | [[rs(6).b]] = | 2         |
+	  And the 'sortval' in Workflow 'workflowithAssignandsortrec' debug outputs as    
+	  | # |                  |
+	  | 1 | [[rs(1).a]] = 10 |
+	  | 2 | [[rs(5).a]] = 20 |
+	  | 3 | [[rs(7).a]] = 30 |
+	  | 4 | [[rs(2).b]] = 6  |
+	  | 5 | [[rs(4).b]] = 4  |
+	  | 6 | [[rs(6).b]] = 2  |
+	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrec' debug inputs as
+	  | Sort Field       | Sort Order |
+	  | [[rs(1).a]] = 10 |            |
+	  | [[rs(5).a]] = 20 |            |
+	  | [[rs(7).a]] = 30 | Forward    |
+	  And the 'sortRec' in Workflow 'workflowithAssignandsortrec' debug outputs as
+	  |                  |
+	  | [[rs(1).a]] = 10 |
+	  | [[rs(5).a]] = 20 |
+	  | [[rs(7).a]] = 30 |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
