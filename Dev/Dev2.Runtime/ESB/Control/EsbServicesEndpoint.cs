@@ -298,7 +298,6 @@ namespace Dev2.Runtime.ESB.Control
             // local non-scoped execution ;)
             var isLocal = !dataObject.IsRemoteWorkflow;
 
-
             var principle = Thread.CurrentPrincipal;
             ServerLogger.LogMessage("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
 

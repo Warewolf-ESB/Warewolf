@@ -14,7 +14,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
     {
         private IndexList _myKeys;
         private BinaryDataListStorageLayer _itemStorage;
-        public int _appendIndex;
+        public int AppendIndex;
         IDictionary<string, int> _strToColIdx;
         bool _isEmpty;
 
@@ -97,11 +97,31 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                                     // Fetch index value 
                                     var internalIdx = InternalFetchColumnIndex(col);
 
+                                    // adjust if there is a mapping ;)
+                                    // The datalist in the studio used to sort
+                                    // hence we always had the correct ordering in the inner and outer xml shape
+                                    // Now that this is not happening we need to account for swapped shapes
+                                    BinaryDataListAlias keyAlias;
+                                    if(_keyToAliasMap.TryGetValue(col, out keyAlias))
+                                    {
+                                        var parentColumns = keyAlias.MasterEntry.Columns;
+                                        var parentColumn = keyAlias.MasterColumn;
+
+                                        internalIdx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
+
+                                        colCnt = (short)parentColumns.Count;
+                                    }
+
                                     // FOR : Bug_10247_Outter
                                     // if -1 skip and try next key ;) 
                                     if(internalIdx != -1)
                                     {
                                         IBinaryDataListItem tmp = _internalReturnValue[internalIdx];
+
+                                        if(keyAlias != null)
+                                        {
+                                            tmp.UpdateField(col);
+                                        }
 
                                         // normal object build
                                         tmp.UpdateValue(theRow.FetchValue(internalIdx, colCnt));
@@ -245,7 +265,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             Guid masterID = dlID;
-            string masterRS = parentNamespace;
+            string masterRs = parentNamespace;
             string masterCol = parentColumn;
             Guid searchID = dlID;
 
@@ -264,7 +284,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                 if(bdl != null)
                 {
                     string error;
-                    bdl.TryGetEntry(masterRS, out masterEntry, out error);
+                    bdl.TryGetEntry(masterRs, out masterEntry, out error);
                     errors.AddError(error);
 
                     if(masterEntry != null)
@@ -276,7 +296,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                             // we have a hit ;)
                             masterID = binaryDataListAlias.MasterKeyID;
                             searchID = masterID;
-                            masterRS = binaryDataListAlias.MasterNamespace;
+                            masterRs = binaryDataListAlias.MasterNamespace;
                             masterCol = binaryDataListAlias.MasterColumn;
                             aliasSearchRounds++;
                         }
@@ -318,7 +338,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
 
             // Check MasterKeyID to see if it contains an alias, if so keep bubbling until we at end ;)
-            _keyToAliasMap[childColumn] = new BinaryDataListAlias { MasterKeyID = masterID, ChildKey = GenerateKeyPrefix(Namespace, DataListKey), MasterKey = GenerateKeyPrefix(masterRS, masterID), MasterColumn = masterCol, MasterNamespace = masterRS, MasterEntry = masterEntry };
+            _keyToAliasMap[childColumn] = new BinaryDataListAlias { MasterKeyID = masterID, ChildKey = GenerateKeyPrefix(Namespace, DataListKey), MasterKey = GenerateKeyPrefix(masterRs, masterID), MasterColumn = masterCol, MasterNamespace = masterRs, MasterEntry = masterEntry };
         }
 
         public void AddGap(int idx)
@@ -340,7 +360,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         public void MoveIndexDataForClone(int min, int max, HashSet<int> gaps, bool onMasterEntry)
         {
             // signal that we have data here ;)
-            _appendIndex = 2;
+            AppendIndex = 2;
             _isEmpty = false;
 
             _myKeys.MinValue = min;

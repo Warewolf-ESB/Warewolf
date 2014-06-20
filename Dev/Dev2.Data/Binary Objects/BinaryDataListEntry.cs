@@ -159,7 +159,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             IsEditable = isEditable;
             ColumnIODirection = ioDir;
             DataListKey = dataListKey;
-            _internalObj._appendIndex = -1;
+            _internalObj.AppendIndex = -1;
             _internalObj.Init(cols.Count);
             RegisterScope();
         }
@@ -171,7 +171,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             IsEditable = isEditable;
             ColumnIODirection = ioDir;
             DataListKey = dataListKey;
-            _internalObj._appendIndex = -1;
+            _internalObj.AppendIndex = -1;
             _internalObj.Init(1);
             RegisterScope();
         }
@@ -604,16 +604,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public int FetchAppendRecordsetIndex()
         {
             int result = FetchLastRecordsetIndex();
-            if(result >= 1 && _internalObj._appendIndex > 0)
+            if(result >= 1 && _internalObj.AppendIndex > 0)
             {
                 if(!_internalObj.IsEmtpy)
                 {
                     result++; // inc for insert if data already present    
                 }
             }
-            else if(result == 1 && _internalObj._appendIndex == -1)
+            else if(result == 1 && _internalObj.AppendIndex == -1)
             {
-                _internalObj._appendIndex = 2; // first pass
+                _internalObj.AppendIndex = 2; // first pass
 
                 var aliasDic = _internalObj.FetchAlias();
 
@@ -976,7 +976,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 _internalObj.Remove(i, true);
             }
 
-            var tmp = new SBinaryDataListEntry { IsRecordset = _internalObj.IsRecordset, Columns = _internalObj.Columns, Namespace = _internalObj.Namespace, DataListKey = _internalObj.DataListKey, Description = _internalObj.Description, IsEditable = _internalObj.IsEditable, ColumnIODirection = _internalObj.ColumnIODirection, _appendIndex = -1 };
+            var tmp = new SBinaryDataListEntry { IsRecordset = _internalObj.IsRecordset, Columns = _internalObj.Columns, Namespace = _internalObj.Namespace, DataListKey = _internalObj.DataListKey, Description = _internalObj.Description, IsEditable = _internalObj.IsEditable, ColumnIODirection = _internalObj.ColumnIODirection, AppendIndex = -1 };
 
             tmp.Init(_internalObj.Columns.Count);
 

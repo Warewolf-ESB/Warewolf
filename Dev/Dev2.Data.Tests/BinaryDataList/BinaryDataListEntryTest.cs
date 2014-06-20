@@ -20,9 +20,9 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("BinaryDataListEntry_MakeRecordsetEvaluateReady")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_FetchRecordsetIndexes_WhenAliases_ExpectAliasKeys()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             string error;
@@ -61,7 +61,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             dl1.TryGetEntry("recset", out entry, out error);
 
             // adjust the alias mapping data ;)
-           
+
             entry.AdjustForIOMapping(dl0.UID, "f1", "recset", "f1", out errors);
 
             //------------Assert Results-------------------------
@@ -82,9 +82,9 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BinaryDataListEntry_Sort")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_Sort_WhenGaps_ExpectSortedResults()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             string error;
@@ -111,9 +111,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Execute Test---------------------------
             IBinaryDataListEntry entry;
             dl0.TryGetEntry("recset", out entry, out error);
-            entry.Sort("f1",false,out error);
+            entry.Sort("f1", false, out error);
             var row1 = entry.FetchRecordAt(1, out error);
-            Assert.AreEqual(row1[0].TheValue,"a");
+            Assert.AreEqual(row1[0].TheValue, "a");
             Assert.AreEqual(row1[1].TheValue, "3");
             var row2 = entry.FetchRecordAt(2, out error);
             Assert.AreEqual(row2[0].TheValue, "");
@@ -132,9 +132,9 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BinaryDataListEntry_Sort")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_Sort_Foward_WhenGapsAndMissingEntries_ExpectSortedResultsWithBlanksAtStart()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             string error;
@@ -181,9 +181,9 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BinaryDataListEntry_Sort")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_Sort_Backward_Int_WhenGapsAndMissingEntries_ExpectSortedResultsWithBlanksAtStart()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             string error;
@@ -231,9 +231,9 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BinaryDataListEntry_Sort")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_Sort_Backward_float_WhenGapsAndMissingEntries_ExpectSortedResultsWithBlanksAtStart()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             string error;
@@ -331,9 +331,9 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BinaryDataListEntry_Sort")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_Sort_Backward_Date_WhenGapsAndMissingEntries_ExpectSortedResultsWithBlanksAtStart()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             string error;
@@ -347,10 +347,10 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             // dl0 - Parent
             dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
-            dl0.TryCreateRecordsetValue(new DateTime(2001,01,01).ToString(CultureInfo.InvariantCulture), "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue(new DateTime(2001, 01, 01).ToString(CultureInfo.InvariantCulture), "f1", "recset", 1, out error);
             dl0.TryCreateRecordsetValue("1", "f2", "recset", 1, out error);
             dl0.TryCreateRecordsetValue("2", "f2", "recset", 3, out error);
-            dl0.TryCreateRecordsetValue(new DateTime(1999,01,01).ToString(CultureInfo.InvariantCulture), "f1", "recset", 4, out error);
+            dl0.TryCreateRecordsetValue(new DateTime(1999, 01, 01).ToString(CultureInfo.InvariantCulture), "f1", "recset", 4, out error);
             dl0.TryCreateRecordsetValue("3", "f2", "recset", 4, out error);
 
             // push datalist
@@ -399,7 +399,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             dl0.TryCreateRecordsetValue(new DateTime(2001, 01, 01).ToString(CultureInfo.InvariantCulture), "f1", "recset", 1, out error);
             dl0.TryCreateRecordsetValue("1", "f2", "recset", 1, out error);
             dl0.TryCreateRecordsetValue("2", "f2", "recset", 3, out error);
-             dl0.TryCreateRecordsetValue("", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("", "f1", "recset", 3, out error);
             dl0.TryCreateRecordsetValue(new DateTime(1999, 01, 01).ToString(CultureInfo.InvariantCulture), "f1", "recset", 4, out error);
             dl0.TryCreateRecordsetValue("3", "f2", "recset", 4, out error);
 
@@ -430,9 +430,9 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BinaryDataListEntry_Sort")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_Sort_ExpectNoErrorIfEmpty()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             string error;
@@ -462,9 +462,9 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("BinaryDataListEntry_MakeRecordsetEvaluateReady")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_FetchRecordsetIndexes_WhenAliasesPresentAndMadeEvaluateReady_ExpectChildEntryKeys()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             string error;
@@ -527,9 +527,9 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("BinaryDataListEntry_MakeRecordsetEvaluateReady")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_MakeRecordsetEvaluateReady_NormalUsage_ExpectEvaluateReadyRecordset()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             string error;
@@ -559,9 +559,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             dl1.TryGetEntry("recset", out entry, out error);
 
             //add gap where we want to evaluate for return, as this is the bug ;)
-            entry.FetchRecordsetIndexes().AddGap(3); 
+            entry.FetchRecordsetIndexes().AddGap(3);
 
-            entry.MakeRecordsetEvaluateReady(3,"f1", out error);
+            entry.MakeRecordsetEvaluateReady(3, "f1", out error);
 
             //------------Assert Results-------------------------
 
@@ -572,7 +572,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(1, idxes.Count);
             Assert.AreEqual(3, minIdx);
             Assert.AreEqual(3, maxIdx);
-            
+
         }
 
         [TestMethod]
@@ -593,7 +593,7 @@ namespace Dev2.Data.Tests.BinaryDataList
                 IBinaryDataListEntry entry;
 
                 // emulate the delete ;)
-                if (bdl.TryGetEntry("rs", out entry, out error))
+                if(bdl.TryGetEntry("rs", out entry, out error))
                 {
                     entry.TryDeleteRows("", out error);
                     entry.TryDeleteRows("", out error);
@@ -615,9 +615,9 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("BinaryDataListEntry_Clone")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_Clone_IndexDataMoves_ExpectClonedIndexData()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
@@ -628,7 +628,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             IBinaryDataListEntry entry;
 
             // emulate the delete at index 1, aka a header delete ;)
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 entry.TryDeleteRows("1", out error);
             }
@@ -659,7 +659,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             IBinaryDataListEntry entry;
 
             // emulate the delete ;)
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 entry.TryDeleteRows("3", out error);
                 entry.TryDeleteRows("2", out error);
@@ -687,15 +687,15 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 var res = entry.ItemCollectionSize();
                 var isEmpty = entry.IsEmpty();
 
                 Assert.IsTrue(isEmpty);
-                Assert.AreEqual(0,res);
+                Assert.AreEqual(0, res);
             }
-                
+
         }
 
 
@@ -714,10 +714,10 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
-// ReSharper disable RedundantEmptyObjectCreationArgumentList
+                // ReSharper disable RedundantEmptyObjectCreationArgumentList
                 IList<IBinaryDataListItem> row = new List<IBinaryDataListItem>()
 // ReSharper restore RedundantEmptyObjectCreationArgumentList
                 {
@@ -745,7 +745,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", -1);
                 IList<IBinaryDataListItem> row = new List<IBinaryDataListItem>
@@ -775,7 +775,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
                 entry.TryPutRecordItemAtIndex(itm, 1, out error);
@@ -801,7 +801,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", -1);
                 entry.TryPutRecordItemAtIndex(itm, -1, out error);
@@ -828,13 +828,13 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
-                entry.TryAppendRecordItem(itm,out error);
+                entry.TryAppendRecordItem(itm, out error);
                 Assert.IsFalse(entry.IsEmpty());
                 Assert.AreEqual(1, entry.ItemCollectionSize());
-                Assert.AreEqual(2,entry.FetchAppendRecordsetIndex());
+                Assert.AreEqual(2, entry.FetchAppendRecordsetIndex());
             }
 
 
@@ -857,11 +857,11 @@ namespace Dev2.Data.Tests.BinaryDataList
             IBinaryDataListEntry entry;
             IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("MyCoolvalue", "scalarValue");
 
-            if (bdl.TryGetEntry("scalarValue", out entry, out error))
+            if(bdl.TryGetEntry("scalarValue", out entry, out error))
             {
-                entry.TryPutScalar(itm,out error);
+                entry.TryPutScalar(itm, out error);
 
-                Assert.AreEqual("MyCoolvalue",entry.FetchScalar().TheValue);
+                Assert.AreEqual("MyCoolvalue", entry.FetchScalar().TheValue);
             }
 
 
@@ -882,7 +882,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 3);
                 entry.TryPutRecordItemAtIndex(itm, 3, out error);
@@ -893,7 +893,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
         }
 
-      
+
         [TestMethod]
         [Owner("Travis")]
         [TestCategory("BinaryDataListEntry,UnitTest")]
@@ -909,7 +909,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
                 IBinaryDataListItem itm2 = Dev2BinaryDataListFactory.CreateBinaryItem("jane", "rs", "val", 3);
@@ -958,9 +958,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("gRec", out entry, out error))
+            if(bdl.TryGetEntry("gRec", out entry, out error))
             {
-                   
+
                 Assert.IsFalse(entry.IsEmpty());
                 Assert.AreEqual(3, entry.ItemCollectionSize());
                 Assert.AreEqual(4, entry.FetchAppendRecordsetIndex());
@@ -1003,7 +1003,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("gRec", out entry, out error))
+            if(bdl.TryGetEntry("gRec", out entry, out error))
             {
                 IBinaryDataListItem itm = entry.TryFetchRecordsetColumnAtIndex("opt", 3, out error);
                 Assert.AreEqual(string.Empty, error);
@@ -1028,7 +1028,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
                 IBinaryDataListItem itm2 = Dev2BinaryDataListFactory.CreateBinaryItem("jane", "rs", "val", 2);
@@ -1036,8 +1036,8 @@ namespace Dev2.Data.Tests.BinaryDataList
                 entry.TryPutRecordItemAtIndex(itm2, 2, out error);
                 entry.MakeRecordsetEvaluateReady(2, "val", out error);
 
-                Assert.AreEqual(2,entry.FetchLastRecordsetIndex());
-                Assert.AreEqual(1,entry.ItemCollectionSize());
+                Assert.AreEqual(2, entry.FetchLastRecordsetIndex());
+                Assert.AreEqual(1, entry.ItemCollectionSize());
             }
         }
 
@@ -1056,7 +1056,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IBinaryDataListEntry entry;
 
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "val", 1);
                 IBinaryDataListItem itm2 = Dev2BinaryDataListFactory.CreateBinaryItem("jane", "rs", "val", 2);
@@ -1067,14 +1067,14 @@ namespace Dev2.Data.Tests.BinaryDataList
                 Assert.AreEqual(2, entry.FetchLastRecordsetIndex());
                 Assert.AreEqual(2, entry.ItemCollectionSize());
             }
-    }
+        }
 
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("BinaryDataListEntry_FetchRecordAt")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_FetchRecordAt_ColumnDoesNotExist_BlankRowNotInserted()
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             var compiler = DataListFactory.CreateDataListCompiler();
@@ -1090,16 +1090,94 @@ namespace Dev2.Data.Tests.BinaryDataList
             IList<IBinaryDataListItem> data = null;
 
             // fetch record at non-existent field
-            if (bdl.TryGetEntry("rs", out entry, out error))
+            if(bdl.TryGetEntry("rs", out entry, out error))
             {
                 data = entry.FetchRecordAt(1, "foo", out error);
             }
 
 
             //------------Assert Results-------------------------
-// ReSharper disable PossibleNullReferenceException
+            // ReSharper disable PossibleNullReferenceException
             Assert.AreEqual(0, data.Count, "Found non-existent field?!");
-// ReSharper restore PossibleNullReferenceException
+            // ReSharper restore PossibleNullReferenceException
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("BinaryDataListEntry_Indexer")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_Indexer_WhenAliasedAndColumnsAreSwappedInXMLShape_ExpectCorrectData()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            const string InputDefs = @"<Inputs><Input Name=""val"" Source=""[[rs(*).val]]"" Recordset=""rs"" /><Input Name=""val2"" Source=""[[rs(*).val2]]"" Recordset=""rs"" /></Inputs>";
+            const string OutputDefs = @"<Outputs><Output Name=""val"" MapsTo=""[[rs(*).val]]"" Value=""[[rs().val]]"" Recordset=""rs"" /><Output Name=""val2"" MapsTo=""[[rs(*).val2]]"" Value=""[[rs().val2]]"" Recordset=""rs"" /></Outputs>";
+            var oldID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>val_value</val><val2>val2_value</val2></rs></xml>", "<xml><rs><val/><val2/></rs></xml>", out errors);
+            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val2/><val/></rs></xml>", out errors);
+
+            //------------Execute Test---------------------------
+            compiler.ShapeForSubExecution(oldID, shapeID, InputDefs, OutputDefs, out errors); // this triggers the aliasing ;)
+
+            //------------Assert Results-------------------------
+            var bdl = compiler.FetchBinaryDataList(shapeID, out errors);
+            string error;
+            IBinaryDataListEntry entry;
+
+            // how check the ordering of the data coming out after the alias operation
+            // because the columns are swapped we need to ensure the right index is fetched from storage ;)
+            if(bdl.TryGetEntry("rs", out entry, out error))
+            {
+                var record = entry.FetchRecordAt(1, out error);
+                // val2 first because it is first col in shapeID datalist
+                Assert.AreEqual("val2_value", record[0].TheValue);
+                Assert.AreEqual("val_value", record[1].TheValue);
+            }
+            else
+            {
+                Assert.Fail();
+            }
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("BinaryDataListEntry_Indexer")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_Indexer_WhenAliasedAndColumnsAreNotwappedInXMLShape_ExpectCorrectData()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            const string InputDefs = @"<Inputs><Input Name=""val"" Source=""[[rs(*).val]]"" Recordset=""rs"" /><Input Name=""val2"" Source=""[[rs(*).val2]]"" Recordset=""rs"" /></Inputs>";
+            const string OutputDefs = @"<Outputs><Output Name=""val"" MapsTo=""[[rs(*).val]]"" Value=""[[rs().val]]"" Recordset=""rs"" /><Output Name=""val2"" MapsTo=""[[rs(*).val2]]"" Value=""[[rs().val2]]"" Recordset=""rs"" /></Outputs>";
+            var oldID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>val_value</val><val2>val2_value</val2></rs></xml>", "<xml><rs><val/><val2/></rs></xml>", out errors);
+            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/><val2/></rs></xml>", out errors);
+
+            //------------Execute Test---------------------------
+            compiler.ShapeForSubExecution(oldID, shapeID, InputDefs, OutputDefs, out errors); // this triggers the aliasing ;)
+
+            //------------Assert Results-------------------------
+            var bdl = compiler.FetchBinaryDataList(shapeID, out errors);
+            string error;
+            IBinaryDataListEntry entry;
+
+            // how check the ordering of the data coming out after the alias operation
+            // because the columns are swapped we need to ensure the right index is fetched from storage ;)
+            if(bdl.TryGetEntry("rs", out entry, out error))
+            {
+                var record = entry.FetchRecordAt(1, out error);
+                // right way around because xml shape matches 
+                Assert.AreEqual("val_value", record[0].TheValue);
+                Assert.AreEqual("val2_value", record[1].TheValue);
+            }
+            else
+            {
+                Assert.Fail();
+            }
+
         }
 
     }

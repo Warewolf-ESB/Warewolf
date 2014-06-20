@@ -52,26 +52,26 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Clones the data list.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid CloneDataList(Guid curDLID, out ErrorResultTO errors)
+        public Guid CloneDataList(Guid curDlid, out ErrorResultTO errors)
         {
-            return _svrCompiler.CloneDataList(curDLID, out errors);
+            return _svrCompiler.CloneDataList(curDlid, out errors);
         }
 
         /// <summary>
         /// Used to evaluate an expression against a given datalist
         /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="curDlid">The cur DL ID.</param>
         /// <param name="typeOf">The type of evaluation.</param>
         /// <param name="expression">The expression.</param>
         /// <param name="toRoot"></param>
         /// <param name="errors"></param>
         /// <returns></returns>
-        public IBinaryDataListEntry Evaluate(Guid curDLID, enActionType typeOf, string expression, bool toRoot, out ErrorResultTO errors)
+        public IBinaryDataListEntry Evaluate(Guid curDlid, enActionType typeOf, string expression, bool toRoot, out ErrorResultTO errors)
         {
-            return _svrCompiler.Evaluate(null, curDLID, typeOf, expression, out errors, toRoot);
+            return _svrCompiler.Evaluate(null, curDlid, typeOf, expression, out errors, toRoot);
         }
 
         /// <summary>
@@ -226,143 +226,143 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Fetches the binary data list.
         /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="curDlid">The cur DL ID.</param>
         /// <param name="errors"></param>
         /// <returns></returns>
-        public IBinaryDataList FetchBinaryDataList(Guid curDLID, out ErrorResultTO errors)
+        public IBinaryDataList FetchBinaryDataList(Guid curDlid, out ErrorResultTO errors)
         {
-            return _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
+            return _svrCompiler.FetchBinaryDataList(null, curDlid, out errors);
         }
 
         /// <summary>
         /// Upserts the value to the specified cur DL ID's expression.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="expression">The expression.</param>
         /// <param name="value">The value.</param>
         /// <param name="errors"></param>
         /// <returns></returns>
-        public Guid Upsert(Guid curDLID, string expression, IBinaryDataListEntry value, out ErrorResultTO errors)
+        public Guid Upsert(Guid curDlid, string expression, IBinaryDataListEntry value, out ErrorResultTO errors)
         {
-            return _svrCompiler.Upsert(null, curDLID, expression, value, out errors);
+            return _svrCompiler.Upsert(null, curDlid, expression, value, out errors);
         }
 
         /// <summary>
         /// Upserts the values against the specified cur DL ID's expression list.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="expressions">The expressions.</param>
         /// <param name="values">The values.</param>
         /// <param name="errors"></param>
         /// <returns></returns>
-        public Guid Upsert(Guid curDLID, IList<string> expressions, IList<IBinaryDataListEntry> values, out ErrorResultTO errors)
+        public Guid Upsert(Guid curDlid, IList<string> expressions, IList<IBinaryDataListEntry> values, out ErrorResultTO errors)
         {
-            return _svrCompiler.Upsert(null, curDLID, expressions, values, out errors);
+            return _svrCompiler.Upsert(null, curDlid, expressions, values, out errors);
         }
 
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="expressions">The expressions.</param>
         /// <param name="values">The values.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid Upsert(Guid curDLID, IList<string> expressions, IList<string> values, out ErrorResultTO errors)
+        public Guid Upsert(Guid curDlid, IList<string> expressions, IList<string> values, out ErrorResultTO errors)
         {
-            return _svrCompiler.Upsert(null, curDLID, expressions, values, out errors);
+            return _svrCompiler.Upsert(null, curDlid, expressions, values, out errors);
         }
 
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="expression">The expression.</param>
         /// <param name="value">The value.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid Upsert(Guid curDLID, string expression, string value, out ErrorResultTO errors)
+        public Guid Upsert(Guid curDlid, string expression, string value, out ErrorResultTO errors)
         {
             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in regular upsert
             var allRegions = DataListCleaningUtils.SplitIntoRegions(expression);
             var allValues = allRegions.Select(region => value).ToList();
-            return _svrCompiler.Upsert(null, curDLID, allRegions, allValues, out errors);
+            return _svrCompiler.Upsert(null, curDlid, allRegions, allValues, out errors);
         }
 
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<string> payload, out ErrorResultTO errors)
+        public Guid Upsert(Guid curDlid, IDev2DataListUpsertPayloadBuilder<string> payload, out ErrorResultTO errors)
         {
-            return _svrCompiler.Upsert(null, curDLID, payload, out errors);
+            return _svrCompiler.Upsert(null, curDlid, payload, out errors);
         }
 
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors)
+        public Guid Upsert(Guid curDlid, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors)
         {
-            return _svrCompiler.Upsert(null, curDLID, payload, out errors);
+            return _svrCompiler.Upsert(null, curDlid, payload, out errors);
         }
 
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors)
+        public Guid Upsert(Guid curDlid, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors)
         {
-            return _svrCompiler.Upsert(null, curDLID, payload, out errors);
+            return _svrCompiler.Upsert(null, curDlid, payload, out errors);
         }
 
         /// <summary>
         /// Shapes the specified current dlid.
         /// </summary>
-        /// <param name="curDLID">The current dlid.</param>
+        /// <param name="curDlid">The current dlid.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="defs">The defs.</param>
         /// <param name="errors">The errors.</param>
         /// <param name="overrideID">The override unique identifier.</param>
         /// <returns></returns>
-        public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors, Guid overrideID = default(Guid))
+        public Guid Shape(Guid curDlid, enDev2ArgumentType typeOf, string defs, out ErrorResultTO errors, Guid overrideID = default(Guid))
         {
-            return _svrCompiler.Shape(null, curDLID, typeOf, defs, out errors, overrideID);
+            return _svrCompiler.Shape(null, curDlid, typeOf, defs, out errors, overrideID);
         }
 
         /// <summary>
         /// Shapes the definitions in binary form to create/amended a DL.
         /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="curDlid">The cur DL ID.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="definitions">The definitions.</param>
         /// <param name="errors"></param>
         /// <returns></returns>
-        public Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, IList<IDev2Definition> definitions, out ErrorResultTO errors)
+        public Guid Shape(Guid curDlid, enDev2ArgumentType typeOf, IList<IDev2Definition> definitions, out ErrorResultTO errors)
         {
-            return _svrCompiler.Shape(null, curDLID, typeOf, definitions, out errors);
+            return _svrCompiler.Shape(null, curDlid, typeOf, definitions, out errors);
         }
 
         /// <summary>
         /// Shapes for sub execution.
         /// </summary>
-        /// <param name="parentDLID">The parent dlid.</param>
-        /// <param name="childDLID">The child dlid.</param>
+        /// <param name="parentDlid">The parent dlid.</param>
+        /// <param name="childDlid">The child dlid.</param>
         /// <param name="inputDefs">The input defs.</param>
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
-        public IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubExecution(Guid parentDLID, Guid childDLID, string inputDefs, string outputDefs, out ErrorResultTO errors)
+        public IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubExecution(Guid parentDlid, Guid childDlid, string inputDefs, string outputDefs, out ErrorResultTO errors)
         {
-            return _svrCompiler.ShapeForSubExecution(null, parentDLID, childDLID, inputDefs, outputDefs, out errors);
+            return _svrCompiler.ShapeForSubExecution(null, parentDlid, childDlid, inputDefs, outputDefs, out errors);
         }
 
 
@@ -415,14 +415,14 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Upserts the system tag, keep val == string.Empty to erase the tag
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="tag">The tag.</param>
         /// <param name="val">The val.</param>
         /// <param name="errors"></param>
         /// <returns></returns>
-        public Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, string val, out ErrorResultTO errors)
+        public Guid UpsertSystemTag(Guid curDlid, enSystemTag tag, string val, out ErrorResultTO errors)
         {
-            return _svrCompiler.UpsertSystemTag(curDLID, tag, val, out errors);
+            return _svrCompiler.UpsertSystemTag(curDlid, tag, val, out errors);
         }
 
         /// <summary>
@@ -494,12 +494,12 @@ namespace Dev2.DataList.Contract
         /// <param name="typeOf">The type of.</param>
         /// <param name="input">The input.</param>
         /// <param name="outputDefs">The output defs.</param>
-        /// <param name="targetDLID">The target dlid.</param>
+        /// <param name="targetDlid">The target dlid.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid PopulateDataList(DataListFormat typeOf, object input, string outputDefs, Guid targetDLID, out ErrorResultTO errors)
+        public Guid PopulateDataList(DataListFormat typeOf, object input, string outputDefs, Guid targetDlid, out ErrorResultTO errors)
         {
-            return _svrCompiler.PopulateDataList(null, typeOf, input, outputDefs, targetDLID, out errors);
+            return _svrCompiler.PopulateDataList(null, typeOf, input, outputDefs, targetDlid, out errors);
         }
 
         /// <summary>
@@ -541,15 +541,15 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Converts to selected Type from binary
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="depth">The depth.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public string ConvertFrom(Guid curDLID, DataListFormat typeOf, enTranslationDepth depth, out ErrorResultTO errors)
+        public string ConvertFrom(Guid curDlid, DataListFormat typeOf, enTranslationDepth depth, out ErrorResultTO errors)
         {
 
-            DataListTranslatedPayloadTO tmp = _svrCompiler.ConvertFrom(null, curDLID, depth, typeOf, out errors);
+            DataListTranslatedPayloadTO tmp = _svrCompiler.ConvertFrom(null, curDlid, depth, typeOf, out errors);
 
             if(tmp != null)
             {
@@ -704,13 +704,13 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Evaluates the system entry.
         /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="curDlid">The cur DL ID.</param>
         /// <param name="sysTag">The system tag.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public string EvaluateSystemEntry(Guid curDLID, enSystemTag sysTag, out ErrorResultTO errors)
+        public string EvaluateSystemEntry(Guid curDlid, enSystemTag sysTag, out ErrorResultTO errors)
         {
-            IBinaryDataListEntry binaryDataListEntry = _svrCompiler.Evaluate(null, curDLID, enActionType.System, sysTag.ToString(), out errors) ?? DataListConstants.baseEntry;
+            IBinaryDataListEntry binaryDataListEntry = _svrCompiler.Evaluate(null, curDlid, enActionType.System, sysTag.ToString(), out errors) ?? DataListConstants.baseEntry;
             return binaryDataListEntry.FetchScalar().TheValue;
         }
 
@@ -719,24 +719,24 @@ namespace Dev2.DataList.Contract
             return _svrCompiler.FetchChanges(null, id, direction);
         }
 
-        public bool DeleteDataListByID(Guid curDLID)
+        public bool DeleteDataListByID(Guid curDlid)
         {
 
-            return _svrCompiler.DeleteDataListByID(curDLID, false);
+            return _svrCompiler.DeleteDataListByID(curDlid, false);
         }
 
-        public bool ForceDeleteDataListByID(Guid curDLID)
+        public bool ForceDeleteDataListByID(Guid curDlid)
         {
             // Do nothing for now, we scope it all ;)
-            return _svrCompiler.DeleteDataListByID(curDLID, true);
+            return _svrCompiler.DeleteDataListByID(curDlid, true);
         }
 
-        public int GetMaxNumberOfExecutions(Guid curDLID, IList<string> expressions)
+        public int GetMaxNumberOfExecutions(Guid curDlid, IList<string> expressions)
         {
 
             int result = 1;
             ErrorResultTO errors;
-            IBinaryDataList bdl = FetchBinaryDataList(curDLID, out errors);
+            IBinaryDataList bdl = FetchBinaryDataList(curDlid, out errors);
             // Loop each expression to find the total number of executions ;)
             // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var exp in expressions)
@@ -754,17 +754,17 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        public Guid FetchParentID(Guid curDLID)
+        public Guid FetchParentID(Guid curDlid)
         {
 
             ErrorResultTO errors;
-            return (_svrCompiler.FetchBinaryDataList(null, curDLID, out errors).ParentUID);
+            return (_svrCompiler.FetchBinaryDataList(null, curDlid, out errors).ParentUID);
         }
 
-        public bool HasErrors(Guid curDLID)
+        public bool HasErrors(Guid curDlid)
         {
             ErrorResultTO errors;
-            var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
+            var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDlid, out errors);
 
             if(binaryDatalist != null)
             {
@@ -775,10 +775,10 @@ namespace Dev2.DataList.Contract
             return true;
         }
 
-        public string FetchErrors(Guid curDLID, bool returnAsXml = false)
+        public string FetchErrors(Guid curDlid, bool returnAsXml = false)
         {
             ErrorResultTO errors;
-            var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
+            var binaryDatalist = _svrCompiler.FetchBinaryDataList(null, curDlid, out errors);
             if(binaryDatalist != null)
             {
                 return (binaryDatalist.FetchErrors(returnAsXml));
@@ -798,23 +798,23 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Clears the errors.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/02/06</date>
-        public void ClearErrors(Guid curDLID)
+        public void ClearErrors(Guid curDlid)
         {
             ErrorResultTO errors;
-            var list = _svrCompiler.FetchBinaryDataList(null, curDLID, out errors);
+            var list = _svrCompiler.FetchBinaryDataList(null, curDlid, out errors);
             if(list != null)
                 list.ClearErrors();
         }
 
-        public bool SetParentID(Guid curDLID, Guid newParent)
+        public bool SetParentID(Guid curDlid, Guid newParent)
         {
             bool result = true;
             ErrorResultTO errors;
 
-            _svrCompiler.SetParentUID(curDLID, newParent, out errors);
+            _svrCompiler.SetParentUID(curDlid, newParent, out errors);
             if(errors.HasErrors())
             {
                 result = false;

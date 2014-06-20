@@ -23,22 +23,22 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Used to evaluate an expression against a given datalist
         /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="curDlid">The cur DL ID.</param>
         /// <param name="typeOf">The type of evaluation.</param>
         /// <param name="expression">The expression.</param>
-        /// <param name="toRoot"></param>
-        /// <param name="errors"></param>
+        /// <param name="toRoot">if set to <c>true</c> [automatic root].</param>
+        /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        IBinaryDataListEntry Evaluate(Guid curDLID, enActionType typeOf, string expression, bool toRoot, out ErrorResultTO errors);
+        IBinaryDataListEntry Evaluate(Guid curDlid, enActionType typeOf, string expression, bool toRoot, out ErrorResultTO errors);
 
         /// <summary>
         /// Evaluates the system entry.
         /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="curDlid">The cur DL ID.</param>
         /// <param name="sysTag">The system tag.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        string EvaluateSystemEntry(Guid curDLID, enSystemTag sysTag, out ErrorResultTO errors);
+        string EvaluateSystemEntry(Guid curDlid, enSystemTag sysTag, out ErrorResultTO errors);
 
         #endregion
 
@@ -122,18 +122,18 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Fetches the binary data list.
         /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="curDlid">The cur DL ID.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        IBinaryDataList FetchBinaryDataList(Guid curDLID, out ErrorResultTO errors);
+        IBinaryDataList FetchBinaryDataList(Guid curDlid, out ErrorResultTO errors);
 
         /// <summary>
         /// Clones the data list.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid CloneDataList(Guid curDLID, out ErrorResultTO errors);
+        Guid CloneDataList(Guid curDlid, out ErrorResultTO errors);
 
         /// <summary>
         /// Gets the wizard data list for a service.
@@ -163,93 +163,93 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Upserts the value to the specified cur DL ID's expression.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="expression">The expression.</param>
         /// <param name="value">The value.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid Upsert(Guid curDLID, string expression, IBinaryDataListEntry value, out ErrorResultTO errors);
+        Guid Upsert(Guid curDlid, string expression, IBinaryDataListEntry value, out ErrorResultTO errors);
 
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="expressions">The expressions.</param>
         /// <param name="values">The values.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid Upsert(Guid curDLID, IList<string> expressions, IList<string> values, out ErrorResultTO errors);
+        Guid Upsert(Guid curDlid, IList<string> expressions, IList<string> values, out ErrorResultTO errors);
 
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="expression">The expression.</param>
         /// <param name="value">The value.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid Upsert(Guid curDLID, string expression, string value, out ErrorResultTO errors);
+        Guid Upsert(Guid curDlid, string expression, string value, out ErrorResultTO errors);
 
         /// <summary>
         /// Upserts the values against the specified cur DL ID's expression list.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="expressions">The expressions.</param>
         /// <param name="values">The values.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid Upsert(Guid curDLID, IList<string> expressions, IList<IBinaryDataListEntry> values, out ErrorResultTO errors);
+        Guid Upsert(Guid curDlid, IList<string> expressions, IList<IBinaryDataListEntry> values, out ErrorResultTO errors);
 
 
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<string> payload, out ErrorResultTO errors);
+        Guid Upsert(Guid curDlid, IDev2DataListUpsertPayloadBuilder<string> payload, out ErrorResultTO errors);
 
         /// <summary>
         /// Upserts the specified cur DLID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="payload">The payload.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors);
+        Guid Upsert(Guid curDlid, IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> payload, out ErrorResultTO errors);
 
         /// <summary>
         /// Shapes for sub execution.
         /// </summary>
-        /// <param name="parentDLID">The parent dlid.</param>
-        /// <param name="childDLID">The child dlid.</param>
+        /// <param name="parentDlid">The parent dlid.</param>
+        /// <param name="childDlid">The child dlid.</param>
         /// <param name="inputDefs">The input defs.</param>
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubExecution(Guid parentDLID, Guid childDLID, string inputDefs, string outputDefs, out ErrorResultTO errors);
+        IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> ShapeForSubExecution(Guid parentDlid, Guid childDlid, string inputDefs, string outputDefs, out ErrorResultTO errors);
 
         /// <summary>
         /// Shapes the specified current dlid.
         /// </summary>
-        /// <param name="curDLID">The current dlid.</param>
+        /// <param name="curDlid">The current dlid.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="inputDefinitions">The input definitions.</param>
         /// <param name="errors">The errors.</param>
         /// <param name="overrideID">The override unique identifier.</param>
         /// <returns></returns>
-        Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, string inputDefinitions, out ErrorResultTO errors, Guid overrideID = default(Guid));
+        Guid Shape(Guid curDlid, enDev2ArgumentType typeOf, string inputDefinitions, out ErrorResultTO errors, Guid overrideID = default(Guid));
 
         /// <summary>
         /// Shapes the definitions in binary form to create/amended a DL.
         /// </summary>
-        /// <param name="curDLID">The cur DL ID.</param>
+        /// <param name="curDlid">The cur DL ID.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="definitions">The definitions.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid Shape(Guid curDLID, enDev2ArgumentType typeOf, IList<IDev2Definition> definitions, out ErrorResultTO errors);
+        Guid Shape(Guid curDlid, enDev2ArgumentType typeOf, IList<IDev2Definition> definitions, out ErrorResultTO errors);
 
 
         /// <summary>
@@ -281,12 +281,12 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Upserts the system tag, keep val == string.Empty to erase the tag
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="tag">The tag.</param>
         /// <param name="val">The val.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, string val, out ErrorResultTO errors);
+        Guid UpsertSystemTag(Guid curDlid, enSystemTag tag, string val, out ErrorResultTO errors);
 
         #endregion
 
@@ -345,20 +345,20 @@ namespace Dev2.DataList.Contract
         /// <param name="typeOf">The type of.</param>
         /// <param name="input">The input.</param>
         /// <param name="outputDefs">The output defs.</param>
-        /// <param name="targetDLID">The target dlid.</param>
+        /// <param name="targetDlid">The target dlid.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid PopulateDataList(DataListFormat typeOf, object input, string outputDefs, Guid targetDLID, out ErrorResultTO errors);
+        Guid PopulateDataList(DataListFormat typeOf, object input, string outputDefs, Guid targetDlid, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts to selected Type from binary
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="typeOf">The type of.</param>
         /// <param name="depth">The depth.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        string ConvertFrom(Guid curDLID, DataListFormat typeOf, enTranslationDepth depth, out ErrorResultTO errors);
+        string ConvertFrom(Guid curDlid, DataListFormat typeOf, enTranslationDepth depth, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts the and filter.
@@ -453,64 +453,64 @@ namespace Dev2.DataList.Contract
         /// <summary>
         /// Deletes the data list by ID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <returns></returns>
-        bool DeleteDataListByID(Guid curDLID);
+        bool DeleteDataListByID(Guid curDlid);
 
         /// <summary>
         /// Forces the delete data list by ID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <returns></returns>
-        bool ForceDeleteDataListByID(Guid curDLID);
+        bool ForceDeleteDataListByID(Guid curDlid);
 
         /// <summary>
         /// Gets the max number of executions.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="expressions">The expressions.</param>
         /// <returns></returns>
-        int GetMaxNumberOfExecutions(Guid curDLID, IList<string> expressions);
+        int GetMaxNumberOfExecutions(Guid curDlid, IList<string> expressions);
 
         /// <summary>
         /// Fetches the parent ID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <returns></returns>
-        Guid FetchParentID(Guid curDLID);
+        Guid FetchParentID(Guid curDlid);
 
         /// <summary>
         /// Determines whether the specified cur DLID has errors.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <returns>
         ///   <c>true</c> if the specified cur DLID has errors; otherwise, <c>false</c>.
         /// </returns>
-        bool HasErrors(Guid curDLID);
+        bool HasErrors(Guid curDlid);
 
         /// <summary>
         /// Fetches the errors.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="returnAsXml">if set to <c>true</c> [return asynchronous XML].</param>
         /// <returns></returns>
-        string FetchErrors(Guid curDLID, bool returnAsXml = false);
+        string FetchErrors(Guid curDlid, bool returnAsXml = false);
 
         /// <summary>
         /// Clears the errors.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <author>Jurie.smit</author>
         /// <date>2013/02/06</date>
-        void ClearErrors(Guid curDLID);
+        void ClearErrors(Guid curDlid);
 
         /// <summary>
         /// Sets the parent ID.
         /// </summary>
-        /// <param name="curDLID">The cur DLID.</param>
+        /// <param name="curDlid">The cur DLID.</param>
         /// <param name="newParent">The new parent.</param>
         /// <returns></returns>
-        bool SetParentID(Guid curDLID, Guid newParent);
+        bool SetParentID(Guid curDlid, Guid newParent);
 
 
         /// <summary>
@@ -531,6 +531,6 @@ namespace Dev2.DataList.Contract
 
         #endregion External Methods
 
-        Guid Upsert(Guid curDLID, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors);
+        Guid Upsert(Guid curDlid, IDev2DataListUpsertPayloadBuilder<List<string>> payload, out ErrorResultTO errors);
     }
 }

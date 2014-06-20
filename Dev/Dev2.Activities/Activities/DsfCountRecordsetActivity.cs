@@ -1,4 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -7,10 +11,6 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Globalization;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
