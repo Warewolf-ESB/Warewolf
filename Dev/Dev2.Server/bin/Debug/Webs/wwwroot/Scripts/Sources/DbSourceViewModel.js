@@ -166,7 +166,7 @@ function DbSourceViewModel(saveContainerID, environment) {
 
     self.cancelTest = function() {
         self.isTestResultsLoading(false);
-        self.testTime = GetCurrentDateTime();
+        self.testTime = new Date().valueOf();//GetCurrentDateTime();
     };
     
     $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {
