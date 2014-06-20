@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Management;
@@ -128,7 +129,7 @@ namespace Dev2.Activities
             var computerInfo = new ComputerInfo();
             var stringBuilder = new StringBuilder();
             var availablePhysicalMemory = ConvertToMB(computerInfo.AvailablePhysicalMemory);
-            stringBuilder.Append(availablePhysicalMemory.ToString());
+            stringBuilder.Append(availablePhysicalMemory.ToString(CultureInfo.InvariantCulture));
             return stringBuilder.ToString();
         }
 
@@ -137,7 +138,7 @@ namespace Dev2.Activities
             var computerInfo = new ComputerInfo();
             var stringBuilder = new StringBuilder();
             var availableVirtualMemory = ConvertToMB(computerInfo.AvailableVirtualMemory);
-            stringBuilder.Append(availableVirtualMemory.ToString());
+            stringBuilder.Append(availableVirtualMemory.ToString(CultureInfo.InvariantCulture));
             return stringBuilder.ToString();
         }
 
@@ -146,7 +147,7 @@ namespace Dev2.Activities
             var computerInfo = new ComputerInfo();
             var stringBuilder = new StringBuilder();
             var totalPhysicalMemory = ConvertToMB(computerInfo.TotalPhysicalMemory);
-            stringBuilder.Append(totalPhysicalMemory.ToString());
+            stringBuilder.Append(totalPhysicalMemory.ToString(CultureInfo.InvariantCulture));
             return stringBuilder.ToString();
         }
 
@@ -155,7 +156,7 @@ namespace Dev2.Activities
             var computerInfo = new ComputerInfo();
             var stringBuilder = new StringBuilder();
             var totalVirtualMemory = ConvertToMB(computerInfo.TotalVirtualMemory);
-            stringBuilder.Append(totalVirtualMemory.ToString());
+            stringBuilder.Append(totalVirtualMemory.ToString(CultureInfo.InvariantCulture));
             return stringBuilder.ToString();
         }
 
@@ -177,8 +178,9 @@ namespace Dev2.Activities
             var winQuery = new ObjectQuery("SELECT LoadPercentage FROM Win32_Processor");
             var searcher = new ManagementObjectSearcher(winQuery);
 
-            foreach(ManagementObject item in searcher.Get())
+            foreach(var o in searcher.Get())
             {
+                var item = (ManagementObject)o;
                 stringBuilder.Append((100 - Convert.ToInt32(item["LoadPercentage"])) + "%");
             }
             return stringBuilder.ToString();
@@ -189,8 +191,9 @@ namespace Dev2.Activities
             var stringBuilder = new StringBuilder();
             var winQuery = new ObjectQuery("SELECT MaxClockSpeed,NumberOfLogicalProcessors FROM Win32_Processor");
             var searcher = new ManagementObjectSearcher(winQuery);
-            foreach(ManagementObject item in searcher.Get())
+            foreach(var o in searcher.Get())
             {
+                var item = (ManagementObject)o;
                 var maxClockSpeed = Convert.ToInt32(item["MaxClockSpeed"]);
                 var numberOfProcessors = Convert.ToInt32(item["NumberOfLogicalProcessors"]);
                 stringBuilder.Append(numberOfProcessors + "*" + maxClockSpeed + " Mhz");
@@ -218,10 +221,26 @@ namespace Dev2.Activities
             WindowsIdentity currentIdentity = WindowsIdentity.GetCurrent();
             if(currentIdentity != null)
             {
-                var groups = from sid in currentIdentity.Groups select sid.Translate(typeof(NTAccount)).Value;
-                foreach(var grp in groups)
+                if(currentIdentity.Groups != null)
                 {
-                    stringBuilder.AppendFormat(grp + ",");
+                    var groups = new List<string>();
+                    foreach(var sid in currentIdentity.Groups)
+                    {
+                        try
+                        {
+                            var groupName = sid.Translate(typeof(NTAccount)).Value;
+                            groups.Add(groupName);
+                        }
+                        catch(Exception ex)
+                        {
+                            //NOTE: This is done to get around the WarewolfAdministrators group that was added and is not a valid NTAccount.
+                            ServerLogger.LogError("GetUserRolesInformation", ex);
+                        }
+                    }
+                    foreach(var grp in groups)
+                    {
+                        stringBuilder.AppendFormat(grp + ",");
+                    }
                 }
             }
             return stringBuilder.ToString().TrimEnd(new[] { ',' });
@@ -244,7 +263,7 @@ namespace Dev2.Activities
             var winQuery = new ObjectQuery("SELECT Name FROM Win32_Process Where Name LIKE '%chrome%'");
             var searcher = new ManagementObjectSearcher(winQuery);
             var managementObjectCollection = searcher.Get();
-            stringBuilder.Append(managementObjectCollection.Count.ToString());
+            stringBuilder.Append(managementObjectCollection.Count.ToString(CultureInfo.InvariantCulture));
             return stringBuilder.ToString();
         }
 
