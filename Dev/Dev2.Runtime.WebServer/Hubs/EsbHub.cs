@@ -289,7 +289,6 @@ namespace Dev2.Runtime.WebServer.Hubs
 
             this.LogTrace("Send Debug State For [ " + Context.User.Identity.Name + " ]");
 
-            //var user = hubCallerConnectionContext.Caller;
             var user = hubCallerConnectionContext.All;
             user.SendDebugState(debugSerializated);
         }

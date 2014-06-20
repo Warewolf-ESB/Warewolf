@@ -50,18 +50,17 @@ namespace Dev2.Models
         private bool? _isChecked = false;
         private bool _isRenaming;
         private string _displayName;
-        private IStudioResourceRepository _studioResourceRepository;
+        private readonly IStudioResourceRepository _studioResourceRepository;
 
         ObservableCollection<ExplorerItemModel> _children;
-        ResourceType _resourceType;
         ICommand _refreshCommand;
         private Permissions _permissions;
         bool _isRefreshing;
         ICommand _newFolderCommand;
-        IAsyncWorker _asyncWorker;
+        readonly IAsyncWorker _asyncWorker;
         bool _isOverwrite;
 
-        private Dictionary<ResourceType, Type> _activityNames;
+        private readonly Dictionary<ResourceType, Type> _activityNames;
 
         #endregion
         public ExplorerItemModel()
@@ -187,21 +186,10 @@ namespace Dev2.Models
         public void SetDisplay(string display)
         {
             _displayName = display;
-            //OnPropertyChanged("DisplayName");
         }
 
         public Guid ResourceId { get; set; }
-        public ResourceType ResourceType
-        {
-            get
-            {
-                return _resourceType;
-            }
-            set
-            {
-                _resourceType = value;
-            }
-        }
+        public ResourceType ResourceType { get; set; }
         public ObservableCollection<ExplorerItemModel> Children
         {
             get
@@ -225,14 +213,7 @@ namespace Dev2.Models
                     if(_permissions != value)
                     {
                         _permissions = value;
-                        if(_permissions == Permissions.None)
-                        {
-                            IsAuthorized = false;
-                        }
-                        else
-                        {
-                            IsAuthorized = true;
-                        }
+                        IsAuthorized = _permissions != Permissions.None;
 
                         OnPropertyChanged();
                         // ReSharper disable ExplicitCallerInfoArgument
@@ -361,7 +342,6 @@ namespace Dev2.Models
                 {
                     return true;
                 }
-                //TODO: Check if the server is connected
                 return _isConnected;
             }
             set
@@ -821,9 +801,8 @@ namespace Dev2.Models
         public void AddNewFolder()
         {
             IsExplorerExpanded = true;
-            string resourcePath;
             var name = GetUniqueName();
-            resourcePath = String.IsNullOrEmpty(ResourcePath) ? name : string.Format("{0}\\{1}", ResourcePath, name);
+            string resourcePath = String.IsNullOrEmpty(ResourcePath) ? name : string.Format("{0}\\{1}", ResourcePath, name);
 
             ExplorerItemModel explorerItemModel = new ExplorerItemModel { DisplayName = name, ResourceType = ResourceType.Folder, Parent = this, EnvironmentId = EnvironmentId, Permissions = Permissions, ResourcePath = resourcePath };
             _studioResourceRepository.AddItem(explorerItemModel);
@@ -1172,12 +1151,6 @@ namespace Dev2.Models
         /// <date>2013/01/23</date>
         public virtual void VerifyCheckState()
         {
-            //if(!Children.Any()) !!! removed because it seemed redundant becuse the only call to this can come from a cild
-            //{
-            //    SetIsChecked(false, false, true);
-            //    return;
-            //}
-
             bool? state = null;
             var count = Children.Count();
             for(int i = 0; i < count; ++i)

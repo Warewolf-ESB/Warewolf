@@ -79,12 +79,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 res.SetMessage(errorMessage);
             }
 
-            // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             if(compiledResources != null)
             {
                 var saveResult = ResourceCatalog.Instance.SaveResource(workspaceID, resourceDefinition);
-                // TMP FIX
-                //                ResourceCatalog.Instance.SaveResource(Guid.Empty, resourceDefinition);
                 res.SetMessage(saveResult.Message + " " + DateTime.Now);
             }
 

@@ -12,7 +12,6 @@ using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
-using Dev2.Diagnostics;
 using Dev2.Explorer;
 using Dev2.Diagnostics.Debug;
 using Dev2.ExtMethods;

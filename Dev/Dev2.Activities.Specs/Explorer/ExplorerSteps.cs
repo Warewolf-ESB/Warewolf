@@ -19,15 +19,25 @@ namespace Dev2.Activities.Specs.Explorer
     [Binding]
     public class ExplorerSteps
     {
-        const string BaseString = @"C:\Development\Branches\ExplorerUpgrade\Dev2.Server\bin\Debug\Resources\";
-
         [Given(@"I have a path '(.*)'")]
         public void GivenIHaveAPath(string path)
         {
             var paths = path.Split("\\".ToArray()).ToList();
             var root = paths.First();
-            var workingDirectory = BaseString + root;
-
+            var workingDirectory = "";
+            var basePath = "";
+            var currentDirectory = Directory.GetCurrentDirectory();
+            if(!string.IsNullOrEmpty(currentDirectory))
+            {
+                var indexOfWrongPath = currentDirectory.IndexOf("\\Dev2.Activities.Specs\\bin\\Debug", StringComparison.InvariantCultureIgnoreCase);
+                if(indexOfWrongPath != -1)
+                {
+                    const string ServerRelativePath = "\\Dev2.Server\\bin\\Debug\\Resources\\";
+                    var rootBasePath = currentDirectory.Substring(0, indexOfWrongPath);
+                    basePath = rootBasePath + ServerRelativePath;
+                    workingDirectory = basePath + root;
+                }
+            }
             if(Directory.Exists(workingDirectory))
             {
                 Directory.Delete(workingDirectory, true);
@@ -43,6 +53,7 @@ namespace Dev2.Activities.Specs.Explorer
             }
 
             ScenarioContext.Current.Add("path", path);
+            ScenarioContext.Current.Add("basePath", basePath);
             ScenarioContext.Current.Add("workingDirectory", workingDirectory);
         }
 
@@ -107,7 +118,7 @@ namespace Dev2.Activities.Specs.Explorer
             environmentRepository.Setup(m => m.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>()))
                                  .Returns(environmentModel.Object);
 
-            var repository = new StudioResourceRepository(null, localhost,(a,b)=> a())
+            var repository = new StudioResourceRepository(null, localhost, (a, b) => a())
                 {
                     GetCurrentEnvironment = () => localhost,
                     GetExplorerProxy = id =>
@@ -126,7 +137,8 @@ namespace Dev2.Activities.Specs.Explorer
         [Then(@"the folder path will be '(.*)'")]
         public void ThenTheFolderPathWillBe(string resultPath)
         {
-            var path = BaseString + resultPath;
+            var basePath = ScenarioContext.Current.Get<string>("basePath");
+            var path = basePath + resultPath;
             Assert.IsTrue(Directory.Exists(path));
         }
 
@@ -252,7 +264,8 @@ namespace Dev2.Activities.Specs.Explorer
         [Then(@"the folder path '(.*)' will be deleted")]
         public void ThenTheFolderPathWillBeDeleted(string folderPath)
         {
-            var fullPath = BaseString + folderPath;
+            var basePath = ScenarioContext.Current.Get<string>("basePath");
+            var fullPath = basePath + folderPath;
             Assert.IsFalse(Directory.Exists(fullPath));
         }
 
