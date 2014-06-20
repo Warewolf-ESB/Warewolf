@@ -173,7 +173,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        // BUG 9798 - 2013.06.25 - TWR : added
         public IBrowserPopupController BrowserPopupController { get; private set; }
 
         #endregion
@@ -443,7 +442,6 @@ namespace Dev2.Studio.ViewModels
                 throw new ArgumentNullException("environmentRepository");
             }
 
-            // PBI 9941 - 2013.07.07 - TWR: added
             if(versionChecker == null)
             {
                 throw new ArgumentNullException("versionChecker");
@@ -454,15 +452,13 @@ namespace Dev2.Studio.ViewModels
             _asyncWorker = asyncWorker;
 
             _createDesigners = createDesigners;
-            BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController(); // BUG 9798 - 2013.06.25 - TWR : added
-            //ResourceDependencyService = resourceDependencyService ?? new ResourceDependencyService();
+            BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController();
             PopupProvider = popupController ?? new PopupController();
             WindowManager = windowManager ?? new WindowManager();
             WebController = webController ?? new WebController();
             FeedbackInvoker = feedbackInvoker ?? new FeedbackInvoker();
             EnvironmentRepository = environmentRepository;
             FlowController = new FlowController(PopupProvider);
-            // PBI 9512 - 2013.06.07 - TWR : refactored to use common method
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             ShowStartPage();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
@@ -522,7 +518,7 @@ namespace Dev2.Studio.ViewModels
         public void Handle(DeleteResourcesMessage message)
         {
             this.TraceInfo(message.GetType().Name);
-            DeleteResources(message.ResourceModels, message.ShowDialog);
+            DeleteResources(message.ResourceModels, message.ShowDialog, message.ActionToDoOnDelete);
         }
 
         public void Handle(SetActiveEnvironmentMessage message)
@@ -594,15 +590,15 @@ namespace Dev2.Studio.ViewModels
                     if(resourceModel != null)
                     {
                         DeployResource = resourceModel as IContextualResourceModel;
+                    }
                 }
-            }
                 if(!exist)
-            {
-                AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateDeployViewModel(message.ViewModel));
-            }
+                {
+                    AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateDeployViewModel(message.ViewModel));
+                }
                 else
                 {
-            this.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
+                    this.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
                     EventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.ResourceId, message.ViewModel.EnvironmentId));
                 }
             }
@@ -809,16 +805,13 @@ namespace Dev2.Studio.ViewModels
             });
         }
 
-        // PBI 9512 - 2013.06.07 - TWR: added
         public void ShowCommunityPage()
         {
-            // BUG 9798 - 2013.06.25 - TWR : changed to launch external browser
             BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
         }
 
         public bool IsActiveEnvironmentConnected()
         {
-            // Used for enabling / disabling basic server commands (Eg: Creating a new Workflow)
             if(ActiveEnvironment == null)
             {
                 return false;
@@ -1103,7 +1096,7 @@ namespace Dev2.Studio.ViewModels
             return false;
         }
 
-        private void DeleteResources(ICollection<IContextualResourceModel> models, bool showConfirm = true)
+        private void DeleteResources(ICollection<IContextualResourceModel> models, bool showConfirm = true, System.Action actionToDoOnDelete = null)
         {
             if(models == null || (showConfirm && !ConfirmDelete(models)))
             {
@@ -1123,8 +1116,6 @@ namespace Dev2.Studio.ViewModels
                 {
                     return;
                 }
-
-
                 //If its deleted from loalhost, and is a server, also delete from repository
                 if(contextualModel.Environment.IsLocalHost)
                 {
@@ -1142,6 +1133,10 @@ namespace Dev2.Studio.ViewModels
                             }
                         }
                     }
+                }
+                if(actionToDoOnDelete != null)
+                {
+                    actionToDoOnDelete();
                 }
             }
         }
@@ -1563,9 +1558,9 @@ namespace Dev2.Studio.ViewModels
         public bool OnStudioClosing()
         {
             List<WorkSurfaceContextViewModel> workSurfaceContextViewModels = Items.ToList();
-            for(int i = 0; i < workSurfaceContextViewModels.Count; i++)
+            foreach(WorkSurfaceContextViewModel workSurfaceContextViewModel in workSurfaceContextViewModels)
             {
-                var vm = workSurfaceContextViewModels[i].WorkSurfaceViewModel;
+                var vm = workSurfaceContextViewModel.WorkSurfaceViewModel;
                 if(vm != null)
                 {
                     if(vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
@@ -1573,7 +1568,7 @@ namespace Dev2.Studio.ViewModels
                         var settingsViewModel = vm as SettingsViewModel;
                         if(settingsViewModel != null && settingsViewModel.IsDirty)
                         {
-                            ActivateItem(workSurfaceContextViewModels[i]);
+                            ActivateItem(workSurfaceContextViewModel);
                             bool remove = settingsViewModel.DoDeactivate();
                             if(!remove)
                             {
@@ -1586,7 +1581,7 @@ namespace Dev2.Studio.ViewModels
                         var schedulerViewModel = vm as SchedulerViewModel;
                         if(schedulerViewModel != null && schedulerViewModel.SelectedTask != null && schedulerViewModel.SelectedTask.IsDirty)
                         {
-                            ActivateItem(workSurfaceContextViewModels[i]);
+                            ActivateItem(workSurfaceContextViewModel);
                             bool remove = schedulerViewModel.DoDeactivate();
                             if(!remove)
                             {

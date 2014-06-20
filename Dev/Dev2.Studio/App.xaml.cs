@@ -156,7 +156,6 @@ namespace Dev2.Studio
             HasShutdownStarted = true;
             DebugDispatcher.Instance.Shutdown();
             Browser.Shutdown();
-
             try
             {
                 base.OnExit(e);

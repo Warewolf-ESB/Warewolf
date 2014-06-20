@@ -955,15 +955,16 @@ namespace Dev2.Models
 
                 if(contextualResourceModels.Any())
                 {
-                    EventPublishers.Aggregator.Publish(new DeleteResourcesMessage(contextualResourceModels));
-                }
-
-                for(int i = folderList.Count - 1; i >= 0; i--)
-                {
-                    if(folderList[i].ResourceType == ResourceType.Folder && (folderList[i].Children.Count == 0 || folderList[i].Children.All(c => c.ResourceType == ResourceType.Folder)))
+                    EventPublishers.Aggregator.Publish(new DeleteResourcesMessage(contextualResourceModels, true, () =>
                     {
-                        StudioResourceRepository.Instance.DeleteFolder(folderList[i]);
-                    }
+                        for(int i = folderList.Count - 1; i >= 0; i--)
+                        {
+                            if(folderList[i].ResourceType == ResourceType.Folder && (folderList[i].Children.Count == 0 || folderList[i].Children.All(c => c.ResourceType == ResourceType.Folder)))
+                            {
+                                StudioResourceRepository.Instance.DeleteFolder(folderList[i]);
+                            }
+                        }
+                    }));
                 }
             }
         }

@@ -34,7 +34,6 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Workspaces;
-using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels;
@@ -1231,37 +1230,6 @@ namespace Dev2.Core.Tests
             _eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
         }
 
-        //[TestMethod]
-        //[Ignore]//might cause nodes to remain in the tree even if the resource is missing from the catalog
-        ////check this test again after navigation tree binds to resource catalog
-        //public void DeleteResourceConfirmedWithNoResponseExpectNoMessage()
-        //{
-        //    CreateFullExportsAndVm();
-        //    SetupForDelete();
-
-        //    _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(() => MakeMsg("<Result>Failure</Result>"));
-
-        //    var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
-        //    _mainViewModel.Handle(msg);
-        //    _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
-        //}
-
-        //[TestMethod]
-        //[Ignore]//might cause nodes to remain in the tree even if the resource is missing from the catalog
-        ////check this test again after navigation tree binds to resource catalog
-        //public void DeleteResourceConfirmedWithInvalidResponseExpectNoMessage()
-        //{
-        //    CreateFullExportsAndVm();
-        //    SetupForDelete();
-        //    var response = MakeMsg("<DataList>Invalid</DataList>");
-        //    _resourceRepo.Setup(s => s.DeleteResource(_firstResource.Object)).Returns(response);
-
-        //    var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
-        //    _mainViewModel.Handle(msg);
-        //    _eventAggregator.Verify(e => e.Publish(It.IsAny<RemoveNavigationResourceMessage>()), Times.Never());
-        //}
-
-
         [TestMethod]
         public void DeleteResourceConfirmedExpectContextRemoved()
         {
@@ -1270,6 +1238,65 @@ namespace Dev2.Core.Tests
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object });
             _mainViewModel.Handle(msg);
             _resourceRepo.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewModel_HandleDeleteResourceMessage")]
+        public void MainViewModel_HandleDeleteResourceMessage_WhenHasActionNotDeclined_PerformsAction()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            var _actionInvoked = false;
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, true, () =>
+            {
+                _actionInvoked = true;
+            });
+            //------------Execute Test---------------------------
+            _mainViewModel.Handle(msg);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(_actionInvoked);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewModel_HandleDeleteResourceMessage")]
+        public void MainViewModel_HandleDeleteResourceMessage_WhenHasActionDeclined_PerformsAction()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
+            var _actionInvoked = false;
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false, () =>
+            {
+                _actionInvoked = true;
+            });
+            //------------Execute Test---------------------------
+            _mainViewModel.Handle(msg);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_actionInvoked);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewModel_HandleDeleteResourceMessage")]
+        public void MainViewModel_HandleDeleteResourceMessage_WhenHasNullResource_PerformsAction()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
+            var _actionInvoked = false;
+            var msg = new DeleteResourcesMessage(null, true, () =>
+            {
+                _actionInvoked = true;
+            });
+            //------------Execute Test---------------------------
+            _mainViewModel.Handle(msg);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(_actionInvoked);
         }
 
         [TestMethod]
@@ -1755,7 +1782,6 @@ namespace Dev2.Core.Tests
 
         #region BrowserPopupController
 
-        // BUG 9798 - 2013.06.25 - TWR : added
         [TestMethod]
         public void MainViewModelShowCommunityPageExpectedInvokesConstructorsBrowserPopupController()
         {
@@ -1772,7 +1798,6 @@ namespace Dev2.Core.Tests
             popupController.Verify(p => p.ShowPopup(It.IsAny<string>()));
         }
 
-        // BUG 9798 - 2013.06.25 - TWR : added
         [TestMethod]
         public void MainViewModelConstructorWithNullBrowserPopupControllerExpectedCreatesExternalBrowserPopupController()
         {
@@ -1784,7 +1809,6 @@ namespace Dev2.Core.Tests
             Assert.IsInstanceOfType(vm.BrowserPopupController, typeof(ExternalBrowserPopupController));
         }
 
-        // BUG 9941 - 2013.07.07 - TWR : added
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void MainViewModelConstructorWithNullVersionCheckerExpectedThrowsArgumentNullException()
@@ -1889,8 +1913,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
-            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker());
-            scheduler.WorkSurfaceContext = WorkSurfaceContext.Scheduler;
+            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker()) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             scheduler.SelectedTask = task.Object;
@@ -1927,8 +1950,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
-            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker());
-            scheduler.WorkSurfaceContext = WorkSurfaceContext.Scheduler;
+            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker()) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(false);
             scheduler.SelectedTask = task.Object;
@@ -1960,9 +1982,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
-            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new AsyncWorker(), new NativeWindow());
-            settings.RetValue = false;
-            settings.WorkSurfaceContext = WorkSurfaceContext.Settings;
+            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new AsyncWorker(), new NativeWindow()) { RetValue = false, WorkSurfaceContext = WorkSurfaceContext.Settings };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             settings.IsDirty = true;
@@ -1989,9 +2009,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
 
-            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new AsyncWorker(), new NativeWindow());
-            settings.RetValue = true;
-            settings.WorkSurfaceContext = WorkSurfaceContext.Settings;
+            var settings = new SettingsViewModelForTest(EventPublishers.Aggregator, popup.Object, new AsyncWorker(), new NativeWindow()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Settings };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             settings.IsDirty = true;
@@ -2017,9 +2035,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes).Verifiable();
-            var scheduler = new SchedulerViewModelForTesting(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker());
-            scheduler.RetValue = true;
-            scheduler.WorkSurfaceContext = WorkSurfaceContext.Scheduler;
+            var scheduler = new SchedulerViewModelForTesting(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker()) { RetValue = true, WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             scheduler.SelectedTask = task.Object;
@@ -2384,8 +2400,7 @@ namespace Dev2.Core.Tests
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object);
-            viewModel.IsBusyDownloadingInstaller = null;
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = null };
             //------------Execute Test---------------------------
             var isDownloading = viewModel.IsDownloading();
             //------------Assert Results-------------------------
@@ -2410,8 +2425,7 @@ namespace Dev2.Core.Tests
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object);
-            viewModel.IsBusyDownloadingInstaller = () => false;
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
             //------------Execute Test---------------------------
             var isDownloading = viewModel.IsDownloading();
             //------------Assert Results-------------------------
@@ -2435,8 +2449,7 @@ namespace Dev2.Core.Tests
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object);
-            viewModel.IsBusyDownloadingInstaller = () => false;
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
             //------------Execute Test---------------------------
             var isDownloading = viewModel.IsDownloading();
             //------------Assert Results-------------------------
