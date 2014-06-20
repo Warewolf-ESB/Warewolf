@@ -160,9 +160,13 @@ function DbSourceViewModel(saveContainerID, environment) {
         });  
     };
 
+    self.GetCurrentDateTime = function () {
+        return new Date().valueOf();
+    };
+
     self.cancelTest = function() {
         self.isTestResultsLoading(false);
-        self.testTime = new Date().valueOf();
+        self.testTime = GetCurrentDateTime();
     };
     
     $.post("Service/Help/GetDictionary" + window.location.search, self.helpDictionaryID, function (result) {

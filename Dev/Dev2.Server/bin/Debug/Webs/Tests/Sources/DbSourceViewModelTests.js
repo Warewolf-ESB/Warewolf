@@ -189,6 +189,9 @@ test("DbSource_RegressionTest_CancelTest_isTestResultsLoadingIsFalseAndLastTestT
 
     var model = new DbSourceViewModel();
     var testTimeTestValue = new Date().valueOf();
+    model.GetCurrentDateTime = function () {
+        return testTimeTestValue;
+    }
     model.cancelTest();
     ok(!model.isTestResultsLoading(), "Did Test Results Stop Loading");
     ok(model.testTime == testTimeTestValue, "Is The Last Test Time Now");
