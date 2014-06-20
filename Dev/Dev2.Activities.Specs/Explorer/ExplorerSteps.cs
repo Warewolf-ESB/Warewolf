@@ -37,6 +37,15 @@ namespace Dev2.Activities.Specs.Explorer
                     basePath = rootBasePath + ServerRelativePath;
                     workingDirectory = basePath + root;
                 }
+                else //When run in the environment
+                {
+                    const string ServerRelativePath = "\\Resources\\";
+                    Console.WriteLine(currentDirectory);
+                    var rootBasePath = currentDirectory;
+                    basePath = rootBasePath + ServerRelativePath;
+                    workingDirectory = basePath + root;
+                    Console.WriteLine(workingDirectory);
+                }
             }
             if(Directory.Exists(workingDirectory))
             {
