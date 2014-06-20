@@ -151,31 +151,44 @@ namespace Dev2.Runtime.Hosting
 
         public IResource GetResource(Guid workspaceID, string resourceName, ResourceType resourceType = ResourceType.Unknown, string version = null)
         {
-
-            if(string.IsNullOrEmpty(resourceName))
+            while(true)
             {
-                throw new ArgumentNullException("resourceName");
+                if(string.IsNullOrEmpty(resourceName))
+                {
+                    throw new ArgumentNullException("resourceName");
+                }
+                var resourceNameToSearchFor = resourceName.Replace("/", "\\");
+                var resourcePath = resourceNameToSearchFor;
+                var endOfResourcePath = resourceNameToSearchFor.LastIndexOf('\\');
+                if(endOfResourcePath >= 0)
+                {
+                    resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);
+                }
+                var resources = GetResources(workspaceID);
+                var foundResource = resources.FirstOrDefault(r => string.Equals(r.ResourcePath ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase) && (resourceType == ResourceType.Unknown || r.ResourceType == resourceType));
+                if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                {
+                    workspaceID = GlobalConstants.ServerWorkspaceID;
+                    continue;
+                }
+                return foundResource;
             }
-            var resourceNameToSearchFor = resourceName.Replace("/", "\\");
-            var resourcePath = resourceNameToSearchFor;
-            var endOfResourcePath = resourceNameToSearchFor.LastIndexOf('\\');
-            if(endOfResourcePath >= 0)
-            {
-
-                resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);
-            }
-            var resources = GetResources(workspaceID);
-            return resources.FirstOrDefault(r => string.Equals(r.ResourcePath ?? "", resourcePath, StringComparison.InvariantCultureIgnoreCase) && string.Equals(r.ResourceName, resourceNameToSearchFor, StringComparison.InvariantCultureIgnoreCase)
-                && (resourceType == ResourceType.Unknown || r.ResourceType == resourceType));
         }
 
         // ReSharper disable MethodOverloadWithOptionalParameter
-        public IResource GetResource(Guid workspaceID, Guid resourceID, Version version = null)
-        // ReSharper restore MethodOverloadWithOptionalParameter
+        public IResource GetResource(Guid workspaceID, Guid resourceID, Version version = null) // ReSharper restore MethodOverloadWithOptionalParameter
         {
-            var resources = GetResources(workspaceID);
-            var resource = resources.FirstOrDefault(r => r.ResourceID == resourceID && (version == null || r.Version == version));
-            return resource;
+            while(true)
+            {
+                var resources = GetResources(workspaceID);
+                var resource = resources.FirstOrDefault(r => r.ResourceID == resourceID && (version == null || r.Version == version));
+                if(resource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                {
+                    workspaceID = GlobalConstants.ServerWorkspaceID;
+                    continue;
+                }
+                return resource;
+            }
         }
 
         #endregion
@@ -946,8 +959,17 @@ namespace Dev2.Runtime.Hosting
 
         public virtual IResource GetResource(Guid workspaceID, Guid serviceID)
         {
-            var resources = GetResources(workspaceID);
-            return resources.FirstOrDefault(resource => resource.ResourceID == serviceID);
+            while(true)
+            {
+                var resources = GetResources(workspaceID);
+                var foundResource = resources.FirstOrDefault(resource => resource.ResourceID == serviceID);
+                if(foundResource == null && workspaceID != GlobalConstants.ServerWorkspaceID)
+                {
+                    workspaceID = GlobalConstants.ServerWorkspaceID;
+                    continue;
+                }
+                return foundResource;
+            }
         }
 
         public virtual T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new()
