@@ -1,4 +1,5 @@
-﻿using ActivityUnitTests;
+﻿using System.Security.Principal;
+using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Data.Enums;
 using Dev2.Enums;
@@ -259,7 +260,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var mock = new Mock<IGetSystemInformation>();
             const string expectedValue = "Admin,Dev";
-            mock.Setup(information => information.GetUserRolesInformation()).Returns(expectedValue);
+            mock.Setup(information => information.GetUserRolesInformation(It.IsAny<IIdentity>())).Returns(expectedValue);
             var activity = DsfGatherSystemInformationActivity(mock);
             //------------Execute Test---------------------------
             var userRolesInformation = activity.GetCorrectSystemInformation(enTypeOfSystemInformationToGather.UserRoles);
@@ -397,9 +398,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<ADL><a/></ADL>";
             TestData = "<root><a>Some Other Value</a></root>";
             //------------Execute Test---------------------------
-            var result = ExecuteProcess(isDebug:true);
-                         ExecuteProcess(isDebug:true);
-                         ExecuteProcess(isDebug:true);
+            var result = ExecuteProcess(isDebug: true);
+            ExecuteProcess(isDebug: true);
+            ExecuteProcess(isDebug: true);
             //------------Assert Results-------------------------
             // remove test datalist ;)
             DataListRemoval(result.DataListID);

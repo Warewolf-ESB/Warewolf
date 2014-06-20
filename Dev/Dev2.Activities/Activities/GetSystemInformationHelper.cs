@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Management;
@@ -32,12 +32,12 @@ namespace Dev2.Activities
         string GetCPUTotalInformation();
         string GetLanguageInformation();
         string GetRegionInformation();
-        string GetUserRolesInformation();
+        string GetUserRolesInformation(IIdentity currentIdentity);
         string GetDomainInformation();
         string GetUserNameInformation();
         string GetNumberOfWareWolfAgentsInformation();
     }
-
+    [ExcludeFromCodeCoverage]
     public class GetSystemInformationHelper : IGetSystemInformation
     {
         #region Implementation of IGetSystemInformation
@@ -215,31 +215,33 @@ namespace Dev2.Activities
             return stringBuilder.ToString();
         }
 
-        public string GetUserRolesInformation()
+        public string GetUserRolesInformation(IIdentity currentIdentity = null)
         {
             var stringBuilder = new StringBuilder();
-            WindowsIdentity currentIdentity = WindowsIdentity.GetCurrent();
-            if(currentIdentity != null)
+            WindowsIdentity identity = currentIdentity as WindowsIdentity ?? WindowsIdentity.GetCurrent();
+            if(identity != null)
             {
-                if(currentIdentity.Groups != null)
+                if(identity.Groups != null)
                 {
-                    var groups = new List<string>();
-                    foreach(var sid in currentIdentity.Groups)
+                    foreach(var sid in identity.Groups)
                     {
                         try
                         {
-                            var groupName = sid.Translate(typeof(NTAccount)).Value;
-                            groups.Add(groupName);
+                            var translatedGroup = sid.Translate(typeof(NTAccount));
+                            var name = translatedGroup.Value;
+                            stringBuilder.AppendFormat(name + ",");
                         }
-                        catch(Exception ex)
+                        catch(Exception)
                         {
-                            //NOTE: This is done to get around the WarewolfAdministrators group that was added and is not a valid NTAccount.
-                            ServerLogger.LogError("GetUserRolesInformation", ex);
+                            var winQuery = new ObjectQuery("SELECT * FROM Win32_Group WHERE SID='" + sid.Value + "'");
+                            var searcher = new ManagementObjectSearcher(winQuery);
+                            foreach(var o in searcher.Get())
+                            {
+                                var item = (ManagementObject)o;
+                                var name = Convert.ToString(item["Name"]);
+                                stringBuilder.AppendFormat(name + ",");
+                            }
                         }
-                    }
-                    foreach(var grp in groups)
-                    {
-                        stringBuilder.AppendFormat(grp + ",");
                     }
                 }
             }

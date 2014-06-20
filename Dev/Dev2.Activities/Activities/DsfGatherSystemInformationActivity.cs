@@ -1,4 +1,5 @@
-﻿using Dev2.Activities.Debug;
+﻿using System.Security.Principal;
+using Dev2.Activities.Debug;
 using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Dev2.Data.Factories;
@@ -24,6 +25,7 @@ namespace Dev2.Activities
         #region Fields
 
         IGetSystemInformation _getSystemInformation;
+        IIdentity _currentIdentity;
 
         #endregion
 
@@ -91,8 +93,11 @@ namespace Dev2.Activities
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             toUpsert.IsDebug = (dataObject.IsDebugMode());
             toUpsert.ResourceID = dataObject.ResourceID;
+            if(dataObject.ExecutingUser != null)
+            {
+                _currentIdentity = dataObject.ExecutingUser.Identity;
+            }
             var indexCounter = 0;
-
             InitializeDebug(dataObject);
             try
             {
@@ -114,15 +119,15 @@ namespace Dev2.Activities
                     var hasErrors = allErrors.HasErrors();
                     if(!hasErrors)
                     {
-                                string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
-                                string expression = item.Result;
+                        string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
+                        string expression = item.Result;
 
-                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
-                                {
-                                    toUpsert.Add(region, val);
-                                }
-                            }
+                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                        {
+                            toUpsert.Add(region, val);
                         }
+                    }
+                }
 
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
@@ -206,7 +211,7 @@ namespace Dev2.Activities
                 case enTypeOfSystemInformationToGather.Region:
                     return GetSystemInformation.GetRegionInformation();
                 case enTypeOfSystemInformationToGather.UserRoles:
-                    return GetSystemInformation.GetUserRolesInformation();
+                    return GetSystemInformation.GetUserRolesInformation(_currentIdentity);
                 case enTypeOfSystemInformationToGather.UserName:
                     return GetSystemInformation.GetUserNameInformation();
                 case enTypeOfSystemInformationToGather.Domain:
@@ -366,14 +371,7 @@ namespace Dev2.Activities
                 string currentName = modelProperty.ComputedValue as string;
                 if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
                 {
-                    if(currentName.Contains(" ("))
-                    {
-                        currentName = currentName.Remove(currentName.IndexOf(" (", StringComparison.Ordinal));
-                    }
-                    else
-                    {
-                        currentName = currentName.Remove(currentName.IndexOf("(", StringComparison.Ordinal));
-                    }
+                    currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
                 }
                 currentName = currentName + " (" + (count - 1) + ")";
                 return currentName;
