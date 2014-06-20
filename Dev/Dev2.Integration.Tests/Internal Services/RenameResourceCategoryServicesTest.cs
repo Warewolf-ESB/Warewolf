@@ -1,6 +1,7 @@
 ﻿using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Integration.Tests.Internal_Services
 {
     /// <summary>
@@ -9,6 +10,7 @@ namespace Dev2.Integration.Tests.Internal_Services
     [TestClass]
     public class RenameResourceCategoryServicesTest
     {
+        // ReSharper disable InconsistentNaming
         private readonly string _webServerURI = ServerSettings.WebserverURI;
 
         /// <summary>

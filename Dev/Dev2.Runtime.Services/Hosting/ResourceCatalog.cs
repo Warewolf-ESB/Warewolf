@@ -1720,7 +1720,7 @@ namespace Dev2.Runtime.Hosting
             {
                 throw new ArgumentNullException("newCategory", @"No value provided for oldCategory");
             }
-            var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase));
+            var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase)).ToList();
             try
             {
                 foreach(var resource in resourcesToUpdate)
