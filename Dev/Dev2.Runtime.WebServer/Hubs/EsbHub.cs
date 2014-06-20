@@ -4,7 +4,6 @@ using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
-using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
@@ -291,7 +290,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             this.LogTrace("Send Debug State For [ " + Context.User.Identity.Name + " ]");
 
             //var user = hubCallerConnectionContext.Caller;
-            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+            var user = hubCallerConnectionContext.All;
             user.SendDebugState(debugSerializated);
         }
 
