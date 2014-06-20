@@ -1247,28 +1247,28 @@ Scenario: Simple workflow with Assign and Replace(Evaluating variable inside a v
 	  | [[replaceResult]] = 1 |
 
 Scenario: Simple workflow with Assign and Format Numbers(Evaluating variable inside variable in format number tool)executing against the server
-      Given I have a workflow "WorkflowWithAssignandFormat"
-	  And "WorkflowWithAssignandFormat" contains an Assign "IndexVal1" as
+      Given I have a workflow "WorkflowAssignandFormat"
+	  And "WorkflowAssignandFormat" contains an Assign "IndexVal1" as
 	  | variable | value   |
 	  | [[a]]    | b       |
 	  | [[b]]    | 12.3412 |	 	  
-      And "WorkflowWithAssignandFormat" contains Format Number "Fnumber1" as 
+      And "WorkflowAssignandFormat" contains Format Number "Fnumber1" as 
 	  | Number    | Rounding Selected | Rounding To | Decimal to show | Result      |
 	  | [[[[a]]]] | Up                | 3           | 3               | [[fresult]] |
-	  When "WorkflowWithAssignandFormat" is executed
+	  When "WorkflowAssignandFormat" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'IndexVal1' in WorkFlow 'WorkflowWithAssignandFormat' debug inputs as
+	  And the 'IndexVal1' in WorkFlow 'WorkflowAssignandFormat' debug inputs as
 	  | # | Variable | New Value |
 	  | 1 | [[a]] =  | b         |
 	  | 2 | [[b]] =  | 12.3412   |
-	  And the 'IndexVal1' in Workflow 'WorkflowWithAssignandFormat' debug outputs as  
+	  And the 'IndexVal1' in Workflow 'WorkflowAssignandFormat' debug outputs as  
 	  | # |                 |
 	  | 1 | [[a]] = b       |
 	  | 2 | [[b]] = 12.3412 |
-	  And the 'Fnumber1' in WorkFlow 'WorkflowWithAssignandFormat' debug inputs as 	
+	  And the 'Fnumber1' in WorkFlow 'WorkflowAssignandFormat' debug inputs as 	
 	  | Number              | Rounding | Rounding Value | Decimals to show |
 	  | [[[[a]]]] = 12.3412 | Up       | 3              | 3                |
-	  And the 'Fnumber1' in Workflow 'WorkflowWithAssignandFormat' debug outputs as 
+	  And the 'Fnumber1' in Workflow 'WorkflowAssignandFormat' debug outputs as 
 	  |                      |
 	  | [[fresult]] = 12.342 |
 
