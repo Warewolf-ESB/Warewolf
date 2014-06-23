@@ -23,7 +23,7 @@ namespace Dev2.Core.Tests.Workflows
     ///This is a result class for WorkflowInputDataViewModelTest and is intended
     ///to contain all WorkflowInputDataViewModelTest Unit Tests
     ///</summary>
-    [TestClass]    
+    [TestClass]
     public class WorkflowInputDataViewModelTest
     {
         private readonly Guid _resourceID = Guid.Parse("2b975c6d-670e-49bb-ac4d-fb1ce578f66a");
@@ -371,6 +371,50 @@ namespace Dev2.Core.Tests.Workflows
             var expectedPayload = payload.ToString(SaveOptions.None);
             var actualPayload = workflowInputDataViewModel.SendExecuteRequestPayload.ToString(SaveOptions.None);
             Assert.AreEqual(expectedPayload, actualPayload);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("WorkflowInputDataViewModel_SetXmlData")]
+        public void WorkflowInputDataViewModel_SetXmlData_XmlDataContainsRecordsetFields()
+        {
+            //------------Setup for test--------------------------
+            const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
+            var rm = new Mock<IContextualResourceModel>();
+            rm.Setup(r => r.ServerID).Returns(_serverID);
+            rm.Setup(r => r.ResourceName).Returns(ResourceName);
+            rm.Setup(r => r.ID).Returns(_resourceID);
+            rm.Setup(r => r.DataList).Returns(Shape);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.Empty);
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockEnvironmentConnection.Object);
+            rm.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
+
+            var serviceDebugInfoModel = new ServiceDebugInfoModel
+            {
+                DebugModeSetting = DebugMode.DebugInteractive,
+                RememberInputs = true,
+                ResourceModel = rm.Object,
+                ServiceInputData = "<DataList><rec><a>1</a></rec></DataList>"
+            };
+
+            var debugOutputViewModel = CreateDebugOutputViewModel();
+            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel);
+            var itemToAdd = new DataListItem { DisplayValue = "rec(1).a", Field = "a", Recordset = "rec", IsRecordset = true, RecordsetIndex = "1", RecordsetIndexType = enRecordsetIndexType.Numeric, Value = "1" };
+            workflowInputDataViewModel.WorkflowInputs.Add(itemToAdd);
+
+            //------------Execute Test---------------------------
+            workflowInputDataViewModel.SetXmlData();
+
+            //------------Assert Results-------------------------
+            var result = workflowInputDataViewModel.XmlData;
+            StringAssert.Contains(result, @"<DataList>
+  <rec>
+    <a>1</a>
+  </rec>
+</DataList>");
+
         }
 
         [TestMethod]
