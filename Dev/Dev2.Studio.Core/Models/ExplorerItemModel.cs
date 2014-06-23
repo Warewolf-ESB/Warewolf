@@ -447,7 +447,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType <= ResourceType.ServerSource && (Permissions.HasFlag(Permissions.View) || Permissions.HasFlag(Permissions.Execute) || Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.Contribute)))
+                if(ResourceType <= ResourceType.ServerSource && (Permissions.HasFlag(Permissions.View)  || Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.Contribute)))
                 {
 
                     return true;

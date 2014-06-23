@@ -2676,6 +2676,103 @@ namespace Dev2.Core.Tests.ModelTests
 
             IsServer(ResourceType.Server, false, Guid.NewGuid());
         }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_CanEdit")]
+        public void ExplorerItemModel_CanEdit_ServerWithGuid_Expect_Success()
+        {
+
+            PermissionsTest(a => a.CanEdit, Permissions.Administrator, true);
+            PermissionsTest(a => a.CanEdit, Permissions.View, true);
+            PermissionsTest(a => a.CanEdit, Permissions.Contribute, true);
+            PermissionsTest(a => a.CanEdit, Permissions.Execute, false);
+            PermissionsTest(a => a.CanEdit, Permissions.DeployFrom, false);
+            PermissionsTest(a => a.CanEdit, Permissions.DeployTo, false);
+            PermissionsTest(a => a.CanConnect, Permissions.None, false);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_CanExecute")]
+        public void ExplorerItemModel_CanExecute_ServerWithGuid_Expect_Success()
+        {
+
+            PermissionsTest(a => a.CanExecute, Permissions.Administrator, true);
+            PermissionsTest(a => a.CanExecute, Permissions.View, false);
+            PermissionsTest(a => a.CanExecute, Permissions.Contribute, true);
+            PermissionsTest(a => a.CanExecute, Permissions.Execute, true);
+            PermissionsTest(a => a.CanExecute, Permissions.DeployFrom, false);
+            PermissionsTest(a => a.CanExecute, Permissions.DeployTo, false);
+            PermissionsTest(a => a.CanConnect, Permissions.None, false);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_CanConnect")]
+        public void ExplorerItemModel_CanConnect_Expect_Success()
+        {
+
+            PermissionsTest(a => a.CanConnect, Permissions.Administrator, true,ResourceType.Server);
+            PermissionsTest(a => a.CanConnect, Permissions.View, true, ResourceType.Server);
+            PermissionsTest(a => a.CanConnect, Permissions.Contribute, true, ResourceType.Server);
+            PermissionsTest(a => a.CanConnect, Permissions.Execute, true, ResourceType.Server);
+            PermissionsTest(a => a.CanConnect, Permissions.DeployFrom, true, ResourceType.Server);
+            PermissionsTest(a => a.CanConnect, Permissions.DeployTo, true, ResourceType.Server);
+            PermissionsTest(a => a.CanConnect, Permissions.None, false, ResourceType.Server);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_CanDisConnect")]
+        public void ExplorerItemModel_CanDisConnect_ServerWithGuid_Expect_Success()
+        {
+
+            PermissionsTest(a => a.CanDisconnect, Permissions.Administrator, true, ResourceType.Server);
+            PermissionsTest(a => a.CanDisconnect, Permissions.View, true, ResourceType.Server);
+            PermissionsTest(a => a.CanDisconnect, Permissions.Contribute, true, ResourceType.Server);
+            PermissionsTest(a => a.CanDisconnect, Permissions.Execute, true, ResourceType.Server);
+            PermissionsTest(a => a.CanDisconnect, Permissions.DeployFrom, true, ResourceType.Server);
+            PermissionsTest(a => a.CanDisconnect, Permissions.DeployTo, true, ResourceType.Server);
+            PermissionsTest(a => a.CanDisconnect, Permissions.None, false, ResourceType.Server);
+        }
+
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_CanViewDependencies")]
+        public void ExplorerItemModel_CanViewDependencies_ServerWithGuid_Expect_Success()
+        {
+
+            PermissionsTest(a => a.CanShowDependencies, Permissions.Administrator, true);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.View, true);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.Contribute, true);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.Execute, true);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.DeployFrom, true);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.DeployTo, true);
+            PermissionsTest(a => a.CanShowDependencies, Permissions.None, false);
+        }
+
+
+        public void PermissionsTest(Func<IExplorerItemModel,bool> property, Permissions permissions , bool expected,ResourceType resourceType = ResourceType.WorkflowService)
+        {
+
+            var serverItem = new ExplorerItemModel
+            {
+                ResourceType = resourceType,
+                DisplayName = "bob",
+                ResourceId = Guid.Empty,
+                Permissions = permissions,
+                EnvironmentId = Guid.NewGuid()
+            };
+            Assert.AreEqual(property(serverItem), expected);
+        }
+
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_IsLocalHost")]
