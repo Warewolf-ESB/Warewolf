@@ -144,25 +144,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems)
         {
-            //            IList<IWorkspaceItem> applicableWorkspaceItems = workspaceItems
-            //                .Where(w => w.ServerID == _environmentModel.Connection.ServerID &&
-            //                            w.WorkspaceID == _environmentModel.Connection.WorkspaceID)
-            //                .ToList();
-            //
-            //            var rootElement = new XElement("WorkspaceItems");
-            //            rootElement.Add(applicableWorkspaceItems.Select(w => w.ToXml()));
-            //
-            //            var comsController = new CommunicationController { ServiceName = "GetLatestService" };
-            //            comsController.AddPayloadArgument("EditedItemsXml", rootElement.ToString());
-            //            comsController.AddPayloadArgument("Roles", "*");
-            //
-            //            comsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, _environmentModel.Connection.WorkspaceID);
-
             IsLoaded = false;
             Load();
         }
 
-        // TODO : Refactor this ;)
+        // TODO : Refactor this
         public List<IResourceModel> ReloadResource(Guid resourceID, Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
         {
             var comsController = new CommunicationController { ServiceName = "ReloadResourceService" };
