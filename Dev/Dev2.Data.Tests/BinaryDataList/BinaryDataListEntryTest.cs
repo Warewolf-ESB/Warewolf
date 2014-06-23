@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Binary_Objects.Structs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
@@ -429,6 +432,1004 @@ namespace Dev2.Data.Tests.BinaryDataList
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_BlankRecordSetData")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_BlankRecordSetData_Data_ExpectBlank()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetValue(new DateTime(2001, 01, 01).ToString(CultureInfo.InvariantCulture), "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("1", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("2", "f2", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("sdsd", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue(new DateTime(1999, 01, 01).ToString(CultureInfo.InvariantCulture), "f1", "recset", 4, out error);
+            dl0.TryCreateRecordsetValue("3", "f2", "recset", 4, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+            entry.BlankRecordSetData("f1");
+            var row1 = entry.FetchRecordAt(1, out error);
+            Assert.AreEqual(row1[0].TheValue, "");
+            Assert.AreEqual(row1[1].TheValue, "1");
+            var row2 = entry.FetchRecordAt(2, out error);
+            Assert.AreEqual(row2[0].TheValue, "");
+            Assert.AreEqual(row2[1].TheValue, "");
+            var row3 = entry.FetchRecordAt(3, out error);
+            Assert.AreEqual(row3[0].TheValue, "");
+            Assert.AreEqual(row3[1].TheValue, "2");
+            var row4 = entry.FetchRecordAt(4, out error);
+            Assert.AreEqual(row4[0].TheValue, "");
+            Assert.AreEqual(row4[1].TheValue, "3");
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_BlankRecordSetData")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_BlankRecordSetData_InvalidColumn_Data_ExpectBlank()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetValue("a", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("1", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("2", "f2", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("sdsd", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("b", "f1", "recset", 4, out error);
+            dl0.TryCreateRecordsetValue("3", "f2", "recset", 4, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+            entry.BlankRecordSetData("fx");
+            var row1 = entry.FetchRecordAt(1, out error);
+            Assert.AreEqual(row1[0].TheValue, "a");
+            Assert.AreEqual(row1[1].TheValue, "1");
+            var row2 = entry.FetchRecordAt(2, out error);
+            Assert.AreEqual(row2[0].TheValue, "");
+            Assert.AreEqual(row2[1].TheValue, "");
+            var row3 = entry.FetchRecordAt(3, out error);
+            Assert.AreEqual(row3[0].TheValue, "sdsd");
+            Assert.AreEqual(row3[1].TheValue, "2");
+            var row4 = entry.FetchRecordAt(4, out error);
+            Assert.AreEqual(row4[0].TheValue, "b");
+            Assert.AreEqual(row4[1].TheValue, "3");
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_BlankRecordSetData")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_BlankRecordSetData_Empty_Data_ExpectBlank()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+            entry.BlankRecordSetData("fx");
+            var row1 = entry.FetchRecordAt(1, out error);
+            Assert.AreEqual(row1[0].TheValue, "");
+            Assert.AreEqual(row1[1].TheValue, "");
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_DeleteAllRows")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_DeleteAllRows_Empty_Data_ExpectError()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+           
+            var row1 = entry.FetchRecordAt(1, out error);
+            Assert.AreEqual(row1[0].TheValue, "");
+            Assert.AreEqual(row1[1].TheValue, "");
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_DeleteAllRows")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_DeleteAllRows_HasValues_ExpectEmptyDS()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+            var row = entry.FetchRecordAt(1, out error);
+            Assert.AreEqual("r1.f1.value",row[0].TheValue);
+            Assert.AreEqual("r1.f2.value", row[1].TheValue);
+            entry.TryDeleteRows("*", out error);
+
+            row = entry.FetchRecordAt(1, out error);
+            Assert.AreEqual(row[0].TheValue, "");
+            Assert.AreEqual(row[1].TheValue, "");
+            row = entry.FetchRecordAt(2, out error);
+            Assert.AreEqual(row[0].TheValue, "");
+            Assert.AreEqual(row[1].TheValue, "");
+            row = entry.FetchRecordAt(3, out error);
+            Assert.AreEqual(row[0].TheValue, "");
+            Assert.AreEqual(row[1].TheValue, "");
+            row = entry.FetchRecordAt(4, out error);
+            Assert.AreEqual(row[0].TheValue, "");
+            Assert.AreEqual(row[1].TheValue, "");
+            Assert.AreEqual(String.Empty,error);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_HasField")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_HasField_HasField_ExpectTrue()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+
+            Assert.IsTrue(entry.HasField("f1"));
+            Assert.IsTrue(entry.HasField("f2"));
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_HasField")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_HasField_TryFetchRecordSet_ExpectTrue()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+            entry.TryFetchRecordsetColumnAtIndex("bob", 3, out error);
+            Assert.AreEqual("Index [ 3 ] is out of bounds", error);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_HasField")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_HasField_NoField_ExpectFalse()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+            Assert.IsFalse(entry.HasField("f3"));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_HasField")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_HasField_IsScalar_ExpectFalse()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateScalarTemplate("moo", "bob", "a scalar", true, true, enDev2ColumnArgumentDirection.Both, out error);
+
+            dl0.TryCreateScalarValue("moo.bob", "moo.bob", out error);
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("moo.bob", out entry, out error);
+            Assert.IsFalse(entry.HasField("f3"));
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_HasField")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_HasColumns_IsScalar_ExpectFalse()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+
+
+            // dl0 - Parent
+            dl0.TryCreateScalarTemplate("moo", "bob", "a scalar", true, true, enDev2ColumnArgumentDirection.Both, out error);
+
+            dl0.TryCreateScalarValue("moo.bob", "moo.bob", out error);
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("moo.bob", out entry, out error);
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            Assert.IsFalse(entry.HasColumns(cols));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_HasField")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_HasColumns_NullPassedIn_ExpectFalse()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+
+
+            // dl0 - Parent
+            dl0.TryCreateScalarTemplate("moo", "bob", "a scalar", true, true, enDev2ColumnArgumentDirection.Both, out error);
+
+            dl0.TryCreateScalarValue("moo.bob", "moo.bob", out error);
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("moo.bob", out entry, out error);
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            Assert.IsFalse(entry.HasColumns(null));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_HasField")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_HasColumns_IsRecordSet_AllColumnsExist_ExpectTrue()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            IList<Dev2Column> colsDiff = new List<Dev2Column>();
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f3"));
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetTemplate("recset2", "a recordset", colsDiff, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+
+
+            Assert.IsTrue(entry.HasColumns(cols));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_AdjustAliasOperationForExternalServicePopulate")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_AdjustAliasOperationForExternalServicePopulate_IsRecordSet_ExpectInternalNotSetToEmpty()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            IList<Dev2Column> colsDiff = new List<Dev2Column>();
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f3"));
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetTemplate("recset2", "a recordset", colsDiff, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+            var internalobj = new PrivateObject(entry).GetField("_internalObj") is SBinaryDataListEntry ? (SBinaryDataListEntry)new PrivateObject(entry).GetField("_internalObj") : new SBinaryDataListEntry();
+            Assert.IsFalse(internalobj.IsEmtpy);
+            entry.AdjustAliasOperationForExternalServicePopulate();
+            Assert.IsFalse(internalobj.IsEmtpy);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_HasField")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_HasColumns_IsRecordSet_AllColumnsDoNotExist_ExpectFalse()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            IList<Dev2Column> colsDiff = new List<Dev2Column>();
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f3"));
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetTemplate("recset2", "a recordset", colsDiff, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+
+            IList<Dev2Column> cols2 = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f4"));
+            Assert.IsTrue(entry.HasColumns(cols2));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_FetchLastRecordsetIndex")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_FetchLastRecordsetIndex_WhenAliases_ExpectMaxIndexOfAlias()
+        // ReSharper restore InconsistentNaming
+        {
+
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error); // fetch this from alias
+
+            // dl1 - Child
+            dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+
+            dl1.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
+            dl1.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            compiler.PushBinaryDataList(dl1.UID, dl1, out errors);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry entry;
+            dl1.TryGetEntry("recset", out entry, out error);
+
+            // adjust the alias mapping data ;)
+
+            entry.AdjustForIOMapping(dl0.UID, "f1", "recset", "f1", out errors);
+
+            var ent = entry.FetchLastRecordsetIndex();
+
+            //------------Assert Results-------------------------
+
+            // ensure that it has fetched the alias indexes ;)
+
+            Assert.AreEqual(ent, 3);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_FetchLastRecordsetIndex")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_FetchLastRecordsetIndex_AssertInternalPassThrough()
+        // ReSharper restore InconsistentNaming
+        {
+
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error); // fetch this from alias
+
+
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+
+            var internalSbc = new PrivateObject(entry, new PrivateType(typeof(BinaryDataListEntry))).GetField("_internalObj") is SBinaryDataListEntry ? (SBinaryDataListEntry)new PrivateObject(entry, new PrivateType(typeof(BinaryDataListEntry))).GetField("_internalObj") : new SBinaryDataListEntry();
+   
+            //------------Assert Results-------------------------
+
+            // ensure that it has fetched the alias indexes ;)
+
+           Assert.AreEqual(entry.ColumnIODirection,internalSbc.ColumnIODirection);
+            Assert.AreEqual(entry.IsEditable,internalSbc.IsEditable);
+            Assert.AreEqual(entry.IsEvaluationScalar,internalSbc.IsEvaluationScalar);
+
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_FetchAppendRecordsetIndex")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_FetchAppendRecordsetIndex_WhenAliases_InternalNotMinus1_ExpectAppendValue()
+        // ReSharper restore InconsistentNaming
+        {
+
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error); // fetch this from alias
+
+            // dl1 - Child
+            dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+
+            dl1.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
+            dl1.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            compiler.PushBinaryDataList(dl1.UID, dl1, out errors);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry entry;
+            dl1.TryGetEntry("recset", out entry, out error);
+
+            // adjust the alias mapping data ;)
+
+            entry.AdjustForIOMapping(dl0.UID, "f1", "recset", "f1", out errors);
+
+            var ent = entry.FetchAppendRecordsetIndex();
+
+            //------------Assert Results-------------------------
+
+            // ensure that it has fetched the alias indexes ;)
+
+            Assert.AreEqual(ent, 4);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_FetchAppendRecordsetIndex")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_FetchAppendRecordsetIndex_WhenAliases_InternalMinus1_ExpectAppendValue()
+        // ReSharper restore InconsistentNaming
+        {
+
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+
+
+            // dl1 - Child
+            dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+
+            dl1.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
+            dl1.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            compiler.PushBinaryDataList(dl1.UID, dl1, out errors);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry entry;
+            dl1.TryGetEntry("recset", out entry, out error);
+
+            // adjust the alias mapping data ;)
+
+            entry.AdjustForIOMapping(dl0.UID, "f1", "recset", "f1", out errors);
+
+            var ent = entry.FetchAppendRecordsetIndex();
+
+            //------------Assert Results-------------------------
+
+            // ensure that it has fetched the alias indexes ;)
+
+            Assert.AreEqual(1, ent);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_FetchScalar")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_FetchScalar_IsRecordSet_ExpectLastIndex()
+        // ReSharper restore InconsistentNaming
+        {
+
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+  
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+
+            dl1.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
+            dl1.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
+
+            compiler.PushBinaryDataList(dl1.UID, dl1, out errors);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry entry;
+            dl1.TryGetEntry("recset", out entry, out error);
+
+            // adjust the alias mapping data ;)
+
+            entry.AdjustForIOMapping(dl1.UID, "f1", "recset", "f1", out errors);
+
+            var ent = entry.FetchScalar();
+
+            //------------Assert Results-------------------------
+
+            // ensure that it has fetched the alias indexes ;)
+
+            Assert.AreEqual("r2.f1.value", ent.TheValue);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_TryFetchIndexedRecordsetUpsertPayload")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_TryFetchIndexedRecordsetUpsertPayload_IsRecordSet_ExpectLastIndex()
+        // ReSharper restore InconsistentNaming
+        {
+
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+
+            dl1.TryCreateRecordsetValue("r2.f1.value", "f1", "recset", 2, out error);
+            dl1.TryCreateRecordsetValue("r2.f2.value", "f2", "recset", 2, out error);
+
+            compiler.PushBinaryDataList(dl1.UID, dl1, out errors);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry entry;
+            dl1.TryGetEntry("recset", out entry, out error);
+
+            // adjust the alias mapping data ;)
+
+            entry.AdjustForIOMapping(dl1.UID, "f1", "recset", "f1", out errors);
+
+            var ent = entry.TryFetchIndexedRecordsetUpsertPayload(2,out error);
+
+            //------------Assert Results-------------------------
+
+            // ensure that it has fetched the alias indexes ;)
+
+            Assert.AreEqual("r2.f1.value", ent.TheValue);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_HasField")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_HasColumns_IsRecordSet_EmptyInput_Expecttrue()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            IList<Dev2Column> colsDiff = new List<Dev2Column>();
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f3"));
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetTemplate("recset2", "a recordset", colsDiff, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+
+            IList<Dev2Column> cols2 = new List<Dev2Column>();
+            Assert.IsTrue(entry.HasColumns(cols2));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_Merge")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_Merge_NonMatchingColumn_ExpectEmptyDS()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            IList<Dev2Column> colsDiff = new List<Dev2Column>();
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f3"));
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetTemplate("recset2", "a recordset", colsDiff, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f3", "recset2", 1, out error);
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            IBinaryDataListEntry entry2;
+            dl0.TryGetEntry("recset", out entry, out error);
+            dl0.TryGetEntry("recset2", out entry2, out error);
+            entry.Merge(entry2, out error);
+            Assert.AreEqual("Mapping error: Column not found f3",error);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_Merge")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_Merge_MatchingColumns_ExpectAppendedToend()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+
+            IList<Dev2Column> colsDiff = new List<Dev2Column>();
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+  
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetTemplate("recset2", "a recordset", colsDiff, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+
+
+            dl0.TryCreateRecordsetValue("r2.f1.value", "f1", "recset2", 1, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            IBinaryDataListEntry entry2;
+            dl0.TryGetEntry("recset", out entry, out error);
+            dl0.TryGetEntry("recset2", out entry2, out error);
+            entry.Merge(entry2, out error);
+
+
+            var row = entry.FetchRecordAt(1, out error);
+            Assert.AreEqual(row[0].TheValue, "r1.f1.value");
+            row = entry.FetchRecordAt(2, out error);
+            Assert.AreEqual(row[0].TheValue, "r2.f1.value");
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_Merge")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_Merge_Scalar_ExpectEmptyDS()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            IList<Dev2Column> colsDiff = new List<Dev2Column>();
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f3"));
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateScalarTemplate("moo","bob", "a scalar",  true,true,enDev2ColumnArgumentDirection.Both,  out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+
+            dl0.TryCreateScalarValue("moo.bob", "moo.bob", out error);
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            IBinaryDataListEntry entry2;
+            dl0.TryGetEntry("recset", out entry, out error);
+            dl0.TryGetEntry("moo.bob", out entry2, out error);
+            entry.Merge(entry2, out error);
+            Assert.AreEqual("Type mis-match, one side is Recordset while the other is a scalar", error);
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
         [TestCategory("BinaryDataListEntry_Sort")]
         // ReSharper disable InconsistentNaming
         public void BinaryDataListEntry_Sort_ExpectNoErrorIfEmpty()
@@ -454,8 +1455,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Execute Test---------------------------
             IBinaryDataListEntry entry;
             dl0.TryGetEntry("recset", out entry, out error);
-            entry.Sort("f1", true, out error);
-
+            Assert.IsFalse(entry.TryDeleteRows("*", out error));
+            Assert.AreEqual("Recordset was empty.",error);
 
 
         }
@@ -643,6 +1644,114 @@ namespace Dev2.Data.Tests.BinaryDataList
 
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_Clone")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_Clone_Scalar_ExpectClonedObj()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+
+
+            // dl0 - Parent
+            dl0.TryCreateScalarTemplate("moo", "bob", "a scalar", true, true, enDev2ColumnArgumentDirection.Both, out error);
+
+            dl0.TryCreateScalarValue("moo.bob", "moo.bob", out error);
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("moo.bob", out entry, out error);
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            var cloned = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(),out error);
+            Assert.AreNotEqual(cloned.GetHashCode(),entry.GetHashCode());
+            Assert.AreEqual(cloned.FetchScalar().TheValue,entry.FetchScalar().TheValue);
+            Assert.AreEqual(cloned.FetchScalar().FieldName, entry.FetchScalar().FieldName);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("BinaryDataListEntry_Clone")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_Clone_ShapOnly_ExpectClonedShape()
+        // ReSharper restore InconsistentNaming
+        {
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>", "<xml><rs><val/></rs></xml>", out errors);
+
+            IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            string error;
+            IBinaryDataListEntry entry;
+
+            // emulate the delete at index 1, aka a header delete ;)
+            if (bdl.TryGetEntry("rs", out entry, out error))
+            {
+                entry.TryDeleteRows("1", out error);
+            }
+
+            var res = entry.Clone(enTranslationDepth.Shape, Guid.NewGuid(), out error);
+
+            var cloneMinIndex = res.FetchRecordsetIndexes().FetchNextIndex();
+            var entryMinIndex = entry.FetchRecordsetIndexes().FetchNextIndex();
+
+            Assert.AreEqual(2, entryMinIndex);
+            Assert.AreEqual(cloneMinIndex, entryMinIndex);
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry_Clone")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_Clone_ScalarIdenticalGuid_ExpectClonedObj()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+
+
+            // dl0 - Parent
+            dl0.TryCreateScalarTemplate("moo", "bob", "a scalar", true, true, enDev2ColumnArgumentDirection.Both, out error);
+
+            dl0.TryCreateScalarValue("moo.bob", "moo.bob", out error);
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("moo.bob", out entry, out error);
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            var cloned = entry.Clone(enTranslationDepth.Data, dl0.UID, out error);
+
+            var internalSbc = new PrivateObject(cloned, new PrivateType(typeof(BinaryDataListEntry))).GetField("_internalObj") is SBinaryDataListEntry ? (SBinaryDataListEntry)new PrivateObject(cloned, new PrivateType(typeof(BinaryDataListEntry))).GetField("_internalObj") : new SBinaryDataListEntry();
+            var internalSbe = new PrivateObject(entry, new PrivateType(typeof(BinaryDataListEntry))).GetField("_internalObj") is SBinaryDataListEntry ? (SBinaryDataListEntry)new PrivateObject(entry, new PrivateType(typeof(BinaryDataListEntry))).GetField("_internalObj") : new SBinaryDataListEntry();
+
+            Assert.AreEqual(internalSbc.Columns,internalSbe.Columns);
+            Assert.AreEqual(internalSbc.DataListKey,internalSbe.DataListKey);
+            Assert.AreEqual(internalSbc.Description,internalSbc.Description);
+            Assert.AreEqual(internalSbc.IsEditable, internalSbc.IsEditable);
+            Assert.AreEqual(internalSbc.Namespace,internalSbc.Namespace);
+            Assert.AreEqual(internalSbc.IsEditable,internalSbe.IsEditable);
+            Assert.AreEqual(internalSbc.IsManagmentServicePayload,internalSbe.IsManagmentServicePayload);
+
+        }
+
         [TestMethod]
         [Owner("Travis")]
         [TestCategory("BinaryDataListEntry,UnitTest")]
@@ -758,7 +1867,38 @@ namespace Dev2.Data.Tests.BinaryDataList
             }
 
         }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("BinaryDataListEntry,UnitTest")]
+        [Description("A test to ensure we cannot put a row of data at an invalid index")]
+        public void BinaryDataListEntry_TryPutRecordRowAt_IndexLessThan_Last()
+        {
+            string error;
+            IBinaryDataList dl1 = Dev2BinaryDataListFactory.CreateDataList();
+            dl1.TryCreateScalarTemplate(string.Empty, "myScalar", "A scalar", true, out error);
+            dl1.TryCreateScalarValue("myValue", "myScalar", out error);
 
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+
+            dl1.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl1.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl1.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry entry;
+            dl1.TryGetEntry("recset", out entry, out error);
+            IBinaryDataListItem itm = Dev2BinaryDataListFactory.CreateBinaryItem("bob", "rs", "f1", -1);
+            IList<IBinaryDataListItem> row = new List<IBinaryDataListItem>
+                    {
+                    itm
+                };
+            entry.TryPutRecordRowAt(row, 1, out error);
+            Assert.AreEqual("bob", entry.FetchRecordAt(1,out error)[0].TheValue);
+
+
+        }
         [TestMethod]
         [Owner("Travis")]
         [TestCategory("BinaryDataListEntry,UnitTest")]

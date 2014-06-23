@@ -202,7 +202,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         public void AdjustAliasOperationForExternalServicePopulate()
         {
-            if(!_internalObj.IsEmtpy && FetchAlias().Count > 0 && _internalObj.IsRecordset && _internalObj.Keys.Count == 1)
+            if (!_internalObj.IsEmtpy && FetchAlias().Count > 0 && _internalObj.IsRecordset && _internalObj.Keys.Count == 1)
             {
                 _internalObj.IsEmtpy = true;
             }
@@ -758,21 +758,30 @@ namespace Dev2.DataList.Contract.Binary_Objects
             }
         }
 
-        public bool HasColumns(IList<Dev2Column> cols)
+        public bool HasColumns(IList<Dev2Column> cols) // why refernce equals??
         {
+            if (null == cols)
+                return false;
             bool result = true;
-            IList<Dev2Column> myCols = Columns;
-            int i = 0;
-
-            while(i < cols.Count && result)
+            if (IsRecordset && Columns != null)
             {
-                if(!myCols.Contains(cols[i]))
-                {
-                    result = false;
-                }
-                i++;
-            }
 
+                IList<Dev2Column> myCols = Columns;
+                int i = 0;
+
+                while (i < cols.Count && result)
+                {
+                    if (!myCols.Contains(cols[i]))
+                    {
+                        result = false;
+                    }
+                    i++;
+                }
+            }
+            else
+            {
+                return false;
+            }
             return result;
         }
 

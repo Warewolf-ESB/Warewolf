@@ -491,8 +491,8 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an Sort ""(.*)"" as")]
         public void GivenContainsAnSortAs(string parentName, string activityName, Table table)
         {
-            var dsfSequence = new DsfSortRecordsActivity { DisplayName = activityName, SortField = table.Rows[0][0], SelectedSort = table.Rows[0][1] };
-            CommonSteps.AddActivityToActivityList(parentName, activityName, dsfSequence);
+            var dsfSort = new DsfSortRecordsActivity { DisplayName = activityName, SortField = table.Rows[0][0], SelectedSort = table.Rows[0][1] };
+            CommonSteps.AddActivityToActivityList(parentName, activityName, dsfSort);
         }
 
 

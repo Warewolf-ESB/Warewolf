@@ -118,8 +118,7 @@ Scenario: Sort a recordset forwards
 	| [[rs(4).row]] = best     |            |
 	| [[rs(5).row]] = Warewolf |            |
 	| [[rs(6).row]] = user     |            |
-	| [[rs(8).row]] = so far   | Forward    |
-	| [[rs(7).bow]] = so far   | Forward    |
+	| [[rs(7).row]] = so far   | Forward    |
 	And the debug output as
 	|                           |
 	| [[rs(1).row]] = are      |
@@ -128,7 +127,7 @@ Scenario: Sort a recordset forwards
 	| [[rs(4).row]] = the      |
 	| [[rs(5).row]] = user     |
 	| [[rs(6).row]] = Warewolf |
-	| [[rs(8).row]] = You      |	
+	| [[rs(7).row]] = You      |	
 
 Scenario: Sort a recordset backwards 
 	Given I have the following recordset to sort
