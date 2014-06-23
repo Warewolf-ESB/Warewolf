@@ -347,6 +347,10 @@
       <Project>{1b229665-1631-4275-afbd-cb5b7775e4ca}</Project>
       <Name>Dev2.TaskScheduler.Wrappers</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.UnitTestUtils\Dev2.UnitTestUtils.csproj">
+      <Project>{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}</Project>
+      <Name>Dev2.UnitTestUtils</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Dev2.Core.Tests
 {
-    static class TestUtil
+   public static class TestUtil
     {
         public static IEnumerable<Mock<T>> GenerateMockEnumerable<T>(int count) where T : class
         {

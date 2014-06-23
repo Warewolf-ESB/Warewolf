@@ -8,23 +8,34 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.Hosting;
-
+using System.Linq;
 namespace Dev2.Runtime.ESB.WF
 {
     public sealed class WfApplicationUtils
     {
+        Action<DebugOutputBase, DebugItem> _add;
+
+        public  WfApplicationUtils()
+        {
+            _add = AddDebugItem;
+        }
+        public  WfApplicationUtils(Func<IDataListCompiler> getDataListCompiler,Action<DebugOutputBase,DebugItem> add)
+        {
+            GetDataListCompiler = getDataListCompiler;
+            _add = add;
+        }
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false)
         {
             errors = new ErrorResultTO();
             if(dataObject != null)
             {
-                Guid parentInstanceId;
-                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
+                Guid parentInstanceID;
+                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
 
                 var debugState = new DebugState
                 {
                     ID = dataObject.DataListID,
-                    ParentID = parentInstanceId,
+                    ParentID = parentInstanceID,
                     WorkspaceID = dataObject.WorkspaceID,
                     StateType = stateType,
                     StartTime = workflowStartTime ?? DateTime.Now,
@@ -53,8 +64,8 @@ namespace Dev2.Runtime.ESB.WF
                     ErrorResultTO invokeErrors;
                     var com = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
-                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
-                    var inputs = GetDebugInputs(defs, com, out invokeErrors);
+                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName), enDev2ColumnArgumentDirection.Input);
+                    var inputs = GetDebugValues(defs, com, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                     debugState.Inputs.AddRange(inputs);
                 }
@@ -64,8 +75,8 @@ namespace Dev2.Runtime.ESB.WF
                     ErrorResultTO invokeErrors;
                     var com = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
-                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
-                    var inputs = GetDebugInputs(defs, com, out invokeErrors);
+                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName), enDev2ColumnArgumentDirection.Output);
+                    var inputs = GetDebugValues(defs, com, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                     debugState.Outputs.AddRange(inputs);
                 }
@@ -85,7 +96,7 @@ namespace Dev2.Runtime.ESB.WF
                 {
                     if(debugState.StateType == StateType.End)
                     {
-                        GetDebugDispatcher().Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+                        GetDebugDispatcher().Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID,dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
                     }
                     else
                     {
@@ -96,30 +107,36 @@ namespace Dev2.Runtime.ESB.WF
         }
 
         public Func<IDebugDispatcher> GetDebugDispatcher = () => DebugDispatcher.Instance;
-
-        public List<DebugItem> GetDebugInputs(IList<IDev2Definition> inputs, IBinaryDataList dataList, out ErrorResultTO errors)
+        private Func<IDataListCompiler> GetDataListCompiler = () => DataListFactory.CreateDataListCompiler();
+       
+        public List<DebugItem> GetDebugValues(IList<IDev2Definition> values, IBinaryDataList dataList, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            IDataListCompiler compiler = GetDataListCompiler();
             var results = new List<DebugItem>();
-            foreach(IDev2Definition dev2Definition in inputs)
+            var added = new List<string>();
+            foreach (IDev2Definition dev2Definition in values)
             {
                 IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, GetVariableName(dev2Definition), false, out errors);
                 GetValue(tmpEntry, dev2Definition);
-
+             
+                var defn = GetVariableName(dev2Definition);
+                if (added.Any(a => a == defn))
+                    continue;
+                
+                added.Add(defn);
                 DebugItem itemToAdd = new DebugItem();
-                AddDebugItem(new DebugItemVariableParams(GetVariableName(dev2Definition), "", tmpEntry, dataList.UID), itemToAdd);
+                _add(new DebugItemVariableParams(GetVariableName(dev2Definition), "", tmpEntry, dataList.UID), itemToAdd);
                 results.Add(itemToAdd);
             }
 
-            foreach(IDebugItem debugInput in results)
+            foreach (IDebugItem debugInput in results)
             {
                 debugInput.FlushStringBuilder();
             }
 
             return results;
         }
-
         private static void GetValue(IBinaryDataListEntry tmpEntry, IDev2Definition defn)
         {
 
@@ -150,13 +167,41 @@ namespace Dev2.Runtime.ESB.WF
         /// <summary>
         /// Finds the service shape.
         /// </summary>
-        /// <param name="workspaceId">The workspace ID.</param>
-        /// <param name="resourceId">The ID of the resource</param>
+        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="serviceName">Name of the service.</param>
         /// <returns></returns>
-        public string FindServiceShape(Guid workspaceId, Guid resourceId)
+        public string FindServiceShape(Guid workspaceID, string serviceName)
         {
             var result = "<DataList></DataList>";
-            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId);
+            var resource = ResourceCatalog.Instance.GetResource(workspaceID, serviceName);
+
+            if(resource == null)
+            {
+                return result;
+            }
+
+            result = resource.DataList;
+
+
+
+            if(string.IsNullOrEmpty(result))
+            {
+                result = "<DataList></DataList>";
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Finds the service shape.
+        /// </summary>
+        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="resourceID">The ID of the resource</param>
+        /// <returns></returns>
+        public string FindServiceShape(Guid workspaceID, Guid resourceID)
+        {
+            var result = "<DataList></DataList>";
+            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceID);
 
             if(resource == null)
             {

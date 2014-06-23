@@ -141,9 +141,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Testing.SFTPServer", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Crypto.HashGenerator", "Dev2.Crypto.HashGenerator\Dev2.Crypto.HashGenerator.csproj", "{E872FFC0-96F9-4FB8-A8D9-B498E158742B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UnitTestUtils", "Dev2.UnitTestUtils\Dev2.UnitTestUtils.csproj", "{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 54
+		SccNumberOfProjects = 55
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -306,6 +308,9 @@ Global
 		SccProjectUniqueName53 = Dev2.Crypto.HashGenerator\\Dev2.Crypto.HashGenerator.csproj
 		SccProjectName53 = Dev2.Crypto.HashGenerator
 		SccLocalPath53 = Dev2.Crypto.HashGenerator
+		SccProjectUniqueName54 = Dev2.UnitTestUtils\\Dev2.UnitTestUtils.csproj
+		SccProjectName54 = Dev2.UnitTestUtils
+		SccLocalPath54 = Dev2.UnitTestUtils
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1318,6 +1323,24 @@ Global
 		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Test|x64.ActiveCfg = Release|Any CPU
 		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Test|x86.ActiveCfg = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Release|x64.ActiveCfg = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Release|x86.ActiveCfg = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Test|Any CPU.Build.0 = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Test|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Test|Mixed Platforms.Build.0 = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Test|x64.ActiveCfg = Release|Any CPU
+		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Test|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
