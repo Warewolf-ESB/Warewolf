@@ -13,9 +13,9 @@
     <DeploymentItem filename="Binaries\IronRuby.dll" />
   </Deployment>
   <NamingScheme baseName="UT" />
-  <Execution parallelTestCount="1">
+  <Execution>
     <Buckets size="500" />
-    <Timeouts testTimeout="0" />
+    <Timeouts testTimeout="30000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>
@@ -36,6 +36,24 @@
     <AgentRule name="LocalMachineDefaultRole">
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/CodeCoverage/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.CodeCoverage.CoveragePlugIn, Microsoft.VisualStudio.QualityTools.Plugins.CodeCoverage, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Code Coverage (Visual Studio 2010)">
+          <Configuration>
+            <CodeCoverage xmlns="">
+              <Regular>
+                <CodeCoverageItem binaryFile="Dev2.Activities.Designers\bin\Debug\Dev2.Activities.Designers.dll" pdbFile="Dev2.Activities.Designers\bin\Debug\Dev2.Activities.Designers.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Activities\bin\Debug\Dev2.Activities.dll" pdbFile="Dev2.Activities\bin\Debug\Dev2.Activities.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Common\bin\Debug\Dev2.Common.dll" pdbFile="Dev2.Common\bin\Debug\Dev2.Common.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Core\bin\Debug\Dev2.Core.dll" pdbFile="Dev2.Core\bin\Debug\Dev2.Core.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Data\bin\Debug\Dev2.Data.dll" pdbFile="Dev2.Data\bin\Debug\Dev2.Data.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Infrastructure\bin\Debug\Dev2.Infrastructure.dll" pdbFile="Dev2.Infrastructure\bin\Debug\Dev2.Infrastructure.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Runtime.Configuration\bin\Debug\Dev2.Runtime.Configuration.dll" pdbFile="Dev2.Runtime.Configuration\bin\Debug\Dev2.Runtime.Configuration.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Runtime\bin\Debug\Dev2.Runtime.dll" pdbFile="Dev2.Runtime\bin\Debug\Dev2.Runtime.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Scheduler\bin\Debug\Dev2.Scheduler.dll" pdbFile="Dev2.Scheduler\bin\Debug\Dev2.Scheduler.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Studio.Core\bin\Debug\Dev2.Studio.Core.dll" pdbFile="Dev2.Studio.Core\bin\Debug\Dev2.Studio.Core.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.TaskScheduler.Wrappers\bin\Debug\Dev2.TaskScheduler.Wrappers.dll" pdbFile="Dev2.TaskScheduler.Wrappers\bin\Debug\Dev2.TaskScheduler.Wrappers.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.UndoFramework\bin\Debug\Dev2.UndoFramework.dll" pdbFile="Dev2.UndoFramework\bin\Debug\Dev2.UndoFramework.pdb" instrumentInPlace="true" />
+              </Regular>
+            </CodeCoverage>
+          </Configuration>
         </DataCollector>
       </DataCollectors>
     </AgentRule>
