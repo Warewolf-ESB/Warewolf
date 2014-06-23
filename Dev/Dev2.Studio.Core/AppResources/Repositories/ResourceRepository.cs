@@ -81,7 +81,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
 
             //Fetch from resource repository to deploy ;)
-            IList<IResourceModel> deployableResources = dto.ResourceModels.Where(model => model != null).Select(resource => resource.ID).Select(fetchID => sourceEnviroment.ResourceRepository.FindSingle(c => c.ID == fetchID)).ToList();
+            IList<IResourceModel> deployableResources = dto.ResourceModels.Where(model => model != null).Select(resource => resource.ID).Select(fetchId => sourceEnviroment.ResourceRepository.FindSingle(c => c.ID == fetchId)).ToList();
 
             // Create the real deployment payload ;)
             IDeployDto trueDto = new DeployDto { ResourceModels = deployableResources };
@@ -100,8 +100,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 {
                     foreach(IResourceModel resource in effectedResources)
                     {
-                        var theID = resource.ID;
-                        var resourceToUpdate = deployableResources.FirstOrDefault(res => res.ID == theID);
+                        var theId = resource.ID;
+                        var resourceToUpdate = deployableResources.FirstOrDefault(res => res.ID == theId);
 
                         if(resourceToUpdate != null)
                         {
@@ -148,18 +148,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Load();
         }
 
-        // TODO : Refactor this
-        public List<IResourceModel> ReloadResource(Guid resourceID, Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
+        public List<IResourceModel> ReloadResource(Guid resourceId, Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
         {
             var comsController = new CommunicationController { ServiceName = "ReloadResourceService" };
-            comsController.AddPayloadArgument("ResourceID", resourceID.ToString());
+            comsController.AddPayloadArgument("ResourceID", resourceId.ToString());
             comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), resourceType));
 
             var con = _environmentModel.Connection;
             comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
 
             comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
-            comsController.AddPayloadArgument("GuidCsv", resourceID.ToString());
+            comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
             comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), resourceType));
 
             var toReloadResources = comsController.ExecuteCommand<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
@@ -299,23 +298,23 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return SaveResource(_environmentModel, instanceObj.ToServiceDefinition(), GlobalConstants.ServerWorkspaceID);
         }
 
-        public void Rename(string resourceID, string newName)
+        public void Rename(string resourceId, string newName)
         {
-            Guid resID;
+            Guid resId;
 
-            if(Guid.TryParse(resourceID, out resID))
+            if(Guid.TryParse(resourceId, out resId))
             {
 
                 var comsController = new CommunicationController { ServiceName = "RenameResourceService" };
                 comsController.AddPayloadArgument("NewName", newName);
-                comsController.AddPayloadArgument("ResourceID", resourceID);
+                comsController.AddPayloadArgument("ResourceID", resourceId);
 
                 var con = _environmentModel.Connection;
                 var me = comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
 
                 if(me.Message.Contains("Renamed Resource"))
                 {
-                    var findInLocalRepo = ResourceModels.FirstOrDefault(res => res.ID == Guid.Parse(resourceID));
+                    var findInLocalRepo = ResourceModels.FirstOrDefault(res => res.ID == Guid.Parse(resourceId));
                     if(findInLocalRepo != null)
                     {
                         findInLocalRepo.ResourceName = newName;
@@ -324,7 +323,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
             else
             {
-                throw new ArgumentException(StringResources.Resource_ID_must_be_a_Guid, "resourceID");
+                throw new ArgumentException(StringResources.Resource_ID_must_be_a_Guid, "resourceId");
             }
         }
 
@@ -349,7 +348,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var theResource = FindSingle(c => c.ResourceName.Equals(resource.ResourceName, StringComparison.CurrentCultureIgnoreCase), true);
 
-            // BUG 9703 - 2013.06.21 - TWR - refactored to make sure we always create a new one
             if(theResource != null)
             {
                 ResourceModels.Remove(theResource);
@@ -381,9 +379,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             DeleteResource(instanceObj);
         }
 
-        public void RefreshResource(Guid resourceID)
+        public void RefreshResource(Guid resourceId)
         {
-            _cachedServices.Remove(resourceID);
+            _cachedServices.Remove(resourceId);
         }
 
         public bool ResourceExist(IResourceModel resource)
@@ -436,7 +434,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 comsController.AddPayloadArgument("ResourceID", resource.ID.ToString());
                 comsController.AddPayloadArgument("ResourceType", resource.ResourceType.ToString());
-
+                StudioResourceRepository.DeleteItem(_environmentModel.ID, resource.ID);
                 return comsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection,
                                                               _environmentModel.Connection.WorkspaceID);
 
@@ -475,10 +473,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 comsController.AddPayloadArgument("ResourceID", resource.ID.ToString());
                 comsController.AddPayloadArgument("ResourceType", resource.ResourceType.ToString());
-                return comsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, _environmentModel.Connection.WorkspaceID);
+                ExecuteMessage deleteResourceFromWorkspace = comsController.ExecuteCommand<ExecuteMessage>(_environmentModel.Connection, _environmentModel.Connection.WorkspaceID);
+                StudioResourceRepository.DeleteItem(_environmentModel.ID, resource.ID);
+                return deleteResourceFromWorkspace;
             }
 
-            IResourceModel res = ResourceModels.FirstOrDefault(c => c.ID == resource.ID);
+            var res = ResourceModels.FirstOrDefault(c => c.ID == resource.ID);
 
             if(res == null)
             {
@@ -538,7 +538,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
-        //Juries TODO - Refactor to popupProvider
         void HandleDeleteResourceError(ExecuteMessage data, IResourceModel model)
         {
             if(data.HasError)
@@ -616,7 +615,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
 
-        void HydrateResourceModels(IEnumerable<SerializableResource> wfServices, Guid serverID)
+        void HydrateResourceModels(IEnumerable<SerializableResource> wfServices, Guid serverId)
         {
             if(wfServices == null)
             {
@@ -641,7 +640,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                                                 : (Enums.ResourceType)
                                                   Enum.Parse(typeof(Enums.ResourceType), enumsResourceTypeString);
 
-                    IResourceModel resource = HydrateResourceModel(enumsResourceType, item, serverID);
+                    IResourceModel resource = HydrateResourceModel(enumsResourceType, item, serverId);
                     if(resource != null)
                     {
                         ResourceModels.Add(resource);
@@ -662,12 +661,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
 
         // Make public for testing, should be extracted to a util class for testing....
-        public IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, SerializableResource data, Guid serverID, bool forced = false, bool fetchXaml = false)
+        public IResourceModel HydrateResourceModel(Enums.ResourceType resourceType, SerializableResource data, Guid serverId, bool forced = false, bool fetchXaml = false)
         {
 
             Guid id = data.ResourceID;
 
-            //2013.05.15: Ashley Lewis - Bug 9348 updates force hydration, initialization doesn't
             if(!IsInCache(id) || forced)
             {
                 // add to cache of services fetched ;)
@@ -681,7 +679,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.Outputs = data.Outputs;
                 resource.ResourceType = resourceType;
                 resource.ID = id;
-                resource.ServerID = serverID;
+                resource.ServerID = serverId;
                 resource.IsValid = data.IsValid;
                 if(data.DataList != null)
                 {
@@ -760,11 +758,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public Func<string, ICommunicationController> GetCommunicationController = serviveName => new CommunicationController { ServiceName = serviveName };
 
-        public ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceID)
+        public ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId)
         {
             var comsController = GetCommunicationController("SaveResourceService");
             comsController.AddPayloadArgument("ResourceXml", resourceDefinition);
-            comsController.AddPayloadArgument("WorkspaceID", workspaceID.ToString());
+            comsController.AddPayloadArgument("WorkspaceID", workspaceId.ToString());
 
             var con = targetEnvironment.Connection;
             var result = comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
@@ -813,13 +811,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             var con = resourceModel.Environment.Connection;
 
-            Guid workspaceID = con.WorkspaceID;
+            Guid workspaceId = con.WorkspaceID;
 
             var comsController = new CommunicationController { ServiceName = "TerminateExecutionService" };
             comsController.AddPayloadArgument("Roles", "*");
             comsController.AddPayloadArgument("ResourceID", resourceModel.ID.ToString());
 
-            var result = comsController.ExecuteCommand<ExecuteMessage>(con, workspaceID);
+            var result = comsController.ExecuteCommand<ExecuteMessage>(con, workspaceId);
 
             return result;
         }
@@ -902,8 +900,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.AddPayloadArgument("ResourceName", resourceModel.Category);
             comsController.AddPayloadArgument("GetDependsOnMe", getDependsOnMe.ToString());
 
-            var workspaceID = (resourceModel.Environment.Connection).WorkspaceID;
-            var payload = comsController.ExecuteCommand<ExecuteMessage>(resourceModel.Environment.Connection, workspaceID);
+            var workspaceId = (resourceModel.Environment.Connection).WorkspaceID;
+            var payload = comsController.ExecuteCommand<ExecuteMessage>(resourceModel.Environment.Connection, workspaceId);
 
             if(payload == null)
             {
@@ -1021,13 +1019,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comController.AddPayloadArgument("Type", Enum.GetName(typeof(Enums.ResourceType), resourceType));
 
             var models = comController.ExecuteCommand<List<SerializableResource>>(targetEnvironment.Connection, GlobalConstants.ServerWorkspaceID);
-            var serverID = targetEnvironment.Connection.ServerID;
+            var serverId = targetEnvironment.Connection.ServerID;
 
             var result = new List<IResourceModel>();
 
             if(models != null)
             {
-                result.AddRange(models.Select(model => HydrateResourceModel(resourceType, model, serverID)));
+                result.AddRange(models.Select(model => HydrateResourceModel(resourceType, model, serverId)));
             }
 
             return result;
@@ -1059,18 +1057,18 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         /// Fetches the resource definition.
         /// </summary>
         /// <param name="targetEnv">The target env.</param>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
-        /// <param name="resourceModelID">The resource model unique identifier.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
+        /// <param name="resourceModelId">The resource model unique identifier.</param>
         /// <returns></returns>
-        public ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceID, Guid resourceModelID)
+        public ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId)
         {
             var comsController = new CommunicationController { ServiceName = "FetchResourceDefinitionService" };
-            comsController.AddPayloadArgument("ResourceID", resourceModelID.ToString());
+            comsController.AddPayloadArgument("ResourceID", resourceModelId.ToString());
 
-            var result = comsController.ExecuteCommand<ExecuteMessage>(targetEnv.Connection, workspaceID);
+            var result = comsController.ExecuteCommand<ExecuteMessage>(targetEnv.Connection, workspaceId);
 
             // log the trace for fetch ;)
-            this.TraceInfo(string.Format("Fetched Definition For {0} From Workspace {1}", resourceModelID, workspaceID));
+            this.TraceInfo(string.Format("Fetched Definition For {0} From Workspace {1}", resourceModelId, workspaceId));
 
             return result;
         }
@@ -1159,10 +1157,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 {
                     ResourceModels.ForEach(model =>
                         {
-                            var resourceID = model.ID;
-                            var resourcePermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resourceID);
+                            var resourceId = model.ID;
+                            var resourcePermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resourceId);
                             model.UserPermissions = resourcePermissions;
-                            StudioResourceRepository.UpdateItem(resourceID, (a =>
+                            StudioResourceRepository.UpdateItem(resourceId, (a =>
                             {
                                 a.Permissions = resourcePermissions;
                             }), _environmentModel.ID);
@@ -1190,10 +1188,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     {
                         try
                         {
-                            var resourceID = resourceModel.ID;
+                            var resourceId = resourceModel.ID;
                             var resourcePermissions = permission.Permissions;
                             resourceModel.UserPermissions = resourcePermissions;
-                            StudioResourceRepository.UpdateItem(resourceID, (a =>
+                            StudioResourceRepository.UpdateItem(resourceId, (a =>
                                                     {
                                                         a.Permissions = resourcePermissions;
                                                     }), _environmentModel.ID);

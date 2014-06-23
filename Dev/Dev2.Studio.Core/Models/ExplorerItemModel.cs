@@ -637,8 +637,8 @@ namespace Dev2.Models
         {
             get
             {
-                return _deleteCommand ?? (_deleteCommand =
-                    new RelayCommand(p => Delete()));
+                RelayCommand deleteCommand = new RelayCommand(p => Delete());
+                return _deleteCommand ?? (_deleteCommand = deleteCommand);
             }
         }
 
@@ -653,12 +653,12 @@ namespace Dev2.Models
         {
             get
             {
-                return _renameCommand ?? (_renameCommand =
-                    new RelayCommand(obj =>
+                RelayCommand renameCommand = new RelayCommand(obj =>
                     {
                         IsRenaming = true;
                     }
-                    ));
+                    );
+                return _renameCommand ?? (_renameCommand = renameCommand);
             }
             set
             {
@@ -677,9 +677,8 @@ namespace Dev2.Models
         {
             get
             {
-                return _deployCommand ??
-                       (_deployCommand =
-                        new RelayCommand(param => Deploy()));
+                RelayCommand deployCommand = new RelayCommand(param => Deploy());
+                return _deployCommand ?? (_deployCommand = deployCommand);
             }
         }
 
@@ -694,8 +693,8 @@ namespace Dev2.Models
         {
             get
             {
-                return _editCommand ??
-                    (_editCommand = new RelayCommand(param => Edit()));
+                RelayCommand relayCommand = new RelayCommand(param => Edit());
+                return _editCommand ?? (_editCommand = relayCommand);
             }
         }
 
@@ -710,8 +709,8 @@ namespace Dev2.Models
         {
             get
             {
-                return _connectCommand ??
-                       (_connectCommand = new RelayCommand(param => Connect(), c => !IsConnected));
+                RelayCommand connectCommand = new RelayCommand(param => Connect(), c => !IsConnected);
+                return _connectCommand ?? (_connectCommand = connectCommand);
             }
         }
 
@@ -726,8 +725,8 @@ namespace Dev2.Models
         {
             get
             {
-                return _disconnectCommand ?? (_disconnectCommand = new RelayCommand(param =>
-                                                                       Disconnect(), c => IsConnected));
+                RelayCommand disconnectCommand = new RelayCommand(param => Disconnect(), c => IsConnected);
+                return _disconnectCommand ?? (_disconnectCommand = disconnectCommand);
             }
         }
         public bool? IsChecked
@@ -1101,7 +1100,7 @@ namespace Dev2.Models
         /// <date>2013/01/23</date>
         public void SetIsChecked(bool? value, bool updateChildren, bool updateParent)
         {
-            bool? preState = _isChecked;
+            var preState = _isChecked;
             if(value == _isChecked)
             {
                 return;
@@ -1118,27 +1117,36 @@ namespace Dev2.Models
 
             _isChecked = value;
 
-            if(updateChildren && _isChecked.HasValue)
-            {
-                //Do not check filtered children
-                foreach(var c in Children)
-                {
-                    c.SetIsChecked(_isChecked, true, false);
-                }
-            }
-
-            if(updateParent && Parent != null)
-            {
-                Parent.VerifyCheckState();
-            }
+            UpdateChildren(updateChildren);
+            UpdateParent(updateParent);
 
             // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("IsChecked");
             // ReSharper restore ExplicitCallerInfoArgument           
             CheckStateChangedArgs checkStateChangedArgs = new CheckStateChangedArgs(preState.GetValueOrDefault(false), value.GetValueOrDefault(false), ResourceId, ResourceType);
             if(OnCheckedStateChangedAction != null)
-            {
+                {
                 OnCheckedStateChangedAction.Invoke(checkStateChangedArgs);
+                }
+            }
+
+        void UpdateParent(bool updateParent)
+        {
+            if(updateParent && Parent != null)
+            {
+                Parent.VerifyCheckState();
+            }
+        }
+
+        void UpdateChildren(bool updateChildren)
+        {
+            if(!updateChildren || !_isChecked.HasValue)
+            {
+                return;
+            }
+            foreach(var c in Children)
+            {
+                c.SetIsChecked(_isChecked, true, false);
             }
         }
 
@@ -1154,9 +1162,11 @@ namespace Dev2.Models
         {
             bool? state = null;
             var count = Children.Count();
-            for(int i = 0; i < count; ++i)
+            var i = 0;
+            var stateNull = false;
+            while(i < count && !stateNull)
             {
-                bool? current = Children.ToArray()[i].IsChecked;
+                var current = Children.ToArray()[i].IsChecked;
                 if(i == 0)
                 {
                     state = current;
@@ -1164,8 +1174,9 @@ namespace Dev2.Models
                 else if(state != current)
                 {
                     state = null;
-                    break;
+                    stateNull = true;
                 }
+                i++;
             }
             SetIsChecked(state, false, true);
         }
@@ -1176,17 +1187,17 @@ namespace Dev2.Models
     {
         public bool PreviousState { get; set; }
         public bool NewState { get; set; }
-        public Guid ResourceID { get; set; }
+        public Guid ResourceId { get; set; }
         public ResourceType ResourceType { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public CheckStateChangedArgs(bool previousState, bool newState, Guid resourceID, ResourceType resourceType)
+        public CheckStateChangedArgs(bool previousState, bool newState, Guid resourceId, ResourceType resourceType)
         {
             PreviousState = previousState;
             NewState = newState;
-            ResourceID = resourceID;
+            ResourceId = resourceId;
             ResourceType = resourceType;
         }
     }

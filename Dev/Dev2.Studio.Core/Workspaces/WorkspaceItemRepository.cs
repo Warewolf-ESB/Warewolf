@@ -158,7 +158,6 @@ namespace Dev2.Workspaces
 
         public void AddWorkspaceItem(IContextualResourceModel model)
         {
-            // BUG 9492 - 2013.06.08 - TWR : added null check
             if(model == null)
             {
                 throw new ArgumentNullException("model");

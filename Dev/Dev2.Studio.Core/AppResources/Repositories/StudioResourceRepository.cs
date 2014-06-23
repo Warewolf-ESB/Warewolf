@@ -168,7 +168,7 @@ namespace Dev2.AppResources.Repositories
 
             if(itemToDelete == null)
             {
-                throw new Exception(string.Format("Resource Id : [{0}] was not found", resourceId));
+                return;
             }
 
             DeleteItem(itemToDelete);

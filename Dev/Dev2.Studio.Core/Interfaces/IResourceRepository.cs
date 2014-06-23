@@ -9,15 +9,15 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Workspaces;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface IResourceRepository : IDisposable
     {
-        List<IResourceModel> ReloadResource(Guid resourceID, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
+        List<IResourceModel> ReloadResource(Guid resourceId, ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
         void UpdateWorkspace(IList<IWorkspaceItem> workspaceItems);
-        // ReSharper disable once InconsistentNaming
-        void Rename(string resourceID, string newName);
+        void Rename(string resourceId, string newName);
         void DeployResource(IResourceModel resource);
         ExecuteMessage DeleteResource(IResourceModel resource);
         bool ResourceExist(IResourceModel resource);
@@ -26,8 +26,8 @@ namespace Dev2.Studio.Core.Interfaces
         void Add(IResourceModel resource);
         void ForceLoad();
 
-        bool IsLoaded { get; set; } // BUG 9276 : TWR : 2013.04.19 - added IsLoaded check to prevent unnecessary loading of resources
-        void RefreshResource(Guid resourceID);
+        bool IsLoaded { get; set; }
+        void RefreshResource(Guid resourceId);
         bool IsInCache(Guid id);
         bool DoesResourceExistInRepo(IResourceModel resource);
         void RemoveFromCache(Guid resourceID);
@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.Interfaces
         ExecuteMessage SaveToServer(IResourceModel instanceObj);
 
         void DeployResources(IEnvironmentModel targetEnviroment, IEnvironmentModel sourceEnviroment, IDeployDto dto, IEventAggregator eventPublisher);
-        ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceID, Guid resourceModelID);
+        ExecuteMessage FetchResourceDefinition(IEnvironmentModel targetEnv, Guid workspaceId, Guid resourceModelId);
         List<T> FindSourcesByType<T>(IEnvironmentModel targetEnvironment, enSourceType sourceType);
         List<IResourceModel> FindResourcesByID(IEnvironmentModel targetEnvironment, IEnumerable<string> guids, ResourceType resourceType);
         Data.Settings.Settings ReadSettings(IEnvironmentModel currentEnv);
@@ -50,7 +50,7 @@ namespace Dev2.Studio.Core.Interfaces
 
         ExecuteMessage StopExecution(IContextualResourceModel resourceModel);
         void AddEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment);
-        ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceID);
+        ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId);
         void RemoveEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment);
 
         ICollection<IResourceModel> All();

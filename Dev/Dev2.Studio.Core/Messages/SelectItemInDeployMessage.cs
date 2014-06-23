@@ -1,6 +1,7 @@
 ﻿using System;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Studio.Core.Messages
 {
     public class SelectItemInDeployMessage : IMessage

@@ -54,7 +54,6 @@ using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutMode
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels
 {
-    // PBI 9397 - 2013.06.09 - TWR: made class non-sealed to facilitate testing i.e. creating mock sub-classes
     /// <summary>
     /// 
     /// </summary>
@@ -404,12 +403,10 @@ namespace Dev2.Studio.ViewModels
 
         #endregion
 
-        // PBI 9512 - 2013.06.07 - TWR: added
         // ReSharper disable UnusedAutoPropertyAccessor.Local
         public ILatestGetter LatestGetter { get; private set; }
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
-        // PBI 9941 - 2013.07.07 - TWR: added
         public IVersionChecker Version { get; private set; }
 
         public bool HasActiveConnection
@@ -434,7 +431,7 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IFeedbackInvoker feedbackInvoker = null)
+            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IFeedbackInvoker feedbackInvoker = null, IStudioResourceRepository studioResourceRepository = null)
             : base(eventPublisher)
         {
             if(environmentRepository == null)
@@ -453,6 +450,7 @@ namespace Dev2.Studio.ViewModels
 
             _createDesigners = createDesigners;
             BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController();
+            StudioResourceRepository = studioResourceRepository ?? Dev2.AppResources.Repositories.StudioResourceRepository.Instance;
             PopupProvider = popupController ?? new PopupController();
             WindowManager = windowManager ?? new WindowManager();
             WebController = webController ?? new WebController();
@@ -465,10 +463,12 @@ namespace Dev2.Studio.ViewModels
 
             if(ExplorerViewModel == null)
             {
-                ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, StudioResourceRepository.Instance, false, enDsfActivityType.All, AddWorkspaceItems);
+                ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, StudioResourceRepository, false, enDsfActivityType.All, AddWorkspaceItems);
                 ExplorerViewModel.LoadEnvironments();
             }
         }
+
+        public IStudioResourceRepository StudioResourceRepository { get; set; }
 
         #endregion ctor
 
@@ -635,6 +635,7 @@ namespace Dev2.Studio.ViewModels
             tempResource.ResourceName = newWorflowName;
             tempResource.DisplayName = newWorflowName;
             tempResource.IsNewWorkflow = true;
+            StudioResourceRepository.AddResouceItem(tempResource);
 
             AddAndActivateWorkSurface(WorkSurfaceContextFactory.CreateResourceViewModel(tempResource));
             AddWorkspaceItem(tempResource);
@@ -748,7 +749,6 @@ namespace Dev2.Studio.ViewModels
         {
             if(resourceType == "Workflow")
             {
-                //Massimo.Guerrera:23-04-2013 - Added for PBI 8723
                 TempSave(ActiveEnvironment, resourceType, resourcePath);
             }
             else
@@ -991,8 +991,6 @@ namespace Dev2.Studio.ViewModels
             {
                 if(item != null)
                 {
-                    //Not sure what this does
-                    // item.Parent = this;
                     var wfItem = item.WorkSurfaceViewModel as IWorkflowDesignerViewModel;
                     if(wfItem != null)
                     {

@@ -39,7 +39,7 @@ namespace BusinessDesignStudio.Unit.Tests
     /// <summary>
     /// Summary description for ResourceRepositoryTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
     public class ResourceRepositoryTest
     {
 
@@ -1095,7 +1095,7 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.Object.ResourceRepository.DeleteResource(myItem);
 
             Assert.AreEqual(expectedCount - 1, mockEnvironmentModel.Object.ResourceRepository.All().Count);
-            mockStudioResourceRepository.Verify(repository => repository.DeleteItem(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Never());
+            mockStudioResourceRepository.Verify(repository => repository.DeleteItem(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]

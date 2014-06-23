@@ -13,6 +13,7 @@ using System.Windows;
 using System.Windows.Forms;
 using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
+using Dev2.AppResources.Repositories;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
@@ -62,7 +63,7 @@ namespace Dev2.Core.Tests
     ///     This is a result class for MainViewModelTest and is intended
     ///     to contain all MainViewModelTest Unit Tests
     /// </summary>
-    [TestClass]    
+    [TestClass]
     public class MainViewModelTest
     {
         #region Variables
@@ -89,6 +90,7 @@ namespace Dev2.Core.Tests
         Mock<IWindowManager> _windowManager;
         Mock<IAuthorizationService> _authorizationService;
         Mock<IEnvironmentModel> _activeEnvironment;
+        Mock<IStudioResourceRepository> _mockStudioResourceRepository;
 
         #endregion Variables
 
@@ -140,13 +142,14 @@ namespace Dev2.Core.Tests
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IEnvironmentRepository>();
             var environmentModel = new Mock<IEnvironmentModel>();
+            var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
             environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
             environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
             environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
-            var mvm = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, null, null, null, null, null);
+            var mvm = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, null, null, null, null, null, mockStudioResourceRepository.Object);
             mvm.Setup(c => c.ShowStartPage()).Verifiable();
 
             //construct
@@ -841,13 +844,14 @@ namespace Dev2.Core.Tests
             _feedbackInvoker = new Mock<IFeedbackInvoker>();
             _webController = new Mock<IWebController>();
             _windowManager = new Mock<IWindowManager>();
+            _mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             SetupDefaultMef(_feedbackInvoker);
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             _mainViewModel = new MainViewModel(_eventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, PopupController.Object,
-                _windowManager.Object, _webController.Object, _feedbackInvoker.Object);
+                _windowManager.Object, _webController.Object, _feedbackInvoker.Object, _mockStudioResourceRepository.Object);
         }
 
         void CreateFullExportsAndVm()
@@ -860,13 +864,14 @@ namespace Dev2.Core.Tests
             _feedbackInvoker = new Mock<IFeedbackInvoker>();
             _webController = new Mock<IWebController>();
             _windowManager = new Mock<IWindowManager>();
+            _mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             SetupDefaultMef(_feedbackInvoker);
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             _mainViewModel = new MainViewModel(_eventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, PopupController.Object
-                , _windowManager.Object, _webController.Object, _feedbackInvoker.Object);
+                , _windowManager.Object, _webController.Object, _feedbackInvoker.Object, _mockStudioResourceRepository.Object);
 
             _activeEnvironment = new Mock<IEnvironmentModel>();
             _authorizationService = new Mock<IAuthorizationService>();
@@ -1101,6 +1106,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             int HitCounter = 0;
             IContextualResourceModel payloadResourceModel = null;
+            _mockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()));
             _webController.Setup(w => w.DisplayDialogue(It.IsAny<IContextualResourceModel>(), false)).Callback((IContextualResourceModel c, bool b1) =>
                 {
                     HitCounter++;
@@ -1121,6 +1127,7 @@ namespace Dev2.Core.Tests
             {
                 Assert.Fail("The resource passed in was null");
             }
+            _mockStudioResourceRepository.Verify(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()), Times.Never());
         }
 
         [TestMethod]
@@ -1177,6 +1184,7 @@ namespace Dev2.Core.Tests
         {
             //Setup
             CreateFullExportsAndVmWithEmptyRepo();
+            _mockStudioResourceRepository.Setup(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()));
             var environmentRepo = CreateMockEnvironment();
             Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
             mockAuthService.Setup(c => c.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
@@ -1190,6 +1198,7 @@ namespace Dev2.Core.Tests
             _mainViewModel.NewResourceCommand.Execute("Workflow");
             //Assert
             resourceRepo.Verify(r => r.Save(It.IsAny<IResourceModel>()), Times.Never());
+            _mockStudioResourceRepository.Verify(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()), Times.Once());
         }
 
         #endregion

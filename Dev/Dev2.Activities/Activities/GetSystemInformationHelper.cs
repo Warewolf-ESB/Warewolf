@@ -9,6 +9,7 @@ using Dev2.Common;
 using Dev2.Converters.DateAndTime;
 using Microsoft.VisualBasic.Devices;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Activities
 {
     public interface IGetSystemInformation
@@ -25,9 +26,7 @@ namespace Dev2.Activities
         string GetDiskSpaceAvailableInformation();
         string GetDiskSpaceTotalInformation();
         string GetPhysicalMemoryAvailableInformation();
-        string GetVirtualMemoryAvailableInformation();
         string GetPhysicalMemoryTotalInformation();
-        string GetVirtualMemoryTotalInformation();
         string GetCPUAvailableInformation();
         string GetCPUTotalInformation();
         string GetLanguageInformation();
@@ -37,7 +36,8 @@ namespace Dev2.Activities
         string GetUserNameInformation();
         string GetNumberOfWareWolfAgentsInformation();
     }
-    
+
+    [ExcludeFromCodeCoverage]
     public class GetSystemInformationHelper : IGetSystemInformation
     {
         #region Implementation of IGetSystemInformation
@@ -133,14 +133,6 @@ namespace Dev2.Activities
             return stringBuilder.ToString();
         }
 
-        public string GetVirtualMemoryAvailableInformation()
-        {
-            var computerInfo = new ComputerInfo();
-            var stringBuilder = new StringBuilder();
-            var availableVirtualMemory = ConvertToMB(computerInfo.AvailableVirtualMemory);
-            stringBuilder.Append(availableVirtualMemory.ToString(CultureInfo.InvariantCulture));
-            return stringBuilder.ToString();
-        }
 
         public string GetPhysicalMemoryTotalInformation()
         {
@@ -151,14 +143,6 @@ namespace Dev2.Activities
             return stringBuilder.ToString();
         }
 
-        public string GetVirtualMemoryTotalInformation()
-        {
-            var computerInfo = new ComputerInfo();
-            var stringBuilder = new StringBuilder();
-            var totalVirtualMemory = ConvertToMB(computerInfo.TotalVirtualMemory);
-            stringBuilder.Append(totalVirtualMemory.ToString(CultureInfo.InvariantCulture));
-            return stringBuilder.ToString();
-        }
 
         ulong ConvertToMB(ulong valueToConvert)
         {

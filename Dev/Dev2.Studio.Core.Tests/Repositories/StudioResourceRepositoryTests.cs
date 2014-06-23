@@ -23,7 +23,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 namespace Dev2.Core.Tests.Repositories
 {
-    [TestClass]    
+    [TestClass]
     // ReSharper disable InconsistentNaming
     public class StudioResourceRepositoryTests
     {
@@ -417,9 +417,7 @@ namespace Dev2.Core.Tests.Repositories
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [ExpectedException(typeof(Exception))]
-        [TestCategory("StudioResourceRepository_DeleteFolder")]
-        public void StudioResourceRepository_DeleteFolder_ResourceIdDoesnotExists_ThrowsException()
+        public void StudioResourceRepository_DeleteFolder_ResourceIdDoesnotExists_DoesNothing()
         {
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
@@ -604,7 +602,6 @@ namespace Dev2.Core.Tests.Repositories
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("StudioResourceRepository_DeleteItem")]
-        [ExpectedException(typeof(Exception))]
         public void StudioResourceRepository_DeleteItem_ItemRemoved_ResourceNotFound_ChildrenChangedNotFired()
         {
             //------------Setup for test--------------------------
@@ -636,7 +633,7 @@ namespace Dev2.Core.Tests.Repositories
             repository.DeleteItem(environmentId, environmentId);
             //------------Assert Results-------------------------
             var foundItem = repository.FindItemById(environmentId);
-            Assert.IsNotNull(foundItem);
+            Assert.IsNull(foundItem);
             Assert.IsFalse(_propertyChangedCalled);
         }
 
@@ -814,8 +811,7 @@ namespace Dev2.Core.Tests.Repositories
 
         private static void GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
         {
-            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object);
-            repo.IsLoaded = true;
+            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object) { IsLoaded = true };
             // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(repo);
             // ReSharper restore ObjectCreationAsStatement

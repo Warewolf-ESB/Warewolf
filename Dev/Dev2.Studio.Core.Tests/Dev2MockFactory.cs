@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities;
+using Dev2.AppResources.Repositories;
 using Dev2.Common.Common;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.Interfaces;
@@ -148,6 +149,7 @@ namespace Dev2.Core.Tests
                     var eventPublisher = new Mock<IEventAggregator>();
                     var environmentRepository = new Mock<IEnvironmentRepository>();
                     var environmentModel = new Mock<IEnvironmentModel>();
+                    var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
                     environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
                     environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
                     environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
@@ -155,7 +157,7 @@ namespace Dev2.Core.Tests
                     var versionChecker = new Mock<IVersionChecker>();
                     var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
                     _mockMainViewModel = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object,
-                        versionChecker.Object, false, null, null, null, null, null);
+                        versionChecker.Object, false, null, null, null, null, null, mockStudioResourceRepository.Object);
                 }
                 return _mockMainViewModel;
             }

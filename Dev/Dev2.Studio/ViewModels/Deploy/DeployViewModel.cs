@@ -24,6 +24,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows.Input;
 
+// ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Deploy
 // ReSharper restore CheckNamespace
@@ -424,13 +425,13 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 if(Target != null)
                 {
-                    if(checkStateChangedArgs.ResourceID != Guid.Empty)
+                    if(checkStateChangedArgs.ResourceId != Guid.Empty)
                     {
                         if(SelectedDestinationServer != null)
                         {
                             if(SelectedDestinationServer.ResourceRepository != null)
                             {
-                                var resourceModel = SelectedDestinationServer.ResourceRepository.FindSingle(model => model.ID == checkStateChangedArgs.ResourceID) as IContextualResourceModel;
+                                var resourceModel = SelectedDestinationServer.ResourceRepository.FindSingle(model => model.ID == checkStateChangedArgs.ResourceId) as IContextualResourceModel;
                                 if(resourceModel != null)
                                 {
                                     Target.SetNodeOverwrite(resourceModel, false);
@@ -462,6 +463,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
             if(Source != null && Source.ExplorerItemModels != null && Source.ExplorerItemModels.Count > 0)
             {
+                Source.ClearConflictingNodesNodes();
                 ExplorerItemModel explorerItemModel = Source.ExplorerItemModels[0];
                 if(explorerItemModel != null)
                 {

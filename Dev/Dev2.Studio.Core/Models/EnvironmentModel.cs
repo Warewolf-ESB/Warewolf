@@ -22,19 +22,15 @@ using Action = System.Action;
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models
 {
-    // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
     public class EnvironmentModel : ObservableObject, IEnvironmentModel
     {
         IEventAggregator _eventPublisher;
         bool _publishEventsOnDispatcherThread;
-        PermissionsModifiedService _permissionsModifiedService;
         IStudioResourceRepository _studioResourceRepo;
 
-        // BUG 9940 - 2013.07.29 - TWR - added
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
         public event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
-        //private IStudioResourceRepository _studioResourceRepository;
         #region CTOR
         //, IWizardEngine wizardEngine
         public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread = true)
@@ -42,20 +38,20 @@ namespace Dev2.Studio.Core.Models
         {
         }
 
-        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository,IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread = true)// seems to be for testing
+        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread = true)// seems to be for testing
             : this(EventPublishers.Aggregator, id, environmentConnection, resourceRepository, studioResourceRepository, publishEventsOnDispatcherThread)
         {
         }
         //, IWizardEngine wizardEngine
         public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread = true) // seems to be for testing
         {
-            Initialize(eventPublisher, id, environmentConnection, null ,studioResourceRepository,publishEventsOnDispatcherThread);
+            Initialize(eventPublisher, id, environmentConnection, null, studioResourceRepository, publishEventsOnDispatcherThread);
         }
 
         public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread = true) // seems to be for testing
         {
             VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
-            Initialize(eventPublisher, id, environmentConnection, resourceRepository,studioResourceRepository, publishEventsOnDispatcherThread);
+            Initialize(eventPublisher, id, environmentConnection, resourceRepository, studioResourceRepository, publishEventsOnDispatcherThread);
         }
 
         //, IWizardEngine wizardEngine
@@ -75,7 +71,6 @@ namespace Dev2.Studio.Core.Models
 
             _publishEventsOnDispatcherThread = publishEventsOnDispatcherThread;
 
-            // BUG 9940 - 2013.07.29 - TWR - added
             Connection.NetworkStateChanged += OnNetworkStateChanged;
 
             AuthorizationService = CreateAuthorizationService(environmentConnection);
@@ -90,11 +85,11 @@ namespace Dev2.Studio.Core.Models
 
         void ReceivePermissionsModified(PermissionsModifiedMemo memo)
         {
-            if (memo.ServerID == Connection.ServerID && !Name.Contains("localhost") )
+            if(memo.ServerID == Connection.ServerID && !Name.Contains("localhost"))
             {
                 var resourcePermissions = AuthorizationService.GetResourcePermissions(Guid.Empty);
-                
-                _studioResourceRepo.UpdateRootAndFoldersPermissions(resourcePermissions,ID);
+
+                _studioResourceRepo.UpdateRootAndFoldersPermissions(resourcePermissions, ID);
             }
         }
 
@@ -108,7 +103,6 @@ namespace Dev2.Studio.Core.Models
 
         public Guid ID { get; private set; }
 
-        // BUG: 8786 - TWR - 2013.02.20 - Added category
         public bool IsLocalHostCheck()
         {
             return Connection.IsLocalHost;
@@ -149,17 +143,7 @@ namespace Dev2.Studio.Core.Models
                 return Name + " (" + Connection.WebServerUri + ")";
             }
         }
-        public PermissionsModifiedService PermissionsModifiedService
-        {
-            get
-            {
-                return _permissionsModifiedService;
-            }
-            set
-            {
-                _permissionsModifiedService = value;
-            }
-        }
+        public PermissionsModifiedService PermissionsModifiedService { get; set; }
 
         #endregion
 
@@ -275,7 +259,7 @@ namespace Dev2.Studio.Core.Models
                 new XAttribute("ConnectionString", connectionString),
                 new XElement("TypeOf", "Dev2Server"),
                 new XElement("DisplayName", Name),
-                new XElement("Category", Category ?? "") // BUG: 8786 - TWR - 2013.02.20 - Changed to use category
+                new XElement("Category", Category ?? "")
                 );
 
 
@@ -296,7 +280,6 @@ namespace Dev2.Studio.Core.Models
 
         void RaiseIsConnectedChanged(bool isOnline)
         {
-            // BUG 9940 - 2013.07.29 - TWR - added
             if(IsConnectedChanged != null)
             {
                 IsConnectedChanged(this, new ConnectedEventArgs { IsConnected = isOnline });
@@ -315,7 +298,6 @@ namespace Dev2.Studio.Core.Models
 
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
-            // BUG 9940 - 2013.07.29 - TWR - added
             RaiseNetworkStateChanged(e.ToState == NetworkState.Online);
         }
 
@@ -362,7 +344,6 @@ namespace Dev2.Studio.Core.Models
                 return false;
             }
 
-            // BUG 9276 : TWR : 2013.04.19 - refactored to use deleted EnvironmentModelEqualityComparer logic instead!   
             //Dont ever EVER check any other property here or the connect control will die and you will be beaten;)
             return ID == other.ID;
         }

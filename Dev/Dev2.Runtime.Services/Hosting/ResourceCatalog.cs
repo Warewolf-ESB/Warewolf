@@ -27,6 +27,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.Hosting
 {
 
@@ -1746,11 +1747,13 @@ namespace Dev2.Runtime.Hosting
 
         void UpdateResourcePath(Guid workspaceID, IResource resource, string newCategory)
         {
+            var newPath = newCategory + "\\" + resource.ResourceName;
+            resource.ResourcePath = newPath;
             StringBuilder resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
 
             XElement resourceElement = resourceContents.ToXElement();
             XElement categoryElement = resourceElement.Element("Category");
-            var newPath = newCategory + "\\" + resource.ResourceName;
+
             if(categoryElement == null)
             {
                 resourceElement.Add(new XElement("Category", newPath));
@@ -1760,7 +1763,7 @@ namespace Dev2.Runtime.Hosting
                 categoryElement.SetValue(newPath);
             }
             StringBuilder contents = resourceElement.ToStringBuilder();
-            resource.ResourcePath = newPath;
+
             SaveImpl(workspaceID, resource, contents);
         }
 

@@ -4,7 +4,7 @@ using Dev2.Common.Wrappers.Interfaces;
 
 namespace Dev2.Common.Wrappers
 {
-     // not required for code coverage this is simply a pass through required for unit testing
+    [ExcludeFromCodeCoverage] // not required for code coverage this is simply a pass through required for unit testing
     public class DirectoryWrapper : IDirectory
     {
         public string[] GetFiles(string path)
@@ -54,7 +54,7 @@ namespace Dev2.Common.Wrappers
 
         public void Delete(string directoryStructureFromPath, bool recursive)
         {
-            Directory.Delete(directoryStructureFromPath,recursive);
+            Directory.Delete(directoryStructureFromPath, recursive);
         }
     }
 }
