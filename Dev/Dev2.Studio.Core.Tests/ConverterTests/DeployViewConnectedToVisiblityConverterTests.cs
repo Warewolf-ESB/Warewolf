@@ -13,8 +13,7 @@ using Moq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.ConverterTests
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DeployViewConnectedToVisiblityConverterTest
     {
         [TestMethod]

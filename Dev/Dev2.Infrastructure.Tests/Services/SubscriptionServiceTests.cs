@@ -7,8 +7,7 @@ using Moq;
 
 namespace Dev2.Infrastructure.Tests.Services
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class SubscriptionServiceTests
     {
         [TestMethod]

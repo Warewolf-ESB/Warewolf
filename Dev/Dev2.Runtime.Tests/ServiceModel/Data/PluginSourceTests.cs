@@ -13,8 +13,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 // ReSharper restore CheckNamespace
 {
     // BUG 9500 - 2013.05.31 - TWR : added proper testing
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class PluginSourceTests
     {
         #region Save

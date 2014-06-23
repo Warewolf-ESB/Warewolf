@@ -10,8 +10,7 @@ namespace Unlimited.UnitTest.Framework {
     /// <summary>
     /// Summary description for TokenizerTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class TokenizerTest {
         public TokenizerTest() {
             //

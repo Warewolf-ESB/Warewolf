@@ -27,8 +27,7 @@ namespace Dev2.Core.Tests.Webs
     // Saving with Invalid connection
     // Dev2 Set with invalid environment connection
 
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ConnectCallbackHandlerTests
     {
         const string ConnectionID = "1478649D-CF54-4D0D-8E26-CA9B81454B66";

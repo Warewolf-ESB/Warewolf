@@ -30,8 +30,7 @@ using Moq;
 // ReSharper disable CheckNamespace
 namespace Dev2.Core.Tests
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DeployViewModelTest : DeployViewModelTestBase
     {
         Mock<IAuthorizationService> _authService;

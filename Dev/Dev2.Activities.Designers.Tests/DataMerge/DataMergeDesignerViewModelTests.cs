@@ -10,8 +10,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.DataMerge
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DataMergeDesignerViewModelTests
     {
         [TestMethod]

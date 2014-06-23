@@ -16,8 +16,7 @@ using Moq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ESB
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class RemoteWorkflowExecutionContainerTests
     {
         static XElement _connectionXml;

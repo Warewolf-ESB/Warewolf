@@ -13,7 +13,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Tests that the Properties have not changed on the activities 
     /// </summary>
     [TestClass]
-    [ExcludeFromCodeCoverage]
+    
     // ReSharper disable InconsistentNaming
     public class HighLevel_ActivityTests : BaseActivityUnitTest
     {

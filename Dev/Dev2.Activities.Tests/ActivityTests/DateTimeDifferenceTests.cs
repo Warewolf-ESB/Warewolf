@@ -16,8 +16,7 @@ namespace ActivityUnitTests.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     // ReSharper disable InconsistentNaming
     public class DateTimeDifferenceTests : BaseActivityUnitTest
     {

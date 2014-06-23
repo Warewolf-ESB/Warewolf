@@ -9,8 +9,7 @@ using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Dev2.Tests.Runtime.Util
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public partial class ScrubberTests
     {
         #region Scrub Xml

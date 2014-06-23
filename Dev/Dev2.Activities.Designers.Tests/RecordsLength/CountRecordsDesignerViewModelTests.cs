@@ -6,8 +6,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.RecordsLength
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     // ReSharper disable InconsistentNaming
     public class RecordsLengthDesignerViewModelTests
     {

@@ -71,7 +71,7 @@ namespace Dev2.TaskScheduler.Wrappers
             return _taskServiceConvertorFactory.CreateTask(Instance.RegisterTaskDefinition(Path, definition.Instance));
         }
 
-        [ExcludeFromCodeCoverage]
+        
 // ReSharper disable ParameterHidesMember
 // ReSharper disable InconsistentNaming
         public IDev2Task RegisterTaskDefinition(string Path, IDev2TaskDefinition definition, TaskCreation createType,

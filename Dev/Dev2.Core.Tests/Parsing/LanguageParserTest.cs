@@ -6,8 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Unlimited.UnitTest.Framework.Parsing
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class LanguageParserTest
     {
 

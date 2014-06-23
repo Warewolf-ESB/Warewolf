@@ -14,8 +14,7 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 953 - 2013.05.16 - TWR - Created
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class WebSourcesTests
     {
         const string TestMethod = "GetCitiesByCountry";

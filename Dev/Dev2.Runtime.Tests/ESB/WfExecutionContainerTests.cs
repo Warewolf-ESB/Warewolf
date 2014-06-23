@@ -10,8 +10,7 @@ using Moq;
 
 namespace Dev2.Tests.Runtime.ESB
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class WfExecutionContainerTests
     {
         #region Execute

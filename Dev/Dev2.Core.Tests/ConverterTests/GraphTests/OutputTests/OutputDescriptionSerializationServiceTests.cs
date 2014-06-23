@@ -9,8 +9,7 @@ using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class OutputDescriptionSerializationServiceTests
     {
         #region XML Paths

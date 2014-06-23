@@ -23,8 +23,7 @@ using Moq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class SqlBulkInsertDesignerViewModelTests
     {
 

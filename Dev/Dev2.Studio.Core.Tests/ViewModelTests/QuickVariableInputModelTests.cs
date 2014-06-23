@@ -13,8 +13,7 @@ namespace Dev2.Core.Tests.ViewModelTests
     /// <summary>
     /// Summary description for QuickVariableInputModelTests
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class QuickVariableInputModelTests
     {
         public QuickVariableInputModelTests()

@@ -5,8 +5,7 @@ using Dev2.Data.Binary_Objects;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class IndexIteratorTest
     {
         [TestMethod]

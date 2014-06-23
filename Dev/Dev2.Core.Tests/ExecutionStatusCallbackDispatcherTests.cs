@@ -5,8 +5,7 @@ using Dev2.Network.Execution;
 
 namespace Unlimited.UnitTest.Framework
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ExecutionStatusCallbackDispatcherTests
     {
         [TestMethod]

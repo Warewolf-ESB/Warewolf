@@ -18,8 +18,7 @@ namespace ActivityUnitTests.ActivityTests
     /// <summary>
     /// Summary description for BaseConvertActivityTests
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class BaseConvertActivityTests : BaseActivityUnitTest
     {
         /// <summary>

@@ -8,8 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public partial class QuickVariableInputViewModelTests
     {
         [TestMethod]

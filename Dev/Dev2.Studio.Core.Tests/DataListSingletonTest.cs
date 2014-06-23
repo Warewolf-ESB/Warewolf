@@ -10,8 +10,7 @@ namespace Dev2.Core.Tests
     /// <summary>
     /// A set of test cases to test the functionality of the DataListSingleton
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DataListSingletonTest
     {
 

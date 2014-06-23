@@ -7,8 +7,7 @@ using Moq;
 
 namespace Dev2.Core.Tests.AppResources.Comparers
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ContexttualResourceModelEqualityComparerTests
     {
         [TestMethod]

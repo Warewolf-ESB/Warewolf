@@ -7,8 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Repository
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class SimulationRespositoryTest
     {
         static SimulationRepository _testInstance;

@@ -12,8 +12,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// <summary>
     /// Summary description for StaticActivityFindMissingStrategyTests
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class StaticActivityFindMissingStrategyTests
     {
         private TestContext _testContextInstance;

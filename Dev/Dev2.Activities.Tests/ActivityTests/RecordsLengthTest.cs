@@ -13,8 +13,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for RecordsetLengthTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class RecordsetLengthTest : BaseActivityUnitTest
     {
         /// <summary>

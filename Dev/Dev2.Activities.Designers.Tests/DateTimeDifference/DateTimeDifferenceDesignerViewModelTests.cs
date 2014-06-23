@@ -8,8 +8,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.DateTimeDifference
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DateTimeDifferenceDesignerViewModelTests
     {
         [TestMethod]

@@ -5,8 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.Builders
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     // ReSharper disable InconsistentNaming
     public class RecordSetCollectionBuilderTest
     {

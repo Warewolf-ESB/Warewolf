@@ -14,9 +14,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DataSplitActivityTest
     /// </summary>
-    [TestClass]
-    // ReSharper disable InconsistentNaming
-    [ExcludeFromCodeCoverage]
+    [TestClass]    // ReSharper disable InconsistentNaming
+    
     public class DataSplitActivityTest : BaseActivityUnitTest
     {
         IList<DataSplitDTO> _resultsCollection = new List<DataSplitDTO>();

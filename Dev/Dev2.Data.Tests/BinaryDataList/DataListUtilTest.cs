@@ -12,8 +12,7 @@ using System.Linq;
 
 namespace Dev2.Data.Tests.BinaryDataList
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     // ReSharper disable InconsistentNaming
     public class DataListUtilTest
     {

@@ -8,8 +8,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.FindIndex
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class FindIndexDesignerViewModelTests
     {
         [TestMethod]

@@ -6,8 +6,7 @@ using System.Windows;
 
 namespace Dev2.Core.Tests.ConverterTests
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     // ReSharper disable InconsistentNaming
     public class PaddingThicknessConverterTests
     {

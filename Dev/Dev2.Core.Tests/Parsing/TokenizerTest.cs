@@ -9,8 +9,7 @@ using System.Parsing.Tokenization;
 // ReSharper disable InconsistentNaming
 namespace Unlimited.UnitTest.Framework.Parsing
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class TokenizerTest
     {
         #region RequiredDefinitions Tests

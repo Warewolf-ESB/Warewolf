@@ -15,8 +15,7 @@ namespace Dev2.Data.Tests.BinaryDataList
     /// <summary>
     /// Test for the BinaryDataListEntry ;)
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class BinaryDataListEntryTest
     {
 

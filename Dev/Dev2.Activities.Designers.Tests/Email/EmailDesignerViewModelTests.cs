@@ -23,8 +23,7 @@ using Moq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Email
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class EmailDesignerViewModelTests
     {
         const string AppLocalhost = "http://localhost:3142";

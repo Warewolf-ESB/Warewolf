@@ -7,8 +7,7 @@ using System.Xml.Linq;
 
 namespace Dev2.Runtime.Configuration.Tests.Settings
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ConfigurationTests
     {
         #region CTOR

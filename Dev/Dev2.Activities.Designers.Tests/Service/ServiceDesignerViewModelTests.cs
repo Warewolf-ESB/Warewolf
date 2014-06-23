@@ -36,8 +36,7 @@ using Action = System.Action;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Service
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ServiceDesignerViewModelTests
     {
         #region CTOR

@@ -10,8 +10,7 @@ namespace Dev2.Tests
     ///This is a test class for DataListUtilTest and is intended
     ///to contain all DataListUtilTest Unit Tests
     ///</summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DataListCleaningUtilTest
     {
  

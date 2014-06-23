@@ -15,8 +15,7 @@ namespace Dev2.Sql.Tests
 
     /// <author>Trevor.Williams-Ros</author>
     /// <date>2013/02/21</date>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class WorkflowsTests
     {
         const string TestServerUri = "http://localhost:1234/services/Test";

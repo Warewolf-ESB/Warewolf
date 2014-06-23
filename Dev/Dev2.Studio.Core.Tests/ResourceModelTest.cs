@@ -20,8 +20,7 @@ using Moq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ResourceModelTest
     {
         private IResourceModel _resourceModel;

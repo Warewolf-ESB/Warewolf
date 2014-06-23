@@ -9,8 +9,7 @@ using Moq;
 
 namespace Dev2.Tests.Diagnostics
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DebugStateTests
     {
 

@@ -102,7 +102,7 @@ public class SecurityWrapper : ISecurityWrapper
     /// <summary>
     ///     Creates a new LSA wrapper for the local machine
     /// </summary>
-    [ExcludeFromCodeCoverage]
+    
     public SecurityWrapper(IAuthorizationService authorizationService)
         : this(Environment.MachineName)
     {
@@ -114,7 +114,7 @@ public class SecurityWrapper : ISecurityWrapper
     ///     Creates a new LSA wrapper for the specified MachineName
     /// </summary>
     /// <param name="MachineName">The name of the machine that should be connected to</param>
-    [ExcludeFromCodeCoverage]
+    
     public SecurityWrapper(string MachineName)
     {
         LSA_OBJECT_ATTRIBUTES lsaAttr;
@@ -141,7 +141,7 @@ public class SecurityWrapper : ISecurityWrapper
     /// </summary>
     /// <param name="privilege">The name of the privilege for which the accounts with this right should be enumerated</param>
     /// <param name="userName"></param>
-    [ExcludeFromCodeCoverage]
+    
     public bool IsWindowsAuthorised(string privilege, string userName)
     {
         bool windowsAuthorised = false;
@@ -261,7 +261,7 @@ public class SecurityWrapper : ISecurityWrapper
     /// </summary>
     /// <param name="SID">The Security Identifier to resolve to an account name</param>
     /// <returns>An account name for example "NT AUTHORITY\LOCAL SERVICE" or SID in SDDL form</returns>
-    [ExcludeFromCodeCoverage]
+    
     private String ResolveAccountName(SecurityIdentifier SID)
     {
         try
@@ -279,7 +279,7 @@ public class SecurityWrapper : ISecurityWrapper
     ///     Tests the return value from Win32 method calls
     /// </summary>
     /// <param name="ReturnValue">The return value from the a Win32 method call</param>
-    [ExcludeFromCodeCoverage]
+    
     private void TestReturnValue(uint ReturnValue)
     {
         if(ReturnValue == 0) return;

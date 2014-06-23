@@ -37,7 +37,7 @@ namespace Dev2.Activities
         string GetUserNameInformation();
         string GetNumberOfWareWolfAgentsInformation();
     }
-    [ExcludeFromCodeCoverage]
+    
     public class GetSystemInformationHelper : IGetSystemInformation
     {
         #region Implementation of IGetSystemInformation

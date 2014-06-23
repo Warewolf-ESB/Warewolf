@@ -15,8 +15,7 @@ using System.Text;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     // ReSharper disable InconsistentNaming
     public class RenameItemsTest
     {

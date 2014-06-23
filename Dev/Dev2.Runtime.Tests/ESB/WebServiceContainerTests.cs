@@ -20,8 +20,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Tests.Runtime.ESB
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class WebServiceContainerTests
     {
         static readonly XElement WebSourceWithInputsXml = XmlResource.Fetch("WebSource");

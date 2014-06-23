@@ -7,8 +7,7 @@ namespace Dev2.Data.Tests.TO
     /// <summary>
     /// Summary description for ErrorResultTOTests
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ErrorResultTOTests
     {
         /// <summary>

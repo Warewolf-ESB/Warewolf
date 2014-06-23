@@ -10,8 +10,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
     /// <author>trevor.williams-ros</author>
     /// <date>2013/02/13</date>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class RecordsetTests
     {
         #region CTOR

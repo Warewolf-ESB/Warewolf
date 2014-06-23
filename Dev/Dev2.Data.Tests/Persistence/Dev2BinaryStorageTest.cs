@@ -10,8 +10,7 @@ namespace Dev2.Data.Tests.Persistence
     /// <summary>
     /// Summary description for Dev2BinaryStorageTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class Dev2BinaryStorageTest
     {
         /// <summary>

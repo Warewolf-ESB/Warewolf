@@ -11,8 +11,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Foreach
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ForeachDesignerViewModelTests
     {
         [TestMethod]

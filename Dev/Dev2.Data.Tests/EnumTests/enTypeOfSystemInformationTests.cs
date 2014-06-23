@@ -8,8 +8,7 @@ namespace Dev2.Data.Tests.EnumTests
     /// <summary>
     /// Summary description for enTypeOfSystemInformationTests
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class enTypeOfSystemInformationTests
     {
         public enTypeOfSystemInformationTests()

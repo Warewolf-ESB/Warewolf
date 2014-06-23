@@ -34,7 +34,7 @@ namespace Dev2.TaskScheduler.Wrappers
             get { return Instance.ValueQueries; }
         }
 
-        [ExcludeFromCodeCoverage]
+        
         public bool GetBasic(out string log, out string source, out int? eventId)
         {
             return Instance.GetBasic(out log, out source, out eventId);

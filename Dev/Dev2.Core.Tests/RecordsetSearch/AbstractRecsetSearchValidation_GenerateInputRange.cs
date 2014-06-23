@@ -6,8 +6,7 @@ namespace Dev2.Tests.RecordsetSearch
     /// <summary>
     /// Summary description for AbstractRecsetSearchValidation_GenerateInputRange
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class AbstractRecsetSearchValidation_GenerateInputRange
     {
 

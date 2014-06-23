@@ -18,8 +18,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
     // Fetching a switch case decision model tests - Un-used have commented it out
     // No test cases for SaveModel - Fixed
 
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class WebModelTests
     {
         /// <summary>

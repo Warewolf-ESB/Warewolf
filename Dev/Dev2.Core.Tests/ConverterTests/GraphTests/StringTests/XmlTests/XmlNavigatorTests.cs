@@ -7,8 +7,7 @@ using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class XmlNavigatorTests
     {
         internal string Given()

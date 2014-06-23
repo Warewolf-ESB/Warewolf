@@ -20,8 +20,7 @@ using Dev2.Core.Tests.Utils;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ActivityDesignerViewModelTests
     {
 

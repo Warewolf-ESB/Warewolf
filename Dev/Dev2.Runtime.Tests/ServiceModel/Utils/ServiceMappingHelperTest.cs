@@ -16,8 +16,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Utils
     /// <summary>
     /// Summary description for ServiceMappingHelperTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ServiceMappingHelperTest
     {
         /// <summary>

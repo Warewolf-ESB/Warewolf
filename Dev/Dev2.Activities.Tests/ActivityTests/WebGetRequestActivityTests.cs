@@ -19,8 +19,7 @@ namespace ActivityUnitTests.ActivityTest
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
 
     public class WebGetRequestActivityTests : BaseActivityUnitTest
     {

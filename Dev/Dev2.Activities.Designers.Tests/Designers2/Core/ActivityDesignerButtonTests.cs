@@ -10,8 +10,7 @@ using Moq;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ActivityDesignerButtonTests
     {
         #region Tests

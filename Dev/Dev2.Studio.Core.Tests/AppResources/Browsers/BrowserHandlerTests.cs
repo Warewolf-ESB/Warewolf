@@ -11,8 +11,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
     // PBI 9644 - 2013.06.21 - TWR: added    
     // PBI 9512 - 2013.06.07 - TWR: merged
     // BUG 9798 - 2013.06.25 - TWR : refactored for external
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class BrowserHandlerTests
     {
         #region CTOR

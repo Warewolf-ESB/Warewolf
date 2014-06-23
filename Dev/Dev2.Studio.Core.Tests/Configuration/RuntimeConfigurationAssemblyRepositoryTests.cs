@@ -11,8 +11,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Configuration
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class RuntimeConfigurationAssemblyRepositoryTests
     {
         #region Fields

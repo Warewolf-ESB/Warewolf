@@ -12,8 +12,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming 
 namespace Dev2.Activities.Designers.Tests.BaseConvert
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class BaseConvertTests
     {
         [TestMethod]

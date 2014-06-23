@@ -7,8 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.Helpers
 {
     // PBI 9512 - 2013.06.07 - TWR: added
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class LatestWebGetterTests
     {
         [TestMethod]

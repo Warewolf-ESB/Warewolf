@@ -32,7 +32,7 @@ namespace Dev2.CustomControls.Progress
         #endregion
 
         #region CTOR
-        [ExcludeFromCodeCoverage]
+        
         public ProgressFileDownloader(Window owner) // cant cover this because a window needs to be shown to be a parent of something else. 
             : this(new Dev2WebClient(new WebClient()), new FileWrapper(), new CryptoProvider(new SHA256CryptoServiceProvider()))
         {
@@ -42,7 +42,7 @@ namespace Dev2.CustomControls.Progress
         public static Func<Window, Action, IProgressNotifier> GetProgressDialogViewModel = (owner, cancelAction) => DialogViewModel(owner, cancelAction);
 
         
-        [ExcludeFromCodeCoverage]
+        
         static IProgressNotifier DialogViewModel(Window owner, Action cancelAction)
         {
             var dialog = new ProgressDialog(owner);
@@ -166,7 +166,7 @@ namespace Dev2.CustomControls.Progress
         #endregion
 
         #region OnDownloadProgressChanged
-        [ExcludeFromCodeCoverage] // cant test this because the DownloadProgressChangedEventArgs has no public ctor
+         // cant test this because the DownloadProgressChangedEventArgs has no public ctor
         void OnDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs args)
         {
 
@@ -199,7 +199,7 @@ namespace Dev2.CustomControls.Progress
 
         public Action<string> ShutDownAction { get; set; }
 
-        [ExcludeFromCodeCoverage]
+        
         static void ShutdownAndInstall(string fileName)
         {
             Application.Current.Shutdown();

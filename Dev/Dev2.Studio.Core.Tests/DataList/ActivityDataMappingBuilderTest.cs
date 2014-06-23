@@ -13,8 +13,7 @@ namespace Dev2.Core.Tests.DataList
     /// <summary>
     /// Summary description for ActivityDataMappingBuilderTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ActivityDataMappingBuilderTest
     {
         /// <summary>

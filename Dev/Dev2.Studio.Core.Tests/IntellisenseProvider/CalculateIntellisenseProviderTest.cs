@@ -10,8 +10,7 @@ using System.Linq;
 
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class CalculateIntellisenseProviderTest
     {
         // ReSharper disable InconsistentNaming

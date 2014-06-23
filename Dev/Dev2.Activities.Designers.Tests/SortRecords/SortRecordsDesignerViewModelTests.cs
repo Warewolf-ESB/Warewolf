@@ -6,8 +6,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.SortRecords
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class SortRecordsDesignerViewModelTests
     {
         [TestMethod]

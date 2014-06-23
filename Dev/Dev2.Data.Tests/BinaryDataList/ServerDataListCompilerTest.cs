@@ -15,8 +15,7 @@ namespace Dev2.Data.Tests.BinaryDataList
     /// <summary>
     /// Summary description for ServerDataListCompilerTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ServerDataListCompilerTest
     {
         private readonly IEnvironmentModelDataListCompiler _sdlc = DataListFactory.CreateServerDataListCompiler();

@@ -5,8 +5,7 @@ using Unlimited.Framework.Converters.Graph.String.Json;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests.JsonTest
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class JsonPathSegmentTests {
         
         #region CreatePathSegment Tests

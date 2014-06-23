@@ -9,8 +9,7 @@ namespace Dev2.Tests.MathOperationTest
     /// <summary>
     /// Summary description for FunctionRepositoryTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class FunctionRepositoryTest
     {
         /// <summary>

@@ -16,8 +16,7 @@ namespace Dev2.Data.Tests.ConverterTest
     /// <summary>
     /// Summary description for DataListConverterTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DataListConverterTest
     {
         /// <summary>

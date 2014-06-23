@@ -17,8 +17,7 @@ namespace Dev2.Tests.DataList
     /// <summary>
     /// Summary description for Dev2DataListBuilderTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class Dev2DataListBuilderTest
     {
 

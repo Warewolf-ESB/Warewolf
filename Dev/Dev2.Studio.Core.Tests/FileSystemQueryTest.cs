@@ -10,8 +10,7 @@ using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     // ReSharper disable InconsistentNaming
     public class FileSystemQueryTest
     {

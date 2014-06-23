@@ -7,8 +7,7 @@ namespace Dev2.Tests.ConverterTests.Base
     /// <summary>
     /// PBI : 1204 - Base Convert Test
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class BaseConvertTest
     {
 

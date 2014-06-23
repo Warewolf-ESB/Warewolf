@@ -11,8 +11,7 @@ namespace Dev2.Core.Tests
     /// <summary>
     /// Summary description for Dev2DialogueTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class Dev2DialogueTest
     {
 

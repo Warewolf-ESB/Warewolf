@@ -13,8 +13,7 @@ namespace Dev2.Tests
     /// <summary>
     /// Summary description for DataListCompilerTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DataListCompilerTest
     {
         // ReSharper disable InconsistentNaming

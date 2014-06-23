@@ -14,8 +14,7 @@ using Moq;
 
 namespace Dev2.Core.Tests.Webs
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class FileChooserCallbackHandlerTests
     {
         static ImportServiceContext _importContext;

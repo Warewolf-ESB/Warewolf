@@ -14,8 +14,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for AssignActivity
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ForEachActivityTest : BaseActivityUnitTest
     {
         private new static readonly IDataListCompiler Compiler = DataListFactory.CreateDataListCompiler();

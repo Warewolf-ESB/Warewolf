@@ -6,8 +6,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.FormatNumber
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class FormatNumberDesignerViewModelTests
     {
         [TestMethod]

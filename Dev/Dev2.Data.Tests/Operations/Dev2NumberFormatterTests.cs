@@ -7,8 +7,7 @@ using System;
 
 namespace Dev2.Data.Tests.Operations
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class Dev2NumberFormatterTests
     {
         #region Class Members

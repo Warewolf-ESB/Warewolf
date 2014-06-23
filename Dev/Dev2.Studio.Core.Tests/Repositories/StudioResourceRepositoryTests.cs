@@ -23,8 +23,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 namespace Dev2.Core.Tests.Repositories
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     // ReSharper disable InconsistentNaming
     public class StudioResourceRepositoryTests
     {

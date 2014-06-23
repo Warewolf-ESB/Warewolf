@@ -16,8 +16,7 @@ namespace Dev2.Core.Tests.ViewModelTests
     /// <summary>
     /// Summary description for FeedbackViewModelTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class FeedbackViewModelTest
     {
         #region Static Class Init

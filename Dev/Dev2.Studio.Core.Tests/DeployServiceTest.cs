@@ -14,8 +14,7 @@ namespace Dev2.Core.Tests
     /// <summary>
     /// Summary description for DeployServiceTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DeployServiceTest
     {
 

@@ -9,8 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests.BinaryDataList.Converters
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class FetchStudioDataListXMLTranslatorTest
     {
         static readonly IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();

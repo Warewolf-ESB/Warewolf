@@ -11,8 +11,7 @@
 //
 //namespace Dev2.Tests.Runtime.Configuration
 //{
-//    [TestClass]
-//    [ExcludeFromCodeCoverage]
+//    [TestClass]//    
 //    public class SettingsProviderTests
 //    {
 //        static readonly object WriterLock = new object();

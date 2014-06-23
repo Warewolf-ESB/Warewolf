@@ -12,8 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Webs
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class WebsiteCallbackHandlerTests
     {
         private IResourceModel _resourceModel;

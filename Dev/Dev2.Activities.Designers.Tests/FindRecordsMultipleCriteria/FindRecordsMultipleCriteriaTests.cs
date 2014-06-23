@@ -13,8 +13,7 @@ namespace Dev2.Activities.Designers.Tests.FindRecordsMultipleCriteria
 {
     // OnSearchTypeChanged moved from FindRecordsTO tests
     // ReSharper disable InconsistentNaming
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class FindRecordsMultipleCriteriaTests
     {
         [TestMethod]

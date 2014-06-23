@@ -22,8 +22,7 @@ namespace Dev2.DynamicServices.Test
     /// <summary>
     /// Summary description for WorkspaceTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class WorkspaceTest
     {
         const string ServiceName = "Calculate_RecordSet_Subtract";

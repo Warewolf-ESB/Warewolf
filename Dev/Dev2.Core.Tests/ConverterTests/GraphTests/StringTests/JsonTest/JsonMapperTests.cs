@@ -7,8 +7,7 @@ using Unlimited.Framework.Converters.Graph.String.Json;
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class JsonMapperTests
     {
         /// <summary>

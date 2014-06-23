@@ -13,8 +13,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for FindRecordsActivityTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class FindRecordsMultipleCriteriaActivityTest : BaseActivityUnitTest
     {
         TestContext testContextInstance;

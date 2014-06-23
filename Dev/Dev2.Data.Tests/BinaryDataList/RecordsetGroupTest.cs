@@ -11,8 +11,7 @@ namespace Dev2.Data.Tests.BinaryDataList
     /// <summary>
     /// Summary description for RecordsetGroupTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class RecordsetGroupTest
     {
         /// <summary>

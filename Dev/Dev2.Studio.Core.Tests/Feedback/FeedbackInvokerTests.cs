@@ -9,8 +9,7 @@ using Moq;
 
 namespace Dev2.Core.Tests.Feedback
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class FeedbackInvokerTests
     {
         #region Class Members

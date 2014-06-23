@@ -62,8 +62,7 @@ namespace Dev2.Core.Tests
     ///     This is a result class for MainViewModelTest and is intended
     ///     to contain all MainViewModelTest Unit Tests
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class MainViewModelTest
     {
         #region Variables

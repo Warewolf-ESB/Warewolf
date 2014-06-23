@@ -21,8 +21,7 @@ using System.Threading;
 
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DefaultIntellisenseProviderTest
     {
         // ReSharper disable InconsistentNaming

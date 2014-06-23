@@ -9,8 +9,7 @@ using Moq;
 namespace Dev2.Tests.Runtime.ESB
 {
     // BUG 9710 - 2013.06.20 - TWR - Created
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DatabaseServiceContainerTests
     {
         #region ClassInitialize

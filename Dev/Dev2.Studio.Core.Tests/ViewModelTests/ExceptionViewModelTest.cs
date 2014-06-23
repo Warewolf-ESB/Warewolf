@@ -12,8 +12,7 @@ using Moq;
 
 namespace Dev2.Core.Tests.ViewModelTests
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ExceptionViewModelTest
     {
         #region Class Members

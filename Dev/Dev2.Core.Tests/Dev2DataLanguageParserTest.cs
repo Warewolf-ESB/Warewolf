@@ -14,8 +14,7 @@ namespace Dev2.Tests
     //<summary>
     //Summary description for Dev2DataLanguageParser
     //</summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     // ReSharper disable InconsistentNaming
     public class Dev2DataLanguageParserTest
     {

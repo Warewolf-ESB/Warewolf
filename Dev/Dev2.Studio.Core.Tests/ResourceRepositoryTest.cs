@@ -39,8 +39,7 @@ namespace BusinessDesignStudio.Unit.Tests
     /// <summary>
     /// Summary description for ResourceRepositoryTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ResourceRepositoryTest
     {
 

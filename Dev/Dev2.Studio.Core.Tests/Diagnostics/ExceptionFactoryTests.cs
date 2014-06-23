@@ -10,8 +10,7 @@ using Moq;
 
 namespace Dev2.Core.Tests.Diagnostics
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ExceptionFactoryTests
     {
         Mock<IEnvironmentModel> _contextModel;

@@ -14,8 +14,7 @@ namespace Dev2.DynamicServices.Test
     /// <summary>
     /// Summary description for DynamicServicesInvokerTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class WorkspaceItemTests
     {
         static readonly Guid TestWorkspaceID = new Guid("B1890C86-95D8-4612-A7C3-953250ED237A");

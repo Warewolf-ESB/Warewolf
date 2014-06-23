@@ -25,8 +25,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// I would say it was built, then testing was applied to it after the fact ;(
     /// I do not understand how else we could miss-null checks and have this string property grab to check values in test scenario. 
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class SqlBulkInsertActivityTests : BaseActivityUnitTest
     {
         public TestContext TestContext { get; set; }

@@ -6,8 +6,7 @@ using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.String.Json;
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class JsonNavigatorTests {
 
         internal string Given()

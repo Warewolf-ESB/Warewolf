@@ -15,8 +15,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     ///     Summary description for RandomActivityTests
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class RandomActivityTests : BaseActivityUnitTest
     {
         /// <summary>

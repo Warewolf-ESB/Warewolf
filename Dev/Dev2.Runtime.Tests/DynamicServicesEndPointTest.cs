@@ -16,8 +16,7 @@ namespace Dev2.Tests.Runtime
     /// <summary>
     /// Summary description for DynamicServicesInvokerTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DynamicServicesEndPointTest
     {
         const int VersionNo = 9999;

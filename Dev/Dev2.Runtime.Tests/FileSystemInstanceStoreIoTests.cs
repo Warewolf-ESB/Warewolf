@@ -13,8 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Runtime
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class FileSystemInstanceStoreIoTests
     {
         const string TestFileName = "TestInstanceStore";

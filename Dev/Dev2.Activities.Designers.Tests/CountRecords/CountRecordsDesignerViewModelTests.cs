@@ -6,8 +6,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.CountRecords
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class CountRecordsDesignerViewModelTests
     {
         [TestMethod]

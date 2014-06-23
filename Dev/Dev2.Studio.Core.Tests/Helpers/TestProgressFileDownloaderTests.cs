@@ -11,8 +11,7 @@ using Moq;
 
 namespace Dev2.Core.Tests.Helpers
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
    
     public class TestProgressFileDownloaderTests
     {

@@ -12,8 +12,7 @@ using Moq;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class DebugStateTreeViewItemViewModelTests
     {
         // ReSharper disable NotAccessedField.Local

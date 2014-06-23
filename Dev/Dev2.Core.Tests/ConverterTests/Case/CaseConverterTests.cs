@@ -8,8 +8,7 @@ namespace Dev2.Tests.ConverterTests.Case
     /// <summary>
     /// Summary description for CaseConverterTests
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class CaseConverterTests
     {
         ICaseConverter converter = CaseConverterFactory.CreateCaseConverter();

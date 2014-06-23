@@ -7,8 +7,7 @@ using Unlimited.Framework.Converters.Graph.Poco;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class PocoInterrogatorTests
     {
         #region Private/Internal Methods

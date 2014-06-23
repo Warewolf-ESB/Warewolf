@@ -5,7 +5,7 @@ using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.TaskScheduler.Wrappers
 {
-    [ExcludeFromCodeCoverage]
+    
     public class Dev2TaskEvent : ITaskEvent
     {
         private readonly TaskEvent _nativeObject;

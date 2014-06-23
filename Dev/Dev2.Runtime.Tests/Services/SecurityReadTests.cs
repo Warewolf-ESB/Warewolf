@@ -14,8 +14,7 @@ using System.Linq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class SecurityReadTests
     {
         static string _testDir;
