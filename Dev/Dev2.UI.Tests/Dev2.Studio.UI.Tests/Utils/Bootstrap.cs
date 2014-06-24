@@ -45,6 +45,8 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static int WaitMS = 5000;
 
+        static bool _isLocal = false;
+
         /// <summary>
         /// Inits the ServerLocation.
         /// </summary>
@@ -58,6 +60,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
             if(testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901")
             {
+                _isLocal = true;
                 ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
                 StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
                 RootSourceLocation = StudioLocation.Replace("Warewolf Server.exe", "Resources\\");
@@ -151,6 +154,12 @@ namespace Dev2.Studio.UI.Tests.Utils
             else
             {
                 LogTestRunMessage("Could not locate CodedUI Binaries", true);
+            }
+
+            if(!_isLocal)
+            {
+                // Now clean up next test run ;)
+                CloseAllInstancesOfIE();
             }
         }
 
