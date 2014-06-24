@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass]
+    [TestClass]    
     [ExcludeFromCodeCoverage]
     public class GetDatabaseColumnsForTableTests
     {

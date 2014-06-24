@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 953 - 2013.05.16 - TWR - Created
-    [TestClass]
+    [TestClass]    
     [ExcludeFromCodeCoverage]
     public class WebSourcesTests
     {
@@ -102,7 +102,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebSourcesConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
+#pragma warning disable 168
             var handler = new WebSources(null);
+#pragma warning restore 168
         }
 
         #endregion
@@ -177,7 +179,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
                         DirectoryHelper.CleanUp(workspacePath);
                     }
                 }
+                // ReSharper disable EmptyGeneralCatchClause
                 catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
                 {
                 }
             }

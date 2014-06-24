@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.DataListCache;
@@ -17,24 +16,20 @@ namespace Dev2.Data.Tests.BinaryDataList
     /// <summary>
     /// Summary description for ServerTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
+    [TestClass]    
     public class ServerTest
     {
-
         private static readonly IDataListServer Dls = new DataListServer(DataListPersistenceProviderFactory.CreateMemoryProvider());
         private static readonly DataListFormat XmlFormat = DataListFormat.CreateFormat(GlobalConstants._XML);
         private static readonly DataListFormat XmlFormatWithoutSystemTags = DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags);
         private static readonly DataListFormat XmlFormatInputsOnly = DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only);
 
-        const string _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
-        const string _dataListWellformedData = "<DataList><scalar1>s1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
-        const string _dataListWellformedMult = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>";
-        //private static readonly string _dataListWellformedMultData = "<DataList><scalar1>s1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2/></DataList>";
-        const string _dataListMalformed = "<DataList><scalar1/><rs1><f1/><f2/><f3/><scalar2/></DataList>";
-        //private static readonly string _dataListMalformedData = "<DataList><scalar1/>abc<rs1><f1/><f2/><f3/><scalar2/></DataList>";
-        const string _dataListWellformedDescAttributes = "<DataList><scalar1 Description=\"Test scalar description\"/><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\"/></rs1><scalar2/></DataList>";
-        const string _dataListWellformedDataWithDesc = "<DataList><scalar1 Description=\"Test scalar description\"/>s1</scalar1><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\">f1.1</f1></rs1><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\">f1.2</f1></rs1><scalar2/></DataList>";
+        const string DataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
+        const string DataListWellformedData = "<DataList><scalar1>s1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
+        const string DataListWellformedMult = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>";
+        const string DataListMalformed = "<DataList><scalar1/><rs1><f1/><f2/><f3/><scalar2/></DataList>";
+        const string DataListWellformedDescAttributes = "<DataList><scalar1 Description=\"Test scalar description\"/><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\"/></rs1><scalar2/></DataList>";
+        const string DataListWellformedDataWithDesc = "<DataList><scalar1 Description=\"Test scalar description\"/>s1</scalar1><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\">f1.1</f1></rs1><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\">f1.2</f1></rs1><scalar2/></DataList>";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -63,6 +58,8 @@ namespace Dev2.Data.Tests.BinaryDataList
 
         #region Positive Test
 
+        // ReSharper disable InconsistentNaming
+
         [TestMethod]
         public void Fetch_TranslationTypes_ExpectAddTypes()
         {
@@ -89,8 +86,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             string error;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
-            IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformed, out errors);
+            byte[] data = (TestHelper.ConvertStringToByteArray(DataListWellformedData));
+            IBinaryDataList obj = xmlConverter.ConvertTo(data, DataListWellformed, out errors);
 
             IBinaryDataListEntry entry;
             if(obj.TryGetEntry("rs1", out entry, out error))
@@ -120,8 +117,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             string error;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
-            IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedMult, out errors);
+            byte[] data = (TestHelper.ConvertStringToByteArray(DataListWellformedData));
+            IBinaryDataList obj = xmlConverter.ConvertTo(data, DataListWellformedMult, out errors);
 
             IBinaryDataListEntry entry;
 
@@ -153,8 +150,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             ErrorResultTO errors;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
-            IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedDescAttributes, out errors);
+            byte[] data = (TestHelper.ConvertStringToByteArray(DataListWellformedData));
+            IBinaryDataList obj = xmlConverter.ConvertTo(data, DataListWellformedDescAttributes, out errors);
 
             IBinaryDataListEntry entry;
 
@@ -185,8 +182,8 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListWellformedDataWithDesc));
-            IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedDescAttributes, out errors);
+            byte[] data = (TestHelper.ConvertStringToByteArray(DataListWellformedDataWithDesc));
+            IBinaryDataList obj = xmlConverter.ConvertTo(data, DataListWellformedDescAttributes, out errors);
 
             IList<IBinaryDataListEntry> scalars = obj.FetchScalarEntries();
             IList<IBinaryDataListEntry> recordsets = obj.FetchRecordsetEntries();
@@ -205,7 +202,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(""));
-            IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedDescAttributes, out errors);
+            IBinaryDataList obj = xmlConverter.ConvertTo(data, DataListWellformedDescAttributes, out errors);
 
             IList<IBinaryDataListEntry> scalars = obj.FetchScalarEntries();
             IList<IBinaryDataListEntry> recordsets = obj.FetchRecordsetEntries();
@@ -221,8 +218,8 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
-            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListMalformed));
-            xmlConverter.ConvertTo(data, _dataListMalformed, out errors);
+            byte[] data = (TestHelper.ConvertStringToByteArray(DataListMalformed));
+            xmlConverter.ConvertTo(data, DataListMalformed, out errors);
 
             // convert fails, hence no datalist cleanup ;)
 
@@ -299,7 +296,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             string result = tmp.FetchAsString();
 
-            Assert.AreEqual("<DataList><rs2><f2>rec1.f2.value</f2></rs2><rs2><f2>rec2.f2.value</f2></rs2><scalar1>scalar1Value</scalar1></DataList>", result);
+            Assert.AreEqual("<DataList><scalar1>scalar1Value</scalar1></DataList>", result);
 
         }
 
@@ -545,5 +542,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         }
 
         #endregion
+
+        // ReSharper restore InconsistentNaming
     }
 }

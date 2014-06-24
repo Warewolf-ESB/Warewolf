@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
-using Dev2.Common.Common;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
+using Dev2.Common.Common;
 using Dev2.Session;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.DataList
 {
     /// <summary>
     /// Summary description for BrokerTest
     /// </summary>
-    [TestClass]
-    [ExcludeFromCodeCoverage]
-    public class BrokerTest {
+    [TestClass]    
+    public class BrokerTest
+    {
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -20,11 +19,11 @@ namespace Dev2.Tests.DataList
         ///</summary>
         public TestContext TestContext { get; set; }
 
-        #region Additional test attributee
+        #region Additional test attribute
         
         private void DeleteDir(string rootFolder)
         {
-            if (Directory.Exists(rootFolder + @"\Dev2\"))
+            if(Directory.Exists(rootFolder + @"\Dev2\"))
             {
                 DirectoryHelper.CleanUp(rootFolder + @"\Dev2\");
             }
@@ -33,14 +32,6 @@ namespace Dev2.Tests.DataList
         #endregion
 
         #region InitSession Tests
-
-        [TestMethod]
-        public void InitSessionWithSavedData()
-        {
-            //
-            // TODO: Add test logic here
-            //
-        }
 
         [TestMethod]
         public void InitSessionWithNoData()
@@ -79,7 +70,7 @@ namespace Dev2.Tests.DataList
             broker.InitDebugSession(to);
             to = broker.PersistDebugSession(to);
 
-            var expected = "<DataList><scalar1>s1</scalar1></DataList>";
+            const string expected = "<DataList><scalar1>s1</scalar1></DataList>";
 
             // just ensure the operation worked successfully with no errors
             Assert.AreEqual(string.Empty, to.Error);
@@ -89,7 +80,9 @@ namespace Dev2.Tests.DataList
         }
 
         [TestMethod]
+        // ReSharper disable InconsistentNaming
         public void PersistSessionWithSavedData_ExpectSavedData()
+        // ReSharper restore InconsistentNaming
         {
             //DeleteDir();
             // bootstrap
@@ -114,8 +107,11 @@ namespace Dev2.Tests.DataList
 
         #region PersistSession Test
 
+        // ReSharper disable InconsistentNaming
+
         //Bug 7842 2013.01.29: Ashley Lewis - Altered expected and assert from PreviousXmlData to MergedXmlData
         [TestMethod]
+
         public void PersistSessionWithSavedData_ChangedDataList_Expect_MergedXmlData()
         {
             // bootstrap
@@ -132,7 +128,7 @@ namespace Dev2.Tests.DataList
             to = broker.PersistDebugSession(to);
 
             // just ensure the operation worked successfully with no errors
-            to.DataList = "<DataList><rs><field/><f2/></rs></DataList>";
+            to.DataList = "<DataList><rs><field ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs></DataList>";
             to = broker.InitDebugSession(to);
 
             Assert.AreEqual("<DataList><rs><field></field><f2>f2Value</f2></rs></DataList>", to.XmlData);
@@ -150,7 +146,7 @@ namespace Dev2.Tests.DataList
             IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = rootFolder;
-            to.DataList = "<DataList><scalar1/><persistantscalar/><rs><f1/><f2/></rs><recset><field1/><field2/></recset></DataList>";
+            to.DataList = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
             to.XmlData = "<DataList><scalar1>s1</scalar1><persistantscalar>SomeValue</persistantscalar><rs><f1>f1Value</f1><f2>f2Value</f2></rs><recset><field1>somedata</field1><field2>moredata</field2></recset><recset><field1></field1><field2></field2></recset></DataList>";
             to.ServiceName = "DummyService";
             to.WorkflowID = "DummyService";
@@ -158,7 +154,7 @@ namespace Dev2.Tests.DataList
             to = broker.PersistDebugSession(to);
 
             // just ensure the operation worked successfully with no errors
-            to.DataList = "<DataList><persistantscalar/><rs><field/><f2/></rs><recset><newfield/><field1/><changedfieldname/></recset></DataList>";
+            to.DataList = "<DataList><persistantscalar ColumnIODirection=\"Input\"/><rs><field ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><newfield ColumnIODirection=\"Input\"/><field1 ColumnIODirection=\"Input\"/><changedfieldname ColumnIODirection=\"Input\"/></recset></DataList>";
             to = broker.InitDebugSession(to);
 
             Assert.AreEqual("<DataList><persistantscalar>SomeValue</persistantscalar><rs><field></field><f2>f2Value</f2></rs><recset><newfield></newfield><field1>somedata</field1><changedfieldname></changedfieldname></recset><recset><newfield></newfield><field1></field1><changedfieldname></changedfieldname></recset></DataList>", to.XmlData);
@@ -184,7 +180,7 @@ namespace Dev2.Tests.DataList
             to = broker.PersistDebugSession(to);
 
             // just ensure the operation worked successfully with no errors
-            to.DataList = "<DataList><rs><f2/></rs></DataList>";
+            to.DataList = "<DataList><rs><f2 ColumnIODirection=\"Input\"/></rs></DataList>";
             to = broker.InitDebugSession(to);
 
             Assert.AreEqual("<DataList><rs><f2>f2Value</f2></rs></DataList>", to.XmlData);
@@ -239,5 +235,7 @@ namespace Dev2.Tests.DataList
         }
 
         #endregion PersistSession Tests
+
+        // ReSharper restore InconsistentNaming
     }
 }

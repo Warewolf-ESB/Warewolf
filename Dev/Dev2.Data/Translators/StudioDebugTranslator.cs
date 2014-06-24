@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Dev2.Common;
+using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
@@ -41,7 +42,7 @@ namespace Dev2.Server.DataList.Translators
                     {
                         var fName = entry.Namespace;
                         var val = entry.FetchScalar();
-                        if(val != null)
+                        if(val != null && (entry.ColumnIODirection == enDev2ColumnArgumentDirection.Both || entry.ColumnIODirection == enDev2ColumnArgumentDirection.Input))
                         {
                             DoScalarAppending(result, fName, val);
                         }

@@ -40,7 +40,6 @@ namespace Dev2.PathOperations
             {
 
                 // TODO : we need to chunk this in
-
                 if(!deferredRead)
                 {
                     byte[] bytes;
@@ -51,6 +50,7 @@ namespace Dev2.PathOperations
                         s.Read(bytes, 0, (int)s.Length);
                     }
 
+                    // TODO : Remove the need for this ;(
                     return Encoding.UTF8.GetString(bytes);
                 }
 
@@ -787,9 +787,9 @@ namespace Dev2.PathOperations
                 _filesToDelete.Add(tmpFile);
                 return tmpFile;
             }
-            catch (Exception e)
+            catch(Exception e)
             {
-               this.LogError(e);
+                this.LogError(e);
                 throw;
             }
 
@@ -805,12 +805,12 @@ namespace Dev2.PathOperations
             {
                 File.Delete(path);
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 this.LogError(e);
                 throw;
             }
-            
+
         }
 
         string CreateTmpDirectory()
@@ -822,9 +822,9 @@ namespace Dev2.PathOperations
 
                 return (di.FullName);
             }
-            catch (Exception err)
+            catch(Exception err)
             {
-               this.LogError(err);
+                this.LogError(err);
                 throw;
             }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Text;
 using System.Xml;
 using Dev2.Common.Enums;
@@ -35,6 +36,8 @@ namespace Dev2.Server.DataList.Translators
 
         internal static void DoScalarAppending(StringBuilder result, string fName, IBinaryDataListItem val)
         {
+
+
             result.Append("<");
             result.Append(fName);
             result.Append(">");
@@ -47,6 +50,11 @@ namespace Dev2.Server.DataList.Translators
         internal static void DoRecordSetAppending(ErrorResultTO errors, IBinaryDataListEntry entry, StringBuilder result)
         {
             var cnt = entry.FetchLastRecordsetIndex();
+            var cols = entry.Columns;
+            if(!cols.Any(c => c.ColumnIODirection == enDev2ColumnArgumentDirection.Both || c.ColumnIODirection == enDev2ColumnArgumentDirection.Input))
+            {
+                return;
+            }
             for(var i = 1; i <= cnt; i++)
             {
                 string error;
@@ -59,15 +67,21 @@ namespace Dev2.Server.DataList.Translators
 
                 foreach(var col in rowData)
                 {
+
                     var fName = col.FieldName;
 
-                    result.Append("<");
-                    result.Append(fName);
-                    result.Append(">");
-                    result.Append(col.TheValue);
-                    result.Append("</");
-                    result.Append(fName);
-                    result.Append(">");
+                    if(cols.Any(c => c.ColumnName == fName &&
+                        (c.ColumnIODirection == enDev2ColumnArgumentDirection.Both || c.ColumnIODirection == enDev2ColumnArgumentDirection.Input)))
+                    {
+
+                        result.Append("<");
+                        result.Append(fName);
+                        result.Append(">");
+                        result.Append(col.TheValue);
+                        result.Append("</");
+                        result.Append(fName);
+                        result.Append(">");
+                    }
                 }
 
                 result.Append("</");
@@ -185,8 +199,9 @@ namespace Dev2.Server.DataList.Translators
         /// <summary>
         /// Build the template based upon the sent shape
         /// </summary>
-        /// <param name="shape"></param>
-        /// <param name="error"></param>
+        /// <param name="shape">The shape.</param>
+        /// <param name="error">The error.</param>
+        /// <returns></returns>
         internal static IBinaryDataList BuildTargetShape(string shape, out string error)
         {
             IBinaryDataList result = null;
@@ -233,6 +248,7 @@ namespace Dev2.Server.DataList.Translators
                                         }
 
                                         cols.Add(descAttribute != null ? DataListFactory.CreateDev2Column(subc.Name, descAttribute.Value, true, columnDirection) : DataListFactory.CreateDev2Column(subc.Name, String.Empty, true, columnDirection));
+
                                     }
                                     string myError;
                                     // It is possible for the .Attributes property to be null, a check should be added

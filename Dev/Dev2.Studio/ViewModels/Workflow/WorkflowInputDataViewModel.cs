@@ -477,11 +477,28 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         public void SetXmlData()
         {
-            CreateDataListObjectFromList();
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlId = compiler.PushBinaryDataList(DataList.UID, DataList, out errors);
-            string dataListString = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only), enTranslationDepth.Data, out errors);
+            var dl = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), string.Empty, DebugTO.DataList ?? "<Datalist></Datalist>", out errors);
+            DataList = compiler.FetchBinaryDataList(dl, out errors);
+            // For some damn reason this does not always bind like it should! ;)
+            Thread.Sleep(150);
+
+            foreach(var item in WorkflowInputs)
+            {
+                string error;
+                if(item.IsRecordset && !string.IsNullOrEmpty(item.Value))
+                {
+                    DataList.TryCreateRecordsetValue(item.Value, item.Field, item.Recordset, Convert.ToInt32(item.RecordsetIndex), out error);
+                }
+                else if(!item.IsRecordset)
+                {
+                    DataList.TryCreateScalarValue(item.Value, item.Field, out error);
+                }
+            }
+
+            var dlId = compiler.PushBinaryDataList(DataList.UID, DataList, out errors);
+            var dataListString = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors);
             try
             {
                 XmlData = XElement.Parse(dataListString).ToString();
@@ -548,25 +565,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         #endregion Methods
 
         #region Private Methods
-        private void CreateDataListObjectFromList()
-        {
-            string error;
-            DataList = Broker.DeSerialize("<Datalist></Datalist>", DebugTO.DataList ?? "<Datalist></Datalist>", enTranslationTypes.XML, out error);//2013.01.22: Ashley Lewis - Bug 7837
-            // For some damn reason this does not always bind like it should! ;)
-            Thread.Sleep(150);
-
-            foreach(IDataListItem item in WorkflowInputs)
-            {
-                if(item.IsRecordset && !string.IsNullOrEmpty(item.Value))
-                {
-                    DataList.TryCreateRecordsetValue(item.Value, item.Field, item.Recordset, Convert.ToInt32(item.RecordsetIndex), out error);
-                }
-                else if(!item.IsRecordset)
-                {
-                    DataList.TryCreateScalarValue(item.Value, item.Field, out error);
-                }
-            }
-        }
 
         private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<Dev2Column> columns, int indexToInsertAt, int indexNum)
         {

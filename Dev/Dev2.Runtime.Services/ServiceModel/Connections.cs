@@ -60,12 +60,6 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     var xml = contents.ToXElement();
                     result = new Connection(xml);
-
-                    // now we need to remove \ for display to the user ;)
-                    if(result.UserName == GlobalConstants.PublicUsername && string.IsNullOrEmpty(result.Password))
-                    {
-                        result.UserName = string.Empty;
-                    }
                 }
             }
             catch(Exception ex)
@@ -87,9 +81,10 @@ namespace Dev2.Runtime.ServiceModel
                 var connection = JsonConvert.DeserializeObject<Connection>(args);
 
                 // convert public user and pass to proper ntlm user and pass ;)
-                if(string.IsNullOrEmpty(connection.UserName) && string.IsNullOrEmpty(connection.Password))
+                if(connection.AuthenticationType == AuthenticationType.Public)
                 {
                     connection.UserName = GlobalConstants.PublicUsername;
+                    connection.Password = string.Empty;
                 }
 
                 ResourceCatalog.Instance.SaveResource(workspaceID, connection);
