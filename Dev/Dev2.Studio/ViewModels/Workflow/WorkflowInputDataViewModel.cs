@@ -481,7 +481,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
             Guid dlId = compiler.PushBinaryDataList(DataList.UID, DataList, out errors);
-            string dataListString = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors);
+            string dataListString = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only), enTranslationDepth.Data, out errors);
             try
             {
                 XmlData = XElement.Parse(dataListString).ToString();
