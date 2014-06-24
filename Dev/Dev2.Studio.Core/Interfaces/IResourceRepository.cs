@@ -66,5 +66,7 @@ namespace Dev2.Studio.Core.Interfaces
         void Remove(ICollection<IResourceModel> instanceObjs);
 
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);
+
+        void LoadResourceFromWorkspace(Guid resourceId);
     }
 }

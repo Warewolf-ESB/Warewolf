@@ -376,7 +376,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                     DestinationServerHasDropped = false;
                     if(_selectedDestinationServer != null)
                     {
-                        Target.Environment = _selectedSourceServer;
+                        Target.Environment = _selectedDestinationServer;
                         _selectedDestinationServer.IsConnectedChanged -= SelectedDestinationServerIsConnectedChanged;
                         _selectedDestinationServer.IsConnectedChanged += SelectedDestinationServerIsConnectedChanged;
                     }

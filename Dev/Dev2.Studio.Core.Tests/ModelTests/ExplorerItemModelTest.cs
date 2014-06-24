@@ -707,15 +707,59 @@ namespace Dev2.Core.Tests.ModelTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExplorerItemModel_DeleteCommand")]
+        public void ExplorerItemModel_DeleteCommand_FolderWithNoItems_CallDeleteFolder()
+        {
+            //------------Setup for test--------------------------
+            var aggregator = new Mock<EventAggregator>();
+            string actualFolderNameInvoked = null;
+            aggregator.Setup(a => a.Publish(It.IsAny<DeleteFolderMessage>())).Callback<object>(msg =>
+            {
+                var workSurfaceObject = (msg is DeleteFolderMessage) ? (msg as DeleteFolderMessage).FolderName : null;
+                actualFolderNameInvoked = workSurfaceObject;
+            });
+
+            EventPublishers.Aggregator = aggregator.Object;
+
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            var resourceId = Guid.NewGuid();
+            var envID = Guid.Empty;
+
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            mockEnvironment.Setup(model => model.ID).Returns(envID);
+            GetEnvironmentRepository(mockEnvironment);
+
+            const string displayName = "localhost";
+            ExplorerItemModel resourceItem;
+            var serverItem = SetupExplorerItemModelWithFolderNoChild(displayName, envID, out resourceItem);
+            //------------Execute Test---------------------------
+            resourceItem.DeleteCommand.Execute(null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(serverItem);
+            Assert.IsNotNull(actualFolderNameInvoked);
+            Assert.AreEqual(resourceItem.DisplayName, actualFolderNameInvoked);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ExplorerItemModel_DeleteCommand")]
         public void ExplorerItemModel_DeleteCommand_HasSelectedItemHasChildren_CallDeleteForAllChildren()
         {
             //------------Setup for test--------------------------
             var aggregator = new Mock<EventAggregator>();
             Collection<IContextualResourceModel> actualResourceInvoked = null;
+            string folderName = null;
             aggregator.Setup(a => a.Publish(It.IsAny<DeleteResourcesMessage>())).Callback<object>(msg =>
             {
-                var workSurfaceObject = (msg is DeleteResourcesMessage) ? (msg as DeleteResourcesMessage).ResourceModels : null;
+                DeleteResourcesMessage deleteResourcesMessage = (msg as DeleteResourcesMessage);
+                var workSurfaceObject = (msg is DeleteResourcesMessage) ? deleteResourcesMessage.ResourceModels : null;
                 actualResourceInvoked = (workSurfaceObject is Collection<IContextualResourceModel>) ? (workSurfaceObject as Collection<IContextualResourceModel>) : null;
+                if(deleteResourcesMessage != null)
+                {
+                    folderName = deleteResourcesMessage.FolderName;
+                }
             });
 
             EventPublishers.Aggregator = aggregator.Object;
@@ -740,13 +784,15 @@ namespace Dev2.Core.Tests.ModelTests
             resourceItem.Parent.DeleteCommand.Execute(null);
             //------------Assert Results-------------------------
 
-     
+
             Assert.IsNotNull(serverItem);
             Assert.IsNotNull(actualResourceInvoked);
             Assert.AreEqual(3, actualResourceInvoked.Count);
             Assert.AreEqual(resourceId, actualResourceInvoked[0].ID);
             Assert.AreEqual(resourceId, actualResourceInvoked[1].ID);
             Assert.AreEqual(resourceId, actualResourceInvoked[2].ID);
+            Assert.IsNotNull(folderName);
+            Assert.AreEqual(resourceItem.Parent.DisplayName, folderName);
         }
 
 
@@ -786,7 +832,7 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Execute Test---------------------------
             resourceItem.Parent.DeleteCommand.Execute(null);
             //------------Assert Results-------------------------
-            mockResourceRepository.Verify(a => a.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, It.IsAny<ResourceModelEqualityComparer>(), true),Times.Once());
+            mockResourceRepository.Verify(a => a.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, It.IsAny<ResourceModelEqualityComparer>(), true), Times.Once());
 
         }
 
@@ -2715,7 +2761,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_CanConnect_Expect_Success()
         {
 
-            PermissionsTest(a => a.CanConnect, Permissions.Administrator, true,ResourceType.Server);
+            PermissionsTest(a => a.CanConnect, Permissions.Administrator, true, ResourceType.Server);
             PermissionsTest(a => a.CanConnect, Permissions.View, true, ResourceType.Server);
             PermissionsTest(a => a.CanConnect, Permissions.Contribute, true, ResourceType.Server);
             PermissionsTest(a => a.CanConnect, Permissions.Execute, true, ResourceType.Server);
@@ -2758,7 +2804,7 @@ namespace Dev2.Core.Tests.ModelTests
         }
 
 
-        public void PermissionsTest(Func<IExplorerItemModel,bool> property, Permissions permissions , bool expected,ResourceType resourceType = ResourceType.WorkflowService)
+        public void PermissionsTest(Func<IExplorerItemModel, bool> property, Permissions permissions, bool expected, ResourceType resourceType = ResourceType.WorkflowService)
         {
 
             var serverItem = new ExplorerItemModel
@@ -2889,7 +2935,7 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_RemoveCommand")]
         public void ExplorerItemModel_RemoveCommand_ExpectRemoveCalled()
         {
-  
+
             var rep = new Mock<IStudioResourceRepository>();
 
             var worker = new Mock<IAsyncWorker>();
@@ -2897,7 +2943,7 @@ namespace Dev2.Core.Tests.ModelTests
             var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out outvalue, rep.Object, worker.Object);
 
             explorerItemModel.RemoveCommand.Execute(null);
-            rep.Verify(a=>a.RemoveEnvironment(It.IsAny<Guid>()),Times.Once());
+            rep.Verify(a => a.RemoveEnvironment(It.IsAny<Guid>()), Times.Once());
 
         }
 
@@ -2960,7 +3006,7 @@ namespace Dev2.Core.Tests.ModelTests
         {
             ExplorerItemModel exp;
             var item = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out exp);
-            
+
             Assert.IsFalse(item.IsChecked != null && item.IsChecked.Value);
             item.IsOverwrite = true;
             item.Children[0].SetIsChecked(true, false, false);
@@ -3054,6 +3100,31 @@ namespace Dev2.Core.Tests.ModelTests
                 Parent = folderItem
             };
             folderItem.Children.Add(resourceItem);
+            serverItem.Children.Add(folderItem);
+            return serverItem;
+        }
+
+        static ExplorerItemModel SetupExplorerItemModelWithFolderNoChild(string displayName, Guid envID, out ExplorerItemModel resourceItem)
+        {
+            var serverItem = new ExplorerItemModel
+            {
+                ResourceType = ResourceType.Server,
+                DisplayName = displayName,
+                ResourceId = Guid.Empty,
+                Permissions = Permissions.Administrator,
+                EnvironmentId = envID
+            };
+            var folderItem = new ExplorerItemModel
+            {
+                ResourceType = ResourceType.Folder,
+                DisplayName = Guid.NewGuid().ToString(),
+                ResourceId = Guid.Empty,
+                Permissions = Permissions.Administrator,
+                EnvironmentId = envID,
+                Parent = serverItem
+            };
+
+            resourceItem = folderItem;
             serverItem.Children.Add(folderItem);
             return serverItem;
         }

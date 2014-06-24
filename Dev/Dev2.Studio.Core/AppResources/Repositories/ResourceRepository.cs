@@ -189,6 +189,35 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return effectedResources;
         }
 
+        public void LoadResourceFromWorkspace(Guid resourceId)
+        {
+            var con = _environmentModel.Connection;
+            var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
+            comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
+            comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), Enums.ResourceType.WorkflowService));
+
+            var toReloadResources = comsController.ExecuteCommand<List<SerializableResource>>(con, con.WorkspaceID);
+            foreach(var serializableResource in toReloadResources)
+            {
+                var resource = HydrateResourceModel(Enums.ResourceType.WorkflowService, serializableResource, _environmentModel.Connection.ServerID, true, true);
+                var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
+
+                if(resourceToUpdate != null)
+                {
+                    resourceToUpdate.Update(resource);
+                }
+                else
+                {
+                    AddResourceToStudioResourceRepository(resource, new ExecuteMessage());
+                    ResourceModels.Add(resource);
+                    if(ItemAdded != null)
+                    {
+                        ItemAdded(resource, null);
+                    }
+                }
+            }
+        }
+
         /// <summary>
         ///     Checks if a resources exists and is a workflow.
         /// </summary>

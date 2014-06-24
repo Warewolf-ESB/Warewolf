@@ -63,7 +63,7 @@ namespace Dev2.Core.Tests
     ///     This is a result class for MainViewModelTest and is intended
     ///     to contain all MainViewModelTest Unit Tests
     /// </summary>
-    [TestClass]    
+    [TestClass]
     [ExcludeFromCodeCoverage]
     public class MainViewModelTest
     {
@@ -972,6 +972,7 @@ namespace Dev2.Core.Tests
             item.SetupGet(i => i.WorkspaceID).Returns(_workspaceID);
             item.SetupGet(i => i.ServerID).Returns(_serverID);
             item.SetupGet(i => i.ServiceName).Returns(ResourceName);
+            item.SetupGet(i => i.ID).Returns(_firstResourceID);
             list.Add(item.Object);
             _mockWorkspaceRepo.SetupGet(c => c.WorkspaceItems).Returns(list);
             _mockWorkspaceRepo.Setup(c => c.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
@@ -1029,7 +1030,7 @@ namespace Dev2.Core.Tests
                 .Verifiable();
             SetupDefaultMef();
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            _mainViewModel = new MainViewModel(_eventAggregator.Object, asyncWorker.Object, mock.Object, new Mock<IVersionChecker>().Object, false);
+            _mainViewModel = new MainViewModel(_eventAggregator.Object, asyncWorker.Object, mock.Object, new Mock<IVersionChecker>().Object, false, null, PopupController.Object);
             SetupForDelete();
             _firstResource.Setup(r => r.ResourceType).Returns(ResourceType.Source);
             _firstResource.Setup(r => r.ServerResourceType).Returns("Server");
@@ -1213,7 +1214,7 @@ namespace Dev2.Core.Tests
             var mock = SetupForDeleteServer();
             _environmentModel.Setup(s => s.IsLocalHost).Returns(true);
             //---------Execute------
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, "", false);
             _mainViewModel.Handle(msg);
 
             //---------Verify------
@@ -1231,7 +1232,7 @@ namespace Dev2.Core.Tests
             _eventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>())).Verifiable();
 
             //---------Execute------
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, "", false);
             _mainViewModel.Handle(msg);
 
             //---------Verify------
@@ -1244,7 +1245,7 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             SetupForDelete();
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object });
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, "");
             _mainViewModel.Handle(msg);
             _resourceRepo.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
         }
@@ -1258,7 +1259,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             SetupForDelete();
             var _actionInvoked = false;
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, true, () =>
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, "", true, () =>
             {
                 _actionInvoked = true;
             });
@@ -1278,7 +1279,7 @@ namespace Dev2.Core.Tests
             SetupForDelete();
             PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
             var _actionInvoked = false;
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false, () =>
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, "", false, () =>
             {
                 _actionInvoked = true;
             });
@@ -1298,7 +1299,7 @@ namespace Dev2.Core.Tests
             SetupForDelete();
             PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
             var _actionInvoked = false;
-            var msg = new DeleteResourcesMessage(null, true, () =>
+            var msg = new DeleteResourcesMessage(null, "", true, () =>
             {
                 _actionInvoked = true;
             });
@@ -1314,7 +1315,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             SetupForDelete();
             PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.Yes);
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object });
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, "");
             _mainViewModel.Handle(msg);
             _resourceRepo.Verify(s => s.HasDependencies(_firstResource.Object), Times.Once());
         }
@@ -1325,7 +1326,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             SetupForDelete();
             PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, false);
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { _firstResource.Object }, "", false);
             _mainViewModel.Handle(msg);
             _resourceRepo.Verify(s => s.HasDependencies(_firstResource.Object), Times.Never());
         }
@@ -1335,7 +1336,7 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             SetupForDelete();
-            var msg = new DeleteResourcesMessage(null, false);
+            var msg = new DeleteResourcesMessage(null, "", false);
             _mainViewModel.Handle(msg);
             PopupController.Verify(s => s.Show(), Times.Never());
         }
@@ -1359,7 +1360,7 @@ namespace Dev2.Core.Tests
             unassignedResource.Setup(resource => resource.Environment).Returns(env.Object);
             repo.Setup(repository => repository.DeleteResource(unassignedResource.Object)).Returns(MakeMsg("<DataList>Success</DataList>")).Verifiable();
             env.Setup(environment => environment.ResourceRepository).Returns(repo.Object);
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { unassignedResource.Object }, false);
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { unassignedResource.Object }, "", false);
 
             //Run delete command
             _mainViewModel.Handle(msg);
@@ -1378,12 +1379,68 @@ namespace Dev2.Core.Tests
             _environmentModel.Setup(s => s.IsLocalHost).Returns(true);
 
             //---------Execute------
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { null }, false);
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { null }, "", false);
             _mainViewModel.Handle(msg);
 
             //---------Verify------
             mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Never());
             _eventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewmodel_HandleDeleteResourceMessage")]
+        public void MainViewmodel_HandleDeleteFolderMessage_NullActionToPerform_NoNothingDone()
+        {
+            //---------Setup------
+            SetupForDeleteServer();
+            PopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            _environmentModel.Setup(s => s.IsLocalHost).Returns(true);
+
+            //---------Execute------
+            var msg = new DeleteFolderMessage("folderName");
+            _mainViewModel.Handle(msg);
+            //---------Verify------
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewmodel_HandleDeleteResourceMessage")]
+        public void MainViewmodel_HandleDeleteFolderMessage_ActionToPerform_YesResult_ActionPerformed()
+        {
+            //---------Setup------
+            SetupForDeleteServer();
+            PopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            _environmentModel.Setup(s => s.IsLocalHost).Returns(true);
+            var _actionCalled = false;
+            //---------Execute------
+            var msg = new DeleteFolderMessage("folderName", () =>
+            {
+                _actionCalled = true;
+            });
+            _mainViewModel.Handle(msg);
+            //---------Verify------
+            Assert.IsTrue(_actionCalled);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewmodel_HandleDeleteResourceMessage")]
+        public void MainViewmodel_HandleDeleteFolderMessage_ActionToPerform_NoResult_ActionNotPerformed()
+        {
+            //---------Setup------
+            SetupForDeleteServer();
+            PopupController.Setup(controller => controller.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.YesNo, MessageBoxImage.Warning, It.IsAny<string>())).Returns(MessageBoxResult.No);
+            _environmentModel.Setup(s => s.IsLocalHost).Returns(true);
+            var _actionCalled = false;
+            //---------Execute------
+            var msg = new DeleteFolderMessage("folderName", () =>
+            {
+                _actionCalled = true;
+            });
+            _mainViewModel.Handle(msg);
+            //---------Verify------
+            Assert.IsFalse(_actionCalled);
         }
 
         #endregion delete

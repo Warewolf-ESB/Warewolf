@@ -1,4 +1,5 @@
-﻿using Dev2.Activities;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dev2.Activities;
 using Dev2.AppResources.Repositories;
 using Dev2.Data.ServiceModel;
 using Dev2.Messages;
@@ -15,7 +16,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Input;
@@ -447,7 +447,7 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType <= ResourceType.ServerSource && (Permissions.HasFlag(Permissions.View)  || Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.Contribute)))
+                if(ResourceType <= ResourceType.ServerSource && (Permissions.HasFlag(Permissions.View) || Permissions.HasFlag(Permissions.Administrator) || Permissions.HasFlag(Permissions.Contribute)))
                 {
 
                     return true;
@@ -954,7 +954,21 @@ namespace Dev2.Models
 
                 if(contextualResourceModels.Any())
                 {
-                    EventPublishers.Aggregator.Publish(new DeleteResourcesMessage(contextualResourceModels, true, () =>
+                    var displayName = DisplayName;
+                    EventPublishers.Aggregator.Publish(new DeleteResourcesMessage(contextualResourceModels, displayName, true, () =>
+                    {
+                        for(int i = folderList.Count - 1; i >= 0; i--)
+                        {
+                            if(folderList[i].ResourceType == ResourceType.Folder && (folderList[i].Children.Count == 0 || folderList[i].Children.All(c => c.ResourceType == ResourceType.Folder)))
+                            {
+                                StudioResourceRepository.Instance.DeleteFolder(folderList[i]);
+                            }
+                        }
+                    }));
+                }
+                else
+                {
+                    EventPublishers.Aggregator.Publish(new DeleteFolderMessage(DisplayName, () =>
                     {
                         for(int i = folderList.Count - 1; i >= 0; i--)
                         {
@@ -1125,10 +1139,10 @@ namespace Dev2.Models
             // ReSharper restore ExplicitCallerInfoArgument           
             CheckStateChangedArgs checkStateChangedArgs = new CheckStateChangedArgs(preState.GetValueOrDefault(false), value.GetValueOrDefault(false), ResourceId, ResourceType);
             if(OnCheckedStateChangedAction != null)
-                {
+            {
                 OnCheckedStateChangedAction.Invoke(checkStateChangedArgs);
-                }
             }
+        }
 
         void UpdateParent(bool updateParent)
         {
