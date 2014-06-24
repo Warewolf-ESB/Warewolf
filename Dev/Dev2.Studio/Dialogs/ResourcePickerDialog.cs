@@ -64,6 +64,7 @@ namespace Dev2.Dialogs
         {
             if(_environmentModel != null)
             {
+                _navigationViewModel.FilterEnvironment = _environmentModel;
                 _navigationViewModel.Filter(model => model.EnvironmentId == _environmentModel.ID);
             }
             else

@@ -14,8 +14,10 @@ namespace Dev2.Studio.ViewModels.Navigation
         ExplorerItemModel SelectedItem { get; set; }
         void Dispose();
         bool IsFromActivityDrop { get; set; }
+        IEnvironmentModel FilterEnvironment { get; set; }
+
         void BringItemIntoView(IContextualResourceModel item);
 
-        void Filter(Func<ExplorerItemModel, bool> filter,bool fromFilter=false);
+        void Filter(Func<ExplorerItemModel, bool> filter, bool fromFilter = false);
     }
 }

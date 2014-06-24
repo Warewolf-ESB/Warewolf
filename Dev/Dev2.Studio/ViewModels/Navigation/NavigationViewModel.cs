@@ -35,7 +35,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         #region private fields
 
         RelayCommand _refreshMenuCommand;
-        enDsfActivityType _activityType;
         readonly NavigationViewModelType _navigationViewModelType;
         bool _fromActivityDrop;
         readonly IEventAggregator _eventPublisher;
@@ -57,7 +56,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             EnvironmentRepository = environmentRepository;
             Context = context;
 
-            _activityType = activityType;
+            DsfActivityType = activityType;
             _fromActivityDrop = isFromActivityDrop;
             _navigationViewModelType = navigationViewModelType;
             Environments = new List<IEnvironmentModel>();
@@ -76,7 +75,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public List<IEnvironmentModel> Environments { get; private set; }
 
-        public enDsfActivityType DsfActivityType { get { return _activityType; } set { _activityType = value; } }
+        public enDsfActivityType DsfActivityType { get; set; }
 
         public bool IsFromActivityDrop
         {
@@ -93,6 +92,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 }
             }
         }
+        public IEnvironmentModel FilterEnvironment { get; set; }
 
         public ExplorerItemModel SelectedItem
         {
@@ -278,8 +278,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
             var tmpSelected = SelectedItem;
             List<ExplorerItemModel> expandedList = new List<ExplorerItemModel>();
-            // Added the Where clause to only refresh the connected environments.Massimo.Guerrera BUG 9441
-            // Added "|| c.IsLocalHost()" to the Where clause to connect to disconnected localhost - 2013.08.13: Ashley Lewis for bug 10106 (studio autoconnect)
             foreach(var environment in Environments.Where(c => c.IsConnected || c.IsLocalHost))
             {
                 var explorerItemModel = ExplorerItemModels.FirstOrDefault(c => c.EnvironmentId == environment.ID);
@@ -349,21 +347,28 @@ namespace Dev2.Studio.ViewModels.Navigation
             Func<ExplorerItemModel, bool> serviceFilter = model => ((model.ResourceType >= ResourceType.DbService && model.ResourceType <= ResourceType.WebService));
             Func<ExplorerItemModel, bool> sourceFilter = model => ((model.ResourceType >= ResourceType.DbSource && model.ResourceType <= ResourceType.ServerSource));
 
+            Func<ExplorerItemModel, bool> environmentFilter = model => true;
+
+            if(FilterEnvironment != null)
+            {
+                environmentFilter = model => model.EnvironmentId == FilterEnvironment.ID;
+            }
+
             if(filter != null)
             {
                 switch(DsfActivityType)
                 {
                     case enDsfActivityType.All:
-                        ExplorerItemModels = StudioResourceRepository.Filter(filter);
+                        ExplorerItemModels = StudioResourceRepository.Filter(model => filter(model) && environmentFilter(model));
                         break;
                     case enDsfActivityType.Workflow:
-                        ExplorerItemModels = StudioResourceRepository.Filter(model => workflowFilter(model) && filter(model));
+                        ExplorerItemModels = StudioResourceRepository.Filter(model => workflowFilter(model) && filter(model) && environmentFilter(model));
                         break;
                     case enDsfActivityType.Service:
-                        ExplorerItemModels = StudioResourceRepository.Filter(model => serviceFilter(model) && filter(model));
+                        ExplorerItemModels = StudioResourceRepository.Filter(model => serviceFilter(model) && filter(model) && environmentFilter(model));
                         break;
                     case enDsfActivityType.Source:
-                        ExplorerItemModels = StudioResourceRepository.Filter(model => sourceFilter(model) && filter(model));
+                        ExplorerItemModels = StudioResourceRepository.Filter(model => sourceFilter(model) && filter(model) && environmentFilter(model));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -393,13 +398,13 @@ namespace Dev2.Studio.ViewModels.Navigation
                         ExplorerItemModels = StudioResourceRepository.ExplorerItemModels;
                         break;
                     case enDsfActivityType.Workflow:
-                        ExplorerItemModels = StudioResourceRepository.Filter(workflowFilter);
+                        ExplorerItemModels = StudioResourceRepository.Filter(model => workflowFilter(model) && environmentFilter(model));
                         break;
                     case enDsfActivityType.Service:
-                        ExplorerItemModels = StudioResourceRepository.Filter(serviceFilter);
+                        ExplorerItemModels = StudioResourceRepository.Filter(model => serviceFilter(model) && environmentFilter(model));
                         break;
                     case enDsfActivityType.Source:
-                        ExplorerItemModels = StudioResourceRepository.Filter(sourceFilter);
+                        ExplorerItemModels = StudioResourceRepository.Filter(model => sourceFilter(model) && environmentFilter(model));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -414,7 +419,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public ExplorerItemModel FindChild(IContextualResourceModel resource)
         {
-            var explorerItemModels = ExplorerItemModels.SelectMany(explorerItemModel => TreeEx.Descendants(explorerItemModel)).ToList();
+            var explorerItemModels = ExplorerItemModels.SelectMany(explorerItemModel => explorerItemModel.Descendants()).ToList();
             return resource != null ? explorerItemModels.FirstOrDefault(model => model.ResourceId == resource.ID && model.EnvironmentId == resource.Environment.ID) : null;
         }
 

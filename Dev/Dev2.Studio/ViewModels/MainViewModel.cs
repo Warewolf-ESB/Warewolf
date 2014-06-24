@@ -1240,6 +1240,8 @@ namespace Dev2.Studio.ViewModels
                         }
                         else
                         {
+                            var fetchResourceDefinition = environment.ResourceRepository.FetchResourceDefinition(environment, environment.Connection.WorkspaceID, resource.ID);
+                            resource.WorkflowXaml = fetchResourceDefinition.Message;
                             resource.IsWorkflowSaved = item.IsWorkflowSaved;
                             resource.OnResourceSaved += model => GetWorkspaceItemRepository().UpdateWorkspaceItemIsWorkflowSaved(model);
                             AddWorkSurfaceContextFromWorkspace(resource);
