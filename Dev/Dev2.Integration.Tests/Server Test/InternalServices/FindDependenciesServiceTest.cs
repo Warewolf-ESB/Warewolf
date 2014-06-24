@@ -5,6 +5,8 @@ using System.Xml.Linq;
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.InternalServices {
     /// <summary>
     /// Summary description for FindDependenciesServiceTest
