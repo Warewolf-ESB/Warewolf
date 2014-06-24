@@ -6,6 +6,7 @@ using Dev2.Models;
 using Dev2.Runtime.Hosting;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using System;
@@ -369,6 +370,13 @@ namespace Dev2.AppResources.Repositories
                 var environmentId = GetCurrentEnvironment();
                 var parent = FindItem(model => model.ResourcePath.Equals(resourcePath) && model.EnvironmentId == environmentId);
                 var alreadyAdded = FindItem(model => model.ResourceId == item.ResourceId && model.ResourcePath == item.ResourcePath) != null;
+                var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
+                var resourceRepository = environmentModel.ResourceRepository;
+                var resourceModel = resourceRepository.Find(model => model.ID == item.ResourceId);
+                if(resourceModel == null)
+                {
+                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
+                }
                 if(parent != null && !alreadyAdded)
                 {
                     explorerItem.EnvironmentId = parent.EnvironmentId;
