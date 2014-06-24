@@ -7,7 +7,8 @@ using System.Linq;
 
 namespace Dev2.Data.Tests.Operations
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class Dev2IndexFinderTests
     {
         private IDev2IndexFinder _indexFinder;

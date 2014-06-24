@@ -8,7 +8,8 @@ using Unlimited.UnitTest.Framework.ConverterTests.GraphTests;
 
 namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PocoPathTests {
 
         #region GetSegements Tests

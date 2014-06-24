@@ -9,7 +9,8 @@ namespace Dev2.Tests
     /// <summary>
     /// Summary description for check-in
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataListFactoryTest
     {
         /// <summary>

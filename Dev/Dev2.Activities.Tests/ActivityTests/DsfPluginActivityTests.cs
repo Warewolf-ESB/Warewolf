@@ -9,7 +9,8 @@ using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DsfPluginActivityTests
     {
         /// <summary>

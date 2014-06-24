@@ -4,7 +4,7 @@ using Dev2.Common.Wrappers.Interfaces;
 
 namespace Dev2.Common.Wrappers
 {
-     
+     [ExcludeFromCodeCoverage]
     public class DirectoryEntryWrapper :IDirectoryEntry
     {
         private readonly DirectoryEntry _wrapped;

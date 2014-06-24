@@ -5,7 +5,8 @@ using Warewolf.ComponentModel;
 
 namespace Dev2.Sql.Tests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ExtensiosnTests
     {
         [TestMethod]

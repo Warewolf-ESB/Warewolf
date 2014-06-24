@@ -9,7 +9,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Core.Tests.Feedback
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FeedbackRecorderTests
     {
         #region Class Members

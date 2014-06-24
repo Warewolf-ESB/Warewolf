@@ -13,7 +13,8 @@ using Moq;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ClearLogsTest
     {
         private static readonly Guid _workspaceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");

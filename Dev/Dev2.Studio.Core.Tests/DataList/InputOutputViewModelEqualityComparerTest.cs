@@ -9,7 +9,8 @@ namespace Dev2.Core.Tests.DataList
     /// <summary>
     /// Summary description for InputOutputViewModelEqualityComparerTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class InputOutputViewModelEqualityComparerTest
     {
         /// <summary>

@@ -16,7 +16,8 @@ using Moq;
 namespace Dev2.Core.Tests.Helpers
 {
     // ReSharper disable InconsistentNaming
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class VersionCheckerTests
     {
         [TestMethod]

@@ -5,7 +5,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Create
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class CreateDesignerViewModelTests
     {

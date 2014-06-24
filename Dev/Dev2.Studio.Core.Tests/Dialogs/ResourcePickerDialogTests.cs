@@ -28,7 +28,8 @@ using System.Linq;
 
 namespace Dev2.Core.Tests.Dialogs
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class ResourcePickerDialogTests
     {

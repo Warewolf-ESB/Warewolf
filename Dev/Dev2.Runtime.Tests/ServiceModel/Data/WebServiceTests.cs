@@ -12,7 +12,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
 
     // PBI 1220 - 2013.05.26 - TWR - Created
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WebServiceTests
     {
         #region CTOR

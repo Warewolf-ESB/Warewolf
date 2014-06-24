@@ -16,7 +16,8 @@ using Moq;
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 1220 - 2013.05.27 - TWR - Created
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WebServicesTest
     {
         string _requestResponse;

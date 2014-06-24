@@ -11,7 +11,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Factories
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DsfActivityFactoryTests
     {
         [TestMethod]

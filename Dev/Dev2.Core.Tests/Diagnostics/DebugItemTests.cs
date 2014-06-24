@@ -8,7 +8,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Diagnostics
 {
     // ReSharper disable InconsistentNaming
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DebugItemTests
     {
         const string LongText = "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."

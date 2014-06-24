@@ -7,7 +7,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Services
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class UserConfigurationServiceTests
     {
         #region Static Class Init

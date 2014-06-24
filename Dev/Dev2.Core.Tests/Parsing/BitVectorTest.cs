@@ -8,7 +8,8 @@ namespace Dev2.Tests.Parsing
     /// <summary>
     /// Summary description for BitVectorTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BitVectorTest
     {
         public BitVectorTest()

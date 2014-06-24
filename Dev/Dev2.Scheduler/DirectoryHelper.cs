@@ -4,7 +4,7 @@ using Dev2.Scheduler.Interfaces;
 
 namespace Dev2.Scheduler
 {
-     // not required for code coverage this is simply a pass through required for unit testing
+    [ExcludeFromCodeCoverage] // not required for code coverage this is simply a pass through required for unit testing
     public class DirectoryHelper : IDirectoryHelper
     {
         public string[] GetFiles(string path)

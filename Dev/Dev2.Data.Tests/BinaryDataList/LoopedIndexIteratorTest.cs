@@ -8,7 +8,8 @@ namespace Dev2.Data.Tests.BinaryDataList
     /// <summary>
     /// Summary description for LoopedIndexIteratorTEst
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class LoopedIndexIteratorTest
     {
         /// <summary>

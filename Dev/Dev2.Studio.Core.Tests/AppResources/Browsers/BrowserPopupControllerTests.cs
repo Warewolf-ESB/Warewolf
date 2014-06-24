@@ -6,7 +6,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.AppResources.Browsers
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BrowserPopupControllerTests
     {
         #region ShowPopup

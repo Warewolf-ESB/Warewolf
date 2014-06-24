@@ -21,7 +21,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
 // ReSharper restore CheckNamespace
 {
     [TestClass]
-    
+    [ExcludeFromCodeCoverage]
     public class IntellisenseTextBoxTests
     {
 

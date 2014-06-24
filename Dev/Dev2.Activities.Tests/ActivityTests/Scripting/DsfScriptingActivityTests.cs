@@ -14,7 +14,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
     /// <summary>
     /// Summary description for CalculateActivityTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DsfScriptingActivityTests : BaseActivityUnitTest
     {
         /// <summary>

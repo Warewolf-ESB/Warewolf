@@ -9,7 +9,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.Webs
 {
-    [TestClass]    public class WebSourceCallbackHandlerTests
+    [TestClass][ExcludeFromCodeCoverage]
+    public class WebSourceCallbackHandlerTests
     {
         static ImportServiceContext _importContext;
 

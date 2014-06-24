@@ -4,7 +4,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Infrastructure.Tests.Communication
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DesignValidationMemoTests
     {
         [TestMethod]

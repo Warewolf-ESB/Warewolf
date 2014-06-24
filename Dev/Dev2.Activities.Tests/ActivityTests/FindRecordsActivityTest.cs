@@ -11,7 +11,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for FindRecordsActivityTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class FindRecordsActivityTest : BaseActivityUnitTest
     {

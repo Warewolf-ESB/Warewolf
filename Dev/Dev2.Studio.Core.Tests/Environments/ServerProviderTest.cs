@@ -12,7 +12,8 @@ namespace Dev2.Core.Tests.Environments
 {
     // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ServerProviderTest
     {
 

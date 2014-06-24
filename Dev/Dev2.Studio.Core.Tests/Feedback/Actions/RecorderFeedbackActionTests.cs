@@ -14,7 +14,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.Feedback.Actions
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RecorderFeedbackActionTests
     {
         #region Class Members

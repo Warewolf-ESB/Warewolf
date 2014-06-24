@@ -7,7 +7,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Zip
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class ZipDesignerViewModelTests
     {

@@ -11,14 +11,15 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Copy
     {
         [When(@"the copy file tool is executed")]
         public void WhenTheCopyFileToolIsExecuted()
-        {   if(! Directory.Exists("c:\\copydir"))
         {
+            if(!Directory.Exists("c:\\copydir"))
+            {
                 Directory.CreateDirectory("c:\\copydir");
                 Directory.CreateDirectory("c:\\copydir\\1");
                 Directory.CreateDirectory("c:\\copydir\\6");
                 Directory.CreateDirectory("c:\\copydir\\33");
                 // ReSharper disable LocalizableElement
-                File.WriteAllText("c:\\copydir\bob.txt","bob");
+                File.WriteAllText("c:\\copydir\bob.txt", "bob");
 
                 File.WriteAllText("c:\\copydir\\1\\bob.txt", "dora");
                 File.WriteAllText("c:\\copydir\\6\\bob.txt", "moon");

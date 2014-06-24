@@ -1,4 +1,5 @@
-﻿using System.Activities.Statements;
+﻿using System;
+using System.Activities.Statements;
 using Dev2.Activities.Specs.BaseTypes;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -22,11 +23,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         {
             BuildShapeAndTestData();
 
-
             var create = new DsfPathCreate
             {
                 OutputPath = ScenarioContext.Current.Get<string>(CommonSteps.DestinationHolder),
-                Username = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder),
+                Username = ScenarioContext.Current.Get<string>(CommonSteps.DestinationUsernameHolder).ResolveDomain(),
                 Password = ScenarioContext.Current.Get<string>(CommonSteps.DestinationPasswordHolder),
                 Overwrite = ScenarioContext.Current.Get<bool>(CommonSteps.OverwriteHolder),
                 Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder)

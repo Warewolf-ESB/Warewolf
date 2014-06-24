@@ -12,7 +12,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Data.Tests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class XPathParserTests
     {
         readonly XPathParser _xPathParser = new XPathParser();

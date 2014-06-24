@@ -11,7 +11,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
     /// <summary>
     /// Summary description for DateTimeParserTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DateTimeParserTests
     {
         static IDateTimeParser parser;

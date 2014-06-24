@@ -10,7 +10,8 @@ using Moq.Protected;
 
 namespace Dev2.Activities.Designers.Tests.GetWebRequestTests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class GetWebRequestViewModelTests
     {
         [TestMethod]

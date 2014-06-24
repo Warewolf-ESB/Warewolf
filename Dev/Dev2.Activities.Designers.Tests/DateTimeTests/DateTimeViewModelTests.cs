@@ -8,7 +8,8 @@ using Moq.Protected;
 
 namespace Dev2.Activities.Designers.Tests.DateTimeTests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DateTimeViewModelTests
     {
         [TestMethod]

@@ -13,7 +13,8 @@ using Moq;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Utils
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ResourceChangeHandlerTests
     {
         [TestMethod]

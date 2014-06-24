@@ -10,7 +10,8 @@ namespace Dev2.Tests.DataList
     /// <summary>
     /// Summary description for BrokerTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BrokerTest {
 
         /// <summary>

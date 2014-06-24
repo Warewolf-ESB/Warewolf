@@ -219,6 +219,7 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="Toolbox\FileAndFolder\Rename\RenameSteps.cs" />
+    <Compile Include="Toolbox\FileAndFolder\DomainResolution.cs" />
     <Compile Include="Toolbox\FileAndFolder\Unzip\Unzip.feature.cs">
       <DependentUpon>Unzip.feature</DependentUpon>
       <DesignTime>True</DesignTime>

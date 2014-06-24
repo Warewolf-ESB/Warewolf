@@ -16,7 +16,8 @@ using Newtonsoft.Json;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class TerminateExecutionTest
     {
         private static readonly Guid WorkspaceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");

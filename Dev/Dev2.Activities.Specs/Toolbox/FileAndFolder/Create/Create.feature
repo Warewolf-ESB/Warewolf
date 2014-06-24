@@ -20,11 +20,10 @@ Scenario Outline: Create file at location
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-		| Name       | destination | destinationLocation                                            | selected | username               | password | resultVar       | result  | errorOccured |
-		| Local      | [[path]]    | c:\myfile.txt                                                  | True     | ""                     | ""       | [[result]]      | Success | NO           |
-		| UNC        | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\test.txt        | True     | ""                     | ""       | [[result]]      | Success | NO           |
-		| UNC Secure | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\test.txt | True     | Dev2\IntegrationTester | I73573r0 | [[result]]      | Success | NO           |
-		| FTP        | [[path]]    | ftp://rsaklfsvrsbspdc:1001/FORTESTING/test.txt                 | True     | ""                     | ""       | [[result]]      | Success | NO           |
-		| FTPS       | [[path]]    | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test.txt                 | True     | IntegrationTester      | I73573r0 | [[result]]      | Success | NO           |
-		| SFTP       | [[path]]    | sftp://localhost/test.txt                                      | True     | dev2                   | Q/ulw&]  | [[result]]      | Success | NO           |
-		#| SFTP       | [[path]]    | sftp://localhost/test.txt                                      | True     | dev2                   | Q/ulw&]  | [[result]][[a]] | Success | AN           |
+		| Name       | destination | destinationLocation                                            | selected | username                     | password | resultVar       | result  | errorOccured |
+		| Local      | [[path]]    | c:\myfile.txt                                                  | True     | ""                           | ""       | [[result]]      | Success | NO           |
+		| UNC        | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\test.txt        | True     | ""                           | ""       | [[result]]      | Success | NO           |
+		| UNC Secure | [[path]]    | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\test.txt | True     | dev2.local\IntegrationTester | I73573r0 | [[result]]      | Success | NO           |
+		| FTP        | [[path]]    | ftp://rsaklfsvrsbspdc:1001/FORTESTING/test.txt                 | True     | ""                           | ""       | [[result]]      | Success | NO           |
+		| FTPS       | [[path]]    | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test.txt                 | True     | IntegrationTester            | I73573r0 | [[result]]      | Success | NO           |
+		| SFTP       | [[path]]    | sftp://localhost/test.txt                                      | True     | dev2                         | Q/ulw&]  | [[result]]      | Success | NO           |

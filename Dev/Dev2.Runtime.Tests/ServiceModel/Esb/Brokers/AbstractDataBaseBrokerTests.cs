@@ -11,7 +11,8 @@ using Moq;
 
 namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class AbstractDataBaseBrokerTests
     {
         [TestMethod]

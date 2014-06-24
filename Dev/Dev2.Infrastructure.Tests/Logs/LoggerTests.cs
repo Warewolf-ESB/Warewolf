@@ -10,7 +10,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable ExplicitCallerInfoArgument
 namespace Dev2.Infrastructure.Tests.Logs
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class LoggerTests
     {
         TestTraceListner _testTraceListner;

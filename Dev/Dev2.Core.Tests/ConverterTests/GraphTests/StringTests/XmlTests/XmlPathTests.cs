@@ -7,7 +7,8 @@ using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class XmlPathTests {
 
         #region GetSegments Tests

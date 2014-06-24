@@ -52,7 +52,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Workflows
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WorkflowDesignerUnitTest
     {
 

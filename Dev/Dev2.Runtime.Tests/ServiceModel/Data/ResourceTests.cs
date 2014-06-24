@@ -13,7 +13,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // ReSharper disable InconsistentNaming
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ResourceTests
     {
         #region Equals

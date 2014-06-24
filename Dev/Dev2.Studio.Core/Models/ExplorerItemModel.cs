@@ -1000,7 +1000,7 @@ namespace Dev2.Models
             }
 
         }
-        
+        [ExcludeFromCodeCoverage]
         public void CancelRename(KeyEventArgs eventArgs)
         {
             if(eventArgs.Key == Key.Escape)

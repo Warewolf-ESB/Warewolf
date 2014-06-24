@@ -12,7 +12,8 @@ using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ConnectionTests
     {
 

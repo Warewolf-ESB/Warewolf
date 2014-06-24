@@ -9,7 +9,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.ViewModelTests.Dialogs
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class Dev2MessageBoxViewModelTests
     {
 

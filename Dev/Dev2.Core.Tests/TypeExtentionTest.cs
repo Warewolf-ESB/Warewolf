@@ -8,7 +8,8 @@ namespace Dev2.Tests
     /// <summary>
     /// Summary description for TypeExtentionTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class TypeExtentionTest
     {
         /// <summary>

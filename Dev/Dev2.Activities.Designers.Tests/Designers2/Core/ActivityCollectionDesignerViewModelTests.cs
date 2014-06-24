@@ -14,7 +14,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ActivityCollectionDesignerViewModelTests
     {
         [TestMethod]

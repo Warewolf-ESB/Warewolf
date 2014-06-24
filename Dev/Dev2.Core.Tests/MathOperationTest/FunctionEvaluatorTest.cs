@@ -9,7 +9,8 @@ namespace Dev2.Tests.MathOperationTest
     /// <summary>
     /// Summary description for FunctionEvaluatorTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FunctionEvaluatorTest
     {
         private IFunctionEvaluator _eval = MathOpsFactory.CreateFunctionEvaluator();

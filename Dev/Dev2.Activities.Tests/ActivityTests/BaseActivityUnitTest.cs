@@ -25,7 +25,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace ActivityUnitTests
 // ReSharper restore CheckNamespace
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BaseActivityUnitTest
     {
 

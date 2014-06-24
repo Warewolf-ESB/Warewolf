@@ -11,7 +11,8 @@ using System;
 
 namespace Dev2.Data.Tests.Operations
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class Dev2ReplaceOperationTests
     {
         public Dev2ReplaceOperationTests()

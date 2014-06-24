@@ -19,7 +19,8 @@ namespace Dev2.Core.Tests.Utils
     /// <summary>
     /// Summary description for WorkflowDesignerUtilsTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WorkflowDesignerUtilsTest
     {
         /// <summary>

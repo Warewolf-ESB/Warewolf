@@ -6,7 +6,8 @@ using Unlimited.Framework.Converters.Graph.String;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class StringInterrogatorTests {
 
         internal string XmlGiven() {

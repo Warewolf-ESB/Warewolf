@@ -33,7 +33,8 @@ namespace Dev2.Core.Tests
     /// <summary>
     ///     Summary description for NavigationViewModelTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DeployNavigationViewModelTest
     {
         #region Test Variables

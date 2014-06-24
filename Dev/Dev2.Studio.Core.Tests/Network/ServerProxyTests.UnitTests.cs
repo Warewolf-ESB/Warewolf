@@ -14,8 +14,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Network
 {
-    
-    [TestClass]    public partial class ServerProxyTests
+    [ExcludeFromCodeCoverage]
+    [TestClass]
+    public partial class ServerProxyTests
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]

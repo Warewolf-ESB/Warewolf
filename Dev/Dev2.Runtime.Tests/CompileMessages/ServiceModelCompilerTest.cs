@@ -10,7 +10,8 @@ namespace Dev2.Tests.Runtime.CompileMessages
     /// <summary>
     /// Summary description for ServiceModelCompilerTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ServiceModelCompilerTest
     {
         /// <summary>

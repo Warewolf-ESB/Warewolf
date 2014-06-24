@@ -11,7 +11,8 @@ using Moq;
 
 namespace Dev2.Runtime.Configuration.Tests.ViewModels
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class MainViewModelTests
     {
         [TestMethod]

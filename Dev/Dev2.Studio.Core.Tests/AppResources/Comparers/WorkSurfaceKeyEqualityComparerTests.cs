@@ -15,7 +15,8 @@ namespace Dev2.Core.Tests.AppResources.Comparers
     /// <summary>
     /// Summary description for WorkSurfaceKeyEqualityComparerTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WorkSurfaceKeyEqualityComparerTests
     {
         /// <summary>

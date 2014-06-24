@@ -13,7 +13,8 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// <summary>
     /// Summary description for SequenceActivityFindMissingStrategyTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class SequenceActivityFindMissingStrategyTests
     {
         [TestMethod]

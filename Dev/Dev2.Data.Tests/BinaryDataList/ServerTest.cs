@@ -17,7 +17,8 @@ namespace Dev2.Data.Tests.BinaryDataList
     /// <summary>
     /// Summary description for ServerTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ServerTest
     {
 

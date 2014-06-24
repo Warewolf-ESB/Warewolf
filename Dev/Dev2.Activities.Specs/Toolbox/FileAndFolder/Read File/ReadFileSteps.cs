@@ -27,7 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
             var fileRead = new DsfFileRead
             {
                 InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
-                Username = ScenarioContext.Current.Get<string>(CorrectUsernameDomain(CommonSteps.SourceUsernameHolder)),
+                Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder).ResolveDomain(),
                 Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
                 Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder)
             };
@@ -38,25 +38,6 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
             };
 
             ScenarioContext.Current.Add("activity", fileRead);
-        }
-
-        private string CorrectUsernameDomain(string IncorrectUsername)
-        {
-            bool inDomain = true;
-            try
-            {
-                System.DirectoryServices.ActiveDirectory.Domain.GetComputerDomain();
-            }
-            catch (ActiveDirectoryObjectNotFoundException)
-            {
-                inDomain = false;
-            }
-            var DomainPart = IncorrectUsername.IndexOf("\\");
-            if (DomainPart == -1 && !inDomain)
-            {
-                return IncorrectUsername.Replace(IncorrectUsername.Substring(0, DomainPart + 1), ".\\");
-            }
-            return IncorrectUsername;
         }
     }
 }

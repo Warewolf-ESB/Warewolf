@@ -7,7 +7,8 @@ namespace Dev2.Data.Tests
     /// <summary>
     /// Summary description for XmlHelperTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class XmlHelperTest
     {
         /// <summary>

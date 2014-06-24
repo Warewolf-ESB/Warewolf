@@ -29,7 +29,8 @@ using Newtonsoft.Json;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Hosting
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ResourceCatalogTests
     {
         // Change this if you change the number of resources saved by SaveResources()

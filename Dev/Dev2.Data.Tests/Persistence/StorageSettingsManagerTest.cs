@@ -10,7 +10,8 @@ namespace Dev2.Data.Tests.Persistence
     /// <summary>
     /// Summary description for StorageSettingsManagerTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class StorageSettingsManagerTest
     {

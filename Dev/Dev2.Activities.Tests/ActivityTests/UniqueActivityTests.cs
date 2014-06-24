@@ -14,7 +14,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DataSplitActivityTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class UniqueActivityTests : BaseActivityUnitTest
     {
         /// <summary>

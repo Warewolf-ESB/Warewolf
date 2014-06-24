@@ -10,7 +10,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 // ReSharper disable ImplicitlyCapturedClosure
 namespace Dev2.Tests.Activities.TOTests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ActivityDtoTests
     {
         [TestMethod]

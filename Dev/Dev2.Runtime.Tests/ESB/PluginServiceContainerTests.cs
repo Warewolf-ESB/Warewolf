@@ -10,7 +10,8 @@ using Moq;
 namespace Dev2.Tests.Runtime.ESB
 {
     // BUG 9619 - 2013.06.05 - TWR - Created
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PluginServiceContainerTests
     {
         #region ClassInitialize

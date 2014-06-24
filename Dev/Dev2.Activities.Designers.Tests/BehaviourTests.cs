@@ -11,7 +11,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BehaviourTests
     {
         #region DataGridFocusTextOnLoadBehavior

@@ -10,7 +10,8 @@ using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.OutputTests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ShapedXmlOutputFormatterTests
     {
         #region Private/Internal Methods

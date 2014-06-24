@@ -12,7 +12,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // PBI 5656 - 2013.05.20 - TWR - Created
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WebSourceTests
     {
         #region Save

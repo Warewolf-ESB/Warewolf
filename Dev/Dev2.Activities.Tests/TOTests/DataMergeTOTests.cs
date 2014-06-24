@@ -8,7 +8,8 @@ namespace Dev2.Tests.Activities.TOTests
     /// <summary>
     /// Summary description for DataMergeTOTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class DataMergeTOTests
     {

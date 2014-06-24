@@ -15,7 +15,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
     /// <author>trevor.williams-ros</author>
     /// <date>2013/02/13</date>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ServicesTests
     {
         #region CreateInputsMethod

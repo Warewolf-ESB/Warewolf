@@ -5,7 +5,8 @@ using System.Collections.Generic;
 
 namespace Dev2.Runtime.Configuration.Tests.ComponentModel
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class SettingsObjectTests
     {
         [TestMethod]

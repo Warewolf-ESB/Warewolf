@@ -10,7 +10,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.Services
 {
     // ReSharper disable InconsistentNaming
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RenameResourceTests
     {
 

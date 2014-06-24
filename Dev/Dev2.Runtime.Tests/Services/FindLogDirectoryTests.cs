@@ -12,7 +12,8 @@ using Moq;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FindLogDirectoryTests
     {
         static string _testDir;

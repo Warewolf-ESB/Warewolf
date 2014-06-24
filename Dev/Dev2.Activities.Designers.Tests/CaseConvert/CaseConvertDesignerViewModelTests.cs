@@ -8,7 +8,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.CaseConvert
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class CaseConvertDesignerViewModelTests
     {
         [TestMethod]

@@ -10,7 +10,8 @@ namespace Dev2.Tests.Activities.TOTests
     /// <summary>
     /// Summary description for DataSplitDTOTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataSplitDTOTests
     {
         [TestMethod]

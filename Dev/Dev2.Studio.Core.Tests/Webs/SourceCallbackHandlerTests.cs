@@ -15,7 +15,8 @@ using Newtonsoft.Json.Linq;
 
 namespace Dev2.Core.Tests.Webs
 {
-    [TestClass]    public class SourceCallbackHandlerTests
+    [TestClass][ExcludeFromCodeCoverage]
+    public class SourceCallbackHandlerTests
     {
         static ImportServiceContext _importContext;
 

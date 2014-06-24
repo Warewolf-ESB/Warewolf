@@ -11,7 +11,8 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// <summary>
     /// Summary description for DsfActivityFindMissingStrategyTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DsfActivityFindMissingStrategyTests
     {
         /// <summary>

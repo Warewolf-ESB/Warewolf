@@ -11,7 +11,8 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// <summary>
     /// Summary description for ForEachActivityFindMissingStrategyTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ForEachActivityFindMissingStrategyTests
     {
         public ForEachActivityFindMissingStrategyTests()

@@ -9,7 +9,8 @@ namespace Dev2.Core.Tests.UtilsTests
     /// <summary>
     /// Summary description for NewWorkflowNamesTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataListConversionUtilTest
     {
         /// <summary>

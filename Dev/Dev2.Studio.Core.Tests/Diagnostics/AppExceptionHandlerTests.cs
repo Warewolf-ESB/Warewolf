@@ -15,7 +15,8 @@ using Moq.Protected;
 
 namespace Dev2.Core.Tests.Diagnostics
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class AppExceptionHandlerTests
     {
         static readonly object TestGuard = new object();

@@ -20,7 +20,8 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WorkflowHelperTests
     {
         #region Expected Namespaces/Assemblies

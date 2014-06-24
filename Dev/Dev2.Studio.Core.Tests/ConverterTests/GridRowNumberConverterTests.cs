@@ -10,7 +10,8 @@ using System.Windows.Controls;
 
 namespace Dev2.Core.Tests.ConverterTests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class GridRowNumberConverterTests
     {

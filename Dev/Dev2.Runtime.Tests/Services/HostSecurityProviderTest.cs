@@ -15,7 +15,8 @@ namespace Dev2.Tests.Runtime.Services
     /// <summary>
     /// Summary description for HostSecurityProviderTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class HostSecurityProviderTest
     {
         static XElement TestXml;

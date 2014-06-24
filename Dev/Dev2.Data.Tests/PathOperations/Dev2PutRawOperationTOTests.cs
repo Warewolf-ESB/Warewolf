@@ -6,7 +6,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable once InconsistentNaming
 namespace Dev2.Data.Tests.PathOperations
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class Dev2PutRawOperationTOTests
     {
         [TestMethod]

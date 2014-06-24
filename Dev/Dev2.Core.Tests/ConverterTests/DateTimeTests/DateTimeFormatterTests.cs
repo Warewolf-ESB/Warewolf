@@ -9,7 +9,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
     /// <summary>
     /// Summary description for DateTimeFormatterTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DateTimeFormatterTests
     {
         static IDateTimeFormatter formatter;

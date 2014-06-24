@@ -11,7 +11,8 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
     /// <summary>
     /// Summary description for DataGridActivityFindMissingStrategyTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataGridActivityFindMissingStrategyTests
     {
         public DataGridActivityFindMissingStrategyTests()

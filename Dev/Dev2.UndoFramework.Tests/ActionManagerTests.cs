@@ -10,7 +10,8 @@ namespace UndoFramework.Tests
     /// <summary>
     /// Summary description for ActionManagerTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class ActionManagerTests
     {
         Mock<AbstractAction> mockAction = new Mock<AbstractAction>();

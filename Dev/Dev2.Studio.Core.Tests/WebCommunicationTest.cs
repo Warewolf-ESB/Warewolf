@@ -17,7 +17,8 @@
 //using Dev2.Studio.Core;
 //
 //namespace Dev2.Core.Tests {
-//    [TestClass]//    
+//    [TestClass]
+//    [ExcludeFromCodeCoverage]
 //    public class WebCommunicationTest {
 //
 //        #region Get Tests

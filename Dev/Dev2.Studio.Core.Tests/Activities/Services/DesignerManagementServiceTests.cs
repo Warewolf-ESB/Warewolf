@@ -9,7 +9,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.Activities.Services
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DesignerManagementServiceTests
     {
 

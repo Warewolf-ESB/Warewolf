@@ -23,7 +23,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             var delete = new DsfPathDelete
             {
                 InputPath = ScenarioContext.Current.Get<string>(CommonSteps.SourceHolder),
-                Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder),
+                Username = ScenarioContext.Current.Get<string>(CommonSteps.SourceUsernameHolder).ResolveDomain(),
                 Password = ScenarioContext.Current.Get<string>(CommonSteps.SourcePasswordHolder),
                 Result = ScenarioContext.Current.Get<string>(CommonSteps.ResultVariableHolder)
             };

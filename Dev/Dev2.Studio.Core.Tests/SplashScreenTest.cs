@@ -8,7 +8,8 @@ namespace Dev2.Core.Tests
     /// <summary>
     /// Summary description for SplashScreenTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class SplashScreenTest
     {
 

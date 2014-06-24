@@ -14,7 +14,8 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // PBI 953 - 2013.05.16 - TWR - Created
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class EmailSourcesTests
     {
         const int SmtpTimeout = 30000;

@@ -8,7 +8,8 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests
     /// <summary>
     /// Summary description for DateTimeComparerTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DateTimeComparerTests
     {
         #region Fields

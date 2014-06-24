@@ -9,7 +9,8 @@ namespace Dev2.Tests.Activities.TOTests
     /// <summary>
     /// Summary description for CaseConvertDTOTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class CaseConvertDTOTests
     {
         [TestMethod]

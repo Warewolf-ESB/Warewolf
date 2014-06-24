@@ -10,7 +10,8 @@ namespace Dev2.Core.Tests {
     /// <summary>
     /// Summary description for WebResourceViewModelTest
     /// </summary>
-    [TestClass]    public class WebResourceViewModelTest {
+    [TestClass][ExcludeFromCodeCoverage]
+    public class WebResourceViewModelTest {
         /// <summary>
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.

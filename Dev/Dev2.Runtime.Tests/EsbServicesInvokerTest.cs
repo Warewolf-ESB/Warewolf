@@ -30,7 +30,8 @@ namespace Dev2.Tests.Runtime
     /// <summary>
     /// Summary description for DynamicServicesInvokerTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class EsbServicesInvokerTest
     {
         static readonly Guid TestWorkspaceID = new Guid("B1890C86-95D8-4612-A7C3-953250ED237A");

@@ -10,7 +10,8 @@ using Moq;
 
 namespace Dev2.Tests.Runtime.Services
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class AbstractServiceExecutionTests
     {
         #region Create Service

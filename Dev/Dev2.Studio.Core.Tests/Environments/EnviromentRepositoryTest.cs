@@ -31,7 +31,8 @@ namespace Dev2.Core.Tests.Environments
     /// <summary>
     /// Summary description for EnvironmentRepositoryTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class EnviromentRepositoryTest
     {
         // Needed for Source initialization!!!

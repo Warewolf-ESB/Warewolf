@@ -5,7 +5,8 @@ using Unlimited.Framework.Converters.Graph.Poco;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PocoPathSegmentTests
     {
         /// <summary>

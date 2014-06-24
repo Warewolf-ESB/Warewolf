@@ -14,7 +14,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.ServiceModel
 {
     // BUG 9500 - 2013.05.31 - TWR - Created
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class PluginServicesTest
     {
 

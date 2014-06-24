@@ -11,7 +11,8 @@ using Moq;
 
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class DateTimeIntellisenseProviderTests
     {

@@ -11,7 +11,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     /// <summary>
     /// Summary description for DbServiceTests
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DbServiceTests
     {
         static Service DeserializeService(string args)

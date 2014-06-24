@@ -12,7 +12,8 @@ namespace Unlimited.UnitTest.Framework
     /// <summary>
     /// Summary description for Dev2RecordsetIndexScopeTest 
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DataListLoadTest
     {
         const double _ticksPerSec = 10000000;

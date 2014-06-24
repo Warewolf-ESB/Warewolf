@@ -4,7 +4,7 @@ using Dev2.Common.Wrappers.Interfaces;
 
 namespace Dev2.Common.Wrappers
 {
-     
+     [ExcludeFromCodeCoverage]
     public class DirectoryEntryFactory : IDirectoryEntryFactory
     {
         public IDirectoryEntry Create(string path)

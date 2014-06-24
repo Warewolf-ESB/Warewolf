@@ -15,7 +15,8 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for RemoteDebugItemGenerationTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class RemoteDebugItemGenerationTest : BaseActivityUnitTest
     {
         /// <summary>

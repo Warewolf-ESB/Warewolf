@@ -11,7 +11,8 @@ namespace Dev2.Tests.MathOperationTest
     /// <summary>
     /// Summary description for FunctionTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class FunctionTest
     {
         public FunctionTest()

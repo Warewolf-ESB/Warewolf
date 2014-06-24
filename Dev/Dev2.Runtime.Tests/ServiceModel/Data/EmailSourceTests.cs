@@ -11,7 +11,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.Runtime.ServiceModel.Data
 {
     // PBI 953 - 2013.05.16 - TWR - Created
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class EmailSourceTests
     {
         #region Save

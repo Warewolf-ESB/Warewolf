@@ -11,7 +11,8 @@ using Newtonsoft.Json;
 namespace Dev2.Tests.Runtime.ServiceModel
 // ReSharper restore CheckNamespace
 {
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class DbSourceTests
     {
         #region ToString Tests

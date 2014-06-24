@@ -11,7 +11,8 @@ namespace Dev2.Tests.DataList
     /// <summary>
     /// Summary description for BinaryDataListTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class BinaryDataListTest
     {
         // ReSharper disable InconsistentNaming

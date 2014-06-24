@@ -51,6 +51,27 @@
                 <CodeCoverageItem binaryFile="Dev2.Studio.Core\bin\Debug\Dev2.Studio.Core.dll" pdbFile="Dev2.Studio.Core\bin\Debug\Dev2.Studio.Core.pdb" instrumentInPlace="true" />
                 <CodeCoverageItem binaryFile="Dev2.TaskScheduler.Wrappers\bin\Debug\Dev2.TaskScheduler.Wrappers.dll" pdbFile="Dev2.TaskScheduler.Wrappers\bin\Debug\Dev2.TaskScheduler.Wrappers.pdb" instrumentInPlace="true" />
                 <CodeCoverageItem binaryFile="Dev2.UndoFramework\bin\Debug\Dev2.UndoFramework.dll" pdbFile="Dev2.UndoFramework\bin\Debug\Dev2.UndoFramework.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" pdbFile="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Composition\bin\Debug\Dev2.Composition.dll" pdbFile="Dev2.Composition\bin\Debug\Dev2.Composition.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Crypto.HashGenerator\bin\Debug\Dev2.Crypto.HashGenerator.exe" pdbFile="Dev2.Crypto.HashGenerator\bin\Debug\Dev2.Crypto.HashGenerator.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.CustomControls\bin\Debug\Dev2.CustomControls.dll" pdbFile="Dev2.CustomControls\bin\Debug\Dev2.CustomControls.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Development.Languages\bin\Debug\Dev2.Development.Languages.dll" pdbFile="Dev2.Development.Languages\bin\Debug\Dev2.Development.Languages.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Diagnostics\bin\Debug\Dev2.Diagnostics.dll" pdbFile="Dev2.Diagnostics\bin\Debug\Dev2.Diagnostics.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Instrumentation\bin\Debug\Dev2.Instrumentation.dll" pdbFile="Dev2.Instrumentation\bin\Debug\Dev2.Instrumentation.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Intellisense\bin\Debug\Dev2.Intellisense.dll" pdbFile="Dev2.Intellisense\bin\Debug\Dev2.Intellisense.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Network\bin\Debug\Dev2.Network.dll" pdbFile="Dev2.Network\bin\Debug\Dev2.Network.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.OuputConfigFiles\bin\Debug\Dev2.OuputConfigFiles.dll" pdbFile="Dev2.OuputConfigFiles\bin\Debug\Dev2.OuputConfigFiles.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.OutputLibraries\bin\Debug\Dev2.OutputLibraries.dll" pdbFile="Dev2.OutputLibraries\bin\Debug\Dev2.OutputLibraries.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.dll" pdbFile="Dev2.Runtime.Services\bin\Debug\Dev2.Runtime.Services.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Runtime.WebServer\bin\Debug\Dev2.Runtime.WebServer.dll" pdbFile="Dev2.Runtime.WebServer\bin\Debug\Dev2.Runtime.WebServer.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Services.Execution\bin\Debug\Dev2.Services.Execution.dll" pdbFile="Dev2.Services.Execution\bin\Debug\Dev2.Services.Execution.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Services.Sql\bin\Debug\Dev2.Services.Sql.dll" pdbFile="Dev2.Services.Sql\bin\Debug\Dev2.Services.Sql.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Util\bin\Debug\Dev2.Util.dll" pdbFile="Dev2.Util\bin\Debug\Dev2.Util.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="SFTPServer\bin\Debug\SFTPServer.exe" pdbFile="SFTPServer\bin\Debug\SFTPServer.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Server\bin\Debug\Warewolf Server.exe" pdbFile="Dev2.Server\bin\Debug\Warewolf Server.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Studio\bin\Debug\Warewolf Studio.exe" pdbFile="Dev2.Studio\bin\Debug\Warewolf Studio.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Sql\bin\Debug\Warewolf.Sql.dll" pdbFile="Dev2.Sql\bin\Debug\Warewolf.Sql.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Server\bin\Debug\WareWolfAgent.exe" pdbFile="Dev2.Server\bin\Debug\WareWolfAgent.pdb" instrumentInPlace="true" />
               </Regular>
             </CodeCoverage>
           </Configuration>
