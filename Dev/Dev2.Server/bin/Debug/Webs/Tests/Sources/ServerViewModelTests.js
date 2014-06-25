@@ -33,6 +33,13 @@ test("AuthentificationTypeSubscriberWithChangingAuthentificationTypeToWindowsExp
     ok(!model.isUserInputVisible());
 });
 
+test("AuthentificationTypeSubscriberWithChangingAuthentificationTypeToPublicExpectedUserInputMadeInvisible", function () {
+
+    var model = new ServerViewModel();
+    model.data.authenticationType("Public");
+    ok(!model.isUserInputVisible());
+});
+
 test("IsFormValidWithValidUserAuthentificationExpectedFormIsValid", function () {
 
     var model = new ServerViewModel();
