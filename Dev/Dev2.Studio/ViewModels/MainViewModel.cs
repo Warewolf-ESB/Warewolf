@@ -1194,9 +1194,9 @@ namespace Dev2.Studio.ViewModels
             if(EnvironmentRepository == null) return;
 
             HashSet<IWorkspaceItem> workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
-
-            // ReSharper disable once ForCanBeConvertedToForeach
+// ReSharper disable ForCanBeConvertedToForeach
             for(int i = 0; i < GetWorkspaceItemRepository().WorkspaceItems.Count; i++)
+// ReSharper restore ForCanBeConvertedToForeach
             {
                 //
                 // Get the environment for the workspace item

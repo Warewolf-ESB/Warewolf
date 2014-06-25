@@ -555,7 +555,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Save(bool isLocalSave = false, bool isStudioShutdown = false)
         {
-            Save(ContextualResourceModel, isLocalSave, isStudioShutdown);
+            Save(ContextualResourceModel, isLocalSave, isStudioShutdown:isStudioShutdown);
             if(WorkSurfaceViewModel != null)
             {
                 WorkSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
