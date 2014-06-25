@@ -5,14 +5,14 @@ using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Network
 {
     #region WebServerMethod
 
     public enum WebServerMethod
     {
-        // ReSharper disable once InconsistentNaming
+        // ReSharper disable InconsistentNaming
         POST,
         GET
     }
@@ -36,8 +36,7 @@ namespace Dev2.Studio.Core.Network
             }
             asyncWorker.Start(() =>
             {
-                var controller = new CommunicationController();
-                controller.ServiceName = resourceModel.Category;
+                var controller = new CommunicationController { ServiceName = resourceModel.Category };
                 controller.AddPayloadArgument("DebugPayload", payload);
                 controller.ExecuteCommand<string>(clientContext, clientContext.WorkspaceID);
             }, () => { });
@@ -66,11 +65,12 @@ namespace Dev2.Studio.Core.Network
 
         public static void OpenInBrowser(WebServerMethod post, IContextualResourceModel resourceModel, string xmlData, bool isXml)
         {
-            if(resourceModel == null || resourceModel.Environment == null || !resourceModel.Environment.IsConnected)
+            if(resourceModel == null || resourceModel.Environment == null || resourceModel.Environment.Connection == null || !resourceModel.Environment.IsConnected)
             {
                 return;
             }
-            var relativeUrl = string.Format("/services/{0}.xml?", resourceModel.Category);
+            var environmentConnection = resourceModel.Environment.Connection;
+            var relativeUrl = string.Format("/services/{0}.xml?wid={1}", resourceModel.Category, environmentConnection.WorkspaceID);
             if(isXml)
             {
                 relativeUrl += xmlData;
@@ -80,7 +80,7 @@ namespace Dev2.Studio.Core.Network
                 relativeUrl += xmlData;
             }
             Uri url;
-            Uri.TryCreate(resourceModel.Environment.Connection.WebServerUri, relativeUrl, out url);
+            Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out url);
             Process.Start(url.ToString());
         }
     }

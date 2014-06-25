@@ -199,7 +199,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var toReloadResources = comsController.ExecuteCommand<List<SerializableResource>>(con, con.WorkspaceID);
             foreach(var serializableResource in toReloadResources)
             {
-                var resource = HydrateResourceModel(Enums.ResourceType.WorkflowService, serializableResource, _environmentModel.Connection.ServerID, true, false);
+                var resource = HydrateResourceModel(Enums.ResourceType.WorkflowService, serializableResource, _environmentModel.Connection.ServerID, true);
                 var resourceToUpdate = ResourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
 
                 if(resourceToUpdate != null)
@@ -1194,11 +1194,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                                 a.Permissions = resourcePermissions;
                             }), _environmentModel.ID);
                         });
-                    // StudioResourceRepository.FindItem(a=>a.EnvironmentId ==  _environmentModel.ID && a.ResourceType = ResourceType.Server).Permissions;
                     StudioResourceRepository.UpdateRootAndFoldersPermissions(serverPermissions, _environmentModel.ID, false);
                     StudioResourceRepository.UpdateItem(Guid.Empty, (x =>
                     {
-                        if(serverPermissions != Permissions.None && x.Children.Count == 0)
+                        if(serverPermissions != Permissions.None && x.Children.Count == 0 && !x.IsRefreshing)
                         {
                             StudioResourceRepository.Load(x.EnvironmentId, x.AsyncWorker);
                         }

@@ -34,7 +34,7 @@ namespace Dev2.Services.Security
 
         public TimeSpan TimeOutPeriod { get; set; }
 
-        public void Remove(Guid resourceID)
+        public void Remove(Guid resourceId)
         {
             LogStart();
             _permissionsLock.EnterWriteLock();
@@ -43,7 +43,7 @@ namespace Dev2.Services.Security
                 var oldPermissions = new WindowsGroupPermission[_permissions.Count];
                 _permissions.CopyTo(oldPermissions);
 
-                var removedCount = _permissions.RemoveAll(p => !p.IsServer && p.ResourceID == resourceID);
+                var removedCount = _permissions.RemoveAll(p => !p.IsServer && p.ResourceID == resourceId);
 
                 if(removedCount > 0)
                 {
@@ -65,10 +65,11 @@ namespace Dev2.Services.Security
         {
             LogStart();
             _permissionsLock.EnterWriteLock();
+            var previousPermissions = _permissions.ToList();
+            List<WindowsGroupPermission> newPermissions;
             try
             {
-                var newPermissions = ReadPermissions();
-                RaisePermissionsModified(_permissions, newPermissions);
+                newPermissions = ReadPermissions();
                 _permissions.Clear();
                 if(newPermissions != null)
                 {
@@ -78,6 +79,10 @@ namespace Dev2.Services.Security
             finally
             {
                 _permissionsLock.ExitWriteLock();
+            }
+            if(newPermissions != null)
+            {
+                RaisePermissionsModified(previousPermissions, newPermissions);
             }
             RaisePermissionsChanged();
             LogEnd();

@@ -13,6 +13,6 @@ namespace Dev2.Services.Security
         void Read();
         event EventHandler<PermissionsModifiedEventArgs> PermissionsModified;
 
-        void Remove(Guid resourceID);
+        void Remove(Guid resourceId);
     }
 }

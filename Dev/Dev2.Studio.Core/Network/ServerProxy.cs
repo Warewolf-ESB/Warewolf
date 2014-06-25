@@ -85,8 +85,8 @@ namespace Dev2.Network
                 EsbProxy.On<string>("SendMemo", OnMemoReceived);
                 EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
                 EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
-                EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIDReceived);
-                EsbProxy.On<Guid>("SendServerID", OnServerIDReceived);
+                EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIdReceived);
+                EsbProxy.On<Guid>("SendServerID", OnServerIdReceived);
                 EsbProxy.On<string>("ItemUpdatedMessage", OnItemUpdatedMessageReceived);
                 EsbProxy.On<string>("ItemDeletedMessage", OnItemDeletedMessageReceived);
                 EsbProxy.On<string>("ItemAddedMessage", OnItemAddedMessageReceived);
@@ -110,13 +110,13 @@ namespace Dev2.Network
             OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
         }
 
-        void OnWorkspaceIDReceived(Guid obj)
+        void OnWorkspaceIdReceived(Guid obj)
         {
             AddDebugWriter(obj);
             WorkspaceID = obj;
         }
 
-        void OnServerIDReceived(Guid obj)
+        void OnServerIdReceived(Guid obj)
         {
             ServerID = obj;
         }
@@ -404,7 +404,7 @@ namespace Dev2.Network
             }
         }
 
-        public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceID, Guid dataListID)
+        public StringBuilder ExecuteCommand(StringBuilder payload, Guid workspaceId, Guid dataListId)
         {
             if(payload == null || payload.Length == 0)
             {
@@ -418,7 +418,7 @@ namespace Dev2.Network
             var startIdx = 0;
             var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
 
-            var messageID = Guid.NewGuid();
+            var messageId = Guid.NewGuid();
             List<Envelope> mailToSend = new List<Envelope>();
             for(int i = 0; i < rounds; i++)
             {
@@ -441,7 +441,7 @@ namespace Dev2.Network
             for(int i = 0; i < mailToSend.Count; i++)
             {
                 bool isEnd = (i + 1 == mailToSend.Count);
-                Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", mailToSend[i], isEnd, workspaceID, dataListID, messageID);
+                Task<Receipt> invoke = EsbProxy.Invoke<Receipt>("ExecuteCommand", mailToSend[i], isEnd, workspaceId, dataListId, messageId);
                 Wait(invoke, result);
                 if(invoke.IsFaulted)
                 {
@@ -453,7 +453,7 @@ namespace Dev2.Network
                     var totalToFetch = invoke.Result.ResultParts;
                     for(int q = 0; q < totalToFetch; q++)
                     {
-                        Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = q, RequestID = messageID });
+                        Task<string> fragmentInvoke = EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = q, RequestID = messageId });
                         Wait(fragmentInvoke, result);
                         if(!fragmentInvoke.IsFaulted && fragmentInvoke.Result != null)
                         {
@@ -536,9 +536,9 @@ namespace Dev2.Network
             return default(T);
         }
 
-        public void AddDebugWriter(Guid workspaceID)
+        public void AddDebugWriter(Guid workspaceId)
         {
-            var t = EsbProxy.Invoke("AddDebugWriter", workspaceID);
+            var t = EsbProxy.Invoke("AddDebugWriter", workspaceId);
             Wait(t);
         }
 

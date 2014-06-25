@@ -42,10 +42,10 @@ namespace Dev2.Security
                 if(foundPermission != null)
                 {
                     foundPermission.Permissions = modifiedPermission.Permissions;
-                    
+
                 }
             }
-            RaisePermissionsModified(new PermissionsModifiedEventArgs(new List<WindowsGroupPermission> (modifiedPermissions)));
+            RaisePermissionsModified(new PermissionsModifiedEventArgs(new List<WindowsGroupPermission>(modifiedPermissions)));
             RaisePermissionsChanged();
         }
 
@@ -59,7 +59,7 @@ namespace Dev2.Security
 
         public override void Read()
         {
-            // ReSharper disable once UnusedVariable
+            // ReSharper disable UnusedVariable
 #pragma warning disable 168
             var task = ReadAsync();
 #pragma warning restore 168
@@ -76,10 +76,10 @@ namespace Dev2.Security
             {
                 ServiceName = "SecurityReadService"
             };
-            SecuritySettingsTO securitySettingsTO = communicationController.ExecuteCommand<SecuritySettingsTO>(_environmentConnection, _environmentConnection.WorkspaceID);
-            if(securitySettingsTO != null)
+            SecuritySettingsTO securitySettingsTo = communicationController.ExecuteCommand<SecuritySettingsTO>(_environmentConnection, _environmentConnection.WorkspaceID);
+            if(securitySettingsTo != null)
             {
-                return securitySettingsTO.WindowsGroupPermissions;
+                return securitySettingsTo.WindowsGroupPermissions;
             }
             return null;
         }

@@ -186,6 +186,8 @@ namespace Dev2.Services.Security
                                 // Check user's administrator membership
                                 isInRole = principal.IsInRole(WindowsGroupPermission.AdministratorsText);
                             }
+                            //Check regardless. Not installing the software can create a situation where the "Administrators" group is not part of Warewolf
+                            isInRole = principal.IsInRole(WindowsGroupPermission.AdministratorsText);
                         }
 
                         return isInRole;

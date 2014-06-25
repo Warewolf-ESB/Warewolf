@@ -7,7 +7,8 @@ using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.AspNet.SignalR.Client;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface IEnvironmentConnection
@@ -27,7 +28,7 @@ namespace Dev2.Studio.Core.Interfaces
         event EventHandler PermissionsChanged;
         bool IsAuthorized { get; }
 
-        StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceID, Guid dataListID);
+        StringBuilder ExecuteCommand(StringBuilder xmlRequest, Guid workspaceId, Guid dataListId);
 
         IHubProxy EsbProxy { get; }
 
@@ -39,7 +40,7 @@ namespace Dev2.Studio.Core.Interfaces
         void Disconnect();
 
         // BUG 9634 - 2013.07.17 - TWR : added
-        void Verify(Action<ConnectResult> callback, bool wait=true);
+        void Verify(Action<ConnectResult> callback, bool wait = true);
 
         // BUG 10106 - 2013.08.13 - TWR - added
         void StartAutoConnect();

@@ -44,22 +44,6 @@ namespace Dev2.ViewModels.Deploy
 
         public event EventHandler LoadResourcesCompleted;
         public IEnvironmentRepository EnvironmentRepository { get; set; }
-        //        public virtual ObservableCollection<ExplorerItemModel> ExplorerItemModels
-        //        {
-        //            get
-        //            {
-        //                return _explorerItemModels??new ObservableCollection<ExplorerItemModel>();
-        //            }
-        //            set
-        //            {
-        //                if(Equals(value, _explorerItemModels))
-        //                {
-        //                    return;
-        //                }
-        //                _explorerItemModels = value;
-        //                OnPropertyChanged("ExplorerItemModels");
-        //            }
-        //        }
         public bool IsRefreshing
         {
             get { return _isRefreshing; }
@@ -137,7 +121,7 @@ namespace Dev2.ViewModels.Deploy
                     }
                     catch(Exception ex)
                     {
-                        Logger.LogError(this, ex);
+                        this.LogError(ex);
                     }
                     finally
                     {
