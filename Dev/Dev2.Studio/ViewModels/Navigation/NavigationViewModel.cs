@@ -19,6 +19,7 @@ using Dev2.Studio.Enums;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 
+// ReSharper disable ImplicitlyCapturedClosure
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation
 // ReSharper restore CheckNamespace

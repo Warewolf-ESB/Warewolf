@@ -171,10 +171,10 @@ namespace Dev2.UI
                 if(_selectedServer != null && _selectedServer.Equals(value))
                 {
                     return;
-            }
+                }
                 _selectedServer = value;
                 OnPropertyChanged("SelectedServer");
-        }
+            }
         }
 
         public void SelectedServerHasChanged(IEnvironmentModel newValue, ConnectControlViewModel viewModel)
@@ -192,36 +192,36 @@ namespace Dev2.UI
                 ActionForNewRemoteServer(newValue, viewModel);
                 ActionForAlreadySavedServer(newValue, viewModel);
                 viewModel._eventPublisher.Publish(new ServerSelectionChangedMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
-                    }
-                }
+            }
+        }
 
         static void ActionForAlreadySavedServer(IEnvironmentModel newValue, ConnectControlViewModel viewModel)
         {
-                if(newValue.Name != NewServerText)
+            if(newValue.Name != NewServerText)
+            {
+                switch(viewModel.ConnectControlInstanceType)
                 {
-                    switch(viewModel.ConnectControlInstanceType)
-                    {
-                        case ConnectControlInstanceType.Explorer:
-                            viewModel._eventPublisher.Publish(new SetSelectedItemInExplorerTree(newValue.Name));
-                            viewModel._eventPublisher.Publish(new AddServerToExplorerMessage(newValue));
-                            viewModel._eventPublisher.Publish(new SetActiveEnvironmentMessage(newValue, true));
-                            break;
-                        case ConnectControlInstanceType.DeploySource:
-                            viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
-                            break;
-                        case ConnectControlInstanceType.DeployTarget:
-                            viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
-                            break;
-                        case ConnectControlInstanceType.Settings:
-
-                            break;
-                        case ConnectControlInstanceType.Scheduler:
-
-                            break;
-                        case ConnectControlInstanceType.RuntimeConfiguration:
-                            break;
-                    }
+                    case ConnectControlInstanceType.Explorer:
+                        viewModel._eventPublisher.Publish(new SetSelectedItemInExplorerTree(newValue.Name));
+                        viewModel._eventPublisher.Publish(new AddServerToExplorerMessage(newValue));
+                        viewModel._eventPublisher.Publish(new SetActiveEnvironmentMessage(newValue, true));
+                        break;
+                    case ConnectControlInstanceType.DeploySource:
+                        viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
+                        break;
+                    case ConnectControlInstanceType.DeployTarget:
+                        viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
+                        break;
+                    case ConnectControlInstanceType.Settings:
+                        viewModel.AddMissingServers();
+                        break;
+                    case ConnectControlInstanceType.Scheduler:
+                        viewModel.AddMissingServers();
+                        break;
+                    case ConnectControlInstanceType.RuntimeConfiguration:
+                        break;
                 }
+            }
         }
 
         static void ActionForNewRemoteServer(IEnvironmentModel newValue, ConnectControlViewModel viewModel)
@@ -283,7 +283,7 @@ namespace Dev2.UI
 
         public virtual void OpenNewConnectionWizard(IEnvironmentModel localHost)
         {
-            RootWebSite.ShowDialog(localHost, ResourceType.Server, null, string.Empty);
+            RootWebSite.ShowDialog(localHost, ResourceType.Server, null, string.Empty, null, null, ConnectControlInstanceType);
         }
 
         public void AddMissingServers()
