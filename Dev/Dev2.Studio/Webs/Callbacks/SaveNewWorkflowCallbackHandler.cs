@@ -1,8 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
-using Dev2.Services.Events;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Webs.Callbacks;
 using System;
@@ -16,24 +14,13 @@ namespace Dev2.Studio.Webs.Callbacks
         #region Fields
 
         private readonly IContextualResourceModel _resourceModel;
-        private readonly bool _addToTabManager;
+        public bool AddToTabManager { private set; get; }
 
         #endregion
-
-        public SaveNewWorkflowCallbackHandler(IContextualResourceModel resourceModel)
-            : this(EnvironmentRepository.Instance, resourceModel)
-        {
-        }
-
-        public SaveNewWorkflowCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, IContextualResourceModel resourceModel)
-            : this(EventPublishers.Aggregator, currentEnvironmentRepository, resourceModel, true)
-        {
-        }
-
         public SaveNewWorkflowCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, IContextualResourceModel resourceModel, bool addToTabManager)
             : base(eventPublisher, currentEnvironmentRepository)
         {
-            _addToTabManager = addToTabManager;
+            AddToTabManager = addToTabManager;
             _resourceModel = resourceModel;
         }
 
@@ -48,7 +35,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 string resCat = SanitizePath((string)jsonObj.resourcePath, resName);
                 if(_resourceModel != null)
                 {
-                    EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, _addToTabManager));
+                    EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, AddToTabManager));
                 }
 
                 Close();

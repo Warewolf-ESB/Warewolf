@@ -1,8 +1,9 @@
 ﻿using System;
 using Caliburn.Micro;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.ViewModels.Base
+// ReSharper restore CheckNamespace
 {
     public abstract class SimpleBaseViewModel : Screen, IDisposable
     {
@@ -11,7 +12,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
         private bool _closeRequested;
         private ViewModelDialogResults _viewModelResults = ViewModelDialogResults.Cancel;
 
-        private bool _isDisposed;
+        public bool IsDisposed {private set; get;}
 
         #endregion Class Members
 
@@ -82,7 +83,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
         void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if(!_isDisposed)
+            if(!IsDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
@@ -94,7 +95,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
                 // Call the appropriate methods to clean up
                 // unmanaged resources here.
-                _isDisposed = true;
+                IsDisposed = true;
             }
         }
 

@@ -1,10 +1,15 @@
-﻿using System;
-using System.Text;
+﻿using Caliburn.Micro;
+using Dev2.Core.Tests.Environments;
+using Dev2.Services.Events;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Webs;
+using Dev2.Studio.Webs.Callbacks;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Text;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Webs
@@ -193,6 +198,56 @@ namespace Dev2.Core.Tests.Webs
             const string expected = "services/webservice?wid=00000000-0000-0000-0000-000000000000&rid=4270372d-c6c1-457d-9f08-e36d69b71147&envir=Foobar+(http%3a%2f%2f127%252E0%252E0%252E1%3a3142%2f)&path=&sourceID=1afe38e9-a6f5-403d-9e52-06dd7ae11198&category=WebServiceTest";
 
             Assert.AreEqual(expected, result);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("RootWebsite_ShowSaveDialog")]
+        public void RootWebsite_ShowSaveDialog_AddToTabManagerIsFalse_IsFalseOnTheCallbackHandler()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = SetupResourceModel();
+            //------------Execute Test---------------------------
+            RootWebSite.ShowNewWorkflowSaveDialog(resourceModel.Object,addToTabManager:false);
+            //------------Assert Results-------------------------
+            var saveCallBackHandler = RootWebSite.CallBackHandler as SaveNewWorkflowCallbackHandler;
+            Assert.IsNotNull(saveCallBackHandler);
+            Assert.IsFalse(saveCallBackHandler.AddToTabManager);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("RootWebsite_ShowSaveDialog")]
+        public void RootWebsite_ShowSaveDialog_AddToTabManagerIsTrue_IsTrueOnTheCallbackHandler()
+        {
+            //------------Setup for test--------------------------
+            var resourceModel = SetupResourceModel();
+            //------------Execute Test---------------------------
+            RootWebSite.ShowNewWorkflowSaveDialog(resourceModel.Object);
+            //------------Assert Results-------------------------
+            var saveCallBackHandler = RootWebSite.CallBackHandler as SaveNewWorkflowCallbackHandler;
+            Assert.IsNotNull(saveCallBackHandler);
+            Assert.IsTrue(saveCallBackHandler.AddToTabManager);
+        }
+
+        static Mock<IContextualResourceModel> SetupResourceModel()
+        {
+            CompositionInitializer.DefaultInitialize();
+            RootWebSite.IsTestMode = true;
+            Mock<IEnvironmentModel> environment = new Mock<IEnvironmentModel>();
+            environment.SetupGet(r => r.Name).Returns("localhost");
+            Mock<IEnvironmentConnection> connection = new Mock<IEnvironmentConnection>();
+            connection.SetupGet(e => e.AppServerUri).Returns(new Uri("http://www.azure.com"));
+            environment.SetupGet(r => r.Connection).Returns(connection.Object);
+            var testEnvRepo = new TestEnvironmentRespository(environment.Object);
+// ReSharper disable ObjectCreationAsStatement
+            new EnvironmentRepository(testEnvRepo);
+// ReSharper restore ObjectCreationAsStatement
+            EventPublishers.Aggregator = new Mock<IEventAggregator>().Object;
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.SetupGet(m => m.Environment).Returns(environment.Object);
+            resourceModel.SetupGet(m => m.Category).Returns("MyFolder");
+            return resourceModel;
         }
 
         // ReSharper restore InconsistentNaming

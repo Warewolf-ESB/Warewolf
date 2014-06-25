@@ -21,13 +21,14 @@ namespace Dev2.Core.Tests.ProperMoqs
         #region Properties
 
         public bool IsValid { get; set; }
+        public bool Authorized { get; set; }
 
         public Guid ID { get; set; }
         public Permissions UserPermissions { get; set; }
 
         public bool IsAuthorized(AuthorizationContext authorizationContext)
         {
-            return false;
+            return Authorized;
         }
 
         public bool AllowCategoryEditing { get; set; }

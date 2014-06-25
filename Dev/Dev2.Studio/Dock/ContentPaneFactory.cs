@@ -1,4 +1,9 @@
-﻿using System;
+﻿using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.WorkSurface;
+using Infragistics;
+using Infragistics.Windows.DockManager;
+using Infragistics.Windows.DockManager.Events;
+using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -7,13 +12,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.WorkSurface;
-using Infragistics;
-using Infragistics.Windows.DockManager;
-using Infragistics.Windows.DockManager.Events;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Dock
 {
     /// <summary>
@@ -306,8 +306,7 @@ namespace Dev2.Studio.Dock
                 ContentPaneFactory oldFactory = (ContentPaneFactory)e.OldValue;
                 ContentPaneFactory newFactory = (ContentPaneFactory)e.NewValue;
 
-                // ReSharper disable once PossibleUnintendedReferenceComparison
-                if(oldFactory == newFactory)
+                if(oldFactory != null && oldFactory.Equals(newFactory))
                 {
                     return;
                 }
@@ -512,7 +511,7 @@ namespace Dev2.Studio.Dock
         #endregion //GetSiblingDocument
 
         #region OnPaneClosing
-        private void OnPaneClosing(object sender, PaneClosingEventArgs e)
+        public void OnPaneClosing(object sender, PaneClosingEventArgs e)
         {
             ContentPane contentPane = sender as ContentPane;
             if(contentPane != null)
@@ -523,11 +522,17 @@ namespace Dev2.Studio.Dock
                 {
                     var vm = model;
                     vm.TryClose();
-                    vm.Dispose();
                     var mainVm = vm.Parent as MainViewModel;
-                    if(mainVm != null && !mainVm.CloseCurrent)
+                    if(mainVm != null)
                     {
-                        e.Cancel = true;
+                        if(mainVm.CloseCurrent)
+                        {
+                            vm.Dispose();
+                        }
+                        else
+                        {
+                            e.Cancel = true;
+                        }
                     }
                 }
             }

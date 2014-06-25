@@ -2,6 +2,7 @@
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -308,7 +309,7 @@ namespace Dev2.Studio.Webs
 
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceID = null, bool addToTabManager = true)
         {
-            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EnvironmentRepository.Instance, resourceModel), "WorkflowService");
+            ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager), "WorkflowService");
         }
 
         static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string resourceID = null)
@@ -347,9 +348,12 @@ namespace Dev2.Studio.Webs
             else
             {
                 // TODO : return the relativeUriString generated ;)
+                CallBackHandler = callbackHandler;
                 TestModeRelativeUri = relativeUriString;
             }
         }
+
+        public static WebsiteCallbackHandler CallBackHandler { get; set; }
 
         #endregion
 

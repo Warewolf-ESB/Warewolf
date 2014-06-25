@@ -180,6 +180,7 @@
     <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverterTests.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToEnabledConverterTests.cs" />
     <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
+    <Compile Include="Dock\ContentPaneFactoryTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -223,6 +224,7 @@
     <Compile Include="IntellisenseProvider\CalculateIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\DefaultIntellisenseProviderTest.cs" />
     <Compile Include="IntellisenseProvider\EventLogParser.cs" />
+    <Compile Include="MainViewModelBase.cs" />
     <Compile Include="MainViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
