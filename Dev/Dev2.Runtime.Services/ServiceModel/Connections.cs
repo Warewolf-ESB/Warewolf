@@ -233,7 +233,7 @@ namespace Dev2.Runtime.ServiceModel
                         client.UseDefaultCredentials = false;
 
                         //// we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
-                        if(string.IsNullOrEmpty(connection.UserName) && string.IsNullOrEmpty(connection.Password))
+                        if(connection.AuthenticationType == AuthenticationType.Public)
                         {
                             connection.UserName = GlobalConstants.PublicUsername;
                         }

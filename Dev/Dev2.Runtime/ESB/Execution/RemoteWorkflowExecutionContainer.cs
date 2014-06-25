@@ -1,4 +1,9 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Data.Enums;
@@ -11,11 +16,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
 using enActionType = Dev2.DataList.Contract.enActionType;
 
 namespace Dev2.Runtime.ESB.Execution
@@ -205,9 +205,10 @@ namespace Dev2.Runtime.ESB.Execution
                     req.UseDefaultCredentials = false;
 
                     // we to default to the hidden public user name of \, silly know but that is how to get around ntlm auth ;)
-                    if(string.IsNullOrEmpty(userName) && string.IsNullOrEmpty(password))
+                    if(authenticationType == AuthenticationType.Public)
                     {
                         userName = GlobalConstants.PublicUsername;
+                        password = string.Empty;
                     }
 
                     req.Credentials = new NetworkCredential(userName, password);
