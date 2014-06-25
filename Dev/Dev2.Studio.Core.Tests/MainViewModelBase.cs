@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using System.IO;
+using System.Reflection;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Communication;
 using Dev2.Composition;
@@ -105,6 +107,7 @@ namespace Dev2.Core.Tests
             // ReSharper disable ObjectCreationAsStatement
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
+            FindCefSharpWpfDll();//Ashley: Load Xaml references manually...
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, PopupController.Object
                 , WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object);
@@ -114,6 +117,15 @@ namespace Dev2.Core.Tests
             ActiveEnvironment.Setup(e => e.AuthorizationService).Returns(AuthorizationService.Object);
 
             MainViewModel.ActiveEnvironment = ActiveEnvironment.Object;
+        }
+
+        static void FindCefSharpWpfDll()
+        {
+            var assemblyPath = Path.Combine(Environment.CurrentDirectory, @"..\..\..\Binaries\CefSharp\CefSharp.Wpf.dll");
+            if(File.Exists(assemblyPath))
+            {
+                Assembly.LoadFile(assemblyPath);
+            }
         }
 
         protected Mock<IContextualResourceModel> CreateResource(ResourceType resourceType)
