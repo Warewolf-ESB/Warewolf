@@ -38,6 +38,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Username = string.Empty;
             Password = string.Empty;
             Result = string.Empty;
+
         }
 
         protected override void OnExecute(NativeActivityContext context)
@@ -228,6 +229,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get;
             set;
         }
+  
 
         #endregion Properties
 

@@ -496,6 +496,18 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
+        [Given(@"""(.*)"" contains an Delete ""(.*)"" as")]
+// ReSharper disable InconsistentNaming
+        public void GivenContainsAnDeleteAs(string parentName, string activityName, Table table)
+// ReSharper restore InconsistentNaming
+        {
+            var del = new DsfPathDelete();
+            del.InputPath = table.Rows[0][0];
+            del.Result = table.Rows[0][1];
+            del.DisplayName = activityName;
+            CommonSteps.AddVariableToVariableList(table.Rows[0][1]);
+            CommonSteps.AddActivityToActivityList(parentName, activityName, del);
+        }
 
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
         {

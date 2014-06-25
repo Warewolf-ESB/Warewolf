@@ -167,7 +167,7 @@ namespace ActivityUnitTests.ActivityTests
 
             DsfZip preact = new DsfZip
             {
-                InputPath = "OldFile.txt",
+                InputPath = @"c:\OldFile.txt",
                 OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
                 Result = "[[res]]",
                 DestinationUsername = "destUName",

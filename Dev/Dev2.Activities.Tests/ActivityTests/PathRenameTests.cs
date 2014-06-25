@@ -233,7 +233,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var act = new DsfPathRename
                 {
-                    InputPath = "OldFile.txt",
+                    InputPath = @"c:\OldFile.txt",
                     OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
                     Result = "[[res]]",
                     DestinationUsername = "destUName",

@@ -271,7 +271,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             DsfPathMove act = new DsfPathMove
             {
-                InputPath = "OldFile.txt",
+                InputPath = @"c:\OldFile.txt",
                 OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
                 Result = "[[res]]",
                 DestinationUsername = "destUName",

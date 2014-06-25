@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.PathOperations
+// ReSharper restore CheckNamespace
 {
 
     /// <summary>
@@ -14,7 +17,7 @@ namespace Dev2.PathOperations
     {
 
         private static IList<Type> _endPoints;
-        private static readonly object _endPointsLock = new object();
+        private static readonly object EndPointsLock = new object();
         // used to check what type services what
         private static IList<IActivityIOOperationsEndPoint> _referenceCheckers;
 
@@ -22,11 +25,11 @@ namespace Dev2.PathOperations
         /// Return an IActivityIOPath based upont the path string
         /// </summary>
         /// <param name="path"></param>
-        /// <param name="IsNotCertVerifiable"></param>
+        /// <param name="isNotCertVerifiable"></param>
         /// <returns></returns>
-        public static IActivityIOPath CreatePathFromString(string path, bool IsNotCertVerifiable)
+        public static IActivityIOPath CreatePathFromString(string path, bool isNotCertVerifiable)
         {
-            return CreatePathFromString(path, string.Empty, string.Empty, IsNotCertVerifiable);
+            return CreatePathFromString(path, string.Empty, string.Empty, isNotCertVerifiable);
         }
 
         /// <summary>
@@ -47,19 +50,22 @@ namespace Dev2.PathOperations
         /// <param name="path">The path.</param>
         /// <param name="user">The user.</param>
         /// <param name="pass">The pass.</param>
-        /// <param name="IsNotCertVerifiable">if set to <c>true</c> [is not cert verifiable].</param>
+        /// <param name="isNotCertVerifiable">if set to <c>true</c> [is not cert verifiable].</param>
         /// <returns></returns>
-        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool IsNotCertVerifiable)
+        public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable)
         {
+            VerifyArgument.IsNotNull("path",path);
             // Fetch path type
             enActivityIOPathType type = Dev2ActivityIOPathUtils.ExtractPathType(path);
             if(type == enActivityIOPathType.Invalid)
             {
                 // Default to file system
                 type = enActivityIOPathType.FileSystem;
+                if(!Path.IsPathRooted(path))
+                    throw  new IOException("Invalid Path. Please insure that the path provided is an absolute path, if you intended to access the local file system.");
             }
 
-            return new Dev2ActivityIOPath(type, path, user, pass, IsNotCertVerifiable);
+            return new Dev2ActivityIOPath(type, path, user, pass, isNotCertVerifiable);
         }
 
         /// <summary>
@@ -70,7 +76,7 @@ namespace Dev2.PathOperations
         public static IActivityIOOperationsEndPoint CreateOperationEndPointFromIOPath(IActivityIOPath target)
         {
 
-            lock(_endPointsLock)
+            lock(EndPointsLock)
             {
                 // load end-points if need be... aka first load
                 if(_endPoints == null)

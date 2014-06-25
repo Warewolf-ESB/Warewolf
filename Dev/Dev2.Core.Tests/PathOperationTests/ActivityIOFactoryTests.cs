@@ -1,10 +1,14 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using Dev2.Data.PathOperations;
 using Dev2.PathOperations;
 using Dev2.Tests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.UnitTest.Framework.PathOperationTests
+// ReSharper restore CheckNamespace
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
@@ -44,7 +48,9 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
         /// Create type of the path from string expected activity IO path file system.
         /// </summary>
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void CreatePathFromString_Expected_IActivityIOPath_FileSystem_Type()
+// ReSharper restore InconsistentNaming
         {
 
             IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "");
@@ -56,7 +62,9 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
         /// Create type of the path from string expected activity IO path FTP.
         /// </summary>
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void CreatePathFromString_Expected_IActivityIOPath_FTP_Type()
+// ReSharper restore InconsistentNaming
         {
 
             IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path, "", "");
@@ -65,10 +73,93 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
         }
 
         /// <summary>
+        /// Create type of the path from string expected activity IO path FTP.
+        /// </summary>
+
+        [TestMethod,ExpectedException(typeof(IOException))]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ActivityIOFactory_CreateOperationEndPointFromIOPath")]
+// ReSharper disable InconsistentNaming
+        public void CreatePathFromString_NonRootedPath_ExpectException()
+// ReSharper restore InconsistentNaming
+        {
+            ActivityIOFactory.CreatePathFromString("", "", "");
+        }
+
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ActivityIOFactory_CreateOperationEndPointFromIOPath")]
+        // ReSharper disable InconsistentNaming
+        public void CreatePathFromString_NonRootedPath_ExpectArgumentNullException()
+        // ReSharper restore InconsistentNaming
+        {
+            ActivityIOFactory.CreatePathFromString(null, "", "");
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ActivityIOFactory_CreateOperationEndPointFromIOPath")]
+        // ReSharper disable InconsistentNaming
+        public void CreatePathFromString_AssertAllPropertiesAreSet_ExpectCorrectValues()
+        // ReSharper restore InconsistentNaming
+        {
+            var path = ActivityIOFactory.CreatePathFromString(@"c:\bob","dave","monkey", false);
+            Assert.AreEqual(@"c:\bob",path.Path);
+            Assert.AreEqual(@"dave", path.Username);
+            Assert.AreEqual(@"monkey", path.Password);
+            Assert.IsFalse( path.IsNotCertVerifiable);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ActivityIOFactory_CreateUnzipTO")]
+        // ReSharper disable InconsistentNaming
+        public void CreatePathFromString_CreateUnzipTO_AssertCorrectType()
+        // ReSharper restore InconsistentNaming
+        {
+            var operationTO = ActivityIOFactory.CreateZipTO("20", "ss", "name", true);
+            Assert.AreEqual("20", operationTO.CompressionRatio);
+            Assert.AreEqual("ss", operationTO.ArchivePassword);
+            Assert.AreEqual("name", operationTO.ArchiveName);
+            Assert.IsTrue(operationTO.Overwrite);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ActivityIOFactory_CreateUnzipTO")]
+        // ReSharper disable InconsistentNaming
+        public void CreatePathFromString_CreateUnzipTO_PWD_OverWrite_AssertCorrectType()
+        // ReSharper restore InconsistentNaming
+        {
+            var operationTO = ActivityIOFactory.CreateUnzipTO("20", true);
+            Assert.AreEqual("20", operationTO.ArchivePassword);
+            Assert.IsTrue(operationTO.Overwrite);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ActivityIOFactory_Dev2PutRawOperationTO")]
+        // ReSharper disable InconsistentNaming
+        public void CreatePathFromString_CreatePathFromString_AssertCorrectType()
+        // ReSharper restore InconsistentNaming
+        {
+            var operationTO = ActivityIOFactory.CreatePathFromString(@"c:\moon",true);
+            Assert.AreEqual(@"c:\moon", operationTO.Path);
+            //Assert.AreEqual(, operationTO.);
+        }
+
+
+
+        /// <summary>
         /// Create type of the path from string expected activity IO path FTPS.
         /// </summary>
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void CreatePathFromString_Expected_IActivityIOPath_FTPS_Type()
+// ReSharper restore InconsistentNaming
         {
 
             IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTPS_AuthPath, "", "");
@@ -85,7 +176,9 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
         /// provider.
         /// </summary>
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void CreateOperationEndPointFromIOPath_Expected_IActivityIOOperationsEndPoint_FileSysytemProvider_Type()
+// ReSharper restore InconsistentNaming
         {
 
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "");
@@ -99,7 +192,9 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
         /// end point FTP provider.
         /// </summary>
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void CreateOperationEndPointFromIOPath_Expected_IActivityIOOperationsEndPoint_FTPProvider_Type()
+// ReSharper restore InconsistentNaming
         {
 
             IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path, "", "");
@@ -116,7 +211,9 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
         /// Create type of the operations broker expected activity operations broker file sysytem provider.
         /// </summary>
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void CreateOperationsBroker_Expected_IActivityOperationsBroker_FileSysytemProvider_Type()
+// ReSharper restore InconsistentNaming
         {
 
             IActivityOperationsBroker result = ActivityIOFactory.CreateOperationsBroker();
@@ -125,5 +222,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
         }
 
         #endregion Create Operation Broker Tests
+
+
     }
 }

@@ -530,37 +530,37 @@ Scenario: Workflow with Assign Create and Delete folder tools executing against 
 	  | [[res2]] = Success |
 
 #This Test Scenario should be passed after the Bug 11815 is fixed
-#Scenario Outline: Workflow with Assign Create and Delete Record tools with incorrect input path executing against the server
-#	  Given I have a workflow "WorkflowWithAssignCreateDeleteRecord"
-#	  And "WorkflowWithAssignCreateDeleteRecord" contains an Assign "Assign to create" as
-#	  | variable    | value         |
-#	  | [[rec().a]] | \create.txt |
-#	  And "WorkflowWithAssignCreateDeleteRecord" contains an Create "Create1" as
-#	  | File or Folder | If it exits | Username | Password | Result   |
-#	  | [[rec().a]]    | True        |          |          | [[res1]] |
-#	  And "WorkflowWithAssignCreateDeleteRecord" contains an Delete "DeleteFolder" as
-#	  | Recordset   | Result   |
-#	  | [[rec().a]] | [[res2]] |
-#	  When "WorkflowWithAssignCreateDeleteRecord" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Assign to create' in WorkFlow 'WorkflowWithAssignCreateDeleteRecord' debug inputs as
-#	  | # | Variable      | New Value   |
-#	  | 1 | [[rec().a]] = | \create.txt |
-#	  And the 'Assign to create' in Workflow 'WorkflowWithAssignCreateDeleteRecord' debug outputs as     
-#	  | # |                            |
-#	  | 1 | [[rec(1).a]] = \create.txt |
-#	  And the 'Create1' in WorkFlow 'WorkflowWithAssignCreateDeleteRecord' debug inputs as
-#	  | File or Folder            | Overwrite | Username | Password |
-#	  | [[rec().a]] = \create.txt | True      |          |          | 
-#	  And the 'Create1' in Workflow 'WorkflowWithAssignCreateDeleteRecord' debug outputs as    
-#	   |                    |
-#	   | [[res1]] = Failure |
-#	  And the 'DeleteFolder' in WorkFlow 'WorkflowWithAssignCreateDeleteRecord' debug inputs as
-#	  | Input Path                | Username | Password |
-#	  | [[rec().a]] = \create.txt |          |          |
-#	  And the 'DeleteFolder' in Workflow 'WorkflowWithAssignCreateDeleteRecord' debug outputs as    
-#	  |                    |
-#	  | [[res2]] = Failure |
+Scenario: Workflow with Assign Create and Delete Record tools with incorrect input path executing against the server
+	  Given I have a workflow "WorkflowWithAssignCreateDeleteRecordNoneExist1"
+	  And "WorkflowWithAssignCreateDeleteRecordNoneExist1" contains an Assign "Assign to create" as
+	  | variable    | value         |
+	  | [[rec().a]] | create.txt |
+	  And "WorkflowWithAssignCreateDeleteRecordNoneExist1" contains an Create "Create1" as
+	  | File or Folder | If it exits | Username | Password | Result   |
+	  | [[rec().a]]    | True        |          |          | [[res1]] |
+	  And "WorkflowWithAssignCreateDeleteRecordNoneExist1" contains an Delete "Delete" as
+	  | File Or Folder | Result   |
+	  | [[rec().a]]  | [[res1]] |
+	  When "WorkflowWithAssignCreateDeleteRecordNoneExist1" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'Assign to create' in WorkFlow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug inputs as
+	  | # | Variable      | New Value   |
+	  | 1 | [[rec().a]] = | create.txt |
+	  And the 'Assign to create' in Workflow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug outputs as     
+	  | # |                            |
+	  | 1 | [[rec(1).a]] = create.txt |
+	  And the 'Create1' in WorkFlow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug inputs as
+	  | File or Folder            | Overwrite | Username   | Password   |
+	  | [[rec(1).a]] = create.txt | True      | Username = | Password = |
+	  And the 'Create1' in Workflow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug outputs as    
+	   |                    |
+	   | [[res1]] = Failure |
+	  And the 'Delete' in WorkFlow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug inputs as
+	  | Input Path                | Username | Password |
+	  | [[rec(1).a]] = create.txt |   Username =       |    Password =      |
+	  And the 'Delete' in Workflow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug outputs as    
+	  |                    |
+	  | [[res1]] = Failure |
 
 Scenario: Workflow with 2 Assign tools executing against the server
 	  Given I have a workflow "WorkflowWith2Assigntools"
