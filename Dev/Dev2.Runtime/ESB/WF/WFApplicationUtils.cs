@@ -21,7 +21,7 @@ namespace Dev2.Runtime.ESB.WF
         }
         public  WfApplicationUtils(Func<IDataListCompiler> getDataListCompiler,Action<DebugOutputBase,DebugItem> add)
         {
-            GetDataListCompiler = getDataListCompiler;
+            _getDataListCompiler = getDataListCompiler;
             _add = add;
         }
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false)
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.WF
                     ErrorResultTO invokeErrors;
                     var com = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
-                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName), enDev2ColumnArgumentDirection.Input);
+                    var defs = compiler.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName), enDev2ColumnArgumentDirection.Input);
                     var inputs = GetDebugValues(defs, com, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                     debugState.Inputs.AddRange(inputs);
@@ -75,7 +75,7 @@ namespace Dev2.Runtime.ESB.WF
                     ErrorResultTO invokeErrors;
                     var com = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
-                    var defs = compiler.GenerateDefsFromDataList(FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName), enDev2ColumnArgumentDirection.Output);
+                    var defs = compiler.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ServiceName), enDev2ColumnArgumentDirection.Output);
                     var inputs = GetDebugValues(defs, com, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
                     debugState.Outputs.AddRange(inputs);
@@ -107,12 +107,12 @@ namespace Dev2.Runtime.ESB.WF
         }
 
         public Func<IDebugDispatcher> GetDebugDispatcher = () => DebugDispatcher.Instance;
-        private Func<IDataListCompiler> GetDataListCompiler = () => DataListFactory.CreateDataListCompiler();
+        private readonly Func<IDataListCompiler> _getDataListCompiler = () => DataListFactory.CreateDataListCompiler();
        
         public List<DebugItem> GetDebugValues(IList<IDev2Definition> values, IBinaryDataList dataList, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            IDataListCompiler compiler = GetDataListCompiler();
+            IDataListCompiler compiler = _getDataListCompiler();
             var results = new List<DebugItem>();
             var added = new List<string>();
             foreach (IDev2Definition dev2Definition in values)
@@ -120,6 +120,7 @@ namespace Dev2.Runtime.ESB.WF
                 IBinaryDataListEntry tmpEntry = compiler.Evaluate(dataList.UID, enActionType.User, GetVariableName(dev2Definition), false, out errors);
                 GetValue(tmpEntry, dev2Definition);
              
+               
                 var defn = GetVariableName(dev2Definition);
                 if (added.Any(a => a == defn))
                     continue;
@@ -147,7 +148,7 @@ namespace Dev2.Runtime.ESB.WF
             else
             {
                 string error;
-                tmpEntry.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, null, out error);
+                tmpEntry.MakeRecordsetEvaluateReady(GlobalConstants.AllIndexes, GlobalConstants.AllColumns, out error);
             }
         }
 
@@ -155,7 +156,7 @@ namespace Dev2.Runtime.ESB.WF
         {
             return String.IsNullOrEmpty(value.RecordSetName)
                   ? String.Format("[[{0}]]", value.Name)
-                  : String.Format("[[{0}()]]", value.RecordSetName);
+                  : String.Format("[[{0}(){1}]]", value.RecordSetName, String.IsNullOrEmpty( value.Name)?String.Empty:"."+value.Name);
         }
 
         void AddDebugItem(DebugOutputBase parameters, DebugItem debugItem)

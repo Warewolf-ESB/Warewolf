@@ -20,7 +20,9 @@ using Dev2.Server.Datalist;
 using Newtonsoft.Json;
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract
+// ReSharper restore CheckNamespace
 {
     internal class DataListCompiler : IDataListCompiler
     {
@@ -942,6 +944,56 @@ namespace Dev2.DataList.Contract
         {
             IList<IDev2Definition> result = new List<IDev2Definition>();
 
+            if (!string.IsNullOrEmpty(dataList))
+            {
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.LoadXml(dataList);
+
+                XmlNodeList tmpRootNl = xDoc.ChildNodes;
+                XmlNodeList nl = tmpRootNl[0].ChildNodes;
+
+                for (int i = 0; i < nl.Count; i++)
+                {
+                    XmlNode tmpNode = nl[i];
+
+                    var ioDirection = GetDev2ColumnArgumentDirection(tmpNode);
+
+                    if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                    {
+                        if (tmpNode.HasChildNodes)
+                        {
+                            // it is a record set, make it as such
+                            string recordsetName = tmpNode.Name;
+                            // now extract child node defs
+                            XmlNodeList childNl = tmpNode.ChildNodes;
+                            for (int q = 0; q < childNl.Count; q++)
+                            {
+                                var xmlNode = childNl[q];
+                                var fieldIODirection = GetDev2ColumnArgumentDirection(xmlNode);
+                                if (CheckIODirection(dev2ColumnArgumentDirection, fieldIODirection))
+                                {
+                                    result.Add(DataListFactory.CreateDefinition(xmlNode.Name, "", "", recordsetName, false, "",
+                                                                                false, "", false));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // scalar value, make it as such
+                            result.Add(DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+
+        public IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
+        {
+            IList<IDev2Definition> result = new List<IDev2Definition>();
+
             if(!string.IsNullOrEmpty(dataList))
             {
                 XmlDocument xDoc = new XmlDocument();
@@ -956,9 +1008,12 @@ namespace Dev2.DataList.Contract
 
                     var ioDirection = GetDev2ColumnArgumentDirection(tmpNode);
 
-                    if(CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
-                    {
-                        if(tmpNode.HasChildNodes)
+                        if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection) && tmpNode.HasChildNodes)
+                        {
+                            result.Add(DataListFactory.CreateDefinition("", "", "", tmpNode.Name, false, "",
+                                                                                false, "", false));
+                        }
+                        else if( tmpNode.HasChildNodes)
                         {
                             // it is a record set, make it as such
                             string recordsetName = tmpNode.Name;
@@ -980,7 +1035,7 @@ namespace Dev2.DataList.Contract
                             // scalar value, make it as such
                             result.Add(DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
                         }
-                    }
+                  //  }
                 }
             }
 

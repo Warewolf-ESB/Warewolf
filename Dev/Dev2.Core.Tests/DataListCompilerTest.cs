@@ -257,6 +257,25 @@ namespace Dev2.Tests
             Assert.AreEqual(4, generateDefsFromDataList.Count);
         }
 
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DataListCompiler_GenerateDefsFromDataList")]
+        public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForOnlyNestedColumns()
+        {
+            //------------Setup for test--------------------------
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+            const string dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                    "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Input\" />" +
+                                    "<recset ColumnIODirection=\"None\"><f1 ColumnIODirection=\"Output\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
+            //------------Execute Test---------------------------
+            var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataList(dataList, enDev2ColumnArgumentDirection.Both);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, generateDefsFromDataList.Count);
+        }
+
         [TestMethod]
         public void GenerateDefsFromDataListWhereDataListExpectResultsToMatchIODirectionForRecsetHasNone()
         {
@@ -431,6 +450,104 @@ namespace Dev2.Tests
         }
 
         #endregion
+
+        #region Generate Defintion Tests Debug
+
+
+
+        [TestMethod]
+        public void GenerateDefsFromData_Debug_ListWhereDataListExpectResultsToMatchIODirectionForInput()
+        {
+            //------------Setup for test--------------------------
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+
+            const string dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                    "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                    "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
+            //------------Execute Test---------------------------
+            var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Input);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(6, generateDefsFromDataList.Count);
+        }
+
+        [TestMethod]
+        public void GenerateDefsFromDataListDebugWhereDataListExpectResultsToMatchIODirectionForOutput()
+        {
+            //------------Setup for test--------------------------
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+            const string dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                    "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                    "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
+            //------------Execute Test---------------------------
+            var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Output);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(6, generateDefsFromDataList.Count);
+        }
+
+        [TestMethod]
+        public void GenerateDefsFromDataListDebugWhereDataListExpectResultsToMatchIODirectionForBoth()
+        {
+            //------------Setup for test--------------------------
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+            const string dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                    "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                    "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
+            //------------Execute Test---------------------------
+            var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Both);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(6, generateDefsFromDataList.Count);
+        }
+
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DataListCompiler_GenerateDefsFromDataList")]
+        public void GenerateDefsFromDataListWhereDataListDebugExpectResultsToMatchIODirectionForOnlyNestedColumns()
+        {
+            //------------Setup for test--------------------------
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+            const string dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                    "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Input\" />" +
+                                    "<recset ColumnIODirection=\"None\"><f1 ColumnIODirection=\"Output\" /><f2 ColumnIODirection=\"Output\" /></recset></DataList>";
+            //------------Execute Test---------------------------
+            var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Both);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(5, generateDefsFromDataList.Count);
+        }
+
+        [TestMethod]
+        public void GenerateDefsFromDataListWhereDataListDebugExpectResultsToMatchIODirectionForRecsetHasNone()
+        {
+            //------------Setup for test--------------------------
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+            const string dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                    "<sssdd ColumnIODirection=\"Both\" /><sss ColumnIODirection=\"Both\" />" +
+                                    "<recset ColumnIODirection=\"Both\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"None\" /></recset></DataList>";
+            //------------Execute Test---------------------------
+            var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Output);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(6, generateDefsFromDataList.Count);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DataListCompiler_GenerateDefsFromDataList")]
+        public void GenerateDefsFromDataList_Debug_RecSetNotOut_CoulmnsOut_ExpectColumns()
+        {
+            //------------Setup for test--------------------------
+            var dataListCompiler = DataListFactory.CreateDataListCompiler();
+            const string dataList = "<DataList><test ColumnIODirection=\"Both\" /><newvar ColumnIODirection=\"Input\" /><as ColumnIODirection=\"Output\" />" +
+                                    "<recset ColumnIODirection=\"Input\"><f1 ColumnIODirection=\"Both\" /><f2 ColumnIODirection=\"None\" /></recset></DataList>";
+            //------------Execute Test---------------------------
+            var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Output);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4, generateDefsFromDataList.Count);
+        }
+
+
+        #endregion Generate Defintion Tests
 
         // ReSharper restore InconsistentNaming
     }

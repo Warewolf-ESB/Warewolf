@@ -98,6 +98,14 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         IList<IDev2Definition> GenerateDefsFromDataList(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection);
 
+                /// <summary>
+        /// Generate IO definitions from the DL, specifically for debug
+        /// </summary>
+        /// <param name="dataList">The data list.</param>
+        /// <param name="dev2ColumnArgumentDirection">The dev2 column argument direction.</param>
+        /// <returns></returns>
+        IList<IDev2Definition> GenerateDefsFromDataListForDebug(string dataList, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection);
+
         /// <summary>
         /// Shapes the dev2 definitions to data list.
         /// </summary>

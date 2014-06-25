@@ -104,7 +104,7 @@ namespace Dev2.Tests.Runtime.WF
             var compiler = new Mock<IDataListCompiler>();
             var entr = new Mock<IBinaryDataListEntry>();
             ErrorResultTO err;
-            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo()]]", false, out err)).Returns(entr.Object);
+            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo().bob]]", false, out err)).Returns(entr.Object);
             var wfUtils = new WfApplicationUtils(() => compiler.Object, ((a, b) => { }));
             var items = MoqUtils.GenerateMockEnumerable<IDev2Definition>(1)
                        .SetupExpectationsOnEnumerableWithReturnValues(new[] { "moo" }, (a => a.RecordSetName))
@@ -127,7 +127,7 @@ namespace Dev2.Tests.Runtime.WF
             var compiler = new Mock<IDataListCompiler>();
             var entr = new Mock<IBinaryDataListEntry>();
             ErrorResultTO err;
-            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo()]]", false, out err)).Returns(entr.Object);
+            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo().bob]]", false, out err)).Returns(entr.Object);
             var wfUtils = new WfApplicationUtils(() => compiler.Object, ((a, b) => { }));
             var items = MoqUtils.GenerateMockEnumerable<IDev2Definition>(2)
                        .SetupExpectationsOnEnumerableWithReturnValues(new[] { "moo", "moo" }, (a => a.RecordSetName))
@@ -149,7 +149,7 @@ namespace Dev2.Tests.Runtime.WF
             var compiler = new Mock<IDataListCompiler>();
             var entr = new Mock<IBinaryDataListEntry>();
             ErrorResultTO err;
-            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo()]]", false, out err)).Returns(entr.Object);
+            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo().moo]]", false, out err)).Returns(entr.Object);
             var wfUtils = new WfApplicationUtils(() => compiler.Object, ((a, b) => { }));
             var items = MoqUtils.GenerateMockEnumerable<IDev2Definition>(2)
                        .SetupExpectationsOnEnumerableWithReturnValues(new[] { "moo", "moo" }, (a => a.RecordSetName))
@@ -173,8 +173,8 @@ namespace Dev2.Tests.Runtime.WF
             var compiler = new Mock<IDataListCompiler>();
             var entr = new Mock<IBinaryDataListEntry>();
             ErrorResultTO err;
-            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo()]]", false, out err)).Returns(entr.Object);
-            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[bob()]]", false, out err)).Returns(entr.Object);
+            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo().moo]]", false, out err)).Returns(entr.Object);
+            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[bob().murali]]", false, out err)).Returns(entr.Object);
             compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo]]", false, out err)).Returns(entr.Object);
             var wfUtils = new WfApplicationUtils(() => compiler.Object, ((a, b) => { }));
             var items = MoqUtils.GenerateMockEnumerable<IDev2Definition>(3)
@@ -198,9 +198,10 @@ namespace Dev2.Tests.Runtime.WF
             var compiler = new Mock<IDataListCompiler>();
             var entr = new Mock<IBinaryDataListEntry>();
             ErrorResultTO err;
-            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo()]]", false, out err)).Returns(entr.Object);
-            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[bob()]]", false, out err)).Returns(entr.Object);
+            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo().moo]]", false, out err)).Returns(entr.Object);
+            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[bob().murali]]", false, out err)).Returns(entr.Object);
             compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, "[[moo]]", false, out err)).Returns(entr.Object);
+
             var wfUtils = new WfApplicationUtils(() => compiler.Object, ((a, b) => { }));
             var items = MoqUtils.GenerateMockEnumerable<IDev2Definition>(3)
                        .SetupExpectationsOnEnumerableWithReturnValues(new[] { "moo", "", "bob" ,"moo"}, (a => a.RecordSetName))
