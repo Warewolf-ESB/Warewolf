@@ -8,6 +8,7 @@ using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Messages;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
@@ -31,15 +32,14 @@ namespace Dev2.Core.Tests.Webs
     [ExcludeFromCodeCoverage]
     public class ConnectCallbackHandlerTests
     {
-        const string ConnectionID = "1478649D-CF54-4D0D-8E26-CA9B81454B66";
-        const string ConnectionCategory = "TestCategory";
+        const string ConnectionId = "1478649D-CF54-4D0D-8E26-CA9B81454B66";
         const string ConnectionName = "TestConnection";
         const string ConnectionAddress = "http://RSAKLFBRANDONPA:77/dsf";
         const int ConnectionWebServerPort = 1234;
 
         // Keys are case-sensitive!
         static readonly string ConnectionJson =
-            "{\"ResourceID\":\"" + ConnectionID +
+            "{\"ResourceID\":\"" + ConnectionId +
             "\",\"ResourceName\":\"" + ConnectionName +
             "\",\"ResourcePath\":\"TEST\",\"ResourceType\":\"Server\",\"Address\":\"" + ConnectionAddress +
             "\",\"AuthenticationType\":\"Windows\",\"UserName\":\"\",\"Password\":\"\",\"WebServerPort\":" + ConnectionWebServerPort + "}";
@@ -85,6 +85,22 @@ namespace Dev2.Core.Tests.Webs
 
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectCallbackHandler_Cancel")]
+        public void ConnectCallbackHandler_Cancel_ShouldFireSetConnectControlSelectedServerMessage()
+        {
+            //------------Setup for test--------------------------
+            var aggregator = new Mock<IEventAggregator>();
+            EventPublishers.Aggregator = aggregator.Object;
+            aggregator.Setup(e => e.Publish(It.IsAny<SetConnectControlSelectedServerMessage>())).Verifiable();
+            var connectCallbackHandler = new ConnectCallbackHandler();
+            //------------Execute Test---------------------------
+            connectCallbackHandler.Cancel();
+            //------------Assert Results-------------------------
+            aggregator.Verify(e => e.Publish(It.IsAny<SetConnectControlSelectedServerMessage>()), Times.Once());
+        }
+
+        [TestMethod]
         // ReSharper disable InconsistentNaming - Unit Tests
         public void Save_WithValidConnection_Expected_InvokesAddResourceService()
         // ReSharper restore InconsistentNaming - Unit Tests
@@ -105,8 +121,7 @@ namespace Dev2.Core.Tests.Webs
             connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { }))));
             targetEnv.Setup(e => e.Connection).Returns(connection.Object);
 
-            var repo = new TestEnvironmentRespository();
-            repo.ActiveEnvironment = targetEnv.Object;
+            var repo = new TestEnvironmentRespository { ActiveEnvironment = targetEnv.Object };
             targetEnv.Setup(e => e.ResourceRepository).Returns(resRepo.Object);
 
 
@@ -242,7 +257,7 @@ namespace Dev2.Core.Tests.Webs
                             {
                                 var msg = (AddServerToDeployMessage)m;
                                 Assert.IsTrue(msg.Server.ID.ToString()
-                                                 .Equals(ConnectionID.ToString(CultureInfo.InvariantCulture),
+                                                 .Equals(ConnectionId.ToString(CultureInfo.InvariantCulture),
                                                          StringComparison.InvariantCultureIgnoreCase));
                             })
                              .Verifiable();

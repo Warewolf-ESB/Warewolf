@@ -160,8 +160,10 @@ namespace Dev2.Core.Tests.ViewModelTests
             // ReSharper restore ObjectCreationAsStatement
             connectControlViewModel.BindToActiveEnvironment = true;
             connectControlViewModel.LoadServers();
+            var environmentModel = connectControlViewModel.Servers[0];
             //------------Execute Test---------------------------
-            connectControlViewModel.SelectedServer = connectControlViewModel.Servers[0];
+            connectControlViewModel.SelectedServer = environmentModel;
+            connectControlViewModel.SelectedServerHasChanged(environmentModel, connectControlViewModel);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, connectControlViewModel.openNewConnectionWizardHitCount);
         }
@@ -179,12 +181,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
-            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
-            connectControlViewModel.ConnectControlInstanceType = ConnectControlInstanceType.DeployTarget;
-            connectControlViewModel.Servers = new ObservableCollection<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
-            connectControlViewModel.BindToActiveEnvironment = false;
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object) { ConnectControlInstanceType = ConnectControlInstanceType.DeployTarget, Servers = new ObservableCollection<IEnvironmentModel> { localhostServer, remoteServer, otherServer }, BindToActiveEnvironment = false, SelectedServer = remoteServer };
             //------------Execute Test---------------------------
-            connectControlViewModel.SelectedServer = remoteServer;
+            connectControlViewModel.SelectedServerHasChanged(remoteServer, connectControlViewModel);
             //------------Assert Results-------------------------
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Never());
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Never());
@@ -204,12 +203,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
-            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
-            connectControlViewModel.ConnectControlInstanceType = ConnectControlInstanceType.Explorer;
-            connectControlViewModel.Servers = new ObservableCollection<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
-            connectControlViewModel.BindToActiveEnvironment = false;
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object) { ConnectControlInstanceType = ConnectControlInstanceType.Explorer, Servers = new ObservableCollection<IEnvironmentModel> { localhostServer, remoteServer, otherServer }, BindToActiveEnvironment = false, SelectedServer = remoteServer };
             //------------Execute Test---------------------------
-            connectControlViewModel.SelectedServer = remoteServer;
+            connectControlViewModel.SelectedServerHasChanged(remoteServer, connectControlViewModel);
             //------------Assert Results-------------------------
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Once());
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Once());
@@ -230,12 +226,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
-            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
-            connectControlViewModel.ConnectControlInstanceType = ConnectControlInstanceType.DeploySource;
-            connectControlViewModel.Servers = new ObservableCollection<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
-            connectControlViewModel.BindToActiveEnvironment = false;
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object) { ConnectControlInstanceType = ConnectControlInstanceType.DeploySource, Servers = new ObservableCollection<IEnvironmentModel> { localhostServer, remoteServer, otherServer }, BindToActiveEnvironment = false, SelectedServer = remoteServer };
             //------------Execute Test---------------------------
-            connectControlViewModel.SelectedServer = remoteServer;
+            connectControlViewModel.SelectedServerHasChanged(remoteServer, connectControlViewModel);
             //------------Assert Results-------------------------
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Never());
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>()), Times.Never());
@@ -255,8 +248,8 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
-            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
-            connectControlViewModel.SelectedServer = remoteServer;
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object) { SelectedServer = remoteServer };
+            connectControlViewModel.SelectedServerHasChanged(remoteServer, connectControlViewModel);
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Once());
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>()), Times.Once());
             var serverDtos = new List<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
@@ -282,14 +275,15 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
             mockEventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>())).Verifiable();
-            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
-            connectControlViewModel.BindToActiveEnvironment = true;
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object) { BindToActiveEnvironment = true };
             var serverDtos = new List<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
             var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
             connectControlViewModel.Servers = observableCollection;
             //------------Execute Test---------------------------
             connectControlViewModel.SelectedServer = remoteServer;
+            connectControlViewModel.SelectedServerHasChanged(remoteServer, connectControlViewModel);
             connectControlViewModel.SelectedServer = localhostServer;
+            connectControlViewModel.SelectedServerHasChanged(localhostServer, connectControlViewModel);
             //------------Assert Results-------------------------
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<SetSelectedItemInExplorerTree>()), Times.Exactly(2));
             mockEventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<ServerSelectionChangedMessage>()), Times.Exactly(2));
@@ -305,9 +299,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
-            connectControlViewModel.LabelText = "Connect";
-            connectControlViewModel.BindToActiveEnvironment = true;
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object) { LabelText = "Connect", BindToActiveEnvironment = true };
             var serverDtos = new List<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
             var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
             connectControlViewModel.Servers = observableCollection;
@@ -329,9 +321,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
-            connectControlViewModel.LabelText = "Connect";
-            connectControlViewModel.BindToActiveEnvironment = false;
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object) { LabelText = "Connect", BindToActiveEnvironment = false };
             var serverDtos = new List<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
             var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
             connectControlViewModel.Servers = observableCollection;
@@ -353,9 +343,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
-            connectControlViewModel.LabelText = "Connect";
-            connectControlViewModel.BindToActiveEnvironment = false;
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object) { LabelText = "Connect", BindToActiveEnvironment = false };
             var serverDtos = new List<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
             var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
             connectControlViewModel.Servers = observableCollection;
@@ -378,9 +366,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object);
-            connectControlViewModel.LabelText = "Connect";
-            connectControlViewModel.BindToActiveEnvironment = false;
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer, mockEventAggregator.Object) { LabelText = "Connect", BindToActiveEnvironment = false };
             var serverDtos = new List<IEnvironmentModel> { localhostServer, remoteServer, otherServer };
             var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
             connectControlViewModel.Servers = observableCollection;
@@ -403,9 +389,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var remoteServer = CreateMockEnvironmentModel("remote", false);
             var otherServer = CreateMockEnvironmentModel("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var connectControlViewModel = new ConnectControlViewModel(localhostServer.Object, mockEventAggregator.Object, new TestAsyncWorker());
-            connectControlViewModel.LabelText = "Connect";
-            connectControlViewModel.BindToActiveEnvironment = false;
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer.Object, mockEventAggregator.Object, new TestAsyncWorker()) { LabelText = "Connect", BindToActiveEnvironment = false };
             var serverDtos = new List<IEnvironmentModel> { localhostServer.Object, remoteServer.Object, otherServer.Object };
             var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
             connectControlViewModel.Servers = observableCollection;
@@ -426,9 +410,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var remoteServer = CreateMockEnvironmentModel("remote", true);
             var otherServer = CreateMockEnvironmentModel("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var connectControlViewModel = new ConnectControlViewModel(localhostServer.Object, mockEventAggregator.Object, new TestAsyncWorker());
-            connectControlViewModel.LabelText = "Connect";
-            connectControlViewModel.BindToActiveEnvironment = false;
+            var connectControlViewModel = new ConnectControlViewModel(localhostServer.Object, mockEventAggregator.Object, new TestAsyncWorker()) { LabelText = "Connect", BindToActiveEnvironment = false };
             var serverDtos = new List<IEnvironmentModel> { localhostServer.Object, remoteServer.Object, otherServer.Object };
             var observableCollection = new ObservableCollection<IEnvironmentModel>(serverDtos);
             connectControlViewModel.Servers = observableCollection;
@@ -449,9 +431,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var remoteServer = CreateMockEnvironmentModel("remote", false);
             var otherServer = CreateMockEnvironmentModel("disconnected", false);
             var mockEventAggregator = new Mock<IEventAggregator>();
-            var connectControlViewModel = new TestConnectControlViewModel(localhostServer.Object, mockEventAggregator.Object);
-            connectControlViewModel.LabelText = "Connect";
-            connectControlViewModel.BindToActiveEnvironment = false;
+            var connectControlViewModel = new TestConnectControlViewModel(localhostServer.Object, mockEventAggregator.Object) { LabelText = "Connect", BindToActiveEnvironment = false };
             var serverDtos = new List<IEnvironmentModel> { localhostServer.Object, remoteServer.Object, otherServer.Object };
             var mockEnvironmentRepository = new TestEnvironmentRespository(localhostServer.Object, remoteServer.Object, otherServer.Object);
             // ReSharper disable ObjectCreationAsStatement

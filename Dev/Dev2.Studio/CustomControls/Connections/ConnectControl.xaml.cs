@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using Caliburn.Micro;
 using Dev2.AppResources.Enums;
@@ -17,7 +18,6 @@ namespace Dev2.UI
     /// </summary>
     public partial class ConnectControl
     {
-        readonly IEventAggregator _eventPublisher;
         readonly IApp _mainApp;
 
         #region CTOR
@@ -32,10 +32,10 @@ namespace Dev2.UI
             InitializeComponent();
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("mainApp", mainApp);
-            _eventPublisher = eventPublisher;
+            IEventAggregator eventPublisher1 = eventPublisher;
             _mainApp = mainApp;
-            _eventPublisher.Subscribe(this);
-            ViewModel = new ConnectControlViewModel(null, _eventPublisher);
+            eventPublisher1.Subscribe(this);
+            ViewModel = new ConnectControlViewModel(null, eventPublisher1);
             DataContext = ViewModel;
             Loaded += OnLoaded;
         }
@@ -96,6 +96,7 @@ namespace Dev2.UI
 
         #region Automation ID's
 
+        // ReSharper disable InconsistentNaming
         public string ServerComboBoxAutomationID
         {
             get { return (string)GetValue(ServerComboBoxAutomationIDProperty); }
@@ -208,6 +209,18 @@ namespace Dev2.UI
             }
 
             Loaded -= OnLoaded;
+        }
+
+        void SelectionHasChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(ViewModel != null)
+            {
+                IEnvironmentModel environmentModel = e.AddedItems[0] as IEnvironmentModel;
+                if(environmentModel != null)
+                {
+                    ViewModel.SelectedServerHasChanged(environmentModel, ViewModel);
+                }
+            }
         }
     }
 }

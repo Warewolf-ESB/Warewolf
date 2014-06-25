@@ -28,7 +28,7 @@ namespace Dev2.UI
 
         const string NewServerText = "New Remote Server...";
 
-        IAsyncWorker _asyncWorker;
+        readonly IAsyncWorker _asyncWorker;
         readonly IEnvironmentModel _activeEnvironment;
         readonly IEventAggregator _eventPublisher;
 
@@ -56,8 +56,7 @@ namespace Dev2.UI
             {
                 _activeEnvironment = activeEnvironment;
             }
-            ObservableCollection<IEnvironmentModel> observableCollection = new ObservableCollection<IEnvironmentModel>();
-            observableCollection.Add(CreateNewRemoteServerEnvironment());
+            ObservableCollection<IEnvironmentModel> observableCollection = new ObservableCollection<IEnvironmentModel> { CreateNewRemoteServerEnvironment() };
             Servers = observableCollection;
             _eventPublisher = eventAggregator;
             IsEnabled = true;
@@ -163,23 +162,21 @@ namespace Dev2.UI
         {
             get
             {
-                return (IEnvironmentModel)GetValue(SelectedServerProperty);
+                return _selectedServer;
             }
             set
             {
-                SetValue(SelectedServerProperty, value);
+                if(_selectedServer != null && _selectedServer.Equals(value))
+                {
+                    return;
+                }
+                _selectedServer = value;
+                OnPropertyChanged("SelectedServer");
             }
         }
 
-        // Using a DependencyProperty as the backing store for SelectedServer.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty SelectedServerProperty =
-            DependencyProperty.Register("SelectedServer", typeof(IEnvironmentModel), typeof(ConnectControlViewModel), new PropertyMetadata(null, OnSelectedServerChanged));
-
-        static void OnSelectedServerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        public void SelectedServerHasChanged(IEnvironmentModel newValue, ConnectControlViewModel viewModel)
         {
-            var viewModel = (ConnectControlViewModel)d;
-            var newValue = e.NewValue as IEnvironmentModel;
-
             if(newValue != null)
             {
                 if(newValue.IsConnected)
@@ -190,49 +187,54 @@ namespace Dev2.UI
                 {
                     viewModel.SetDisconnectedState();
                 }
-
-                if(newValue.Name == NewServerText)
-                {
-                    IEnvironmentModel localHost = viewModel.Servers.FirstOrDefault(c => c.IsLocalHost);
-                    if(localHost != null)
-                    {
-                        viewModel.OpenNewConnectionWizard(localHost);
-
-                        viewModel.AddMissingServers();
-                    }
-                }
-
-                if(newValue.Name != NewServerText)
-                {
-                    switch(viewModel.ConnectControlInstanceType)
-                    {
-                        case ConnectControlInstanceType.Explorer:
-                            viewModel._eventPublisher.Publish(new SetSelectedItemInExplorerTree(newValue.Name));
-                            viewModel._eventPublisher.Publish(new AddServerToExplorerMessage(newValue));
-                            viewModel._eventPublisher.Publish(new SetActiveEnvironmentMessage(newValue, true));
-                            break;
-                        case ConnectControlInstanceType.DeploySource:
-                            viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
-                            break;
-                        case ConnectControlInstanceType.DeployTarget:
-                            viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
-                            break;
-                        case ConnectControlInstanceType.Settings:
-
-                            break;
-                        case ConnectControlInstanceType.Scheduler:
-
-                            break;
-                        case ConnectControlInstanceType.RuntimeConfiguration:
-                            break;
-                    }
-                }
-
+                ActionForNewRemoteServer(newValue, viewModel);
+                ActionForAlreadySavedServer(newValue, viewModel);
                 viewModel._eventPublisher.Publish(new ServerSelectionChangedMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
             }
         }
 
+        static void ActionForAlreadySavedServer(IEnvironmentModel newValue, ConnectControlViewModel viewModel)
+        {
+            if(newValue.Name != NewServerText)
+            {
+                switch(viewModel.ConnectControlInstanceType)
+                {
+                    case ConnectControlInstanceType.Explorer:
+                        viewModel._eventPublisher.Publish(new SetSelectedItemInExplorerTree(newValue.Name));
+                        viewModel._eventPublisher.Publish(new AddServerToExplorerMessage(newValue));
+                        viewModel._eventPublisher.Publish(new SetActiveEnvironmentMessage(newValue, true));
+                        break;
+                    case ConnectControlInstanceType.DeploySource:
+                        viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
+                        break;
+                    case ConnectControlInstanceType.DeployTarget:
+                        viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
+                        break;
+                    case ConnectControlInstanceType.Settings:
 
+                        break;
+                    case ConnectControlInstanceType.Scheduler:
+
+                        break;
+                    case ConnectControlInstanceType.RuntimeConfiguration:
+                        break;
+                }
+            }
+        }
+
+        static void ActionForNewRemoteServer(IEnvironmentModel newValue, ConnectControlViewModel viewModel)
+        {
+            if(newValue.Name == NewServerText)
+            {
+                IEnvironmentModel localHost = viewModel.Servers.FirstOrDefault(c => c.IsLocalHost);
+                if(localHost != null)
+                {
+                    viewModel.OpenNewConnectionWizard(localHost);
+
+                    viewModel.AddMissingServers();
+                }
+            }
+        }
 
         #endregion
 
@@ -247,6 +249,7 @@ namespace Dev2.UI
         // Using a DependencyProperty as the backing store for BindToActiveEnvironment.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty BindToActiveEnvironmentProperty =
             DependencyProperty.Register("BindToActiveEnvironment", typeof(bool), typeof(ConnectControlViewModel), new PropertyMetadata(false));
+        IEnvironmentModel _selectedServer;
 
         #endregion
 
@@ -336,6 +339,7 @@ namespace Dev2.UI
             }
         }
 
+
         void EditConnection()
         {
             if(SelectedServer != null)
@@ -399,8 +403,7 @@ namespace Dev2.UI
 
         EnvironmentModel CreateNewRemoteServerEnvironment()
         {
-            EnvironmentModel environmentModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(new Uri("http://localhost:3142")));
-            environmentModel.Name = NewServerText;
+            EnvironmentModel environmentModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(new Uri("http://localhost:3142"))) { Name = NewServerText };
             return environmentModel;
         }
 

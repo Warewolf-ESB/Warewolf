@@ -2,6 +2,7 @@
 using Caliburn.Micro;
 using Dev2.AppResources.Enums;
 using Dev2.Data.ServiceModel;
+using Dev2.Messages;
 using Dev2.Network;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
@@ -50,6 +51,16 @@ namespace Dev2.Studio.Webs.Callbacks
             Save(jsonObj, environmentModel);
         }
 
+        #region Overrides of WebsiteCallbackHandler
+
+        public override void Cancel()
+        {
+            EventPublisher.Publish(new SetConnectControlSelectedServerMessage(EnvironmentRepository.Instance.ActiveEnvironment, _connectControlInstanceType));
+            base.Cancel();
+        }
+
+        #endregion
+
         #region Save
 
         /// <summary>
@@ -66,7 +77,7 @@ namespace Dev2.Studio.Webs.Callbacks
             }
             Connection newConnection = JsonConvert.DeserializeObject<Connection>(jsonObj.ToString());
 
-            var resourceID = newConnection.ResourceID;
+            var resourceId = newConnection.ResourceID;
             ServerProxy connection;
             if(newConnection.AuthenticationType == AuthenticationType.Windows || newConnection.AuthenticationType == AuthenticationType.Anonymous)
             {
@@ -76,7 +87,7 @@ namespace Dev2.Studio.Webs.Callbacks
             {
                 connection = new ServerProxy(newConnection.WebAddress, newConnection.UserName, newConnection.Password);
             }
-            var newEnvironment = new EnvironmentModel(resourceID, connection) { Name = newConnection.ResourceName, Category = newConnection.ResourcePath };
+            var newEnvironment = new EnvironmentModel(resourceId, connection) { Name = newConnection.ResourceName, Category = newConnection.ResourcePath };
 
             if(defaultEnvironment != null)
             {
@@ -85,7 +96,7 @@ namespace Dev2.Studio.Webs.Callbacks
                 //
                 defaultEnvironment.ResourceRepository.AddEnvironment(defaultEnvironment, newEnvironment);
 
-                ReloadResource(defaultEnvironment, resourceID, Core.AppResources.Enums.ResourceType.Source);
+                ReloadResource(defaultEnvironment, resourceId, Core.AppResources.Enums.ResourceType.Source);
             }
 
             CurrentEnvironmentRepository.Save(newEnvironment);

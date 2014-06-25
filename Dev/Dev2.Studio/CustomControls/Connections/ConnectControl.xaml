@@ -23,6 +23,7 @@
                   Grid.Column="1"
                   x:Name="TheServerComboBox"                  
                   SelectedItem="{Binding SelectedServer,Mode=TwoWay}"
+                  SelectionChanged="SelectionHasChanged"
                   ItemsSource="{Binding Servers}"
                   Margin="5,0,0,0"
                   VerticalAlignment="Bottom"
