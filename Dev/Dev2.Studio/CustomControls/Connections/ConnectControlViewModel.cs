@@ -16,11 +16,13 @@ using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Webs;
 using Dev2.Threading;
+using Dev2.Webs;
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.UI
+// ReSharper restore CheckNamespace
 {
     public class ConnectControlViewModel : DependencyObject, INotifyPropertyChanged, IHandle<UpdateActiveEnvironmentMessage>, IHandle<SetConnectControlSelectedServerMessage>
     {
@@ -169,10 +171,10 @@ namespace Dev2.UI
                 if(_selectedServer != null && _selectedServer.Equals(value))
                 {
                     return;
-                }
+            }
                 _selectedServer = value;
                 OnPropertyChanged("SelectedServer");
-            }
+        }
         }
 
         public void SelectedServerHasChanged(IEnvironmentModel newValue, ConnectControlViewModel viewModel)
@@ -190,36 +192,36 @@ namespace Dev2.UI
                 ActionForNewRemoteServer(newValue, viewModel);
                 ActionForAlreadySavedServer(newValue, viewModel);
                 viewModel._eventPublisher.Publish(new ServerSelectionChangedMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
-            }
-        }
+                    }
+                }
 
         static void ActionForAlreadySavedServer(IEnvironmentModel newValue, ConnectControlViewModel viewModel)
         {
-            if(newValue.Name != NewServerText)
-            {
-                switch(viewModel.ConnectControlInstanceType)
+                if(newValue.Name != NewServerText)
                 {
-                    case ConnectControlInstanceType.Explorer:
-                        viewModel._eventPublisher.Publish(new SetSelectedItemInExplorerTree(newValue.Name));
-                        viewModel._eventPublisher.Publish(new AddServerToExplorerMessage(newValue));
-                        viewModel._eventPublisher.Publish(new SetActiveEnvironmentMessage(newValue, true));
-                        break;
-                    case ConnectControlInstanceType.DeploySource:
-                        viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
-                        break;
-                    case ConnectControlInstanceType.DeployTarget:
-                        viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
-                        break;
-                    case ConnectControlInstanceType.Settings:
+                    switch(viewModel.ConnectControlInstanceType)
+                    {
+                        case ConnectControlInstanceType.Explorer:
+                            viewModel._eventPublisher.Publish(new SetSelectedItemInExplorerTree(newValue.Name));
+                            viewModel._eventPublisher.Publish(new AddServerToExplorerMessage(newValue));
+                            viewModel._eventPublisher.Publish(new SetActiveEnvironmentMessage(newValue, true));
+                            break;
+                        case ConnectControlInstanceType.DeploySource:
+                            viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
+                            break;
+                        case ConnectControlInstanceType.DeployTarget:
+                            viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
+                            break;
+                        case ConnectControlInstanceType.Settings:
 
-                        break;
-                    case ConnectControlInstanceType.Scheduler:
+                            break;
+                        case ConnectControlInstanceType.Scheduler:
 
-                        break;
-                    case ConnectControlInstanceType.RuntimeConfiguration:
-                        break;
+                            break;
+                        case ConnectControlInstanceType.RuntimeConfiguration:
+                            break;
+                    }
                 }
-            }
         }
 
         static void ActionForNewRemoteServer(IEnvironmentModel newValue, ConnectControlViewModel viewModel)

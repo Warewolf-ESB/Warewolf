@@ -49,7 +49,6 @@ namespace Dev2.Studio.Core.Interfaces
         bool HasDependencies(IContextualResourceModel resourceModel);
 
         ExecuteMessage StopExecution(IContextualResourceModel resourceModel);
-        void AddEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment);
         ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId);
         void RemoveEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment);
 

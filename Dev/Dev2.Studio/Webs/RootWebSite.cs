@@ -1,4 +1,6 @@
-﻿using Dev2.AppResources.Enums;
+﻿using System;
+using System.Web;
+using Dev2.AppResources.Enums;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
@@ -6,14 +8,9 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Webs.Callbacks;
 using Dev2.Webs.Callbacks;
-using System;
-using System.Web;
 
-// ReSharper disable CheckNamespace
-namespace Dev2.Studio.Webs
-// ReSharper restore CheckNamespace
+namespace Dev2.Webs
 {
     public static class RootWebSite
     {

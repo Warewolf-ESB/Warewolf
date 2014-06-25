@@ -1,4 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Communication;
 using Dev2.Composition;
@@ -23,13 +30,6 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Xml.Linq;
 using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
 // ReSharper disable InconsistentNaming
@@ -39,7 +39,7 @@ namespace BusinessDesignStudio.Unit.Tests
     /// <summary>
     /// Summary description for ResourceRepositoryTest
     /// </summary>
-    [TestClass]    
+    [TestClass]
     [ExcludeFromCodeCoverage]
     public class ResourceRepositoryTest
     {
@@ -576,7 +576,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.GetStudioResourceRepository = null;
         }
 
-     
+
         /// <summary>
         /// Create resource with human Interface service type
         /// </summary>
@@ -1804,42 +1804,6 @@ namespace BusinessDesignStudio.Unit.Tests
         }
         #endregion
 
-        #region AddEnvironment
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void AddEnvironment_With_NullParameters_Expected_ThrowsArgumentNullException()
-        {
-            ResourceRepository resourceRepository = GetResourceRepository();
-            resourceRepository.AddEnvironment(null, null);
-        }
-
-        [TestMethod]
-        public void AddEnvironment_With_NonNullParameters_Expected_InvokesExecuteCommandOnTargetEnvironment()
-        {
-            var testEnv = EnviromentRepositoryTest.CreateMockEnvironment();
-
-            ResourceRepository resourceRepository = GetResourceRepository();
-            var targetEnv = new Mock<IEnvironmentModel>();
-
-            ExecuteMessage msg = new ExecuteMessage();
-
-            var exePayload = JsonConvert.SerializeObject(msg);
-
-            var rand = new Random();
-            var connection = new Mock<IEnvironmentConnection>();
-            connection.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
-            connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
-            connection.Setup(c => c.IsConnected).Returns(true);
-            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(exePayload));
-            targetEnv.Setup(e => e.Connection).Returns(connection.Object);
-            resourceRepository.AddEnvironment(targetEnv.Object, testEnv.Object);
-
-            connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
-        }
-
-        #endregion
-
         #region RemoveEnvironment
 
         [TestMethod]
@@ -2526,7 +2490,13 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var theResources = ids.Select(id => new SerializableResource
             {
-                ResourceCategory = "Test Category", DataList = "", Errors = errors, IsValid = isValid, ResourceID = id, ResourceName = "TestWorkflowService", ResourceType = theType,
+                ResourceCategory = "Test Category",
+                DataList = "",
+                Errors = errors,
+                IsValid = isValid,
+                ResourceID = id,
+                ResourceName = "TestWorkflowService",
+                ResourceType = theType,
             }).ToList();
 
             var serviceObj = JsonConvert.SerializeObject(theResources);

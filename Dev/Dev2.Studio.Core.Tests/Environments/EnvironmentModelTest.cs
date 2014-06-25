@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Network;
-using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
-using Dev2.Common.Common;
 using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Providers.Events;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
@@ -83,7 +80,7 @@ namespace Dev2.Core.Tests.Environments
             //------------Setup for test--------------------------
             var connection = CreateConnection();
             var repo = new Mock<IResourceRepository>();
-            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object,new Mock<IStudioResourceRepository>().Object);
+            var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object, new Mock<IStudioResourceRepository>().Object);
             const string expectedDisplayName = "localhost (http://localhost:3142/)";
             //------------Execute Test---------------------------
             string displayName = env.DisplayName;
@@ -236,51 +233,6 @@ namespace Dev2.Core.Tests.Environments
             var e2 = CreateEnvironmentModel(Guid.NewGuid(), c2.Object);
 
             e1.Connect(e2);
-        }
-
-        [TestMethod]
-        public void EnvironmentModel_ToSourceDefinition_CategoryIsNotServers()
-        {
-            // BUG: 8786 - TWR - 2013.02.20
-            var environmentConnection = CreateConnection();
-            environmentConnection.Setup(c => c.DisplayName).Returns(() => "TestEnv");
-            environmentConnection.Setup(c => c.WebServerUri).Returns(() => new Uri("http://localhost:1234"));
-            environmentConnection.Setup(c => c.AppServerUri).Returns(() => new Uri("http://localhost:77/dsf"));
-
-            var envModel = CreateEnvironmentModel(Guid.NewGuid(), environmentConnection.Object);
-            var sourceDef = envModel.ToSourceDefinition().ToString();
-            var sourceXml = XElement.Parse(sourceDef);
-            var category = sourceXml.ElementSafe("Category").ToUpper();
-            Assert.AreNotEqual("SERVERS", category);
-        }
-
-        [TestMethod]
-        public void EnvironmentModel_ToSourceDefinition_HasAuthenticationType()
-        {
-            var expectedConnectionString = string.Join(";",
-               string.Format("AppServerUri={0}", "http://localhost:77/dsf"),
-               string.Format("WebServerPort={0}", "1234"),
-               string.Format("AuthenticationType={0}", AuthenticationType.User)
-               );
-            expectedConnectionString = string.Join(";",
-                    expectedConnectionString,
-                    string.Format("UserName={0}", "some user"),
-                    string.Format("Password={0}", "some password")
-                    );
-            // BUG: 8786 - TWR - 2013.02.20
-            var environmentConnection = CreateConnection();
-            environmentConnection.Setup(c => c.DisplayName).Returns(() => "TestEnv");
-            environmentConnection.Setup(c => c.WebServerUri).Returns(() => new Uri("http://localhost:1234"));
-            environmentConnection.Setup(c => c.AppServerUri).Returns(() => new Uri("http://localhost:77/dsf"));
-            environmentConnection.Setup(c => c.AuthenticationType).Returns(() => AuthenticationType.User);
-            environmentConnection.Setup(c => c.UserName).Returns(() => "some user");
-            environmentConnection.Setup(c => c.Password).Returns(() => "some password");
-
-            var envModel = CreateEnvironmentModel(Guid.NewGuid(), environmentConnection.Object);
-            var sourceDef = envModel.ToSourceDefinition().ToString();
-            var sourceXml = XElement.Parse(sourceDef);
-            var connectionString = sourceXml.AttributeSafe("ConnectionString").ToUpper();
-            Assert.AreEqual(expectedConnectionString.ToUpper(), connectionString);
         }
 
         [TestMethod]
@@ -702,7 +654,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentTreeViewModel_PermissionsChanged_MemoIDEqualsEnvironmentServerId_UserPermissionChanges()
         {
             //------------Setup for test--------------------------
-          
+
 
             var resourceID = Guid.NewGuid();
             //var connectionServerId = Guid.NewGuid();
@@ -718,15 +670,15 @@ namespace Dev2.Core.Tests.Environments
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(e => e.ServerEvents).Returns(eventPublisher);
             connection.SetupGet(c => c.ServerID).Returns(memoServerID);
-            
+
             var srepo = new Mock<IStudioResourceRepository>();
             var repo = new Mock<IResourceRepository>();
             var environment = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object, srepo.Object, false);
             environment.Name = "localhost";
             connection.Setup(a => a.DisplayName).Returns("localhost");
-                     //------------Execute Test---------------------------
+            //------------Execute Test---------------------------
             eventPublisher.Publish(pubMemo);
-            srepo.Verify(a=>a.UpdateRootAndFoldersPermissions(It.IsAny<Permissions>(),It.IsAny<Guid>(),true),Times.Never());
+            srepo.Verify(a => a.UpdateRootAndFoldersPermissions(It.IsAny<Permissions>(), It.IsAny<Guid>(), true), Times.Never());
         }
         [TestMethod]
         [TestCategory("EnvironmentTreeViewModel_PermissionsChanged")]
@@ -758,9 +710,9 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(a => a.DisplayName).Returns("bob");
             //------------Execute Test---------------------------
             eventPublisher.Publish(pubMemo);
-            srepo.Verify(a => a.UpdateRootAndFoldersPermissions(It.IsAny<Permissions>(), It.IsAny<Guid>(),true), Times.Once());
+            srepo.Verify(a => a.UpdateRootAndFoldersPermissions(It.IsAny<Permissions>(), It.IsAny<Guid>(), true), Times.Once());
         }
-        [TestMethod,ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         [TestCategory("EnvironmentTreeViewModel_CTOR")]
         [Owner("Leon Rajindrasomething")]
         public void EnvironmentTreeViewModel_CTOR_NullStudioRep()
@@ -768,7 +720,9 @@ namespace Dev2.Core.Tests.Environments
 
             var repo = new Mock<IResourceRepository>();
             var connection = new Mock<IEnvironmentConnection>();
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object, null, false);
+            // ReSharper restore ObjectCreationAsStatement
 
         }
 
@@ -787,31 +741,6 @@ namespace Dev2.Core.Tests.Environments
 
             return new EnvironmentModel(id, connection, repo.Object, new Mock<IStudioResourceRepository>().Object, false);
         }
-
-        //[TestMethod]
-        //[Owner("Trevor Williams-Ros")]
-        //[TestCategory("ConnectControlViewModel_Servers")]
-        //public void EnvironmentModel_Equality_Diction_ItemWithSameKeyAdded_NotAddedAndNoExceptionThrown()
-        //{
-        //    //------------Setup for test--------------------------
-        //    var serverID = Guid.NewGuid();
-        //    const string ServerUri = "https://myotherserver:3143";
-
-        //    var servers = new List<IEnvironmentModel>
-        //    {
-        //        CreateConnectControlServer(Guid.Empty, "Server1", serverID, ServerUri),
-        //        CreateConnectControlServer(Guid.Empty, "Server2", serverID, ServerUri),
-        //    };
-
-        //    var testDictionary = new Dictionary<IEnvironmentModel, IEnvironmentModel>();
-        //    testDictionary.Add(servers[0], servers[0]);
-
-
-        //    //------------Execute Test---------------------------
-        //    testDictionary.Add(servers[1], servers[1]);
-
-        //    //------------Assert Results-------------------------
-        //}
 
         public static IEnvironmentModel CreateEqualityEnvironmentModel(Guid resourceID, string resourceName, Guid serverID, string serverUri)
         {

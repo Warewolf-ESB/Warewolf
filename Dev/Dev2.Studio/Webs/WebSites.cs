@@ -1,10 +1,9 @@
 ﻿using System.Windows;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Webs;
+using Dev2.Studio.Webs;
 
-// ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Webs
+namespace Dev2.Webs
 {
     public static class WebSites
     {

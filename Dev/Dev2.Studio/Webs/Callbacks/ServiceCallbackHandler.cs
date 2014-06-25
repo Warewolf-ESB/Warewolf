@@ -5,12 +5,10 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Webs.Callbacks;
 using System;
 using System.Xml.Linq;
 
-// ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Webs.Callbacks
+namespace Dev2.Webs.Callbacks
 {
     public class ServiceCallbackHandler : WebsiteCallbackHandler
     {

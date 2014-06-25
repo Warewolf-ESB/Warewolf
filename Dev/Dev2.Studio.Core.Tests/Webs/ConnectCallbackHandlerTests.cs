@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Text;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Composition;
-using Dev2.Core.Tests.Environments;
-using Dev2.Messages;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
-using Dev2.Studio.Webs.Callbacks;
 using Dev2.Util;
+using Dev2.Webs.Callbacks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
@@ -81,55 +78,6 @@ namespace Dev2.Core.Tests.Webs
             var handler = new ConnectCallbackHandler();
             handler.Save(null, null);
             handler.Save(null, null);
-        }
-
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ConnectCallbackHandler_Cancel")]
-        public void ConnectCallbackHandler_Cancel_ShouldFireSetConnectControlSelectedServerMessage()
-        {
-            //------------Setup for test--------------------------
-            var aggregator = new Mock<IEventAggregator>();
-            EventPublishers.Aggregator = aggregator.Object;
-            aggregator.Setup(e => e.Publish(It.IsAny<SetConnectControlSelectedServerMessage>())).Verifiable();
-            var connectCallbackHandler = new ConnectCallbackHandler();
-            //------------Execute Test---------------------------
-            connectCallbackHandler.Cancel();
-            //------------Assert Results-------------------------
-            aggregator.Verify(e => e.Publish(It.IsAny<SetConnectControlSelectedServerMessage>()), Times.Once());
-        }
-
-        [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Tests
-        public void Save_WithValidConnection_Expected_InvokesAddResourceService()
-        // ReSharper restore InconsistentNaming - Unit Tests
-        {
-
-            var targetEnv = new Mock<IEnvironmentModel>();
-            var resRepo = new Mock<IResourceRepository>();
-
-            bool addCalled = false;
-
-            resRepo.Setup(r => r.AddEnvironment(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnvironmentModel>()))
-                   .Callback(() =>
-                       {
-                           addCalled = true;
-                       });
-
-            var connection = new Mock<IEnvironmentConnection>();
-            connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(string.Format("<XmlData>{0}</XmlData>", string.Join("\n", new { }))));
-            targetEnv.Setup(e => e.Connection).Returns(connection.Object);
-
-            var repo = new TestEnvironmentRespository { ActiveEnvironment = targetEnv.Object };
-            targetEnv.Setup(e => e.ResourceRepository).Returns(resRepo.Object);
-
-
-            var handler = new ConnectCallbackHandler(repo);
-
-            handler.Save(ConnectionJson, targetEnv.Object);
-
-            Assert.IsTrue(addCalled);
         }
 
         [TestMethod]

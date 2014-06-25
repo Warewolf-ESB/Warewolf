@@ -4,8 +4,8 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 
-// ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Webs.Callbacks
+
+namespace Dev2.Webs.Callbacks
 {
     public class WebSourceCallbackHandler : SourceCallbackHandler
     {

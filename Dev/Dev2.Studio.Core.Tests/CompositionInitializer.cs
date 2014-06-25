@@ -16,6 +16,7 @@ using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.Webs;
+using Dev2.Webs;
 using Moq;
 
 #endregion

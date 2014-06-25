@@ -7,11 +7,8 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Webs.Callbacks;
 
-// ReSharper disable once CheckNamespace
-
-namespace Dev2.Studio.Webs.Callbacks
+namespace Dev2.Webs.Callbacks
 {
     public class FileChooserCallbackHandler : WebsiteCallbackHandler
     {

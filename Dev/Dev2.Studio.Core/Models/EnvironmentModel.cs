@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Network;
-using System.Text;
 using System.Windows;
-using System.Xml;
-using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Communication;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -230,48 +226,6 @@ namespace Dev2.Studio.Core.Models
 
 
             }
-        }
-
-        #endregion
-
-        #region ToSourceDefinition
-
-        public StringBuilder ToSourceDefinition()
-        {
-            var connectionString = string.Join(";",
-                string.Format("AppServerUri={0}", Connection.AppServerUri),
-                string.Format("WebServerPort={0}", Connection.WebServerUri.Port),
-                string.Format("AuthenticationType={0}", Connection.AuthenticationType)
-                );
-            if(Connection.AuthenticationType == AuthenticationType.User)
-            {
-                connectionString = string.Join(";",
-                    connectionString,
-                    string.Format("UserName={0}", Connection.UserName),
-                    string.Format("Password={0}", Connection.Password)
-                    );
-            }
-
-            var xml = new XElement("Source",
-                new XAttribute("ID", ID),
-                new XAttribute("Name", Name ?? ""),
-                new XAttribute("Type", "Dev2Server"),
-                new XAttribute("ConnectionString", connectionString),
-                new XElement("TypeOf", "Dev2Server"),
-                new XElement("DisplayName", Name),
-                new XElement("Category", Category ?? "")
-                );
-
-
-            var result = new StringBuilder();
-            XmlWriterSettings xws = new XmlWriterSettings { OmitXmlDeclaration = true };
-            using(XmlWriter xw = XmlWriter.Create(result, xws))
-            {
-                xml.Save(xw);
-            }
-
-
-            return result;
         }
 
         #endregion

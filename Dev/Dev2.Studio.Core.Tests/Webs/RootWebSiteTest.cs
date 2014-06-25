@@ -1,22 +1,22 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Text;
+using Caliburn.Micro;
 using Dev2.Core.Tests.Environments;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Webs;
-using Dev2.Studio.Webs.Callbacks;
 using Dev2.Util;
+using Dev2.Webs;
+using Dev2.Webs.Callbacks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Text;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Webs
 {
     /// <summary>
     /// Summary description for RootWebSiteTest
-    /// </summary>
+    /// </summary> 
     [TestClass]
     public class RootWebSiteTest
     {
@@ -208,7 +208,7 @@ namespace Dev2.Core.Tests.Webs
             //------------Setup for test--------------------------
             var resourceModel = SetupResourceModel();
             //------------Execute Test---------------------------
-            RootWebSite.ShowNewWorkflowSaveDialog(resourceModel.Object,addToTabManager:false);
+            RootWebSite.ShowNewWorkflowSaveDialog(resourceModel.Object, addToTabManager: false);
             //------------Assert Results-------------------------
             var saveCallBackHandler = RootWebSite.CallBackHandler as SaveNewWorkflowCallbackHandler;
             Assert.IsNotNull(saveCallBackHandler);
@@ -240,9 +240,9 @@ namespace Dev2.Core.Tests.Webs
             connection.SetupGet(e => e.AppServerUri).Returns(new Uri("http://www.azure.com"));
             environment.SetupGet(r => r.Connection).Returns(connection.Object);
             var testEnvRepo = new TestEnvironmentRespository(environment.Object);
-// ReSharper disable ObjectCreationAsStatement
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(testEnvRepo);
-// ReSharper restore ObjectCreationAsStatement
+            // ReSharper restore ObjectCreationAsStatement
             EventPublishers.Aggregator = new Mock<IEventAggregator>().Object;
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.SetupGet(m => m.Environment).Returns(environment.Object);

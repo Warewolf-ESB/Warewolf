@@ -11,11 +11,9 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
-using Dev2.Webs.Callbacks;
 using Newtonsoft.Json;
 
-// ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Webs.Callbacks
+namespace Dev2.Webs.Callbacks
 {
     public class ConnectCallbackHandler : WebsiteCallbackHandler
     {
@@ -85,18 +83,19 @@ namespace Dev2.Studio.Webs.Callbacks
             }
             else
             {
+                //
+                // NOTE: Public needs to drop through to User for the rest of the framework to pick up properly behind the scenes ;)
+                //
                 connection = new ServerProxy(newConnection.WebAddress, newConnection.UserName, newConnection.Password);
             }
             var newEnvironment = new EnvironmentModel(resourceId, connection) { Name = newConnection.ResourceName, Category = newConnection.ResourcePath };
 
             if(defaultEnvironment != null)
             {
-                //
-                // NOTE: This must ALWAYS save the environment to the server
-                //
-                defaultEnvironment.ResourceRepository.AddEnvironment(defaultEnvironment, newEnvironment);
+                // NOTE : NEVER EVER CALL defaultEnvironment.ResourceRepository.AddEnvironment(defaultEnvironment, newEnvironment);
+                // THERE IS NO REASON TO RE-SAVE A SAVED RESOURCE!!!!
 
-                ReloadResource(defaultEnvironment, resourceId, Core.AppResources.Enums.ResourceType.Source);
+                ReloadResource(defaultEnvironment, resourceId, Studio.Core.AppResources.Enums.ResourceType.Source);
             }
 
             CurrentEnvironmentRepository.Save(newEnvironment);

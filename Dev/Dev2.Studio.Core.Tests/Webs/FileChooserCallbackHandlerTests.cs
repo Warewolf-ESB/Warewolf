@@ -7,8 +7,8 @@ using Dev2.Composition;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Webs.Callbacks;
 using Dev2.Util;
+using Dev2.Webs.Callbacks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -50,7 +50,9 @@ namespace Dev2.Core.Tests.Webs
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+#pragma warning disable 168
             var handler = new FileChooserCallbackHandler(null);
+#pragma warning restore 168
 
             //------------Assert Results-------------------------
         }
@@ -103,7 +105,7 @@ namespace Dev2.Core.Tests.Webs
             var handler = new TestFileChooserCallbackHandler(message);
 
             //------------Execute Test---------------------------
-            handler.Save(It.IsAny<string>(), true);
+            handler.Save(It.IsAny<string>());
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, handler.CloseHitCount);

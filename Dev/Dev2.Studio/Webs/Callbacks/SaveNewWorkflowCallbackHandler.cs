@@ -2,11 +2,9 @@
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Webs.Callbacks;
 using System;
 
-// ReSharper disable CheckNamespace
-namespace Dev2.Studio.Webs.Callbacks
+namespace Dev2.Webs.Callbacks
 {
     public class SaveNewWorkflowCallbackHandler
        : WebsiteCallbackHandler

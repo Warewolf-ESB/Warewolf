@@ -1,5 +1,11 @@
-﻿using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition.Primitives;
+using System.IO;
 using System.Reflection;
+using System.Text;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Communication;
@@ -16,18 +22,12 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels;
-using Dev2.Studio.Webs;
 using Dev2.Threading;
+using Dev2.Webs;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition.Primitives;
-using System.Text;
-using System.Windows;
 
 namespace Dev2.Core.Tests
 {

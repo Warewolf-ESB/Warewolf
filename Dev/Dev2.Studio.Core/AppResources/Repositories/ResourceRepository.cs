@@ -1,4 +1,12 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Windows;
+using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -23,14 +31,6 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Utils;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Windows;
-using System.Xml.Linq;
 
 
 // ReSharper disable CheckNamespace
@@ -768,22 +768,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         #endregion Private Methods
 
         #region Add/RemoveEnvironment
-
-        public void AddEnvironment(IEnvironmentModel targetEnvironment, IEnvironmentModel environment)
-        {
-            if(targetEnvironment == null)
-            {
-                throw new ArgumentNullException("targetEnvironment");
-            }
-            if(environment == null)
-            {
-                throw new ArgumentNullException("environment");
-            }
-
-            var sourceDefinition = environment.ToSourceDefinition();
-
-            SaveResource(targetEnvironment, sourceDefinition, GlobalConstants.ServerWorkspaceID);
-        }
 
         public Func<string, ICommunicationController> GetCommunicationController = serviveName => new CommunicationController { ServiceName = serviveName };
 

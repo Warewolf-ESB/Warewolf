@@ -1,4 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Linq;
+using System.Windows;
+using Caliburn.Micro;
 using Dev2.Common.Utils;
 using Dev2.Composition;
 using Dev2.Interfaces;
@@ -12,12 +15,8 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.InterfaceImplementors;
-using Dev2.Studio.Webs.Callbacks;
 using Dev2.Workspaces;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Linq;
-using System.Windows;
 
 namespace Dev2.Webs.Callbacks
 {

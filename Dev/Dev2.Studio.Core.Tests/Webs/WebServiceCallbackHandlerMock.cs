@@ -1,5 +1,5 @@
 ﻿using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Webs.Callbacks;
+using Dev2.Webs.Callbacks;
 using Newtonsoft.Json.Linq;
 
 namespace Dev2.Core.Tests.Webs

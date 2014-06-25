@@ -1,8 +1,8 @@
 ﻿using Dev2.Data.SystemTemplates.Models;
-using Dev2.Studio.Webs.Callbacks;
+using Dev2.Webs.Callbacks;
 
 // ReSharper disable once CheckNamespace
-namespace Dev2.Studio.Webs
+namespace Dev2.Webs
 {
     public static class WebHelper
     {
