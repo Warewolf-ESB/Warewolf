@@ -21,6 +21,7 @@ REM ****************************************************************************
 
 REM ** Kill The Server **
 
+sc stop "Warewolf Server"
 taskkill /im "Warewolf Server.exe"
 
 REM  Wait 7 seconds ;)
@@ -28,9 +29,10 @@ ping -n 7 127.0.0.1 > nul
 
 REM ** Start The Server **
 
-START "%DeploymentDirectory%\Warewolf Server.exe" /D %DeploymentDirectory% "Warewolf Server.exe"
+robocopy "%DeploymentDirectory%" "%PROGRAMFILES(X86)\Warewolf\Server" *.* /s
+sc start "Warewolf Server"
 
 REM  Wait 30 seconds ;)
-ping -n 30 127.0.0.1 > nul
+ping -n 20 127.0.0.1 > nul
 
 exit 0
