@@ -1,0 +1,369 @@
+
+<Service Name="Date and Time Difference" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="7406e75f-9280-4296-8099-22c780841f95" Version="1.0" ResourceType="WorkflowService">
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Date and Time Difference"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+ xmlns:ddd="clr-namespace:Dev2.Data.Decision;assembly=Dev2.Data"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
+ xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;sap:VirtualizedContainerService.HintSize&gt;779,2052&lt;/sap:VirtualizedContainerService.HintSize&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces for internal implementation&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart DisplayName="Date and Time Difference" sap:VirtualizedContainerService.HintSize="739,2012"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+      &lt;Variable x:TypeArguments="ddd:Dev2DataListDecisionHandler" Name="Dev2DecisionHandler" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;sap:WorkflowViewStateService.ViewState&gt;
+      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
+        &lt;av:Point x:Key="ShapeLocation"&gt;270,2.5&lt;/av:Point&gt;
+        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,77.5 300,107.5 308.5,107.5 308.5,134&lt;/av:PointCollection&gt;
+        &lt;x:Double x:Key="Height"&gt;1976&lt;/x:Double&gt;
+        &lt;x:Double x:Key="Width"&gt;725&lt;/x:Double&gt;
+      &lt;/scg:Dictionary&gt;
+    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;FlowStep x:Name="__ReferenceID0"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;av:Point x:Key="ShapeLocation"&gt;172,134&lt;/av:Point&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;273,92&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;308.5,226 308.5,256 310,256 310,257.1&lt;/av:PointCollection&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (4)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="273,92" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="81d81e9f-b86e-4927-bdb3-b328a241487e" UpdateAllOccurrences="False"&gt;
+          &lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;
+            &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+          &lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;
+          &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+            &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="8"&gt;
+              &lt;uaba:ActivityDTO FieldName="[[Result]]" FieldValue="Date and Time Difference: FAIL" IndexNumber="1" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable1]]"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[format]]" FieldValue="yyyy/mm/dd 12h:min:ss.sp am/pm" IndexNumber="2" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable2]]"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[date1]]" FieldValue="2045/09/15 09:24:35.952 PM" IndexNumber="3" WatermarkTextValue="" WatermarkTextVariable=""&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[date2]]" FieldValue="2046/10/16 10:25:36.953 PM" IndexNumber="4" WatermarkTextValue="" WatermarkTextVariable=""&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="5" WatermarkTextValue="" WatermarkTextVariable=""&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+            &lt;/scg:List&gt;
+          &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+          &lt;sap:WorkflowViewStateService.ViewState&gt;
+            &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+              &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+            &lt;/scg:Dictionary&gt;
+          &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;/uaba:DsfMultiAssignActivity&gt;
+        &lt;FlowStep.Next&gt;
+          &lt;FlowStep x:Name="__ReferenceID1"&gt;
+            &lt;sap:WorkflowViewStateService.ViewState&gt;
+              &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                &lt;av:Point x:Key="ShapeLocation"&gt;185,257.1&lt;/av:Point&gt;
+                &lt;av:Size x:Key="ShapeSize"&gt;250,161&lt;/av:Size&gt;
+                &lt;av:PointCollection x:Key="ConnectorLocation"&gt;310,418.1 310,457.1&lt;/av:PointCollection&gt;
+              &lt;/scg:Dictionary&gt;
+            &lt;/sap:WorkflowViewStateService.ViewState&gt;
+            &lt;uaba:DsfDateTimeDifferenceActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="Date and Time Difference" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="250,161" Input1="[[date1]]" Input2="[[date2]]" InputFormat="[[format]]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputType="Years" Result="[[years]]" SimulationMode="OnDemand" UniqueID="133689d7-f988-4d4c-914a-d091b5842a56"&gt;
+              &lt;uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+              &lt;/uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+              &lt;sap:WorkflowViewStateService.ViewState&gt;
+                &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                  &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                &lt;/scg:Dictionary&gt;
+              &lt;/sap:WorkflowViewStateService.ViewState&gt;
+            &lt;/uaba:DsfDateTimeDifferenceActivity&gt;
+            &lt;FlowStep.Next&gt;
+              &lt;FlowStep x:Name="__ReferenceID2"&gt;
+                &lt;sap:WorkflowViewStateService.ViewState&gt;
+                  &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                    &lt;av:Point x:Key="ShapeLocation"&gt;185,457.1&lt;/av:Point&gt;
+                    &lt;av:Size x:Key="ShapeSize"&gt;250,161&lt;/av:Size&gt;
+                    &lt;av:PointCollection x:Key="ConnectorLocation"&gt;310,618.1 310,647.1&lt;/av:PointCollection&gt;
+                  &lt;/scg:Dictionary&gt;
+                &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                &lt;uaba:DsfDateTimeDifferenceActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="Date and Time Difference" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="250,161" Input1="[[date1]]" Input2="[[date2]]" InputFormat="[[format]]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputType="Months" Result="[[months]]" SimulationMode="OnDemand" UniqueID="133689d7-f988-4d4c-914a-d091b5842a56"&gt;
+                  &lt;uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                    &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+                  &lt;/uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                  &lt;sap:WorkflowViewStateService.ViewState&gt;
+                    &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                      &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                    &lt;/scg:Dictionary&gt;
+                  &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                &lt;/uaba:DsfDateTimeDifferenceActivity&gt;
+                &lt;FlowStep.Next&gt;
+                  &lt;FlowStep x:Name="__ReferenceID3"&gt;
+                    &lt;sap:WorkflowViewStateService.ViewState&gt;
+                      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                        &lt;av:Point x:Key="ShapeLocation"&gt;185,647.1&lt;/av:Point&gt;
+                        &lt;av:Size x:Key="ShapeSize"&gt;250,161&lt;/av:Size&gt;
+                        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;310,808.1 310,827.1&lt;/av:PointCollection&gt;
+                      &lt;/scg:Dictionary&gt;
+                    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                    &lt;uaba:DsfDateTimeDifferenceActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="Date and Time Difference" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="250,161" Input1="[[date1]]" Input2="[[date2]]" InputFormat="[[format]]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputType="Days" Result="[[days]]" SimulationMode="OnDemand" UniqueID="133689d7-f988-4d4c-914a-d091b5842a56"&gt;
+                      &lt;uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                        &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+                      &lt;/uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                      &lt;sap:WorkflowViewStateService.ViewState&gt;
+                        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                          &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                        &lt;/scg:Dictionary&gt;
+                      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                    &lt;/uaba:DsfDateTimeDifferenceActivity&gt;
+                    &lt;FlowStep.Next&gt;
+                      &lt;FlowStep x:Name="__ReferenceID4"&gt;
+                        &lt;sap:WorkflowViewStateService.ViewState&gt;
+                          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                            &lt;av:Point x:Key="ShapeLocation"&gt;185,827.1&lt;/av:Point&gt;
+                            &lt;av:Size x:Key="ShapeSize"&gt;250,161&lt;/av:Size&gt;
+                            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;310,988.1 300,988.1 300,997.1&lt;/av:PointCollection&gt;
+                          &lt;/scg:Dictionary&gt;
+                        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                        &lt;uaba:DsfDateTimeDifferenceActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="Date and Time Difference" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="250,161" Input1="[[date1]]" Input2="[[date2]]" InputFormat="[[format]]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputType="Weeks" Result="[[weeks]]" SimulationMode="OnDemand" UniqueID="133689d7-f988-4d4c-914a-d091b5842a56"&gt;
+                          &lt;uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                            &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+                          &lt;/uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                          &lt;sap:WorkflowViewStateService.ViewState&gt;
+                            &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                              &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                            &lt;/scg:Dictionary&gt;
+                          &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                        &lt;/uaba:DsfDateTimeDifferenceActivity&gt;
+                        &lt;FlowStep.Next&gt;
+                          &lt;FlowStep x:Name="__ReferenceID5"&gt;
+                            &lt;sap:WorkflowViewStateService.ViewState&gt;
+                              &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                                &lt;av:Point x:Key="ShapeLocation"&gt;175,997.1&lt;/av:Point&gt;
+                                &lt;av:Size x:Key="ShapeSize"&gt;250,161&lt;/av:Size&gt;
+                                &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,1158.1 300,1177.1 310,1177.1&lt;/av:PointCollection&gt;
+                              &lt;/scg:Dictionary&gt;
+                            &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                            &lt;uaba:DsfDateTimeDifferenceActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="Date and Time Difference" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="250,161" Input1="[[date1]]" Input2="[[date2]]" InputFormat="[[format]]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputType="Hours" Result="[[hours]]" SimulationMode="OnDemand" UniqueID="133689d7-f988-4d4c-914a-d091b5842a56"&gt;
+                              &lt;uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                                &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+                              &lt;/uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                              &lt;sap:WorkflowViewStateService.ViewState&gt;
+                                &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                                  &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                                &lt;/scg:Dictionary&gt;
+                              &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                            &lt;/uaba:DsfDateTimeDifferenceActivity&gt;
+                            &lt;FlowStep.Next&gt;
+                              &lt;FlowStep x:Name="__ReferenceID6"&gt;
+                                &lt;sap:WorkflowViewStateService.ViewState&gt;
+                                  &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                                    &lt;av:Point x:Key="ShapeLocation"&gt;185,1177.1&lt;/av:Point&gt;
+                                    &lt;av:Size x:Key="ShapeSize"&gt;250,161&lt;/av:Size&gt;
+                                    &lt;av:PointCollection x:Key="ConnectorLocation"&gt;310,1338.1 310,1357.1&lt;/av:PointCollection&gt;
+                                  &lt;/scg:Dictionary&gt;
+                                &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                                &lt;uaba:DsfDateTimeDifferenceActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="Date and Time Difference" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="250,161" Input1="[[date1]]" Input2="[[date2]]" InputFormat="[[format]]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputType="Minutes" Result="[[minutes]]" SimulationMode="OnDemand" UniqueID="133689d7-f988-4d4c-914a-d091b5842a56"&gt;
+                                  &lt;uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                                    &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+                                  &lt;/uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                                  &lt;sap:WorkflowViewStateService.ViewState&gt;
+                                    &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                                      &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                                    &lt;/scg:Dictionary&gt;
+                                  &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                                &lt;/uaba:DsfDateTimeDifferenceActivity&gt;
+                                &lt;FlowStep.Next&gt;
+                                  &lt;FlowStep x:Name="__ReferenceID7"&gt;
+                                    &lt;sap:WorkflowViewStateService.ViewState&gt;
+                                      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                                        &lt;av:Point x:Key="ShapeLocation"&gt;185,1357.1&lt;/av:Point&gt;
+                                        &lt;av:Size x:Key="ShapeSize"&gt;250,161&lt;/av:Size&gt;
+                                        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;310,1518.1 310,1537.1&lt;/av:PointCollection&gt;
+                                      &lt;/scg:Dictionary&gt;
+                                    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                                    &lt;uaba:DsfDateTimeDifferenceActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="Date and Time Difference" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="250,161" Input1="[[date1]]" Input2="[[date2]]" InputFormat="[[format]]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputType="Seconds" Result="[[seconds]]" SimulationMode="OnDemand" UniqueID="133689d7-f988-4d4c-914a-d091b5842a56"&gt;
+                                      &lt;uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                                        &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+                                      &lt;/uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                                      &lt;sap:WorkflowViewStateService.ViewState&gt;
+                                        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                                          &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                                        &lt;/scg:Dictionary&gt;
+                                      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                                    &lt;/uaba:DsfDateTimeDifferenceActivity&gt;
+                                    &lt;FlowStep.Next&gt;
+                                      &lt;FlowStep x:Name="__ReferenceID8"&gt;
+                                        &lt;sap:WorkflowViewStateService.ViewState&gt;
+                                          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                                            &lt;av:Point x:Key="ShapeLocation"&gt;185,1537.1&lt;/av:Point&gt;
+                                            &lt;av:Size x:Key="ShapeSize"&gt;250,161&lt;/av:Size&gt;
+                                            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;310,1698.1 310,1728.1 313,1728.1 313,1753.96&lt;/av:PointCollection&gt;
+                                          &lt;/scg:Dictionary&gt;
+                                        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                                        &lt;uaba:DsfDateTimeDifferenceActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="Date and Time Difference" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="250,161" Input1="[[date1]]" Input2="[[date2]]" InputFormat="[[format]]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputType="Split Secs" Result="[[splits]]" SimulationMode="OnDemand" UniqueID="133689d7-f988-4d4c-914a-d091b5842a56"&gt;
+                                          &lt;uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                                            &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+                                          &lt;/uaba:DsfDateTimeDifferenceActivity.AmbientDataList&gt;
+                                          &lt;sap:WorkflowViewStateService.ViewState&gt;
+                                            &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                                              &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                                            &lt;/scg:Dictionary&gt;
+                                          &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                                        &lt;/uaba:DsfDateTimeDifferenceActivity&gt;
+                                        &lt;FlowStep.Next&gt;
+                                          &lt;FlowDecision x:Name="__ReferenceID9" sap:VirtualizedContainerService.HintSize="70,87"&gt;
+                                            &lt;FlowDecision.Condition&gt;
+                                              &lt;uaba:DsfFlowDecisionActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" SimulationOutput="{x:Null}" Add="False" DatabindRecursive="False" DisplayName="Decision" ExpressionText="Dev2DecisionHandler.Instance.ExecuteDecisionStack(&amp;quot;{!TheStack!:[{!Col1!:![[years]]!,!Col2!:!1!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!},{!Col1!:![[months]]!,!Col2!:!13!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!},{!Col1!:![[days]]!,!Col2!:!396!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!},{!Col1!:![[weeks]]!,!Col2!:!56!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!},{!Col1!:![[hours]]!,!Col2!:!9505!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!},{!Col1!:![[minutes]]!,!Col2!:!570301!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!},{!Col1!:![[seconds]]!,!Col2!:!34218061!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!},{!Col1!:![[splits]]!,!Col2!:!34218061001!,!Col3!:!!,!PopulatedColumnCount!:2,!EvaluationFn!:!IsEqual!}],!TotalDecisions!:8,!ModelName!:!Dev2DecisionStack!,!Mode!:!AND!,!TrueArmText!:!Pass!,!FalseArmText!:!False!}&amp;quot;,AmbientDataList)" HasError="[HasError]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="5bade56d-4015-423d-9a61-1c28a0463027"&gt;
+                                                &lt;uaba:DsfFlowDecisionActivity.AmbientDataList&gt;
+                                                  &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+                                                &lt;/uaba:DsfFlowDecisionActivity.AmbientDataList&gt;
+                                              &lt;/uaba:DsfFlowDecisionActivity&gt;
+                                            &lt;/FlowDecision.Condition&gt;
+                                            &lt;sap:WorkflowViewStateService.ViewState&gt;
+                                              &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                                                &lt;x:String x:Key="TrueLabel"&gt;Pass&lt;/x:String&gt;
+                                                &lt;av:Point x:Key="ShapeLocation"&gt;278,1753.96&lt;/av:Point&gt;
+                                                &lt;av:Size x:Key="ShapeSize"&gt;70,87&lt;/av:Size&gt;
+                                                &lt;av:PointCollection x:Key="TrueConnector"&gt;278,1797.46 231.395,1797.46 231.395,1884&lt;/av:PointCollection&gt;
+                                              &lt;/scg:Dictionary&gt;
+                                            &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                                            &lt;FlowDecision.True&gt;
+                                              &lt;FlowStep x:Name="__ReferenceID10"&gt;
+                                                &lt;sap:WorkflowViewStateService.ViewState&gt;
+                                                  &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                                                    &lt;av:Point x:Key="ShapeLocation"&gt;103.395,1884&lt;/av:Point&gt;
+                                                    &lt;av:Size x:Key="ShapeSize"&gt;256,92&lt;/av:Size&gt;
+                                                  &lt;/scg:Dictionary&gt;
+                                                &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                                                &lt;uaba:DsfMultiAssignActivity Compiler="{x:Null}" CurrentResult="{x:Null}" DataObject="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ScenarioID="{x:Null}" ScopingObject="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (1)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="256,92" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" SimulationMode="OnDemand" UniqueID="b1bf6cf1-4494-48ce-a686-7f308f69fd72" UpdateAllOccurrences="False"&gt;
+                                                  &lt;uaba:DsfMultiAssignActivity.AmbientDataList&gt;
+                                                    &lt;InOutArgument x:TypeArguments="scg:List(x:String)" /&gt;
+                                                  &lt;/uaba:DsfMultiAssignActivity.AmbientDataList&gt;
+                                                  &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+                                                    &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="4"&gt;
+                                                      &lt;uaba:ActivityDTO FieldName="[[Result]]" FieldValue="Date and Time Difference: PASS" IndexNumber="1" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable1]]"&gt;
+                                                        &lt;uaba:ActivityDTO.OutList&gt;
+                                                          &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                                                        &lt;/uaba:ActivityDTO.OutList&gt;
+                                                      &lt;/uaba:ActivityDTO&gt;
+                                                      &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="2" WatermarkTextValue="Value" WatermarkTextVariable="[[Variable2]]"&gt;
+                                                        &lt;uaba:ActivityDTO.OutList&gt;
+                                                          &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                                                        &lt;/uaba:ActivityDTO.OutList&gt;
+                                                      &lt;/uaba:ActivityDTO&gt;
+                                                    &lt;/scg:List&gt;
+                                                  &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+                                                  &lt;sap:WorkflowViewStateService.ViewState&gt;
+                                                    &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                                                      &lt;x:Boolean x:Key="IsExpanded"&gt;True&lt;/x:Boolean&gt;
+                                                    &lt;/scg:Dictionary&gt;
+                                                  &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                                                &lt;/uaba:DsfMultiAssignActivity&gt;
+                                              &lt;/FlowStep&gt;
+                                            &lt;/FlowDecision.True&gt;
+                                          &lt;/FlowDecision&gt;
+                                        &lt;/FlowStep.Next&gt;
+                                      &lt;/FlowStep&gt;
+                                    &lt;/FlowStep.Next&gt;
+                                  &lt;/FlowStep&gt;
+                                &lt;/FlowStep.Next&gt;
+                              &lt;/FlowStep&gt;
+                            &lt;/FlowStep.Next&gt;
+                          &lt;/FlowStep&gt;
+                        &lt;/FlowStep.Next&gt;
+                      &lt;/FlowStep&gt;
+                    &lt;/FlowStep.Next&gt;
+                  &lt;/FlowStep&gt;
+                &lt;/FlowStep.Next&gt;
+              &lt;/FlowStep&gt;
+            &lt;/FlowStep.Next&gt;
+          &lt;/FlowStep&gt;
+        &lt;/FlowStep.Next&gt;
+      &lt;/FlowStep&gt;
+    &lt;/Flowchart.StartNode&gt;
+    &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID2&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID3&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID4&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID5&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID6&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID7&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID8&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID9&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID10&lt;/x:Reference&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <Category>TESTS\Date and Time Difference</Category>
+  <Tags>
+  </Tags>
+  <IconPath>pack://application:,,,/Dev2.Studio;component/images/workflowservice2.png</IconPath>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DisplayName>Workflow</DisplayName>
+  <DataList>
+    <Result Description="" IsEditable="True" ColumnIODirection="Output" />
+    <format Description="" IsEditable="True" ColumnIODirection="None" />
+    <date1 Description="" IsEditable="True" ColumnIODirection="None" />
+    <date2 Description="" IsEditable="True" ColumnIODirection="None" />
+    <years Description="" IsEditable="True" ColumnIODirection="None" />
+    <months Description="" IsEditable="True" ColumnIODirection="None" />
+    <days Description="" IsEditable="True" ColumnIODirection="None" />
+    <weeks Description="" IsEditable="True" ColumnIODirection="None" />
+    <hours Description="" IsEditable="True" ColumnIODirection="None" />
+    <minutes Description="" IsEditable="True" ColumnIODirection="None" />
+    <seconds Description="" IsEditable="True" ColumnIODirection="None" />
+    <splits Description="" IsEditable="True" ColumnIODirection="None" />
+  </DataList>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>RnjPxothHw05RnZl7hvC6A1pDEU=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>OdgJfvwwr7xlSYcZ9nAMkm8T6NPvUX/u0x0DMhwsVCsg1kzv1+SCf6sYi1r/0A6W12k2QjHWQi9PdYmBabewnKXjj8KclY0kPS5cW7zl0gb/qB9+f/Wcvit86b0maFnbsLnfBNiGEl+j6JL6Cl5T9v4ZJopvRL93YZSLUS5JUto=</SignatureValue>
+  </Signature>
+</Service>

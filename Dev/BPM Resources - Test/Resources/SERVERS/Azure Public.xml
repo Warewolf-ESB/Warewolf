@@ -1,0 +1,20 @@
+
+<Source ID="774c1be9-17fc-426b-a31c-b53d686038c9" Name="Azure Public" Type="Dev2Server" ConnectionString="AppServerUri=http://dev2-warewolf.cloudapp.net:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Version="1.0" ResourceType="Server" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <TypeOf>Dev2Server</TypeOf>
+  <DisplayName>Azure Public</DisplayName>
+  <Category>SERVERS\Azure Public</Category>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>RnGacSxKD/tn48efkoZHXeIIArY=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>gyal2myI/tQ+drG4Gv3qyLNv1sZjKxAC51AmyEnStUrfB+WNDH2Fq6UjYzxHKrr8eHoaCHRXdXVDVZk/9IMGRrKGHSIBy+y6FcbjAEp7T5duzOkJJdNGLekrxFPEm38EB5kg13Omj1+uqvutkiNi2O91M1Ul2wbjMF2x8b5lOW4=</SignatureValue>
+  </Signature>
+</Source>

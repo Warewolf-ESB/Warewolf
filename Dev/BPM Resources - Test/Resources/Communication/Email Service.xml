@@ -1,0 +1,64 @@
+
+<Service ID="72536234-b49a-4ac8-9c16-c9b1c7d202c3" Version="1.0" Name="Email Service" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="Email Service" Type="Plugin" SourceID="2a7a78af-826f-4334-a402-b35e910295c9" SourceName="Email Plugin" SourceMethod="Send" Namespace="Unlimited.Framework.Plugins.EmailPlugin">
+      <Inputs>
+        <Input Name="Host" Source="Host" EmptyToNull="false" DefaultValue="mail.bellevuenet.co.za" NativeType="System.Object">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Port" Source="Port" EmptyToNull="false" DefaultValue="25" NativeType="System.Object">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="From" Source="From" EmptyToNull="false" DefaultValue="DynamicServiceFramework@theunlimited.co.za" NativeType="System.Object">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="To" Source="To" EmptyToNull="false" DefaultValue="" NativeType="System.Object">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Subject" Source="Subject" EmptyToNull="false" DefaultValue="" NativeType="System.Object">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="BodyType" Source="BodyType" EmptyToNull="false" DefaultValue="html" NativeType="System.Object">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Body" Source="Body" EmptyToNull="false" DefaultValue="" NativeType="System.Object">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Attachment" Source="Attachment" EmptyToNull="false" DefaultValue="NONE" NativeType="System.Object">
+          <Validator Type="Required" />
+        </Input>
+      </Inputs>
+      <Outputs />
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:_x003C_Paths_x003E_k__BackingField /></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>Plugin</TypeOf>
+  <DisplayName>Email Service</DisplayName>
+  <Category>Communication\Email Service</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>Si+S6QUKmCnBxArO+uZdEegCD9Y=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>TVsoY5fuDPiC+RFfr86kPkzzk4MWD/3UQ7cvXXpwdg9jlk9rZaBCtHW+J8j+XSAZSJ720yDe1V3xZ8zn49ofT9BXnaE6IskwRNv7fYG9H4QQgxD1K0QGvEJcykzmk3VLfpIZ2eif+9VhOTA9BsJ6h0QRSRGmaNEXimwzZ679NXo=</SignatureValue>
+  </Signature>
+</Service>

@@ -1,0 +1,142 @@
+
+<Service Name="MultiAssignCalculateNoCalculateComparisonTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="03514601-1eea-427d-8d9b-c3605a1bd1f9" Version="1.0" ResourceType="WorkflowService">
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="MultiAssignCalculateNoCalculateComparisonTest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;sap:VirtualizedContainerService.HintSize&gt;654,676&lt;/sap:VirtualizedContainerService.HintSize&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart DisplayName="MultiAssignCalculateNoCalculateComparisonTest" sap:VirtualizedContainerService.HintSize="614,636" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;sap:WorkflowViewStateService.ViewState&gt;
+      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
+        &lt;av:Point x:Key="ShapeLocation"&gt;270,2.5&lt;/av:Point&gt;
+        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;270,40 240,40 240,19 128,19 128,79&lt;/av:PointCollection&gt;
+      &lt;/scg:Dictionary&gt;
+    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;
+    &lt;/Flowchart.StartNode&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;390,3&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;206,194&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity sap:VirtualizedContainerService.HintSize="206,194" Text="PBI 3443&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;Workflow to test that&amp;#xD;&amp;#xA;multi assign activities&amp;#xD;&amp;#xA;operating in calculate mode&amp;#xD;&amp;#xA;provide evaluated results,&amp;#xD;&amp;#xA;as opposed to non calculate&amp;#xD;&amp;#xA;mode." /&gt;
+    &lt;/FlowStep&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;400,203&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;200,215&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity sap:VirtualizedContainerService.HintSize="200,215" Text="Expected Input&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;[[Input]]=10&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;Calculate Expected Output&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;40&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;Non Calc Expected Output&amp;#xD;&amp;#xA;&amp;#xD;&amp;#xA;sum(30,10)" /&gt;
+    &lt;/FlowStep&gt;
+    &lt;FlowStep x:Name="__ReferenceID0"&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;53.5,222&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;273,116&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfMultiAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (2)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="273,116" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False"&gt;
+        &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+          &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="4"&gt;
+            &lt;uaba:ActivityDTO FieldName="[[CalcResult]]" FieldValue="!~calculation~!sum(30,[[Input]])!~~calculation~!" IndexNumber="1"&gt;
+              &lt;uaba:ActivityDTO.OutList&gt;
+                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+              &lt;/uaba:ActivityDTO.OutList&gt;
+            &lt;/uaba:ActivityDTO&gt;
+            &lt;uaba:ActivityDTO FieldName="[[NoCalcResult]]" FieldValue="sum(30,[[Input]])" IndexNumber="2"&gt;
+              &lt;uaba:ActivityDTO.OutList&gt;
+                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+              &lt;/uaba:ActivityDTO.OutList&gt;
+            &lt;/uaba:ActivityDTO&gt;
+            &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="3"&gt;
+              &lt;uaba:ActivityDTO.OutList&gt;
+                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+              &lt;/uaba:ActivityDTO.OutList&gt;
+            &lt;/uaba:ActivityDTO&gt;
+          &lt;/scg:List&gt;
+        &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+      &lt;/uaba:DsfMultiAssignActivity&gt;
+    &lt;/FlowStep&gt;
+    &lt;FlowStep x:Name="__ReferenceID1"&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;0,79&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;256,92&lt;/av:Size&gt;
+          &lt;av:PointCollection x:Key="ConnectorLocation"&gt;128,171 128,201 190,201 190,222&lt;/av:PointCollection&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfMultiAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (1)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="256,92" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False"&gt;
+        &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+          &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="4"&gt;
+            &lt;uaba:ActivityDTO FieldName="[[Input]]" FieldValue="10" IndexNumber="1"&gt;
+              &lt;uaba:ActivityDTO.OutList&gt;
+                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+              &lt;/uaba:ActivityDTO.OutList&gt;
+            &lt;/uaba:ActivityDTO&gt;
+            &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="2"&gt;
+              &lt;uaba:ActivityDTO.OutList&gt;
+                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+              &lt;/uaba:ActivityDTO.OutList&gt;
+            &lt;/uaba:ActivityDTO&gt;
+          &lt;/scg:List&gt;
+        &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+      &lt;/uaba:DsfMultiAssignActivity&gt;
+      &lt;FlowStep.Next&gt;
+        &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+      &lt;/FlowStep.Next&gt;
+    &lt;/FlowStep&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <Category>Integration Test Services\MultiAssignCalculateNoCalculateComparisonTest</Category>
+  <Tags>
+  </Tags>
+  <IconPath>
+  </IconPath>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DisplayName>Workflow</DisplayName>
+  <DataList>
+    <CalcResult Description="" />
+    <Input Description="" />
+    <NoCalcResult Description="" />
+  </DataList>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>J+wS+duA8ehW3UbeVbjk2NMmjz0=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>jxsx+s4uqZPzL6JSCqqN567Q/SkSOpuhRsBEke/AdleZKyYFuAmce6pdBIUJ5yuWuNZeXeKHKokyIswe1Hxa7cPW8+IOHZe+xwjKWMe1/2YLf59RmRr1fQbTKdytKTjMujhf+7bhQgUt++MWC2AjOySvOLqCd+8a4wwPsJrRgYA=</SignatureValue>
+  </Signature>
+</Service>
