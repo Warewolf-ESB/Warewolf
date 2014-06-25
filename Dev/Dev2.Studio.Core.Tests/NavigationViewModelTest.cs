@@ -347,7 +347,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var viewModel = Init(false, true);
-            viewModel.DsfActivityType = enDsfActivityType.Workflow; 
+            viewModel.DsfActivityType = enDsfActivityType.Workflow;
             //------------Preconditions---------------------------
             Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
             //------------Execute Test---------------------------
@@ -355,10 +355,10 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(HasFolder(viewModel.ExplorerItemModels[0].Children));
         }
-        
+
         private bool HasFolder(IEnumerable<ExplorerItemModel> children)
         {
-            if (children.Any(explorerItemModel => explorerItemModel.ResourceType == Data.ServiceModel.ResourceType.Folder))
+            if(children.Any(explorerItemModel => explorerItemModel.ResourceType == Data.ServiceModel.ResourceType.Folder))
             {
                 return true;
             }
@@ -721,6 +721,20 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(resourceVm.Parent.IsExplorerExpanded);
         }
 
+        [TestMethod]
+        public void NavigationViewModel_BringItemIntoView_NotCorrectEnvironment_DoesNotSetTreeNodeIsSelectedTrueParentOpen()
+        {
+            var viewModel = Init(false, true);
+            var mockEnvironment2 = GetMockEnvironment();
+            mockEnvironment2.Setup(model => model.ID).Returns(Guid.NewGuid());
+            viewModel.AddEnvironment(mockEnvironment2.Object);
+            _mockResourceModel2.Setup(model => model.ID).Returns(_mockResourceModel.Object.ID);
+            _mockResourceModel2.Setup(model => model.Environment.ID).Returns(mockEnvironment2.Object.ID);
+            var resourceVm = viewModel.FindChild(_mockResourceModel2.Object);
+            viewModel.BringItemIntoView(_mockResourceModel2.Object);
+            Assert.IsNull(resourceVm);
+        }
+
 
         [TestMethod]
         public void NavigationViewModel_BringItemIntoViewWithNull_Expects_DoesNothing()
@@ -833,7 +847,7 @@ namespace Dev2.Core.Tests
             ExplorerItemModel anotherEnvironment = new ExplorerItemModel();
             anotherEnvironment.DisplayName = "Other Server";
             anotherEnvironment.EnvironmentId = toBeRemoved.Object.ID;
-            var studioResourceRepository = new StudioResourceRepository(localhostExplorerItemModel,_Invoke);
+            var studioResourceRepository = new StudioResourceRepository(localhostExplorerItemModel, _Invoke);
             studioResourceRepository.ExplorerItemModels.Add(anotherEnvironment);
             studioResourceRepository.GetExplorerProxy = guid => new Mock<IExplorerResourceRepository>().Object;
             var viewModel = new NavigationViewModel(publisher.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, envRepo.Object, studioResourceRepository);
@@ -909,7 +923,7 @@ namespace Dev2.Core.Tests
                     categoryItem.Children.Add(resourceItemModel);
                 }
             }
-            var studioResourceRepository = new StudioResourceRepository(localhostItemModel,_Invoke);
+            var studioResourceRepository = new StudioResourceRepository(localhostItemModel, _Invoke);
             var explorerResourceRepository = new Mock<IExplorerResourceRepository>().Object;
             studioResourceRepository.GetExplorerProxy = guid => explorerResourceRepository;
             return studioResourceRepository;

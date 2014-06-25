@@ -210,19 +210,12 @@ namespace Dev2.ViewModels.Deploy
 
         public void BringItemIntoView(Guid environmentId, Guid resourceId)
         {
-            //if(ExplorerItemModels != null && ExplorerItemModels.Count > 0)
+            IStudioResourceRepository studioResourceRepository = StudioResourceRepository;
+            ExplorerItemModel item = studioResourceRepository.FindItemByIdAndEnvironment(resourceId, environmentId);
+            if(item != null)
             {
-                IStudioResourceRepository studioResourceRepository = StudioResourceRepository;
-                var environment = studioResourceRepository.FindItemById(environmentId);
-                if(environment != null)
-                {
-                    ExplorerItemModel item = studioResourceRepository.FindItemById(resourceId);
-                    if(item != null)
-                    {
-                        item.IsExplorerSelected = true;
-                        RecusiveExplorerExpandParent(item.Parent);
-                    }
-                }
+                item.IsExplorerSelected = true;
+                RecusiveExplorerExpandParent(item.Parent);
             }
         }
 
