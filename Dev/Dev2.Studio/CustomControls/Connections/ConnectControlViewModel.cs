@@ -59,6 +59,7 @@ namespace Dev2.UI
                 _activeEnvironment = activeEnvironment;
             }
             ObservableCollection<IEnvironmentModel> observableCollection = new ObservableCollection<IEnvironmentModel> { CreateNewRemoteServerEnvironment() };
+            EnvironmentRepository.Instance.ItemAdded += (sender, args) => AddMissingServers();
             Servers = observableCollection;
             _eventPublisher = eventAggregator;
             IsEnabled = true;
@@ -293,7 +294,10 @@ namespace Dev2.UI
                 if(!Servers.Contains(environmentModel))
                 {
                     Servers.Add(environmentModel);
-                    SelectedServer = environmentModel;
+                    if(BindToActiveEnvironment)
+                    {
+                        SelectedServer = environmentModel;
+                    }
                 }
             }
         }

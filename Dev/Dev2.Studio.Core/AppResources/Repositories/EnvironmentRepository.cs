@@ -17,7 +17,6 @@ using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core
 {
-    // BUG 9276 : TWR : 2013.04.19 - refactored so that we share environments
 
     public class EnvironmentRepository : IEnvironmentRepository
     {
@@ -266,9 +265,9 @@ namespace Dev2.Studio.Core
                 var xml = new XElement("Environments");
                 if(environmentGuids != null)
                 {
-                    foreach(var environmentID in environmentGuids.Where(id => id != Guid.Empty))
+                    foreach(var environmentId in environmentGuids.Where(id => id != Guid.Empty))
                     {
-                        xml.Add(new XElement("Environment", environmentID));
+                        xml.Add(new XElement("Environment", environmentId));
                     }
                 }
                 var path = GetEnvironmentsFilePath();
@@ -501,7 +500,7 @@ namespace Dev2.Studio.Core
         static IEnvironmentModel CreateEnvironmentModel(Connection connection)
         {
 
-            var resourceID = connection.ResourceID;
+            var resourceId = connection.ResourceID;
             ServerProxy connectionProxy;
             if(connection.AuthenticationType == AuthenticationType.Windows || connection.AuthenticationType == AuthenticationType.Anonymous)
             {
@@ -511,7 +510,7 @@ namespace Dev2.Studio.Core
             {
                 connectionProxy = new ServerProxy(connection.WebAddress, connection.UserName, connection.Password);
             }
-            return new EnvironmentModel(resourceID, connectionProxy) { Name = connection.ResourceName };
+            return new EnvironmentModel(resourceId, connectionProxy) { Name = connection.ResourceName };
         }
 
         #endregion
@@ -575,9 +574,9 @@ namespace Dev2.Studio.Core
                 return string.Empty;
             }
 
-            const string TOLookFor = "AppServerUri";
-            var appServerUriIdx = connectionstring.IndexOf(TOLookFor, StringComparison.Ordinal);
-            var length = TOLookFor.Length;
+            const string ToLookFor = "AppServerUri";
+            var appServerUriIdx = connectionstring.IndexOf(ToLookFor, StringComparison.Ordinal);
+            var length = ToLookFor.Length;
             var substring = connectionstring.Substring(appServerUriIdx + length + 1);
             var indexofDelimiter = substring.IndexOf(';');
             var uri = substring.Substring(0, indexofDelimiter);

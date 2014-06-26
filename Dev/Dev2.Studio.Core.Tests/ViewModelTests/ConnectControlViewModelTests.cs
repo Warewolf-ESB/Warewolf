@@ -30,7 +30,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_Constructor_ActiveEnvironmentIsNull_ThrowsArgumentNullException()
         {
             //------------Setup for test--------------------------
-
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
             new ConnectControlViewModel(null, null);
@@ -44,6 +45,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_Constructor_ActiveEnvironmentIsNotNull_SetsProperty()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var env = new Mock<IEnvironmentModel>();
             //------------Execute Test---------------------------
             var connectViewModel = new ConnectControlViewModel(env.Object, new EventAggregator());
@@ -60,6 +63,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             SetupMef();
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -82,6 +87,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             SetupMef();
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -104,6 +111,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             SetupMef();
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -126,6 +135,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             SetupMef();
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var connectViewModel = new ConnectControlViewModel(localhostServer, new EventAggregator());
             var mockEnvironmentRepository = new TestEnvironmentRespository(localhostServer);
@@ -146,6 +157,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_SelectionChanged_BoundToActiveEnvironment_SelectNewServer_NewServerAdded()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -174,6 +187,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_SelectionChanged_WhenHasItem_NotBoundToActiveEnvironmentAndInstanceTypeDeployTarget_ShouldNotFireMessages()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -196,6 +211,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_SelectionChanged_WhenHasItem_NotBoundToActiveEnvironmentAndInstanceTypeExplorer_ShouldFireMessages()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -219,6 +236,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_SelectionChanged_WhenHasItem_NotBoundToActiveEnvironmentAndInstanceTypeDeploySource_ShouldNotFireMessages()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -241,6 +260,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_SelectionChanged_SettingSelectedItemToAlreadySelectedItem_ShouldNotFireMessages()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -268,6 +289,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_SelectionChanged_FromRemoteServerToLocalServerWithRemoteServerNotConnected_ShouldFireMessagesTwice()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -295,6 +318,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_HandleUpdateActiveEnvironmentMessageWhenBoundToActiveEnvironmentTrue_SelectedServerIsUpdated()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -317,6 +342,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_HandleUpdateActiveEnvironmentMessageWhenBoundToActiveEnvironmentFalse_SelectedServerIsNotUpdated()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -339,6 +366,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_SetConnectControlSelectedServerMessage_TypeIsCorrect_SetSelectedServer()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -362,6 +391,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_SetConnectControlSelectedServerMessage_TypeIsNotCorrect_DontSetSelectedServer()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateServer("localhost", true);
             var remoteServer = CreateServer("remote", false);
             var otherServer = CreateServer("disconnected", false);
@@ -385,6 +416,9 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_ConnectWithDisconnectedEnvironment_ConnectIsHit()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
+
             var localhostServer = CreateMockEnvironmentModel("localhost", true);
             var remoteServer = CreateMockEnvironmentModel("remote", false);
             var otherServer = CreateMockEnvironmentModel("disconnected", false);
@@ -406,6 +440,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_ConnectWithConnectedEnvironment_DisconnectIsHit()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateMockEnvironmentModel("localhost", true);
             var remoteServer = CreateMockEnvironmentModel("remote", true);
             var otherServer = CreateMockEnvironmentModel("disconnected", false);
@@ -427,6 +463,8 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void ConnectControlViewModel_EditConnection_EnvironmentReloaded()
         {
             //------------Setup for test--------------------------
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
             var localhostServer = CreateMockEnvironmentModel("localhost", true);
             var remoteServer = CreateMockEnvironmentModel("remote", false);
             var otherServer = CreateMockEnvironmentModel("disconnected", false);
@@ -444,6 +482,50 @@ namespace Dev2.Core.Tests.ViewModelTests
             connectControlViewModel.EditCommand.Execute(null);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, connectControlViewModel.openEditConnectionWizardHitCount);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectControlViewModel_AddMissingServers")]
+        public void ConnectControlViewModel_AddMissingServers_WhenEnvironmentRepositoryItemAdded_ServerIsAddedToServerCollection()
+        {
+            //------------Setup for test--------------------------
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
+            var localhostServer = CreateMockEnvironmentModel("localhost", true);
+            var remoteServer = CreateMockEnvironmentModel("remote", false);
+            var connectControlViewModel = new TestConnectControlViewModel(localhostServer.Object, mockEventAggregator.Object) { SelectedServer = localhostServer.Object };
+            //------------PreConditions--------------------------
+            Assert.AreEqual(1, connectControlViewModel.Servers.Count);
+            Assert.AreEqual(localhostServer.Object, connectControlViewModel.SelectedServer);
+            //------------Execute Test---------------------------
+            EnvironmentRepository.Instance.Save(remoteServer.Object);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(3, connectControlViewModel.Servers.Count); //The New Remote Server is also in the list
+            Assert.AreEqual(localhostServer.Object, connectControlViewModel.SelectedServer);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectControlViewModel_AddMissingServers")]
+        public void ConnectControlViewModel_AddMissingServers_WhenBindToActiveEnvironment_ServerIsSelected()
+        {
+            //------------Setup for test--------------------------
+            var mockEventAggregator = new Mock<IEventAggregator>();
+            var testEnvRepo = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            new EnvironmentRepository(testEnvRepo);
+            var localhostServer = CreateMockEnvironmentModel("localhost", true);
+            var remoteServer = CreateMockEnvironmentModel("remote", false);
+            var connectControlViewModel = new TestConnectControlViewModel(localhostServer.Object, mockEventAggregator.Object) { SelectedServer = localhostServer.Object, BindToActiveEnvironment = true };
+            //------------PreConditions--------------------------
+            Assert.AreEqual(1, connectControlViewModel.Servers.Count);
+            Assert.AreEqual(localhostServer.Object, connectControlViewModel.SelectedServer);
+            //------------Execute Test---------------------------
+            EnvironmentRepository.Instance.Save(remoteServer.Object);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(3, connectControlViewModel.Servers.Count); //The New Remote Server is also in the list
+            Assert.AreEqual(remoteServer.Object, connectControlViewModel.SelectedServer);
         }
 
         #region Testing Methods
