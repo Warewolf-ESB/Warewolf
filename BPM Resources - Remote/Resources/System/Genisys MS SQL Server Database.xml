@@ -1,0 +1,31 @@
+
+<Source Name="Genisys MS SQL Server Database" Type="SqlDatabase" ConnectionString="server=RSAKLFSVRGENDEV;database=Cities;integrated security=true;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="f5677179-3dc4-4cdd-9000-55cd5921edba" Version="1.0" ResourceType="DbSource">
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
+  <Comment>SQL Database</Comment>
+  <Category>System\Genisys MS SQL Server Database</Category>
+  <HelpLink>http://filler.link</HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>Database</TypeOf>
+  <DisplayName>Source</DisplayName>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>bm/YzwqWluFxyfavhCB6q82e2EI=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>iEPFhTu9+EgkjtbuUmKGqWtwIShJQtcw0O8RflD69tKg6xDr0grk2WeJ8n/i8wTpfEyCQO9+FCZ5v5l+CfvngwjajDLdC8H5cw9blnL0RdQ67t/xDUmWPmIGtDjcC4T+Ld8fC3RV0kAk9wlia6y+B5BEetiWZMuCt7VdDspf1IY=</SignatureValue>
+  </Signature>
+</Source>

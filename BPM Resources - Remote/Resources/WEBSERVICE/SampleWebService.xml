@@ -1,0 +1,23 @@
+
+<Source ID="105209e1-c755-4051-b696-1e7869c362b0" Version="1.0" Name="SampleWebService" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://www.webservicex.net/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=US;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>SampleWebService</DisplayName>
+  <Category>WEBSERVICE\SampleWebService</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>1k35iKJSJ9KJTQqqgMhElbQYxVQ=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>gk40n2BEpRRJ/SETsDU8Wii8gGZUBhR3uVfH2rKcvlFTAOtEzjQnEyZuO/xvwq0BxDpNykTqOqG6RDFpAts2mIjxtomahubBpbyD6NVM3d6p/LwLr0vpbgL7a+mgJdRWg0fQtVK5NE4ueAgQGOyrJdSmIiSj7qsp9g/OhL7VJ00=</SignatureValue>
+  </Signature>
+</Source>

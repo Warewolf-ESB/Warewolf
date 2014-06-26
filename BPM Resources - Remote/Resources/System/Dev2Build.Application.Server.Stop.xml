@@ -1,0 +1,47 @@
+
+<Service Name="Dev2Build.Application.Server.Stop" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="35e48157-e3b9-450f-8916-45e5e5be3b05" Version="1.0" ResourceType="PluginService">
+  <Actions>
+    <Action Name="KillProcess" Type="Plugin" SourceName="Remote Application Server Start" SourceMethod="KillProcessById">
+      <Inputs>
+        <Input Name="PathToProcessStore" Source="PathToProcessStore">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="ProcessId" Source="ProcessId">
+          <Validator Type="Required" />
+        </Input>
+      </Inputs>
+      <Outputs>
+        <Output Name="Error" MapsTo="Error" Value="[[Error]]" />
+        <Output Name="ProcessIdKilled" MapsTo="ProcessIdKilled" Value="[[ProcessInfo().ProcessIdKilled]]" Recordset="ProcessKillInfo" />
+      </Outputs>
+    </Action>
+  </Actions>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,</AuthorRoles>
+  <Comment>Stop a running application server given it's processId</Comment>
+  <Category>System\Dev2Build.Application.Server.Stop</Category>
+  <HelpLink>a:\</HelpLink>
+  <DisplayName>Service</DisplayName>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <Source />
+  <XamlDefinition />
+  <DataList />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>a0W9rYKwoZ1f87JFltAj0lpvfmA=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>lSCu44nfikfe/ZtEHoYHKgvTbSgvuiJ2s85OY2iutwmXcnYfFUkRZ8eTD2yc7FL0Uh52VWHrIY9yn0OzYBZg8Ml36RWzA7KtlLW0ovWaUCCfJiRaIzgXEzhzuHSGBR83OTCH5F7NZECGQBLCeTb5w8DUE7HmAVs8WVXuZQgAq8c=</SignatureValue>
+  </Signature>
+</Service>

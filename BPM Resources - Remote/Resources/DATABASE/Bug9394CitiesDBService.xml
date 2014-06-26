@@ -1,0 +1,37 @@
+
+<Source ID="6c800a5e-f6eb-4c85-a6ce-174ecd135581" Version="1.0" Name="Bug9394CitiesDBService" ResourceType="DbSource" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Cities;User ID=DEV2\Travis.Frisinger;Password=$uperman13;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Bug9394CitiesDBService</DisplayName>
+  <Category>DATABASE\Bug9394CitiesDBService</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <XamlDefinition>
+  </XamlDefinition>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>fThwvYn5CzN+KEYdbz67elu5SPM=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>FUi4FO2oJW4uVESI+Lrg3yGKE+7x004wQas5O8VMEICqEbiyzPjbqyGAIUcddBMttayqRKrwmJcASdKltSuC/yOaCrFDH4Ge+fftvVDWhInX6ZLCnPFJV2btMQWeILaOqEZylGHfvdJl91u+hXYTLhVNJFpGHd9YBGMOKjILNYs=</SignatureValue>
+  </Signature>
+</Source>

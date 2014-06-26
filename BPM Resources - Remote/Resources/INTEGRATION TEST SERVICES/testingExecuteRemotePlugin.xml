@@ -1,0 +1,46 @@
+
+<Service ID="73b8859d-15d3-485e-94fe-85545a7a1466" Version="1.0" Name="testingExecuteRemotePlugin" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="testingExecuteRemotePlugin" Type="Plugin" SourceID="7d4736e1-e4aa-45f6-ae16-fa1fc71d786c" SourceName="testingRemotePluginSrc" SourceMethod="GetBaseException" Namespace="HgCo.WindowsLive.SkyDrive.LogOnFailedException">
+      <Inputs />
+      <Outputs>
+        <Output OriginalName="Message" Name="Message" MapsTo="Message" Value="[[Message]]" RecordsetName="" RecordsetAlias="" Recordset="" />
+        <Output OriginalName="HResult" Name="" MapsTo="" Value="" RecordsetName="" RecordsetAlias="" Recordset="" />
+        <Output OriginalName="DataCount" Name="" MapsTo="" Value="" RecordsetName="" RecordsetAlias="" Recordset="" />
+        <Output OriginalName="DataIsReadOnly" Name="" MapsTo="" Value="" RecordsetName="" RecordsetAlias="" Recordset="" />
+        <Output OriginalName="DataIsFixedSize" Name="" MapsTo="" Value="" RecordsetName="" RecordsetAlias="" Recordset="" />
+        <Output OriginalName="DataIsSynchronized" Name="" MapsTo="" Value="" RecordsetName="" RecordsetAlias="" Recordset="" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Poco" i:type="d5p1:PocoPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Message</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Message</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Message]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Exception of type 'HgCo.WindowsLive.SkyDrive.LogOnFailedException' was thrown.</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Poco" i:type="d5p1:PocoPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">HResult</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">HResult</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph" /><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">-2146233088</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Poco" i:type="d5p1:PocoPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Data.Count</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Data.Count</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph" /><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">0</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Poco" i:type="d5p1:PocoPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Data.IsReadOnly</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Data.IsReadOnly</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph" /><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">False</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Poco" i:type="d5p1:PocoPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Data.IsFixedSize</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Data.IsFixedSize</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph" /><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">False</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Poco" i:type="d5p1:PocoPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Data.IsSynchronized</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Data.IsSynchronized</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph" /><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">False</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>Plugin</TypeOf>
+  <DisplayName>testingExecuteRemotePlugin</DisplayName>
+  <Category>INTEGRATION TEST SERVICES\testingExecuteRemotePlugin</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>WsqSJt6UkU3y1PicQwwkSDOMTDk=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>ZDPG5t6y7IrI32OLgdeULVhosIwbFjUSmAquAsvtnSaG83C6U4ii/9SDrpXb1meKYxB1RDG07wzwk2OEKbl74yDMezbe/Cp3VeHFZQRbXYjBznmSQsLGx79y8NmNrbSiKQufCG15vgCdp8iAIFgpzn3TjNS0V/7Gg0pysHkLct4=</SignatureValue>
+  </Signature>
+</Service>

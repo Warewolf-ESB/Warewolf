@@ -1,0 +1,56 @@
+
+<Service Name="SVN Remote Copy" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="6d59fd92-d043-4e5c-839b-8d20dbb6b3db" Version="1.0" ResourceType="PluginService">
+  <Actions>
+    <Action Name="SVN_Remote_CP" Type="Plugin" SourceName="SVN Remote Copy Source" SourceMethod="CopyRemoteDir">
+      <Inputs>
+        <Input Name="FromURI" Source="FromURI">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="ToURI" Source="ToURI">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="LogMsg" Source="LogMsg">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Username" Source="Username">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Password" Source="Password">
+          <Validator Type="Required" />
+        </Input>
+      </Inputs>
+      <Outputs>
+        <Output Name="error" MapsTo="error" Value="[[Error]]" />
+        <Output Name="result" MapsTo="result" Value="[[Result]]" />
+      </Outputs>
+    </Action>
+  </Actions>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,</AuthorRoles>
+  <Comment>a</Comment>
+  <Category>System\SVN Remote Copy</Category>
+  <HelpLink>a:/</HelpLink>
+  <DisplayName>Service</DisplayName>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <Source />
+  <DataList />
+  <XamlDefinition />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>VoiuWiQIK/0V3DflgjlO4xZfwbk=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>JAhkIj7CiMXfRAtiTyGXakVjYTGf5UbOKkrHkN91JQTQH17zTJ01ouacR30ugY7ytpMAVkvnOMohacDn6KHqu003eH9KQZx0gJX8yQrN3MxGdSmz/kQIi7bEptMpIbL9GZWCdwvCuxd0NZwGb+SdHaUaW3t4wgUxAyTdbSU11gc=</SignatureValue>
+  </Signature>
+</Service>

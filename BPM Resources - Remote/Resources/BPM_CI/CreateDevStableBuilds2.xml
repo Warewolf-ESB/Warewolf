@@ -1,0 +1,189 @@
+
+<Service Name="CreateDevStableBuilds2" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="c10d5c43-0179-49cf-8202-f6cfd7388074" Version="1.0" ResourceType="WorkflowService">
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="CreateDevStableBuilds2" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;sap:VirtualizedContainerService.HintSize&gt;2974,2042&lt;/sap:VirtualizedContainerService.HintSize&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart sap:VirtualizedContainerService.HintSize="2934,2002" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;sap:WorkflowViewStateService.ViewState&gt;
+      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
+        &lt;av:Point x:Key="ShapeLocation"&gt;270,2.5&lt;/av:Point&gt;
+        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,77.5 300,107.5 300,228.5&lt;/av:PointCollection&gt;
+        &lt;x:Double x:Key="Width"&gt;2920&lt;/x:Double&gt;
+        &lt;x:Double x:Key="Height"&gt;1965.8400000000002&lt;/x:Double&gt;
+      &lt;/scg:Dictionary&gt;
+    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;FlowStep x:Name="__ReferenceID5"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;av:Point x:Key="ShapeLocation"&gt;103,228.5&lt;/av:Point&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;394,203&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,431.5 300,461.5 300,568.5&lt;/av:PointCollection&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;uaba:DsfActivity ActivityStateData="{x:Null}" AuthorRoles="{x:Null}" Category="{x:Null}" CurrentResult="{x:Null}" DataTags="{x:Null}" ExplicitDataList="{x:Null}" IconPath="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ResultValidationExpression="{x:Null}" ResultValidationRequiredTags="{x:Null}" SimulationOutput="{x:Null}" Tags="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DeferExecution="False" DisplayName="Move File" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="394,203" InputTransformation="&amp;lt;input&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;FilePath&amp;gt;[[CpPath]]&amp;lt;/FilePath&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;DestinationFilePath&amp;gt;[[CpPath]]\DEV&amp;lt;/DestinationFilePath&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;UserName&amp;gt;zuko.mgwili&amp;lt;/UserName&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;Password&amp;gt;P@ssword&amp;lt;/Password&amp;gt;&amp;#xA;&amp;lt;/input&amp;gt;" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" ServiceName="Move File" ToolboxFriendlyName="Move File" /&gt;
+        &lt;FlowStep.Next&gt;
+          &lt;FlowStep x:Name="__ReferenceID6"&gt;
+            &lt;sap:WorkflowViewStateService.ViewState&gt;
+              &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                &lt;av:Point x:Key="ShapeLocation"&gt;93.5,568.5&lt;/av:Point&gt;
+                &lt;av:Size x:Key="ShapeSize"&gt;413,203&lt;/av:Size&gt;
+                &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,771.5 300,801.5 300,968.5&lt;/av:PointCollection&gt;
+              &lt;/scg:Dictionary&gt;
+            &lt;/sap:WorkflowViewStateService.ViewState&gt;
+            &lt;uaba:DsfActivity ActivityStateData="{x:Null}" AuthorRoles="{x:Null}" Category="{x:Null}" CurrentResult="{x:Null}" DataTags="{x:Null}" ExplicitDataList="{x:Null}" IconPath="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ResultValidationExpression="{x:Null}" ResultValidationRequiredTags="{x:Null}" SimulationOutput="{x:Null}" Tags="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DeferExecution="False" DisplayName="Copy File" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="413,203" InputTransformation="&amp;lt;input&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;FilePath&amp;gt;[[CpPath]]\DEV&amp;lt;/FilePath&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;DestinationFilePath&amp;gt;[[CpPath]]\STABLE&amp;lt;/DestinationFilePath&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;UserName&amp;gt;zuko.mgwili&amp;lt;/UserName&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;Password&amp;gt;P@ssword&amp;lt;/Password&amp;gt;&amp;#xA;&amp;lt;/input&amp;gt;" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" ServiceName="Copy File" ToolboxFriendlyName="Copy File" /&gt;
+            &lt;FlowStep.Next&gt;
+              &lt;FlowStep x:Name="__ReferenceID7"&gt;
+                &lt;sap:WorkflowViewStateService.ViewState&gt;
+                  &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                    &lt;av:Point x:Key="ShapeLocation"&gt;130,968.5&lt;/av:Point&gt;
+                    &lt;av:Size x:Key="ShapeSize"&gt;340,278&lt;/av:Size&gt;
+                  &lt;/scg:Dictionary&gt;
+                &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                &lt;uaba:DsfActivity ActivityStateData="{x:Null}" AuthorRoles="{x:Null}" Category="{x:Null}" CurrentResult="{x:Null}" DataTags="{x:Null}" ExplicitDataList="{x:Null}" IconPath="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ResultValidationExpression="{x:Null}" ResultValidationRequiredTags="{x:Null}" SimulationOutput="{x:Null}" Tags="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DeferExecution="False" DisplayName="Delete File" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="340,278" InputTransformation="&amp;lt;input&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;FilePath&amp;gt;[[CpPath]]\STABLE\Binaries&amp;lt;/FilePath&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;FilePath&amp;gt;[[CpPath]]\STABLE\css&amp;lt;/FilePath&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;FilePath&amp;gt;[[CpPath]]\STABLE\Plugins&amp;lt;/FilePath&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;FilePath&amp;gt;[[CpPath]]\STABLE\scripts&amp;lt;/FilePath&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;FilePath&amp;gt;[[CpPath]]\STABLE\Services&amp;lt;/FilePath&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;FilePath&amp;gt;[[CpPath]]\STABLE\Sources&amp;lt;/FilePath&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;FilePath&amp;gt;[[CpPath]]\STABLE\themes&amp;lt;/FilePath&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;UserName&amp;gt;zuko.mgwili&amp;lt;/UserName&amp;gt;&amp;#xA;&amp;#x9;&amp;lt;Password&amp;gt;P@ssword&amp;lt;/Password&amp;gt;&amp;#xA;&amp;lt;/input&amp;gt;" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" ServiceName="Delete File" ToolboxFriendlyName="Delete File" /&gt;
+              &lt;/FlowStep&gt;
+            &lt;/FlowStep.Next&gt;
+          &lt;/FlowStep&gt;
+        &lt;/FlowStep.Next&gt;
+      &lt;/FlowStep&gt;
+    &lt;/Flowchart.StartNode&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;608.5,483.5&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;383,593&lt;/av:Size&gt;
+          &lt;av:PointCollection x:Key="ConnectorLocation"&gt;471.5,1330 501.5,1330 501.5,1440 730,1440&lt;/av:PointCollection&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign" FieldName="DeleteSubversionResources" FieldValue="{}{{&amp;#xA;&amp;#x9;var fso = new ActiveXObject(&amp;quot;Scripting.FileSystemObject&amp;quot;);&amp;#xA;&amp;#x9;var fo = fso.GetFolder(&amp;quot;[[CpPath]]/STABLE&amp;quot;);&amp;#xA;&amp;#xA;&amp;#x9;var fc = new Enumerator(fo.SubFolders);&amp;#xA;&amp;#x9;fc.moveFirst();&amp;#xA;&amp;#x9;var f,r;&amp;#xA;&amp;#x9;var count = 0;&amp;#xA;&amp;#x9;while(!fc.atEnd()){&amp;#xA;&amp;#x9;&amp;#x9;f = fc.item();&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;if(f.Name ==&amp;quot;undefined&amp;quot;){&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;fc.moveNext();&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;continue;&amp;#xA;&amp;#x9;&amp;#x9;}&amp;#xA;&amp;#x9;&amp;#x9;if(f.Name == &amp;quot;css&amp;quot; || &amp;#xA;&amp;#x9;&amp;#x9;    f.Name ==&amp;quot;Plugins&amp;quot; || &amp;#xA;&amp;#x9;&amp;#x9;    f.Name == &amp;quot;scripts&amp;quot; || &amp;#xA;&amp;#x9;&amp;#x9;    f.Name == &amp;quot;Services&amp;quot; ||&amp;#xA;&amp;#x9;&amp;#x9;    f.Name == &amp;quot;Sources&amp;quot; ||&amp;#xA;&amp;#x9;&amp;#x9;    f.Name == &amp;quot;themes&amp;quot;){&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;f.Delete();&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;count++;&amp;#xA;&amp;#x9;&amp;#x9;}&amp;#xA;&amp;#x9;&amp;#x9;fc.moveNext();&amp;#xA;&amp;#x9;}&amp;#xA;&amp;#x9;var r = count + &amp;quot; folders deleted&amp;quot;;&amp;#xA;}}" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="383,593" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False" /&gt;
+    &lt;/FlowStep&gt;
+    &lt;FlowStep x:Name="__ReferenceID0"&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;1590,1316&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;200,128&lt;/av:Size&gt;
+          &lt;av:PointCollection x:Key="ConnectorLocation"&gt;1790,1380 1820,1380 1820,1390 1888.5,1390&lt;/av:PointCollection&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfActivity ActivityStateData="{x:Null}" AuthorRoles="{x:Null}" Category="{x:Null}" CurrentResult="{x:Null}" DataTags="{x:Null}" ExplicitDataList="{x:Null}" IconPath="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ResultValidationExpression="{x:Null}" ResultValidationRequiredTags="{x:Null}" SimulationOutput="{x:Null}" Tags="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DeferExecution="False" DisplayName="SVN Checkout Process" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="200,128" InputTransformation="" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" ServiceName="SVN Checkout Process" ToolboxFriendlyName="SVN Checkout Process" /&gt;
+      &lt;FlowStep.Next&gt;
+        &lt;FlowStep x:Name="__ReferenceID1"&gt;
+          &lt;sap:WorkflowViewStateService.ViewState&gt;
+            &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+              &lt;av:Point x:Key="ShapeLocation"&gt;1888.5,1131&lt;/av:Point&gt;
+              &lt;av:Size x:Key="ShapeSize"&gt;383,518&lt;/av:Size&gt;
+              &lt;av:PointCollection x:Key="ConnectorLocation"&gt;2271.5,1390 2301.5,1390 2301.5,1435 2368.5,1435&lt;/av:PointCollection&gt;
+            &lt;/scg:Dictionary&gt;
+          &lt;/sap:WorkflowViewStateService.ViewState&gt;
+          &lt;uaba:DsfAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign" FieldName="DeleteSvnDir" FieldValue="{}{{&amp;#xA;&amp;#x9;var fso = new ActiveXObject(&amp;quot;Scripting.FileSystemObject&amp;quot;);&amp;#xA;&amp;#x9;var fo = fso.GetFolder(&amp;quot;[[CpPath]]/STABLE&amp;quot;);&amp;#xA;&amp;#xA;&amp;#x9;var fc = new Enumerator(fo.SubFolders);&amp;#xA;&amp;#x9;fc.moveFirst();&amp;#xA;&amp;#x9;var f,r;&amp;#xA;&amp;#x9;var count = 0;&amp;#xA;&amp;#x9;while(!fc.atEnd()){&amp;#xA;&amp;#x9;&amp;#x9;f = fc.item();&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;if(f.Name ==&amp;quot;undefined&amp;quot;){&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;fc.moveNext();&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;continue;&amp;#xA;&amp;#x9;&amp;#x9;}&amp;#xA;&amp;#x9;&amp;#x9;if(f.Name == &amp;quot;.svn&amp;quot;){&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;f.Delete();&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;count++;&amp;#xA;&amp;#x9;&amp;#x9;}&amp;#xA;&amp;#x9;&amp;#x9;fc.moveNext();&amp;#xA;&amp;#x9;}&amp;#xA;&amp;#x9;var r = count + &amp;quot; folders deleted&amp;quot;;&amp;#xA;}}" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="383,518" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False" /&gt;
+          &lt;FlowStep.Next&gt;
+            &lt;FlowStep x:Name="__ReferenceID4"&gt;
+              &lt;sap:WorkflowViewStateService.ViewState&gt;
+                &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                  &lt;av:Point x:Key="ShapeLocation"&gt;2368.5,1131&lt;/av:Point&gt;
+                  &lt;av:Size x:Key="ShapeSize"&gt;488,608&lt;/av:Size&gt;
+                &lt;/scg:Dictionary&gt;
+              &lt;/sap:WorkflowViewStateService.ViewState&gt;
+              &lt;uaba:DsfAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign" FieldName="CleanUp" FieldValue="{}{{&amp;#xA;&amp;#x9;var fso = new ActiveXObject(&amp;quot;Scripting.FileSystemObject&amp;quot;);&amp;#xA;&amp;#x9;var fo = fso.GetFolder(&amp;quot;[[CpPath]]&amp;quot;);&amp;#xA;&amp;#xA;&amp;#x9;var fc = new Enumerator(fo.SubFolders);&amp;#xA;&amp;#x9;fc.moveFirst();&amp;#xA;&amp;#x9;var f,r;&amp;#xA;&amp;#x9;var count = 0;&amp;#xA;&amp;#x9;while(!fc.atEnd()){&amp;#xA;&amp;#x9;&amp;#x9;f = fc.item();&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;if(f.Name ==&amp;quot;undefined&amp;quot; || f.Name == &amp;quot;DEV&amp;quot; || f.Name == &amp;quot;STABLE&amp;quot;){&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;fc.moveNext();&amp;#xA;&amp;#x9;&amp;#x9;&amp;#x9;continue;&amp;#xA;&amp;#x9;&amp;#x9;}&amp;#xA;&amp;#x9;&amp;#x9;f.Delete();&amp;#xA;&amp;#x9;&amp;#x9;count++;&amp;#xA;&amp;#x9;&amp;#x9;fc.moveNext();&amp;#xA;&amp;#x9;}&amp;#xA;&amp;#x9;fc = new Enumerator(fo.Files);&amp;#xA;&amp;#x9;fc.moveFirst();&amp;#xA;&amp;#x9;while(!fc.atEnd()){&amp;#xA;&amp;#x9;&amp;#x9;f = fc.item();&amp;#x9;&amp;#x9;&amp;#xA;&amp;#x9;&amp;#x9;f.Delete();&amp;#xA;&amp;#x9;&amp;#x9;count++;&amp;#xA;&amp;#x9;&amp;#x9;fc.moveNext();&amp;#xA;&amp;#x9;}&amp;#x9;&amp;#xA;&amp;#x9;var r = count + &amp;quot; folders and files deleted&amp;quot;;&amp;#xA;}}" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="488,608" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False" /&gt;
+            &lt;/FlowStep&gt;
+          &lt;/FlowStep.Next&gt;
+        &lt;/FlowStep&gt;
+      &lt;/FlowStep.Next&gt;
+    &lt;/FlowStep&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;730,1376&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;200,128&lt;/av:Size&gt;
+          &lt;av:PointCollection x:Key="ConnectorLocation"&gt;930,1440 960,1440 960,1410 980,1410&lt;/av:PointCollection&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfActivity ActivityStateData="{x:Null}" AuthorRoles="{x:Null}" Category="{x:Null}" CurrentResult="{x:Null}" DataTags="{x:Null}" ExplicitDataList="{x:Null}" IconPath="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ResultValidationExpression="{x:Null}" ResultValidationRequiredTags="{x:Null}" SimulationOutput="{x:Null}" Tags="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DeferExecution="False" DisplayName="SetSvnAuth" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="200,128" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="True" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" ServiceName="SetSvnAuth" ToolboxFriendlyName="SetSvnAuth" /&gt;
+      &lt;FlowStep.Next&gt;
+        &lt;FlowStep x:Name="__ReferenceID2"&gt;
+          &lt;sap:WorkflowViewStateService.ViewState&gt;
+            &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+              &lt;av:Point x:Key="ShapeLocation"&gt;980,1308.5&lt;/av:Point&gt;
+              &lt;av:Size x:Key="ShapeSize"&gt;200,203&lt;/av:Size&gt;
+              &lt;av:PointCollection x:Key="ConnectorLocation"&gt;1180,1410 1210,1410 1264.5,1410&lt;/av:PointCollection&gt;
+            &lt;/scg:Dictionary&gt;
+          &lt;/sap:WorkflowViewStateService.ViewState&gt;
+          &lt;uaba:DsfAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign" FieldName="LocalUri" FieldValue="[[CpPath]]\STABLE" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="200,203" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False" /&gt;
+          &lt;FlowStep.Next&gt;
+            &lt;FlowStep x:Name="__ReferenceID3"&gt;
+              &lt;sap:WorkflowViewStateService.ViewState&gt;
+                &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                  &lt;av:Point x:Key="ShapeLocation"&gt;1264.5,1308.5&lt;/av:Point&gt;
+                  &lt;av:Size x:Key="ShapeSize"&gt;304,203&lt;/av:Size&gt;
+                  &lt;av:PointCollection x:Key="ConnectorLocation"&gt;1568.5,1410 1590,1410 1590,1380&lt;/av:PointCollection&gt;
+                &lt;/scg:Dictionary&gt;
+              &lt;/sap:WorkflowViewStateService.ViewState&gt;
+              &lt;uaba:DsfAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign" FieldName="ServerUri" FieldValue="http://rsaklfsvrgendev.dev2.local:8090/svn/bds/trunk" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="304,203" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False" /&gt;
+              &lt;FlowStep.Next&gt;
+                &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+              &lt;/FlowStep.Next&gt;
+            &lt;/FlowStep&gt;
+          &lt;/FlowStep.Next&gt;
+        &lt;/FlowStep&gt;
+      &lt;/FlowStep.Next&gt;
+    &lt;/FlowStep&gt;
+    &lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID2&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID3&lt;/x:Reference&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;527.5,5&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;465,230&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity sap:VirtualizedContainerService.HintSize="465,230" Text="2012-03-14: zuko.mgwili@dev2.co.za&amp;#xA;&amp;#xA;The workflow creates two directories in BuildRelease/ApplicationServer folder&amp;#xA;&amp;#xA;1. Create DEV folder and copy the contents of ApplicationServer into&amp;#xA;Dev.&amp;#xA;2. Create STABLE folder and copy the contents of ApplicationServer into&amp;#xA;STABLE.&amp;#xA;3. Delete Subversion resources in STABLE folder.&amp;#xA;4. Checkout trunk in STABLE folder.&amp;#xA;5. Delete .svn directory&amp;#xA;" /&gt;
+    &lt;/FlowStep&gt;
+    &lt;x:Reference&gt;__ReferenceID4&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID5&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID6&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID7&lt;/x:Reference&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,</AuthorRoles>
+  <Comment>a</Comment>
+  <Category>BPM_CI\CreateDevStableBuilds2</Category>
+  <Tags>
+  </Tags>
+  <HelpLink>a:/</HelpLink>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DisplayName>Workflow</DisplayName>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>AnVHrx+5h3htvd2Ux8wp04qyaIo=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>YojWGz0et4Xdqcf6lYgv/ThBuds6O15RhAAkUOpe8dm4NvUdGL193Fm7u5eNJ6MqY5k8dKWBj1OiULXXyPrFimnVk2VZ/0BcIBeLdmHjIAJcy623c4y6SnizHFUBSxQQ1gtga1FL+Dnvq8F8pF59s6bjsfOuHxt9h8jQTONWYDM=</SignatureValue>
+  </Signature>
+</Service>

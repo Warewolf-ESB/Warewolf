@@ -1,0 +1,23 @@
+
+<Source ID="ff49bf97-f8ca-4d84-ae28-d55ac7d35df8" Version="1.0" Name="What Is My IP Address" ResourceType="WebSource" ConnectionString="Address=http://freegeoip.net/;DefaultQuery=;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>What Is My IP Address</DisplayName>
+  <Category>Webservice\What Is My IP Address</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <TypeOf>WebSource</TypeOf>
+  <XamlDefinition />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>15VAa2aRfY4vR9QavRvjJlLHa50=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>XnbA+6586eRxH8t0cIcQO42e4EezaJL6EAYEocokWV0OZMfKWu5mDaOX2HR+SHDG86eTuNLc1T6hVFJ3NQUqFgym93EnElKx1DSmj4j7lSWkTHnCnpKZ7HViEVO4c22IiaQc5HzFCPRkBfzPr8eSSDpnvO53A4NzeUeE5DqZwAc=</SignatureValue>
+  </Signature>
+</Source>

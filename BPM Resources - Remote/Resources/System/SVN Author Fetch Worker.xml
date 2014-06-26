@@ -1,0 +1,53 @@
+
+<Service Name="SVN Author Fetch Worker" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="16f0d64d-5f5e-4767-836f-7bca0dd10108" Version="1.0" ResourceType="PluginService">
+  <Actions>
+    <Action Name="SVN_Author_Fetch_Worker" Type="Plugin" SourceName="SVN Author Fetch" SourceMethod="GetSvnCommitUserForRevision">
+      <Inputs>
+        <Input Name="Path" Source="Path">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Revision" Source="Revision">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Username" Source="Username">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Password" Source="Password">
+          <Validator Type="Required" />
+        </Input>
+      </Inputs>
+      <Outputs>
+        <Output Name="error" MapsTo="error" Value="[[Error]]" />
+        <Output Name="author" MapsTo="author" Value="[[SVNLog().Author]]" Recordset="result" />
+      </Outputs>
+    </Action>
+  </Actions>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,</AuthorRoles>
+  <Comment>a</Comment>
+  <Category>System\SVN Author Fetch Worker</Category>
+  <HelpLink>a:/</HelpLink>
+  <DisplayName>Service</DisplayName>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <Source />
+  <XamlDefinition />
+  <DataList />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>T7+yqaO0iH319r62EKkjmTt/Tdw=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>uJP2eFKJL9sitw5cNanZXv3oTtt9QH2AvMLRU023fQPd1qPqoJ4Pa+pxZ2ZqwDzHkI0DFE8dO11LlXgUplqLgp0gABahuiEI4oRPHDy9oyTufGwT3+pojw+dr0hnEKIedxQUcmcYDI1Lc/fGthoZxjw3l1zWsJc2+/2aMn6d4po=</SignatureValue>
+  </Signature>
+</Service>

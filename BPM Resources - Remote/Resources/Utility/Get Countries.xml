@@ -1,0 +1,39 @@
+
+<Service Name="Get Countries" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="9ce0d922-74d7-4282-9807-c632fb41081b" Version="1.0" ResourceType="DbService">
+  <Actions>
+    <Action Name="Get Countries" Type="InvokeStoredProc" SourceName="Cities Database" SourceMethod="spGetCountries">
+      <Input Name="Prefix" Source="Prefix">
+        <Validator Type="Required">
+        </Validator>
+      </Input>
+    </Action>
+  </Actions>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,</AuthorRoles>
+  <Comment>dfs</Comment>
+  <Category>Utility\Get Countries</Category>
+  <HelpLink>http://s</HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <Source />
+  <XamlDefinition />
+  <DataList />
+  <DisplayName>Service</DisplayName>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>y9LLTgwT+0PxQVcjf9nlgeCb8O4=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>fYGN0y2uLdlKY4pntUcb0sLc0UQLMkCfmejvf8c407fR/VYE1F6XK/1016ncQZ5mwhArxM4zYQ0llWytH4oeqM5bCJ1GHi/cTA0KYKDpkW+iJjXSnIaSn6+45+vVGATIxPCjGw5bJgfyv1KoFzuOZQLKmJsbfHVwOHxy6ey1VYY=</SignatureValue>
+  </Signature>
+</Service>

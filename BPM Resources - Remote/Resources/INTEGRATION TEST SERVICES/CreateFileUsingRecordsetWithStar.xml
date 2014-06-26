@@ -1,0 +1,166 @@
+
+<Service Name="CreateFileUsingRecordsetWithStar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="01445e61-c292-4a83-83f6-7e0ef90835a3" Version="1.0" ResourceType="WorkflowService">
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="CreateFileUsingRecordsetWithStar" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;sap:VirtualizedContainerService.HintSize&gt;1116,899&lt;/sap:VirtualizedContainerService.HintSize&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart DisplayName="CreateFileUsingRecordsetWithStar" sap:VirtualizedContainerService.HintSize="1076,859" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;sap:WorkflowViewStateService.ViewState&gt;
+      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
+        &lt;av:Point x:Key="ShapeLocation"&gt;270,2.5&lt;/av:Point&gt;
+        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,77.5 300,140 274.5,140&lt;/av:PointCollection&gt;
+        &lt;x:Double x:Key="Width"&gt;1062&lt;/x:Double&gt;
+        &lt;x:Double x:Key="Height"&gt;823&lt;/x:Double&gt;
+      &lt;/scg:Dictionary&gt;
+    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;FlowStep x:Name="__ReferenceID3"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;av:Point x:Key="ShapeLocation"&gt;25.5,96&lt;/av:Point&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;249,88&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;150,184 150,206 170,206&lt;/av:PointCollection&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;uaba:DsfPathDelete CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" Result="{x:Null}" ResultTransformation="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DisplayName="Delete" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="249,88" InputPath="C:\Temp\PathOperationsTestFolder" InstructionList="[InstructionList]" IsNotCertVerifiable="False" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" Password="" Username="" /&gt;
+        &lt;FlowStep.Next&gt;
+          &lt;FlowStep x:Name="__ReferenceID0"&gt;
+            &lt;sap:WorkflowViewStateService.ViewState&gt;
+              &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                &lt;av:Point x:Key="ShapeLocation"&gt;30.5,206&lt;/av:Point&gt;
+                &lt;av:Size x:Key="ShapeSize"&gt;279,88&lt;/av:Size&gt;
+                &lt;av:PointCollection x:Key="ConnectorLocation"&gt;170,294 170,324 160,324 160,346&lt;/av:PointCollection&gt;
+              &lt;/scg:Dictionary&gt;
+            &lt;/sap:WorkflowViewStateService.ViewState&gt;
+            &lt;uaba:DsfMultiAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (4)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="279,88" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False"&gt;
+              &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+                &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="8"&gt;
+                  &lt;uaba:ActivityDTO FieldName="[[Recorset(1).record]]" FieldValue="C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt" IndexNumber="1"&gt;
+                    &lt;uaba:ActivityDTO.OutList&gt;
+                      &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                    &lt;/uaba:ActivityDTO.OutList&gt;
+                  &lt;/uaba:ActivityDTO&gt;
+                  &lt;uaba:ActivityDTO FieldName="[[Recorset(2).record]]" FieldValue="C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile2.txt" IndexNumber="2"&gt;
+                    &lt;uaba:ActivityDTO.OutList&gt;
+                      &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                    &lt;/uaba:ActivityDTO.OutList&gt;
+                  &lt;/uaba:ActivityDTO&gt;
+                  &lt;uaba:ActivityDTO FieldName="[[Recorset(3).record]]" FieldValue="C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile3.txt" IndexNumber="3"&gt;
+                    &lt;uaba:ActivityDTO.OutList&gt;
+                      &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                    &lt;/uaba:ActivityDTO.OutList&gt;
+                  &lt;/uaba:ActivityDTO&gt;
+                  &lt;uaba:ActivityDTO FieldName="[[Recorset(4).record]]" FieldValue="C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile4.txt" IndexNumber="4"&gt;
+                    &lt;uaba:ActivityDTO.OutList&gt;
+                      &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                    &lt;/uaba:ActivityDTO.OutList&gt;
+                  &lt;/uaba:ActivityDTO&gt;
+                  &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="5"&gt;
+                    &lt;uaba:ActivityDTO.OutList&gt;
+                      &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                    &lt;/uaba:ActivityDTO.OutList&gt;
+                  &lt;/uaba:ActivityDTO&gt;
+                &lt;/scg:List&gt;
+              &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+            &lt;/uaba:DsfMultiAssignActivity&gt;
+            &lt;FlowStep.Next&gt;
+              &lt;FlowStep x:Name="__ReferenceID1"&gt;
+                &lt;sap:WorkflowViewStateService.ViewState&gt;
+                  &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                    &lt;av:Point x:Key="ShapeLocation"&gt;53,346&lt;/av:Point&gt;
+                    &lt;av:Size x:Key="ShapeSize"&gt;214,88&lt;/av:Size&gt;
+                    &lt;av:PointCollection x:Key="ConnectorLocation"&gt;160,434 160,464 160,496&lt;/av:PointCollection&gt;
+                  &lt;/scg:Dictionary&gt;
+                &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                &lt;uaba:DsfPathCreate CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DisplayName="Create" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="214,88" InstructionList="[InstructionList]" IsNotCertVerifiable="False" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputPath="[[Recorset(*).record]]" Overwrite="False" Password="" Result="[[RESULT().RES]]" Username="" /&gt;
+                &lt;FlowStep.Next&gt;
+                  &lt;FlowStep x:Name="__ReferenceID2"&gt;
+                    &lt;sap:WorkflowViewStateService.ViewState&gt;
+                      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                        &lt;av:Point x:Key="ShapeLocation"&gt;35.5,496&lt;/av:Point&gt;
+                        &lt;av:Size x:Key="ShapeSize"&gt;249,88&lt;/av:Size&gt;
+                      &lt;/scg:Dictionary&gt;
+                    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+                    &lt;uaba:DsfPathDelete CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DisplayName="Delete" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="249,88" InputPath="C:\Temp\PathOperationsTestFolder" InstructionList="[InstructionList]" IsNotCertVerifiable="False" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" Password="" Result="[[DeleteFileRes]]" Username="" /&gt;
+                  &lt;/FlowStep&gt;
+                &lt;/FlowStep.Next&gt;
+              &lt;/FlowStep&gt;
+            &lt;/FlowStep.Next&gt;
+          &lt;/FlowStep&gt;
+        &lt;/FlowStep.Next&gt;
+      &lt;/FlowStep&gt;
+    &lt;/Flowchart.StartNode&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;360,119&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;563,194&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Location" sap:VirtualizedContainerService.HintSize="563,194" Text="C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt&amp;#xA;C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile2.txt&amp;#xA;C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile3.txt&amp;#xA;C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile4.txt" /&gt;
+    &lt;/FlowStep&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;370,353&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;692,470&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Expected" sap:VirtualizedContainerService.HintSize="692,470" Text="&amp;lt;ADL&amp;gt;&amp;#xA;      &amp;lt;RESULT&amp;gt;&amp;#xA;        &amp;lt;RES&amp;gt;Successful&amp;lt;/RES&amp;gt;&amp;#xA;      &amp;lt;/RESULT&amp;gt;&amp;#xA;      &amp;lt;RESULT&amp;gt;&amp;#xA;        &amp;lt;RES&amp;gt;Successful&amp;lt;/RES&amp;gt;&amp;#xA;      &amp;lt;/RESULT&amp;gt;&amp;#xA;      &amp;lt;RESULT&amp;gt;&amp;#xA;        &amp;lt;RES&amp;gt;Successful&amp;lt;/RES&amp;gt;&amp;#xA;      &amp;lt;/RESULT&amp;gt;&amp;#xA;      &amp;lt;RESULT&amp;gt;&amp;#xA;        &amp;lt;RES&amp;gt;Successful&amp;lt;/RES&amp;gt;&amp;#xA;      &amp;lt;/RESULT&amp;gt;&amp;#xA;      &amp;lt;Recorset&amp;gt;&amp;#xA;        &amp;lt;record&amp;gt;C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt&amp;lt;/record&amp;gt;&amp;#xA;      &amp;lt;/Recorset&amp;gt;&amp;#xA;      &amp;lt;Recorset&amp;gt;&amp;#xA;        &amp;lt;record&amp;gt;C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile2.txt&amp;lt;/record&amp;gt;&amp;#xA;      &amp;lt;/Recorset&amp;gt;&amp;#xA;      &amp;lt;Recorset&amp;gt;&amp;#xA;        &amp;lt;record&amp;gt;C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile3.txt&amp;lt;/record&amp;gt;&amp;#xA;      &amp;lt;/Recorset&amp;gt;&amp;#xA;      &amp;lt;Recorset&amp;gt;&amp;#xA;        &amp;lt;record&amp;gt;C:\Temp\PathOperationsTestFolder\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile4.txt&amp;lt;/record&amp;gt;&amp;#xA;      &amp;lt;/Recorset&amp;gt;&amp;#xA;      &amp;lt;Service&amp;gt;CreateFileUsingRecordsetWithStar&amp;lt;/Service&amp;gt;&amp;#xA;      &amp;lt;DeleteFileRes&amp;gt;Delete Operation Successful&amp;lt;/DeleteFileRes&amp;gt;&amp;#xA;    &amp;lt;/ADL&amp;gt;" /&gt;
+    &lt;/FlowStep&gt;
+    &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID2&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID3&lt;/x:Reference&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
+  <Comment>Test workflow for creating a file with the path in recordset</Comment>
+  <Category>integration test services\CreateFileUsingRecordsetWithStar</Category>
+  <Tags>
+  </Tags>
+  <HelpLink>a:/</HelpLink>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DisplayName>Workflow</DisplayName>
+  <DataList>
+    <Recorset Description="">
+      <record Description="" />
+    </Recorset>
+    <DeleteFileRes Description="" />
+    <RESULT Description="">
+      <RES Description="" />
+    </RESULT>
+  </DataList>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>Qq6BZnqaho677hNTjQ/uU9GSOmI=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>rdMgQhBSDHZS6/wb8nU/WUx7JIPEnQSPlTI5BvB80ShWWjEwT48nwHwv1nE2v8TPIVGoiH7+Ojt5I/gemLMj8qVO+KY8HbZDalbQecidFKMw5bQM7MlxhGpZVcBjOeCjKtpOAoWVj39pbed4efY2UZy+nBqbriL0fxXYgT98PjA=</SignatureValue>
+  </Signature>
+</Service>

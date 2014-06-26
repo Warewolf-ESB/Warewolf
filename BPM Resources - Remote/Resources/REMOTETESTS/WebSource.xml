@@ -1,0 +1,23 @@
+
+<Source ID="d894ffe4-125b-4b91-bcd3-b84eadab3544" Version="1.0" Name="WebSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://www.webservicex.net/globalweather.asmx/GetCitiesByCountry;DefaultQuery=?CountryName=Canada;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>WebSource</DisplayName>
+  <Category>REMOTETESTS\WebSource</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>FZEc46ty5eefEjTw2iR3T9Hn7yU=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>CdlkAl0YYq7p0AHTbzA852x3MEgtxfyJ8j6N7mJWkB3WvNdyGNiM2BNQfil1faOuD3dZV5DhLLrec9Ji4b6Ue0an/sQ3IRD6C/72/fHJbbhfrmC9879pPF3I4VPcbhOzKBfmkP5k8Cn8Cr4kFAx2IcOIAYvJP3KvBy7OnO2wqlg=</SignatureValue>
+  </Signature>
+</Source>

@@ -1,0 +1,56 @@
+
+<Service Name="TFS Remote Build Start" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="952c434a-b2b4-489b-8c89-0450362b680a" Version="1.0" ResourceType="PluginService">
+  <Actions>
+    <Action Name="CopyFile" Type="Plugin" SourceName="TFS Remote Build" SourceMethod="startRemoteBuild">
+      <Inputs>
+        <Input Name="Server" Source="Server">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Project" Source="Project">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Application" Source="Application">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="IsReleaseCanidate" Source="IsReleaseCanidate" DefaultValue="no" />
+        <Input Name="FailNotifyUser" Source="FailNotifyUser" DefaultValue="NONE" />
+        <Input Name="SvnRevision" Source="SvnRevision" DefaultValue="-1" />
+        <Input Name="PathToTestLibrary" Source="Pathtotestlibrary">
+          <Validator Type="Required" />
+        </Input>
+      </Inputs>
+      <Outputs>
+        <Output Name="error" MapsTo="error" Value="[[Error]]" />
+        <Output Name="result" MapsTo="result" Value="[[Result]]" />
+      </Outputs>
+    </Action>
+  </Actions>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,</AuthorRoles>
+  <Comment>a</Comment>
+  <Category>System\TFS Remote Build Start</Category>
+  <HelpLink>a:/</HelpLink>
+  <DisplayName>Service</DisplayName>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <Source />
+  <XamlDefinition />
+  <DataList />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>UwXog+96KGn2LV6kXOqyzpdzF+c=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>lOBvwiYTwMpK0Fy4jXdVF9tmpLqpPFYzh2wGfQYpBmtERNAPTWL1osZe+mB8FO+uIjWu34fpBHlEVKlESLXDwr8GxAH9SooTx0nx8fF0iTPqI3x0l5aTpe0geMxwyfVAAzwirGXBI0KhTcXhtNNOd2rHh4mGxRIVgv9V9GNZJjY=</SignatureValue>
+  </Signature>
+</Service>

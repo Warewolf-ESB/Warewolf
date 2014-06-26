@@ -1,0 +1,31 @@
+
+<Source Name="testingPluginSrc" Type="Plugin" AssemblyName="Unlimited.Framework.Plugins.EmailPlugin" AssemblyLocation="Plugins/Unlimited.Email.Plugin.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="92fa8d07-dfb3-4d11-a02b-a5ff96b7317b" Version="1.0" ResourceType="PluginSource">
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
+  <Comment>Plugin</Comment>
+  <Category>ML-Testing\testingPluginSrc</Category>
+  <HelpLink>http://dummyhelp.link</HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>Plugin</TypeOf>
+  <DisplayName>Source</DisplayName>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>k9aBhOomPPlsFDrjpalXdPzknvw=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>izTWUvVle0EomPDGktYgwNnh4tzRmpJw5fbOC37KfJuNtyTqdPyOPOVFF2769ue5fl/4ZGoc8027NRzAEFPtzTMufqT0/HC3vB6sW5RD3q8xmoJGH/t4xs7YjLDYqbc5v2d78rWjQu0QD9l+L8W0tiqNqv9hVN+wUdPFgPZHFFo=</SignatureValue>
+  </Signature>
+</Source>

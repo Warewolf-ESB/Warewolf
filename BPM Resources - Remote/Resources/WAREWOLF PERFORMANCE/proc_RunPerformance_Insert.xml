@@ -1,0 +1,50 @@
+
+<Service ID="9a3af34c-1889-44c2-b1e7-8c0fafdb0bb5" Version="1.0" Name="proc_RunPerformance_Insert" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="" Type="InvokeStoredProc" SourceID="388d5d30-bc0d-4686-8eda-5e8cd0e804f5" SourceName="WarewolfPerformance" SourceMethod="dbo.proc_RunPerformance_Insert">
+      <Inputs>
+        <Input Name="RunType" Source="RunType" EmptyToNull="false" DefaultValue="" />
+        <Input Name="RunDate" Source="RunDate" EmptyToNull="false" DefaultValue="" />
+        <Input Name="RunUser" Source="RunUser" EmptyToNull="false" DefaultValue="" />
+        <Input Name="ComputerName" Source="ComputerName" EmptyToNull="false" DefaultValue="" />
+        <Input Name="DataRows" Source="DataRows" EmptyToNull="false" DefaultValue="" />
+        <Input Name="SQL" Source="SQL" EmptyToNull="false" DefaultValue="" />
+        <Input Name="MapIn" Source="MapIn" EmptyToNull="false" DefaultValue="" />
+        <Input Name="MapOut" Source="MapOut" EmptyToNull="false" DefaultValue="" />
+        <Input Name="OS" Source="OS" EmptyToNull="false" DefaultValue="" />
+        <Input Name="RAM" Source="RAM" EmptyToNull="false" DefaultValue="" />
+      </Inputs>
+      <Outputs />
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths /></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>proc_RunPerformance_Insert</DisplayName>
+  <Category>WAREWOLF PERFORMANCE\proc_RunPerformance_Insert</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>sTP+fgcxLv9UrI9ukKBtwZQFn/E=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>k+ZFRX361YWpPsMlXPs6bGjamQcN/VevM8pCNqyBUaY6J6gttoh/2DBawotFGo0NnHebE4cveQN8JXSrdgiCgNAeLT0U51kzNpcBzkoiNFhNOiwLwH7QbD6NjHw9E952zq22Z9h0rhafAsGANmUrg0CY61alAkXm0asWsM3Dqz4=</SignatureValue>
+  </Signature>
+</Service>

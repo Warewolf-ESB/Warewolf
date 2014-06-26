@@ -1,0 +1,43 @@
+
+<Service Name="DEV2Plugin_SQLServer_Connect" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="f7fcf7aa-8bc2-48fc-a659-091effb44c1c" Version="1.0" ResourceType="PluginService">
+  <Actions>
+    <Action Name="DEV2PluginSQLServerConnect" Type="Plugin" SourceName="DEV2Plugin_SQLServer" SourceMethod="Connect">
+      <Inputs>
+        <Input Name="XML" Source="XML">
+          <Validator Type="Required" />
+        </Input>
+      </Inputs>
+      <Outputs>
+        <Output Name="Error" MapsTo="Error" Value="[[Error]]" />
+        <Output Name="Connect" MapsTo="Connect" Value="[[Connect]]" />
+      </Outputs>
+    </Action>
+  </Actions>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
+  <Comment>Establishes a connetion to a database</Comment>
+  <Category>DATABASE\DEV2Plugin_SQLServer_Connect</Category>
+  <Tags>DATABASE</Tags>
+  <HelpLink>http://A</HelpLink>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <Source />
+  <XamlDefinition />
+  <DisplayName>Service</DisplayName>
+  <DataList />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>EmKnZCKLM3BDDHa8SiDzs3sUqsc=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>NnV556rktNZjU7RvLb+CRi0knbMu5pMupA56VfLECahh+/djVF58p53ibLnJ1Z1G9bUjx4L+35NQ7g5nLYdch9+ERVGh+BPNv3bIy+cMBlWv5xY8UXePOuHjbr6cqIwO6eZOstddfdhIr/Qd9Jweque8jrhLCdcIZ8IYJ13MZ80=</SignatureValue>
+  </Signature>
+</Service>

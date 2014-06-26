@@ -1,0 +1,44 @@
+
+<Service ID="eb2fd278-9d33-464b-af15-f655c0083557" Version="1.0" Name="aaa" ResourceType="PluginService" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="ToString" Type="Plugin" SourceID="2717fbae-a23a-4bce-a2ad-fe9ffe4bfffb" SourceName="test" Namespace="MS.Internal.AssemblyHelper" SourceMethod="ToString">
+      <Inputs />
+      <Outputs />
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Error</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Error</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Error]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">System.MissingMethodException: Cannot create an abstract class.
+   at System.RuntimeTypeHandle.CreateInstance(RuntimeType type, Boolean publicOnly, Boolean noCheck, Boolean&amp; canBeCached, RuntimeMethodHandleInternal&amp; ctor, Boolean&amp; bNeedSecurityCheck)
+   at System.RuntimeType.CreateInstanceSlow(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark&amp; stackMark)
+   at System.RuntimeType.CreateInstanceDefaultCtor(Boolean publicOnly, Boolean skipCheckThis, Boolean fillCache, StackCrawlMark&amp; stackMark)
+   at System.Activator.CreateInstance(Type type, Boolean nonPublic)
+   at System.Activator.CreateInstance(Type type)
+   at Dev2.Runtime.ServiceModel.Esb.Brokers.PluginBroker.TestPlugin(PluginService pluginService)</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>Plugin</TypeOf>
+  <DisplayName>aaa</DisplayName>
+  <Category>Utility\aaa</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>hL96iveo3u/mAgR1FHx1nKP8Lyw=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>vXKh1Btxl20cPAmWNl82RHnsMAhBkcrfzQLuKc48SL/RPsVUXAJt7biWoCbrDqAOKwQAYC69ggFenidJ7/CwbiOzRgstBtfwtZdHsyIRFKTi6n8wnhqnt83lhjcG2CT71vIO1ssT916SUDw8hVNr0MLM/hEdnFWu8CJQhrd9cBg=</SignatureValue>
+  </Signature>
+</Service>

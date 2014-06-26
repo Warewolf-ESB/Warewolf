@@ -1,0 +1,53 @@
+
+<Service Name="IntegrationTestReporting" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="ebaeafb2-da92-401f-878d-3fdb583ebe3a" Version="1.0" ResourceType="WorkflowService">
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity x:Class="IntegrationTestReporting" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart DisplayName="IntegrationTestReporting" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;x:Null /&gt;
+    &lt;/Flowchart.StartNode&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <Category>BARNEY\IntegrationTestReporting</Category>
+  <Tags>
+  </Tags>
+  <IconPath>
+  </IconPath>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DisplayName>Workflow</DisplayName>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>09gA8/Dwt9Sli2uqhoQdkV2oev4=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>UOcyKIGJnKHdP/ly5YCgFThRvSaylBuN/kjqNOCrm11otRx/dAokqwoi8Nl34Vjx45qvBUA1pJFXwPlYDEWQzfM2+eVepVTFoAOBlrNvDHcgMsY2cMmVu8YIB9nCXMxGSL7fgjYmYNYPfmbLMKbvcECiWXM+cW0oPDF5cDtyL8I=</SignatureValue>
+  </Signature>
+</Service>

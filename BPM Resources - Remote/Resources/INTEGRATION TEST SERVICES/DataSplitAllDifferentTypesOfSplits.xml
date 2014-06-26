@@ -1,0 +1,122 @@
+
+<Service Name="DataSplitAllDifferentTypesOfSplits" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="39b0faf6-9168-4e17-af1c-4a61d9b585df" Version="1.0" ResourceType="WorkflowService">
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DataSplitAllDifferentTypesOfSplits" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;sap:VirtualizedContainerService.HintSize&gt;662,1031&lt;/sap:VirtualizedContainerService.HintSize&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart DisplayName="DataSplitAllDifferentTypesOfSplits" sap:VirtualizedContainerService.HintSize="622,991" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;sap:WorkflowViewStateService.ViewState&gt;
+      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
+        &lt;av:Point x:Key="ShapeLocation"&gt;270,2.5&lt;/av:Point&gt;
+        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
+        &lt;x:Double x:Key="Height"&gt;955&lt;/x:Double&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,77.5 300,107.5 200,107.5 200,153&lt;/av:PointCollection&gt;
+        &lt;x:Double x:Key="Width"&gt;608&lt;/x:Double&gt;
+      &lt;/scg:Dictionary&gt;
+    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+    &lt;/Flowchart.StartNode&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;364,43&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;235,194&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Source String" sap:VirtualizedContainerService.HintSize="235,194" Text="SOURCE STRING:&amp;#xA;&amp;#xA;0. Title|Fname|LName|TelNo&amp;#xA;1. Mr|Frank|Williams|0795628443&amp;#xA;2. Mr|Enzo|Ferrari|0821169853&amp;#xA;3. Mrs|Jenny|Smith|07624 58963&amp;#xA;4. Ms|Kerrin|deSilvia|0724587310&amp;#xA;5. Sir|Richard|Branson|0812457896" /&gt;
+    &lt;/FlowStep&gt;
+    &lt;FlowStep x:Name="__ReferenceID0"&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;75,153&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;250,114&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfDataSplitActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DisplayName="Data Split (4)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="250,114" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" ReverseOrder="False" SourceString="0. Title|Fname|LName|TelNo&amp;#xA;1. Mr|Frank|Williams|0795628443&amp;#xA;2. Mr|Enzo|Ferrari|0821169853&amp;#xA;3. Mrs|Jenny|Smith|07624 58963&amp;#xA;4. Ms|Kerrin|deSilvia|0724587310&amp;#xA;5. Sir|Richard|Branson|0812457896"&gt;
+        &lt;uaba:DsfDataSplitActivity.ResultsCollection&gt;
+          &lt;scg:List x:TypeArguments="uaba:DataSplitDTO" Capacity="8"&gt;
+            &lt;uaba:DataSplitDTO At="" EnableAt="False" Include="False" IndexNumber="1" OutputVariable="[[Contacts().Title]]" SplitType="Space"&gt;
+              &lt;uaba:DataSplitDTO.OutList&gt;
+                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+              &lt;/uaba:DataSplitDTO.OutList&gt;
+            &lt;/uaba:DataSplitDTO&gt;
+            &lt;uaba:DataSplitDTO At="|" EnableAt="True" Include="False" IndexNumber="2" OutputVariable="[[Contacts().FirstName]]" SplitType="Chars"&gt;
+              &lt;uaba:DataSplitDTO.OutList&gt;
+                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+              &lt;/uaba:DataSplitDTO.OutList&gt;
+            &lt;/uaba:DataSplitDTO&gt;
+            &lt;uaba:DataSplitDTO At="|" EnableAt="True" Include="False" IndexNumber="3" OutputVariable="[[Contacts().LastName]]" SplitType="Chars"&gt;
+              &lt;uaba:DataSplitDTO.OutList&gt;
+                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+              &lt;/uaba:DataSplitDTO.OutList&gt;
+            &lt;/uaba:DataSplitDTO&gt;
+            &lt;uaba:DataSplitDTO At="" EnableAt="False" Include="False" IndexNumber="4" OutputVariable="[[Contacts().Tel]]" SplitType="New Line"&gt;
+              &lt;uaba:DataSplitDTO.OutList&gt;
+                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+              &lt;/uaba:DataSplitDTO.OutList&gt;
+            &lt;/uaba:DataSplitDTO&gt;
+            &lt;uaba:DataSplitDTO At="" EnableAt="True" Include="False" IndexNumber="5" OutputVariable="" SplitType="Index"&gt;
+              &lt;uaba:DataSplitDTO.OutList&gt;
+                &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+              &lt;/uaba:DataSplitDTO.OutList&gt;
+            &lt;/uaba:DataSplitDTO&gt;
+          &lt;/scg:List&gt;
+        &lt;/uaba:DsfDataSplitActivity.ResultsCollection&gt;
+      &lt;/uaba:DsfDataSplitActivity&gt;
+    &lt;/FlowStep&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;81,305&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;366,635&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Expected Result" sap:VirtualizedContainerService.HintSize="366,635" Text="&amp;lt;ADL&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;Contacts&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Title&amp;gt;0.&amp;lt;/Title&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;FirstName&amp;gt;Title&amp;lt;/FirstName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;LastName&amp;gt;Fname&amp;lt;/LastName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Tel&amp;gt;LName|TelNo&amp;lt;/Tel&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;/Contacts&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;Contacts&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Title&amp;gt;1.&amp;lt;/Title&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;FirstName&amp;gt;Mr&amp;lt;/FirstName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;LastName&amp;gt;Frank&amp;lt;/LastName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Tel&amp;gt;Williams|0795628443&amp;lt;/Tel&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;/Contacts&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;Contacts&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Title&amp;gt;2.&amp;lt;/Title&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;FirstName&amp;gt;Mr&amp;lt;/FirstName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;LastName&amp;gt;Enzo&amp;lt;/LastName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Tel&amp;gt;Ferrari|0821169853&amp;lt;/Tel&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;/Contacts&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;Contacts&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Title&amp;gt;3.&amp;lt;/Title&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;FirstName&amp;gt;Mrs&amp;lt;/FirstName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;LastName&amp;gt;Jenny&amp;lt;/LastName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Tel&amp;gt;Smith|07624 58963&amp;lt;/Tel&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;/Contacts&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;Contacts&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Title&amp;gt;4.&amp;lt;/Title&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;FirstName&amp;gt;Ms&amp;lt;/FirstName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;LastName&amp;gt;Kerrin&amp;lt;/LastName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Tel&amp;gt;deSilvia|0724587310&amp;lt;/Tel&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;/Contacts&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;Contacts&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Title&amp;gt;5.&amp;lt;/Title&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;FirstName&amp;gt;Sir&amp;lt;/FirstName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;LastName&amp;gt;Richard&amp;lt;/LastName&amp;gt;&amp;#xD;&amp;#xA;        &amp;lt;Tel&amp;gt;Branson|0812457896&amp;lt;/Tel&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;/Contacts&amp;gt;&amp;#xD;&amp;#xA;      &amp;lt;Service&amp;gt;DataSplitAllDifferentTypesOfSplits&amp;lt;/Service&amp;gt;&amp;#xD;&amp;#xA;    &amp;lt;/ADL&amp;gt;" /&gt;
+    &lt;/FlowStep&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
+  <Comment>a</Comment>
+  <Category>Integration test services\DataSplitAllDifferentTypesOfSplits</Category>
+  <HelpLink>a:/</HelpLink>
+  <DisplayName>Workflow</DisplayName>
+  <DataList>
+    <Contacts Description="">
+      <Title Description="" />
+      <FirstName Description="" />
+      <LastName Description="" />
+      <Tel Description="" />
+    </Contacts>
+  </DataList>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>q0xffTVf90tYO+fWXTU0we/Wz/k=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>XvJ4xkx3zCzfWxdAbJFYfHw9OT9WXSbQSiccPzmpIrhsT9SoefMIK5G+ae7FNUznB9ybkEG7/ECmGCPdLg3j6gGVw/OFetcdMpS7y5SKyhbc/kVVMA0uzMEMU7Cj05W12sFLzrVRIkpzCmdoAisS+pal0YLbpppTVNNcQG1UU7s=</SignatureValue>
+  </Signature>
+</Service>

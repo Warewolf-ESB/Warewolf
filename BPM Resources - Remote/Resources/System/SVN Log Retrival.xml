@@ -1,0 +1,53 @@
+
+<Service Name="SVN Log Retrival" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="37fc54f6-6cc9-40fa-ab98-1af37221f23a" Version="1.0" ResourceType="PluginService">
+  <Actions>
+    <Action Name="SVN_Log" Type="Plugin" SourceName="SVN Log Fetch" SourceMethod="GetSvnLog">
+      <Inputs>
+        <Input Name="Path" Source="Path">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Revision" Source="Revision">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Username" Source="Username">
+          <Validator Type="Required" />
+        </Input>
+        <Input Name="Password" Source="Password">
+          <Validator Type="Required" />
+        </Input>
+      </Inputs>
+      <Outputs>
+        <Output Name="error" MapsTo="error" Value="[[Error]]" />
+        <Output Name="p" MapsTo="p" Value="[[SVNLog().LineItem]]" Recordset="logData" />
+      </Outputs>
+    </Action>
+  </Actions>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,</AuthorRoles>
+  <Comment>a</Comment>
+  <Category>System\SVN Log Retrival</Category>
+  <HelpLink>a:/</HelpLink>
+  <DisplayName>Service</DisplayName>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <Source />
+  <XamlDefinition />
+  <DataList />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>nT7VXwWsBHcJxmNxXT1BCbHWC/Q=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>RX6+NnHDPOuAkFlebAZf1nC5lzd5PRto0H9fsDv00ghPqAYIoI09sGfmiH7Lt7oL8Ym+FM8NuAwtHmILsQL1wv+WC18ZZoqK25DwVXSaqRWExUwRZt0eE4xwPoEmCxcoW3wrjQ9aA6S6x5vwSNGQBttP3fQAZKIqDqaXfu9GnAU=</SignatureValue>
+  </Signature>
+</Service>

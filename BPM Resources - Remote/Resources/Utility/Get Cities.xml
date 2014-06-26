@@ -1,0 +1,43 @@
+
+<Service Name="Get Cities" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="5baeec74-7ef1-4127-9c1e-b7584cd97a42" Version="1.0" ResourceType="DbService">
+  <Actions>
+    <Action Name="Get Cities" Type="InvokeStoredProc" SourceName="Cities Database" SourceMethod="dbo.spGetCitiesByCountry">
+      <Input Name="Country" Source="Country">
+        <Validator Type="Required">
+        </Validator>
+      </Input>
+      <Input Name="Prefix" Source="Prefix">
+        <Validator Type="Required">
+        </Validator>
+      </Input>
+    </Action>
+  </Actions>
+  <AuthorRoles>Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers,</AuthorRoles>
+  <Comment>dfs</Comment>
+  <Category>Utility\Get Cities</Category>
+  <HelpLink>http://s</HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule />
+  <WorkflowActivityDef />
+  <Source />
+  <XamlDefinition />
+  <DataList />
+  <DisplayName>Service</DisplayName>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>D9/gRmYfCk1sDtXYwv+Qr/JCw9s=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>ow70l/tiJZKQfGezmmhL5PKwQgOloUqnVs5YVWOdyPQYJv4uiMP8sRgw2VxH9bOgBY1HF6Ql/esRT+wq9LHqup7i9FL0GD10e31QHUbX2Wu2uxcJ3lvDFhh0yjdFJUifOK2sADtPblXyLcYzjPHOV8r5g5fn+DFzgFFyAuF8n+c=</SignatureValue>
+  </Signature>
+</Service>

@@ -1,0 +1,44 @@
+
+<Service ID="b33b0f7e-75ce-480b-96e1-a91132950030" Version="1.0" Name="TWR-Cities" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="Countries" Type="InvokeStoredProc" SourceID="48ed5cb8-f226-4a98-8eba-208cb477e422" SourceName="Cities Database" SourceMethod="dbo.spGetCountries">
+      <Inputs>
+        <Input Name="Prefix" Source="Prefix" EmptyToNull="false" DefaultValue="" />
+      </Inputs>
+      <Outputs>
+        <Output Name="CountryID" MapsTo="CountryID" Value="[[Countries().CountryID]]" Recordset="Countries" />
+        <Output Name="Description" MapsTo="CountryName" Value="[[Countries().CountryName]]" Recordset="Countries" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">NewDataSet().Table.CountryID</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">NewDataSet().Table.CountryID</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Countries().CountryID]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">4,5</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">NewDataSet().Table.Description</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">NewDataSet().Table.Description</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Countries().CountryName]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Andorra,Angola</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>TWR-Cities</DisplayName>
+  <Category>TWR\TWR-Cities</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>f5JpIsSxpE4fUdGBY7pUN4WHfVM=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>trAJolS5906wS59DU6L/0jFhEN6C8CQz/+SYbnIQMT2wDeZTjpGlMZql++PBH19TBJDbM9iKyTehgJ4K8gvEQNCvczoDWvFYSnqI46OxZVW2HOEAClXELf1Qilu2/YZ3WFkIYKHXOxDa4b8SLZAJNHh3FAmQ8fQsbEsiR8R96Zg=</SignatureValue>
+  </Signature>
+</Service>

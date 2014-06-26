@@ -1,0 +1,44 @@
+
+<Service ID="9d3f11f2-9a00-47e9-84a7-8951c2dcdd52" Version="1.0" Name="MapLocations" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="dbo_Pr_MapLocationsGetTop10" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.Pr_MapLocationsGetTop10">
+      <Inputs />
+      <Outputs>
+        <Output OriginalName="MapLocationID" Name="MapLocationID" MapsTo="MapLocationID" Value="[[Addresses().MapLocationID]]" RecordsetName="dbo_Pr_MapLocationsGetTop10" RecordsetAlias="Addresses" Recordset="Addresses" />
+        <Output OriginalName="StreetAddress" Name="StreetAddress" MapsTo="StreetAddress" Value="[[Addresses().StreetAddress]]" RecordsetName="dbo_Pr_MapLocationsGetTop10" RecordsetAlias="Addresses" Recordset="Addresses" />
+        <Output OriginalName="Latitude" Name="Latitude" MapsTo="Latitude" Value="[[Addresses().Latitude]]" RecordsetName="dbo_Pr_MapLocationsGetTop10" RecordsetAlias="Addresses" Recordset="Addresses" />
+        <Output OriginalName="Longitude" Name="Longitude" MapsTo="Longitude" Value="[[Addresses().Longitude]]" RecordsetName="dbo_Pr_MapLocationsGetTop10" RecordsetAlias="Addresses" Recordset="Addresses" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.MapLocationID</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.MapLocationID</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Addresses().MapLocationID]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">1,2,3,4,5,7,8,9,10,11</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.StreetAddress</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.StreetAddress</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Addresses().StreetAddress]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">19 Pineside Road__COMMA__ New Germany,1244 Old North Coast Rd__COMMA__ Redhill,Westmead Road__COMMA__ Westmead,Turquoise Road__COMMA__ Queensmead,Old Main Road__COMMA__ Isipingo,2 Brook Street North__COMMA__ Warwick Junction,Bellair Road__COMMA__ Corner Bellair &amp; Edwin Swales/Sarnia Arterial,Riverside Road__COMMA__ Durban North,Malacca Road__COMMA__ Durban North,Glanville Road__COMMA__ Woodlands</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.Latitude</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.Latitude</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Addresses().Latitude]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">,,,,,,,,,</SampleData></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.Longitude</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement().Table.Longitude</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[Addresses().Longitude]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">,,,,,,,,,</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>MapLocations</DisplayName>
+  <Category>DBSERVICES\MapLocations</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>dQvi65L3LC7jlPha99voDXaRfis=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>U/6iH3Fy6aTvxJbldV3kWo2MjouGyQR7VXSmiPN7+tJwxt6xxGuwLuVE5poPS9qRsg8GVMnC1OBh+9syn5aMZdJY6sD1in8RXZQt5wgW+1oqjujSIAn88ocPJgXkSEoBa76gd20rFWOmPyGkfcDpcfxpemFy48IH+TOGJMqNNm4=</SignatureValue>
+  </Signature>
+</Service>

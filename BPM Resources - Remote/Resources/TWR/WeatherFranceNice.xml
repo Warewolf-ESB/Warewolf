@@ -1,0 +1,22 @@
+
+<Source ID="2b9c5622-f324-4f3a-a511-4042e9ea1ee6" Version="1.0" Name="WeatherFranceNice" ResourceType="WebSource" ConnectionString="Address=http://www.webservicex.net/globalweather.asmx;DefaultQuery=/GetWeather?CityName=Nice&amp;CountryName=France;AuthenticationType=Anonymous" Type="EmailSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>WeatherFranceNice</DisplayName>
+  <Category>TWR\WeatherFranceNice</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <TypeOf>EmailSource</TypeOf>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>ny9sl7I3TB9nLSd+/N3F0AmEijo=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>SdtzCKJJp5WsFMEv+Tbe8Fh1l7fWEd7+X4h6XZMXr2vy4SnA/ppFA+M4PnjCjOPfgT757FgyziRLZsTwUeITvgCnmfm5GIF3S5jbN7ju0SjnTTrYSnNhLaBe7YBGTOhQR1xT21kiZz90ZIe20l4WACaxXfxmyST1KO2VSXQs48c=</SignatureValue>
+  </Signature>
+</Source>

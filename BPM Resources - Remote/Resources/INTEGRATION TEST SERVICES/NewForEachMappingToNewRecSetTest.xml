@@ -1,0 +1,176 @@
+
+<Service Name="NewForEachMappingToNewRecSetTest" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="1bbfe290-b572-4af2-969c-0ff6519b69d8" Version="1.0" ResourceType="WorkflowService">
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="NewForEachMappingToNewRecSetTest" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;sap:VirtualizedContainerService.HintSize&gt;1179,1184&lt;/sap:VirtualizedContainerService.HintSize&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart DisplayName="NewForEachMappingToNewRecSetTest" sap:VirtualizedContainerService.HintSize="1139,1144" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;sap:WorkflowViewStateService.ViewState&gt;
+      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
+        &lt;av:Point x:Key="ShapeLocation"&gt;270,2.5&lt;/av:Point&gt;
+        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,77.5 300,107.5 300,126&lt;/av:PointCollection&gt;
+        &lt;x:Double x:Key="Width"&gt;1125&lt;/x:Double&gt;
+        &lt;x:Double x:Key="Height"&gt;1108&lt;/x:Double&gt;
+      &lt;/scg:Dictionary&gt;
+    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;FlowStep x:Name="__ReferenceID0"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;av:Point x:Key="ShapeLocation"&gt;160.5,126&lt;/av:Point&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;279,88&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;439.5,170 469.5,170 469.5,166 560,166&lt;/av:PointCollection&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;uaba:DsfMultiAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (10)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="279,88" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False"&gt;
+          &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+            &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="16"&gt;
+              &lt;uaba:ActivityDTO FieldName="[[Valriable]]" FieldValue="testScalar" IndexNumber="1"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[recset(1).rec]]" FieldValue="RecVal1" IndexNumber="2"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[recset(2).rec]]" FieldValue="RecVal2" IndexNumber="3"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[recset(3).rec]]" FieldValue="RecVal3" IndexNumber="4"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[recset(4).rec]]" FieldValue="RecVal4" IndexNumber="5"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[recset(5).rec]]" FieldValue="RecVal5" IndexNumber="6"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[recset(1).rec2]]" FieldValue="Rec2Val1" IndexNumber="7"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[recset(2).rec2]]" FieldValue="Rec2Val2" IndexNumber="8"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[testing(1).test]]" FieldValue="testVal1" IndexNumber="9"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[testing(2).test]]" FieldValue="testVal2" IndexNumber="10"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="11"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+            &lt;/scg:List&gt;
+          &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+        &lt;/uaba:DsfMultiAssignActivity&gt;
+        &lt;FlowStep.Next&gt;
+          &lt;FlowStep x:Name="__ReferenceID1"&gt;
+            &lt;sap:WorkflowViewStateService.ViewState&gt;
+              &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                &lt;av:Point x:Key="ShapeLocation"&gt;560,109&lt;/av:Point&gt;
+                &lt;av:Size x:Key="ShapeSize"&gt;218,114&lt;/av:Size&gt;
+              &lt;/scg:Dictionary&gt;
+            &lt;/sap:WorkflowViewStateService.ViewState&gt;
+            &lt;uaba:DsfForEachActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" SimulationOutput="{x:Null}" test="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DisplayName="For Each" FailOnFirstError="False" ForEachElementName="[[recset()]]" FromDisplayName="[[recset()]]" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="218,114" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage"&gt;
+              &lt;uaba:DsfForEachActivity.DataFunc&gt;
+                &lt;ActivityFunc x:TypeArguments="x:String, x:Boolean" DisplayName="Data Action"&gt;
+                  &lt;ActivityFunc.Argument&gt;
+                    &lt;DelegateInArgument x:TypeArguments="x:String" Name="explicitData_20120620111815" /&gt;
+                  &lt;/ActivityFunc.Argument&gt;
+                  &lt;uaba:DsfActivity ActivityStateData="{x:Null}" AuthorRoles="{x:Null}" Category="{x:Null}" CurrentResult="{x:Null}" DataTags="{x:Null}" IconPath="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ResultValidationExpression="{x:Null}" ResultValidationRequiredTags="{x:Null}" SimulationOutput="{x:Null}" Tags="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DeferExecution="False" DisplayName="TestForEachOutput" ExplicitDataList="[explicitData_20120620111815]" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="202,50" InputMapping="&amp;lt;Inputs&amp;gt;&amp;lt;Input Name=&amp;quot;innerrec&amp;quot; Source=&amp;quot;&amp;quot; Recordset=&amp;quot;innerrecset&amp;quot; /&amp;gt;&amp;lt;Input Name=&amp;quot;innerrec2&amp;quot; Source=&amp;quot;&amp;quot; Recordset=&amp;quot;innerrecset&amp;quot; /&amp;gt;&amp;lt;Input Name=&amp;quot;innerdate&amp;quot; Source=&amp;quot;&amp;quot; Recordset=&amp;quot;innerrecset&amp;quot; /&amp;gt;&amp;lt;Input Name=&amp;quot;innertest&amp;quot; Source=&amp;quot;[[recset(*).rec]]&amp;quot; Recordset=&amp;quot;innertesting&amp;quot; /&amp;gt;&amp;lt;Input Name=&amp;quot;innerScalar&amp;quot; Source=&amp;quot;[[Valriable]]&amp;quot; /&amp;gt;&amp;lt;/Inputs&amp;gt;" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="True" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputMapping="&amp;lt;Outputs&amp;gt;&amp;lt;Output Name=&amp;quot;innerrec&amp;quot; MapsTo=&amp;quot;innerrec&amp;quot; Value=&amp;quot;[[newset().newrec]]&amp;quot; Recordset=&amp;quot;innerrecset&amp;quot; /&amp;gt;&amp;lt;Output Name=&amp;quot;innerrec2&amp;quot; MapsTo=&amp;quot;innerrec2&amp;quot; Value=&amp;quot;[[newset().newrec2]]&amp;quot; Recordset=&amp;quot;innerrecset&amp;quot; /&amp;gt;&amp;lt;Output Name=&amp;quot;innerdate&amp;quot; MapsTo=&amp;quot;innerdate&amp;quot; Value=&amp;quot;&amp;quot; Recordset=&amp;quot;innerrecset&amp;quot; /&amp;gt;&amp;lt;Output Name=&amp;quot;innertest&amp;quot; MapsTo=&amp;quot;innertest&amp;quot; Value=&amp;quot;&amp;quot; Recordset=&amp;quot;innertesting&amp;quot; /&amp;gt;&amp;lt;Output Name=&amp;quot;innerScalar&amp;quot; MapsTo=&amp;quot;innerScalar&amp;quot; Value=&amp;quot;&amp;quot; /&amp;gt;&amp;lt;/Outputs&amp;gt;" RemoveInputFromOutput="False" ServiceName="TestForEachOutput" ToolboxFriendlyName="TestForEachOutput" /&gt;
+                &lt;/ActivityFunc&gt;
+              &lt;/uaba:DsfForEachActivity.DataFunc&gt;
+            &lt;/uaba:DsfForEachActivity&gt;
+          &lt;/FlowStep&gt;
+        &lt;/FlowStep.Next&gt;
+      &lt;/FlowStep&gt;
+    &lt;/Flowchart.StartNode&gt;
+    &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;203.5,232.5&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;613,875&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Expected Result" sap:VirtualizedContainerService.HintSize="613,875" Text="&amp;lt;ADL&amp;gt;&amp;#xA;        &amp;lt;newset&amp;gt;&amp;#xA;          &amp;lt;newrec&amp;gt;testScalar&amp;lt;/newrec&amp;gt;&amp;#xA;          &amp;lt;newrec2&amp;gt;RecVal1&amp;lt;/newrec2&amp;gt;&amp;#xA;        &amp;lt;/newset&amp;gt;&amp;#xA;        &amp;lt;newset&amp;gt;&amp;#xA;          &amp;lt;newrec&amp;gt;testScalar&amp;lt;/newrec&amp;gt;&amp;#xA;          &amp;lt;newrec2&amp;gt;RecVal2&amp;lt;/newrec2&amp;gt;&amp;#xA;        &amp;lt;/newset&amp;gt;&amp;#xA;        &amp;lt;newset&amp;gt;&amp;#xA;          &amp;lt;newrec&amp;gt;testScalar&amp;lt;/newrec&amp;gt;&amp;#xA;          &amp;lt;newrec2&amp;gt;RecVal3&amp;lt;/newrec2&amp;gt;&amp;#xA;        &amp;lt;/newset&amp;gt;&amp;#xA;        &amp;lt;newset&amp;gt;&amp;#xA;          &amp;lt;newrec&amp;gt;testScalar&amp;lt;/newrec&amp;gt;&amp;#xA;          &amp;lt;newrec2&amp;gt;RecVal4&amp;lt;/newrec2&amp;gt;&amp;#xA;        &amp;lt;/newset&amp;gt;&amp;#xA;        &amp;lt;newset&amp;gt;&amp;#xA;          &amp;lt;newrec&amp;gt;testScalar&amp;lt;/newrec&amp;gt;&amp;#xA;          &amp;lt;newrec2&amp;gt;RecVal5&amp;lt;/newrec2&amp;gt;&amp;#xA;        &amp;lt;/newset&amp;gt;&amp;#xA;        &amp;lt;testing&amp;gt;&amp;#xA;          &amp;lt;test&amp;gt;testVal1&amp;lt;/test&amp;gt;&amp;#xA;        &amp;lt;/testing&amp;gt;&amp;#xA;        &amp;lt;testing&amp;gt;&amp;#xA;          &amp;lt;test&amp;gt;testVal2&amp;lt;/test&amp;gt;&amp;#xA;        &amp;lt;/testing&amp;gt;&amp;#xA;        &amp;lt;recset&amp;gt;&amp;#xA;          &amp;lt;rec&amp;gt;RecVal1&amp;lt;/rec&amp;gt;&amp;#xA;          &amp;lt;rec2&amp;gt;Rec2Val1&amp;lt;/rec2&amp;gt;&amp;#xA;        &amp;lt;/recset&amp;gt;&amp;#xA;        &amp;lt;recset&amp;gt;&amp;#xA;          &amp;lt;rec&amp;gt;RecVal2&amp;lt;/rec&amp;gt;&amp;#xA;          &amp;lt;rec2&amp;gt;Rec2Val2&amp;lt;/rec2&amp;gt;&amp;#xA;        &amp;lt;/recset&amp;gt;&amp;#xA;        &amp;lt;recset&amp;gt;&amp;#xA;          &amp;lt;rec&amp;gt;RecVal3&amp;lt;/rec&amp;gt;&amp;#xA;          &amp;lt;rec2 /&amp;gt;&amp;#xA;        &amp;lt;/recset&amp;gt;&amp;#xA;        &amp;lt;recset&amp;gt;&amp;#xA;          &amp;lt;rec&amp;gt;RecVal4&amp;lt;/rec&amp;gt;&amp;#xA;          &amp;lt;rec2 /&amp;gt;&amp;#xA;        &amp;lt;/recset&amp;gt;&amp;#xA;        &amp;lt;recset&amp;gt;&amp;#xA;          &amp;lt;rec&amp;gt;RecVal5&amp;lt;/rec&amp;gt;&amp;#xA;          &amp;lt;rec2 /&amp;gt;&amp;#xA;        &amp;lt;/recset&amp;gt;&amp;#xA;        &amp;lt;Service&amp;gt;NewForEachMappingToNewRecSetTest&amp;lt;/Service&amp;gt;&amp;#xA;        &amp;lt;Valriable&amp;gt;testScalar&amp;lt;/Valriable&amp;gt;&amp;#xA;        &amp;lt;firstVar&amp;gt;&amp;lt;/firstVar&amp;gt;&amp;#xA;        &amp;lt;Resumption&amp;gt;&amp;#xA;          &amp;lt;ParentWorkflowInstanceId&amp;gt;e2ae31bd-1ebf-4c74-a29d-e9f3b3deffc0&amp;lt;/ParentWorkflowInstanceId&amp;gt;&amp;#xA;          &amp;lt;ParentServiceName&amp;gt;NewForEachMappingToNewRecSetTest&amp;lt;/ParentServiceName&amp;gt;&amp;#xA;        &amp;lt;/Resumption&amp;gt;&amp;#xA;      &amp;lt;/ADL&amp;gt;" /&gt;
+    &lt;/FlowStep&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <AuthorRoles>Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
+  <Comment>ishd</Comment>
+  <Category>Integration Test Services\NewForEachMappingToNewRecSetTest</Category>
+  <Tags>
+  </Tags>
+  <HelpLink>a:/</HelpLink>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DisplayName>Workflow</DisplayName>
+  <DataList>
+    <Valriable Description="" />
+    <recset Description="">
+      <rec Description="" />
+      <rec2 Description="" />
+    </recset>
+    <firstVar Description="" />
+    <testing Description="">
+      <test Description="" />
+    </testing>
+    <newset Description="">
+      <newrec Description="" />
+      <newrec2 Description="" />
+    </newset>
+  </DataList>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>mTxxBfnFY896NDaXQfNKkSqF2xM=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>uLT8gLXUAJw/NmLw590yf4j8+WMeFl9nPSUVfaSnIAqDC5NkTgWO/eW1AjsfhvoKFjBKfs23C63WGACPaVh/oS8OJrEnzOFlP2uimUBvX2wKu29fQbu1tzoRbF2f21RIo9U/IUDiUfhnWMZErZOtTJDKkTWVQeNnJ9MSR/O6OMI=</SignatureValue>
+  </Signature>
+</Service>

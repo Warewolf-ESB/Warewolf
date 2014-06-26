@@ -1,0 +1,125 @@
+
+<Service Name="DateAndTimeWithNotOutputFormat" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="c3f41cdb-7aa5-4197-b74e-261f96ada8b2" Version="1.0" ResourceType="WorkflowService">
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DateAndTimeWithNotOutputFormat" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;sap:VirtualizedContainerService.HintSize&gt;817,676&lt;/sap:VirtualizedContainerService.HintSize&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart DisplayName="DateAndTimeWithNotOutputFormat" sap:VirtualizedContainerService.HintSize="777,636" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;sap:WorkflowViewStateService.ViewState&gt;
+      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
+        &lt;av:Point x:Key="ShapeLocation"&gt;70,2.5&lt;/av:Point&gt;
+        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
+        &lt;x:Double x:Key="Width"&gt;763&lt;/x:Double&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;100,77.5 100,107.5 140,107.5 140,146&lt;/av:PointCollection&gt;
+      &lt;/scg:Dictionary&gt;
+    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;FlowStep x:Name="__ReferenceID1"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;av:Point x:Key="ShapeLocation"&gt;0.5,146&lt;/av:Point&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;279,88&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;140,234 140,264 281,264 281,390 251,390&lt;/av:PointCollection&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;uaba:DsfMultiAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign (2)" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="279,88" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False"&gt;
+          &lt;uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+            &lt;scg:List x:TypeArguments="uaba:ActivityDTO" Capacity="4"&gt;
+              &lt;uaba:ActivityDTO FieldName="[[InputDate]]" FieldValue="2012-08-20" IndexNumber="1"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="[[InputFormat]]" FieldValue="yyyy'-'m'-'d" IndexNumber="2"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+              &lt;uaba:ActivityDTO FieldName="" FieldValue="" IndexNumber="3"&gt;
+                &lt;uaba:ActivityDTO.OutList&gt;
+                  &lt;scg:List x:TypeArguments="x:String" Capacity="0" /&gt;
+                &lt;/uaba:ActivityDTO.OutList&gt;
+              &lt;/uaba:ActivityDTO&gt;
+            &lt;/scg:List&gt;
+          &lt;/uaba:DsfMultiAssignActivity.FieldsCollection&gt;
+        &lt;/uaba:DsfMultiAssignActivity&gt;
+        &lt;FlowStep.Next&gt;
+          &lt;FlowStep x:Name="__ReferenceID0"&gt;
+            &lt;sap:WorkflowViewStateService.ViewState&gt;
+              &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+                &lt;av:Point x:Key="ShapeLocation"&gt;47,307&lt;/av:Point&gt;
+                &lt;av:Size x:Key="ShapeSize"&gt;204,166&lt;/av:Size&gt;
+              &lt;/scg:Dictionary&gt;
+            &lt;/sap:WorkflowViewStateService.ViewState&gt;
+            &lt;uaba:DsfDateTimeActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" DatabindRecursive="False" DateTime="[[InputDate]]" DisplayName="Date and Time" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="204,166" InputFormat="[[InputFormat]]" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" OutputFormat="" Result="[[MyBirthday]]" TimeModifierType="" TimeModifierAmountDisplay=""  /&gt;
+          &lt;/FlowStep&gt;
+        &lt;/FlowStep.Next&gt;
+      &lt;/FlowStep&gt;
+    &lt;/Flowchart.StartNode&gt;
+    &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+    &lt;x:Reference&gt;__ReferenceID1&lt;/x:Reference&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;330,3&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;200,194&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Inputs" sap:VirtualizedContainerService.HintSize="200,194" Text="Input : 2012-08-20&amp;#xA;Input Format : yyyy'-'m'-'d&amp;#xA;" /&gt;
+    &lt;/FlowStep&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;330,213&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;200,194&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="Expected" sap:VirtualizedContainerService.HintSize="200,194" Text="2012-8-20" /&gt;
+    &lt;/FlowStep&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <AuthorRoles>Domain Users,All Users,Company Users,Business Design Studio Developers,Build Configuration Engineers,Test Engineers,DEV2 Limited Internet Access,</AuthorRoles>
+  <Comment>cake</Comment>
+  <Category>Integration Test Services\DateAndTimeWithNotOutputFormat</Category>
+  <Tags>
+  </Tags>
+  <HelpLink>http://eatcakes</HelpLink>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DisplayName>Workflow</DisplayName>
+  <DataList>
+    <InputDate Description="" />
+    <InputFormat Description="" />
+    <MyBirthday Description="" />
+  </DataList>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>FyVk0xPRQG+yWwPOwiSZCcZbt6c=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>krSb1S63fXGxTww7rbndNe7Vkcv8iHDTkB3z7bF375KyRtp+DIJMMN9yyYkd+sUoFbQUVbl5BvaLZjlUeVg4PZkCDn2CO6CSPJwr6oTShTYpaA1lHNLC2Ki4KXNJiAtwPInVbsYDSgopgY8AHUjzp78BuXwLdThf1ORPPe9f4QI=</SignatureValue>
+  </Signature>
+</Service>

@@ -1,0 +1,101 @@
+
+<Service ID="3f57e8ba-0763-41fa-ac78-a4c9de0948f3" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ServiceToBindFrom" ResourceType="WorkflowService" IsValid="false">
+  <DisplayName>ServiceToBindFrom</DisplayName>
+  <Category>Services\ServiceToBindFrom</Category>
+  <IsNewWorkflow>false</IsNewWorkflow>
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <Tags>
+  </Tags>
+  <IconPath>pack://application:,,,/Warewolf Studio;component/images/Workflow-32.png</IconPath>
+  <HelpLink>
+  </HelpLink>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <DataList>
+    <DataList1234 Description="" />
+    <Testing1234 Description="" />
+    <result Description="" />
+    <testingVariable Description="" />
+  </DataList>
+  <Action Name="InvokeWorkflow" Type="Workflow">
+    <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="ServiceToBindFrom" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Unlimited.Applications.BusinessDesignStudio.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Unlimited.Framework" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
+  &lt;x:Members&gt;
+    &lt;x:Property Name="AmbientDataList" Type="InOutArgument(scg:List(x:String))" /&gt;
+    &lt;x:Property Name="ParentWorkflowInstanceId" Type="InOutArgument(s:Guid)" /&gt;
+    &lt;x:Property Name="ParentServiceName" Type="InOutArgument(x:String)" /&gt;
+  &lt;/x:Members&gt;
+  &lt;sap:VirtualizedContainerService.HintSize&gt;778,1014&lt;/sap:VirtualizedContainerService.HintSize&gt;
+  &lt;mva:VisualBasic.Settings&gt;Assembly references and imported namespaces serialized as XML namespaces&lt;/mva:VisualBasic.Settings&gt;
+  &lt;Flowchart sap:VirtualizedContainerService.HintSize="738,974" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces"&gt;
+    &lt;Flowchart.Variables&gt;
+      &lt;Variable x:TypeArguments="scg:List(x:String)" Name="InstructionList" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="LastResult" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="HasError" /&gt;
+      &lt;Variable x:TypeArguments="x:String" Name="ExplicitDataList" /&gt;
+      &lt;Variable x:TypeArguments="x:Boolean" Name="IsValid" /&gt;
+      &lt;Variable x:TypeArguments="uf:UnlimitedObject" Name="d" /&gt;
+      &lt;Variable x:TypeArguments="uaba:Util" Name="t" /&gt;
+    &lt;/Flowchart.Variables&gt;
+    &lt;sap:WorkflowViewStateService.ViewState&gt;
+      &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+        &lt;x:Boolean x:Key="IsExpanded"&gt;False&lt;/x:Boolean&gt;
+        &lt;av:Point x:Key="ShapeLocation"&gt;270,2.5&lt;/av:Point&gt;
+        &lt;av:Size x:Key="ShapeSize"&gt;60,75&lt;/av:Size&gt;
+        &lt;av:PointCollection x:Key="ConnectorLocation"&gt;300,77.5 300,107.5 150,107.5 150,276&lt;/av:PointCollection&gt;
+        &lt;x:Double x:Key="Height"&gt;938.5&lt;/x:Double&gt;
+        &lt;x:Double x:Key="Width"&gt;724&lt;/x:Double&gt;
+      &lt;/scg:Dictionary&gt;
+    &lt;/sap:WorkflowViewStateService.ViewState&gt;
+    &lt;Flowchart.StartNode&gt;
+      &lt;FlowStep x:Name="__ReferenceID0"&gt;
+        &lt;sap:WorkflowViewStateService.ViewState&gt;
+          &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+            &lt;av:Point x:Key="ShapeLocation"&gt;20.5,276&lt;/av:Point&gt;
+            &lt;av:Size x:Key="ShapeSize"&gt;259,443&lt;/av:Size&gt;
+            &lt;av:PointCollection x:Key="ConnectorLocation"&gt;271.5,280 301.5,280 301.5,342 450,342 450,372&lt;/av:PointCollection&gt;
+          &lt;/scg:Dictionary&gt;
+        &lt;/sap:WorkflowViewStateService.ViewState&gt;
+        &lt;uaba:DsfAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="True" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign" FieldName="result" FieldValue="{}{{&amp;#xA;     var max = &amp;quot;[[max]]&amp;quot;;&amp;#xA;&amp;#xA;     if(max.length &amp;lt; 1){&amp;#xA;&amp;#x9;max = 10;&amp;#xA;     }&amp;#xA;     var i = 0;&amp;#xA;     var id = &amp;quot;&amp;lt;Data&amp;gt;&amp;quot;;&amp;#xA;     var value = new Array();&amp;#xA;     for(var i  = 0; i &amp;lt;= max; i++){&amp;#xA;        id += &amp;quot;&amp;lt;regions&amp;gt;&amp;quot;;&amp;#xA;        id += &amp;quot;&amp;lt;id&amp;gt;&amp;quot;+i+&amp;quot;&amp;lt;/id&amp;gt;&amp;quot;;&amp;#xA;        id += &amp;quot;&amp;lt;name&amp;gt;region&amp;quot;+i + &amp;quot;&amp;lt;/name&amp;gt;&amp;quot;;&amp;#xA;        id += &amp;quot;&amp;lt;/regions&amp;gt;&amp;quot;;&amp;#xA;       }&amp;#xA;  id += &amp;quot;&amp;lt;/Data&amp;gt;&amp;quot;;&amp;#xA;}}" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="259,443" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="True" /&gt;
+      &lt;/FlowStep&gt;
+    &lt;/Flowchart.StartNode&gt;
+    &lt;x:Reference&gt;__ReferenceID0&lt;/x:Reference&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;393.5,33&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;200,22&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfCommentActivity DisplayName="DEF" sap:VirtualizedContainerService.HintSize="200,22" Text="01-02-2012 : Travis.Frisinger@dev2.co.za&amp;#xA;&amp;#xA;A testing service used to ensure&amp;#xA;databinding works for both datagrid&amp;#xA;and radio button, checkbox, and drop down." /&gt;
+    &lt;/FlowStep&gt;
+    &lt;FlowStep&gt;
+      &lt;sap:WorkflowViewStateService.ViewState&gt;
+        &lt;scg:Dictionary x:TypeArguments="x:String, x:Object"&gt;
+          &lt;av:Point x:Key="ShapeLocation"&gt;330,308.5&lt;/av:Point&gt;
+          &lt;av:Size x:Key="ShapeSize"&gt;200,203&lt;/av:Size&gt;
+        &lt;/scg:Dictionary&gt;
+      &lt;/sap:WorkflowViewStateService.ViewState&gt;
+      &lt;uaba:DsfAssignActivity CurrentResult="{x:Null}" ExplicitDataList="{x:Null}" FieldValue="{x:Null}" InputMapping="{x:Null}" InputTransformation="{x:Null}" OnResumeKeepList="{x:Null}" OutputMapping="{x:Null}" ParentServiceName="{x:Null}" ParentWorkflowInstanceId="{x:Null}" ResultTransformation="{x:Null}" ServiceHost="{x:Null}" SimulationOutput="{x:Null}" Add="False" AmbientDataList="[AmbientDataList]" CreateBookmark="False" DatabindRecursive="False" DisplayName="Assign" FieldName="[[testingVariable]]" HasError="[HasError]" sap:VirtualizedContainerService.HintSize="200,203" InstructionList="[InstructionList]" IsSimulationEnabled="False" IsUIStep="False" IsValid="[IsValid]" IsWorkflow="False" OnResumeClearAmbientDataList="False" OnResumeClearTags="FormView,InstanceId,Bookmark,ParentWorkflowInstanceId,ParentServiceName,WebPage" UpdateAllOccurrences="False" /&gt;
+    &lt;/FlowStep&gt;
+  &lt;/Flowchart&gt;
+&lt;/Activity&gt;</XamlDefinition>
+  </Action>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>ylPALIFwtoLBmMnuNbrWsPqlf9Y=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>M6FVhT55HN1df5iIKliN4zPYaSoXehiUJHzFKKrfxVsE8ZpJpUdpYQhvalWUAQza9FBHaLAIMnup9tNdmpCCCR3Wp2YeOPeArThA3YJEhDqlC6JqM4q5Tvfg9EONeQYZ8BWFT06Qe1Cz46zFZwe/UCLtfe2/CmXg8In1QtcSUSI=</SignatureValue>
+  </Signature>
+</Service>

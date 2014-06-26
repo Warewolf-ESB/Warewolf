@@ -1,0 +1,43 @@
+
+<Service ID="53b8656d-feda-43bb-8f50-1f78e270b615" Version="1.0" Name="IntegrationTestDBNullLogicNotChecked" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <Actions>
+    <Action Name="dbo_NullReturnsZZZ_NotNullReturnsAAA" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.NullReturnsZZZ_NotNullReturnsAAA">
+      <Inputs>
+        <Input Name="nullFlag" Source="nullFlag" EmptyToNull="true" DefaultValue="" />
+      </Inputs>
+      <Outputs>
+        <Output Name="result" MapsTo="result" Value="[[dbo_NullReturnsZZZ_NotNullReturnsAAA().result]]" Recordset="dbo_NullReturnsZZZ_NotNullReturnsAAA" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:Paths><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.String.Xml" i:type="d5p1:XmlPath"><ActualPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement.Table.result</ActualPath><DisplayPath xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">DocumentElement.Table.result</DisplayPath><OutputExpression xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[dbo_NullReturnsZZZ_NotNullReturnsAAA().result]]</OutputExpression><SampleData xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">AAA</SampleData></d2p1:anyType></d1p1:Paths></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>IntegrationTestDBNullLogicNotChecked</DisplayName>
+  <Category>ML-Testing\IntegrationTestDBNullLogicNotChecked</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>05pK/pVgvz9w4kbsip3VJY+U0Kg=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>XnXF69lAD2nm2xqAw19T/vewZJVkmA+QYv/nW1sNW1zMspZgK66JnrCXY4LemL/RznZzkeuOm9/2eAxhHxlw06WamuZWC4MLlQZyiDrvBrzxveE/7Jpbq4s4O/AltbZFJyfUxK15lwI5gl5Rd/25g9fAnplAjlIbGvkAH8f5ygQ=</SignatureValue>
+  </Signature>
+</Service>
