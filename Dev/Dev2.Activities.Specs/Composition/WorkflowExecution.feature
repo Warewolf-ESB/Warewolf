@@ -200,7 +200,7 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
 	  | 1 | [[rec(1).a]] = NTA= |
 	  
 
-# Bug
+# This issue should be resolved as part of bug 12021
 #Scenario: Workflow with Assign and 2 Delete tools executing against the server
 #	  Given I have a workflow "WorkflowWithAssignand2Deletetools"
 #	  And "WorkflowWithAssignand2Deletetools" contains an Assign "Assign to delete" as
