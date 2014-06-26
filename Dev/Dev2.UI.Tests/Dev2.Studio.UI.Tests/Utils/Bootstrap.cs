@@ -67,10 +67,13 @@ namespace Dev2.Studio.UI.Tests.Utils
                 RootServiceLocation = StudioLocation.Replace("Warewolf Server.exe", "Resources\\");
                 return;
             }
-            CopyDirectory(testCtx.DeploymentDirectory, ServerLocation.Replace("Warewolf Server.exe", string.Empty));
+            var expectedServerLocation = ServerLocation.Replace("\\Warewolf Server.exe", string.Empty);
+            Directory.CreateDirectory(expectedServerLocation);
+            CopyDirectory(testCtx.DeploymentDirectory, expectedServerLocation);
+            Directory.CreateDirectory(RemoteServerLocation);
             CopyDirectory(testCtx.DeploymentDirectory, RemoteServerLocation);
         }
-
+		
         private static string GetProcessPath(ManagementObjectCollection processes)
         {
             if(processes == null || processes.Count == 0)
