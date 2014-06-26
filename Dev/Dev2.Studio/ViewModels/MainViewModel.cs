@@ -36,7 +36,6 @@ using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.ResourceManagement;
-using Dev2.Studio.Webs;
 using Dev2.Threading;
 using Dev2.Utils;
 using Dev2.Webs;
@@ -1195,9 +1194,9 @@ namespace Dev2.Studio.ViewModels
             if(EnvironmentRepository == null) return;
 
             HashSet<IWorkspaceItem> workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
-// ReSharper disable ForCanBeConvertedToForeach
+            // ReSharper disable ForCanBeConvertedToForeach
             for(int i = 0; i < GetWorkspaceItemRepository().WorkspaceItems.Count; i++)
-// ReSharper restore ForCanBeConvertedToForeach
+            // ReSharper restore ForCanBeConvertedToForeach
             {
                 //
                 // Get the environment for the workspace item

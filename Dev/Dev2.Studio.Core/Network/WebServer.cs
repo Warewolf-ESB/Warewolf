@@ -70,7 +70,7 @@ namespace Dev2.Studio.Core.Network
                 return;
             }
             var environmentConnection = resourceModel.Environment.Connection;
-            var relativeUrl = string.Format("/services/{0}.xml?wid={1}", resourceModel.Category, environmentConnection.WorkspaceID);
+            var relativeUrl = string.Format("/services/{0}.xml?", resourceModel.Category);
             if(isXml)
             {
                 relativeUrl += xmlData;
@@ -79,6 +79,7 @@ namespace Dev2.Studio.Core.Network
             {
                 relativeUrl += xmlData;
             }
+            relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
             Uri url;
             Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out url);
             Process.Start(url.ToString());

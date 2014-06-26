@@ -31,15 +31,15 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
 
-        protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceID, NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
+        protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
         {
             string executePayload;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             Guid workspaceGuid;
 
-            if(workspaceID != null)
+            if(workspaceId != null)
             {
-                if(!Guid.TryParse(workspaceID, out workspaceGuid))
+                if(!Guid.TryParse(workspaceId, out workspaceGuid))
                 {
                     workspaceGuid = WorkspaceRepository.Instance.ServerWorkspace.ID;
                 }
@@ -51,7 +51,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             ErrorResultTO errors;
             var allErrors = new ErrorResultTO();
-            var dataObject = new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload) { IsFromWebServer = true, ExecutingUser = user, ServiceName = serviceName };
+            var dataObject = new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload) { IsFromWebServer = true, ExecutingUser = user, ServiceName = serviceName, WorkspaceID = workspaceGuid };
 
             // now bind any variables that are part of the path arguments ;)
             BindRequestVariablesToDataObject(webRequest, ref dataObject);
@@ -62,9 +62,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 ServerLogger.LogTrace("Remote Invoke");
 
                 var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
-                var remoteID = headers.Get(HttpRequestHeader.From.ToString());
+                var remoteId = headers.Get(HttpRequestHeader.From.ToString());
 
-                if(isRemote != null && remoteID != null)
+                if(isRemote != null && remoteId != null)
                 {
                     if(isRemote.Equals(GlobalConstants.RemoteServerInvoke))
                     {
@@ -72,7 +72,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                         dataObject.RemoteInvoke = true;
                     }
 
-                    dataObject.RemoteInvokerID = remoteID;
+                    dataObject.RemoteInvokerID = remoteId;
                 }
             }
 
@@ -263,10 +263,10 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                 if(!string.IsNullOrEmpty(request.InstanceID))
                 {
-                    Guid tmpID;
-                    if(Guid.TryParse(request.InstanceID, out tmpID))
+                    Guid tmpId;
+                    if(Guid.TryParse(request.InstanceID, out tmpId))
                     {
-                        dataObject.WorkflowInstanceId = tmpID;
+                        dataObject.WorkflowInstanceId = tmpId;
                     }
                 }
 
@@ -277,7 +277,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
         }
 
-        protected static string GetPostData(ICommunicationContext ctx, string postDataListID)
+        protected static string GetPostData(ICommunicationContext ctx, string postDataListId)
         {
             var baseStr = HttpUtility.UrlDecode(ctx.Request.Uri.ToString());
             if(baseStr != null)
@@ -381,11 +381,11 @@ namespace Dev2.Runtime.WebServer.Handlers
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid pushedID = compiler.PushBinaryDataList(bdl.UID, bdl, out errors);
+            Guid pushedId = compiler.PushBinaryDataList(bdl.UID, bdl, out errors);
 
-            if(pushedID != Guid.Empty)
+            if(pushedId != Guid.Empty)
             {
-                var result = compiler.ConvertFrom(pushedID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+                var result = compiler.ConvertFrom(pushedId, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
                 if(errors.HasErrors())
                 {
                     "AbstractWebRequestHandler".LogError(errors.MakeDisplayReady());
@@ -421,6 +421,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return serviceName;
         }
 
+        // ReSharper disable InconsistentNaming
         protected static string GetWorkspaceID(ICommunicationContext ctx)
         {
             return ctx.Request.QueryString["wid"];
