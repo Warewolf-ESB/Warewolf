@@ -1959,26 +1959,175 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 	  | [[rs(1).a]] = 30 |
 	  | [[rs(2).a]] = 20 |
 	  | [[rs(4).a]] = 10 |
-	  | [[rs(5).a]] =  |
-	  | [[rs(6).a]] =  |
-	  | [[rs(7).a]] =  |
+	  | [[rs(5).a]] =    |
+	  | [[rs(6).a]] =    |
+	  | [[rs(7).a]] =    |
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# BELOW THREE TEST SCENARIOS SHOULD BE PASSED AFTER THE BUG 12021 IS FIXED
+#Scenario: Workflow with Assign and Unique Tool, finding unique data from multiple rows 
+#      Given I have a workflow "workflowithAssignandUnique"
+#      And "workflowithAssignandUnique" contains an Assign "Records" as
+#	  | variable      | value |
+#	  | [[rs().row]]  | 10    |
+#	  | [[rs().data]] | 10    |
+#	  | [[rs().row ]] | 40    |
+#	  | [[rs().data]] | 20    |
+#	  | [[rs().row ]] | 20    |
+#	  | [[rs().data]] | 20    |
+#	  | [[rs().row ]] | 30    |
+#	  | [[rs().data]] | 40    |
+#	  And "workflowithAssignandUnique" contains an Unique "Unique rec" as
+#	  | In Field(s)                  | Return Fields | Result           |
+#	  | [[rs(*).row]],[[rs(*).data]] | [[rs().row]]  | [[rec().unique]] |
+#	  When "workflowithAssignandUnique" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Records' in WorkFlow 'workflowithAssignandUnique' debug inputs as
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rs().row]] = | 10        |
+#	  | 2 | [[rs().data]]= | 10        |
+#	  | 3 | [[rs().row ]]= | 40        |
+#	  | 4 | [[rs().data]]= | 20        |
+#	  | 5 | [[rs().row ]]= | 20        |
+#	  | 6 | [[rs().data]]= | 20        |
+#	  | 7 | [[rs().row ]]= | 30        |
+#	  | 8 | [[rs().data]]= | 40        |
+#	  And the 'Records' in Workflow 'workflowithAssignandUnique' debug outputs as  
+#	  | # |                     |
+#	  | 1 | [[rs(1).row]] =  10 |
+#	  | 2 | [[rs(1).data]]=  10 |
+#	  | 3 | [[rs(2).row ]]=  40 |
+#	  | 4 | [[rs(2).data]]=  20 |
+#	  | 5 | [[rs(3).row ]]=  20 |
+#	  | 6 | [[rs(3).data]]=  20 |
+#	  | 7 | [[rs(4).row ]]=  30 |
+#	  | 8 | [[rs(4).data]]=  40 |
+#	  And the 'Unique rec' in WorkFlow 'workflowithAssignandUnique' debug inputs as
+#       | #           |                     | Return Fields |
+#       | In Field(s) | [[rs(1).row]] = 10  |               |
+#       |             | [[rs(2).row]] = 40  |               |
+#       |             | [[rs(3).row]] = 20  |               |
+#       |             | [[rs(4).row]] = 30  |               |
+#       |             | [[rs(1).data]] = 10 |               |
+#       |             | [[rs(2).data]] = 20 |               |
+#       |             | [[rs(3).data]] = 20 |               |
+#       |             | [[rs(4).data]] = 40 |               |
+#       |             |                     | [[rs().row]]  |
+#      And the 'Unique rec' in Workflow 'workflowithAssignandUnique' debug outputs as  
+#       | # |                        |
+#       | 1 | [[rec(1).unique]] = 10 |
+#       |   | [[rec(2).unique]] = 40 |
+#       |   | [[rec(3).unique]] = 20 |
+#       |   | [[rec(4).unique]] = 30 |
+#
+#Scenario: Workflow with Assign and Unique Tool, Infields rec without star
+#      Given I have a workflow "workflowithAssignandUniqueTool"
+#      And "workflowithAssignandUniqueTool" contains an Assign "Records" as
+#	  | variable      | value |
+#	  | [[rs().row]]  | 10    |
+#	  | [[rs().data]] | 10    |
+#	  | [[rs().row ]] | 40    |
+#	  | [[rs().data]] | 20    |
+#	  | [[rs().row ]] | 20    |
+#	  | [[rs().data]] | 20    |
+#	  | [[rs().row ]] | 30    |
+#	  | [[rs().data]] | 40    |
+#	  And "workflowithAssignandUniqueTool" contains an Unique "Unique rec" as
+#	  | In Field(s)                | Return Fields | Result           |
+#	  | [[rs().row]],[[rs().data]] | [[rs().row]]  | [[rec().unique]] |
+#	  When "workflowithAssignandUniqueTool" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Records' in WorkFlow 'workflowithAssignandUniqueTool' debug inputs as
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rs().row]] = | 10        |
+#	  | 2 | [[rs().data]]= | 10        |
+#	  | 3 | [[rs().row ]]= | 40        |
+#	  | 4 | [[rs().data]]= | 20        |
+#	  | 5 | [[rs().row ]]= | 20        |
+#	  | 6 | [[rs().data]]= | 20        |
+#	  | 7 | [[rs().row ]]= | 30        |
+#	  | 8 | [[rs().data]]= | 40        |
+#	  And the 'Records' in Workflow 'workflowithAssignandUniqueTool' debug outputs as  
+#	  | # |                     |
+#	  | 1 | [[rs(1).row]] =  10 |
+#	  | 2 | [[rs(1).data]]=  10 |
+#	  | 3 | [[rs(2).row ]]=  40 |
+#	  | 4 | [[rs(2).data]]=  20 |
+#	  | 5 | [[rs(3).row ]]=  20 |
+#	  | 6 | [[rs(3).data]]=  20 |
+#	  | 7 | [[rs(4).row ]]=  30 |
+#	  | 8 | [[rs(4).data]]=  40 |
+#	  And the 'Unique rec' in WorkFlow 'workflowithAssignandUniqueTool' debug inputs as
+#       | #           |                     | Return Fields |
+#       | In Field(s) | [[rs(1).row]] = 10  |               |
+#       |             | [[rs(2).row]] = 40  |               |
+#       |             | [[rs(3).row]] = 20  |               |
+#       |             | [[rs(4).row]] = 30  |               |
+#       |             | [[rs(1).data]] = 10 |               |
+#       |             | [[rs(2).data]] = 20 |               |
+#       |             | [[rs(3).data]] = 20 |               |
+#       |             | [[rs(4).data]] = 40 |               |
+#       |             |                     | [[rs().row]]  |
+#      And the 'Unique rec' in Workflow 'workflowithAssignandUniqueTool' debug outputs as  
+#       | # |                        |
+#       | 1 | [[rec(1).unique]] = 10 |
+#       |   | [[rec(2).unique]] = 40 |
+#       |   | [[rec(3).unique]] = 20 |
+#       |   | [[rec(4).unique]] = 30 |
+#
+#Scenario: Workflow with Assign and Unique Tool, Result rec with star
+#      Given I have a workflow "workflowithAssignandUniqueTools"
+#      And "workflowithAssignandUniqueTools" contains an Assign "Records" as
+#	  | variable      | value |
+#	  | [[rs().row]]  | 10    |
+#	  | [[rs().data]] | 10    |
+#	  | [[rs().row ]] | 40    |
+#	  | [[rs().data]] | 20    |
+#	  | [[rs().row ]] | 20    |
+#	  | [[rs().data]] | 20    |
+#	  | [[rs().row ]] | 30    |
+#	  | [[rs().data]] | 40    |
+#	  And "workflowithAssignandUniqueTools" contains an Unique "Unique rec" as
+#	  | In Field(s)                | Return Fields | Result           |
+#	  | [[rs().row]],[[rs().data]] | [[rs().row]]  | [[rec(*).unique]] |
+#	  When "workflowithAssignandUniqueTools" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Records' in WorkFlow 'workflowithAssignandUniqueTools' debug inputs as
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rs().row]] = | 10        |
+#	  | 2 | [[rs().data]]= | 10        |
+#	  | 3 | [[rs().row ]]= | 40        |
+#	  | 4 | [[rs().data]]= | 20        |
+#	  | 5 | [[rs().row ]]= | 20        |
+#	  | 6 | [[rs().data]]= | 20        |
+#	  | 7 | [[rs().row ]]= | 30        |
+#	  | 8 | [[rs().data]]= | 40        |
+#	  And the 'Records' in Workflow 'workflowithAssignandUniqueTools' debug outputs as  
+#	  | # |                     |
+#	  | 1 | [[rs(1).row]] =  10 |
+#	  | 2 | [[rs(1).data]]=  10 |
+#	  | 3 | [[rs(2).row ]]=  40 |
+#	  | 4 | [[rs(2).data]]=  20 |
+#	  | 5 | [[rs(3).row ]]=  20 |
+#	  | 6 | [[rs(3).data]]=  20 |
+#	  | 7 | [[rs(4).row ]]=  30 |
+#	  | 8 | [[rs(4).data]]=  40 |
+#	  And the 'Unique rec' in WorkFlow 'workflowithAssignandUniqueTools' debug inputs as
+#       | #           |                     | Return Fields |
+#       | In Field(s) | [[rs(1).row]] = 10  |               |
+#       |             | [[rs(2).row]] = 40  |               |
+#       |             | [[rs(3).row]] = 20  |               |
+#       |             | [[rs(4).row]] = 30  |               |
+#       |             | [[rs(1).data]] = 10 |               |
+#       |             | [[rs(2).data]] = 20 |               |
+#       |             | [[rs(3).data]] = 20 |               |
+#       |             | [[rs(4).data]] = 40 |               |
+#       |             |                     | [[rs().row]]  |
+#      And the 'Unique rec' in Workflow 'workflowithAssignandUniqueTools' debug outputs as  
+#       | # |                        |
+#       | 1 | [[rec(1).unique]] = 10 |
+#       |   | [[rec(2).unique]] = 40 |
+#       |   | [[rec(3).unique]] = 20 |
+#       |   | [[rec(4).unique]] = 30 |
 
 
 
