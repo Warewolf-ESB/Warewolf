@@ -328,6 +328,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                             {
                                 pairs.Add(keyValue[0], keyValue[1]);
                             }
+                            else if(keyValue.Length == 1)
+                            {
+                                //We have DataWithout an Equals
+                                if(keyValue[0].IsXml())
+                                {
+                                    pairs.Add(keyValue[0], keyValue[0]);
+                                }
+                            }
                         }
 
                         // so some silly chicken sent an empty body on POST with GET style query string parameters
@@ -356,6 +364,14 @@ namespace Dev2.Runtime.WebServer.Handlers
             // Extract request keys ;)
             foreach(var key in pairs.AllKeys)
             {
+                if(key == "wid") //Don't add the Workspace ID to DataList
+                {
+                    continue;
+                }
+                if(key.IsXml())
+                {
+                    return key; //We have a workspace id and XML DataList
+                }
                 string error;
                 bdl.TryCreateScalarTemplate(string.Empty, key, string.Empty, true, out error);
                 if(!string.IsNullOrEmpty(error))
