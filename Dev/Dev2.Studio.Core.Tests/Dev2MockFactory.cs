@@ -308,6 +308,9 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.Verify(It.IsAny<Action<ConnectResult>>(), false)).Callback(() => { });
             var authService = new Mock<IAuthorizationService>();
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(authService.Object);
+            mockEnvironmentModel.Setup(e => e.IsLocalHostCheck()).Returns(true);
+            mockEnvironmentModel.Setup(e => e.IsLocalHost).Returns(true);
+
             return mockEnvironmentModel;
         }
 

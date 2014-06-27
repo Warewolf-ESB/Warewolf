@@ -68,7 +68,6 @@ namespace Dev2
         bool IsDebugMode();
 
         Guid EnvironmentID { get; set; }
-        bool IsRemoteWorkflow { get; }
 
         int ParentThreadID { get; set; }
 
@@ -77,5 +76,9 @@ namespace Dev2
 
         bool RunWorkflowAsync { get; set; }
         bool IsDebugNested { get; set; }
+
+        bool IsRemoteInvoke { get; }
+        bool IsRemoteInvokeOverridden { get; set; }
+        bool IsRemoteWorkflow();
     }
 }

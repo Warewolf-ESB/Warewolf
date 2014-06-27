@@ -327,6 +327,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
+    <!--
     <PostBuildEvent>IF $(ConfigurationName)==Debug GOTO getDebugResources
 IF $(ConfigurationName)==Test GOTO getTestResources
 IF $(ConfigurationName)==Release GOTO getReleaseResources
@@ -344,7 +345,7 @@ GOTO exit
 xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
 xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\Properties" "$(TargetDir)Debug\Webs\Properties\"
 xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\wwwroot" "$(TargetDir)Webs\wwwroot\"
-:exit</PostBuildEvent>
+:exit</PostBuildEvent>-->
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>cd "$(TargetDir)"

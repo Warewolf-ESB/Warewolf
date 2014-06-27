@@ -121,7 +121,7 @@ namespace ActivityUnitTests
 
         }
 
-        public dynamic ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true,bool isDebugMode=false)
+        public dynamic ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentID = default(Guid), bool overrideRemote = false)
         {
 
             var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
@@ -166,7 +166,9 @@ namespace ActivityUnitTests
                     //       if this is NOT provided which will cause the tests to fail!
                     ServerID = Guid.NewGuid(),
                     ExecutingUser = User,
-                    IsDebug = isDebugMode
+                    IsDebug = isDebugMode,
+                    EnvironmentID = currentEnvironmentID,
+                    IsRemoteInvokeOverridden = overrideRemote
                 };
 
             }

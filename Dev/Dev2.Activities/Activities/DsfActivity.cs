@@ -229,7 +229,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string serviceName = string.Empty;
 
             // BUG 9634 - 2013.07.17 - TWR - changed isRemoteExecution to check EnvironmentID instead
+            // This is now the wrong behavior - We need to keep the original EnvironmentID when not a remote workflow
+            // This is because we put and empty GUID in when designing against a remote server that uses it's resources
+            // The first time through this value is set correctly when executing those designed resource from our localhost
+            // If we change it as per what was here, we always get a localhost tag instead of the remote host we are design against
+            var currentEnviromentID = dataObject.EnvironmentID;
+            var isRemote = dataObject.IsRemoteWorkflow();
             dataObject.EnvironmentID = context.GetValue(EnvironmentID);
+            //var proposedEnviromentID = dataObject.EnvironmentID;
+            if((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
+            {
+                dataObject.EnvironmentID = currentEnviromentID;
+                dataObject.IsRemoteInvokeOverridden = true;
+            }
+
             var oldResourceID = dataObject.ResourceID;
 
             InitializeDebug(dataObject);

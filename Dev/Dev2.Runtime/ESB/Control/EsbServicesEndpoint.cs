@@ -296,7 +296,7 @@ namespace Dev2.Runtime.ESB.Control
             var remainingMappings = ShapeForSubRequest(dataObject, inputDefs, outputDefs, out errors);
 
             // local non-scoped execution ;)
-            var isLocal = !dataObject.IsRemoteWorkflow;
+            var isLocal = !dataObject.IsRemoteWorkflow();
 
             var principle = Thread.CurrentPrincipal;
             ServerLogger.LogMessage("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");

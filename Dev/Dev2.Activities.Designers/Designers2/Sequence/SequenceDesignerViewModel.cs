@@ -93,7 +93,7 @@ namespace Dev2.Activities.Designers2.Sequence
 
                             if(resource != null)
                             {
-                                DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true);
+                                DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance);
                                 d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
                                 d.IconPath = resource.IconPath;
                                 WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource);

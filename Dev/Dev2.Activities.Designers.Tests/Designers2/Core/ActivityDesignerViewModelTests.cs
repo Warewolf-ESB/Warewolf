@@ -1,21 +1,21 @@
 ﻿using System;
-using Caliburn.Micro;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Data;
+using Caliburn.Micro;
 using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
 using Dev2.Core.Tests;
+using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
-using Dev2.Core.Tests.Utils;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
@@ -116,10 +116,13 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Mock<IContextualResourceModel> setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock();
             ErrorInfo errorInfo = new ErrorInfo { InstanceID = new Guid() };
 
+            var envRepo = new Mock<IEnvironmentRepository>();
+            envRepo.Setup(e => e.ActiveEnvironment).Returns(setupResourceModelMock.Object.Environment);
+
             IObservableReadOnlyList<IErrorInfo> testErrors = new ObservableReadOnlyList<IErrorInfo> { errorInfo };
             setupResourceModelMock.Setup(c => c.Errors).Returns(testErrors);
             setupResourceModelMock.Setup(c => c.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo> { errorInfo });
-            var viewModel = new ServiceDesignerViewModel(mockModelItem.Object, setupResourceModelMock.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            var viewModel = new ServiceDesignerViewModel(mockModelItem.Object, setupResourceModelMock.Object, envRepo.Object, new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
 
             Assert.AreEqual(1, viewModel.TitleBarToggles.Count);
 

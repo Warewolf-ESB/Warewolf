@@ -178,10 +178,22 @@ namespace Dev2.DynamicServices
         public Guid ParentID { get; set; }
         public bool RunWorkflowAsync { get; set; }
         public bool IsDebugNested { get; set; }
+        public bool IsRemoteInvoke { get { return EnvironmentID != Guid.Empty; } }
+        public bool IsRemoteInvokeOverridden { get; set; }
+
+        bool IDSFDataObject.IsRemoteWorkflow()
+        {
+            if(!IsRemoteInvokeOverridden)
+            {
+                return IsRemoteInvoke;
+            }
+
+            return false;
+        }
+
         public Guid ClientID { get; set; }
 
         public Guid EnvironmentID { get; set; }
-        public bool IsRemoteWorkflow { get { return EnvironmentID != Guid.Empty; } }
 
         public string ParentInstanceID { get; set; }
         public Dictionary<int, List<Guid>> ThreadsToDispose { get; set; }
@@ -325,6 +337,7 @@ namespace Dev2.DynamicServices
             result.RawPayload = RawPayload;
             result.RemoteDebugItems = RemoteDebugItems;
             result.RemoteInvoke = RemoteInvoke;
+            result.IsRemoteInvokeOverridden = result.IsRemoteInvokeOverridden;
             result.RemoteInvokeResultShape = RemoteInvokeResultShape;
             result.RemoteInvokerID = RemoteInvokerID;
             result.RemoteServiceType = RemoteServiceType;

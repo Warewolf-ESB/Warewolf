@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Activities;
+using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using ActivityUnitTests;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -17,7 +19,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-   // ReSharper disable InconsistentNaming
+    // ReSharper disable InconsistentNaming
     [TestClass]
     [ExcludeFromCodeCoverage]
     public class DsfActivityTests : BaseActivityUnitTest
@@ -49,7 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(5, inRes.Count);
         }
-       
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
@@ -126,6 +128,88 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfActivity_OnExecute")]
+        public void DsfActivity_OnExecute_WhenRemoteExecutionInLocalContext_ExpectEnviromentIDRemainsRemoteAndOverrideSetToTrue()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+            var environmentID = Guid.NewGuid();
+            DsfActivity act = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = Guid.Empty
+            };
+            var mockAutorizationService = new Mock<IAuthorizationService>();
+            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
+            act.AuthorizationService = mockAutorizationService.Object;
+
+            //------------Execute Test---------------------------
+            ErrorResultTO errors;
+            TestStartNode = new FlowStep
+            {
+                Action = act
+            };
+
+            TestData = "<DataList></DataList>";
+            CurrentDl = "<DataList></DataList>";
+            User = new Mock<IPrincipal>().Object;
+            Compiler = DataListFactory.CreateDataListCompiler();
+            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            var result = ExecuteProcess(null, true, null, false, true, false, environmentID) as IDSFDataObject;
+
+            // ReSharper disable PossibleNullReferenceException
+            var resultEnvironmentID = result.EnvironmentID;
+            var isRemoteOverridden = result.IsRemoteInvokeOverridden;
+            // ReSharper restore PossibleNullReferenceException
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(environmentID, resultEnvironmentID);
+            Assert.IsTrue(isRemoteOverridden);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfActivity_OnExecute")]
+        public void DsfActivity_OnExecute_WhenLocalExecutionInLocalContext_ExpectEnviromentIDRemainsLocalAndOverrideSetToFalse()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+            var environmentID = Guid.Empty;
+            DsfActivity act = new DsfActivity
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = Guid.Empty
+            };
+            var mockAutorizationService = new Mock<IAuthorizationService>();
+            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
+            act.AuthorizationService = mockAutorizationService.Object;
+
+            //------------Execute Test---------------------------
+            ErrorResultTO errors;
+            TestStartNode = new FlowStep
+            {
+                Action = act
+            };
+
+            TestData = "<DataList></DataList>";
+            CurrentDl = "<DataList></DataList>";
+            User = new Mock<IPrincipal>().Object;
+            Compiler = DataListFactory.CreateDataListCompiler();
+            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            var result = ExecuteProcess(null, true, null, false, true, false, environmentID) as IDSFDataObject;
+
+            // ReSharper disable PossibleNullReferenceException
+            var resultEnvironmentID = result.EnvironmentID;
+            var isRemoteOverridden = result.IsRemoteInvokeOverridden;
+            // ReSharper restore PossibleNullReferenceException
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(environmentID, resultEnvironmentID);
+            Assert.IsFalse(isRemoteOverridden);
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_BeforeExecutionStart")]
         [ExpectedException(typeof(DebugCopyException))]
@@ -141,8 +225,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             var parser = new Mock<IDev2LanguageParser>();
             var inp1 = new Mock<IDev2Definition>();
             var inp2 = new Mock<IDev2Definition>();
-            parser.Setup(a => a.Parse(It.IsAny<string>())).Returns(new List<IDev2Definition> {inp1.Object, inp2.Object});
-           
+            parser.Setup(a => a.Parse(It.IsAny<string>())).Returns(new List<IDev2Definition> { inp1.Object, inp2.Object });
+
             var errors = new ErrorResultTO();
             errors.AddError("bob");
             compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, It.IsAny<string>(), false, out errors));
@@ -154,12 +238,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 act.GetDebugInputs(dl.Object, compiler.Object, parser.Object);
             }
-            catch (Exception err)
+            catch(Exception err)
             {
                 Assert.IsTrue(err.Message.Contains("bob"));
                 throw;
             }
-  
+
         }
 
     }

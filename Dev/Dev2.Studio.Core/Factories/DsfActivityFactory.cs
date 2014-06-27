@@ -1,14 +1,16 @@
-﻿using Dev2.Studio.Core.Activities.Interegators;
+﻿using System;
+using Dev2.Studio.Core.Activities.Interegators;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Factories
+// ReSharper restore CheckNamespace
 {
     public static class DsfActivityFactory
     {
-        public static DsfActivity CreateDsfActivity(IContextualResourceModel resource, DsfActivity activity, bool ifNullCreateNew)
+        public static DsfActivity CreateDsfActivity(IContextualResourceModel resource, DsfActivity activity, bool ifNullCreateNew, IEnvironmentRepository environmentRepository)
         {
             if(activity == null)
             {
@@ -24,11 +26,18 @@ namespace Dev2.Studio.Core.Factories
 
             if(resource != null)
             {
+                var activeEnvironment = environmentRepository.ActiveEnvironment;
                 // PBI 9135 - 2013.07.15 - TWR - Added
                 activity.ResourceID = resource.ID;
                 if(resource.Environment != null)
                 {
-                    activity.EnvironmentID = resource.Environment.ID;
+                    var idToUse = resource.Environment.ID;
+                    // when we have an active remote environment that we are designing against, set it as local to that environment ;)
+                    if(activeEnvironment.ID == resource.Environment.ID && idToUse != Guid.Empty)
+                    {
+                        idToUse = Guid.Empty;
+                    }
+                    activity.EnvironmentID = idToUse;
                 }
 
                 if(resource.ResourceType == ResourceType.WorkflowService)

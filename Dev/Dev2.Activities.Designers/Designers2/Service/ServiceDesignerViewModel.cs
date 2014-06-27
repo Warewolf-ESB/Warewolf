@@ -97,10 +97,24 @@ namespace Dev2.Activities.Designers2.Service
             IsAsyncVisible = ActivityTypeToActionTypeConverter.ConvertToActionType(Type) == DynamicServices.enActionType.Workflow;
             OutputMappingEnabled = !RunWorkflowAsync;
 
-            var environment = environmentRepository.FindSingle(c => c.ID == EnvironmentID);
-            _environment = environment;
-            InitializeValidationService(environment);
-            if(!InitializeResourceModel(environment))
+            // When the active environment is not local, we need to get smart around this piece of logic.
+            // It is very possible we are treating a remote active as local since we cannot logically assign 
+            // an environment id when this is the case as it will fail with source not found since the remote 
+            // does not contain localhost's connections ;)
+            var activeEnvironment = environmentRepository.ActiveEnvironment;
+            if(EnvironmentID == Guid.Empty && !activeEnvironment.IsLocalHostCheck())
+            {
+                _environment = activeEnvironment;
+            }
+            else
+            {
+                var environment = environmentRepository.FindSingle(c => c.ID == EnvironmentID);
+                _environment = environment;
+            }
+
+
+            InitializeValidationService(_environment);
+            if(!InitializeResourceModel(_environment))
             {
                 return;
             }
@@ -108,7 +122,7 @@ namespace Dev2.Activities.Designers2.Service
             {
                 // MUST InitializeMappings() first!
                 InitializeMappings();
-                InitializeLastValidationMemo(environment);
+                InitializeLastValidationMemo(_environment);
                 if(IsItemDragged.Instance.IsDragged)
                 {
                     Expand();
@@ -138,8 +152,6 @@ namespace Dev2.Activities.Designers2.Service
         }
 
         public static readonly DependencyProperty IsFixedProperty = DependencyProperty.Register("IsFixed", typeof(bool), typeof(ServiceDesignerViewModel), new PropertyMetadata(true));
-
-
 
         public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
 

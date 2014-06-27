@@ -398,17 +398,16 @@ namespace Dev2.Activities.Designers.Tests.Sequence
         private static void GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
         {
 
-            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object);
-            repo.IsLoaded = true;
+            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object) { IsLoaded = true };
             // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(repo);
             // ReSharper restore ObjectCreationAsStatement
+            repo.ActiveEnvironment = mockEnvironment.Object;
         }
 
         static ModelItem CreateModelItem()
         {
-            var sequenceActivity = new DsfSequenceActivity();
-            sequenceActivity.DisplayName = "Created Sequence";
+            var sequenceActivity = new DsfSequenceActivity { DisplayName = "Created Sequence" };
             var modelItem = CreateModelItem(sequenceActivity);
             return modelItem;
         }

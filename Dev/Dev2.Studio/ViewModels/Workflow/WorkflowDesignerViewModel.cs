@@ -1,4 +1,27 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Activities;
+using System.Activities.Core.Presentation;
+using System.Activities.Debugger;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Metadata;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.Services;
+using System.Activities.Presentation.View;
+using System.Activities.Statements;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Xaml;
+using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Core;
 using Dev2.AppResources.Converters;
@@ -39,35 +62,11 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
-using Dev2.Studio.Factory;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.Utilities;
 using Dev2.Utils;
 using Dev2.Workspaces;
-using System;
-using System.Activities;
-using System.Activities.Core.Presentation;
-using System.Activities.Debugger;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Metadata;
-using System.Activities.Presentation.Model;
-using System.Activities.Presentation.Services;
-using System.Activities.Presentation.View;
-using System.Activities.Statements;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Xaml;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
@@ -416,7 +415,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         DsfActivity activity = droppedActivity;
                         IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
                             c => c.Category == activity.ServiceName) as IContextualResourceModel;
-                        droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false);
+                        droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, EnvironmentRepository.Instance);
                         modelProperty1.SetValue(droppedActivity);
                     }
                     else
@@ -432,7 +431,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 {
                                     var theResource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
                                     //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true);
+                                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, EnvironmentRepository.Instance);
                                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = navigationItemViewModel.ResourcePath;
                                     ExplorerItemModelToIconConverter converter = new ExplorerItemModelToIconConverter();
                                     var bitmapImage = converter.Convert(new object[] { navigationItemViewModel.ResourceType, false }, null, null, null) as BitmapImage;
@@ -461,7 +460,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 if(resource != null)
                                 {
                                     droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
-                                    droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false);
+                                    droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, EnvironmentRepository.Instance);
                                     modelProperty1.SetValue(droppedActivity);
                                 }
                                 _vm = null;
@@ -1641,16 +1640,16 @@ namespace Dev2.Studio.ViewModels.Workflow
                             if(environmentModel != null)
                             {
                                 var resource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
-                            if(resource != null)
-                            {
-                                //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                                DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true);
+                                if(resource != null)
+                                {
+                                    //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
+                                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance);
                                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
-                                d.IconPath = resource.IconPath;
+                                    d.IconPath = resource.IconPath;
 
-                                modelProperty.SetValue(d);
+                                    modelProperty.SetValue(d);
+                                }
                             }
-                        }
                         }
                         DataObject = null;
                     }
@@ -1666,7 +1665,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 IContextualResourceModel resource = _vm.SelectedResourceModel;
                                 if(resource != null)
                                 {
-                                    DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true);
+                                    DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance);
 
                                     droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
                                     droppedActivity.IconPath = resource.IconPath;

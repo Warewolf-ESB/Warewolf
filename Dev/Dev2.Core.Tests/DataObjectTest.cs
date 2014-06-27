@@ -16,6 +16,75 @@ namespace Dev2.Tests
     [ExcludeFromCodeCoverage]
     public class DataObjectTest
     {
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfDataObject_IsRemoteWorkflow")]
+        public void DsfDataOBject_IsRemoteWorkflow_WhenOverrideNotSet_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
+            dataObject.EnvironmentID = Guid.NewGuid();
+
+            //------------Execute Test---------------------------
+            var result = dataObject.IsRemoteWorkflow();
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
+
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfDataObject_IsRemoteWorkflow")]
+        public void DsfDataOBject_IsRemoteWorkflow_WhenOverrideSet_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
+            dataObject.EnvironmentID = Guid.NewGuid();
+            dataObject.IsRemoteInvokeOverridden = true;
+
+            //------------Execute Test---------------------------
+            var result = dataObject.IsRemoteWorkflow();
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfDataObject_IsRemoteWorkflow")]
+        public void DsfDataOBject_IsRemoteWorkflow_WhenOverrideSetAndEmptyGuid_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
+            dataObject.EnvironmentID = Guid.Empty;
+            dataObject.IsRemoteInvokeOverridden = true;
+
+            //------------Execute Test---------------------------
+            var result = dataObject.IsRemoteWorkflow();
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("DsfDataObject_IsRemoteWorkflow")]
+        public void DsfDataOBject_IsRemoteWorkflow_WhenOverrideNotSetAndEmptyGuid_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
+            dataObject.EnvironmentID = Guid.Empty;
+
+            //------------Execute Test---------------------------
+            var result = dataObject.IsRemoteWorkflow();
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfDataObject_RawPayload")]
@@ -114,7 +183,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(49, properties.Length);
+            Assert.AreEqual(50, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -140,7 +209,8 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.IsDebug, clonedObject.IsDebug);
             Assert.AreEqual(dataObject.IsFromWebServer, clonedObject.IsFromWebServer);
             Assert.AreEqual(dataObject.IsOnDemandSimulation, clonedObject.IsOnDemandSimulation);
-            Assert.AreEqual(dataObject.IsRemoteWorkflow, clonedObject.IsRemoteWorkflow);
+            Assert.AreEqual(dataObject.IsRemoteInvoke, clonedObject.IsRemoteInvoke);
+            Assert.AreEqual(dataObject.IsRemoteInvokeOverridden, clonedObject.IsRemoteInvokeOverridden);
             Assert.AreEqual(dataObject.IsWebpage, clonedObject.IsWebpage);
             Assert.AreEqual(dataObject.NumberOfSteps, clonedObject.NumberOfSteps);
             Assert.AreEqual(dataObject.OriginalInstanceID, clonedObject.OriginalInstanceID);

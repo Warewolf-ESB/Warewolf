@@ -21,14 +21,14 @@ namespace Dev2.Sql.Tests
     {
         const string TestServerUri = "http://localhost:1234/services/Test";
 
-        static XElement WorkflowResultXml;
+        static XElement _workflowResultXml;
 
         #region ClassInitialize
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext context)
         {
-            WorkflowResultXml = XElement.Parse(Resources.GetFromResources("WorkflowResult.xml"));
+            _workflowResultXml = XElement.Parse(Resources.GetFromResources("WorkflowResult.xml"));
         }
 
         #endregion
@@ -76,7 +76,7 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         public void RunWorkflowForXmlImplWithValidParametersExpectedReturnsXml()
         {
-            var expectedXml = WorkflowResultXml.ToString(SaveOptions.DisableFormatting);
+            var expectedXml = _workflowResultXml.ToString(SaveOptions.DisableFormatting);
             var workflows = new WorkflowsMock { ReturnXml = expectedXml };
             var result = workflows.RunWorkflowForXmlImpl(TestServerUri);
             var actualXml = result.ToString(SaveOptions.DisableFormatting);
@@ -107,9 +107,9 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         public void RunWorkflowForSqlImplWithServerUriAndRecordsetNameExpectedReturnsRecordsetAsDataTable()
         {
-            var employees = WorkflowResultXml.Elements("Employees").ToList();
+            var employees = _workflowResultXml.Elements("Employees").ToList();
 
-            var workflows = new WorkflowsMock { ReturnXml = WorkflowResultXml.ToString() };
+            var workflows = new WorkflowsMock { ReturnXml = _workflowResultXml.ToString() };
             var result = workflows.RunWorkflowForSqlImpl(CreateSqlCtxMock(), TestServerUri, "Employees");
             Assert.IsNotNull(result);
             Assert.AreEqual(employees.Count, result.Rows.Count);
@@ -131,12 +131,12 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         public void RunWorkflowForSqlImplWithServerUriAndNullRecordsetNameExpectedReturnsScalarsAsSingleRowInDataTable()
         {
-            var workflows = new WorkflowsMock { ReturnXml = WorkflowResultXml.ToString() };
+            var workflows = new WorkflowsMock { ReturnXml = _workflowResultXml.ToString() };
             var result = workflows.RunWorkflowForSqlImpl(CreateSqlCtxMock(), TestServerUri, null);
             Assert.IsNotNull(result);
 
             var filter = new StringBuilder();
-            foreach(var field in WorkflowResultXml.Elements().Where(e => !e.HasElements))
+            foreach(var field in _workflowResultXml.Elements().Where(e => !e.HasElements))
             {
                 filter.AppendFormat(" AND {0}='{1}'", field.Name.LocalName, field.Value);
             }
@@ -148,11 +148,11 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         public void RunWorkflowForSqlImplWithServerUriAndNullRecordsetNameExpectedReturnsRecordsetsAsRowsInDataTable()
         {
-            var workflows = new WorkflowsMock { ReturnXml = WorkflowResultXml.ToString() };
+            var workflows = new WorkflowsMock { ReturnXml = _workflowResultXml.ToString() };
             var result = workflows.RunWorkflowForSqlImpl(CreateSqlCtxMock(), TestServerUri, null);
             Assert.IsNotNull(result);
 
-            foreach(var node in WorkflowResultXml.Elements().Where(e => e.HasElements))
+            foreach(var node in _workflowResultXml.Elements().Where(e => e.HasElements))
             {
                 var filter = new StringBuilder();
                 foreach(var field in node.Elements())
@@ -168,7 +168,7 @@ namespace Dev2.Sql.Tests
         [TestMethod]
         public void RunWorkflowForSqlImplWithValidArgsExpectedInvokesSqlCtx()
         {
-            var employees = WorkflowResultXml.Elements("Employees").ToList();
+            var employees = _workflowResultXml.Elements("Employees").ToList();
             var sendRowCount = 0;
 
             var ctx = new Mock<ISqlCtx>();
@@ -176,7 +176,7 @@ namespace Dev2.Sql.Tests
             ctx.Setup(c => c.SendEnd()).Verifiable();
             ctx.Setup(c => c.SendRow(It.IsAny<SqlDataRecord>(), It.IsAny<object[]>())).Callback(() => sendRowCount++);
 
-            var workflows = new WorkflowsMock { ReturnXml = WorkflowResultXml.ToString() };
+            var workflows = new WorkflowsMock { ReturnXml = _workflowResultXml.ToString() };
             workflows.RunWorkflowForSqlImpl(ctx.Object, TestServerUri, "Employees");
 
             ctx.VerifyAll();

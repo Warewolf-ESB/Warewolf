@@ -40,7 +40,25 @@ namespace Dev2.Activities.Designers.Tests.Service
     [ExcludeFromCodeCoverage]
     public class ServiceDesignerViewModelTests
     {
+        const string ExpectedName = "TestServiceName";
+
         #region CTOR
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("ServiceDesignerViewModel_Constructor")]
+        public void ServiceDesignerViewModel_Constructor_WhenRemoteActiveEnvironmentAndActivityHasEmptyGuidEnviromentID_ExpectNoValidationErrorsForMissingResource()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var model = GenerateServiceDesignerViewModel(ExpectedName);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, model.DesignValidationErrors.Count);
+            var msg = model.DesignValidationErrors[0];
+            StringAssert.Contains("Service Working Normally", msg.Message);
+            Assert.AreEqual(ErrorType.None, msg.ErrorType);
+        }
 
 
         [TestMethod]
@@ -48,11 +66,8 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_Constructor")]
         public void ServiceDesignerViewModel_Constructor_ErrorMemoDataIsNull_NoNullXmlException()
         {
+
             //------------Setup for test--------------------------
-            const string ExpectedName = "TestServiceName";
-
-            var resourceID = Guid.NewGuid();
-
             var errors = new List<IErrorInfo>
                 {
                     new ErrorInfo
@@ -66,26 +81,16 @@ namespace Dev2.Activities.Designers.Tests.Service
                 };
 
             var rootModel = new Mock<IContextualResourceModel>();
-            rootModel.Setup(m => m.Errors.Count).Returns(0);
+            rootModel.Setup(m => m.Errors.Count).Returns(1);
             rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = ExpectedName };
-
-            var modelItem = CreateModelItem(activity);
-
-            var displayName = modelItem.GetProperty<string>("DisplayName");
-            Assert.IsTrue(displayName.Contains("Dsf"));
-
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
-            new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
-            // ReSharper restore ObjectCreationAsStatement
+            GenerateServiceDesignerViewModel(ExpectedName, rootModel);
 
             //------------Assert Results-------------------------
 
             // No exception it passed ;)
         }
-
 
 
         [TestMethod]
@@ -114,22 +119,13 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         void Verify_Constructor_ImageSource_InitializedCorrectlyForType(string type, string expectedImageSource, string serviceUri = null)
         {
+
             //------------Setup for test--------------------------
-            var rootModel = new Mock<IContextualResourceModel>();
-            rootModel.Setup(m => m.Errors.Count).Returns(0);
-            rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
-
-            var resourceID = Guid.NewGuid();
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = "TestService", Type = type, ServiceUri = serviceUri };
-
-            var modelItem = CreateModelItem(activity);
-
-
             //------------Execute Test---------------------------
-            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
+            var vm = GenerateServiceDesignerViewModel(ExpectedName, null, type, serviceUri);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(expectedImageSource, viewModel.ImageSource);
+            Assert.AreEqual(expectedImageSource, vm.ImageSource);
         }
 
         [TestMethod]
@@ -138,26 +134,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         public void ServiceDesignerViewModel_Constructor_DisplayNameContainsDsf_DisplayNameIsServiceName()
         {
             //------------Setup for test--------------------------
-            const string ExpectedName = "TestServiceName";
-
-            var resourceID = Guid.NewGuid();
-
-            var rootModel = new Mock<IContextualResourceModel>();
-            rootModel.Setup(m => m.Errors.Count).Returns(0);
-            rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
-
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = ExpectedName };
-
-            var modelItem = CreateModelItem(activity);
-
-            var displayName = modelItem.GetProperty<string>("DisplayName");
-            Assert.IsTrue(displayName.Contains("Dsf"));
-
-
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
-            new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
-            // ReSharper restore ObjectCreationAsStatement
+            var model = GenerateServiceDesignerViewModel(ExpectedName);
+            var modelItem = model.ModelItem;
 
             //------------Assert Results-------------------------
             var actual = modelItem.GetProperty<string>("DisplayName");
@@ -171,26 +150,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         public void ServiceDesignerViewModel_Constructor_DisplayNameDoesNotContainDsf_DisplayNameIsNotChanged()
         {
             //------------Setup for test--------------------------
-            const string ExpectedName = "TestDisplayName";
-
-            var resourceID = Guid.NewGuid();
-
-            var rootModel = new Mock<IContextualResourceModel>();
-            rootModel.Setup(m => m.Errors.Count).Returns(0);
-            rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
-
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = "TestServiceName", DisplayName = ExpectedName };
-
-            var modelItem = CreateModelItem(activity);
-
-            var displayName = modelItem.GetProperty<string>("DisplayName");
-            Assert.IsFalse(displayName.Contains("Dsf"));
-
-
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
-            new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
-            // ReSharper restore ObjectCreationAsStatement
+            var model = GenerateServiceDesignerViewModel(ExpectedName);
+            var modelItem = model.ModelItem;
 
             //------------Assert Results-------------------------
             var actual = modelItem.GetProperty<string>("DisplayName");
@@ -420,24 +382,19 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Owner("Huggs")]
         public void ServiceDesignerViewModel_Constructor_EnvironmentIDEmpty_ShouldLoadResourceFromRootModelEnvironment()
         {
-            //-------------------------------------------Setup --------------------------------------------------------------------------
-            var instanceID = Guid.NewGuid();
+            //------------Setup for test--------------------------
+            var rootModel = new Mock<IContextualResourceModel>();
+            rootModel.Setup(m => m.Errors.Count).Returns(0);
+            rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
+            //------------Execute Test---------------------------
+            var vm = GenerateServiceDesignerViewModel(ExpectedName, rootModel);
+            var resourceModel = vm.ResourceModel;
 
-            Mock<IResourceRepository> resourceRepository;
-            var rootModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
-            var resourceModel = CreateResourceModel(Guid.NewGuid(), true, null);
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
-            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, Guid.Empty, null);
-            var envRepository = new Mock<IEnvironmentRepository>();
-            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(rootModel.Object.Environment);
-
-            //------------------------------------------Execute ---------------------------------------------------------------------------------------
-            var vm = new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
             //-----------------------------------------Assertions -----------------------------------------------------------------------------------------
             Assert.IsFalse(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
             Assert.AreEqual(0, vm.LastValidationMemo.Errors.Count, "Constructor has no errors.");
             Assert.IsNotNull(vm.ResourceModel);
-            Assert.AreEqual(resourceModel.Object, vm.ResourceModel);
+            Assert.AreEqual(rootModel.Object, resourceModel);
         }
 
         [TestMethod]
@@ -445,23 +402,19 @@ namespace Dev2.Activities.Designers.Tests.Service
         [Owner("Huggs")]
         public void ServiceDesignerViewModel_Constructor_EnvironmentID_ShouldLoadResourceFromResourceModelEnvironment()
         {
-            //-------------------------------------------Setup --------------------------------------------------------------------------
-            var instanceID = Guid.NewGuid();
-            // SetupMefStuff();
-            Mock<IResourceRepository> resourceRepository;
-            var rootModel = CreateResourceModel(Guid.NewGuid(), true, null);
-            var resourceModel = CreateResourceModel(Guid.NewGuid(), out resourceRepository, null);
-            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
-            var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.ID, null);
-            var envRepository = new Mock<IEnvironmentRepository>();
-            envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
-            //------------------------------------------Execute ---------------------------------------------------------------------------------------
-            var vm = new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //------------Setup for test--------------------------
+            var rootModel = new Mock<IContextualResourceModel>();
+            rootModel.Setup(m => m.Errors.Count).Returns(0);
+            rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
+            //------------Execute Test---------------------------
+            var vm = GenerateServiceDesignerViewModel(ExpectedName, rootModel);
+            var resourceModel = vm.ResourceModel;
+
             //-----------------------------------------Assertions -----------------------------------------------------------------------------------------
             Assert.IsFalse(vm.IsDeleted, "Constructor did not set IsDeleted to true when the resource model has any errors where the FixType is Delete.");
             Assert.AreEqual(0, vm.LastValidationMemo.Errors.Count, "Constructor has no errors.");
             Assert.IsNotNull(vm.ResourceModel);
-            Assert.AreEqual(resourceModel.Object, vm.ResourceModel);
+            Assert.AreEqual(rootModel.Object, resourceModel);
         }
 
         [TestMethod]
@@ -626,6 +579,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
             environment.Setup(a => a.HasLoadedResources).Returns(true);
+
             resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
             //------------Assert Preconditions--------------------
@@ -680,10 +634,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         public void ServiceDesignerViewModel_FixErrorsCommand_ErrorMemoDataIsNull_NoNullXmlException()
         {
             //------------Setup for test--------------------------
-            const string ExpectedName = "TestServiceName";
-
-            var resourceID = Guid.NewGuid();
-
+            var rootModel = new Mock<IContextualResourceModel>();
             var errors = new List<IErrorInfo>
                 {
                     new ErrorInfo
@@ -696,20 +647,12 @@ namespace Dev2.Activities.Designers.Tests.Service
                         }
                 };
 
-            var rootModel = new Mock<IContextualResourceModel>();
             rootModel.Setup(m => m.Errors.Count).Returns(0);
             rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = ExpectedName };
-
-            var modelItem = CreateModelItem(activity);
-
-            var displayName = modelItem.GetProperty<string>("DisplayName");
-            Assert.IsTrue(displayName.Contains("Dsf"));
-
             //------------Execute Test---------------------------
-            var model = new ServiceDesignerViewModel(modelItem, rootModel.Object, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object);
-            model.FixErrorsCommand.Execute(null);
+            var vm = GenerateServiceDesignerViewModel(ExpectedName, rootModel);
+            vm.FixErrorsCommand.Execute(null);
 
             //------------Assert Results-------------------------
 
@@ -1176,6 +1119,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
 
@@ -1221,6 +1165,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.ID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
+            environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
 
             var errors = new ObservableReadOnlyList<IErrorInfo>();
 
@@ -1246,6 +1191,8 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
+
 
             var activity = new DsfActivity
                 {
@@ -1271,7 +1218,6 @@ namespace Dev2.Activities.Designers.Tests.Service
         }
 
 
-
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServiceDesignerViewModel_UpdateMappings")]
@@ -1291,6 +1237,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.ID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
+            environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
 
             var errors = new ObservableReadOnlyList<IErrorInfo>();
 
@@ -1322,6 +1269,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             var activity = new DsfActivity
             {
@@ -1360,12 +1308,12 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var environmentID = Guid.NewGuid();
 
-
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.Connection).Returns(connection.Object);
             environment.Setup(e => e.ID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
+            environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
 
             var errors = new ObservableReadOnlyList<IErrorInfo>();
 
@@ -1397,6 +1345,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             var activity = new DsfActivity
             {
@@ -1458,6 +1407,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.ID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
+            environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
 
             var errors = new ObservableReadOnlyList<IErrorInfo>();
 
@@ -1489,6 +1439,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             var activity = new DsfActivity
             {
@@ -1551,6 +1502,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.ID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
+            environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
 
             var errors = new ObservableReadOnlyList<IErrorInfo>();
 
@@ -1582,6 +1534,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             var activity = new DsfActivity
             {
@@ -1642,6 +1595,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.ID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
+            environment.Setup(model => model.IsLocalHostCheck()).Returns(false);
 
             var errors = new ObservableReadOnlyList<IErrorInfo>();
 
@@ -1673,6 +1627,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             var activity = new DsfActivity
             {
@@ -1726,6 +1681,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.ID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(model => model.IsLocalHost).Returns(false);
+            environment.Setup(e => e.IsLocalHostCheck()).Returns(false);
 
             var errors = new ObservableReadOnlyList<IErrorInfo>();
 
@@ -1755,6 +1711,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             var activity = new DsfActivity
             {
@@ -1831,6 +1788,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
 
@@ -1853,6 +1811,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesingerViewModel_RunWorkflowAsync")]
         public void ServiceDesingerViewModel_RunWorkflowAsync_Constructor_False()
         {
+
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
 
@@ -1867,6 +1826,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
 
@@ -1897,6 +1857,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
 
@@ -1907,7 +1868,6 @@ namespace Dev2.Activities.Designers.Tests.Service
             Assert.IsTrue(viewModel.RunWorkflowAsync);
             Assert.IsFalse(viewModel.OutputMappingEnabled);
         }
-
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -1929,6 +1889,8 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
+
             var resourceType = resourceModel.Object.ServerResourceType;
             var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, Type = new InArgument<string>(resourceType) };
 
@@ -1959,6 +1921,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             var resourceType = resourceModel.Object.ResourceType.ToString();
             var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, Type = new InArgument<string>(resourceType) };
@@ -2048,6 +2011,8 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.ID).Returns(environmentID);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(e => e.HasLoadedResources).Returns(true);
+            environment.Setup(e => e.IsLocalHost).Returns(true);
+            environment.Setup(e => e.IsLocalHostCheck()).Returns(true);
             var errors = new ObservableReadOnlyList<IErrorInfo>();
             if(resourceErrors != null)
             {
@@ -2095,6 +2060,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var modelItem = CreateModelItem(instanceID, resourceModel.Object.ID, resourceModel.Object.Environment.ID, null);
 
             var envRepository = new Mock<IEnvironmentRepository>();
+            envRepository.Setup(e => e.ActiveEnvironment).Returns(resourceModel.Object.Environment);
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
             var worker = new Mock<IAsyncWorker>().Object;
             return new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker);
@@ -2131,6 +2097,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
             var worker = new Mock<IAsyncWorker>().Object;
             return new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, envRepository.Object, eventPublisher, worker);
         }
@@ -2147,6 +2114,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(resourceModel.Object.Environment);
+            envRepository.Setup(r => r.ActiveEnvironment).Returns(resourceModel.Object.Environment);
 
             return new ServiceDesignerViewModel(modelItem.Object, rootModel.Object, envRepository.Object, eventPublisher);
         }
@@ -2189,6 +2157,60 @@ namespace Dev2.Activities.Designers.Tests.Service
         static ModelItem CreateModelItem(DsfActivity activity)
         {
             return ModelItemUtils.CreateModelItem(activity);
+        }
+
+        static ServiceDesignerViewModel GenerateServiceDesignerViewModel(string name, Mock<IContextualResourceModel> myModel = null, string type = null, string serviceURI = null)
+        {
+
+            var resourceID = Guid.NewGuid();
+            var rootModel = myModel;
+
+            if(myModel == null)
+            {
+                rootModel = new Mock<IContextualResourceModel>();
+                rootModel.Setup(m => m.Errors.Count).Returns(0);
+                rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
+            }
+
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = name };
+
+            if(type != null)
+            {
+                activity.Type = type;
+            }
+
+            if(serviceURI != null)
+            {
+                activity.ServiceUri = serviceURI;
+            }
+
+            var modelItem = CreateModelItem(activity);
+
+            // setup the resource repository
+            var resourceRepository = new Mock<IResourceRepository>();
+
+            resourceRepository.Setup(r => r.IsLoaded).Returns(true);
+            resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(rootModel.Object);
+
+            // setup active environment
+            var activeEnvironment = new Mock<IEnvironmentModel>();
+            activeEnvironment.Setup(a => a.IsLocalHostCheck()).Returns(false);
+            activeEnvironment.Setup(a => a.IsLocalHost).Returns(false);
+            activeEnvironment.Setup(a => a.HasLoadedResources).Returns(true);
+            activeEnvironment.Setup(a => a.IsConnected).Returns(true);
+            activeEnvironment.Setup(a => a.ResourceRepository).Returns(resourceRepository.Object);
+
+            // setup the rootModel to return the insane levels of nested junk
+            rootModel.Setup(r => r.Environment).Returns(activeEnvironment.Object);
+
+            // setup the environment repository
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentRepository.Setup(e => e.ActiveEnvironment).Returns(activeEnvironment.Object);
+
+            // ReSharper disable ObjectCreationAsStatement
+            var model = new ServiceDesignerViewModel(modelItem, rootModel.Object, environmentRepository.Object, new Mock<IEventAggregator>().Object);
+            // ReSharper restore ObjectCreationAsStatement
+            return model;
         }
 
     }

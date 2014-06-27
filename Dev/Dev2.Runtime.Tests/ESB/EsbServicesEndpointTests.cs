@@ -12,6 +12,65 @@ namespace Dev2.Tests.Runtime.ESB
     public class EsbServicesEndpointTests
     {
         [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("EsbServicesEndpoint_ExecuteSubRequest")]
+        public void EsbServicesEndpoint_ExecuteSubRequest_IsRemoteWorkflowWhenRemoteExecutionInLocalContext_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
+            dataObject.EnvironmentID = Guid.NewGuid();
+            dataObject.IsRemoteInvokeOverridden = true;
+
+            bool isLocalInvoke = false;
+
+            var invoker = new Mock<IEsbServiceInvoker>();
+            invoker.Setup(i => i.GenerateInvokeContainer(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<Guid>())).Callback(
+                (IDSFDataObject pDataObject, string pServiceName, bool pIsLocal, Guid pMasterDataListID) =>
+                {
+                    isLocalInvoke = pIsLocal;
+                });
+
+            var endpoint = new EsbServicesEndpointMock(invoker.Object);
+            ErrorResultTO errors;
+
+            //------------Execute Test---------------------------
+            endpoint.ExecuteSubRequest(dataObject, It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isLocalInvoke);
+
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        [TestCategory("EsbServicesEndpoint_ExecuteSubRequest")]
+        public void EsbServicesEndpoint_ExecuteSubRequest_IsRemoteWorkflowWhenRemoteExecutionInRemoteContext_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
+            dataObject.EnvironmentID = Guid.NewGuid();
+
+            bool isLocalInvoke = false;
+
+            var invoker = new Mock<IEsbServiceInvoker>();
+            invoker.Setup(i => i.GenerateInvokeContainer(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<Guid>())).Callback(
+                (IDSFDataObject pDataObject, string pServiceName, bool pIsLocal, Guid pMasterDataListID) =>
+                {
+                    isLocalInvoke = pIsLocal;
+                });
+
+            var endpoint = new EsbServicesEndpointMock(invoker.Object);
+            ErrorResultTO errors;
+
+            //------------Execute Test---------------------------
+            endpoint.ExecuteSubRequest(dataObject, It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isLocalInvoke);
+
+        }
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("EsbServicesEndpoint_ExecuteSubRequest")]
         public void EsbServicesEndpoint_ExecuteSubRequest_IsRemoteWorkflow_InvokesGenerateInvokeContainerCorrectly()
@@ -27,10 +86,10 @@ namespace Dev2.Tests.Runtime.ESB
             //------------Setup for test--------------------------
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(d => d.RemoteInvokerID).Returns(remoteInvokerID);
-            dataObject.Setup(d => d.IsRemoteWorkflow).Returns(isRemoteWorkflow);
+            dataObject.Setup(d => d.IsRemoteWorkflow()).Returns(isRemoteWorkflow);
             dataObject.Setup(d => d.ServiceName).Returns("xxxx");
 
-            var isLocalInvoke = !expectedIsLocal; 
+            var isLocalInvoke = !expectedIsLocal;
 
             var invoker = new Mock<IEsbServiceInvoker>();
             invoker.Setup(i => i.GenerateInvokeContainer(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<Guid>())).Callback(
@@ -48,7 +107,7 @@ namespace Dev2.Tests.Runtime.ESB
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedIsLocal, isLocalInvoke);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("EsbServicesEndpoint_ShapeForSubRequest")]
@@ -63,7 +122,7 @@ namespace Dev2.Tests.Runtime.ESB
             var esb = new EsbServicesEndpoint();
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(d => d.RemoteInvokerID).Returns(Guid.NewGuid().ToString());
-            dataObject.Setup(d => d.IsRemoteWorkflow).Returns(true);
+            dataObject.Setup(d => d.IsRemoteWorkflow()).Returns(true);
             dataObject.Setup(d => d.RemoteServiceType).Returns(serviceType);
             dataObject.Setup(d => d.ServiceName).Returns("xxxx");
             ErrorResultTO error;
@@ -84,7 +143,7 @@ namespace Dev2.Tests.Runtime.ESB
             var esb = new EsbServicesEndpoint();
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(d => d.RemoteInvokerID).Returns(Guid.NewGuid().ToString());
-            dataObject.Setup(d => d.IsRemoteWorkflow).Returns(true);
+            dataObject.Setup(d => d.IsRemoteWorkflow()).Returns(true);
             dataObject.Setup(d => d.RemoteServiceType).Returns("Workflow");
             dataObject.Setup(d => d.ServiceName).Returns("xxxx");
             ErrorResultTO error;
