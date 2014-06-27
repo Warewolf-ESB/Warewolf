@@ -5,6 +5,7 @@ using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 
 // ReSharper disable CheckNamespace
@@ -48,5 +49,6 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsLocalHost { get; }
 
         Action<IExplorerItem> ItemAddedMessageAction { get; set; }
+        IAsyncWorker AsyncWorker { get; }
     }
 }

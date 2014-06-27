@@ -32,20 +32,46 @@ namespace Dev2.AppResources.Repositories
             ExplorerItemModels = new ObservableCollection<ExplorerItemModel>();
             _currentDispatcher = Dispatcher.CurrentDispatcher;
             _invoke = _currentDispatcher.Invoke;
-
         }
 
         internal StudioResourceRepository(IExplorerItem explorerItem, Guid environmentId, Action<Action, DispatcherPriority> invoke)
         {
             ExplorerItemModels = new ObservableCollection<ExplorerItemModel>();
             _invoke = invoke;
+
+
             if(explorerItem != null)
             {
-                var explorerItems = MapData(explorerItem, GetEnvironmentRepository());
+                var environmentRepository = GetEnvironmentRepository();
+                var explorerItems = MapData(explorerItem, environmentRepository);
                 LoadItemsToTree(environmentId, explorerItems);
             }
-
             Instance = this;
+        }
+
+        void EnvironmentRepositoryOnItemEdited(object sender, EnvironmentEditedArgs environmentEditedArgs)
+        {
+            var environmentModel = environmentEditedArgs.Environment;
+            if(environmentModel != null && environmentEditedArgs.IsConnected)
+            {
+                var environmentId = environmentModel.ID;
+                var itemModel = ExplorerItemModels.FirstOrDefault(model => model.EnvironmentId == environmentId && model.ResourceType == ResourceType.Server);
+                if(itemModel != null)
+                {
+                    itemModel.IsRefreshing = true;
+                }
+                if(environmentModel.Connection != null)
+                {
+                    if(environmentModel.Connection.AsyncWorker != null)
+                    {
+                        Load(environmentId, environmentModel.Connection.AsyncWorker);
+                    }
+                }
+                if(itemModel != null)
+                {
+                    itemModel.IsRefreshing = false;
+                }
+            }
         }
 
         //This is for testing only need better way of putting this together
@@ -65,6 +91,7 @@ namespace Dev2.AppResources.Repositories
         #region Public Functions
         public Func<IEnvironmentRepository> GetEnvironmentRepository = () => EnvironmentRepository.Instance;
 
+
         public Func<Guid> GetCurrentEnvironment = () => EnvironmentRepository.Instance.ActiveEnvironment.ID;
 
         public Func<Guid, IExplorerResourceRepository> GetExplorerProxy = environmentId =>
@@ -75,6 +102,7 @@ namespace Dev2.AppResources.Repositories
             return new ServerExplorerClientProxy(connection);
         };
         readonly object _syncRoot = new object();
+        bool _isRegistered;
 
         #endregion
 
@@ -89,6 +117,11 @@ namespace Dev2.AppResources.Repositories
                 throw new ArgumentNullException("asyncWorker");
             }
             var environmentRepository = GetEnvironmentRepository();
+            if(!_isRegistered)
+            {
+                environmentRepository.ItemEdited += EnvironmentRepositoryOnItemEdited;
+                _isRegistered = true;
+            }
             // ReSharper disable ImplicitlyCapturedClosure
             IEnvironmentModel environmentModel = environmentRepository.FindSingle(c => c.ID == environmentId);
             // ReSharper restore ImplicitlyCapturedClosure
@@ -519,7 +552,7 @@ namespace Dev2.AppResources.Repositories
             return MapData(explorerItem, GetEnvironmentRepository());
         }
 
-        private static ExplorerItemModel MapData(IExplorerItem item, IEnvironmentRepository environmentRepository)
+        private ExplorerItemModel MapData(IExplorerItem item, IEnvironmentRepository environmentRepository)
         {
             if(item == null)
             {

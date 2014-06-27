@@ -213,7 +213,7 @@ namespace Dev2.UI
 
         void SelectionHasChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(ViewModel != null)
+            if(ViewModel != null && e.AddedItems.Count > 0)
             {
                 IEnvironmentModel environmentModel = e.AddedItems[0] as IEnvironmentModel;
                 if(environmentModel != null)

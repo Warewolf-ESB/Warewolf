@@ -97,6 +97,7 @@ namespace Dev2.Studio.Core
         #endregion
 
         public event EventHandler ItemAdded;
+        public event EventHandler<EnvironmentEditedArgs> ItemEdited;
 
         public IEnvironmentModel Source { get; private set; }
         public IEnvironmentModel ActiveEnvironment { get; set; }
@@ -318,6 +319,14 @@ namespace Dev2.Studio.Core
             }
         }
 
+        void RaiseItemEdited(IEnvironmentModel environment, bool isConnected)
+        {
+            if(ItemEdited != null)
+            {
+                ItemEdited(this, new EnvironmentEditedArgs(environment, isConnected));
+            }
+        }
+
         #endregion
 
         #region LoadInternal
@@ -364,8 +373,11 @@ namespace Dev2.Studio.Core
             }
             else
             {
+                var environmentModel = Environments[index];
+                var isConnected = environmentModel.IsConnected;
                 Environments.RemoveAt(index);
                 Environments.Add(environment);
+                RaiseItemEdited(environment, isConnected);
             }
             RaiseItemAdded();
         }
@@ -634,5 +646,17 @@ namespace Dev2.Studio.Core
         }
 
         #endregion
+    }
+
+    public class EnvironmentEditedArgs : EventArgs
+    {
+        public IEnvironmentModel Environment { get; set; }
+        public bool IsConnected { get; set; }
+
+        public EnvironmentEditedArgs(IEnvironmentModel environment, bool isConnected)
+        {
+            Environment = environment;
+            IsConnected = isConnected;
+        }
     }
 }

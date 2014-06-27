@@ -2,14 +2,14 @@
 using System;
 using System.Collections.Generic;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
 {
     public interface IEnvironmentRepository : IFrameworkRepository<IEnvironmentModel>
     {
         IEnvironmentModel Source { get; }
         IEnvironmentModel ActiveEnvironment { get; set; }
-
+        event EventHandler<EnvironmentEditedArgs> ItemEdited;
         bool IsLoaded { get; set; }
 
         void Clear();
@@ -25,6 +25,6 @@ namespace Dev2.Studio.Core.Interfaces
         void Remove(Guid id);
 
         IEnvironmentModel Get(Guid id);
-       
+
     }
 }

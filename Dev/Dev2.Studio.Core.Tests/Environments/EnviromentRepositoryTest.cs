@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Composition;
+using Dev2.Core.Tests.Utils;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Providers.Events;
@@ -10,6 +11,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -45,6 +47,7 @@ namespace Dev2.Core.Tests.Environments
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
+            AppSettings.LocalHost = "http://localhost:3142";
             SetupMef();
         }
 
@@ -57,7 +60,6 @@ namespace Dev2.Core.Tests.Environments
             ImportService.CurrentContext = importServiceContext;
             ImportService.Initialize(new List<ComposablePartCatalog>());
             ImportService.AddExportedValueToContainer(eventAggregator.Object);
-
             EnviromentRepositoryImportServiceContext = importServiceContext;
         }
 
@@ -239,8 +241,7 @@ namespace Dev2.Core.Tests.Environments
             var e1 = new Mock<IEnvironmentModel>();
             var e2 = new Mock<IEnvironmentModel>();
 
-            var repo = new TestLoadEnvironmentRespository(source.Object, e1.Object, e2.Object);
-            repo.IsLoaded = true;
+            var repo = new TestLoadEnvironmentRespository(source.Object, e1.Object, e2.Object) { IsLoaded = true };
             Assert.IsTrue(repo.IsLoaded);
             repo.ForceLoad();
             Assert.IsFalse(repo.IsLoaded);
@@ -374,6 +375,124 @@ namespace Dev2.Core.Tests.Environments
             repo.Save(e1);
 
             Assert.AreEqual(startCount, repo.All().Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentRepository_Save")]
+        public void EnvironmentRepository_Save_ExistingEnvironment_RaisesItemEditedEvent()
+        {
+            //------------Setup for test--------------------------
+            var c1 = CreateMockConnection();
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, false);
+            var source = new Mock<IEnvironmentModel>();
+            IEnvironmentModel _editedEnvironment = null;
+            var repo = new TestEnvironmentRespository(source.Object, e1);
+            repo.ItemEdited += (sender, args) =>
+            {
+                _editedEnvironment = args.Environment;
+            };
+            e1.Name = "New Name";
+            //------------Execute Test---------------------------
+            repo.Save(e1);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(_editedEnvironment);
+            Assert.AreEqual("New Name", _editedEnvironment.Name);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentRepository_Save")]
+        public void EnvironmentRepository_Save_NotExistingEnvironment_DoesNotRaisesItemEditedEvent()
+        {
+            //------------Setup for test--------------------------
+            var c1 = CreateMockConnection();
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, false);
+            var source = new Mock<IEnvironmentModel>();
+            IEnvironmentModel _editedEnvironment = null;
+            var repo = new TestEnvironmentRespository(source.Object);
+            repo.ItemEdited += (sender, args) =>
+            {
+                _editedEnvironment = args.Environment;
+            };
+            e1.Name = "New Name";
+            //------------Execute Test---------------------------
+            repo.Save(e1);
+            //------------Assert Results-------------------------
+            Assert.IsNull(_editedEnvironment);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentRepository_Save")]
+        public void EnvironmentRepository_Save_RaisesItemAddedEvent()
+        {
+            //------------Setup for test--------------------------
+            var c1 = CreateMockConnection();
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, false);
+            var source = new Mock<IEnvironmentModel>();
+            bool _eventFired = false;
+            var repo = new TestEnvironmentRespository(source.Object);
+            repo.ItemAdded += (sender, args) =>
+            {
+                _eventFired = true;
+            };
+            e1.Name = "New Name";
+            //------------Execute Test---------------------------
+            repo.Save(e1);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_eventFired);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentRepository_Fetch")]
+        public void EnvironmentRepository_Fetch_ReturnsFoundEnvironment()
+        {
+            //------------Setup for test--------------------------
+            var c1 = CreateMockConnection();
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, false);
+            var source = new Mock<IEnvironmentModel>();
+            var repo = new TestEnvironmentRespository(source.Object);
+            repo.Save(e1);
+            //------------Execute Test---------------------------
+            var environmentModel = repo.Fetch(source.Object);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(environmentModel);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentRepository_Fetch")]
+        public void EnvironmentRepository_Fetch_Null_ReturnsNull()
+        {
+            //------------Setup for test--------------------------
+            var c1 = CreateMockConnection();
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, false);
+            var source = new Mock<IEnvironmentModel>();
+            var repo = new TestEnvironmentRespository(source.Object);
+            repo.Save(e1);
+            //------------Execute Test---------------------------
+            var environmentModel = repo.Fetch(null);
+            //------------Assert Results-------------------------
+            Assert.IsNull(environmentModel);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentRepository_Fetch")]
+        public void EnvironmentRepository_Fetch_NotFound_ReturnsEnvironment()
+        {
+            //------------Setup for test--------------------------
+            var c1 = CreateMockConnection();
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, false);
+            var source = new Mock<IEnvironmentModel>();
+            var repo = new TestEnvironmentRespository(source.Object);
+            repo.Save(e1);
+            //------------Execute Test---------------------------
+            var environmentModel = repo.Fetch(new Mock<IEnvironmentModel>().Object);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(environmentModel);
         }
 
 
@@ -699,6 +818,45 @@ namespace Dev2.Core.Tests.Environments
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("EnvironmentRepository_Save")]
+        public void EnvironmentRepository_All_ReturnsListOfServers()
+        {
+            var env = new Mock<IEnvironmentModel>();
+            var con = new Mock<IEnvironmentConnection>();
+            var repo = new Mock<IResourceRepository>();
+
+            var id = Guid.NewGuid();
+
+            Connection theCon = new Connection
+            {
+                Address = "http://127.0.0.1:1234",
+                ResourceName = "TheConnection",
+                ResourceID = id,
+                AuthenticationType = AuthenticationType.User,
+                UserName = "Hagashen",
+                Password = "password",
+                WebServerPort = 1234
+            };
+
+            List<Connection> cons = new List<Connection> { theCon };
+            repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IEnvironmentModel>(), enSourceType.Dev2Server)).Returns(cons);
+
+            con.Setup(c => c.IsConnected).Returns(true);
+            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
+
+            env.Setup(e => e.IsConnected).Returns(true);
+            env.Setup(e => e.Connection).Returns(con.Object);
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            EnvironmentRepository.Instance.Save(env.Object);
+            //-----------------Execute Process---------------------
+            var result = EnvironmentRepository.Instance.All().ToList();
+            //-----------------Assert------------------------------
+            Assert.IsTrue(result.Count > 0);
+        }
+
+        [TestMethod]
         public void EnvironmentRepositoryLookupEnvironmentsWithAuthenticationTypeExpectedReturnsListOfServers()
         {
             var env = new Mock<IEnvironmentModel>();
@@ -785,9 +943,9 @@ namespace Dev2.Core.Tests.Environments
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
-            ResourceModel rm = new ResourceModel(env.Object);
-
-            rm.WorkflowXaml = new StringBuilder(@"<Source ID=""7e9eead4-d876-4bc1-a71d-66c76255795f"" Name=""bld"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://TST-CI-REMOTE:3142/dsf;WebServerPort=3142"" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
+            ResourceModel rm = new ResourceModel(env.Object)
+            {
+                WorkflowXaml = new StringBuilder(@"<Source ID=""7e9eead4-d876-4bc1-a71d-66c76255795f"" Name=""bld"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://TST-CI-REMOTE:3142/dsf;WebServerPort=3142"" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
 	<TypeOf>Dev2Server</TypeOf>
 	<DisplayName>bld</DisplayName>
 	<Category/>
@@ -797,7 +955,8 @@ namespace Dev2.Core.Tests.Environments
 	<UnitTestTargetWorkflowService />
 	<HelpLink />
 	<DataList />
-</Source>");
+</Source>")
+            };
 
             List<IResourceModel> models = new List<IResourceModel> { rm };
 
@@ -823,9 +982,9 @@ namespace Dev2.Core.Tests.Environments
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
-            ResourceModel rm = new ResourceModel(env.Object);
-
-            rm.WorkflowXaml = new StringBuilder(@"<Source ID=""7e9eead4-d876-4bc1-a71d-66c76255795f"" Name=""bld"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://TST-CI-REMOTE:3142/dsf;WebServerPort=3142;AuthenticationType=User;UserName=dev2\hagashen.naidu;Password=hahaha"" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
+            ResourceModel rm = new ResourceModel(env.Object)
+            {
+                WorkflowXaml = new StringBuilder(@"<Source ID=""7e9eead4-d876-4bc1-a71d-66c76255795f"" Name=""bld"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://TST-CI-REMOTE:3142/dsf;WebServerPort=3142;AuthenticationType=User;UserName=dev2\hagashen.naidu;Password=hahaha"" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
 	<TypeOf>Dev2Server</TypeOf>
 	<DisplayName>bld</DisplayName>
 	<Category/>
@@ -835,7 +994,8 @@ namespace Dev2.Core.Tests.Environments
 	<UnitTestTargetWorkflowService />
 	<HelpLink />
 	<DataList />
-</Source>");
+</Source>")
+            };
 
             List<IResourceModel> models = new List<IResourceModel> { rm };
 
@@ -885,14 +1045,13 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
             var studiorepo = new Mock<IStudioResourceRepository>();
             //------------Setup for test--------------------------
-            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, repo.Object,studiorepo.Object);
+            var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, repo.Object, studiorepo.Object);
             //------------Execute Test---------------------------
             EnvironmentRepository.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------
             Assert.IsTrue(true);
         }
 
-        // BUG 9634 - 2013.07.16 - TWR - added
         [TestMethod]
         [TestCategory("EnvironmentRepository_LookupEnvironments")]
         [Description("EnvironmentRepository must initialize EnvironmentModels with their catalog resource ID.")]
@@ -1148,6 +1307,8 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            connection.SetupGet(environmentConnection => environmentConnection.AsyncWorker).Returns(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
+            connection.SetupProperty(c => c.DisplayName);
             if(sources != null && sources.Length > 0)
             {
                 connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()))

@@ -33,7 +33,7 @@ namespace Dev2.Network
     {
         Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
-        private readonly IAsyncWorker _asyncWorker;
+        readonly IAsyncWorker _asyncWorker;
         public ServerProxy(Uri serverUri)
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
         {
@@ -273,7 +273,7 @@ namespace Dev2.Network
             else
             {
                 HubConnection.Start();
-                _asyncWorker.Start(() => Thread.Sleep(MillisecondsTimeout), () => callback(HubConnection.State == ConnectionState.Connected
+                AsyncWorker.Start(() => Thread.Sleep(MillisecondsTimeout), () => callback(HubConnection.State == ConnectionState.Connected
                                      ? ConnectResult.Success
                                      : ConnectResult.ConnectFailed));
             }
@@ -373,6 +373,13 @@ namespace Dev2.Network
         /// <code>True</code> unless server returns Unauthorized or Forbidden status.
         /// </summary>
         public bool IsAuthorized { get; private set; }
+        public IAsyncWorker AsyncWorker
+        {
+            get
+            {
+                return _asyncWorker;
+            }
+        }
 
         public event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
         public event EventHandler PermissionsChanged;
