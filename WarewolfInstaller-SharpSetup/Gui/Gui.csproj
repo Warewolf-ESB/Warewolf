@@ -63,7 +63,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Ionic.Zip.Reduced">
-      <HintPath>C:\Development\WarewolfInstaller-SharpSetup\Debug\Ionic.Zip.Reduced.dll</HintPath>
+      <HintPath>..\..\..\Dev\Binaries\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Deployment.Compression, Version=3.0.0.0, Culture=neutral, PublicKeyToken=ce35f76fcda82bad, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -166,6 +166,7 @@
     <Compile Include="Utility\RegistryKeyExtensionMethods.cs" />
     <Compile Include="Utility\ResourceExtractor.cs" />
     <Compile Include="Utility\ScheduledTaskDeleteOp.cs" />
+    <Compile Include="Utility\UpdateExampleResources.cs" />
     <Compile Include="Utility\WarewolfCommand.cs" />
     <Compile Include="Utility\WarewolfGroupOps.cs" />
     <Compile Include="WelcomeStep.xaml.cs">

@@ -43,6 +43,23 @@ namespace Gui
         {
             SwapConfigs();
             InstallExamples();
+            InstallSamples();
+        }
+
+        void InstallSamples()
+        {
+            UpdateExampleResources resources = new UpdateExampleResources();
+            if (Directory.Exists(Path.Combine(InstallVariables.InstallRoot, "Server", "Services")) || Directory.Exists((Path.Combine(InstallVariables.InstallRoot, "Server", "Sources") )))
+            {
+                resources.SetupSamplesFlat(Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples", "Resources.zip"), Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples"), Path.Combine(InstallVariables.InstallRoot, "Server", "Sources"));
+                resources.SetupSamplesFlat(Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples", "Resources.zip"), Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples"), Path.Combine(InstallVariables.InstallRoot, "Server", "Services"));
+
+            }
+            else
+            {
+                resources.SetupSamples(Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples", "Resources.zip"), Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples"), Path.Combine(InstallVariables.InstallRoot, "Server", "Resources"));
+            }
+            
         }
 
         private void InstallExamples()
@@ -654,7 +671,9 @@ namespace Gui
             Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
 
             // iterate and find matching rule name ;)
+// ReSharper disable LoopCanBeConvertedToQuery
             foreach(INetFwRule rule in firewallPolicy.Rules)
+// ReSharper restore LoopCanBeConvertedToQuery
             {
                 if(rule.Name == ruleName)
                 {
