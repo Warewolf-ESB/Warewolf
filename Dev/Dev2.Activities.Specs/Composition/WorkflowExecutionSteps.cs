@@ -119,7 +119,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 remoteEnvironment.Connect();
                 remoteEnvironment.ForceLoadResources();
-                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == remoteWf, true);
+                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.Category.ToLower() == remoteWf.ToLower(), true);
                 if(remoteResourceModel != null)
                 {
                     var dataMappingViewModel = GetDataMappingViewModel(remoteResourceModel, mappings);
@@ -130,13 +130,13 @@ namespace Dev2.Activities.Specs.Composition
                     var activity = new DsfWorkflowActivity();
                     remoteResourceModel.Outputs = outputMapping;
                     remoteResourceModel.Inputs = inputMapping;
-                    var remoteServerID = remoteEnvironment.ID;
-                    activity.ServiceServer = remoteServerID;
-                    activity.EnvironmentID = remoteServerID;
+                    var remoteServerId = remoteEnvironment.ID;
+                    activity.ServiceServer = remoteServerId;
+                    activity.EnvironmentID = remoteServerId;
                     activity.ServiceUri = remoteEnvironment.Connection.AppServerUri.ToString();
                     activity.ResourceID = remoteResourceModel.ID;
-                    activity.ServiceName = remoteResourceModel.ResourceName;
-                    activity.DisplayName = remoteWf;
+                    activity.ServiceName = remoteResourceModel.Category;
+                    activity.DisplayName = remoteResourceModel.Category;
                     activity.OutputMapping = outputMapping;
                     activity.InputMapping = inputMapping;
                     CommonSteps.AddActivityToActivityList(wf, remoteWf, activity);
@@ -371,7 +371,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("parentWorkflowName", out parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates");
 
-            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase)).ID;
 
             if(parentWorkflowName == workflowName)
             {
@@ -379,7 +379,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             //bool isDataMergeDebug = toolSpecificDebug.Any(t => t.Name == "Data Merge");
@@ -409,7 +409,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates");
-            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase)).ID;
 
             if(parentWorkflowName == workflowName)
             {
@@ -417,7 +417,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
@@ -497,14 +497,11 @@ namespace Dev2.Activities.Specs.Composition
 
 
         [Given(@"""(.*)"" contains an Delete ""(.*)"" as")]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void GivenContainsAnDeleteAs(string parentName, string activityName, Table table)
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
-            var del = new DsfPathDelete();
-            del.InputPath = table.Rows[0][0];
-            del.Result = table.Rows[0][1];
-            del.DisplayName = activityName;
+            var del = new DsfPathDelete { InputPath = table.Rows[0][0], Result = table.Rows[0][1], DisplayName = activityName };
             CommonSteps.AddVariableToVariableList(table.Rows[0][1]);
             CommonSteps.AddActivityToActivityList(parentName, activityName, del);
         }
@@ -516,14 +513,14 @@ namespace Dev2.Activities.Specs.Composition
                 return;
             }
 
-            var debugTO = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
+            var debugTo = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
 
             var clientContext = resourceModel.Environment.Connection;
             if(clientContext != null)
             {
-                var dataList = XElement.Parse(debugTO.XmlData);
-                dataList.Add(new XElement("BDSDebugMode", debugTO.IsDebugMode));
-                dataList.Add(new XElement("DebugSessionID", debugTO.SessionID));
+                var dataList = XElement.Parse(debugTo.XmlData);
+                dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
+                dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
                 WebServer.Send(WebServerMethod.POST, resourceModel, dataList.ToString(), new TestAsyncWorker());
                 _resetEvt.WaitOne();
