@@ -80,17 +80,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)
         {
-            Dev2UnZipOperationTO zipTO =
+            Dev2UnZipOperationTO zipTo =
                        ActivityIOFactory.CreateUnzipTO(ColItr.FetchNextRow(_archPassItr).TheValue,
                                                        Overwrite);
-           return broker.UnZip(scrEndPoint, dstEndPoint, zipTO);
+            return broker.UnZip(scrEndPoint, dstEndPoint, zipTo);
         }
 
         protected override void MoveRemainingIterators()
         {
-// ReSharper disable UnusedVariable
-            var theValue = ColItr.FetchNextRow(_archPassItr).TheValue;
-// ReSharper restore UnusedVariable
+            ColItr.FetchNextRow(_archPassItr);
         }
 
         #region GetForEachInputs/Outputs

@@ -100,7 +100,7 @@ namespace Dev2.Activities.PathOperations
                 AddDebugInputItems(executionId);
             }
 
-            while (ColItr.HasMoreData())
+            while(ColItr.HasMoreData())
             {
                 var hasError = false;
                 IActivityIOPath src = null;
@@ -114,21 +114,22 @@ namespace Dev2.Activities.PathOperations
 
 
                 }
-                catch (IOException ioException)
+                catch(IOException ioException)
                 {
-                    allErrors.AddError("Source: "+ioException.Message);
+                    allErrors.AddError("Source: " + ioException.Message);
                     hasError = true;
                 }
-                try{
+                try
+                {
                     dst = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextRow(outputItr).TheValue,
                                                                                      ColItr.FetchNextRow(desunameItr).TheValue,
                                                                                      ColItr.FetchNextRow(despassItr).TheValue,
                                                                                      true);
 
                 }
-                catch (IOException ioException)
+                catch(IOException ioException)
                 {
-                    allErrors.AddError("Destination:" +ioException.Message);
+                    allErrors.AddError("Destination:" + ioException.Message);
                     hasError = true;
                 }
 
@@ -148,7 +149,7 @@ namespace Dev2.Activities.PathOperations
                     outputs[0].OutputStrings.Add(result);
 
                 }
-                catch (Exception e)
+                catch(Exception e)
                 {
                     allErrors.AddError(e.Message);
                     outputs[0].OutputStrings.Add("Failure");

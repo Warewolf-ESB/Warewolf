@@ -99,22 +99,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)
         {
 
-            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(ColItr.FetchNextRow(_compresItr).TheValue,
+            Dev2ZipOperationTO zipTo = ActivityIOFactory.CreateZipTO(ColItr.FetchNextRow(_compresItr).TheValue,
                                                                          ColItr.FetchNextRow(_archPassItr).TheValue,
                                                                          ColItr.FetchNextRow(_archNameItr).TheValue,
                                                                          Overwrite);
 
-            return broker.Zip(scrEndPoint, dstEndPoint, zipTO);
+            return broker.Zip(scrEndPoint, dstEndPoint, zipTo);
         }
 
         protected override void MoveRemainingIterators()
         {
-// ReSharper disable UnusedVariable
-            string theValue = ColItr.FetchNextRow(_compresItr).TheValue;
-            string value = ColItr.FetchNextRow(_archPassItr).TheValue;
-            string s = ColItr.FetchNextRow(_archNameItr).TheValue;
-            // ReSharper restore UnusedVariable
-
+            ColItr.FetchNextRow(_compresItr);
+            ColItr.FetchNextRow(_archPassItr);
+            ColItr.FetchNextRow(_archNameItr);
         }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)

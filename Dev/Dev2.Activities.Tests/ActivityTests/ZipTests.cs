@@ -28,23 +28,11 @@ namespace ActivityUnitTests.ActivityTests
         static string tempFile;
         const string NewFileName = "ZippedTempFile";
 
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
 
@@ -57,38 +45,38 @@ namespace ActivityUnitTests.ActivityTests
         {
             myTestContext = testContext;
         }
-        
-         //Use ClassCleanup to run code after all tests in a class have run
-         [ClassCleanup]
-         public static void MyClassCleanup()
-         {
-             if(tempFile != null)
-             {
-                 try
-                 {
-                     File.Delete(tempFile);
-                 }
-                 catch(Exception e)
-                 {
-                    if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
-                     {
-                         throw;
-                     }
-                 }
 
-                 try
-                 {
-                     File.Delete(Path.GetTempPath() + NewFileName + ".zip");
-                 }
-                 catch(Exception e)
-                 {
-                     if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
-                     {
-                         throw;
-                     }
-                 }
-             }
-         }
+        //Use ClassCleanup to run code after all tests in a class have run
+        [ClassCleanup]
+        public static void MyClassCleanup()
+        {
+            if(tempFile != null)
+            {
+                try
+                {
+                    File.Delete(tempFile);
+                }
+                catch(Exception e)
+                {
+                    if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
+                    {
+                        throw;
+                    }
+                }
+
+                try
+                {
+                    File.Delete(Path.GetTempPath() + NewFileName + ".zip");
+                }
+                catch(Exception e)
+                {
+                    if(e.GetType() != typeof(FileNotFoundException))// file not found is fine cos we're deleting
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
 
         #endregion
 
@@ -115,7 +103,7 @@ namespace ActivityUnitTests.ActivityTests
         }
 
         #endregion Get Input/Output Tests
-        
+
         #region Blank Output Test
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -153,14 +141,12 @@ namespace ActivityUnitTests.ActivityTests
             Guid randomFileName = Guid.NewGuid();
             fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "Dev2.txt"));
 
-            var zipfileNames = new List<string>();
-            zipfileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName.ToString() + "Dev2Zip.zip"));
 
             foreach(string fileName in fileNames)
             {
-// ReSharper disable LocalizableElement
+                // ReSharper disable LocalizableElement
                 File.WriteAllText(fileName, "TestData");
-// ReSharper restore LocalizableElement
+                // ReSharper restore LocalizableElement
             }
 
             var activityOperationBrokerMock = new ActivityOperationBrokerMock();
@@ -187,6 +173,109 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Username, "destUName");
             Assert.AreEqual(activityOperationBrokerMock.Source.IOPath.Password, "pWord");
             Assert.AreEqual(activityOperationBrokerMock.Source.IOPath.Username, "uName");
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Zip_Execute")]
+        public void Zip_Execute_WhenInputPathNotIsRooted_MovesArchivePasswordItr()
+        {
+            //---------------Setup----------------------------------------------
+            var fileNames = new List<string>();
+            var guid = Guid.NewGuid();
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, guid + "Dev2.txt"));
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            foreach(string fileName in fileNames)
+            {
+                File.Delete(fileName);
+            }
+
+            var activityOperationBrokerMock = new ActivityOperationBrokerMock();
+
+            var act = new DsfZip
+            {
+                InputPath = @"OldFile.txt",
+                OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
+                Result = "[[res(*).a]]",
+                DestinationUsername = "destUName",
+                DestinationPassword = "destPWord",
+                Username = "uName",
+                Password = "pWord",
+                ArchivePassword = "[[pass(*).word]]",
+                CompressionRatio = "[[comp(*).val]]",
+                ArchiveName = "[[arch(*).name]]",
+                GetOperationBroker = () => activityOperationBrokerMock
+            };
+            const string shape = "<ADL><res><a></a></res><pass><word></word></pass><comp><val></val></comp><arch><name></name></arch></ADL>";
+            const string data = "<ADL><pass><word>test</word></pass><pass><word>test2</word></pass><pass><word>test3</word></pass><comp><val>test</val></comp><comp><val>test2</val></comp><comp><val>test3</val></comp><arch><name>test</name></arch><arch><name>test2</name></arch><arch><name>test3</name></arch></ADL>";
+            //-------------------------Execute-----------------------------------------------
+            CheckPathOperationActivityDebugInputOutput(act, shape,
+                                                       data, out inRes, out outRes);
+            //-------------------------Assertions---------------------------------------------
+            Assert.AreEqual(1, outRes.Count);
+            var outputResultList = outRes[0].FetchResultsList();
+            Assert.AreEqual(3, outputResultList.Count);
+            Assert.AreEqual("Failure", outputResultList[0].Value);
+            Assert.AreEqual("[[res(1).a]]", outputResultList[0].Variable);
+            Assert.AreEqual("Failure", outputResultList[1].Value);
+            Assert.AreEqual("[[res(1).a]]", outputResultList[1].Variable);
+            Assert.AreEqual("Failure", outputResultList[2].Value);
+            Assert.AreEqual("[[res(1).a]]", outputResultList[2].Variable);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Zip_Execute")]
+        public void Zip_Execute_WhenOutputPathNotIsRooted_MovesArchivePasswordItr()
+        {
+            //---------------Setup----------------------------------------------
+            var fileNames = new List<string>();
+            var guid = Guid.NewGuid();
+            fileNames.Add(Path.Combine(TestContext.TestRunDirectory, guid + "Dev2.txt"));
+
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+
+            foreach(string fileName in fileNames)
+            {
+                File.Delete(fileName);
+            }
+
+            var activityOperationBrokerMock = new ActivityOperationBrokerMock();
+
+            var act = new DsfZip
+            {
+                InputPath = @"c:\OldFile.txt",
+                OutputPath = "NewName.txt",
+                Result = "[[res(*).a]]",
+                DestinationUsername = "destUName",
+                DestinationPassword = "destPWord",
+                Username = "uName",
+                Password = "pWord",
+                ArchivePassword = "[[pass(*).word]]",
+                CompressionRatio = "[[comp(*).val]]",
+                ArchiveName = "[[arch(*).name]]",
+                GetOperationBroker = () => activityOperationBrokerMock
+            };
+            const string shape = "<ADL><res><a></a></res><pass><word></word></pass><comp><val></val></comp><arch><name></name></arch></ADL>";
+            const string data = "<ADL><pass><word>test</word></pass><pass><word>test2</word></pass><pass><word>test3</word></pass><comp><val>test</val></comp><comp><val>test2</val></comp><comp><val>test3</val></comp><arch><name>test</name></arch><arch><name>test2</name></arch><arch><name>test3</name></arch></ADL>";
+            //-------------------------Execute-----------------------------------------------
+            CheckPathOperationActivityDebugInputOutput(act, shape,
+                                                       data, out inRes, out outRes);
+            //-------------------------Assertions---------------------------------------------
+            Assert.AreEqual(1, outRes.Count);
+            var outputResultList = outRes[0].FetchResultsList();
+            Assert.AreEqual(3, outputResultList.Count);
+            Assert.AreEqual("Failure", outputResultList[0].Value);
+            Assert.AreEqual("[[res(1).a]]", outputResultList[0].Variable);
+            Assert.AreEqual("Failure", outputResultList[1].Value);
+            Assert.AreEqual("[[res(1).a]]", outputResultList[1].Variable);
+            Assert.AreEqual("Failure", outputResultList[2].Value);
+            Assert.AreEqual("[[res(1).a]]", outputResultList[2].Variable);
         }
 
         [TestMethod]
