@@ -107,6 +107,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return broker.Zip(scrEndPoint, dstEndPoint, zipTO);
         }
 
+        protected override void MoveRemainingIterators()
+        {
+// ReSharper disable UnusedVariable
+            string theValue = ColItr.FetchNextRow(_compresItr).TheValue;
+            string value = ColItr.FetchNextRow(_archPassItr).TheValue;
+            string s = ColItr.FetchNextRow(_archNameItr).TheValue;
+            // ReSharper restore UnusedVariable
+
+        }
+
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates, NativeActivityContext context)
         {
             foreach(Tuple<string, string> t in updates)

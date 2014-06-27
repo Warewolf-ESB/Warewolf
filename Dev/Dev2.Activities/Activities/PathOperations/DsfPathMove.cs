@@ -19,5 +19,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(Overwrite);
             return broker.Move(scrEndPoint, dstEndPoint, opTO);
         }
+
+        protected override void MoveRemainingIterators()
+        {
+        }
     }
 }

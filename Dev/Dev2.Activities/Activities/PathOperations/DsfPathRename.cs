@@ -19,5 +19,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var result = broker.Rename(scrEndPoint, dstEndPoint, opTO);
             return result.Replace("Move", "Rename");
         }
+
+        protected override void MoveRemainingIterators()
+        {
+        }
     }
 }

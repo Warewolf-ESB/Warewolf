@@ -167,7 +167,7 @@ namespace Dev2.Integration.Tests.Activities
         [TestMethod]
         public void GetWithNoUserName_InvalidPath_Expected_NoStream()
         {
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString("abc", "", "");
+            IActivityIOPath path = ActivityIOFactory.CreatePathFromString("c:\abc", "", "");
             IActivityIOOperationsEndPoint FileSystemPro = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
             try
             {

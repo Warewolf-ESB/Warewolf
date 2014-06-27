@@ -2,6 +2,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.DataList.Contract;
@@ -99,34 +100,61 @@ namespace Dev2.Activities.PathOperations
                 AddDebugInputItems(executionId);
             }
 
-            while(ColItr.HasMoreData())
+            while (ColItr.HasMoreData())
             {
-                IActivityOperationsBroker broker = GetOperationBroker();
-
+                var hasError = false;
+                IActivityIOPath src = null;
+                IActivityIOPath dst = null;
                 try
                 {
-                    IActivityIOPath src = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextRow(inputItr).TheValue,
+                    src = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextRow(inputItr).TheValue,
                                                                                  ColItr.FetchNextRow(unameItr).TheValue,
                                                                                  ColItr.FetchNextRow(passItr).TheValue,
                                                                                  true);
 
-                    IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextRow(outputItr).TheValue,
+
+                }
+                catch (IOException ioException)
+                {
+                    allErrors.AddError("Source: "+ioException.Message);
+                    hasError = true;
+                }
+                try{
+                    dst = ActivityIOFactory.CreatePathFromString(ColItr.FetchNextRow(outputItr).TheValue,
                                                                                      ColItr.FetchNextRow(desunameItr).TheValue,
                                                                                      ColItr.FetchNextRow(despassItr).TheValue,
                                                                                      true);
 
-                    IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-                    IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-                    var result = ExecuteBroker(broker, scrEndPoint, dstEndPoint);
-                    outputs[0].OutputStrings.Add(result);
                 }
-                catch(Exception e)
+                catch (IOException ioException)
+                {
+                    allErrors.AddError("Destination:" +ioException.Message);
+                    hasError = true;
+                }
+
+                if(hasError)
                 {
                     outputs[0].OutputStrings.Add("Failure");
+                    MoveRemainingIterators();
+                    continue;
+                }
+                IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
+                IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+
+                try
+                {
+                    IActivityOperationsBroker broker = GetOperationBroker();
+                    var result = ExecuteBroker(broker, scrEndPoint, dstEndPoint);
+                    outputs[0].OutputStrings.Add(result);
+
+                }
+                catch (Exception e)
+                {
                     allErrors.AddError(e.Message);
+                    outputs[0].OutputStrings.Add("Failure");
                 }
             }
-
+               
             return outputs;
 
         }
@@ -140,6 +168,7 @@ namespace Dev2.Activities.PathOperations
         }
 
         protected abstract string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint);
+        protected abstract void MoveRemainingIterators();
 
         public Func<IActivityOperationsBroker> GetOperationBroker = () => ActivityIOFactory.CreateOperationsBroker();
 

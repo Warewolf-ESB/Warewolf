@@ -83,8 +83,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Dev2UnZipOperationTO zipTO =
                        ActivityIOFactory.CreateUnzipTO(ColItr.FetchNextRow(_archPassItr).TheValue,
                                                        Overwrite);
+           return broker.UnZip(scrEndPoint, dstEndPoint, zipTO);
+        }
 
-            return broker.UnZip(scrEndPoint, dstEndPoint, zipTO);
+        protected override void MoveRemainingIterators()
+        {
+// ReSharper disable UnusedVariable
+            var theValue = ColItr.FetchNextRow(_archPassItr).TheValue;
+// ReSharper restore UnusedVariable
         }
 
         #region GetForEachInputs/Outputs
