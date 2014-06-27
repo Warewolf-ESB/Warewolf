@@ -26,6 +26,7 @@
             <Directory Id="dirA3C13CC9A90BF0D49E5A0D8F79115F39" Name="PresetExamples" />
             <Directory Id="dir1931D9C5012B41449415D8D0C9710DEB" Name="Webs" />
             <Directory Id="dir1931D9C5012B41449415D8D0C9710DEC" Name="SSL Generation" />
+            <Directory Id="dirAFD5RD2A7A4402A97705789C33D5B003" Name="Resources" />
         </DirectoryRef>
         <!-- Shortcuts -->
         <Component Id="ProgramMenuShortcut" Guid="{3010812e-5a4d-4893-a4e1-0559160e1e3b}" Directory="ProgramMenuDir">
