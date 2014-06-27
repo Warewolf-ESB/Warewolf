@@ -1464,41 +1464,38 @@ Scenario: Workflow with Assign Calculate
 #	        | 1 | [[a]] =  Warewolf | 2               |
 
 #This Test should pass after the bug 11539 is fixed
-#Scenario: Test Mappings for Assign and Calculate Workflow 
-#      Given I have a workflow "TestMappings"
-#	  And "TestMappings" contains an Assign "values1" as
-#      | variable       | value |
-#      | [[rec(1).a]]   | 1     |
-#      | [[rec(1).b]]   | 2     |
-#	  And "TestMappings" contains Calculate "Calculate1" with formula "[[rec(1).a]]+[[rec(1).b]]" into "[[rec(1).c]]"
-#	  And "WorkflowWithAssignBaseConvertandCaseconvert" inputs
-#	  | Inputs |
-#	  |        |
-#	  And "WorkflowWithAssignBaseConvertandCaseconvert" Outputs
-#	  | Outputs |
-#	  | rec().a |
-#	  | rec().b |
-#	  When "TestMappings" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'values1' in WorkFlow 'TestMappings' debug inputs as 
-#	  | # | Variable       | New Value |
-#	  | 1 | [[rec(1).a]] = | 1         |
-#	  | 2 | [[rec(1).b]] = | 2         |
-#	  And the 'values1' in Workflow 'TestMappings' debug outputs as   
-#	  | # |                           |
-#	  | 1 | [[rec(1).a]]         =  1 |
-#	  | 2 | [[rec(1).b]]  =  2        |
-#	  And the 'Calculate1' in WorkFlow 'TestMappings' debug inputs as 
-#      | fx =                                 |
-#      | [[rec(1).a]]+[[rec(1).b]] = 1+2 |           
-#      And the 'Calculate1' in Workflow 'TestMappings' debug outputs as  
-#	  |                  |
-#	  | [[rec(1).c]] = 3 |
-#	  And the 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as
-#	  |                  |
-#	  | [[rec(1).a]] = 1 |
-#	  | [[rec(1).b]] = 2 |
-#	  | [[rec(1).c]] = 3 |
+Scenario: Test Mappings for Assign and Calculate Workflow 
+      Given I have a workflow "TestMappings"
+	  And "TestMappings" contains an Assign "values1" as
+      | variable       | value |
+      | [[rec(1).a]]   | 1     |
+      | [[rec(1).b]]   | 2     |
+	  And "TestMappings" contains Calculate "Calculate1" with formula "[[rec(1).a]]+[[rec(1).b]]" into "[[rec(1).c]]"
+	  And "TestMappings" Outputs
+	  | Outputs |
+	  | rec().a |
+	  | rec().b |
+	  When "TestMappings" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'values1' in WorkFlow 'TestMappings' debug inputs as 
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = | 1         |
+	  | 2 | [[rec(1).b]] = | 2         |
+	  And the 'values1' in Workflow 'TestMappings' debug outputs as   
+	  | # |                           |
+	  | 1 | [[rec(1).a]]         =  1 |
+	  | 2 | [[rec(1).b]]  =  2        |
+	  And the 'Calculate1' in WorkFlow 'TestMappings' debug inputs as 
+      | fx =                                 |
+      | [[rec(1).a]]+[[rec(1).b]] = 1+2 |           
+      And the 'Calculate1' in Workflow 'TestMappings' debug outputs as  
+	  |                  |
+	  | [[rec(1).c]] = 3 |
+	  And the 'TestMappings' in Workflow 'TestMappings' debug outputs as
+	  |                  |
+	  | [[rec(1).a]] = 1 |
+	  | [[rec(1).b]] = 2 |
+	  | [[rec(1).c]] = 3 |
 
 
 

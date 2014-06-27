@@ -495,6 +495,19 @@ namespace Dev2.Activities.Specs.Composition
             CommonSteps.AddActivityToActivityList(parentName, activityName, dsfSort);
         }
 
+        [Given(@"""(.*)"" Outputs")]
+        public void GivenOutputs(string p0, Table table)
+        {
+            //ScenarioContext.Current.Pending();
+
+
+            ScenarioContext.Current.Add("Outputs", table.Rows.Where(a => !a[0].Contains(".") && a[0].Contains("(")).Select(output => output[0]).ToList());
+            ScenarioContext.Current.Add("ScalarOutputs", table.Rows.Where(a => (a[0].Contains(".") && a[0].Contains("(")) || !a[0].Contains("(")).Select(output => output[0]).ToList());
+
+
+        }
+
+
 
         [Given(@"""(.*)"" contains an Delete ""(.*)"" as")]
         // ReSharper disable InconsistentNaming

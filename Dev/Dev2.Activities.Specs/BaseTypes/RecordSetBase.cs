@@ -9,7 +9,7 @@ using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
 using TechTalk.SpecFlow;
-
+using System.Linq;
 namespace Dev2.Activities.Specs.BaseTypes
 {
     [Binding]
@@ -42,12 +42,22 @@ namespace Dev2.Activities.Specs.BaseTypes
             int row = 0;
             dynamic variableList;
             ScenarioContext.Current.TryGetValue("variableList", out variableList);
+            List<string> outputs;
+            ScenarioContext.Current.TryGetValue("Outputs", out outputs);
+            List<string> scalarOuts;
+            ScenarioContext.Current.TryGetValue("ScalarOutputs", out scalarOuts);
+            List<string> actualOuts= new List<string>();
+            if (outputs != null)
+               actualOuts = outputs.Select(a => RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, a)).ToList();
+            List<string> actualscalarOuts = new List<string>();
+            if (outputs != null)
+                actualscalarOuts = scalarOuts.Select(a => RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, a)).ToList(); 
 
             if(variableList != null)
             {
                 foreach(dynamic variable in variableList)
                 {
-                    Build(variable, shape, data, row);
+                    Build(variable, shape, data, row,actualOuts,actualscalarOuts);
                     row++;
                 }
             }
@@ -71,8 +81,11 @@ namespace Dev2.Activities.Specs.BaseTypes
             TestData = data.ToString();
         }
 
-        private void Build(dynamic variable, StringBuilder shape, StringBuilder data, int rowIndex)
+        private void Build(dynamic variable, StringBuilder shape, StringBuilder data, int rowIndex, List<string> actualOuts, List<string> scalarOuts)
         {
+
+            
+
             if(DataListUtil.IsValueRecordset(variable.Item1))
             {
                 dynamic recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable.Item1);
@@ -98,8 +111,10 @@ namespace Dev2.Activities.Specs.BaseTypes
 
                 if(!(addedRecordsets.Contains(recordset) && addedFieldset.Contains(recordField)))
                 {
-                    shape.Append(string.Format("<{0}>", recordset));
-                    shape.Append(string.Format("<{0}/>", recordField));
+                    bool recout = actualOuts.Contains(recordset);
+                    bool scalarOut = scalarOuts.Contains(recordField);
+                    shape.Append(string.Format("<{0} {1}>", recordset, recout ? " ColumnIODirection=\"Output\"" : " ColumnIODirection=\"None\""));
+                    shape.Append(string.Format("<{0}{1}/>", recordField, scalarOut ? " ColumnIODirection=\"Output\"" : " ColumnIODirection=\"None\""));
                     shape.Append(string.Format("</{0}>", recordset));
                     addedRecordsets.Add(recordset);
                     addedFieldset.Add(recordField);
