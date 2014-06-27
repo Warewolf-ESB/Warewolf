@@ -1013,7 +1013,7 @@ namespace Dev2.DataList.Contract
                             result.Add(DataListFactory.CreateDefinition("", "", "", tmpNode.Name, false, "",
                                                                                 false, "", false));
                         }
-                        else if( tmpNode.HasChildNodes)
+                        else if (tmpNode.HasChildNodes)
                         {
                             // it is a record set, make it as such
                             string recordsetName = tmpNode.Name;
@@ -1030,7 +1030,7 @@ namespace Dev2.DataList.Contract
                                 }
                             }
                         }
-                        else
+                        else if (CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
                         {
                             // scalar value, make it as such
                             result.Add(DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));

@@ -467,7 +467,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Input);
             //------------Assert Results-------------------------
-            Assert.AreEqual(6, generateDefsFromDataList.Count);
+            Assert.AreEqual(5, generateDefsFromDataList.Count);// only outer values are inputs. no columns
         }
 
         [TestMethod]
@@ -481,7 +481,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Output);
             //------------Assert Results-------------------------
-            Assert.AreEqual(6, generateDefsFromDataList.Count);
+            Assert.AreEqual(5, generateDefsFromDataList.Count); // nested column does not show up
         }
 
         [TestMethod]
@@ -495,7 +495,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Both);
             //------------Assert Results-------------------------
-            Assert.AreEqual(6, generateDefsFromDataList.Count);
+            Assert.AreEqual(4, generateDefsFromDataList.Count); // ooly both and no inner values
         }
 
 
@@ -514,7 +514,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Both);
             //------------Assert Results-------------------------
-            Assert.AreEqual(5, generateDefsFromDataList.Count);
+            Assert.AreEqual(2, generateDefsFromDataList.Count);  //only2 outs
         }
 
         [TestMethod]
@@ -528,7 +528,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Output);
             //------------Assert Results-------------------------
-            Assert.AreEqual(6, generateDefsFromDataList.Count);
+            Assert.AreEqual(5, generateDefsFromDataList.Count); // nested column must not appear
         }
 
         [TestMethod]
@@ -543,7 +543,7 @@ namespace Dev2.Tests
             //------------Execute Test---------------------------
             var generateDefsFromDataList = dataListCompiler.GenerateDefsFromDataListForDebug(dataList, enDev2ColumnArgumentDirection.Output);
             //------------Assert Results-------------------------
-            Assert.AreEqual(4, generateDefsFromDataList.Count);
+            Assert.AreEqual(3, generateDefsFromDataList.Count); // inner column is set as output
         }
 
 
