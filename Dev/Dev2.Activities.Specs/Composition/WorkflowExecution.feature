@@ -2035,7 +2035,7 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #	  | In Field(s)                | Return Fields | Result           |
 #	  | [[rs().row]],[[rs().data]] | [[rs().row]]  | [[rec().unique]] |
 #	  When "workflowithAssignandUniqueTool" is executed
-#	  Then the workflow execution has "AN" error
+#	  Then the workflow execution has "No" error
 #	  And the 'Records' in WorkFlow 'workflowithAssignandUniqueTool' debug inputs as
 #	  | # | Variable       | New Value |
 #	  | 1 | [[rs().row]] = | 10        |
@@ -2090,7 +2090,7 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #	  | In Field(s)                | Return Fields | Result           |
 #	  | [[rs().row]],[[rs().data]] | [[rs().row]]  | [[rec(*).unique]] |
 #	  When "workflowithAssignandUniqueTools" is executed
-#	  Then the workflow execution has "AN" error
+#	  Then the workflow execution has "NO" error
 #	  And the 'Records' in WorkFlow 'workflowithAssignandUniqueTools' debug inputs as
 #	  | # | Variable       | New Value |
 #	  | 1 | [[rs().row]] = | 10        |
@@ -2129,15 +2129,48 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #       |   | [[rec(3).unique]] = 20 |
 #       |   | [[rec(4).unique]] = 30 |
 
-
-
-
-
-
-
-
-
-
+#This should be passed with the bug 12093
+#Scenario: Workflow by using For Each with Raandom in it
+#      Given I have a workflow "workflowithforeachcontainsrandom"
+#      And "workflowithforeachcontainsrandom" contains a ForEach "ForEachTest" as "NumOfExecution" executiom "5"
+#	  And "ForEachTest" contains Random "Random" as
+#	  | Type    | From | To | Result       |
+#	  | Numbers | 1    | 5  | [[rec(*).a]] |
+#	  When "workflowithforeachcontainsrandom" is executed
+#	  Then the workflow execution has "No" error
+#	  And the 'ForEachTest' in WorkFlow 'workflowithforeachcontainsrandom' debug inputs as
+#	  |                 | Number |
+#	  | No. of Executes | 5      | 
+#	  And the 'Random' in WorkFlow 'workflowithforeachcontainsrandom' debug inputs as 
+#	  | Random  | From | To |
+#	  | Numbers | 1    | 5  |
+#	  And the 'Random' in Workflow 'workflowithforeachcontainsrandom' debug outputs as
+#	  |                      |
+#	  | [[rec(1).a]] = Int32 |
+#	    And the 'Random' in WorkFlow 'workflowithforeachcontainsrandom' debug inputs as 
+#	  | Random  | From | To |
+#	  | Numbers | 1    | 5  |
+#	  And the 'Random' in Workflow 'workflowithforeachcontainsrandom' debug outputs as
+#	  |                      |
+#	  | [[rec(1).a]] = Int32 |
+#	    And the 'Random' in WorkFlow 'workflowithforeachcontainsrandom' debug inputs as 
+#	  | Random  | From | To |
+#	  | Numbers | 1    | 5  |
+#	  And the 'Random' in Workflow 'workflowithforeachcontainsrandom' debug outputs as
+#	  |                      |
+#	  | [[rec(1).a]] = Int32 |
+#	    And the 'Random' in WorkFlow 'workflowithforeachcontainsrandom' debug inputs as 
+#	  | Random  | From | To |
+#	  | Numbers | 1    | 5  |
+#	  And the 'Random' in Workflow 'workflowithforeachcontainsrandom' debug outputs as
+#	  |                      |
+#	  | [[rec(1).a]] = Int32 |
+#	    And the 'Random' in WorkFlow 'workflowithforeachcontainsrandom' debug inputs as 
+#	  | Random  | From | To |
+#	  | Numbers | 1    | 5  |
+#	  And the 'Random' in Workflow 'workflowithforeachcontainsrandom' debug outputs as
+#	  |                      |
+#	  | [[rec(1).a]] = Int32 |
 
 
 
