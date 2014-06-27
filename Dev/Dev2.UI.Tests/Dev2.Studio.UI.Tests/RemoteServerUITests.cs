@@ -14,6 +14,7 @@ namespace Dev2.Studio.UI.Tests
     /// These are UI tests based on using a remote server
     /// </summary>
     [CodedUITest]
+    [Ignore]//Ashley: Pending work item 12095
     public class RemoteServerUiTests : UIMapBase
     {
         #region Const
