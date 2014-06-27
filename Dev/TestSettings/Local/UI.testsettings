@@ -5,7 +5,7 @@
     <DeploymentItem filename="TestBinaries\" />
   </Deployment>
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
-  <Scripts setupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\UI\Startup.bat" cleanupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\UI\Cleanup.bat" />
+  <Scripts setupScript="TestScripts\UI\Startup.bat" cleanupScript="TestScripts\UI\Cleanup.bat" />
   <Execution>
     <Hosts skipUnhostableTests="false" />
     <Timeouts runTimeout="5400000" testTimeout="300000" />

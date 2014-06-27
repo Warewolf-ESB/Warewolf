@@ -5,7 +5,7 @@
     <DeploymentItem filename="TestBinaries\" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\Integration\Startup.bat" cleanupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\Integration\Cleanup.bat" />
+  <Scripts setupScript="TestScripts\Integration\Startup.bat" cleanupScript="TestScripts\Integration\Cleanup.bat" />
   <Execution parallelTestCount="0">
     <Buckets size="1000" />
     <Timeouts testTimeout="120000" />

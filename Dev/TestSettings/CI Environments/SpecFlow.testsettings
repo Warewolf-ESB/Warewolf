@@ -5,7 +5,7 @@
         <DeploymentItem filename="..\..\TestBinaries\" />
     </Deployment>
   <NamingScheme baseName="UT" />
-    <Scripts setupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\Acceptance\Startup.bat" cleanupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\Acceptance\Cleanup.bat" />
+    <Scripts setupScript="TestScripts\Acceptance\Startup.bat" cleanupScript="TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Buckets size="100" />

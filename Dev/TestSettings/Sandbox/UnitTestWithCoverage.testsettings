@@ -12,7 +12,7 @@
     <DeploymentItem filename="..\..\TestBinaries\ConsoleAppToTestExecuteCommandLineActivity.exe" />
     <DeploymentItem filename="..\..\Binaries\IronPython.Modules.dll" />
   </Deployment>
-  <Scripts cleanupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\Unit\Cleanup.bat" />
+  <Scripts cleanupScript="TestScripts\Unit\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Buckets size="1000" />

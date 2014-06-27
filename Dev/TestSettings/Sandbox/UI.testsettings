@@ -4,7 +4,7 @@
   <Deployment>
     <DeploymentItem filename="TestBinaries\" />
   </Deployment>
-  <Scripts setupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\UI\Startup.bat" cleanupScript="TestSettings\CI Environments\Scripts\TestAutomationScripts\UI\Cleanup.bat" />
+  <Scripts setupScript="TestScripts\UI\Startup.bat" cleanupScript="TestScripts\UI\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
   <Execution location="Remote">
     <Timeouts runTimeout="5400000" testTimeout="300000" />
