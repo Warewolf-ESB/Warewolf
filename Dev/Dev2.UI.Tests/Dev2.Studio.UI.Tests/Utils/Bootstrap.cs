@@ -3,8 +3,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
+using System.Security.Principal;
 using System.Threading;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.Utils
@@ -17,6 +17,8 @@ namespace Dev2.Studio.UI.Tests.Utils
     {
         private const string ServerProcName = "Warewolf Server";
         private const string StudioProcName = "Warewolf Studio";
+        private const string ServerExeName = ServerProcName + ".exe";
+        private const string StudioExeName = StudioProcName + ".exe";
         private const int ServerTimeOut = 2000;
         private const int StudioTimeOut = 10000;
 
@@ -58,22 +60,36 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 return;
             }
+            //Ashley: Simulating Travs process right here in the bootstrapper for local test runs...
+            Directory.CreateDirectory(RemoteServerLocation);
+            CopyDirectory(testCtx.DeploymentDirectory, RemoteServerLocation);
+
+            var uiTestRemoteResources = testCtx.DeploymentDirectory + "\\..\\..\\..\\BPM Resources - UITestRemote\\";
+            if(Directory.Exists(uiTestRemoteResources))
+            {
+                var remoteResources = Path.Combine(RemoteServerLocation, "Resources\\");
+                Directory.Delete(remoteResources, true);
+                CopyDirectory(uiTestRemoteResources, remoteResources);
+            }
             if(testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901")
             {
                 _isLocal = true;
                 ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
                 StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
-                RootSourceLocation = StudioLocation.Replace("Warewolf Server.exe", "Resources\\");
-                RootServiceLocation = StudioLocation.Replace("Warewolf Server.exe", "Resources\\");
+                if(StudioLocation == null)
+                {
+                    ServerLocation = Path.Combine(testCtx.DeploymentDirectory, ServerExeName);
+                    StudioLocation = Path.Combine(testCtx.DeploymentDirectory, StudioExeName);
+                }
+                RootSourceLocation = StudioLocation.Replace(StudioExeName, "Resources\\");
+                RootServiceLocation = StudioLocation.Replace(StudioExeName, "Resources\\");
                 return;
             }
-            var expectedServerLocation = ServerLocation.Replace("\\Warewolf Server.exe", string.Empty);
+            var expectedServerLocation = ServerLocation.Replace("\\" + ServerExeName, string.Empty);
             Directory.CreateDirectory(expectedServerLocation);
             CopyDirectory(testCtx.DeploymentDirectory, expectedServerLocation);
-            Directory.CreateDirectory(RemoteServerLocation);
-            CopyDirectory(testCtx.DeploymentDirectory, RemoteServerLocation);
         }
-		
+
         private static string GetProcessPath(ManagementObjectCollection processes)
         {
             if(processes == null || processes.Count == 0)
@@ -203,6 +219,15 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                 Thread.Sleep(WaitMS);
             }
+            else
+            {
+                throw Exception("No remote server found to start");
+            }
+        }
+
+        private static Exception Exception(string p)
+        {
+            throw new NotImplementedException();
         }
 
         public static void AmendRemoteConfigForTest()
@@ -351,6 +376,13 @@ namespace Dev2.Studio.UI.Tests.Utils
         public static void RunTeardown()
         {
             Teardown();
+            try
+            {
+                Directory.Delete(RemoteServerLocation, true);
+            }
+            catch
+            {
+            }
         }
 
         private static ManagementObjectCollection TryGetProcess(string procName)
