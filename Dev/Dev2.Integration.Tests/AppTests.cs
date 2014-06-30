@@ -12,6 +12,8 @@ namespace Dev2.Integration.Tests
     public class AppTests
     {
         private static string deployDir;
+        const string ServerProcessName = "Warewolf Server";
+        const string StudioProcessName = "Warewolf Studio";
 
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
@@ -28,12 +30,7 @@ namespace Dev2.Integration.Tests
 
             try
             {
-                var studioPath = Path.Combine(deployDir, "Warewolf Studio.exe");
-
-                if(!File.Exists(studioPath))
-                {
-                    studioPath = Path.Combine(Directory.GetCurrentDirectory(), "Warewolf Studio.exe");
-                }
+                var studioPath = GetProcessPath(StudioProcessName);
 
                 //Pre-assert
                 Assert.IsTrue(File.Exists(studioPath), "Studio not found at " + studioPath);
@@ -93,12 +90,7 @@ namespace Dev2.Integration.Tests
 
             try
             {
-                var serverPath = Path.Combine(deployDir, "Warewolf Server.exe");
-
-                if(!File.Exists(serverPath))
-                {
-                    serverPath = Path.Combine(Directory.GetCurrentDirectory(), "Warewolf Server.exe");
-                }
+                var serverPath = GetProcessPath(ServerProcessName);
 
                 //Pre-assert
                 Assert.IsTrue(File.Exists(serverPath), "Server not found at " + serverPath);
@@ -146,6 +138,28 @@ namespace Dev2.Integration.Tests
             const string expected = "Critical Failure: Webserver failed to startException has been thrown by the target of an invocation.";
 
             StringAssert.Contains(outputData, expected);
+        }
+
+        private static string GetProcessPath(string processName)
+        {
+            var query = new System.Management.SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
+            ManagementObjectCollection processes;
+            //initialize the searcher with the query it is
+            //supposed to execute
+            using(ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+            {
+                //execute the query
+                processes = searcher.Get();
+                if(processes.Count <= 0)
+                {
+                    return null;
+                }
+            }
+            if(processes == null || processes.Count == 0)
+            {
+                return null;
+            }
+            return (from ManagementObject process in processes select (process.Properties["ExecutablePath"].Value ?? string.Empty).ToString()).FirstOrDefault();
         }
 
         #region Server Lifecycle Manager Test Utils
