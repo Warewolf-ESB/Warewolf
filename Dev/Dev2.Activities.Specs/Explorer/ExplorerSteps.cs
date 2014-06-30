@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.IO;
+using System.Management;
 using System.Linq;
 using System.Linq.Expressions;
 using TechTalk.SpecFlow;
@@ -19,34 +20,21 @@ namespace Dev2.Activities.Specs.Explorer
     [Binding]
     public class ExplorerSteps
     {
+        const string ServerProcessName = "Warewolf Server";
+
         [Given(@"I have a path '(.*)'")]
         public void GivenIHaveAPath(string path)
         {
             var paths = path.Split("\\".ToArray()).ToList();
             var root = paths.First();
-            var workingDirectory = "";
-            var basePath = "";
-            var currentDirectory = Directory.GetCurrentDirectory();
-            if(!string.IsNullOrEmpty(currentDirectory))
+            var serverProcessPath = GetServerProcessPath();
+            if(serverProcessPath == null || !File.Exists(serverProcessPath))
             {
-                var indexOfWrongPath = currentDirectory.IndexOf("\\Dev2.Activities.Specs\\bin\\Debug", StringComparison.InvariantCultureIgnoreCase);
-                if(indexOfWrongPath != -1)
-                {
-                    const string ServerRelativePath = "\\Dev2.Server\\bin\\Debug\\Resources\\";
-                    var rootBasePath = currentDirectory.Substring(0, indexOfWrongPath);
-                    basePath = rootBasePath + ServerRelativePath;
-                    workingDirectory = basePath + root;
-                }
-                else //When run in the environment
-                {
-                    const string ServerRelativePath = "\\Resources\\";
-                    Console.WriteLine(currentDirectory);
-                    var rootBasePath = currentDirectory;
-                    basePath = rootBasePath + ServerRelativePath;
-                    workingDirectory = basePath + root;
-                    Console.WriteLine(workingDirectory);
-                }
+                Assert.Fail("Warewolf server not running or file not accessible '" + serverProcessPath + "'.");
             }
+            var basePath = Path.Combine(Path.GetDirectoryName(serverProcessPath), "Resources");
+            var workingDirectory = Path.Combine(basePath, root);
+            Console.WriteLine(workingDirectory);
             if(Directory.Exists(workingDirectory))
             {
                 Directory.Delete(workingDirectory, true);
@@ -64,6 +52,28 @@ namespace Dev2.Activities.Specs.Explorer
             ScenarioContext.Current.Add("path", path);
             ScenarioContext.Current.Add("basePath", basePath);
             ScenarioContext.Current.Add("workingDirectory", workingDirectory);
+        }
+
+        private static string GetServerProcessPath()
+        {
+            var query = new System.Management.SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + ServerProcessName + "%'");
+            ManagementObjectCollection processes;
+            //initialize the searcher with the query it is
+            //supposed to execute
+            using(ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
+            {
+                //execute the query
+                processes = searcher.Get();
+                if(processes.Count <= 0)
+                {
+                    return null;
+                }
+            }
+            if(processes == null || processes.Count == 0)
+            {
+                return null;
+            }
+            return (from ManagementObject process in processes select (process.Properties["ExecutablePath"].Value ?? string.Empty).ToString()).FirstOrDefault();
         }
 
         [Given(@"the folder '(.*)' exists on the server '(.*)'")]
@@ -147,8 +157,8 @@ namespace Dev2.Activities.Specs.Explorer
         public void ThenTheFolderPathWillBe(string resultPath)
         {
             var basePath = ScenarioContext.Current.Get<string>("basePath");
-            var path = basePath + resultPath;
-            Assert.IsTrue(Directory.Exists(path));
+            var path = Path.Combine(basePath, resultPath);
+            Assert.IsTrue(Directory.Exists(path), "Expected path '" + path + "' does not exist or is not accessible.");
         }
 
         [Given(@"the resource '(.*)' exists on the server '(.*)'")]
