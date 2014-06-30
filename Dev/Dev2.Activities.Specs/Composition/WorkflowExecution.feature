@@ -2173,6 +2173,51 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #	  |                      |
 #	  | [[rec(1).a]] = Int32 |
 
+#This should be passed after the bug 12021 is fixed
+#Scenario: Workflow with Assigns DataSplit executing against the server
+#      Given I have a workflow "WorkflowDataSplit"
+#	  And "WorkflowDataSplit" contains an Assign "Assignval" as
+#      | variable | value   |
+#      | [[a]]    | rec().a |
+#	    And "WorkflowDataSplit" contains Data Split "DataSplit" as
+#	  | String | Variable  | Type  | At | Include    | Escape |
+#	  | abcd   | [[[[a]]]] | Index | 4  | Unselected |        | 
+#	  When "WorkflowDataSplit" is executed
+#	  Then the workflow execution has "No" error
+#	  And the 'Assignval' in WorkFlow 'WorkflowDataSplit' debug inputs as
+#	  | # | Variable | New Value |
+#	  | 1 | [[a]] =  | rec().a   |
+#	  And the 'Assignval' in Workflow 'WorkflowDataSplit' debug outputs as  
+#	  | # |                  |
+#	  | 1 | [[a]] =  rec().a |
+#	  And the 'DataSplit' in WorkFlow 'WorkflowDataSplit' debug inputs as 
+#	  | String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
+#	  | abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 4     | No      |        |
+#	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
+#	  | # |                     |
+#	  | 1 | [[rec(1).b]] = abcd |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

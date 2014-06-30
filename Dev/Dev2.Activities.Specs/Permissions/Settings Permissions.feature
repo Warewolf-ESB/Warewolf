@@ -2,7 +2,7 @@
 	In order to set permissions for my server
 	As a Warewolf user
 	I want to setup a Server Permissions
-
+	
 #Scenario Outline: Server Permissions 
 #        Given I have a server “localhost”
 #        And it has ‘<Group>’ with rights '<Given rights>' 

@@ -117,10 +117,15 @@
       <DependentUpon>Explorer.feature</DependentUpon>
     </Compile>
     <Compile Include="Explorer\ExplorerSteps.cs" />
-    <Compile Include="Explorer\Settings.feature.cs">
+    <Compile Include="Permissions\Settings.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Settings.feature</DependentUpon>
+      <DependentUpon>Settings Permissions.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Permissions\Settings Permissions.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Settings Permissions.feature</DependentUpon>
     </Compile>
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
@@ -399,10 +404,6 @@
     <None Include="Explorer\Explorer.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Explorer.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Explorer\Settings.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.feature.cs</LastGenOutput>
     </None>
     <None Include="Language Parser\Language Parser.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
