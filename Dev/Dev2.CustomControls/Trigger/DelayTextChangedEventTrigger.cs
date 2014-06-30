@@ -28,7 +28,7 @@ namespace Dev2.CustomControls.Trigger
             base.OnAttached();
 
             var observable = Observable.FromEventPattern(AssociatedObject, "TextChanged")
-                              .Throttle(TimeSpan.FromMilliseconds(DelayInMilliSeconds),Scheduler.ThreadPool)
+                              .Throttle(TimeSpan.FromMilliseconds(DelayInMilliSeconds),System.Reactive.Concurrency.Scheduler.ThreadPool)
                               .ObserveOn(SynchronizationContext.Current);
 
             _subscription = observable.Subscribe(ProcessKeyPress);

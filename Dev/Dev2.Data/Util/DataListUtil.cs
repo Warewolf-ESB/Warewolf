@@ -79,7 +79,9 @@ namespace Dev2.Data.Util
         public static string ReplaceRecordsetIndexWithBlank(string expression)
         {
             string extractIndexRegionFromRecordset = ExtractIndexRegionFromRecordset(expression);
-            return expression.Replace(extractIndexRegionFromRecordset, "()");
+            return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
+                                        expression.Replace(extractIndexRegionFromRecordset, "()")
+                                                  .Replace("(())", "()");
         }
 
         /// <summary>

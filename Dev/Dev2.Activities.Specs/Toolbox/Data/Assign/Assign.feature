@@ -126,36 +126,6 @@ Scenario: Assign scalars to
     | 3 | [[rec(3).set]] = 30 |
     | 4 | [[value]] = 30      |
 
-
-Scenario: Assign values to different columns in a reccord set
-	Given I assign the value 10 to a variable "[[rec().a]]"	
-	And I assign the value 20 to a variable "[[rec().b]]"
-	And I assign the value 30 to a variable "[[rec().c]]"
-	And I assign the value [[rec().a]] to a variable "[[d]]"
-	And I assign the value [[rec().b]] to a variable "[[e]]"
-	And I assign the value [[rec().c]] to a variable "[[f]]"
-	When the assign tool is executed
-	Then the value of "[[d]]" equals 10
-	And the value of "[[e]]" equals 20
-	And the value of "[[f]]" equals 30
-	And the execution has "NO" error
-	And the debug inputs as
-	| # | Variable      | New Value        |
-	| 1 | [[rec().a]] = | 10               |
-	| 2 | [[rec().b]] = | 20               |
-	| 3 | [[rec().c]] = | 30               |
-	| 4 | [[d]]     =   | [[rec().a]] = 10 |
-	| 5 | [[e]]     =   | [[rec().b]] = 20 |
-	| 6 | [[f]]     =   | [[rec().c]] = 30 |
-	And the debug output as
-    | # |                 |
-    | 1 | [[rec(1).a]] = 10 |
-    | 2 | [[rec(1).b]] = 20 |
-    | 3 | [[rec(1).c]] = 30 |
-    | 4 | [[d]] = 10       |
-    | 5 | [[e]] = 20       |
-    | 6 | [[f]] = 30       |
-
 Scenario: Assign all recordset values to a single variable
 	Given I assign the value 10 to a variable "[[rec(1).set]]"	
 	And I assign the value 20 to a variable "[[rec(2).set]]"
@@ -201,7 +171,7 @@ Scenario: Assign all recordset values to all recordset
 	| 2 | [[rec(2).set]] =      | 20                  |
 	| 3 | [[rec(3).set]] =      | 30                  |
 	| 4 | [[rs().val]] =        | Hello               |
-	| 5 | [[rs(1).set]] = Hello | [[rec(1).set = 10   |
+	| 5 | [[rs(1).set]] = Hello | [[rec(1).set]] = 10 |
 	|   |                       | [[rec(2).set]] = 20 |
 	|   |                       | [[rec(3).set]] = 30 |
 	And the debug output as
@@ -209,9 +179,9 @@ Scenario: Assign all recordset values to all recordset
     | 1 | [[rec(1).set]] = 10 |
     | 2 | [[rec(2).set]] = 20 |
     | 3 | [[rec(3).set]] = 30 |
-    | 4 | [[rs(1).val]] = 10 |
-    |   | [[rs(2).val]] = 20 |
-    |   | [[rs(3).val]] = 30 |
+    | 4 | [[rs(1).val]] = 10  |
+    |   | [[rs(2).val]] = 20  |
+    |   | [[rs(3).val]] = 30  |
 
 Scenario: Assign a record set to a scalar
 	Given I assign the value 10 to a variable "[[rec(1).set]]"	
@@ -346,67 +316,91 @@ Scenario: Assign to a negative recordset index
 	Then the execution has "AN" error
 	And the debug inputs as
 	| # | Variable          | New Value |
-	| 1 | [[des(-1).val]] = | 10        |	
 	And the debug output as
 	| # |                      |
-#	BUG - NEEDS TO BE INVESTIGATED
-#Scenario: Assign a scalar equal to a calculation with a blank variable
-#	Given I assign the value "=[[cnt]]+1" to a variable "[[cnt]]"
-#	When the assign tool is executed
-#	Then the value of "[[cnt]]" equals "1"
-#	And the execution has "NO" error
-#	And the debug inputs as
-#	| # | Variable  | New Value         |
-#	| 1 | [[cnt]] = | =[[cnt]]+1 = =1+1 |
-#	And the debug output as
-#	| # |             |
-#	| 1 | [[var]] = 1 |
 
-#
-#Scenario Outline: Assign to a invalid variable
-#   Given I assign the value 10 to a variable '<var>'
-#   When the assign tool is executed
-#   Then the execution has '<error>' error
-#   And the debug inputs as
-#	| # | Variable | New Value |
-#	| 1 | <var> =  | 10 |
-#   And the debug output as
-#	| # |          |
-#   Examples:
-#	| no | var                                       | error |
-#	| 1  | [rec").a]]                                | AN    |
-#	| 2  | [[rec'()'.a]]                             | AN    |
-#	| 3  | [[rec"()".a]]                             | AN    |
-#	| 4  | [[rec".a]]                                | AN    |
-#	| 5  | [[rec.a]]                                 | AN    |
-#	| 6  | [[rec()*.a]]                              | AN    |
-#	| 7  | [[rec().a]].[[a]]                         | AN    |
-#	| 8  | [[rec().a]][[a]]                          | AN    |
-#	| 9  | [[rec().a]]*                              | AN    |
-#	| 10 | [[rec().a]] a                             | AN    |
-#	| 11 | [[1]]                                     | AN    |
-#	| 12 | [[rs(),.val]                              | AN    |
-#	| 13 | [[var#]]                                  | AN    |
-#	| 14 | [[var]]00]]                               | AN    |
-#	| 15 | [[var]]@]]                                | AN    |
-#	| 16 | [[var.()]]                                | AN    |
-#	| 17 | [[]]                                      | AN    |
-#	| 18 | [[()]]                                    | AN    |
-#	| 19 | [[var[[a]]]]                              | AN    |
-#	| 20 | [[var[[]]                                 | AN    |
-#	| 21 | [[var1.a]]                                | AN    |
-#	| 22 | [[rec()!a]]                               | AN    |
-#	| 23 | [[rec()         a]]                       | AN    |
-#	| 24 | [[{{rec(_).a}}]]]                         | AN    |
-#	| 25 | [[rec(23).[[var*]]]]                      | AN    |
-#	| 26 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] | AN    |
-#	| 27 | [[rec().a]]&[[a]]                         | AN    |
-#	| 28 | a[[rec([[[[b]]]]).a]]@                    | AN    |
-#	| 29 | [[var  ]]                                 | AN    |
-#	| 30 | [[rec()                                   | AN    |
+Scenario: Assign a scalar equal to a calculation with a blank variable
+	Given I assign the value "=[[cnt]]+1" to a variable "[[cnt]]"
+	When the assign tool is executed
+	Then the value of "[[cnt]]" equals "1"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable  | New Value       |
+	| 1 | [[cnt]] = | String = String |
+	And the debug output as
+	| # |             |
+	| 1 | [[cnt]] = 1 |
 
-
-
+#Bug 11499
+Scenario Outline: Assign to a invalid variable
+   Given I assign the value 10 to a variable '<var>'
+   When the assign tool is executed
+   Then the execution has '<error>' error
+   And the debug inputs as
+	| # | Variable | New Value |	
+   And the debug output as
+	| # |          |
+   Examples:
+	| no | var                                       | error |
+	| 1  | [rec").a]]                                | AN    |
+	| 2  | [[rec'()'.a]]                             | AN    |
+	| 3  | [[rec"()".a]]                             | AN    |
+	| 4  | [[rec".a]]                                | AN    |
+	| 5  | [[rec.a]]                                 | AN    |
+	| 6  | [[rec()*.a]]                              | AN    |
+	| 7  | [[rec().a]].[[a]]                         | AN    |
+	| 8  | [[rec().a]][[a]]                          | AN    |
+	| 9  | [[rec().a]]*                              | AN    |
+	| 10 | [[rec().a]] a                             | AN    |
+	| 11 | [[1]]                                     | AN    |
+	| 12 | [[rs(),.val]                              | AN    |
+	| 13 | [[var#]]                                  | AN    |
+	| 14 | [[var]]00]]                               | AN    |
+	| 15 | [[var]]@]]                                | AN    |
+	| 16 | [[var.()]]                                | AN    |
+	| 17 | [[]]                                      | AN    |
+	| 18 | [[()]]                                    | AN    |
+	| 19 | [[var[[a]]]]                              | AN    |
+	| 20 | [[var[[]]                                 | AN    |
+	| 21 | [[var1.a]]                                | AN    |
+	| 22 | [[rec()!a]]                               | AN    |
+	| 23 | [[rec()         a]]                       | AN    |
+	| 24 | [[{{rec(_).a}}]]]                         | AN    |
+	| 25 | [[rec(23).[[var*]]]]                      | AN    |
+	| 26 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] | AN    |
+	| 27 | [[rec().a]]&[[a]]                         | AN    |
+	| 28 | a[[rec([[[[b]]]]).a]]@                    | AN    |
+	| 29 | [[var  ]]                                 | AN    |
+	| 30 | [[rec()                                   | AN    |
+	
+Scenario: Assign values to different columns in a reccord set
+       Given I assign the value 10 to a variable "[[rec().a]]"       
+       And I assign the value 20 to a variable "[[rec().b]]"
+       And I assign the value 30 to a variable "[[rec().c]]"
+       And I assign the value [[rec().a]] to a variable "[[d]]"
+       And I assign the value [[rec().b]] to a variable "[[e]]"
+       And I assign the value [[rec().c]] to a variable "[[f]]"
+       When the assign tool is executed
+       Then the value of "[[d]]" equals 10
+       And the value of "[[e]]" equals 20
+       And the value of "[[f]]" equals 30
+       And the execution has "NO" error
+       And the debug inputs as
+       | # | Variable      | New Value        |
+       | 1 | [[rec().a]] = | 10               |
+       | 2 | [[rec().b]] = | 20               |
+       | 3 | [[rec().c]] = | 30               |
+       | 4 | [[d]]     =   | [[rec().a]] = 10 |
+       | 5 | [[e]]     =   | [[rec().b]] = 20 |
+       | 6 | [[f]]     =   | [[rec().c]] = 30 |
+       And the debug output as
+    | # |                   |
+    | 1 | [[rec(1).a]] = 10 |
+    | 2 | [[rec(1).b]] = 20 |
+    | 3 | [[rec(1).c]] = 30 |
+    | 4 | [[d]] = 10        |
+    | 5 | [[e]] = 20        |
+    | 6 | [[f]] = 30        |
 
 
 

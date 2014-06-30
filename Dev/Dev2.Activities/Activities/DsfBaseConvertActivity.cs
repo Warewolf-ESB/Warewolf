@@ -18,6 +18,7 @@ using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
+using Dev2.Validation;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -76,7 +77,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors;
+            ErrorResultTO errors = new ErrorResultTO();
             Guid executionId = DataListExecutionID.Get(context);
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
 
@@ -96,6 +97,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         item.ToExpression = item.FromExpression;
                     }
 
+                    var fieldName = item.FromExpression;
+                    fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
+                    var isValidExpr = new IsValidExpressionRule(() => fieldName, dataObject.DataList ?? dataObject.RawPayload)
+                    {
+                        LabelText = fieldName
+                    };
+
+                    var errorInfo = isValidExpr.Check();
+                    if(errorInfo != null)
+                    {
+                        item.FromExpression = "";
+                        errors.AddError(errorInfo.Message);
+                    }
+
+                    allErrors.MergeErrors(errors);
+                    
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.FromExpression, false, out errors);
                     if(dataObject.IsDebugMode())
                     {
@@ -129,6 +146,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
 
                                 int indexToUpsertTo = c.ItemCollectionIndex;
+
                                 string val = string.IsNullOrEmpty(c.TheValue) ? "" : broker.Convert(c.TheValue);
                                 string expression = item.ToExpression;
 
@@ -349,14 +367,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string currentName = modelProperty.ComputedValue as string;
                 if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
                 {
-                    if(currentName.Contains(" ("))
-                    {
-                        currentName = currentName.Remove(currentName.IndexOf(" (", StringComparison.Ordinal));
-                    }
-                    else
-                    {
-                        currentName = currentName.Remove(currentName.IndexOf("(", StringComparison.Ordinal));
-                    }
+                    currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
                 }
                 currentName = currentName + " (" + (count - 1) + ")";
                 return currentName;

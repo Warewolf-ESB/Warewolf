@@ -1,10 +1,4 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net;
-using ActivityUnitTests;
+﻿using ActivityUnitTests;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -12,6 +6,12 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Net;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -32,6 +32,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         public const string SourcePasswordHolder = "sourcePassword";
 
         [Then(@"the execution has ""(.*)"" error")]
+        [Then(@"the execution has '(.*)' error")]
         public void ThenTheExecutionHasError(string anError)
         {
             bool expected = anError.Equals("NO");

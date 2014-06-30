@@ -467,34 +467,30 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign values to different columns in a reccord set")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign all recordset values to a single variable")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
-        public virtual void AssignValuesToDifferentColumnsInAReccordSet()
+        public virtual void AssignAllRecordsetValuesToASingleVariable()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign values to different columns in a reccord set", ((string[])(null)));
-#line 130
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign all recordset values to a single variable", ((string[])(null)));
+#line 129
 this.ScenarioSetup(scenarioInfo);
+#line 130
+ testRunner.Given("I assign the value 10 to a variable \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 131
- testRunner.Given("I assign the value 10 to a variable \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("I assign the value 20 to a variable \"[[rec(2).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 132
- testRunner.And("I assign the value 20 to a variable \"[[rec().b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value 30 to a variable \"[[rec(3).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 133
- testRunner.And("I assign the value 30 to a variable \"[[rec().c]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I assign the value \"\" to a variable \"[[rec(*).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 134
- testRunner.And("I assign the value [[rec().a]] to a variable \"[[d]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 135
- testRunner.And("I assign the value [[rec().b]] to a variable \"[[e]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 136
- testRunner.And("I assign the value [[rec().c]] to a variable \"[[f]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 137
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 135
+ testRunner.Then("the value of \"[[rec(3).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 136
+ testRunner.And("the value of \"[[rec(2).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 137
+ testRunner.And("the value of \"[[rec(1).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 138
- testRunner.Then("the value of \"[[d]]\" equals 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 139
- testRunner.And("the value of \"[[e]]\" equals 20", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 140
- testRunner.And("the value of \"[[f]]\" equals 30", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 141
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table15 = new TechTalk.SpecFlow.Table(new string[] {
@@ -503,29 +499,29 @@ this.ScenarioSetup(scenarioInfo);
                         "New Value"});
             table15.AddRow(new string[] {
                         "1",
-                        "[[rec().a]] =",
+                        "[[rec(1).set]] =",
                         "10"});
             table15.AddRow(new string[] {
                         "2",
-                        "[[rec().b]] =",
+                        "[[rec(2).set]] =",
                         "20"});
             table15.AddRow(new string[] {
                         "3",
-                        "[[rec().c]] =",
+                        "[[rec(3).set]] =",
                         "30"});
             table15.AddRow(new string[] {
                         "4",
-                        "[[d]]     =",
-                        "[[rec().a]] = 10"});
+                        "[[rec(1).set]] = 10",
+                        ""});
             table15.AddRow(new string[] {
-                        "5",
-                        "[[e]]     =",
-                        "[[rec().b]] = 20"});
+                        "",
+                        "[[rec(2).set]] = 20",
+                        ""});
             table15.AddRow(new string[] {
-                        "6",
-                        "[[f]]     =",
-                        "[[rec().c]] = 30"});
-#line 142
+                        "",
+                        "[[rec(3).set]] = 30",
+                        "\" \""});
+#line 139
  testRunner.And("the debug inputs as", ((string)(null)), table15, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
@@ -533,53 +529,57 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table16.AddRow(new string[] {
                         "1",
-                        "[[rec(1).a]] = 10"});
+                        "[[rec(1).set]] = 10"});
             table16.AddRow(new string[] {
                         "2",
-                        "[[rec(1).b]] = 20"});
+                        "[[rec(2).set]] = 20"});
             table16.AddRow(new string[] {
                         "3",
-                        "[[rec(1).c]] = 30"});
+                        "[[rec(3).set]] = 30"});
             table16.AddRow(new string[] {
                         "4",
-                        "[[d]] = 10"});
+                        "[[rec(1).set]] = \"\""});
             table16.AddRow(new string[] {
-                        "5",
-                        "[[e]] = 20"});
+                        "",
+                        "[[rec(2).set]] = \"\""});
             table16.AddRow(new string[] {
-                        "6",
-                        "[[f]] = 30"});
-#line 150
+                        "",
+                        "[[rec(3).set]] = \"\""});
+#line 147
  testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign all recordset values to a single variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign all recordset values to all recordset")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
-        public virtual void AssignAllRecordsetValuesToASingleVariable()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
+        public virtual void AssignAllRecordsetValuesToAllRecordset()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign all recordset values to a single variable", ((string[])(null)));
-#line 159
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign all recordset values to all recordset", new string[] {
+                        "ignore"});
+#line 157
 this.ScenarioSetup(scenarioInfo);
-#line 160
+#line 158
  testRunner.Given("I assign the value 10 to a variable \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 161
+#line 159
  testRunner.And("I assign the value 20 to a variable \"[[rec(2).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 162
+#line 160
  testRunner.And("I assign the value 30 to a variable \"[[rec(3).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 161
+ testRunner.And("I assign the value Hello to a variable \"[[rs().val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 162
+ testRunner.And("I assign the value \"[[rec(*).set]]\" to a variable \"[[rs(*).val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 163
- testRunner.And("I assign the value \"\" to a variable \"[[rec(*).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 164
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 164
+ testRunner.Then("the value of \"[[rs(1).val]]\" equals 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 165
- testRunner.Then("the value of \"[[rec(3).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("the value of \"[[rs(2).val]]\" equals 20", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 166
- testRunner.And("the value of \"[[rec(2).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the value of \"[[rs(3).val]]\" equals 30", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 167
- testRunner.And("the value of \"[[rec(1).set]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 168
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table17 = new TechTalk.SpecFlow.Table(new string[] {
@@ -600,17 +600,21 @@ this.ScenarioSetup(scenarioInfo);
                         "30"});
             table17.AddRow(new string[] {
                         "4",
-                        "[[rec(1).set]] = 10",
-                        ""});
+                        "[[rs().val]] =",
+                        "Hello"});
+            table17.AddRow(new string[] {
+                        "5",
+                        "[[rs(1).set]] = Hello",
+                        "[[rec(1).set]] = 10"});
             table17.AddRow(new string[] {
                         "",
-                        "[[rec(2).set]] = 20",
-                        ""});
+                        "",
+                        "[[rec(2).set]] = 20"});
             table17.AddRow(new string[] {
                         "",
-                        "[[rec(3).set]] = 30",
-                        "\" \""});
-#line 169
+                        "",
+                        "[[rec(3).set]] = 30"});
+#line 168
  testRunner.And("the debug inputs as", ((string)(null)), table17, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
@@ -627,13 +631,13 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec(3).set]] = 30"});
             table18.AddRow(new string[] {
                         "4",
-                        "[[rec(1).set]] = \"\""});
+                        "[[rs(1).val]] = 10"});
             table18.AddRow(new string[] {
                         "",
-                        "[[rec(2).set]] = \"\""});
+                        "[[rs(2).val]] = 20"});
             table18.AddRow(new string[] {
                         "",
-                        "[[rec(3).set]] = \"\""});
+                        "[[rs(3).val]] = 30"});
 #line 177
  testRunner.And("the debug output as", ((string)(null)), table18, "And ");
 #line hidden
@@ -641,34 +645,26 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign all recordset values to all recordset")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a record set to a scalar")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
-        public virtual void AssignAllRecordsetValuesToAllRecordset()
+        public virtual void AssignARecordSetToAScalar()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign all recordset values to all recordset", new string[] {
-                        "ignore"});
-#line 187
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a record set to a scalar", ((string[])(null)));
+#line 186
 this.ScenarioSetup(scenarioInfo);
-#line 188
+#line 187
  testRunner.Given("I assign the value 10 to a variable \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 189
+#line 188
  testRunner.And("I assign the value 20 to a variable \"[[rec(2).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 190
+#line 189
  testRunner.And("I assign the value 30 to a variable \"[[rec(3).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 190
+ testRunner.And("I assign the value \"[[rec(*).set]]\" to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 191
- testRunner.And("I assign the value Hello to a variable \"[[rs().val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 192
- testRunner.And("I assign the value \"[[rec(*).set]]\" to a variable \"[[rs(*).val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 193
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 194
- testRunner.Then("the value of \"[[rs(1).val]]\" equals 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 195
- testRunner.And("the value of \"[[rs(2).val]]\" equals 20", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 196
- testRunner.And("the value of \"[[rs(3).val]]\" equals 30", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 197
+#line 192
+ testRunner.Then("the value of \"[[var]]\" equals \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 193
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
@@ -689,12 +685,8 @@ this.ScenarioSetup(scenarioInfo);
                         "30"});
             table19.AddRow(new string[] {
                         "4",
-                        "[[rs().val]] =",
-                        "Hello"});
-            table19.AddRow(new string[] {
-                        "5",
-                        "[[rs(1).set]] = Hello",
-                        "[[rec(1).set = 10"});
+                        "[[var]]        =",
+                        "[[rec(1).set]] = 10"});
             table19.AddRow(new string[] {
                         "",
                         "",
@@ -703,7 +695,7 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "",
                         "[[rec(3).set]] = 30"});
-#line 198
+#line 194
  testRunner.And("the debug inputs as", ((string)(null)), table19, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -720,90 +712,9 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec(3).set]] = 30"});
             table20.AddRow(new string[] {
                         "4",
-                        "[[rs(1).val]] = 10"});
-            table20.AddRow(new string[] {
-                        "",
-                        "[[rs(2).val]] = 20"});
-            table20.AddRow(new string[] {
-                        "",
-                        "[[rs(3).val]] = 30"});
-#line 207
- testRunner.And("the debug output as", ((string)(null)), table20, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a record set to a scalar")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
-        public virtual void AssignARecordSetToAScalar()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a record set to a scalar", ((string[])(null)));
-#line 216
-this.ScenarioSetup(scenarioInfo);
-#line 217
- testRunner.Given("I assign the value 10 to a variable \"[[rec(1).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 218
- testRunner.And("I assign the value 20 to a variable \"[[rec(2).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 219
- testRunner.And("I assign the value 30 to a variable \"[[rec(3).set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 220
- testRunner.And("I assign the value \"[[rec(*).set]]\" to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 221
- testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 222
- testRunner.Then("the value of \"[[var]]\" equals \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 223
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Variable",
-                        "New Value"});
-            table21.AddRow(new string[] {
-                        "1",
-                        "[[rec(1).set]] =",
-                        "10"});
-            table21.AddRow(new string[] {
-                        "2",
-                        "[[rec(2).set]] =",
-                        "20"});
-            table21.AddRow(new string[] {
-                        "3",
-                        "[[rec(3).set]] =",
-                        "30"});
-            table21.AddRow(new string[] {
-                        "4",
-                        "[[var]]        =",
-                        "[[rec(1).set]] = 10"});
-            table21.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(2).set]] = 20"});
-            table21.AddRow(new string[] {
-                        "",
-                        "",
-                        "[[rec(3).set]] = 30"});
-#line 224
- testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table22.AddRow(new string[] {
-                        "1",
-                        "[[rec(1).set]] = 10"});
-            table22.AddRow(new string[] {
-                        "2",
-                        "[[rec(2).set]] = 20"});
-            table22.AddRow(new string[] {
-                        "3",
-                        "[[rec(3).set]] = 30"});
-            table22.AddRow(new string[] {
-                        "4",
                         "[[var]] = 30"});
-#line 232
- testRunner.And("the debug output as", ((string)(null)), table22, "And ");
+#line 202
+ testRunner.And("the debug output as", ((string)(null)), table20, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -814,45 +725,45 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAScalarEqualToARecordSet()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a scalar equal to a record set", ((string[])(null)));
-#line 239
+#line 209
 this.ScenarioSetup(scenarioInfo);
-#line 240
+#line 210
  testRunner.Given("I assign the value 30 to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 241
+#line 211
  testRunner.And("I assign the value \"[[var]]\" to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 242
+#line 212
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 243
+#line 213
  testRunner.Then("the value of \"[[rec(1).set]]\" equals \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 244
+#line 214
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "New Value"});
-            table23.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "1",
                         "[[var]]       =",
                         "30"});
-            table23.AddRow(new string[] {
+            table21.AddRow(new string[] {
                         "2",
                         "[[rec().set]] =",
                         "[[var]]  = 30"});
-#line 245
- testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
+#line 215
+ testRunner.And("the debug inputs as", ((string)(null)), table21, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table24.AddRow(new string[] {
+            table22.AddRow(new string[] {
                         "1",
                         "[[var]] = 30"});
-            table24.AddRow(new string[] {
+            table22.AddRow(new string[] {
                         "2",
                         "[[rec(1).set]] = 30"});
-#line 249
- testRunner.And("the debug output as", ((string)(null)), table24, "And ");
+#line 219
+ testRunner.And("the debug output as", ((string)(null)), table22, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -863,45 +774,45 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAScalarEqualToACalculation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a scalar equal to a calculation", ((string[])(null)));
-#line 254
+#line 224
 this.ScenarioSetup(scenarioInfo);
-#line 255
+#line 225
  testRunner.Given("I assign the value 30 to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 256
+#line 226
  testRunner.And("I assign the value \"=30-[[var]]\" to a variable \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 257
+#line 227
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 258
+#line 228
  testRunner.Then("the value of \"[[Result]]\" equals \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 259
+#line 229
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "New Value"});
-            table25.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "1",
                         "[[var]]    =",
                         "30"});
-            table25.AddRow(new string[] {
+            table23.AddRow(new string[] {
                         "2",
                         "[[Result]] =",
                         "=30-[[var]] ==30-30"});
-#line 260
- testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
+#line 230
+ testRunner.And("the debug inputs as", ((string)(null)), table23, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table26.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "1",
                         "[[var]] = 30"});
-            table26.AddRow(new string[] {
+            table24.AddRow(new string[] {
                         "2",
                         "[[Result]] = 0"});
-#line 264
- testRunner.And("the debug output as", ((string)(null)), table26, "And ");
+#line 234
+ testRunner.And("the debug output as", ((string)(null)), table24, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -912,54 +823,54 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignAVariableEqualToAGroupCalculationSum()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a variable equal to a group calculation (sum)", ((string[])(null)));
-#line 269
+#line 239
 this.ScenarioSetup(scenarioInfo);
-#line 270
+#line 240
  testRunner.Given("I assign the value 30 to a variable \"[[var1]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 271
+#line 241
  testRunner.And("I assign the value 30 to a variable \"[[var2]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 272
+#line 242
  testRunner.And("I assign the value \"=SUM([[var1]],[[var2]])\" to a variable \"[[Result]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 273
+#line 243
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 274
+#line 244
  testRunner.Then("the value of \"[[Result]]\" equals \"60\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 275
+#line 245
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Variable",
                         "New Value"});
-            table27.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "1",
                         "[[var1]]   =",
                         "30"});
-            table27.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "2",
                         "[[var2]]   =",
                         "30"});
-            table27.AddRow(new string[] {
+            table25.AddRow(new string[] {
                         "3",
                         "[[Result]] =",
                         "=SUM([[var1]],[[var2]]) ==SUM(30,30)"});
-#line 276
- testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
+#line 246
+ testRunner.And("the debug inputs as", ((string)(null)), table25, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table28.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "1",
                         "[[var1]] = 30"});
-            table28.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "2",
                         "[[var2]] = 30"});
-            table28.AddRow(new string[] {
+            table26.AddRow(new string[] {
                         "3",
                         "[[Result]] = 60"});
-#line 281
- testRunner.And("the debug output as", ((string)(null)), table28, "And ");
+#line 251
+ testRunner.And("the debug output as", ((string)(null)), table26, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -970,22 +881,85 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignMultipleRecordsetToTheEndOfARecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign multiple recordset to the end of a recordset", ((string[])(null)));
-#line 287
+#line 257
 this.ScenarioSetup(scenarioInfo);
-#line 288
+#line 258
  testRunner.Given("I assign the value 10 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 289
+#line 259
  testRunner.And("I assign the value 20 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 290
+#line 260
  testRunner.And("I assign the value 30 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 291
+#line 261
  testRunner.And("I assign the value [[rec(3).set]] to a variable \"[[des().val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 292
+#line 262
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 293
+#line 263
  testRunner.Then("the value of \"[[des().val]]\" equals 30", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 294
+#line 264
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table27.AddRow(new string[] {
+                        "1",
+                        "[[rec().set]] =",
+                        "10"});
+            table27.AddRow(new string[] {
+                        "2",
+                        "[[rec().set]] =",
+                        "20"});
+            table27.AddRow(new string[] {
+                        "3",
+                        "[[rec().set]] =",
+                        "30"});
+            table27.AddRow(new string[] {
+                        "4",
+                        "[[des().val]] =",
+                        "[[rec(3).set]] =30"});
+#line 265
+ testRunner.And("the debug inputs as", ((string)(null)), table27, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table28.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).set]] = 10"});
+            table28.AddRow(new string[] {
+                        "2",
+                        "[[rec(2).set]] = 20"});
+            table28.AddRow(new string[] {
+                        "3",
+                        "[[rec(3).set]] = 30"});
+            table28.AddRow(new string[] {
+                        "4",
+                        "[[des(1).val]] = 30"});
+#line 271
+ testRunner.And("the debug output as", ((string)(null)), table28, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign the value of a negative recordset index")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        public virtual void AssignTheValueOfANegativeRecordsetIndex()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign the value of a negative recordset index", ((string[])(null)));
+#line 278
+this.ScenarioSetup(scenarioInfo);
+#line 279
+ testRunner.Given("I assign the value 10 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 280
+ testRunner.And("I assign the value [[rec(-1).set]] to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 281
+ testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 282
+ testRunner.Then("the value of \"[[var]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 283
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -997,17 +971,9 @@ this.ScenarioSetup(scenarioInfo);
                         "10"});
             table29.AddRow(new string[] {
                         "2",
-                        "[[rec().set]] =",
-                        "20"});
-            table29.AddRow(new string[] {
-                        "3",
-                        "[[rec().set]] =",
-                        "30"});
-            table29.AddRow(new string[] {
-                        "4",
-                        "[[des().val]] =",
-                        "[[rec(3).set]] =30"});
-#line 295
+                        "[[var]]       =",
+                        "[[rec(-1).set]] ="});
+#line 284
  testRunner.And("the debug inputs as", ((string)(null)), table29, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table30 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1018,36 +984,36 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rec(1).set]] = 10"});
             table30.AddRow(new string[] {
                         "2",
-                        "[[rec(2).set]] = 20"});
-            table30.AddRow(new string[] {
-                        "3",
-                        "[[rec(3).set]] = 30"});
-            table30.AddRow(new string[] {
-                        "4",
-                        "[[des(1).val]] = 30"});
-#line 301
+                        "[[var]] ="});
+#line 288
  testRunner.And("the debug output as", ((string)(null)), table30, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign the value of a negative recordset index")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign the value of a negative recordset index and another assign after")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
-        public virtual void AssignTheValueOfANegativeRecordsetIndex()
+        public virtual void AssignTheValueOfANegativeRecordsetIndexAndAnotherAssignAfter()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign the value of a negative recordset index", ((string[])(null)));
-#line 308
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign the value of a negative recordset index and another assign after", ((string[])(null)));
+#line 293
 this.ScenarioSetup(scenarioInfo);
-#line 309
+#line 294
  testRunner.Given("I assign the value 10 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 310
+#line 295
  testRunner.And("I assign the value [[rec(-1).set]] to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 311
+#line 296
+ testRunner.And("I assign the value 30 to a variable \"[[scalar]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 297
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 312
+#line 298
+ testRunner.Then("the value of \"[[rec().set]]\" equals \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 299
  testRunner.Then("the value of \"[[var]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 313
+#line 300
+ testRunner.Then("the value of \"[[scalar]]\" equals \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 301
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1062,7 +1028,11 @@ this.ScenarioSetup(scenarioInfo);
                         "2",
                         "[[var]]       =",
                         "[[rec(-1).set]] ="});
-#line 314
+            table31.AddRow(new string[] {
+                        "3",
+                        "[[scalar]]    =",
+                        "30"});
+#line 302
  testRunner.And("the debug inputs as", ((string)(null)), table31, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1074,70 +1044,11 @@ this.ScenarioSetup(scenarioInfo);
             table32.AddRow(new string[] {
                         "2",
                         "[[var]] ="});
-#line 318
- testRunner.And("the debug output as", ((string)(null)), table32, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign the value of a negative recordset index and another assign after")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
-        public virtual void AssignTheValueOfANegativeRecordsetIndexAndAnotherAssignAfter()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign the value of a negative recordset index and another assign after", ((string[])(null)));
-#line 323
-this.ScenarioSetup(scenarioInfo);
-#line 324
- testRunner.Given("I assign the value 10 to a variable \"[[rec().set]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 325
- testRunner.And("I assign the value [[rec(-1).set]] to a variable \"[[var]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 326
- testRunner.And("I assign the value 30 to a variable \"[[scalar]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 327
- testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 328
- testRunner.Then("the value of \"[[rec().set]]\" equals \"10\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 329
- testRunner.Then("the value of \"[[var]]\" equals \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 330
- testRunner.Then("the value of \"[[scalar]]\" equals \"30\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 331
- testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Variable",
-                        "New Value"});
-            table33.AddRow(new string[] {
-                        "1",
-                        "[[rec().set]] =",
-                        "10"});
-            table33.AddRow(new string[] {
-                        "2",
-                        "[[var]]       =",
-                        "[[rec(-1).set]] ="});
-            table33.AddRow(new string[] {
-                        "3",
-                        "[[scalar]]    =",
-                        "30"});
-#line 332
- testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table34.AddRow(new string[] {
-                        "1",
-                        "[[rec(1).set]] = 10"});
-            table34.AddRow(new string[] {
-                        "2",
-                        "[[var]] ="});
-            table34.AddRow(new string[] {
+            table32.AddRow(new string[] {
                         "3",
                         "[[scalar]] = 30"});
-#line 337
- testRunner.And("the debug output as", ((string)(null)), table34, "And ");
+#line 307
+ testRunner.And("the debug output as", ((string)(null)), table32, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -1148,14 +1059,47 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignToANegativeRecordsetIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign to a negative recordset index", ((string[])(null)));
-#line 343
+#line 313
 this.ScenarioSetup(scenarioInfo);
-#line 344
+#line 314
  testRunner.Given("I assign the value 10 to a variable \"[[des(-1).val]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 345
+#line 315
  testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 346
+#line 316
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+#line 317
+ testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+#line 319
+ testRunner.And("the debug output as", ((string)(null)), table34, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign a scalar equal to a calculation with a blank variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        public virtual void AssignAScalarEqualToACalculationWithABlankVariable()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign a scalar equal to a calculation with a blank variable", ((string[])(null)));
+#line 322
+this.ScenarioSetup(scenarioInfo);
+#line 323
+ testRunner.Given("I assign the value \"=[[cnt]]+1\" to a variable \"[[cnt]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 324
+ testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 325
+ testRunner.Then("the value of \"[[cnt]]\" equals \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 326
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -1163,16 +1107,496 @@ this.ScenarioSetup(scenarioInfo);
                         "New Value"});
             table35.AddRow(new string[] {
                         "1",
-                        "[[des(-1).val]] =",
-                        "10"});
-#line 347
+                        "[[cnt]] =",
+                        "String = String"});
+#line 327
  testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-#line 350
+            table36.AddRow(new string[] {
+                        "1",
+                        "[[cnt]] = 1"});
+#line 330
  testRunner.And("the debug output as", ((string)(null)), table36, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        public virtual void AssignToAInvalidVariable(string no, string var, string error, string[] exampleTags)
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign to a invalid variable", exampleTags);
+#line 335
+this.ScenarioSetup(scenarioInfo);
+#line 336
+   testRunner.Given(string.Format("I assign the value 10 to a variable \'{0}\'", var), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 337
+   testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 338
+   testRunner.Then(string.Format("the execution has \'{0}\' error", error), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+#line 339
+   testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+#line 341
+   testRunner.And("the debug output as", ((string)(null)), table38, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[rec\").a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_1()
+        {
+            this.AssignToAInvalidVariable("1", "[rec\").a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec\'()\'.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_2()
+        {
+            this.AssignToAInvalidVariable("2", "[[rec\'()\'.a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec\"()\".a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_3()
+        {
+            this.AssignToAInvalidVariable("3", "[[rec\"()\".a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec\".a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_4()
+        {
+            this.AssignToAInvalidVariable("4", "[[rec\".a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_5()
+        {
+            this.AssignToAInvalidVariable("5", "[[rec.a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec()*.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_6()
+        {
+            this.AssignToAInvalidVariable("6", "[[rec()*.a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec().a]].[[a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_7()
+        {
+            this.AssignToAInvalidVariable("7", "[[rec().a]].[[a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec().a]][[a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_8()
+        {
+            this.AssignToAInvalidVariable("8", "[[rec().a]][[a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec().a]]*")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_9()
+        {
+            this.AssignToAInvalidVariable("9", "[[rec().a]]*", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec().a]] a")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_10()
+        {
+            this.AssignToAInvalidVariable("10", "[[rec().a]] a", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[1]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_11()
+        {
+            this.AssignToAInvalidVariable("11", "[[1]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rs(),.val]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_12()
+        {
+            this.AssignToAInvalidVariable("12", "[[rs(),.val]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var#]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_13()
+        {
+            this.AssignToAInvalidVariable("13", "[[var#]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var]]00]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_14()
+        {
+            this.AssignToAInvalidVariable("14", "[[var]]00]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var]]@]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_15()
+        {
+            this.AssignToAInvalidVariable("15", "[[var]]@]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var.()]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_16()
+        {
+            this.AssignToAInvalidVariable("16", "[[var.()]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_17()
+        {
+            this.AssignToAInvalidVariable("17", "[[]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[()]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_18()
+        {
+            this.AssignToAInvalidVariable("18", "[[()]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var[[a]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_19()
+        {
+            this.AssignToAInvalidVariable("19", "[[var[[a]]]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "20")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "20")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var[[]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_20()
+        {
+            this.AssignToAInvalidVariable("20", "[[var[[]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var1.a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_21()
+        {
+            this.AssignToAInvalidVariable("21", "[[var1.a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "22")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "22")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec()!a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_22()
+        {
+            this.AssignToAInvalidVariable("22", "[[rec()!a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec()         a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_23()
+        {
+            this.AssignToAInvalidVariable("23", "[[rec()         a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[{{rec(_).a}}]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_24()
+        {
+            this.AssignToAInvalidVariable("24", "[[{{rec(_).a}}]]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec(23).[[var*]]]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_25()
+        {
+            this.AssignToAInvalidVariable("25", "[[rec(23).[[var*]]]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_26()
+        {
+            this.AssignToAInvalidVariable("26", "[[r(q).a]][[r()..]][[r\"]][[r()]][[]][[1]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "27")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "27")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec().a]]&[[a]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_27()
+        {
+            this.AssignToAInvalidVariable("27", "[[rec().a]]&[[a]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "28")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "28")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "a[[rec([[[[b]]]]).a]]@")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_28()
+        {
+            this.AssignToAInvalidVariable("28", "a[[rec([[[[b]]]]).a]]@", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "29")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "29")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[var  ]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_29()
+        {
+            this.AssignToAInvalidVariable("29", "[[var  ]]", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign to a invalid variable")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:no", "30")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:var", "[[rec()")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:error", "AN")]
+        public virtual void AssignToAInvalidVariable_30()
+        {
+            this.AssignToAInvalidVariable("30", "[[rec()", "AN", ((string[])(null)));
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign values to different columns in a reccord set")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Assign")]
+        public virtual void AssignValuesToDifferentColumnsInAReccordSet()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign values to different columns in a reccord set", ((string[])(null)));
+#line 376
+this.ScenarioSetup(scenarioInfo);
+#line 377
+       testRunner.Given("I assign the value 10 to a variable \"[[rec().a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 378
+       testRunner.And("I assign the value 20 to a variable \"[[rec().b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 379
+       testRunner.And("I assign the value 30 to a variable \"[[rec().c]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 380
+       testRunner.And("I assign the value [[rec().a]] to a variable \"[[d]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 381
+       testRunner.And("I assign the value [[rec().b]] to a variable \"[[e]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 382
+       testRunner.And("I assign the value [[rec().c]] to a variable \"[[f]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 383
+       testRunner.When("the assign tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 384
+       testRunner.Then("the value of \"[[d]]\" equals 10", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 385
+       testRunner.And("the value of \"[[e]]\" equals 20", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 386
+       testRunner.And("the value of \"[[f]]\" equals 30", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 387
+       testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table39.AddRow(new string[] {
+                        "1",
+                        "[[rec().a]] =",
+                        "10"});
+            table39.AddRow(new string[] {
+                        "2",
+                        "[[rec().b]] =",
+                        "20"});
+            table39.AddRow(new string[] {
+                        "3",
+                        "[[rec().c]] =",
+                        "30"});
+            table39.AddRow(new string[] {
+                        "4",
+                        "[[d]]     =",
+                        "[[rec().a]] = 10"});
+            table39.AddRow(new string[] {
+                        "5",
+                        "[[e]]     =",
+                        "[[rec().b]] = 20"});
+            table39.AddRow(new string[] {
+                        "6",
+                        "[[f]]     =",
+                        "[[rec().c]] = 30"});
+#line 388
+       testRunner.And("the debug inputs as", ((string)(null)), table39, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table40.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] = 10"});
+            table40.AddRow(new string[] {
+                        "2",
+                        "[[rec(1).b]] = 20"});
+            table40.AddRow(new string[] {
+                        "3",
+                        "[[rec(1).c]] = 30"});
+            table40.AddRow(new string[] {
+                        "4",
+                        "[[d]] = 10"});
+            table40.AddRow(new string[] {
+                        "5",
+                        "[[e]] = 20"});
+            table40.AddRow(new string[] {
+                        "6",
+                        "[[f]] = 30"});
+#line 396
+       testRunner.And("the debug output as", ((string)(null)), table40, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

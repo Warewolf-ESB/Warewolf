@@ -9,13 +9,12 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    // ReSharper disable InconsistentNaming
-    // ReSharper disable InconsistentNaming
     /// <summary>
     /// Summary description for CountRecordsTest
     /// </summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class DeleteRecordsActivityTest : BaseActivityUnitTest
     {
         /// <summary>
@@ -59,10 +58,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             IDSFDataObject result = ExecuteProcess();
             const string Expected = @"Success";
             string actual;
-            List<string> recsetData;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+            List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
@@ -298,28 +296,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(6, recsetData.Count);
 
         }
-
-        [TestMethod]
-        public void DeleteRecord_When_Field_Is_Included_Expected_RecordAtIndexToStillBeRemoved_Success()
-        {
-            SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(3).field1]]", "[[res]]");
-
-            IDSFDataObject result = ExecuteProcess();
-            const string Expected = @"Success";
-            string actual;
-            List<string> recsetData;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-            recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            Assert.AreEqual(Expected, actual);
-            Assert.AreEqual(5, recsetData.Count);
-            Assert.AreEqual("f1r4", recsetData[2]);
-
-        }
-
+        
         [TestMethod]
         public void DeleteRecord_When_Index_Is_Negative_Expected_No_Change_Failure()
         {
@@ -429,8 +406,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion
-
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -551,5 +527,29 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[res]]", dsfForEachItems[0].Value);
         }
 
+        #region |Valid Recordset Name|
+
+        //[TestMethod]
+        //[Owner("Tshepo Ntlhokoa")]
+        //[TestCategory("DsfDeleteRecordActivity_Execute")]
+        //public void DsfDeleteRecordActivity_Execute_RecordsetNameHasField_Error()
+        //{
+        //    //------------Setup for test--------------------------
+        //    SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1().field1]]", "[[res]]");
+        //    //------------Execute Test---------------------------
+        //    IDSFDataObject result = ExecuteProcess();
+        //    //------------Assert Results-------------------------
+        //    const string Expected = @"Failure";
+        //    string actual;
+        //    string error;
+        //    GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+        //    List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
+        //    // remove test datalist ;)
+        //    DataListRemoval(result.DataListID);
+        //    Assert.AreEqual(Expected, actual);
+        //    Assert.AreEqual(5, recsetData.Count);
+        //    Assert.AreEqual("f1r2", recsetData[0]);
+        //}
+        #endregion
     }
 }

@@ -21,44 +21,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         #region Fields
 
-        private string _recordsetName;
-        private string _countNumber;
-
         #endregion
 
         /// <summary>
         /// Gets or sets the name of the recordset.
         /// </summary>  
-        [Inputs("RecordsetName")]
-        [FindMissing]
-        public string RecordsetName
-        {
-            get
-            {
-                return _recordsetName;
-            }
-            set
-            {
-                _recordsetName = value;
-            }
-        }
+        [Inputs("RecordsetName"), FindMissing]
+        public string RecordsetName { get; set; }
 
         /// <summary>
         /// Gets or sets the count number.
         /// </summary>  
-        [Outputs("CountNumber")]
-        [FindMissing]
-        public string CountNumber
-        {
-            get
-            {
-                return _countNumber;
-            }
-            set
-            {
-                _countNumber = value;
-            }
-        }
+        [Outputs("CountNumber"), FindMissing]
+        public string CountNumber { get; set; }
 
         public DsfCountRecordsetActivity()
             : base("Count Records")
@@ -93,11 +68,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Process if no errors
             try
             {
-                if(!string.IsNullOrWhiteSpace(RecordsetName))
-                {
-                    IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
-                    allErrors.MergeErrors(errors);
+                ValidateRecordsetName(RecordsetName, errors);
+                allErrors.MergeErrors(errors);
 
+                IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
+                allErrors.MergeErrors(errors);
+                if(!allErrors.HasErrors())
+                {
                     string err;
                     IBinaryDataListEntry recset;
 
@@ -115,7 +92,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         if(recset.Columns != null && CountNumber != string.Empty)
                         {
-                            // Travis.Frisinger - Re-did work for bug 7853 
                             if(recset.IsEmpty())
                             {
                                 foreach(var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
@@ -156,10 +132,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         allErrors.MergeErrors(errors);
                     }
                 }
-                else
-                {
-                    allErrors.AddError("No recordset given");
-                }
             }
             finally
             {
@@ -182,7 +154,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-
+        
         #region Get Debug Inputs/Outputs
 
         #region GetDebugInputs

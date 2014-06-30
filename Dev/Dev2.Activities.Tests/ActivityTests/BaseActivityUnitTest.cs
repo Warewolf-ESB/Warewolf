@@ -143,6 +143,7 @@ namespace ActivityUnitTests
                 {
                     dataObject.DataListID = ExecutionID;
                     dataObject.ExecutingUser = User;
+                    dataObject.DataList = CurrentDl;
                 }
 
             }
@@ -168,7 +169,8 @@ namespace ActivityUnitTests
                     ExecutingUser = User,
                     IsDebug = isDebugMode,
                     EnvironmentID = currentEnvironmentID,
-                    IsRemoteInvokeOverridden = overrideRemote
+                    IsRemoteInvokeOverridden = overrideRemote,                  
+                    DataList = CurrentDl
                 };
 
             }

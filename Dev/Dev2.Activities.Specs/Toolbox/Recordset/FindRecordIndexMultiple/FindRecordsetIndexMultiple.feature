@@ -1578,13 +1578,13 @@ Scenario: Find an index of data in a recordset search type is Is Regex
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                            | # |          |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You      |   |          |          |  |     |                             |                                |
-	|           | [[rs(2).field]] = are      |   |          |          |  |     |                             |                                |
-	|           | [[rs(3).field]] = the      |   |          |          |  |     |                             |                                |
-	|           | [[rs(4).field]] = best     |   |          |          |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |          |          |  |     |                             |                                |
-	|           | [[rs(6).field]] = user     | 1 | Is Regex | Warewolf |  |     | NO                          | NO                             |
+	| #           |                            | # |          |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = You      |   |          |          |  |     |                             |                                |
+	|             | [[rs(2).field]] = are      |   |          |          |  |     |                             |                                |
+	|             | [[rs(3).field]] = the      |   |          |          |  |     |                             |                                |
+	|             | [[rs(4).field]] = best     |   |          |          |  |     |                             |                                |
+	|             | [[rs(5).field]] = Warewolf |   |          |          |  |     |                             |                                |
+	|             | [[rs(6).field]] = user     | 1 | Is Regex | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
 	|                 |
 	| [[result]] = 5 |
@@ -1605,14 +1605,14 @@ Scenario: Find an index of data in a recordset search type is Is Regex multiple 
 	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
 	And the debug inputs as
-	|   #        |                            | # |          |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = Warewolf |   |          |          |  |     |                             |                                |
-	|           | [[rs(2).field]] = You      |   |          |          |  |     |                             |                                |
-	|           | [[rs(3).field]] = are      |   |          |          |  |     |                             |                                |
-	|           | [[rs(4).field]] = the      |   |          |          |  |     |                             |                                |
-	|           | [[rs(5).field]] = best     |   |          |          |  |     |                             |                                |
-	|           | [[rs(6).field]] = Warewolf |   |          |          |  |     |                             |                                |
-	|           | [[rs(7).field]] = user     | 1 | Is Regex | Warewolf |  |     | NO                          | NO                             |
+	| #           |                            | # |          |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = Warewolf |   |          |          |  |     |                             |                                |
+	|             | [[rs(2).field]] = You      |   |          |          |  |     |                             |                                |
+	|             | [[rs(3).field]] = are      |   |          |          |  |     |                             |                                |
+	|             | [[rs(4).field]] = the      |   |          |          |  |     |                             |                                |
+	|             | [[rs(5).field]] = best     |   |          |          |  |     |                             |                                |
+	|             | [[rs(6).field]] = Warewolf |   |          |          |  |     |                             |                                |
+	|             | [[rs(7).field]] = user     | 1 | Is Regex | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
 	|                   |
 	| [[result]] = 1,6 |
@@ -1632,13 +1632,13 @@ Scenario: Find an index of data in a recordset search type is Is Regex result do
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
 	And the debug inputs as
-	|   #        |                            | # |          |      |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You      |   |          |      |  |     |                             |                                |
-	|           | [[rs(2).field]] = are      |   |          |      |  |     |                             |                                |
-	|           | [[rs(3).field]] = the      |   |          |      |  |     |                             |                                |
-	|           | [[rs(4).field]] = best     |   |          |      |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |          |      |  |     |                             |                                |
-	|           | [[rs(6).field]] = user     | 1 | Is Regex | Mars |  |     | NO                          | NO                             |
+	| #           |                            | # |          |      |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = You      |   |          |      |  |     |                             |                                |
+	|             | [[rs(2).field]] = are      |   |          |      |  |     |                             |                                |
+	|             | [[rs(3).field]] = the      |   |          |      |  |     |                             |                                |
+	|             | [[rs(4).field]] = best     |   |          |      |  |     |                             |                                |
+	|             | [[rs(5).field]] = Warewolf |   |          |      |  |     |                             |                                |
+	|             | [[rs(6).field]] = user     | 1 | Is Regex | Mars |  |     | NO                          | NO                             |
 	And the debug output as
 	|                  |
 	| [[result]] = -1 |
@@ -1658,13 +1658,13 @@ Scenario: Find an index of data in a recordset search type is Is Text
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
 	And the debug inputs as
-	|   #        |                            | # |         |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 15       |   |         |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = 56       |   |         |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = 45       |   |         |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = 7        |   |         |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |         |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = 16       | 1 | Is Text |  |  |     | NO                          | NO                             |
+	| #           |                            | # |         |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = 15       |   |         |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = 56       |   |         |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = 45       |   |         |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = 7        |   |         |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = Warewolf |   |         |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = 16       | 1 | Is Text |  |  |     | NO                          | NO                             |
 	And the debug output as
 	|                 |
 	| [[result]] = 5 |
@@ -1685,14 +1685,14 @@ Scenario: Find an index of data in a recordset search type is Is Text multiple r
 	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                            | # |         |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = Warewolf |   |         |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = 45       |   |         |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = 54       |   |         |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = 51       |   |         |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = 86       |   |         |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = Warewolf |   |         |  |  |     |                             |                                |
-	|           | [[rs(7).field]] = 8        | 1 | Is Text |  |  |     | NO                          | NO                             |
+	| #           |                            | # |         |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = Warewolf |   |         |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = 45       |   |         |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = 54       |   |         |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = 51       |   |         |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = 86       |   |         |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = Warewolf |   |         |  |  |     |                             |                                |
+	|             | [[rs(7).field]] = 8        | 1 | Is Text |  |  |     | NO                          | NO                             |
 	And the debug output as
 	|                   |
 	| [[result]] = 1,6 |
@@ -1712,13 +1712,13 @@ Scenario: Find an index of data in a recordset search type is Is Text result doe
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                     | # |         |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 1 |   |         |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = 2 |   |         |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = 3 |   |         |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = 4 |   |         |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = 6 |   |         |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = 5 | 1 | Is Text |  |  |     | NO                          | NO                             |     
+	| #           |                     | # |         |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = 1 |   |         |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = 2 |   |         |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = 3 |   |         |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = 4 |   |         |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = 6 |   |         |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = 5 | 1 | Is Text |  |  |     | NO                          | NO                             |     
 	And the debug output as
 	|                  |
 	| [[result]] = -1 |
@@ -1738,15 +1738,15 @@ Scenario: Find an index of data in a recordset search type is Is XML
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                                 | # |        |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You           |   |        |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = are           |   |        |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = the           |   |        |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = best          |   |        |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = <test></test> |   |        |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = user          | 1 | Is XML |  |  |     | NO                          | NO                             |
+	| #           |                                 | # |        |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = You           |   |        |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = are           |   |        |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = the           |   |        |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = best          |   |        |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = <test></test> |   |        |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = user          | 1 | Is XML |  |  |     | NO                          | NO                             |
 	And the debug output as
-	|                 |
+	|                |
 	| [[result]] = 5 |
 	
 Scenario: Find an index of data in a recordset search type is Is XML multiple results
@@ -1765,14 +1765,14 @@ Scenario: Find an index of data in a recordset search type is Is XML multiple re
 	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                                 | # |        |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = <test></test> |   |        |          |  |     |                             |                                |
-	|           | [[rs(2).field]] = You           |   |        |          |  |     |                             |                                |
-	|           | [[rs(3).field]] = are           |   |        |          |  |     |                             |                                |
-	|           | [[rs(4).field]] = the           |   |        |          |  |     |                             |                                |
-	|           | [[rs(5).field]] = best          |   |        |          |  |     |                             |                                |
-	|           | [[rs(6).field]] = <test></test> |   |        |          |  |     |                             |                                |
-	|           | [[rs(7).field]] = user          | 1 | Is XML | Warewolf |  |     | NO                          | NO                             |     
+	| #           |                                 | # |        |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = <test></test> |   |        |          |  |     |                             |                                |
+	|             | [[rs(2).field]] = You           |   |        |          |  |     |                             |                                |
+	|             | [[rs(3).field]] = are           |   |        |          |  |     |                             |                                |
+	|             | [[rs(4).field]] = the           |   |        |          |  |     |                             |                                |
+	|             | [[rs(5).field]] = best          |   |        |          |  |     |                             |                                |
+	|             | [[rs(6).field]] = <test></test> |   |        |          |  |     |                             |                                |
+	|             | [[rs(7).field]] = user          | 1 | Is XML | Warewolf |  |     | NO                          | NO                             |     
 	And the debug output as
 	|                   |
 	| [[result]] = 1,6 |
@@ -1792,13 +1792,13 @@ Scenario: Find an index of data in a recordset search type is Is XML result does
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
 	And the debug inputs as
-	|   #        |                            | # |        |      |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You      |   |        |      |  |     |                             |                                |
-	|           | [[rs(2).field]] = are      |   |        |      |  |     |                             |                                |
-	|           | [[rs(3).field]] = the      |   |        |      |  |     |                             |                                |
-	|           | [[rs(4).field]] = best     |   |        |      |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |        |      |  |     |                             |                                |
-	|           | [[rs(6).field]] = user     | 1 | Is XML | Mars |  |     | NO                          | NO                             |  
+	| #           |                            | # |        |      |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = You      |   |        |      |  |     |                             |                                |
+	|             | [[rs(2).field]] = are      |   |        |      |  |     |                             |                                |
+	|             | [[rs(3).field]] = the      |   |        |      |  |     |                             |                                |
+	|             | [[rs(4).field]] = best     |   |        |      |  |     |                             |                                |
+	|             | [[rs(5).field]] = Warewolf |   |        |      |  |     |                             |                                |
+	|             | [[rs(6).field]] = user     | 1 | Is XML | Mars |  |     | NO                          | NO                             |  
 	And the debug output as
 	|                  |
 	| [[result]] = -1 |
@@ -1818,13 +1818,13 @@ Scenario: Find an index of data in a recordset search type is Not Alphanumeric
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                        | # |                  |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You  |   |                  |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = are  |   |                  |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = the  |   |                  |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = best |   |                  |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = $$   |   |                  |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = user | 1 | Not Alphanumeric |  |  |     | NO                          | NO                             |
+	| #           |                        | # |                  |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = You  |   |                  |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = are  |   |                  |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = the  |   |                  |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = best |   |                  |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = $$   |   |                  |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = user | 1 | Not Alphanumeric |  |  |     | NO                          | NO                             |
 	And the debug output as
 	|                 |
 	| [[result]] = 5 |
@@ -1845,14 +1845,14 @@ Scenario: Find an index of data in a recordset search type is Not Alphanumeric m
 	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                        | # |                  |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = $$   |   |                  |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = You  |   |                  |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = are  |   |                  |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = the  |   |                  |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = best |   |                  |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = $$   |   |                  |  |  |     |                             |                                |
-	|           | [[rs(7).field]] = user | 1 | Not Alphanumeric |  |  |     | NO                          | NO                             |
+	| #           |                        | # |                  |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = $$   |   |                  |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = You  |   |                  |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = are  |   |                  |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = the  |   |                  |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = best |   |                  |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = $$   |   |                  |  |  |     |                             |                                |
+	|             | [[rs(7).field]] = user | 1 | Not Alphanumeric |  |  |     | NO                          | NO                             |
 	And the debug output as
 	|                   |
 	| [[result]] = 1,6 |
@@ -1872,13 +1872,13 @@ Scenario: Find an index of data in a recordset search type is Not Alphanumeric r
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
 	And the debug inputs as
-	|    #       |                            | # |                  |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You      |   |                  |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = are      |   |                  |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = the      |   |                  |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = best     |   |                  |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |                  |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = user     | 1 | Not Alphanumeric |  |  |     | NO                          | NO                             |   
+	| #           |                            | # |                  |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = You      |   |                  |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = are      |   |                  |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = the      |   |                  |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = best     |   |                  |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = Warewolf |   |                  |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = user     | 1 | Not Alphanumeric |  |  |     | NO                          | NO                             |   
 	And the debug output as
 	|                  |
 	| [[result]] = -1 |
@@ -1898,13 +1898,13 @@ Scenario: Find an index of data in a recordset search type is Not Date
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
 	And the debug inputs as
-	|   #        |                              | # |          |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
-	|           | [[rs(2).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
-	|           | [[rs(3).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
-	|           | [[rs(4).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf   |   |          |          |  |     |                             |                                |
-	|           | [[rs(6).field]] = 12/11/2013 | 1 | Not Date | Warewolf |  |     | NO                          | NO                             |
+	| #           |                              | # |          |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
+	|             | [[rs(2).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
+	|             | [[rs(3).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
+	|             | [[rs(4).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
+	|             | [[rs(5).field]] = Warewolf   |   |          |          |  |     |                             |                                |
+	|             | [[rs(6).field]] = 12/11/2013 | 1 | Not Date | Warewolf |  |     | NO                          | NO                             |
 	And the debug output as
 	|                  |
 	| [[result]] = 5  |
@@ -1925,14 +1925,14 @@ Scenario: Find an index of data in a recordset search type is Not Date multiple 
 	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                              | # |          |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = Warewolf   |   |          |          |  |     |                             |                                |
-	|           | [[rs(2).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
-	|           | [[rs(3).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
-	|           | [[rs(4).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
-	|           | [[rs(5).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
-	|           | [[rs(6).field]] = Warewolf   |   |          |          |  |     |                             |                                |
-	|           | [[rs(7).field]] = 12/11/2013 | 1 | Not Date | Warewolf |  |     | NO                          | NO                             |    
+	| #           |                              | # |          |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = Warewolf   |   |          |          |  |     |                             |                                |
+	|             | [[rs(2).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
+	|             | [[rs(3).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
+	|             | [[rs(4).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
+	|             | [[rs(5).field]] = 12/11/2013 |   |          |          |  |     |                             |                                |
+	|             | [[rs(6).field]] = Warewolf   |   |          |          |  |     |                             |                                |
+	|             | [[rs(7).field]] = 12/11/2013 | 1 | Not Date | Warewolf |  |     | NO                          | NO                             |    
 	And the debug output as
 	|                    |
 	| [[result]] = 1,6  |
@@ -1952,13 +1952,13 @@ Scenario: Find an index of data in a recordset search type is Not Date result do
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                              | # |          |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 12/11/2013 |   |          |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = 12/11/2013 |   |          |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = 12/11/2013 |   |          |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = 12/11/2013 |   |          |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = 12/11/2013 |   |          |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = 12/11/2013 | 1 | Not Date |  |  |     | NO                          | NO                             |     
+	| #           |                              | # |          |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = 12/11/2013 |   |          |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = 12/11/2013 |   |          |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = 12/11/2013 |   |          |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = 12/11/2013 |   |          |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = 12/11/2013 |   |          |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = 12/11/2013 | 1 | Not Date |  |  |     | NO                          | NO                             |     
 	And the debug output as
 	|                  |
 	| [[result]] = -1 |
@@ -1978,13 +1978,13 @@ Scenario: Find an index of data in a recordset search type is Not Email
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
 	And the debug inputs as
-	|   #        |                                        | # |           |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf             |   |           |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = test@testEmail.co.za | 1 | Not Email |  |  |     | NO                          | NO                             |
+	| #           |                                        | # |           |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = Warewolf             |   |           |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = test@testEmail.co.za | 1 | Not Email |  |  |     | NO                          | NO                             |
 	And the debug output as
 	|                  |
 	| [[result]] =  5 |
@@ -2005,14 +2005,14 @@ Scenario: Find an index of data in a recordset search type is Not Email multiple
 	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                                        | # |           |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = Warewolf             |   |           |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = Warewolf             |   |           |  |  |     |                             |                                |
-	|           | [[rs(7).field]] = test@testEmail.co.za | 1 | Not Email |  |  |     | NO                          | NO                             |
+	| #           |                                        | # |           |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = Warewolf             |   |           |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = test@testEmail.co.za |   |           |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = Warewolf             |   |           |  |  |     |                             |                                |
+	|             | [[rs(7).field]] = test@testEmail.co.za | 1 | Not Email |  |  |     | NO                          | NO                             |
 	And the debug output as
 	|                    |
 	| [[result]] =  1,6 |
@@ -2032,13 +2032,13 @@ Scenario: Find an index of data in a recordset search type is Not Email result d
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                                        | # |          |      |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = test@testEmail.co.za |   |          |      |  |     |                             |                                |
-	|           | [[rs(2).field]] = test@testEmail.co.za |   |          |      |  |     |                             |                                |
-	|           | [[rs(3).field]] = test@testEmail.co.za |   |          |      |  |     |                             |                                |
-	|           | [[rs(4).field]] = test@testEmail.co.za |   |          |      |  |     |                             |                                |
-	|           | [[rs(5).field]] = test@testEmail.co.za |   |          |      |  |     |                             |                                |
-	|           | [[rs(6).field]] = test@testEmail.co.za | 1 | Not Email | Mars |  |     | NO                          | NO                             |    
+	| #           |                                        | # |           |      |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = test@testEmail.co.za |   |           |      |  |     |                             |                                |
+	|             | [[rs(2).field]] = test@testEmail.co.za |   |           |      |  |     |                             |                                |
+	|             | [[rs(3).field]] = test@testEmail.co.za |   |           |      |  |     |                             |                                |
+	|             | [[rs(4).field]] = test@testEmail.co.za |   |           |      |  |     |                             |                                |
+	|             | [[rs(5).field]] = test@testEmail.co.za |   |           |      |  |     |                             |                                |
+	|             | [[rs(6).field]] = test@testEmail.co.za | 1 | Not Email | Mars |  |     | NO                          | NO                             |   
 	And the debug output as
 	|                   |
 	| [[result]] =  -1 |
@@ -2058,13 +2058,13 @@ Scenario: Find an index of data in a recordset search type is Not Numeric
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
 	And the debug inputs as
-	|   #        |                            | # |             |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 152      |   |             |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = 5        |   |             |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = 6        |   |             |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = 7        |   |             |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |             |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = 5        | 1 | Not Numeric |  |  |     | NO                          | NO                             |     
+	| #           |                            | # |             |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = 152      |   |             |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = 5        |   |             |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = 6        |   |             |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = 7        |   |             |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = Warewolf |   |             |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = 5        | 1 | Not Numeric |  |  |     | NO                          | NO                             |     
 	And the debug output as
 	|                   |
 	| [[result]] =  5  |
@@ -2085,14 +2085,14 @@ Scenario: Find an index of data in a recordset search type is Not Numeric multip
 	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                            | # |             |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = Warewolf |   |             |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = 45       |   |             |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = 2        |   |             |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = 4        |   |             |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = 5        |   |             |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = Warewolf |   |             |  |  |     |                             |                                |
-	|           | [[rs(7).field]] = 5        | 1 | Not Numeric |  |  |     | NO                          | NO                             |     
+	| #           |                            | # |             |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = Warewolf |   |             |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = 45       |   |             |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = 2        |   |             |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = 4        |   |             |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = 5        |   |             |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = Warewolf |   |             |  |  |     |                             |                                |
+	|             | [[rs(7).field]] = 5        | 1 | Not Numeric |  |  |     | NO                          | NO                             |     
 	And the debug output as
 	|                    |
 	| [[result]] =  1,6 |
@@ -2113,13 +2113,13 @@ Scenario: Find an index of data in a recordset search type is Not Numeric result
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
 	And the debug inputs as
-	|    #       |                     | # |             |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 1 |   |             |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = 1 |   |             |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = 2 |   |             |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = 2 |   |             |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = 3 |   |             |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = 3 | 1 | Not Numeric |  |  |     | NO                          | NO                             |     
+	| #           |                     | # |             |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = 1 |   |             |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = 1 |   |             |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = 2 |   |             |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = 2 |   |             |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = 3 |   |             |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = 3 | 1 | Not Numeric |  |  |     | NO                          | NO                             |     
 	 And the debug output as	   
 	|                   |
 	| [[result]] =  -1 |
@@ -2139,13 +2139,13 @@ Scenario: Find an index of data in a recordset search type is Not Text
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
 	And the debug inputs as
-	| #          |                        | # |          |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You  |   |          |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = are  |   |          |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = the  |   |          |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = best |   |          |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = 52   |   |          |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = user | 1 | Not Text |  |  |     | NO                          | NO                             |     
+	| #           |                        | # |          |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = You  |   |          |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = are  |   |          |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = the  |   |          |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = best |   |          |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = 52   |   |          |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = user | 1 | Not Text |  |  |     | NO                          | NO                             |     
 	And the debug output as
 	|                   |
 	| [[result]] =  5  |
@@ -2167,14 +2167,14 @@ Scenario: Find an index of data in a recordset search type is Not Text multiple 
 	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
 	And the debug inputs as
-	|   #        |                        | # |          |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = 45   |   |          |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = You  |   |          |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = are  |   |          |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = the  |   |          |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = best |   |          |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = 741  |   |          |  |  |     |                             |                                |
-	|           | [[rs(7).field]] = user | 1 | Not Text |  |  |     | NO                          | NO                             |     
+	| #           |                        | # |          |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = 45   |   |          |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = You  |   |          |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = are  |   |          |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = the  |   |          |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = best |   |          |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = 741  |   |          |  |  |     |                             |                                |
+	|             | [[rs(7).field]] = user | 1 | Not Text |  |  |     | NO                          | NO                             |     
 	And the debug output as
 	|                    |
 	| [[result]] =  1,6 |
@@ -2194,13 +2194,13 @@ Scenario: Find an index of data in a recordset search type is Not Text result do
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
 	And the debug inputs as
-	|   #        |                            | # |          |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = You      |   |          |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = are      |   |          |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = the      |   |          |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = best     |   |          |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf |   |          |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = user     | 1 | Not Text |  |  |     | NO                          | NO                             |   
+	| #           |                            | # |          |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = You      |   |          |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = are      |   |          |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = the      |   |          |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = best     |   |          |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = Warewolf |   |          |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = user     | 1 | Not Text |  |  |     | NO                          | NO                             |   
 	 And the debug output as			  
 	|                   |
 	| [[result]] =  -1 |
@@ -2221,13 +2221,13 @@ Scenario: Find an index of data in a recordset search type is Not XML
 	Then the find records index multiple result should be 5
 	And the execution has "NO" error
 	And the debug inputs as
-	|  #         |                                 | # |         |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = <test></test> |   |         |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = <test></test> |   |         |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = <test></test> |   |         |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = <test></test> |   |         |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = Warewolf      |   |         |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = <test></test> | 1 | Not XML |  |  |     | NO                          | NO                             |
+	| #           |                                 | # |         |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = <test></test> |   |         |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = <test></test> |   |         |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = <test></test> |   |         |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = <test></test> |   |         |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = Warewolf      |   |         |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = <test></test> | 1 | Not XML |  |  |     | NO                          | NO                             |
 	And the debug output as
 	|                  |
 	| [[result]] =  5 |
@@ -2249,14 +2249,14 @@ Scenario: Find an index of data in a recordset search type is Not XML multiple r
 	Then the find records index multiple result should be 1,6
 	And the execution has "NO" error
 	And the debug inputs as
-	|   #        |                                 | # |         |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = Warewolf      |   |         |          |  |     |                             |                                |
-	|           | [[rs(2).field]] = <test></test> |   |         |          |  |     |                             |                                |
-	|           | [[rs(3).field]] = <test></test> |   |         |          |  |     |                             |                                |
-	|           | [[rs(4).field]] = <test></test> |   |         |          |  |     |                             |                                |
-	|           | [[rs(5).field]] = <test></test> |   |         |          |  |     |                             |                                |
-	|           | [[rs(6).field]] = Warewolf      |   |         |          |  |     |                             |                                |
-	|           | [[rs(7).field]] = <test></test> | 1 | Not XML | Warewolf |  |     | NO                          | NO                             |  
+	| #           |                                 | # |         |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = Warewolf      |   |         |          |  |     |                             |                                |
+	|             | [[rs(2).field]] = <test></test> |   |         |          |  |     |                             |                                |
+	|             | [[rs(3).field]] = <test></test> |   |         |          |  |     |                             |                                |
+	|             | [[rs(4).field]] = <test></test> |   |         |          |  |     |                             |                                |
+	|             | [[rs(5).field]] = <test></test> |   |         |          |  |     |                             |                                |
+	|             | [[rs(6).field]] = Warewolf      |   |         |          |  |     |                             |                                |
+	|             | [[rs(7).field]] = <test></test> | 1 | Not XML | Warewolf |  |     | NO                          | NO                             |  
 	And the debug output as
 	|                    |
 	| [[result]] =  1,6 |
@@ -2277,13 +2277,13 @@ Scenario: Find an index of data in a recordset search type is Not XML result doe
 	Then the find records index multiple result should be -1
 	And the execution has "NO" error
 	And the debug inputs as
-	|   #        |                                 | # |         |  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).field]] = <test></test> |   |         |  |  |     |                             |                                |
-	|           | [[rs(2).field]] = <test></test> |   |         |  |  |     |                             |                                |
-	|           | [[rs(3).field]] = <test></test> |   |         |  |  |     |                             |                                |
-	|           | [[rs(4).field]] = <test></test> |   |         |  |  |     |                             |                                |
-	|           | [[rs(5).field]] = <test></test> |   |         |  |  |     |                             |                                |
-	|           | [[rs(6).field]] = <test></test> | 1 | Not XML |  |  |     | NO                          | NO                             |
+	| #           |                                 | # |         |  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).field]] = <test></test> |   |         |  |  |     |                             |                                |
+	|             | [[rs(2).field]] = <test></test> |   |         |  |  |     |                             |                                |
+	|             | [[rs(3).field]] = <test></test> |   |         |  |  |     |                             |                                |
+	|             | [[rs(4).field]] = <test></test> |   |         |  |  |     |                             |                                |
+	|             | [[rs(5).field]] = <test></test> |   |         |  |  |     |                             |                                |
+	|             | [[rs(6).field]] = <test></test> | 1 | Not XML |  |  |     | NO                          | NO                             |
 	And the debug output as
 	|                    |
 	| [[result]] =  -1  |
@@ -2377,23 +2377,23 @@ Scenario: Find an index of data in a recordset search type Contains and requires
 
 Scenario: Find an index of data in a recordset search type Contains and requires all fields to match true and match all rows false
 	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| rs(1).field1 |123 |
-	| rs(2).field1 |2 |
-	| rs(3).field1 |5 |
+	| rs           | value |
+	| rs(1).field1 | 123   |
+	| rs(2).field1 | 2     |
+	| rs(3).field1 | 5     |
 	Given I have the following recordset to search for multiple criteria
 	| rs       | value    |	
 	| rs1(1).field2 |214 |
 	| rs1(2).field2 |52 |
 	| rs1(3).field2 |56 |
 	Given I have the following recordset to search for multiple criteria
-	| rs       | value    |
-	| rs2(1).field3 |512 |
-	| rs2(2).field3 |82 |
-	| rs2(3).field3 |12 |
+	| rs            | value |
+	| rs2(1).field3 | 512   |
+	| rs2(2).field3 | 82    |
+	| rs2(3).field3 | 12    |
 	And the fields to search is
-	| field    |
-	| [[rs().field1]] |
+	| field            |
+	| [[rs().field1]]  |
 	| [[rs1().field2]] |
 	| [[rs2().field3]] |
 	And search the recordset with type "Contains" and criteria is "1"	
@@ -2414,9 +2414,9 @@ Scenario: Search using a negative index recordset criteria
 	When the find records index multiple tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as
-	|   #        |                          | # |         |                  |  | And | Require All Fields To Match | Require All Matches To Be True |
-	| In Field(s)| [[rs(1).row]] = Warewolf |   |         |                  |  |     |                             |                                |
-	|           | [[rs(2).row]] = User     | 1 | Not XML | [[my(-1).set]] = |  |     | NO                          | NO                             |
+	| #           |                          | # |         |                  |  | And | Require All Fields To Match | Require All Matches To Be True |
+	| In Field(s) | [[rs(1).row]] = Warewolf |   |         |                  |  |     |                             |                                |
+	|             | [[rs(2).row]] = User     | 1 | Not XML | [[my(-1).set]] = |  |     | NO                          | NO                             |
 	And the debug output as
 	|                  |
 	| [[result]] =  -1 |

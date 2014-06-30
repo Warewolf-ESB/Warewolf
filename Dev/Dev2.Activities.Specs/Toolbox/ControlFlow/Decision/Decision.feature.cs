@@ -3274,6 +3274,46 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("decide if text with space is equal to same text with extra space (False)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void DecideIfTextWithSpaceIsEqualToSameTextWithExtraSpaceFalse()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("decide if text with space is equal to same text with extra space (False)", ((string[])(null)));
+#line 1078
+this.ScenarioSetup(scenarioInfo);
+#line 1079
+ testRunner.Given("a decision variable \"[[A]]\" value \"123 234\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1080
+ testRunner.And("is \"[[A]]\" \"IsEqual\" \"123   234\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1081
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1082
+ testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1083
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table149 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require All decisions to be True"});
+            table149.AddRow(new string[] {
+                        "[[A]] = 123 234",
+                        "String",
+                        "YES"});
+#line 1084
+ testRunner.And("the debug inputs as", ((string)(null)), table149, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table150 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table150.AddRow(new string[] {
+                        "NO"});
+#line 1087
+ testRunner.And("the debug output as", ((string)(null)), table150, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

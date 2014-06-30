@@ -231,6 +231,7 @@ namespace Dev2.DynamicServices
         public ServiceAction ExecuteAction { get; set; }
 
         private string _rawPayload;
+        string _dataList;
         public string RawPayload
         {
             get
@@ -282,7 +283,17 @@ namespace Dev2.DynamicServices
 
         public string ParentWorkflowXmlData { get; set; }
 
-        public string DataList { get; set; }
+        public string DataList
+        {
+            get
+            {
+                return _dataList;
+            }
+            set
+            {
+                _dataList = value;
+            }
+        }
 
         public ExecutionOrigin ExecutionOrigin { get; set; }
         public string ExecutionOriginDescription { get; set; }

@@ -36,6 +36,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         }
 
         [Given(@"I have a convert variable ""(.*)"" with a value of ""(.*)""")]
+        [Given(@"I have a convert variable '(.*)' with a value of '(.*)'")]
         public void GivenIHaveAConvertVariableWithAValueOf(string variable, string value)
         {
             List<Tuple<string, string>> variableList;
@@ -51,6 +52,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         }
 
         [Given(@"I convert a variable ""(.*)"" from type ""(.*)"" to type ""(.*)""")]
+        [Given(@"I convert a variable ""(.*)"" from type '(.*)' to type '(.*)'")]
+        [Given(@"I convert a variable '(.*)' from type '(.*)' to type '(.*)'")]
         public void GivenIConvertAVariableFromTypeToType(string variable, string fromType, string toType)
         {
             List<Tuple<string, string, string>> baseCollection;

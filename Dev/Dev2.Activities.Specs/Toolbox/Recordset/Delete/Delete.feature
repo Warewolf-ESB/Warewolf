@@ -172,63 +172,57 @@ Scenario: Delete a scalar insted of a recordset
 	Then the delete result should be "Failure"
 	And the execution has "AN" error
 	And the debug inputs as  	
-	| Records    |
-	| [[var]]  = |
+	| Records    |	
 	And the debug output as  
-	|                       |
+	|                      |
 	| [[result]] = Failure |
 
-#Scenario: Delete two recordset data.
-#	Given I have the following recordset
-#	| rs       | val |
-#	| rs().row | 1   |
-#	| rs().row | 2   |
-#	| ws().row | 3   |
-#	| ws().row | 4   |
-#	And I delete a record "[[rs(*)]],[[ws(*)]]"
-#	When the delete tool is executed
-#	Then the delete result should be "Failure"
-#	And the recordset "[[rs().row]]" will be as follows
-#	| rs       | row |
-#	And the execution has "AN" error
-#	And the debug inputs as  	
-#	| Records      |
-#	| [[rs(*)]]  = |
-#	| [[ws(*)]]  = |
-#	And the debug output as  
-#	|                      |
-#	| [[result]] = Failure |
-#
-#Scenario: Delete two specific recordset data.
-#	Given I have the following recordset
-#	| rs       | val |
-#	| rs().row | 1   |
-#	| rs().row | 2   |
-#	| rs().row | 3   |
-#	| rs().row | 4   |
-#	And I delete a record "[[rs(1).a]],[[rs(4).a]]"
-#	When the delete tool is executed
-#	Then the delete result should be "Failure"
-#	And the recordset "[[rs().row]]" will be as follows
-#	| rs       | row |
-#	And the execution has "AN" error
-#	And the debug inputs as  	
-#	| Records        |
-#	| [[rs(1)]]  = 1 |
-#	| [[ws(4)]]  = 4 |
-#	And the debug output as  
-#	|                      |
-#	| [[result]] = Failure |
+Scenario: Delete two recordset data.
+	Given I have the following recordset
+	| rs       | val |
+	| rs().row | 1   |
+	| rs().row | 2   |
+	| ws().row | 3   |
+	| ws().row | 4   |
+	And I delete a record "[[rs(*)]],[[ws(*)]]"
+	When the delete tool is executed
+	Then the delete result should be "Failure"
+	And the recordset "[[rs().row]]" will be as follows
+	| rs            | row |
+	| [[rs(1).row]] | 1   |
+	| [[rs(1).row]] | 2   |	
+	And the recordset "[[ws().row]]" will be as follows
+	| rs            | row |
+	| [[ws(1).row]] | 3   |
+	| [[ws(2).row]] | 4   |
+	And the execution has "AN" error
+	And the debug inputs as  	
+	| Records      |
+	And the debug output as  
+	|                      |
+	| [[result]] = Failure |
 
-#
-
-
-
-
-
-
-
-
-
+Scenario: Delete two specific recordset data.
+	Given I have the following recordset
+	| rs       | val |
+	| rs().row | 1   |
+	| rs().row | 2   |
+	| rs().row | 3   |
+	| rs().row | 4   |
+	And I delete a record "[[rs(1).a]],[[rs(4).a]]"
+	When the delete tool is executed
+	Then the delete result should be "Failure"
+	And the recordset "[[rs().row]]" will be as follows
+	| rs           | row |
+	| [[rs().row]] | 1   |
+	| [[rs().row]] | 2   |
+	| [[rs().row]] | 3   |
+	| [[rs().row]] | 4   |
+	And the execution has "AN" error
+	And the debug inputs as  	
+	| Records        |	
+	And the debug output as  
+	|                      |
+	| [[result]] = Failure |
 
 

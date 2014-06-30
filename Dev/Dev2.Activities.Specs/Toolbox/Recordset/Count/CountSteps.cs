@@ -25,6 +25,10 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             }
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
+
+            string resultVariable;
+            ScenarioContext.Current.TryGetValue("resultVariable", out resultVariable);
+
             BuildShapeAndTestData();
 
             string recordSetName;
@@ -35,7 +39,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Count
             var count = new DsfCountRecordsetActivity
                 {
                     RecordsetName = recordset,
-                    CountNumber = ResultVariable
+                    CountNumber = string.IsNullOrEmpty(resultVariable) ? ResultVariable : resultVariable
                 };
 
             TestStartNode = new FlowStep

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Linq;
-using Dev2.Activities.Specs.BaseTypes;
+﻿using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -36,6 +36,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         }
 
         [Given(@"I assign the value (.*) to a variable ""(.*)""")]
+        [Given(@"I assign the value (.*) to a variable '(.*)'")]
         public void GivenIAssignTheValueToAVariable(string value, string variable)
         {
             value = value.Replace('"', ' ').Trim();

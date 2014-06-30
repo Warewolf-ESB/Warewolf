@@ -144,6 +144,5 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         {
             ScenarioContext.Current.Add("resultVariable", resultVar);
         }
-
     }
 }

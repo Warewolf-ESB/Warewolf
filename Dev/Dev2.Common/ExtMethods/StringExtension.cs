@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 
@@ -153,6 +155,27 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsNumeric(this string payload, out decimal value)
         {
+            if (string.IsNullOrEmpty(payload))
+            {
+                value = 0;
+                return false;
+            }
+
+            string evalString = payload;
+
+            if (payload[0] == '-')
+            {
+                evalString = payload.Substring(1, payload.Length - 1);
+            }
+
+            NumberFormatInfo current = CultureInfo.CurrentCulture.NumberFormat;
+            if(evalString.Any(c => !char.IsDigit(c)
+                && c != current.NumberDecimalSeparator[0]))
+            {
+                value = 0;
+                return false;
+            }
+
             return decimal.TryParse(payload, out value);
         }
 

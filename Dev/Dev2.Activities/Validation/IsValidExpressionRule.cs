@@ -1,5 +1,6 @@
 ﻿using Dev2.Data.Enums;
 using Dev2.Data.Parsers;
+using Dev2.Data.Util;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using System;
@@ -48,7 +49,17 @@ namespace Dev2.Validation
             }
 
             var parser = new Dev2DataLanguageParser();
+
             var results = parser.ParseDataLanguageForIntellisense(value, _datalist);
+
+            if(DataListUtil.IsEvaluated(value) && !DataListUtil.IsValueRecordset(value))
+            {
+                var intellisenseResult = parser.ValidateName(DataListUtil.RemoveLanguageBrackets(value), "");
+                if(intellisenseResult != null && intellisenseResult.Type == enIntellisenseResultType.Error)
+                {
+                    results.Add(intellisenseResult);
+                }
+            }
 
             var error = results.FirstOrDefault(r => r.Type == enIntellisenseResultType.Error);
 
@@ -66,7 +77,6 @@ namespace Dev2.Validation
                               + error.Message
                 };
             }
-
             return null;
         }
     }

@@ -1,19 +1,20 @@
-﻿using System;
+﻿using Dev2;
+using Dev2.Data.Util;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Value_Objects;
+using Dev2.Diagnostics.Debug;
+using Dev2.Network.Execution;
+using Microsoft.VisualBasic.Activities;
+using System;
 using System.Activities;
 using System.Activities.Presentation;
 using System.Collections.Generic;
 using System.ComponentModel;
-using Dev2;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
-using Dev2.Diagnostics;
-using Dev2.Diagnostics.Debug;
-using Dev2.Network.Execution;
-using Microsoft.VisualBasic.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 // ReSharper restore CheckNamespace
 {
@@ -257,6 +258,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             iteratorCollection.AddIterator(expressionIterator);
 
             return expressionIterator;
+        }
+
+        protected void ValidateRecordsetName(string recordsetName, ErrorResultTO errors)
+        {
+            if(string.IsNullOrEmpty(recordsetName))
+            {
+                errors.AddError("No recordset given");
+            }
+
+            if(DataListCleaningUtils.SplitIntoRegions(recordsetName).Count > 1)
+            {
+                errors.AddError("Can only accept one variable");
+            }
+            else
+            {
+                if(DataListUtil.IsValueRecordset(recordsetName))
+                {
+                    if(DataListUtil.IsValueRecordsetWithFields(recordsetName))
+                    {
+                        errors.AddError("Must only be a recordset name");
+                    }
+                }
+                else
+                {
+                    errors.AddError("Value must be a recordset name");
+                }
+            }
         }
 
         #endregion Protected Methods
