@@ -245,6 +245,7 @@ namespace Dev2.Runtime.ServiceModel
                         if(connection.AuthenticationType == AuthenticationType.Public)
                         {
                             connection.UserName = GlobalConstants.PublicUsername;
+                            connection.Password = string.Empty;
                         }
 
                         client.Credentials = new NetworkCredential(connection.UserName, connection.Password);
