@@ -2191,6 +2191,114 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
 #	  | # |                     |
 #	  | 1 | [[rec(1).b]] = abcd |
+#
+#Scenario: Workflow with Assign and foreach contains calculate. 
+#      Given I have a workflow "WorkflowDwithforeachcontainscalculate"
+#	  And "WorkflowDwithforeachcontainscalculate" contains an Assign "Assignval" as
+#      | variable   | value |
+#      | [[rs().a]] | 1     |
+#      | [[rs().a]] | 2     |
+#      | [[rs().a]] | 3     |
+#	  And "WorkflowDwithforeachcontainscalculate" contains a ForEach "ForEachTest" as "NumOfExecution" and used "[[rs()]]"
+#	  And "ForEachTest" contains Calculate "Cal" with formula "[[rs(*).a]]+1" into "[[result]]"
+#	  When "WorkflowDwithforeachcontainscalculate" is executed
+#	  Then the workflow execution has "No" error
+#      And the 'Assignval' in WorkFlow 'WorkflowDwithforeachcontainscalculate' debug inputs as
+#      | # | Variable   | New Value |
+#      | 1 | [[rs().a]] | 1         |
+#      | 2 | [[rs().a]] | 2         |
+#      | 3 | [[rs().a]] | 3         |
+#      And the 'Assignval' in Workflow 'WorkflowDwithforeachcontainscalculate' debug outputs as 
+#      | # |                 |
+#      | 1 | [[rs(1).a]] = 1 |
+#      | 2 | [[rs(2).a]] = 2 |
+#      | 3 | [[rs(3).a]] = 3 |   
+#	  And the 'ForEachTest' in WorkFlow 'WorkflowDwithforeachcontainscalculate' debug inputs a
+#	  |                | Recordset       |
+#	  | * in Recordset | [[rs(1).a]] = 1 |
+#	  |                | [[rs(2).a]] = 2 |
+#	  |                | [[rs(3).a]] = 3 |     
+#	   And the 'Calculate1' in WorkFlow 'ForEachTest' debug inputs as 
+#      | fx =                |
+#      | [[rs(1).a]]+1 = 1+1 |           
+#      And the 'Calculate1' in Workflow 'ForEachTest' debug outputs as  
+#	  |                |
+#	  | [[result]] = 2 |
+#	   And the 'Calculate1' in WorkFlow 'ForEachTest' debug inputs as 
+#      | fx =                |
+#      | [[rs(2).a]]+1 = 2+1 |           
+#      And the 'Calculate1' in Workflow 'ForEachTest' debug outputs as  
+#	  |                |
+#	  | [[result]] = 3 |
+#	   And the 'Calculate1' in WorkFlow 'ForEachTest' debug inputs as 
+#      | fx =                |
+#      | [[rs(3).a]]+1 = 3+1 |           
+#      And the 'Calculate1' in Workflow 'ForEachTest' debug outputs as  
+#	  |                |
+#	  | [[result]] = 4 |
+#
+#Scenario: Workflow with Assign and foreach with invalid rec and it contains calculate in it. 
+#      Given I have a workflow "WorkflowDwithforeachcontainscal"
+#	  And "WorkflowDwithforeachcontainscal" contains an Assign "Assigl" as
+#      | variable   | value |
+#      | [[rs().a]] | 1     |
+#      | [[rs().a]] | 2     |
+#      | [[rs().a]] | 3     |
+#	  And "WorkflowDwithforeachcontainscal" contains a ForEach "ForEachTest" as "NumOfExecution" and used "[[rs()]]+1"
+#	  And "ForEachTest" contains Calculate "Cal" with formula "[[rs(*).a]]+1" into "[[result]]"
+#	  When "WorkflowDwithforeachcontainscal" is executed
+#	  Then the workflow execution has "AN" error
+#      And the 'Assigl' in WorkFlow 'WorkflowDwithforeachcontainscal' debug inputs as
+#      | # | Variable   | New Value |
+#      | 1 | [[rs().a]] | 1         |
+#      | 2 | [[rs().a]] | 2         |
+#      | 3 | [[rs().a]] | 3         |
+#      And the 'Assigl' in Workflow 'WorkflowDwithforeachcontainscal' debug outputs as 
+#      | # |                 |
+#      | 1 | [[rs(1).a]] = 1 |
+#      | 2 | [[rs(2).a]] = 2 |
+#      | 3 | [[rs(3).a]] = 3 |   
+#	   And the 'ForEachTest' in WorkFlow 'WorkflowDwithforeachcontainscalculate' debug inputs a
+#	  |                | Recordset       |
+#	  | * in Recordset | [[rs(1).a]]+1 = |
+#	  |                | [[rs(2).a]]+1 = |
+#	  |                | [[rs(3).a]]+1 = |  
+#
+#
+#
+
+
+
+
+
+
+
+
+
+
+#This should be passed after the bug 12021 is fixed
+#Scenario: Workflow with Assigns DataSplit executing against the server
+#      Given I have a workflow "WorkflowDataSplit"
+#	  And "WorkflowDataSplit" contains an Assign "Assignval" as
+#      | variable | value   |
+#      | [[a]]    | rec().a |
+#	    And "WorkflowDataSplit" contains Data Split "DataSplit" as
+#	  | String | Variable  | Type  | At | Include    | Escape |
+#	  | abcd   | [[[[a]]]] | Index | 4  | Unselected |        | 
+#	  When "WorkflowDataSplit" is executed
+#	  Then the workflow execution has "No" error
+#	  And the 'Assignval' in WorkFlow 'WorkflowDataSplit' debug inputs as
+#	  | # | Variable | New Value |
+#	  | 1 | [[a]] =  | rec().a   |
+#	  And the 'Assignval' in Workflow 'WorkflowDataSplit' debug outputs as  
+#	  | # |                  |
+#	  | 1 | [[a]] =  rec().a |
+#	  And the 'DataSplit' in WorkFlow 'WorkflowDataSplit' debug inputs as 
+#	  | String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
+#	  | abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 4     | No      |        |
+#	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
+#	  | # |                     |
+#	  | 1 | [[rec(1).b]] = abcd |
 
 
 
