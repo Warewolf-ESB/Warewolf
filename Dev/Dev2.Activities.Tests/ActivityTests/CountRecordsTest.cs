@@ -184,8 +184,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.IsTrue(res);
         }
-
-
+        
         [TestMethod]
         public void CountRecords_ErrorHandeling_Expected_ErrorTag()
         {
@@ -358,6 +357,85 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[res]]", dsfForEachItems[0].Name);
             Assert.AreEqual("[[res]]", dsfForEachItems[0].Value);
         }
+
+        #region |Valid Recordset Name|
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfCountRecordsetActivity_Execute")]
+        public void DsfCountRecordsetActivity_Execute_EmptyRecordsetName_NoCount()
+        {
+            //------------Setup for test--------------------------
+            SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "", "[[res]]");
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            const string Expected = @"";
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual(Expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfCountRecordsetActivity_Execute")]
+        public void DsfCountRecordsetActivity_Execute_RecordsetHasFieldName_NoCount()
+        {
+            //------------Setup for test--------------------------
+            SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1().field1]]", "[[res]]");
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            const string Expected = @"";
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual(Expected, actual);
+        }
+        
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfCountRecordsetActivity_Execute")]
+        public void DsfCountRecordsetActivity_Execute_TwoInputVariables_NoCount()
+        {
+            //------------Setup for test--------------------------
+            SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1()]][[recset1()]]", "[[res]]");
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            const string Expected = @"";
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual(Expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfCountRecordsetActivity_Execute")]
+        public void DsfCountRecordsetActivity_Execute_InputIsAScalar_NoCount()
+        {
+            //------------Setup for test--------------------------
+            SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1]]", "[[res]]");
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            const string Expected = @"";
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual(Expected, actual);
+        }
+        #endregion
 
         #region Private Test Methods
 

@@ -7,6 +7,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Data.Factories;
 using Dev2.Data.Operations;
 using Dev2.Data.Util;
@@ -17,6 +18,7 @@ using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
+using Dev2.Validation;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -129,6 +131,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.MergeErrors(errorResultTO);
 
                     IBinaryDataListEntry paddingExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.Padding, false, out errorResultTO);
+                    allErrors.MergeErrors(errorResultTO);
+
+                    var fieldName = row.InputVariable;
+                    fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
+                    var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errorResultTO);
+                    if(!string.IsNullOrEmpty(datalist))
+                    {
+                        var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist)
+                        {
+                            LabelText = fieldName
+                        };
+
+                        var errorInfo = isValidExpr.Check();
+                        if(errorInfo != null)
+                        {
+                            row.InputVariable = "";
+                            errorResultTO.AddError(errorInfo.Message);
+                        }
+                        allErrors.MergeErrors(errorResultTO);
+                    }
+
                     allErrors.MergeErrors(errorResultTO);
 
                     if(dataObject.IsDebugMode())

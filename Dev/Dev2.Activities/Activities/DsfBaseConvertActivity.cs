@@ -99,19 +99,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     var fieldName = item.FromExpression;
                     fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
-                    var isValidExpr = new IsValidExpressionRule(() => fieldName, dataObject.DataList ?? dataObject.RawPayload)
+                    var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+                    if(!string.IsNullOrEmpty(datalist))
                     {
-                        LabelText = fieldName
-                    };
+                        var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist)
+                        {
+                            LabelText = fieldName
+                        };
 
-                    var errorInfo = isValidExpr.Check();
-                    if(errorInfo != null)
-                    {
-                        item.FromExpression = "";
-                        errors.AddError(errorInfo.Message);
+                        var errorInfo = isValidExpr.Check();
+                        if(errorInfo != null)
+                        {
+                            item.FromExpression = "";
+                            errors.AddError(errorInfo.Message);
+                        }
+                        allErrors.MergeErrors(errors);
                     }
 
-                    allErrors.MergeErrors(errors);
+
                     
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.FromExpression, false, out errors);
                     if(dataObject.IsDebugMode())

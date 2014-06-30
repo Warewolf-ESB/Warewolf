@@ -18,6 +18,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Validation;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -27,7 +28,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Fields
 
         string _sourceString;
-
+        string _datalistString = "";
         int _indexCounter = 1;
         private IList<DataSplitDTO> _resultsCollection;
         bool _reverseOrder;
@@ -114,7 +115,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             base.CacheMetadata(metadata);
         }
         // ReSharper restore RedundantOverridenMember
-
+        
         protected override void OnExecute(NativeActivityContext context)
         {
             _debugInputs = new List<DebugItem>();
@@ -125,6 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Guid dlID = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
+            _datalistString = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
 
             InitializeDebug(dataObject);
             try
@@ -445,14 +447,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string currentName = modelProperty.ComputedValue as string;
                 if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
                 {
-                    if(currentName.Contains(" ("))
-                    {
-                        currentName = currentName.Remove(currentName.IndexOf(" (", StringComparison.Ordinal));
-                    }
-                    else
-                    {
-                        currentName = currentName.Remove(currentName.IndexOf("(", StringComparison.Ordinal));
-                    }
+                    currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
                 }
                 currentName = currentName + " (" + (count - 1) + ")";
                 return currentName;
@@ -468,6 +463,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             foreach(DataSplitDTO t in args)
             {
+                var fieldName = t.OutputVariable;
+                fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
+
+                if(!string.IsNullOrEmpty(_datalistString))
+                {
+                    var isValidExpr = new IsValidExpressionRule(() => fieldName, _datalistString)
+                    {
+                        LabelText = fieldName
+                    };
+
+                    var errorInfo = isValidExpr.Check();
+                    if(errorInfo != null)
+                    {
+                        errors.AddError(errorInfo.Message);
+                        continue;
+                    }
+                }
+              
                 IBinaryDataListEntry entry;
                 string error;
                 switch(t.SplitType)
@@ -530,7 +543,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 _indexCounter++;
             }
-
             return string.IsNullOrEmpty(dtb.ToTokenize) ? null : dtb.Generate();
         }
 

@@ -11,14 +11,14 @@ namespace Dev2.Common.ExtMethods
     /// </summary>
     public static class StringExtension
     {
-        private static readonly Regex _isAlphaRegex = new Regex("^[a-zA-Z ]*$", RegexOptions.Compiled);
-        private static readonly Regex _isAlphaNumericRegex = new Regex("^[0-9a-zA-Z]*$", RegexOptions.Compiled);
-        private static readonly Regex _isEmailRegex = new Regex(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private static readonly Regex _isBinary = new Regex("^[01]+$");
+        private static readonly Regex IsAlphaRegex = new Regex("^[a-zA-Z ]*$", RegexOptions.Compiled);
+        private static readonly Regex IsAlphaNumericRegex = new Regex("^[0-9a-zA-Z]*$", RegexOptions.Compiled);
+        private static readonly Regex IsEmailRegex = new Regex(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private static readonly Regex IsBinaryField = new Regex("^[01]+$");
         public static Regex IsValidCategoryname = new Regex(@"[\\/?%*:|""<>\.]+$");
         public static Regex IsValidResourcename = new Regex(@"[^a-zA-Z0-9._\s-]+");
-        static readonly Regex _isHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
-        static readonly Regex _isHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
+        static readonly Regex IsHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
+        static readonly Regex IsHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
 
         public static string Escape(this string unescaped)
         {
@@ -64,7 +64,7 @@ namespace Dev2.Common.ExtMethods
                 return false;
             }
 
-            bool result = _isAlphaRegex.IsMatch(payload);
+            bool result = IsAlphaRegex.IsMatch(payload);
 
             return result;
         }
@@ -188,7 +188,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsAlphaNumeric(this string payload)
         {
-            return (!string.IsNullOrEmpty(payload) && (IsAlpha(payload) || IsNumeric(payload) || _isAlphaNumericRegex.IsMatch(payload)));
+            return (!string.IsNullOrEmpty(payload) && (IsAlpha(payload) || IsNumeric(payload) || IsAlphaNumericRegex.IsMatch(payload)));
         }
 
         /// <summary>
@@ -205,7 +205,7 @@ namespace Dev2.Common.ExtMethods
                 return false;
             }
 
-            bool result = _isEmailRegex.IsMatch(payload);
+            bool result = IsEmailRegex.IsMatch(payload);
 
             return result;
         }
@@ -220,7 +220,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsBinary(this string payload)
         {
-            return _isBinary.IsMatch(payload);
+            return IsBinaryField.IsMatch(payload);
         }
 
         /// <summary>
@@ -260,7 +260,7 @@ namespace Dev2.Common.ExtMethods
         public static bool IsHex(this string payload)
         {
 
-            bool result = (_isHex1.IsMatch(payload) || _isHex2.IsMatch(payload));
+            bool result = (IsHex1.IsMatch(payload) || IsHex2.IsMatch(payload));
 
             if((payload.Length % 2) != 0)
             {
@@ -305,12 +305,12 @@ namespace Dev2.Common.ExtMethods
         /// <returns></returns>
         public static string TryAddKeyboardAccellerator(this string input)
         {
-            const string accellerator = "_";            // This is the default WPF accellerator symbol - used to be & in WinForms
+            const string Accellerator = "_";            // This is the default WPF accellerator symbol - used to be & in WinForms
 
             // If it already contains an accellerator, do nothing
-            if(input.Contains(accellerator)) return input;
+            if(input.Contains(Accellerator)) return input;
 
-            return accellerator + input;
+            return Accellerator + input;
         }
     }
 }

@@ -127,6 +127,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         }
 
         [Given(@"assign to variable ""(.*)"" split type ""(.*)"" at ""(.*)"" and Include ""(.*)"" and Escape '(.*)'")]
+        [Given(@"assign to variable '(.*)' split type ""(.*)"" at '(.*)' and Include '(.*)' and Escape '(.*)'")]
         public void GivenAssignToVariableSplitTypeAtAndIncludeAndEscape(string variable, string splitType, string splitAt, string include, string escape)
         {
             var included = include.ToLower() == "selected";

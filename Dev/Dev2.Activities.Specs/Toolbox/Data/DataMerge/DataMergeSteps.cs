@@ -49,6 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         }
 
         [Given(@"a merge variable ""(.*)"" equal to ""(.*)""")]
+        [Given(@"a merge variable '(.*)' equal to ""(.*)""")]
         public void GivenAMergeVariableEqualTo(string variable, string value)
         {
             List<Tuple<string, string>> variableList;

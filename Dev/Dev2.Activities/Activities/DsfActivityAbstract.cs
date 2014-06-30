@@ -279,6 +279,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         errors.AddError("Must only be a recordset name");
                     }
+
                 }
                 else
                 {

@@ -529,27 +529,100 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region |Valid Recordset Name|
 
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("DsfDeleteRecordActivity_Execute")]
-        //public void DsfDeleteRecordActivity_Execute_RecordsetNameHasField_Error()
-        //{
-        //    //------------Setup for test--------------------------
-        //    SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1().field1]]", "[[res]]");
-        //    //------------Execute Test---------------------------
-        //    IDSFDataObject result = ExecuteProcess();
-        //    //------------Assert Results-------------------------
-        //    const string Expected = @"Failure";
-        //    string actual;
-        //    string error;
-        //    GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
-        //    List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
-        //    // remove test datalist ;)
-        //    DataListRemoval(result.DataListID);
-        //    Assert.AreEqual(Expected, actual);
-        //    Assert.AreEqual(5, recsetData.Count);
-        //    Assert.AreEqual("f1r2", recsetData[0]);
-        //}
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfDeleteRecordActivity_Execute")]
+        public void DsfDeleteRecordActivity_Execute_EmptyRecordsetName_Failure()
+        {
+            //------------Setup for test--------------------------
+            SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "", "[[res]]");
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            const string Expected = @"Failure";
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual(Expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfDeleteRecordActivity_Execute")]
+        public void DsfDeleteRecordActivity_Execute_RecordsetHasFieldName_Failure()
+        {
+            //------------Setup for test--------------------------
+            SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1().field1]]", "[[res]]");
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            const string Expected = @"Failure";
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual(Expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfDeleteRecordActivity_Execute")]
+        public void DsfDeleteRecordActivity_Execute_RecordsetHasAnIndex_Failure()
+        {
+            //------------Setup for test--------------------------
+            SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(8)]]", "[[res]]");
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            const string Expected = @"Failure";
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual(Expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfDeleteRecordActivity_Execute")]
+        public void DsfDeleteRecordActivity_Execute_TwoInputVariables_Failure()
+        {
+            //------------Setup for test--------------------------
+            SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1()]][[recset1()]]", "[[res]]");
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            const string Expected = @"Failure";
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual(Expected, actual);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DsfDeleteRecordActivity_Execute")]
+        public void DsfDeleteRecordActivity_Execute_InputIsAScalar_Failure()
+        {
+            //------------Setup for test--------------------------
+            SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1]]", "[[res]]");
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            const string Expected = @"Failure";
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.AreEqual(Expected, actual);
+        }
         #endregion
     }
 }

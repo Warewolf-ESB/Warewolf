@@ -112,19 +112,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             var fieldName = t.FieldName;
                             fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
-                            var isValidExpr = new IsValidExpressionRule(() => fieldName, dataObject.DataList ?? dataObject.RawPayload)
-                                {
-                                    LabelText = fieldName
-                                };
-
-                            var errorInfo = isValidExpr.Check();
-                            if(errorInfo != null)
+                            var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+                            if(!string.IsNullOrEmpty(datalist))
                             {
-                                t.FieldName = "";
-                                errors.AddError(errorInfo.Message);
-                            }
+                                var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist)
+                                    {
+                                        LabelText = fieldName
+                                    };
 
-                            allErrors.MergeErrors(errors);
+                                var errorInfo = isValidExpr.Check();
+                                if(errorInfo != null)
+                                {
+                                    t.FieldName = "";
+                                    errors.AddError(errorInfo.Message);
+                                }
+                                allErrors.MergeErrors(errors);
+                            }
 
                             string eval = t.FieldValue;
 
