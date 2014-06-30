@@ -30,7 +30,7 @@ REM ** Start The Server **
 robocopy "%DeploymentDirectory%" "%PROGRAMFILES(X86)%\Warewolf\Server" *.* /s
 sc start "Warewolf Server"
 
-REM  Wait 10 seconds ;)
-ping -n 10 127.0.0.1 > nul
+REM  Wait 20 seconds ;)
+ping -n 20 127.0.0.1 > nul
 
 exit 0
