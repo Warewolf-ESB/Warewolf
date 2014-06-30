@@ -1059,7 +1059,7 @@ namespace Dev2.Core.Tests.Workflows
             //------------Execute Test---------------------------
             workflowDesigner.Handle(new AddStringListToDataListMessage(new List<string> { "[[rec().s*et]]", "[[test**()]]", "[[1scalar]]" }));
             workflowDesigner.Dispose();
-            //------------Assert Results-------------------------
+            //------------Assert Results--------------------------
             var dataListItemModels = DataListSingleton.ActiveDataList.DataList;
             Assert.AreEqual(3, dataListItemModels.Count);
             Assert.AreEqual("", dataListItemModels[0].DisplayName);

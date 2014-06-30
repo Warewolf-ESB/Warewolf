@@ -484,7 +484,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             EventPublisher.Publish(new ConfigureDecisionExpressionMessage { ModelItem = mi, EnvironmentModel = _resourceModel.Environment, IsNew = true });
         }
 
-        void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository catalog)
+        public void EditActivity(ModelItem modelItem, Guid parentEnvironmentID, IEnvironmentRepository catalog)
         {
             if(Designer == null)
             {
@@ -515,6 +515,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
 
                 var environmentModel = catalog.FindSingle(c => c.ID == environmentID);
+
+                if(environmentID == Guid.Empty && !catalog.ActiveEnvironment.IsLocalHostCheck())
+                {
+                    // we have an "localhost" environment id, yet it is not the active environment, must be remote execution 
+                    // against a remote server, aka remote treated as local ;)
+                    environmentModel = catalog.ActiveEnvironment;
+                }
 
                 if(environmentModel != null)
                 {

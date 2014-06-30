@@ -46,6 +46,25 @@ namespace Dev2.Activities.Specs.Composition
         {
         }
 
+        [Given(@"I have server a ""(.*)"" with workflow ""(.*)""")]
+        public void GivenIHaveAWorkflowOnServer(string serverName, string workflow)
+        {
+            AppSettings.LocalHost = "http://localhost:3142";
+            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflow, ResourceName = workflow, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
+
+            environmentModel.ResourceRepository.Add(resourceModel);
+            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
+
+            _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
+            Add(workflow, resourceModel);
+            Add("parentWorkflowName", workflow);
+            Add("environment", environmentModel);
+            Add("resourceRepo", environmentModel.ResourceRepository);
+            Add("debugStates", new List<IDebugState>());
+        }
+
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
@@ -119,7 +138,7 @@ namespace Dev2.Activities.Specs.Composition
             {
                 remoteEnvironment.Connect();
                 remoteEnvironment.ForceLoadResources();
-                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.Category.ToLower() == remoteWf.ToLower(), true);
+                var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == remoteWf, true);
                 if(remoteResourceModel != null)
                 {
                     var dataMappingViewModel = GetDataMappingViewModel(remoteResourceModel, mappings);
@@ -130,13 +149,13 @@ namespace Dev2.Activities.Specs.Composition
                     var activity = new DsfWorkflowActivity();
                     remoteResourceModel.Outputs = outputMapping;
                     remoteResourceModel.Inputs = inputMapping;
-                    var remoteServerId = remoteEnvironment.ID;
-                    activity.ServiceServer = remoteServerId;
-                    activity.EnvironmentID = remoteServerId;
+                    var remoteServerID = remoteEnvironment.ID;
+                    activity.ServiceServer = remoteServerID;
+                    activity.EnvironmentID = remoteServerID;
                     activity.ServiceUri = remoteEnvironment.Connection.AppServerUri.ToString();
                     activity.ResourceID = remoteResourceModel.ID;
-                    activity.ServiceName = remoteResourceModel.Category;
-                    activity.DisplayName = remoteResourceModel.Category;
+                    activity.ServiceName = remoteResourceModel.ResourceName;
+                    activity.DisplayName = remoteWf;
                     activity.OutputMapping = outputMapping;
                     activity.InputMapping = inputMapping;
                     CommonSteps.AddActivityToActivityList(wf, remoteWf, activity);
@@ -371,7 +390,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("parentWorkflowName", out parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates");
 
-            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase)).ID;
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
 
             if(parentWorkflowName == workflowName)
             {
@@ -379,7 +398,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             //bool isDataMergeDebug = toolSpecificDebug.Any(t => t.Name == "Data Merge");
@@ -409,7 +428,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("parentWorkflowName", out parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates");
-            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName, StringComparison.InvariantCultureIgnoreCase)).ID;
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
 
             if(parentWorkflowName == workflowName)
             {
@@ -417,7 +436,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var toolSpecificDebug =
-                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
@@ -431,8 +450,6 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" as")]
         public void GivenContainsAnSqlBulkInsertAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
         {
-            //ScenarioContext.Current.Pending();
-
             // Fetch source from source name ;)
             var resourceXml = XmlFetch.Fetch(dbSrcName);
             if(resourceXml != null)
@@ -495,26 +512,16 @@ namespace Dev2.Activities.Specs.Composition
             CommonSteps.AddActivityToActivityList(parentName, activityName, dsfSort);
         }
 
-        [Given(@"""(.*)"" Outputs")]
-        public void GivenOutputs(string p0, Table table)
-        {
-            //ScenarioContext.Current.Pending();
-
-
-            ScenarioContext.Current.Add("Outputs", table.Rows.Where(a => !a[0].Contains(".") && a[0].Contains("(")).Select(output => output[0]).ToList());
-            ScenarioContext.Current.Add("ScalarOutputs", table.Rows.Where(a => (a[0].Contains(".") && a[0].Contains("(")) || !a[0].Contains("(")).Select(output => output[0]).ToList());
-
-
-        }
-
-
 
         [Given(@"""(.*)"" contains an Delete ""(.*)"" as")]
         // ReSharper disable InconsistentNaming
         public void GivenContainsAnDeleteAs(string parentName, string activityName, Table table)
         // ReSharper restore InconsistentNaming
         {
-            var del = new DsfPathDelete { InputPath = table.Rows[0][0], Result = table.Rows[0][1], DisplayName = activityName };
+            var del = new DsfPathDelete();
+            del.InputPath = table.Rows[0][0];
+            del.Result = table.Rows[0][1];
+            del.DisplayName = activityName;
             CommonSteps.AddVariableToVariableList(table.Rows[0][1]);
             CommonSteps.AddActivityToActivityList(parentName, activityName, del);
         }
@@ -526,14 +533,14 @@ namespace Dev2.Activities.Specs.Composition
                 return;
             }
 
-            var debugTo = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
+            var debugTO = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
 
             var clientContext = resourceModel.Environment.Connection;
             if(clientContext != null)
             {
-                var dataList = XElement.Parse(debugTo.XmlData);
-                dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
-                dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
+                var dataList = XElement.Parse(debugTO.XmlData);
+                dataList.Add(new XElement("BDSDebugMode", debugTO.IsDebugMode));
+                dataList.Add(new XElement("DebugSessionID", debugTO.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
                 WebServer.Send(WebServerMethod.POST, resourceModel, dataList.ToString(), new TestAsyncWorker());
                 _resetEvt.WaitOne();

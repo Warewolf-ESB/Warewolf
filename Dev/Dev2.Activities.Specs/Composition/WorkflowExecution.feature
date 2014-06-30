@@ -105,60 +105,61 @@ Scenario: Workflow with an assign and webservice
 
 	
 Scenario: Workflow with an assign and remote workflow
-	Given I have a workflow "TestWFAssignAndRemote"
-	 And "TestWFAssignAndRemote" contains an Assign "AssignData" as
+	Given I have a workflow "TestAssignAndRemote"
+	 And "TestAssignAndRemote" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	And "TestWFAssignAndRemote" contains "Test\WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	And "TestAssignAndRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable      |
 	| input            | [[inputData]] | output              | [[output]]       |
 	|                  |               | values(*).upper     | [[values().up]]  |
 	|                  |               | values(*).lower     | [[values().low]] |
-	  When "TestWFAssignAndRemote" is executed
+	  When "TestAssignAndRemote" is executed
 	  Then the workflow execution has "NO" error
-	   And the 'AssignData' in WorkFlow 'TestWFAssignAndRemote' debug inputs as
+	   And the 'AssignData' in WorkFlow 'TestAssignAndRemote' debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the 'AssignData' in Workflow 'TestWFAssignAndRemote' debug outputs as    
+	  And the 'AssignData' in Workflow 'TestAssignAndRemote' debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	   And the 'Test\WorkflowUsedBySpecs' in WorkFlow 'TestWFAssignAndRemote' debug inputs as
+	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignAndRemote' debug inputs as
 	  |                       |
 	  | [[inputData]] = hello |
-	  And the 'Setup Assign (1)' in Workflow 'Test\WorkflowUsedBySpecs' debug outputs as
+	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = hello |
-	  And the 'Convert Case (1)' in Workflow 'Test\WorkflowUsedBySpecs' debug outputs as
+	  And the 'Convert Case (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                |
 	  | 1 | [[in]] = HELLO |
-	  And the 'Final Assign (3)' in Workflow 'Test\WorkflowUsedBySpecs' debug outputs as
+	  And the 'Final Assign (3)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
 	  | # |                             |
 	  | 1 | [[output]] = HELLO          |
 	  | 2 | [[values(1).upper]] = HELLO |
 	  | 3 | [[values(1).lower]] = hello |	  	 
-	  And the 'Test\WorkflowUsedBySpecs' in Workflow 'TestWFAssignAndRemote' debug outputs as
+	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignAndRemote' debug outputs as
 	  |                           |
 	  | [[output]] = HELLO        |
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
 #
 #This Test should be passed after the bug 11612 is fixed
-#Scenario: Remote Workflow with an remote workflow
-#	  Given I have a workflow "RemoteWF" on server "Remote Connection Integration"
-#	  And "RemoteWF" contains "TestRemote" from server "Remote Connection Integration" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable |
-#	  | a                | Warewolf      |                     |             |
-#	  When "RemoteWF" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'TestRemote' in WorkFlow 'RemoteWF' debug inputs as
-#	  |                  |
-#	  | [[a]] = Warewolf |
-#	  And the 'TestRemote' in Workflow 'RemoteWF' debug outputs as
-#	  | # |                  |
-#	  | 1 | [[a]] = Warewolf |	  	 
-#	 And the 'TestRemote' in Workflow 'RemoteWF' debug outputs as
-#	  |                  |
-#	  | [[a]] = Warewolf |
+Scenario: Remote Workflow with an remote workflow
+	  #Given I have a workflow "RemoteWF" on server "Remote Connection Integration"
+	  Given I have server a "Remote Connection Integration" with workflow "RemoteWF"
+	  And "RemoteWF" contains "TestRemote" from server "Remote Connection Integration" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable |
+	  | a                | Warewolf      |                     |             |
+	  When "RemoteWF" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'TestRemote' in WorkFlow 'RemoteWF' debug inputs as
+	  |                  |
+	  | [[a]] = Warewolf |
+	  And the 'TestRemote' in Workflow 'RemoteWF' debug outputs as
+	  | # |                  |
+	  | 1 | [[a]] = Warewolf |	  	 
+	 And the 'TestRemote' in Workflow 'RemoteWF' debug outputs as
+	  |                  |
+	  | [[a]] = Warewolf |
 
 	  
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
@@ -1464,38 +1465,41 @@ Scenario: Workflow with Assign Calculate
 #	        | 1 | [[a]] =  Warewolf | 2               |
 
 #This Test should pass after the bug 11539 is fixed
-Scenario: Test Mappings for Assign and Calculate Workflow 
-      Given I have a workflow "TestMappings"
-	  And "TestMappings" contains an Assign "values1" as
-      | variable       | value |
-      | [[rec(1).a]]   | 1     |
-      | [[rec(1).b]]   | 2     |
-	  And "TestMappings" contains Calculate "Calculate1" with formula "[[rec(1).a]]+[[rec(1).b]]" into "[[rec(1).c]]"
-	  And "TestMappings" Outputs
-	  | Outputs |
-	  | rec().a |
-	  | rec().b |
-	  When "TestMappings" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'values1' in WorkFlow 'TestMappings' debug inputs as 
-	  | # | Variable       | New Value |
-	  | 1 | [[rec(1).a]] = | 1         |
-	  | 2 | [[rec(1).b]] = | 2         |
-	  And the 'values1' in Workflow 'TestMappings' debug outputs as   
-	  | # |                           |
-	  | 1 | [[rec(1).a]]         =  1 |
-	  | 2 | [[rec(1).b]]  =  2        |
-	  And the 'Calculate1' in WorkFlow 'TestMappings' debug inputs as 
-      | fx =                                 |
-      | [[rec(1).a]]+[[rec(1).b]] = 1+2 |           
-      And the 'Calculate1' in Workflow 'TestMappings' debug outputs as  
-	  |                  |
-	  | [[rec(1).c]] = 3 |
-	  And the 'TestMappings' in Workflow 'TestMappings' debug outputs as
-	  |                  |
-	  | [[rec(1).a]] = 1 |
-	  | [[rec(1).b]] = 2 |
-	  | [[rec(1).c]] = 3 |
+#Scenario: Test Mappings for Assign and Calculate Workflow 
+#      Given I have a workflow "TestMappings"
+#	  And "TestMappings" contains an Assign "values1" as
+#      | variable       | value |
+#      | [[rec(1).a]]   | 1     |
+#      | [[rec(1).b]]   | 2     |
+#	  And "TestMappings" contains Calculate "Calculate1" with formula "[[rec(1).a]]+[[rec(1).b]]" into "[[rec(1).c]]"
+#	  And "WorkflowWithAssignBaseConvertandCaseconvert" inputs
+#	  | Inputs |
+#	  |        |
+#	  And "WorkflowWithAssignBaseConvertandCaseconvert" Outputs
+#	  | Outputs |
+#	  | rec().a |
+#	  | rec().b |
+#	  When "TestMappings" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'values1' in WorkFlow 'TestMappings' debug inputs as 
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rec(1).a]] = | 1         |
+#	  | 2 | [[rec(1).b]] = | 2         |
+#	  And the 'values1' in Workflow 'TestMappings' debug outputs as   
+#	  | # |                           |
+#	  | 1 | [[rec(1).a]]         =  1 |
+#	  | 2 | [[rec(1).b]]  =  2        |
+#	  And the 'Calculate1' in WorkFlow 'TestMappings' debug inputs as 
+#      | fx =                                 |
+#      | [[rec(1).a]]+[[rec(1).b]] = 1+2 |           
+#      And the 'Calculate1' in Workflow 'TestMappings' debug outputs as  
+#	  |                  |
+#	  | [[rec(1).c]] = 3 |
+#	  And the 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as
+#	  |                  |
+#	  | [[rec(1).a]] = 1 |
+#	  | [[rec(1).b]] = 2 |
+#	  | [[rec(1).c]] = 3 |
 
 
 
