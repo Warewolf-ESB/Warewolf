@@ -10,7 +10,6 @@ using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Threading;
@@ -90,7 +89,6 @@ namespace Dev2.AppResources.Repositories
 
         #region Public Functions
         public Func<IEnvironmentRepository> GetEnvironmentRepository = () => EnvironmentRepository.Instance;
-
 
         public Func<Guid> GetCurrentEnvironment = () => EnvironmentRepository.Instance.ActiveEnvironment.ID;
 
@@ -346,11 +344,6 @@ namespace Dev2.AppResources.Repositories
             Enum.TryParse(resourceModel.ServerResourceType, out resourceType);
             explorerItemModel.ResourceType = resourceType;
             ItemAddedMessageHandler(explorerItemModel);
-        }
-
-        public IEnumerable<ExplorerItemModel> FindItems(Func<ExplorerItemModel, bool> func)
-        {
-            return func == null ? null : ExplorerItemModels.SelectMany(explorerItemModel => explorerItemModel.Descendants()).Where(func);
         }
 
         public void AddItem(ExplorerItemModel item)

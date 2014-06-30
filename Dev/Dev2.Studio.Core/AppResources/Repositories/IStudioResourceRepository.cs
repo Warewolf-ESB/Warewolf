@@ -31,7 +31,6 @@ namespace Dev2.AppResources.Repositories
         void UpdateItem(Guid id, Action<ExplorerItemModel> action, Guid environmentId);
         void AddResouceItem(IContextualResourceModel resourceModel);
         void ItemAddedMessageHandler(IExplorerItem item);
-        IEnumerable<ExplorerItemModel> FindItems(Func<ExplorerItemModel, bool> func);
 
         void DeleteFolder(ExplorerItemModel item);
 

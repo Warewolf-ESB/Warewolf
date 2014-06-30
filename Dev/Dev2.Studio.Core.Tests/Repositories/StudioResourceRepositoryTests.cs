@@ -1650,6 +1650,138 @@ namespace Dev2.Core.Tests.Repositories
             Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(environmentModel.Object, new ServerExplorerItem { WebserverUri = "bob" }));
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("StudioResourceRepository_AddResourceItem")]
+        public void StudioResourceRepository_AddResourceItem_ItemAdded()
+        {
+            //------------Setup for test--------------------------
+            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var connection = new Mock<IEnvironmentConnection>();
+
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(connection.Object);
+            mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
+            var environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
+
+            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = ResourceType.Server, EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
+            var rootItem = serverItemModel;
+            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = ResourceType.Folder, ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
+            serverItemModel.Children.Add(workflowsFolder);
+
+            var studioResourceRepository = new StudioResourceRepository(serverItemModel, _invoke);
+            resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
+            TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
+            new EnvironmentRepository(testEnvironmentRespository);
+            IEnvironmentModel internalEnvironmentModel = environmentModel;
+            studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
+            //------------Execute Test---------------------------
+            studioResourceRepository.AddResouceItem(resourceModel.Object);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, rootItem.Children.Count);
+            Assert.AreEqual(1, rootItem.Children[0].Children.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("StudioResourceRepository_AddServerNode")]
+        public void StudioResourceRepository_AddServerNode_NonExistent_ItemAdded()
+        {
+            //------------Setup for test--------------------------
+            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var connection = new Mock<IEnvironmentConnection>();
+
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(connection.Object);
+            mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
+            var environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
+
+            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = ResourceType.Server, EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
+            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = ResourceType.Folder, ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
+            serverItemModel.Children.Add(workflowsFolder);
+
+            var studioResourceRepository = new StudioResourceRepository(serverItemModel, _invoke);
+            resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
+            TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
+            new EnvironmentRepository(testEnvironmentRespository);
+            IEnvironmentModel internalEnvironmentModel = environmentModel;
+            studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            //------------Execute Test---------------------------
+            studioResourceRepository.AddServerNode(serverExplorerItem);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, studioResourceRepository.ExplorerItemModels.Count);
+            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("StudioResourceRepository_AddServerNode")]
+        public void StudioResourceRepository_AddServerNode_OtherServerCollapsed()
+        {
+            //------------Setup for test--------------------------
+            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var connection = new Mock<IEnvironmentConnection>();
+
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(connection.Object);
+            mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
+            var environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
+
+            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = ResourceType.Server, EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
+            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = ResourceType.Folder, ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
+            serverItemModel.Children.Add(workflowsFolder);
+
+            var studioResourceRepository = new StudioResourceRepository(serverItemModel, _invoke);
+            resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
+            TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
+            new EnvironmentRepository(testEnvironmentRespository);
+            IEnvironmentModel internalEnvironmentModel = environmentModel;
+            studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            //------------Execute Test---------------------------
+            studioResourceRepository.AddServerNode(serverExplorerItem);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, studioResourceRepository.ExplorerItemModels.Count);
+            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
+            Assert.IsFalse(studioResourceRepository.ExplorerItemModels[0].IsExplorerSelected);
+            Assert.IsFalse(studioResourceRepository.ExplorerItemModels[0].IsExplorerExpanded);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("StudioResourceRepository_AddServerNode")]
+        public void StudioResourceRepository_AddServerNode_Existing_ItemExpandedAndSelected()
+        {
+            //------------Setup for test--------------------------
+            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var connection = new Mock<IEnvironmentConnection>();
+
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(connection.Object);
+            mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
+            var environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
+
+            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = ResourceType.Server, EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
+            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = ResourceType.Folder, ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
+            serverItemModel.Children.Add(workflowsFolder);
+
+            var studioResourceRepository = new StudioResourceRepository(serverItemModel, _invoke);
+            resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
+            TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
+            new EnvironmentRepository(testEnvironmentRespository);
+            IEnvironmentModel internalEnvironmentModel = environmentModel;
+            studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            studioResourceRepository.AddServerNode(serverExplorerItem);
+            //------------Execute Test---------------------------
+            studioResourceRepository.AddServerNode(serverExplorerItem);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, studioResourceRepository.ExplorerItemModels.Count);
+            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
+            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerExpanded);
+        }
+
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
