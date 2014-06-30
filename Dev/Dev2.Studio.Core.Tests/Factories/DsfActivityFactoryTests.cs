@@ -40,7 +40,7 @@ namespace Dev2.Core.Tests.Factories
             model.Setup(m => m.WorkflowXaml).Returns(new StringBuilder("<root/>"));
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty);
 
-            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository);
+            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository,false);
 
             var actualResourceID = Guid.Parse(activity.ResourceID.Expression.ToString());
             var actualEnvironmentID = Guid.Parse(activity.EnvironmentID.Expression.ToString());
@@ -71,7 +71,7 @@ namespace Dev2.Core.Tests.Factories
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty);
 
             //------------Execute Test---------------------------
-            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository);
+            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository, false);
 
             //------------Assert Results-------------------------
             Assert.AreEqual("WebService", ((Literal<string>)(activity.Type.Expression)).Value);
@@ -99,7 +99,7 @@ namespace Dev2.Core.Tests.Factories
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty);
 
             //------------Execute Test---------------------------
-            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository);
+            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository, false);
 
             //------------Assert Results-------------------------
             Assert.AreEqual("DbService", ((Literal<string>)(activity.Type.Expression)).Value);
@@ -127,7 +127,7 @@ namespace Dev2.Core.Tests.Factories
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty);
 
             //------------Execute Test---------------------------
-            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository);
+            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository, false);
 
             //------------Assert Results-------------------------
             Assert.AreEqual("PluginService", ((Literal<string>)(activity.Type.Expression)).Value);
@@ -143,7 +143,7 @@ namespace Dev2.Core.Tests.Factories
             Mock<IContextualResourceModel> mockRes = Dev2MockFactory.SetupResourceModelMock(ResourceType.Service);
             mockRes.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(StringResources.xmlNullSourceMethodServiceDef));
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty);
-            DsfActivityFactory.CreateDsfActivity(mockRes.Object, activity, true, environmentRepository);
+            DsfActivityFactory.CreateDsfActivity(mockRes.Object, activity, true, environmentRepository, false);
 
             //If no exception - pass
             Assert.IsTrue(true);
@@ -171,7 +171,7 @@ namespace Dev2.Core.Tests.Factories
             var environmentRepository = SetupEnvironmentRepo(expectedEnvironmentID);
 
             //------------Execute Test---------------------------
-            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository);
+            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository, false);
 
             //------------Assert Results-------------------------
             StringAssert.Contains(((Literal<string>)(activity.Type.Expression)).Value, "Workflow");
@@ -200,7 +200,7 @@ namespace Dev2.Core.Tests.Factories
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
 
             //------------Execute Test---------------------------
-            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository);
+            DsfActivityFactory.CreateDsfActivity(model.Object, activity, false, environmentRepository, true);
 
             //------------Assert Results-------------------------
             StringAssert.Contains(((Literal<string>)(activity.Type.Expression)).Value, "Workflow");

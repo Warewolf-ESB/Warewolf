@@ -415,7 +415,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         DsfActivity activity = droppedActivity;
                         IContextualResourceModel resource = _resourceModel.Environment.ResourceRepository.FindSingle(
                             c => c.Category == activity.ServiceName) as IContextualResourceModel;
-                        droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, EnvironmentRepository.Instance);
+                        droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
                         modelProperty1.SetValue(droppedActivity);
                     }
                     else
@@ -431,7 +431,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 {
                                     var theResource = environmentModel.ResourceRepository.FindSingle(c => c.ID == navigationItemViewModel.ResourceId) as IContextualResourceModel;
                                     //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, EnvironmentRepository.Instance);
+                                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
                                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = navigationItemViewModel.ResourcePath;
                                     ExplorerItemModelToIconConverter converter = new ExplorerItemModelToIconConverter();
                                     var bitmapImage = converter.Convert(new object[] { navigationItemViewModel.ResourceType, false }, null, null, null) as BitmapImage;
@@ -460,7 +460,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 if(resource != null)
                                 {
                                     droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
-                                    droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, EnvironmentRepository.Instance);
+                                    droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, droppedActivity, false, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
                                     modelProperty1.SetValue(droppedActivity);
                                 }
                                 _vm = null;
@@ -1650,7 +1650,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 if(resource != null)
                                 {
                                     //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance);
+                                    DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
                                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
                                     d.IconPath = resource.IconPath;
 
@@ -1672,7 +1672,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                 IContextualResourceModel resource = _vm.SelectedResourceModel;
                                 if(resource != null)
                                 {
-                                    DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance);
+                                    DsfActivity droppedActivity = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
 
                                     droppedActivity.ServiceName = droppedActivity.DisplayName = droppedActivity.ToolboxFriendlyName = resource.Category;
                                     droppedActivity.IconPath = resource.IconPath;

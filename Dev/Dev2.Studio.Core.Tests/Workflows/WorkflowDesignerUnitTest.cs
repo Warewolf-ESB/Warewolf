@@ -1158,7 +1158,7 @@ namespace Dev2.Core.Tests.Workflows
 
                     var properties = new Dictionary<string, Mock<ModelProperty>>();
                     var propertyCollection = new Mock<ModelPropertyCollection>();
-                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository);
+                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository,true);
 
                     var prop = new Mock<ModelProperty>();
                     prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -1340,7 +1340,7 @@ namespace Dev2.Core.Tests.Workflows
             var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             var mockWorkflowHelper = new Mock<IWorkflowHelper>();
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-            var testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true, environmentRepository);
+            var testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true, environmentRepository, true);
             var mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             mockEnv.Setup(c => c.ID).Returns(envId);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
@@ -1402,7 +1402,7 @@ namespace Dev2.Core.Tests.Workflows
             mockEnv.Setup(c => c.ID).Returns(envId2);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-            DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true, environmentRepository);
+            DsfActivity testAct = DsfActivityFactory.CreateDsfActivity(mockResourceModel.Object, new DsfActivity(), true, environmentRepository, true);
             var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object);
             testClass.TestCheckIfRemoteWorkflowAndSetProperties(testAct, mockResourceModel.Object, mockEnv2.Object);
             Assert.IsTrue(testAct.ServiceUri == "https://localhost:3143/" || testAct.ServiceUri == "http://localhost:3142/" || testAct.ServiceUri == "http://127.0.0.1:3142/", "Expected https://localhost:3143/ or http://localhost:3142/ or http://127.0.0.1:3142/ but got: " + testAct.ServiceUri);
@@ -1490,7 +1490,7 @@ namespace Dev2.Core.Tests.Workflows
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-            var testAct = DsfActivityFactory.CreateDsfActivity(contextualResourceModel, new DsfActivity(), true, environmentRepository);
+            var testAct = DsfActivityFactory.CreateDsfActivity(contextualResourceModel, new DsfActivity(), true, environmentRepository, true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -1554,7 +1554,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository);
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository, true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.ComputedValue).Returns(testAct);
@@ -1644,7 +1644,7 @@ namespace Dev2.Core.Tests.Workflows
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository);
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository, true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.ComputedValue).Returns(testAct);
@@ -1740,7 +1740,7 @@ namespace Dev2.Core.Tests.Workflows
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository);
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository,true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.ComputedValue).Returns(testAct);
@@ -1832,7 +1832,7 @@ namespace Dev2.Core.Tests.Workflows
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository);
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository, true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.ComputedValue).Returns(testAct);
@@ -1924,7 +1924,7 @@ namespace Dev2.Core.Tests.Workflows
 
             #region setup Mock ModelItem
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository);
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository, true);
             (testAct as IDev2Activity).UniqueID = notExpected;
 
             var prop = new Mock<ModelProperty>();
@@ -2071,7 +2071,7 @@ namespace Dev2.Core.Tests.Workflows
                     var properties = new Dictionary<string, Mock<ModelProperty>>();
                     var propertyCollection = new Mock<ModelPropertyCollection>();
                     var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository);
+                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
 
                     var prop = new Mock<ModelProperty>();
                     prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -2157,7 +2157,7 @@ namespace Dev2.Core.Tests.Workflows
                     var properties = new Dictionary<string, Mock<ModelProperty>>();
                     var propertyCollection = new Mock<ModelPropertyCollection>();
                     var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository);
+                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
 
                     var prop = new Mock<ModelProperty>();
                     prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -2245,7 +2245,7 @@ namespace Dev2.Core.Tests.Workflows
                     var properties = new Dictionary<string, Mock<ModelProperty>>();
                     var propertyCollection = new Mock<ModelPropertyCollection>();
                     var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository);
+                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
 
                     var prop = new Mock<ModelProperty>();
                     prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -2336,7 +2336,7 @@ namespace Dev2.Core.Tests.Workflows
                     var properties = new Dictionary<string, Mock<ModelProperty>>();
                     var propertyCollection = new Mock<ModelPropertyCollection>();
                     var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository);
+                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
 
                     var prop = new Mock<ModelProperty>();
                     prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -2430,7 +2430,7 @@ namespace Dev2.Core.Tests.Workflows
                     var properties = new Dictionary<string, Mock<ModelProperty>>();
                     var propertyCollection = new Mock<ModelPropertyCollection>();
                     var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository);
+                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
 
                     var prop = new Mock<ModelProperty>();
                     prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -2947,7 +2947,7 @@ namespace Dev2.Core.Tests.Workflows
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository);
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository, true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.ComputedValue).Returns(testAct);
@@ -3027,7 +3027,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository);
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository, true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.ComputedValue).Returns(testAct);

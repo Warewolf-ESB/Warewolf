@@ -10,7 +10,7 @@ namespace Dev2.Studio.Core.Factories
 {
     public static class DsfActivityFactory
     {
-        public static DsfActivity CreateDsfActivity(IContextualResourceModel resource, DsfActivity activity, bool ifNullCreateNew, IEnvironmentRepository environmentRepository)
+        public static DsfActivity CreateDsfActivity(IContextualResourceModel resource, DsfActivity activity, bool ifNullCreateNew, IEnvironmentRepository environmentRepository, bool isDesignerLocalhost)
         {
             if(activity == null)
             {
@@ -32,11 +32,13 @@ namespace Dev2.Studio.Core.Factories
                 if(resource.Environment != null)
                 {
                     var idToUse = resource.Environment.ID;
+
                     // when we have an active remote environment that we are designing against, set it as local to that environment ;)
-                    if(activeEnvironment.ID == resource.Environment.ID && idToUse != Guid.Empty)
+                    if(activeEnvironment.ID == resource.Environment.ID && idToUse != Guid.Empty && !isDesignerLocalhost)
                     {
                         idToUse = Guid.Empty;
                     }
+
                     activity.EnvironmentID = idToUse;
                 }
 

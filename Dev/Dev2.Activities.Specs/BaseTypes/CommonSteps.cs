@@ -473,7 +473,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     else
                     {
                         // Handle async stuff
-                        if(rowValue.Contains(":"))
+                        if(rowValue.Contains("asynchronously:"))
                         {
                             var endIdx = rowValue.IndexOf(":", StringComparison.Ordinal);
                             endIdx += 1;
