@@ -238,66 +238,6 @@ Scenario: Sort a recordset backwards recordset  with one row
 	And the debug output as
     |                          |
     | [[rs(1).row]] = Warewolf |	
-#
-#Scenario: Sort a random recordset indexes using star notation to Forward
-#	Given I have the following recordset to sort
-#	| rs        | value |
-#	| rs(1).row | a     |
-#	| rs(3).row | b     |
-#	| rs(6).row | c     |
-#	| rs(8).row | b     |
-#	And I sort a record "[[rs(*).row]]"
-#	And my sort order is "Forward"
-#	When the sort records tool is executed
-#	Then the sorted recordset "[[rs().row]]"  will be 
-#	| rs        | value |
-#	| rs(1).row | a     |
-#	| rs(3).row | b     |
-#	| rs(6).row | b     |
-#	| rs(8).row | c     |
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| Sort Field        | Sort Order |
-#	| [[rs(1).row]] = a |            |
-#	| [[rs(3).row]] = b |            |
-#	| [[rs(6).row]] = c |            |
-#	| [[rs(8).row]] = b | Forward    |
-#	And the debug output as
-#	|                   |
-#	| [[rs(1).row]] = a |
-#	| [[rs(3).row]] = b |
-#	| [[rs(6).row]] = b |
-#	| [[rs(8).row]] = c |
-#
-#Scenario: Sort a random recordset indexes using star notation to Backwards
-#	Given I have the following recordset to sort
-#	| rs        | value |
-#	| rs(1).row | a     |
-#	| rs(3).row | b     |
-#	| rs(6).row | c     |
-#	| rs(8).row | b     |
-#	And I sort a record "[[rs(*).row]]"
-#	And my sort order is "Backwards"
-#	When the sort records tool is executed
-#	Then the sorted recordset "[[rs().row]]"  will be 
-#	| rs        | value |
-#	| rs(1).row | c     |
-#	| rs(3).row | b     |
-#	| rs(6).row | b     |
-#	| rs(8).row | a     |
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| Sort Field        | Sort Order |
-#	| [[rs(1).row]] = a |            |
-#	| [[rs(3).row]] = b |            |
-#	| [[rs(6).row]] = c |            |
-#	| [[rs(8).row]] = b | Forward    |
-#	And the debug output as
-#	|                   |
-#	| [[rs(1).row]] = c |
-#	| [[rs(3).row]] = b |
-#	| [[rs(6).row]] = b |
-#	| [[rs(8).row]] = a |
 
 #This following 4 Scenarios should be passed after the bug 11838 is fixed	
 Scenario: Sort 2 columns backwards
