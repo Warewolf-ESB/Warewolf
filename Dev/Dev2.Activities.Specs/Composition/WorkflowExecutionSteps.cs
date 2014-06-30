@@ -9,14 +9,16 @@ using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
+using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
 using Dev2.Diagnostics.Debug;
+using Dev2.DynamicServices;
 using Dev2.Messages;
+using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
 using Dev2.Session;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
@@ -50,19 +52,50 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenIHaveAWorkflowOnServer(string serverName, string workflow)
         {
             AppSettings.LocalHost = "http://localhost:3142";
-            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
-            var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflow, ResourceName = workflow, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
+            environmentModel.ResourceRepository.ForceLoad();
 
-            environmentModel.ResourceRepository.Add(resourceModel);
-            _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
+            // connect to the remove environment now ;)
+            var remoteServerList = environmentModel.ResourceRepository.FindSourcesByType<Connection>(environmentModel, enSourceType.Dev2Server);
+            if(remoteServerList != null && remoteServerList.Count > 0)
+            {
+                var remoteServer = remoteServerList.FirstOrDefault(r => r.ResourceName == serverName);
 
-            _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
-            Add(workflow, resourceModel);
-            Add("parentWorkflowName", workflow);
-            Add("environment", environmentModel);
-            Add("resourceRepo", environmentModel.ResourceRepository);
-            Add("debugStates", new List<IDebugState>());
+                if(remoteServer != null)
+                {
+                    ServerProxy connection;
+                    if(remoteServer.AuthenticationType == AuthenticationType.Windows || remoteServer.AuthenticationType == AuthenticationType.Anonymous)
+                    {
+                        connection = new ServerProxy(new Uri(remoteServer.WebAddress));
+                    }
+                    else
+                    {
+                        //
+                        // NOTE: Public needs to drop through to User for the rest of the framework to pick up properly behind the scenes ;)
+                        //
+                        connection = new ServerProxy(remoteServer.WebAddress, remoteServer.UserName, remoteServer.Password);
+                    }
+
+                    var newEnvironment = new EnvironmentModel(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName, Category = remoteServer.ResourcePath };
+                    newEnvironment.Connect();
+                    newEnvironment.ForceLoadResources();
+
+                    // now find the bloody resource model for execution
+                    var resourceModel = newEnvironment.ResourceRepository.Find(r => r.ResourceName == workflow).FirstOrDefault();
+
+                    _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(newEnvironment.Connection.ServerEvents);
+
+                    _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
+
+                    Add(workflow, resourceModel);
+                    Add("parentWorkflowName", workflow);
+                    Add("environment", newEnvironment);
+                    Add("resourceRepo", newEnvironment.ResourceRepository);
+                    Add("debugStates", new List<IDebugState>());
+
+                }
+            }
         }
 
         [Given(@"I have a workflow ""(.*)""")]
@@ -71,7 +104,7 @@ namespace Dev2.Activities.Specs.Composition
             AppSettings.LocalHost = "http://localhost:3142";
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
-            var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = ResourceType.WorkflowService };
+            var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = Studio.Core.AppResources.Enums.ResourceType.WorkflowService };
 
             environmentModel.ResourceRepository.Add(resourceModel);
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(environmentModel.Connection.ServerEvents);
@@ -333,6 +366,21 @@ namespace Dev2.Activities.Specs.Composition
 
             inputSb.Append("</Inputs>");
             return inputSb;
+        }
+
+        [When(@"""(.*)"" is the active environment used to execute ""(.*)""")]
+        public void WhenIsTheActiveEnvironmentUsedToExecute(string connectionName, string workflowName)
+        {
+            // environment
+            IEnvironmentModel environmentModel;
+            IResourceRepository repository;
+            IContextualResourceModel resourceModel;
+
+            TryGetValue(workflowName, out resourceModel);
+            TryGetValue("environment", out environmentModel);
+            TryGetValue("resourceRepo", out repository);
+
+            ExecuteWorkflow(resourceModel);
         }
 
         [When(@"""(.*)"" is executed")]

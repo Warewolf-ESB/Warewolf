@@ -142,24 +142,19 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
 #
-#This Test should be passed after the bug 11612 is fixed
+# This Test should be passed after the bug 11612 is fixed
+# This test relies upon the fact that the remote workflow is real and loaded into the remote environment
 Scenario: Remote Workflow with an remote workflow
-	  #Given I have a workflow "RemoteWF" on server "Remote Connection Integration"
-	  Given I have server a "Remote Connection Integration" with workflow "RemoteWF"
-	  And "RemoteWF" contains "TestRemote" from server "Remote Connection Integration" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable |
-	  | a                | Warewolf      |                     |             |
-	  When "RemoteWF" is executed
+	  Given I have server a "Remote Connection" with workflow "Bug11612_Outer"
+	  When "Remote Connection" is the active environment used to execute "Bug11612_Outer"
 	  Then the workflow execution has "NO" error
-	  And the 'TestRemote' in WorkFlow 'RemoteWF' debug inputs as
+	  And the 'BUGS\Bug11612_Inner' in WorkFlow 'Bug11612_Outer' debug inputs as
+	  |                                 |
+	  | 2                               | 
+	  | Execute workflow asynchronously: False                               | 	 
+	 And the 'BUGS\Bug11612_Inner' in Workflow 'Bug11612_Outer' debug outputs as
 	  |                  |
-	  | [[a]] = Warewolf |
-	  And the 'TestRemote' in Workflow 'RemoteWF' debug outputs as
-	  | # |                  |
-	  | 1 | [[a]] = Warewolf |	  	 
-	 And the 'TestRemote' in Workflow 'RemoteWF' debug outputs as
-	  |                  |
-	  | [[a]] = Warewolf |
+	  | [[result]] = 3 |
 
 	  
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server

@@ -1,4 +1,10 @@
-﻿using ActivityUnitTests;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Net;
+using ActivityUnitTests;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -6,12 +12,6 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Net;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -472,8 +472,21 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                     else
                     {
-                        debugItemResult.Value = rowValue;
-                        debugItemResult.Type = DebugItemResultType.Value;
+                        // Handle async stuff
+                        if(rowValue.Contains(":"))
+                        {
+                            var endIdx = rowValue.IndexOf(":", StringComparison.Ordinal);
+                            endIdx += 1;
+                            var label = rowValue.Substring(0, endIdx);
+                            var value = rowValue.Substring(endIdx);
+                            debugItemResult.Label = label;
+                            debugItemResult.Value = value;
+                        }
+                        else
+                        {
+                            debugItemResult.Value = rowValue;
+                            debugItemResult.Type = DebugItemResultType.Value;
+                        }
                     }
 
                     list.Add(debugItemResult);
