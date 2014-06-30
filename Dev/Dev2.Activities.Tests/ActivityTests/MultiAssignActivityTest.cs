@@ -567,28 +567,27 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
+        
+        [TestMethod]
+        public void MutiAssignWithEditingExistingRecSets_Expected_RecordSetDataOverwritten()
+        {
+            _fieldCollection.Add(new ActivityDTO("[[testRecSet1(1).testRec1]]", "testRecValue1", _fieldCollection.Count));
 
-        //TJ-TODO:- 
-        //[TestMethod]
-        //public void MutiAssignWithEditingExistingRecSets_Expected_RecordSetDataOverwritten()
-        //{
-        //    _fieldCollection.Add(new ActivityDTO("[[testRecSet1(1).testRec1]]", "testRecValue1", _fieldCollection.Count));
+            SetupArguments(
+                            ActivityStrings.recsetDataListShape
+                          , ActivityStrings.recsetDataListShape);
 
-        //    SetupArguments(
-        //                    ActivityStrings.recsetDataListShape
-        //                  , ActivityStrings.recsetDataListShape);
+            IDSFDataObject result = ExecuteProcess();
 
-        //    IDSFDataObject result = ExecuteProcess();
+            const string expected = "testRecValue1";
+            string error;
+            string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "testRecSet1", "testRec1", out error).First();
 
-        //    const string expected = "testRecValue1";
-        //    string error;
-        //    string actual = RetrieveAllRecordSetFieldValues(result.DataListID, "testRecSet1", "testRec1", out error).First();
+            // remove test datalist
+            DataListRemoval(result.DataListID);
 
-        //    // remove test datalist
-        //    DataListRemoval(result.DataListID);
-
-        //    Assert.AreEqual(expected, actual);
-        //}
+            Assert.AreEqual(expected, actual);
+        }
 
         [TestMethod]
         public void ScalarInRecordset_Expected_MultiAssignCorrectlyIdentifiesField()

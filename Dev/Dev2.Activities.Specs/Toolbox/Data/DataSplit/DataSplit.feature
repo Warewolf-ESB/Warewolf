@@ -500,103 +500,102 @@ Examples:
 	| 1  |         |
 	| 2  | [[%#$]] |
 
-#Scenario Outline: Debug output Validation errors
-#	Given A string to split with value "Warewolf"	
-#	And assign to variable '<Variable>' split type "Index" at '5' and Include 'Selected' and Escape ''
-#	When the data split tool is executed
-#	Then the execution has "AN" error
-#	And the debug inputs as  
-#	| String to Split  | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
-#	| "" =  "Warewolf" | Forward           | No              | 1 | <Variable>  = | Index | 5     | Yes     |        |
-#	And the debug output as
-#	| # |          |
-#	| 1 | String = |
-#Examples: 
-#	 | No | Variable                                  |
-#	 | 1  | [[rec().a]]=]]                            |
-#	 | 2  | [[rec'()'.a]]                             |
-#	 | 3  | [[rec"()".a]]                             |
-#	 | 4  | [[rec".a]]                                |
-#	 | 5  | [[rec.a]]                                 |
-#	 | 6  | [[rec()*.a]]                              |
-#	 | 9  | [[rec().a]]*                              |
-#	 | 10 | [[1]]                                     |
-#	 | 11 | [[@]]                                     |
-#	 | 12 | [[var#]]                                  |
-#	 | 13 | [[var]]00]]                               |
-#	 | 14 | [[var]]@]]                                |
-#	 | 15 | [[var.()]]                                |
-#	 | 16 | [[]]                                      |
-#	 | 17 | [[()]]                                    |
-#	 | 28 | [[var[[]]                                 |
-#	 | 29 | [[var1.a]]                                |
-#	 | 20 | [[rec()!a]]                               |
-#	 | 21 | [[rec()         a]]                       |
-#	 | 22 | [[{{rec(_).a}}]]]                         |
-#	 | 23 | [[rec(23).[[var*]]]]                      |
-#	 | 24 | [[rec()                                   |
-#	 | 25 | a[[rec([[[[b]]]]).a]]@                    |
-#	 | 26 | [[var  ]]                                 |
-#	 | 27 | [[var@]]                                  |
-#	 | 28 | [[var#]]                                  |
-#	 | 29 | [[var]]]]                                 |
-#	 | 30 | [[(1var)]]                                |
-#	 | 31 | [[1var)]]                                 |
-#	 | 32 | [[var.()]]                                |
-#	 | 33 | [[var  ]]                                 |
-#	 | 34 | [[var~]]                                  |
-#	 | 35 | [[var+]]                                  |
-#	 | 36 | [[var]a]]                                 |
-#	 | 37 | [[var[a]]                                 |
-#	 | 38 | [[var 1]]                                 |
-#	 | 39 | [[var[[]]                                 |
-#	 | 40 | [[var[[1]]]]                              |
-#	 | 41 | [[var.a]]                                 |
-#	 | 42 | [[var1.a]]                                |
-#	 | 43 | [[[[a]].[[b]]]]cd]]                       |
-#	 | 44 | [[var*]]                                  |
-#	 | 45 | [[1var]]                                  |
-#	 | 46 | [[@var]]                                  |
-#	 | 47 | [[var]](var)]]                            |
-#	 | 48 | [[var,]]                                  |
-#	 | 49 | [[:var 1]]                                |
-#	 | 50 | [[,var]]                                  |
-#	 | 51 | [[test,var]]                              |
-#	 | 52 | [[test. var]]                             |
-#	 | 53 | [[test.var]]                              |
-#	 | 54 | [[test. 1]]                               |
-#	 | 55 | [[rec(*).&]]                              |
-#	 | 56 | [[rec(),a]]                               |
-#	 | 57 | [[rec()         a]]                       |
-#	 | 58 | [[rec(1).[[rec().1]]]]                    |
-#	 | 59 | [[rec(a).[[rec().a]]]]                    |
-#	 | 60 | [[{{rec(_).a}}]]]                         |
-#	 | 61 | [[*[{{rec(_).a}}]]]                       |
-#	 | 62 | [[rec(23).[[var}]]]]                      |
-#	 | 63 | [[rec(23).[[var*]]]]                      |
-#	 | 64 | [[rec(23).[[var%^&%]]]]                   |
-#	 | 65 | [[rec().a]]234234]]                       |
-#	 | 66 | [[rec().a]]=]]                            |
-#	 | 67 | [[rec()..]]                               |
-#	 | 68 | [[rec().a.b]]                             |
-#	 | 69 | [[rec().a]].a]]                           |
-#	 | 70 | [[rec(@).a]]                              |
-#	 | 71 | [[rec(().a]]                              |
-#	 | 72 | [[rec()).a]]                              |
-#	 | 73 | [[rec(+).a]]                              |
-#	 | 74 | [[rec(-).a]]                              |
-#	 | 75 | [[rec(!).a]]                              |
-#	 | 76 | [[rec(q).a]]                              |
-#	 | 77 | [[rec(w).a]]                              |
-#	 | 78 | [[rec(.).a]]                              |
-#	 | 79 | [[rec(:).a]]                              |
-#	 | 80 | [[rec(,).a]]                              |
-#	 | 81 | [[rec"()".a]]                             |
-#	 | 82 | [[rec'()'.a]]                             |
-#	 | 83 | [[rec").a]]                               |
-#	 | 84 | [[rec{a]]                                 |
-#	 | 85 | [[rec{a}]]                                |
-#	 | 86 | [[rec()*.a]]                              |
-#	 | 87 | [[rec().a[[a]]                            |
-#	 | 89 | [[rec(-1).a                               |
-#	 | 90 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] |
+Scenario Outline: Debug output Validation errors
+	Given A string to split with value "Warewolf"	
+	And assign to variable '<Variable>' split type "Index" at '5' and Include 'Selected' and Escape ''
+	When the data split tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as  
+	| String to Split  | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+	| "" =  "Warewolf" | Forward           | No              | 1 | <Variable>  = | Index | 5     | Yes     |        |
+	And the debug output as
+	| # |          |
+	| 1 | String = |
+Examples: 
+	 | No | Variable                                  |
+	 | 1  | [[rec().a]]=]]                            |
+	 | 2  | [[rec'()'.a]]                             |
+	 | 3  | [[rec"()".a]]                             |
+	 | 4  | [[rec".a]]                                |
+	 | 5  | [[rec.a]]                                 |
+	 | 6  | [[rec()*.a]]                              |
+	 | 9  | [[rec().a]]*                              |
+	 | 10 | [[1]]                                     |
+	 | 11 | [[@]]                                     |
+	 | 12 | [[var#]]                                  |
+	 | 13 | [[var]]00]]                               |
+	 | 14 | [[var]]@]]                                |
+	 | 15 | [[var.()]]                                |
+	 | 16 | [[]]                                      |
+	 | 17 | [[()]]                                    |
+	 | 28 | [[var[[]]                                 |
+	 | 29 | [[var1.a]]                                |
+	 | 20 | [[rec()!a]]                               |
+	 | 21 | [[rec()         a]]                       |
+	 | 22 | [[{{rec(_).a}}]]]                         |
+	 | 23 | [[rec(23).[[var*]]]]                      |
+	 | 24 | [[rec()                                   |
+	 | 25 | a[[rec([[[[b]]]]).a]]@                    |
+	 | 26 | [[var  ]]                                 |
+	 | 27 | [[var@]]                                  |
+	 | 28 | [[var#]]                                  |
+	 | 29 | [[var]]]]                                 |
+	 | 30 | [[(1var)]]                                |
+	 | 31 | [[1var)]]                                 |
+	 | 32 | [[var.()]]                                |
+	 | 33 | [[var  ]]                                 |
+	 | 34 | [[var~]]                                  |
+	 | 35 | [[var+]]                                  |
+	 | 36 | [[var]a]]                                 |
+	 | 37 | [[var[a]]                                 |
+	 | 38 | [[var 1]]                                 |
+	 | 39 | [[var[[]]                                 |
+	 | 40 | [[var[[1]]]]                              |
+	 | 41 | [[var.a]]                                 |
+	 | 42 | [[var1.a]]                                |
+	 | 43 | [[[[a]].[[b]]]]cd]]                       |
+	 | 44 | [[var*]]                                  |
+	 | 45 | [[1var]]                                  |
+	 | 46 | [[@var]]                                  |
+	 | 47 | [[var]](var)]]                            |
+	 | 48 | [[var,]]                                  |
+	 | 49 | [[:var 1]]                                |
+	 | 50 | [[,var]]                                  |
+	 | 51 | [[test,var]]                              |
+	 | 52 | [[test. var]]                             |
+	 | 53 | [[test.var]]                              |
+	 | 54 | [[test. 1]]                               |
+	 | 55 | [[rec(*).&]]                              |
+	 | 56 | [[rec(),a]]                               |
+	 | 57 | [[rec()         a]]                       |
+	 | 58 | [[rec(1).[[rec().1]]]]                    |
+	 | 59 | [[rec(a).[[rec().a]]]]                    |
+	 | 60 | [[{{rec(_).a}}]]]                         |
+	 | 61 | [[*[{{rec(_).a}}]]]                       |
+	 | 62 | [[rec(23).[[var}]]]]                      |
+	 | 63 | [[rec(23).[[var*]]]]                      |
+	 | 64 | [[rec(23).[[var%^&%]]]]                   |
+	 | 65 | [[rec().a]]234234]]                       |
+	 | 66 | [[rec().a]]=]]                            |
+	 | 67 | [[rec()..]]                               |
+	 | 68 | [[rec().a.b]]                             |
+	 | 69 | [[rec().a]].a]]                           |
+	 | 70 | [[rec(@).a]]                              |
+	 | 71 | [[rec(().a]]                              |
+	 | 72 | [[rec()).a]]                              |
+	 | 73 | [[rec(+).a]]                              |
+	 | 74 | [[rec(-).a]]                              |
+	 | 75 | [[rec(!).a]]                              |
+	 | 76 | [[rec(q).a]]                              |
+	 | 77 | [[rec(w).a]]                              |
+	 | 78 | [[rec(.).a]]                              |
+	 | 79 | [[rec(:).a]]                              |
+	 | 80 | [[rec(,).a]]                              |
+	 | 81 | [[rec"()".a]]                             |
+	 | 82 | [[rec'()'.a]]                             |
+	 | 83 | [[rec").a]]                               |
+	 | 84 | [[rec{a]]                                 |
+	 | 85 | [[rec{a}]]                                |
+	 | 86 | [[rec()*.a]]                              |	 
+	 | 89 | [[rec(-1).a                               |
+	 | 90 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] |

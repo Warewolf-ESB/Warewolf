@@ -2013,7 +2013,7 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #       |   | [[rec(2).unique]] = 40 |
 #       |   | [[rec(3).unique]] = 20 |
 #       |   | [[rec(4).unique]] = 30 |
-#
+
 #Scenario: Workflow with Assign and Unique Tool, Infields rec without star
 #      Given I have a workflow "workflowithAssignandUniqueTool"
 #      And "workflowithAssignandUniqueTool" contains an Assign "Records" as
@@ -2167,7 +2167,7 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #	  |                      |
 #	  | [[rec(1).a]] = Int32 |
 
-#This should be passed after the bug 12021 is fixed
+#This should be passed after the bug 12021 is fixed (RECURSIVE EVALUATION)
 #Scenario: Workflow with Assigns DataSplit executing against the server
 #      Given I have a workflow "WorkflowDataSplit"
 #	  And "WorkflowDataSplit" contains an Assign "Assignval" as
@@ -2267,16 +2267,8 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #
 
 
-
-
-
-
-
-
-
-
-#This should be passed after the bug 12021 is fixed
-#Scenario: Workflow with Assigns DataSplit executing against the server
+#This should be passed after the bug 12021 is fixed (RECURSIVE EVALUATION)
+#Scenario: Workflow with Assigns DataSplit executing against the server 2
 #      Given I have a workflow "WorkflowDataSplit"
 #	  And "WorkflowDataSplit" contains an Assign "Assignval" as
 #      | variable | value   |
@@ -2298,30 +2290,3 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
 #	  | # |                     |
 #	  | 1 | [[rec(1).b]] = abcd |
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

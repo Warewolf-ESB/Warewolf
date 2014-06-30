@@ -464,8 +464,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach(DataSplitDTO t in args)
             {
                 var fieldName = t.OutputVariable;
-                fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
-
                 if(!string.IsNullOrEmpty(_datalistString))
                 {
                     var isValidExpr = new IsValidExpressionRule(() => fieldName, _datalistString)
