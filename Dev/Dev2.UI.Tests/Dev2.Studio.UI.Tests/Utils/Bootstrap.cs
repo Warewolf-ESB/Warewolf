@@ -83,6 +83,19 @@ namespace Dev2.Studio.UI.Tests.Utils
                 }
                 RootSourceLocation = StudioLocation.Replace(StudioExeName, "Resources\\");
                 RootServiceLocation = StudioLocation.Replace(StudioExeName, "Resources\\");
+
+                //Ashley: Simulating Travs process right here in the bootstrapper for local test runs...
+                Directory.CreateDirectory(RemoteServerLocation);
+                CopyDirectory(Path.GetDirectoryName(ServerLocation), RemoteServerLocation);
+                CopyDirectory(Path.GetDirectoryName(StudioLocation), RemoteServerLocation);
+
+                if(Directory.Exists(uiTestRemoteResources))
+                {
+                    var remoteResources = Path.Combine(RemoteServerLocation, "Resources\\");
+                    Directory.Delete(remoteResources, true);
+                    CopyDirectory(uiTestRemoteResources, remoteResources);
+                }
+
                 return;
             }
             var expectedServerLocation = ServerLocation.Replace("\\" + ServerExeName, string.Empty);
@@ -107,6 +120,10 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
             foreach(var newPath in Directory.GetFiles(from, "*.*", SearchOption.AllDirectories))
             {
+                if(newPath.ToLower().Contains("version"))
+                {
+                    continue;
+                }
                 File.Copy(newPath, newPath.Replace(from, to), true);
             }
         }

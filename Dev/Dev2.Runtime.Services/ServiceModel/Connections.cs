@@ -17,6 +17,7 @@ using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
 using Connection = Dev2.Data.ServiceModel.Connection;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel
 {
     public class Connections : ExceptionManager
@@ -25,7 +26,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Fields
 
         // ReSharper disable FieldCanBeMadeReadOnly.Local
-        Func<List<string>> FetchComputers;
+        Func<List<string>> _fetchComputers;
         // ReSharper restore FieldCanBeMadeReadOnly.Local
 
         #endregion
@@ -41,7 +42,7 @@ namespace Dev2.Runtime.ServiceModel
         // here for testing
         public Connections(Func<List<string>> fetchComputersFn)
         {
-            FetchComputers = fetchComputersFn;
+            _fetchComputers = fetchComputersFn;
         }
 
         #endregion
@@ -80,6 +81,14 @@ namespace Dev2.Runtime.ServiceModel
             {
                 var connection = JsonConvert.DeserializeObject<Connection>(args);
 
+                Uri actualUri;
+
+                if(Uri.TryCreate(connection.Address, UriKind.RelativeOrAbsolute, out actualUri))
+                {
+                    var port = actualUri.Port;
+                    connection.WebServerPort = port;
+                }
+
                 // convert public user and pass to proper ntlm user and pass ;)
                 if(connection.AuthenticationType == AuthenticationType.Public)
                 {
@@ -111,7 +120,7 @@ namespace Dev2.Runtime.ServiceModel
             // This search is case-sensitive!
             term = term.ToLower();
 
-            var tmp = FetchComputers.Invoke();
+            var tmp = _fetchComputers.Invoke();
             var results = tmp.FindAll(s => s.ToLower().Contains(term));
             return JsonConvert.SerializeObject(results);
         }

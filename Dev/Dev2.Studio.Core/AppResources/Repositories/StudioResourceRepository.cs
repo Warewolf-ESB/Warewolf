@@ -564,11 +564,6 @@ namespace Dev2.AppResources.Repositories
             if(item.ResourceType == ResourceType.Server)
             {
                 IEnvironmentModel environmentModel = environmentRepository.FindSingle(model => GetEnvironmentModel(model, item));
-
-                if(!string.IsNullOrEmpty(item.WebserverUri) && item.WebserverUri.ToLower().Contains(Environment.MachineName.ToLower()))
-                {
-                    environmentModel = environmentRepository.FindSingle(c => c.ID == Guid.Empty); // this is for localhost
-                }
                 if(environmentModel != null && environmentModel.Connection != null)
                 {
                     displayname = environmentModel.DisplayName;
@@ -591,9 +586,22 @@ namespace Dev2.AppResources.Repositories
         {
             if(item != null && model != null)
             {
-                if(!string.IsNullOrEmpty(item.WebserverUri) && model.Connection != null && model.Connection.WebServerUri != null)
+                var itemServerUri = item.WebserverUri;
+                var environmentConnection = model.Connection;
+                var webServerUri = environmentConnection.WebServerUri;
+                if(!string.IsNullOrEmpty(itemServerUri) && environmentConnection != null && webServerUri != null)
                 {
-                    return model.Connection.ServerID == item.ServerId && String.Equals(model.Connection.WebServerUri.ToString(), item.WebserverUri, StringComparison.InvariantCultureIgnoreCase);
+                    Uri actualUri;
+                    Uri.TryCreate(itemServerUri, UriKind.RelativeOrAbsolute, out actualUri);
+                    var found = environmentConnection.ServerID == item.ServerId && String.Equals(webServerUri.ToString(), itemServerUri, StringComparison.InvariantCultureIgnoreCase) && actualUri.Port == webServerUri.Port;
+                    if(found)
+                    {
+                        return true;
+                    }
+                    if(itemServerUri.ToLower().Contains(Environment.MachineName.ToLower()) && actualUri.Port == webServerUri.Port)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
