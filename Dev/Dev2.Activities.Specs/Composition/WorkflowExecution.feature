@@ -2267,6 +2267,31 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #
 
 
+#This should be passed after the bug 12021 is fixed
+#Scenario: Workflow with Assigns DataSplit executing against the server
+#      Given I have a workflow "WorkflowDataSplit"
+#	  And "WorkflowDataSplit" contains an Assign "Assignval" as
+#      | variable | value   |
+#      | [[a]]    | rec().a |
+#	    And "WorkflowDataSplit" contains Data Split "DataSplit" as
+#	  | String | Variable  | Type  | At | Include    | Escape |
+#	  | abcd   | [[[[a]]]] | Index | 4  | Unselected |        | 
+#	  When "WorkflowDataSplit" is executed
+#	  Then the workflow execution has "No" error
+#	  And the 'Assignval' in WorkFlow 'WorkflowDataSplit' debug inputs as
+#	  | # | Variable | New Value |
+#	  | 1 | [[a]] =  | rec().a   |
+#	  And the 'Assignval' in Workflow 'WorkflowDataSplit' debug outputs as  
+#	  | # |                  |
+#	  | 1 | [[a]] =  rec().a |
+#	  And the 'DataSplit' in WorkFlow 'WorkflowDataSplit' debug inputs as 
+#	  | String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
+#	  | abcd            | Forward           | No              | 1 | [[[[a]]]] = [[rec().a]] | Index | 4     | No      |        |
+#	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
+#	  | # |                     |
+#	  | 1 | [[rec(1).b]] = abcd |
+
+
 #This should be passed after the bug 12021 is fixed (RECURSIVE EVALUATION)
 #Scenario: Workflow with Assigns DataSplit executing against the server 2
 #      Given I have a workflow "WorkflowDataSplit"
@@ -2290,3 +2315,87 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #	  And the 'DataSplit' in Workflow 'WorkflowDataSplit' debug outputs as  
 #	  | # |                     |
 #	  | 1 | [[rec(1).b]] = abcd |
+
+#
+#This Test should be passed after the bug 12119 is fixed
+#Scenario: Workflow with Assign and Unique Tool
+#      Given I have a workflow "workfllowAssingunique"
+#      And "workfllowAssingunique" contains an Assign "Records" as
+#	  | variable    | value |
+#	  | [[rs(1).a]] | 19    |
+#	  | [[rs(2).a]] | 20    |
+#	  | [[rs(3).a]] | 40    |
+#	  | [[rs(4).a]] | 50    |
+#	  | [[rs(1).b]] | 19    |
+#	  | [[rs(2).b]] | 20    |
+#	  | [[rs(3).b]] | 30    |
+#	  | [[rs(4).b]] | 80    |
+#	  And "workfllowAssingunique" contains an Unique "Unique rec" as
+#	  | In Field(s)           | Return Fields | Result           |
+#	  | [[rs().a]],[[rs().b]] | [[rs().a]]    | [[rec().unique]] |
+#	  When "workfllowAssingunique" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Records' in WorkFlow 'workfllowAssingunique' debug inputs as
+#	  | # | Variable     | New Value |
+#	  | 1 | [[rs(1).a]]= | 19        |
+#	  | 2 | [[rs(2).a]]= | 20        |
+#	  | 3 | [[rs(3).a]]= | 40        |
+#	  | 4 | [[rs(4).a]]= | 50        |
+#	  | 5 | [[rs(1).b]]= | 19        |
+#	  | 6 | [[rs(2).b]]= | 20        |
+#	  | 7 | [[rs(3).b]]= | 30        |
+#	  | 8 | [[rs(4).b]]= | 80        |
+#	  And the 'Records' in Workflow 'workfllowAssingunique' debug outputs as  
+#	  | # |                   |
+#	  | 1 | [[rs(1).a]] =  19 |
+#	  | 2 | [[rs(2).a]] =  20 |
+#	  | 3 | [[rs(3).a]] =  40 |
+#	  | 4 | [[rs(4).a]] =  50 |
+#	  | 5 | [[rs(1).b]] =  19 |
+#	  | 6 | [[rs(2).b]] =  20 |
+#	  | 7 | [[rs(3).b]] =  30 |
+#	  | 8 | [[rs(4).b]] =  80 |
+#	  And the 'Unique r ec' in WorkFlow 'workfllowAssingunique' debug inputs as
+#       | #           |                  | Return Fields |
+#       | In Field(s) | [[rs(1).a]] = 19 |               |
+#       |             | [[rs(2).a]] = 20 |               |
+#       |             | [[rs(3).a]] = 40 |               |
+#       |             | [[rs(4).a]] = 50 |               |
+#       |             | [[rs(1).b]] = 19 |               |
+#       |             | [[rs(2).b]] = 20 |               |
+#       |             | [[rs(3).b]] = 30 |               |
+#       |             | [[rs(4).b]] = 80 |               |
+#       |             |                  | [[rs().a]]    |
+#      And the 'Unique rec' in Workflow 'workfllowAssingunique' debug outputs as  
+#       | # |                        |
+#       | 1 | [[rec(1).unique]] = 19 |
+#       |   | [[rec(2).unique]] = 20 |
+#       |   | [[rec(3).unique]] = 40 |
+#       |   | [[rec(4).unique]] = 80 |
+#
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
