@@ -880,6 +880,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 }
                 else
                 {
+                    var recordset = FetchRecordAt(numericIndex, out error);
+
+                    if (recordset != null)
+                    {
+                        
+                    }
                     result = DeleteRowAtIndex(numericIndex, out error);
                 }
             }

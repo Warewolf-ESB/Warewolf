@@ -1,12 +1,68 @@
-﻿using Dev2.Validation;
+﻿using System.Diagnostics.CodeAnalysis;
+using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Activities.Designers.Tests.Designers2.Core
+namespace Dev2.Tests.Activities.Validation
 {
     [TestClass]
+    [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
     public class IsValidExpressionRuleTests
     {
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("IsValidExpressionRule_Check")]
+        public void IsValidExpressionRule_Check_InvalidVariable_RaisesError()
+        {
+            //------------Setup for test--------------------------
+            var validator = new IsValidExpressionRule(() => "[[res#]]", "<ADL><rec><field1/></rec><var1/></ADL>");
+            //------------Execute Test---------------------------
+            var errorInfo = validator.Check();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(errorInfo);
+            Assert.AreEqual("The - Variable name [[res#]] contains invalid character(s)", errorInfo.Message);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("IsValidExpressionRule_Check")]
+        public void IsValidExpressionRule_Check_ValidVariable_RaisesNoError()
+        {
+            //------------Setup for test--------------------------
+            var validator = new IsValidExpressionRule(() => "[[var1]]", "<ADL><rec><field1/></rec><var1/></ADL>");
+            //------------Execute Test---------------------------
+            var result = validator.Check();
+            //------------Assert Results-------------------------
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("IsValidExpressionRule_Check")]
+        public void IsValidExpressionRule_Check_VariableIsEmptyString_RaisesNoError()
+        {
+            //------------Setup for test--------------------------
+            var validator = new IsValidExpressionRule(() => "", "<ADL><rec><field1/></rec><var1/></ADL>");
+            //------------Execute Test---------------------------
+            var result = validator.Check();
+            //------------Assert Results-------------------------
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("IsValidExpressionRule_Check")]
+        public void IsValidExpressionRule_Check_MalformedVariable_RaisesAnError()
+        {
+            //------------Setup for test--------------------------
+            var validator = new IsValidExpressionRule(() => "h]]", "<ADL><rec><field1/></rec><var1/></ADL>");
+            //------------Execute Test---------------------------
+            var errorInfo = validator.Check();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(errorInfo);
+            Assert.AreEqual("The - Invalid expression: opening and closing brackets don't match.", errorInfo.Message);
+        }
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]
