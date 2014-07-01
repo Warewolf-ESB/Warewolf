@@ -78,10 +78,16 @@ namespace Dev2.Data.Util
         /// <returns></returns>
         public static string ReplaceRecordsetIndexWithBlank(string expression)
         {
-            string extractIndexRegionFromRecordset = string.Format("({0})", ExtractIndexRegionFromRecordset(expression));
+            var index = ExtractIndexRegionFromRecordset(expression);
+
+            if (string.IsNullOrEmpty(index))
+            {
+                return expression;
+            }
+
+            string extractIndexRegionFromRecordset = string.Format("({0})", index);
             return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
-                                        expression.Replace(extractIndexRegionFromRecordset, "()")
-                                                  .Replace("(())", "()");
+                                        expression.Replace(extractIndexRegionFromRecordset, "()");
         }
 
         /// <summary>

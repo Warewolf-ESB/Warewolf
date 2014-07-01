@@ -1,10 +1,4 @@
-﻿using System;
-using System.Activities;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using Dev2;
+﻿using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -19,6 +13,12 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Validation;
+using System;
+using System.Activities;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -134,22 +134,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.MergeErrors(errorResultTO);
 
                     var fieldName = row.InputVariable;
-                    fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
+                    var splitIntoRegions = DataListCleaningUtils.FindAllLanguagePieces(fieldName);
                     var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errorResultTO);
                     if(!string.IsNullOrEmpty(datalist))
                     {
-                        var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist)
+                        foreach(var region in splitIntoRegions)
                         {
-                            LabelText = fieldName
-                        };
+                            var r = DataListUtil.IsValueRecordset(region) ? DataListUtil.ReplaceRecordsetIndexWithBlank(region) : region;
+                            var isValidExpr = new IsValidExpressionRule(() => r, datalist)
+                            {
+                                LabelText = fieldName
+                            };
 
-                        var errorInfo = isValidExpr.Check();
-                        if(errorInfo != null)
-                        {
-                            row.InputVariable = "";
-                            errorResultTO.AddError(errorInfo.Message);
+                            var errorInfo = isValidExpr.Check();
+                            if(errorInfo != null)
+                            {
+                                row.InputVariable = "";
+                                errorResultTO.AddError(errorInfo.Message);
+                            }
+                            allErrors.MergeErrors(errorResultTO);
                         }
-                        allErrors.MergeErrors(errorResultTO);
                     }
 
                     allErrors.MergeErrors(errorResultTO);

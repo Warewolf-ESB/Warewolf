@@ -1,4 +1,5 @@
-﻿using Dev2.Data.Parsers;
+﻿using Dev2.Common;
+using Dev2.Data.Parsers;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using System;
@@ -70,6 +71,51 @@ namespace Dev2.DataList.Contract
                 }
             }
             return new List<string> { null };
+        }
+
+        public static List<string> FindAllLanguagePieces(string dataListRegion)
+        {
+            var allValidRegions = new List<string>();
+            if(!string.IsNullOrEmpty(dataListRegion))
+            {
+                try
+                {
+                    if(DataListUtil.IsEvaluated(dataListRegion))
+                    {
+                        Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+                        var allParts = parser.MakeParts(dataListRegion, false);
+                        foreach(var part in allParts)
+                        {
+                            var parseTO = part.Child;
+                            while(parseTO != null)
+                            {
+                                AddPart(parseTO, allValidRegions);
+                                parseTO = parseTO.Child;
+                            }
+
+                            AddPart(part, allValidRegions);
+                        }
+                    }
+                }
+                catch(Exception)
+                {
+                    //Do Something usefull like log
+                    ServerLogger.LogMessage("Error parsing");
+                }
+            }
+            return allValidRegions;
+        }
+
+        static void AddPart(ParseTO part, List<string> allValidRegions)
+        {
+            if(string.IsNullOrEmpty(part.Payload) && part.Child == null)
+            {
+                allValidRegions.Add(string.Concat("[[", part.Payload, "]]"));
+            }
+            if(!string.IsNullOrEmpty(part.Payload))
+            {
+                allValidRegions.Add(string.Concat("[[", part.Payload, "]]"));
+            }
         }
 
         private static IEnumerable<string> AddChildrenPart(ParseTO child)

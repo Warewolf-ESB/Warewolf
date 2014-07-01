@@ -1,9 +1,4 @@
-﻿using System;
-using System.Activities;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.Linq;
-using Dev2.Activities.Specs.BaseTypes;
+﻿using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Enums;
@@ -11,6 +6,11 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Enums;
 using Dev2.Runtime.ESB.Control;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Activities;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.Linq;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -62,6 +62,25 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             CommonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
 
+        [Given(@"""(.*)"" contains an Unique ""(.*)"" as")]
+        public void GivenContainsAnUniqueAs(string parentName, string activityName, Table table)
+        {
+            DsfUniqueActivity activity = new DsfUniqueActivity { DisplayName = activityName };
+            foreach(var tableRow in table.Rows)
+            {
+                var inFields = tableRow["In Field(s)"];
+                var returnFields = tableRow["Return Fields"];
+                var result = tableRow["Result"];
+
+
+                CommonSteps.AddVariableToVariableList(result);
+
+                activity.Result = result;
+                activity.ResultFields = returnFields;
+                activity.InFields = inFields;
+            }
+            CommonSteps.AddActivityToActivityList(parentName, activityName, activity);
+        }
 
 
 

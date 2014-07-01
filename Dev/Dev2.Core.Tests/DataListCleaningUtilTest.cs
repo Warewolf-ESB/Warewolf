@@ -12,6 +12,7 @@ namespace Dev2.Tests
     ///</summary>
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class DataListCleaningUtilTest
     {
  
@@ -139,5 +140,89 @@ namespace Dev2.Tests
             Assert.AreEqual("[[rec().val][a]]", actual[0]);
         }
 
-    }
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataListCleaningUtil_FindAllLanguagePieces")]
+        public void DataListCleaningUtils_FindAllLanguagePieces_VariableWithChildVariable_TwoVariables()
+        {
+            //------------Execute Test---------------------------
+            var pieces = DataListCleaningUtils.FindAllLanguagePieces("[[a[[b]]]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, pieces.Count);
+            Assert.AreEqual("[[b]]", pieces[0]);
+            Assert.AreEqual("[[a]]", pieces[1]);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataListCleaningUtil_FindAllLanguagePieces")]
+        public void DataListCleaningUtils_FindAllLanguagePieces_EmptyString_ZeroVariable()
+        {
+            //------------Execute Test---------------------------
+            var pieces = DataListCleaningUtils.FindAllLanguagePieces("");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, pieces.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataListCleaningUtil_FindAllLanguagePieces")]
+        public void DataListCleaningUtils_FindAllLanguagePieces_Number_ZeroVariable()
+        {
+            //------------Execute Test---------------------------
+            var pieces = DataListCleaningUtils.FindAllLanguagePieces("19");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(0, pieces.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataListCleaningUtil_FindAllLanguagePieces")]
+        public void DataListCleaningUtils_FindAllLanguagePieces_RecursiveVariable_OneVariable()
+        {
+            //------------Execute Test---------------------------
+            var pieces = DataListCleaningUtils.FindAllLanguagePieces("[[[[[[d]]]]]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, pieces.Count);
+            Assert.AreEqual("[[d]]", pieces[0]);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataListCleaningUtil_FindAllLanguagePieces")]
+        public void DataListCleaningUtils_FindAllLanguagePieces_MalFormedRecursiveVariable_TwoVariables()
+        {
+            //------------Execute Test---------------------------
+            var pieces = DataListCleaningUtils.FindAllLanguagePieces("[[[[[[d]]]]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, pieces.Count);
+            Assert.AreEqual("[[d]]", pieces[0]);
+            Assert.AreEqual("[[]]]", pieces[1]);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataListCleaningUtil_FindAllLanguagePieces")]
+        public void DataListCleaningUtils_FindAllLanguagePieces_ComplexRecordset_TwoVariable()
+        {
+            //------------Execute Test---------------------------
+            var pieces = DataListCleaningUtils.FindAllLanguagePieces("[[rec().a[[a]]]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, pieces.Count);
+            Assert.AreEqual("[[a]]", pieces[0]);
+            Assert.AreEqual("[[rec().a]]", pieces[1]);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("DataListCleaningUtil_FindAllLanguagePieces")]
+        public void DataListCleaningUtils_FindAllLanguagePieces_EmptyVariable_OneVariable()
+        {
+            //------------Execute Test---------------------------
+            var pieces = DataListCleaningUtils.FindAllLanguagePieces("[[]]");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, pieces.Count);
+            Assert.AreEqual("[[]]", pieces[0]);
+        }
+    }   
 }
