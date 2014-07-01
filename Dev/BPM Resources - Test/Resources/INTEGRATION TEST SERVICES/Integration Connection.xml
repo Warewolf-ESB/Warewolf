@@ -1,0 +1,23 @@
+
+<Source ID="28c80eba-beee-42b5-8ea8-711d83965ce8" Version="1.0" Name="Integration Connection" ResourceType="Server" IsValid="false" ConnectionString="AppServerUri=http://tst-ci-remote:3142;WebServerPort=3142;AuthenticationType=Public" Type="Dev2Server" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>Integration Connection</DisplayName>
+  <Category>INTEGRATION TEST SERVICES\Integration Connection</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>Dev2Server</TypeOf>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>oPRRsspT2zn27MQDWHng0FrODE8=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>ohSKdO4zjC+deTqIxelivTNHXtXmF0GgZjOCjm1Ghg/i3fa6equHv1Fgy0XQIYphPTxggUBfL31oz0DcBhy9G30kzD44XcmDc7P/jgULfWsTwQbKLXZTWYojN6w6qvBf7STBQ+Jv6JWcqr0mnq8ZoV4NjOGzYqGdDdALdsCDxn8=</SignatureValue>
+  </Signature>
+</Source>
