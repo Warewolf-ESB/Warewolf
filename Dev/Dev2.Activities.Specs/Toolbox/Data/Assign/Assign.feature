@@ -402,6 +402,63 @@ Scenario: Assign values to different columns in a reccord set
     | 5 | [[e]] = 20        |
     | 6 | [[f]] = 30        |
 
-
-
-
+#Below 3 Scenarios should be passed after the bug 12131 is fixed
+#Scenario: Assign a record set variable equal to a group calculation (sum)
+#	Given I assign the value 30 to a variable "[[rec(1).a]]"
+#	And I assign the value 30 to a variable "[[rec(1).b]]"
+#	And I assign the value "=SUM([[rec(1).a]],[[rec(1).b]])" to a variable "[[Result]]"
+#	When the assign tool is executed
+#	Then the value of "[[Result]]" equals "60"
+#	And the execution has "NO" error
+#	And the debug inputs as
+#	| # | Variable         | New Value                                   |
+#	| 1 | [[rec(1).a]]   = | 30                                          |
+#	| 2 | [[rec(1).b]]   = | 30                                          |
+#	| 3 | [[Result]] =     | =SUM([[rec(1).a]],[[rec(1).b]]) =SUM(30,30) |
+#	And the debug output as
+#	| # |                   |
+#	| 1 | [[rec(1).a]] = 30 |
+#	| 2 | [[rec(1).b]] = 30 |
+#	| 3 | [[Result]] = 60   |
+#
+#Scenario: Assign a record set variable equal to a group calculation
+#	Given I assign the value 30 to a variable "[[rec(1).a]]"
+#	And I assign the value 30 to a variable "[[rec(1).b]]"
+#	And I assign the value "=SUM[[rec(1).a]],[[rec(1).b]]" to a variable "[[Result]]"
+#	When the assign tool is executed
+#	Then the value of "[[Result]]" equals "60"
+#	And the execution has "NO" error
+#	And the debug inputs as
+#	| # | Variable         | New Value                                   |
+#	| 1 | [[rec(1).a]]   = | 30                                          |
+#	| 2 | [[rec(1).b]]   = | 30                                          |
+#	| 3 | [[Result]] =     | =SUM([[rec(1).a]],[[rec(1).b]]) =SUM(30,30) |
+#	And the debug output as
+#	| # |                   |
+#	| 1 | [[rec(1).a]] = 30 |
+#	| 2 | [[rec(1).b]] = 30 |
+#	| 3 | [[Result]] = 60   |
+#
+#Scenario: Assign a variable equal to a group calculation
+#	Given I assign the value 1 to a variable "[[a]]"
+#	And I assign the value 2 to a variable "[[b]]"
+#	And I assign the value [[a]] to a variable "[[rec(1).b]]"
+#	And I assign the value [[b]] to a variable "[[rec(1).b]]"
+#	And I assign the value "=SUM([[rec(1).a]],[[rec(1).b]])" to a variable "[[Result]]"
+#	When the assign tool is executed
+#	Then the value of "[[Result]]" equals "60"
+#	And the execution has "NO" error
+#	And the debug inputs as
+#	| # | Variable         | New Value                                 |
+#	| 1 | [[a]]            | 1                                         |
+#	| 2 | [[b]]            | 2                                         |
+#	| 3 | [[rec(1).a]]   = | [[a]] = 1                                 |
+#	| 4 | [[rec(1).b]]   = | [[b]] = 2                                 |
+#	| 5 | [[Result]] =     | =SUM([[rec(1).a]],[[rec(1).b]]) =SUM(1,2) |
+#	And the debug output as
+#	| # |                             |
+#	| 1 | [[a]]             1         |
+#	| 2 | [[b]]             2         |
+#	| 3 | [[rec(1).a]]   =  [[a]] = 1 |
+#	| 4 | [[rec(1).b]]   =  [[b]] = 2 |
+#	| 5 | [[Result]]     =  3         |
