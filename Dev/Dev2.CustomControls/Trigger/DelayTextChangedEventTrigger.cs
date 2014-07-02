@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading;
 using System.Windows;
@@ -35,7 +34,9 @@ namespace Dev2.CustomControls.Trigger
 
         }
 
+// ReSharper disable RedundantNameQualifier
         private void ProcessKeyPress(System.Reactive.EventPattern<System.EventArgs> obj)
+// ReSharper restore RedundantNameQualifier
         {
             Dispatcher.BeginInvoke(() => InvokeActions(null));
         }
