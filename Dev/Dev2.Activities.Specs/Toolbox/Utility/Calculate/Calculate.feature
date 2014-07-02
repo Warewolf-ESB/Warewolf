@@ -120,7 +120,34 @@ Scenario: Calculate using isnumber and blank
 #	|                 |
 #	| [[result]] = 21 |
 
+#Scenario: Calculate Assign by evaluating a variable inside a variable
+#	Given I have a calculate variable "[[a]]" equal to "b"
+#	And I have a calculate variable "[[b]]" equal to "20"
+#	And I have the formula "SUM([[[[a]]]],[[b]])"
+#	When the calculate tool is executed
+#	Then the calculate result should be "40"
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| # | fx = |
+#	| # | [[[[a]]]]+[[b]] = 20+20 |	
+#	And the debug output as 
+#	|                 |
+#	| [[result]] = 40 |
 
+#Scenario: Calculate Assign by evaluating a variable inside a variable
+#	Given I have a calculate variable "[[rec().a]]" equal to "b"
+#	And I have a calculate variable "[[b]]" equal to "rec(1).b"
+#   And I have a calculate variable "[[rec(1).b]]" equal to "1"
+#	And I have the formula "[[[[[[rec(1).a]]]]]]+1"
+#	When the calculate tool is executed
+#	Then the calculate result should be "2"
+#	And the execution has "NO" error
+#	And the debug inputs as  
+#	| # | fx = |
+#	| # | [[[[[[rec(1).a]]]]]]+1 = 1+1 |	
+#	And the debug output as 
+#	|                 |
+#	| [[result]] = 2  |
 
 
 
