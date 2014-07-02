@@ -10,7 +10,6 @@ using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.Services.Sql;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Dev2.Services.Security;
