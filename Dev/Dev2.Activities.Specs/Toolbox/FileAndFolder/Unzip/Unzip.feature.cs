@@ -70,7 +70,23 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             testRunner.CollectScenarioErrors();
         }
         
-        public virtual void UnzipFileAtLocation(string name, string source, string sourceLocation, string username, string password, string destination, string destinationLocation, string destUsername, string destPassword, string selected, string archivepassword, string resultVar, string result, string errorOccured, string[] exampleTags)
+        public virtual void UnzipFileAtLocation(
+                    string no, 
+                    string name, 
+                    string source, 
+                    string sourceLocation, 
+                    string username, 
+                    string password, 
+                    string destination, 
+                    string destinationLocation, 
+                    string destUsername, 
+                    string destPassword, 
+                    string selected, 
+                    string archivepassword, 
+                    string resultVar, 
+                    string result, 
+                    string errorOccured, 
+                    string[] exampleTags)
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unzip file at location", exampleTags);
 #line 7
@@ -131,7 +147,8 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Local to Local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\test0.zip")]
@@ -146,16 +163,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_LocalToLocal()
+        public virtual void UnzipFileAtLocation_1()
         {
-            this.UnzipFileAtLocation("Local to Local", "[[path]]", "c:\\test0.zip", "\"\"", "\"\"", "[[path1]]", "c:\\ZIP0", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("1", "Local to Local", "[[path]]", "c:\\test0.zip", "\"\"", "\"\"", "[[path1]]", "c:\\ZIP0", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC to Local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test0.zip")]
@@ -170,16 +188,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_UNCToLocal()
+        public virtual void UnzipFileAtLocation_2()
         {
-            this.UnzipFileAtLocation("UNC to Local", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test0.zip", "\"\"", "\"\"", "[[path1]]", "c:\\ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("2", "UNC to Local", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test0.zip", "\"\"", "\"\"", "[[path1]]", "c:\\ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTP to Local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "3")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test0.zip")]
@@ -194,16 +213,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_FTPToLocal()
+        public virtual void UnzipFileAtLocation_3()
         {
-            this.UnzipFileAtLocation("FTP to Local", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test0.zip", "\"\"", "\"\"", "[[path1]]", "c:\\ZIP2", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("3", "FTP to Local", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test0.zip", "\"\"", "\"\"", "[[path1]]", "c:\\ZIP2", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTPS to Local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "4")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test0.zip")]
@@ -218,16 +238,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_FTPSToLocal()
+        public virtual void UnzipFileAtLocation_4()
         {
-            this.UnzipFileAtLocation("FTPS to Local", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test0.zip", "integrationtester", "I73573r0", "[[path1]]", "c:\\ZIP3", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("4", "FTPS to Local", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test0.zip", "integrationtester", "I73573r0", "[[path1]]", "c:\\ZIP3", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP to Local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "5")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to Local")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/test0.zip")]
@@ -242,16 +263,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_SFTPToLocal()
+        public virtual void UnzipFileAtLocation_5()
         {
-            this.UnzipFileAtLocation("SFTP to Local", "[[path]]", "sftp://localhost/test0.zip", "dev2", "Q/ulw&]", "[[path1]]", "c:\\ZIP4", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("5", "SFTP to Local", "[[path]]", "sftp://localhost/test0.zip", "dev2", "Q/ulw&]", "[[path1]]", "c:\\ZIP4", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Local to UNC")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\test1.zip")]
@@ -266,16 +288,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_LocalToUNC()
+        public virtual void UnzipFileAtLocation_6()
         {
-            this.UnzipFileAtLocation("Local to UNC", "[[path]]", "c:\\test1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\ZIP0", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("6", "Local to UNC", "[[path]]", "c:\\test1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\ZIP0", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC to UNC")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "7")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test1.zip")]
@@ -290,16 +313,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_UNCToUNC()
+        public virtual void UnzipFileAtLocation_7()
         {
-            this.UnzipFileAtLocation("UNC to UNC", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("7", "UNC to UNC", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTP to UNC")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "8")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test1.zip")]
@@ -314,16 +338,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_FTPToUNC()
+        public virtual void UnzipFileAtLocation_8()
         {
-            this.UnzipFileAtLocation("FTP to UNC", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\ZIP2", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("8", "FTP to UNC", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test1.zip", "\"\"", "\"\"", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\ZIP2", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTPS to UNC")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "9")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test1.zip")]
@@ -338,16 +363,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_FTPSToUNC()
+        public virtual void UnzipFileAtLocation_9()
         {
-            this.UnzipFileAtLocation("FTPS to UNC", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test1.zip", "integrationtester", "I73573r0", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\ZIP3", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("9", "FTPS to UNC", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test1.zip", "integrationtester", "I73573r0", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\ZIP3", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP to UNC")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "10")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to UNC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/test1.zip")]
@@ -362,16 +388,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_SFTPToUNC()
+        public virtual void UnzipFileAtLocation_10()
         {
-            this.UnzipFileAtLocation("SFTP to UNC", "[[path]]", "sftp://localhost/test1.zip", "dev2", "Q/ulw&]", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\ZIP4", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("10", "SFTP to UNC", "[[path]]", "sftp://localhost/test1.zip", "dev2", "Q/ulw&]", "[[path1]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\ZIP4", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Local to FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "11")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\test2.zip")]
@@ -386,16 +413,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_LocalToFTP()
+        public virtual void UnzipFileAtLocation_11()
         {
-            this.UnzipFileAtLocation("Local to FTP", "[[path]]", "c:\\test2.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/ZIP0", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("11", "Local to FTP", "[[path]]", "c:\\test2.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/ZIP0", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC to FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "12")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test2.zip")]
@@ -410,16 +438,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_UNCToFTP()
+        public virtual void UnzipFileAtLocation_12()
         {
-            this.UnzipFileAtLocation("UNC to FTP", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test2.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("12", "UNC to FTP", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test2.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/ZIP1", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTP to FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "13")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test2.zip")]
@@ -434,16 +463,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_FTPToFTP()
+        public virtual void UnzipFileAtLocation_13()
         {
-            this.UnzipFileAtLocation("FTP to FTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test2.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/ZIP2", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("13", "FTP to FTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test2.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/ZIP2", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTPS to FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "14")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test2.zip")]
@@ -458,16 +488,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_FTPSToFTP()
+        public virtual void UnzipFileAtLocation_14()
         {
-            this.UnzipFileAtLocation("FTPS to FTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test2.zip", "integrationtester", "I73573r0", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/ZIP3", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("14", "FTPS to FTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test2.zip", "integrationtester", "I73573r0", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/ZIP3", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP to FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "15")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/test2.zip")]
@@ -482,16 +513,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_SFTPToFTP()
+        public virtual void UnzipFileAtLocation_15()
         {
-            this.UnzipFileAtLocation("SFTP to FTP", "[[path]]", "sftp://localhost/test2.zip", "dev2", "Q/ulw&]", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/ZIP4", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("15", "SFTP to FTP", "[[path]]", "sftp://localhost/test2.zip", "dev2", "Q/ulw&]", "[[path1]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/ZIP4", "\"\"", "\"\"", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Local to FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "16")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\test3.zip")]
@@ -506,16 +538,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_LocalToFTPS()
+        public virtual void UnzipFileAtLocation_16()
         {
-            this.UnzipFileAtLocation("Local to FTPS", "[[path]]", "c:\\test3.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/ZIP0", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("16", "Local to FTPS", "[[path]]", "c:\\test3.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/ZIP0", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC to FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test3.zip")]
@@ -530,16 +563,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_UNCToFTPS()
+        public virtual void UnzipFileAtLocation_17()
         {
-            this.UnzipFileAtLocation("UNC to FTPS", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test3.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/ZIP1", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("17", "UNC to FTPS", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test3.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/ZIP1", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTP tp FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "18")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "18")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP tp FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test3.zip")]
@@ -554,16 +588,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_FTPTpFTPS()
+        public virtual void UnzipFileAtLocation_18()
         {
-            this.UnzipFileAtLocation("FTP tp FTPS", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test3.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/ZIP2", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("18", "FTP tp FTPS", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test3.zip", "\"\"", "\"\"", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/ZIP2", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTPS to FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "19")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "19")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test3.zip")]
@@ -578,16 +613,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_FTPSToFTPS()
+        public virtual void UnzipFileAtLocation_19()
         {
-            this.UnzipFileAtLocation("FTPS to FTPS", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test3.zip", "integrationtester", "I73573r0", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/ZIP3", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("19", "FTPS to FTPS", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test3.zip", "integrationtester", "I73573r0", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/ZIP3", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP to FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "20")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "20")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to FTPS")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/test3.zip")]
@@ -602,16 +638,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_SFTPToFTPS()
+        public virtual void UnzipFileAtLocation_20()
         {
-            this.UnzipFileAtLocation("SFTP to FTPS", "[[path]]", "sftp://localhost/test3.zip", "dev2", "Q/ulw&]", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/ZIP4", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("20", "SFTP to FTPS", "[[path]]", "sftp://localhost/test3.zip", "dev2", "Q/ulw&]", "[[path1]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/ZIP4", "integrationtester", "I73573r0", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Local to SFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "21")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "21")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\test4.zip")]
@@ -626,16 +663,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_LocalToSFTP()
+        public virtual void UnzipFileAtLocation_21()
         {
-            this.UnzipFileAtLocation("Local to SFTP", "[[path]]", "c:\\test4.zip", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/ZIP0", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("21", "Local to SFTP", "[[path]]", "c:\\test4.zip", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/ZIP0", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC to SFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "22")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "22")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test4.zip")]
@@ -650,16 +688,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_UNCToSFTP()
+        public virtual void UnzipFileAtLocation_22()
         {
-            this.UnzipFileAtLocation("UNC to SFTP", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test4.zip", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/ZIP1", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("22", "UNC to SFTP", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test4.zip", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/ZIP1", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTP to SFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "23")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "23")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test4.zip")]
@@ -674,16 +713,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_FTPToSFTP()
+        public virtual void UnzipFileAtLocation_23()
         {
-            this.UnzipFileAtLocation("FTP to SFTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test4.zip", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/ZIP2", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("23", "FTP to SFTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test4.zip", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/ZIP2", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTPS to SFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "24")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "24")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test4.zip")]
@@ -698,16 +738,17 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_FTPSToSFTP()
+        public virtual void UnzipFileAtLocation_24()
         {
-            this.UnzipFileAtLocation("FTPS to SFTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test4.zip", "integrationtester", "I73573r0", "[[path1]]", "sftp://localhost/ZIP3", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("24", "FTPS to SFTP", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test4.zip", "integrationtester", "I73573r0", "[[path1]]", "sftp://localhost/ZIP3", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Unzip file at location")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP to SFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "25")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "25")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to SFTP")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/test5.zip")]
@@ -722,186 +763,9 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipFileAtLocation_SFTPToSFTP()
+        public virtual void UnzipFileAtLocation_25()
         {
-            this.UnzipFileAtLocation("SFTP to SFTP", "[[path]]", "sftp://localhost/test5.zip", "dev2", "Q/ulw&]", "[[path1]]", "sftp://localhost/ZIP5", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
-        }
-        
-        public virtual void UnzipTOSFTPFileAtLocation(string name, string source, string sourceLocation, string username, string password, string destination, string destinationLocation, string destUsername, string destPassword, string selected, string archivepassword, string resultVar, string result, string errorOccured, string[] exampleTags)
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("UnzipTOSFTP file at location", exampleTags);
-#line 52
-this.ScenarioSetup(scenarioInfo);
-#line 53
- testRunner.Given(string.Format("I have a source path \'{0}\' with value \'{1}\'", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 54
- testRunner.And(string.Format("zip credentials as \'{0}\' and \'{1}\'", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
- testRunner.And(string.Format("I have a destination path \'{0}\' with value \'{1}\'", destination, destinationLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
- testRunner.And(string.Format("destination credentials as \'{0}\' and \'{1}\'", destUsername, destPassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
- testRunner.And(string.Format("overwrite is \'{0}\'", selected), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
- testRunner.And(string.Format("result as \'{0}\'", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
- testRunner.And(string.Format("Archive Password as \'{0}\'", archivepassword), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
-    testRunner.When("the Unzip file tool is executed with a single file", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 61
- testRunner.Then(string.Format("the result variable \'{0}\' will be \'{1}\'", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 62
- testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Source Path",
-                        "Username",
-                        "Password",
-                        "Destination Path",
-                        "Destination Username",
-                        "Destination Password",
-                        "Overwrite",
-                        "Archive Password"});
-            table3.AddRow(new string[] {
-                        string.Format("{0} = {1}", source, sourceLocation),
-                        string.Format("{0}", username),
-                        "String",
-                        string.Format("{0} = {1}", destination, destinationLocation),
-                        string.Format("{0}", destUsername),
-                        "String",
-                        string.Format("{0}", selected),
-                        "String"});
-#line 63
- testRunner.And("the debug inputs as", ((string)(null)), table3, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table4.AddRow(new string[] {
-                        string.Format("{0} = {1}", resultVar, result)});
-#line 66
- testRunner.And("the debug output as", ((string)(null)), table4, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("UnzipTOSFTP file at location")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Local to SFTP Single")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "Local to SFTP Single")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "c:\\test4.zip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://localhost/ZIP0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipTOSFTPFileAtLocation_LocalToSFTPSingle()
-        {
-            this.UnzipTOSFTPFileAtLocation("Local to SFTP Single", "[[path]]", "c:\\test4.zip", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/ZIP0", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("UnzipTOSFTP file at location")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC to SFTP Single")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC to SFTP Single")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test4.zip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://localhost/ZIP1")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipTOSFTPFileAtLocation_UNCToSFTPSingle()
-        {
-            this.UnzipTOSFTPFileAtLocation("UNC to SFTP Single", "[[path]]", "\\\\RSAKLFSVRSBSPDC\\FileSystemShareTestingSite\\test4.zip", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/ZIP1", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("UnzipTOSFTP file at location")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTP to SFTP Single")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP to SFTP Single")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test4.zip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://localhost/ZIP2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipTOSFTPFileAtLocation_FTPToSFTPSingle()
-        {
-            this.UnzipTOSFTPFileAtLocation("FTP to SFTP Single", "[[path]]", "ftp://rsaklfsvrsbspdc:1001/FORTESTING/test4.zip", "\"\"", "\"\"", "[[path1]]", "sftp://localhost/ZIP2", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("UnzipTOSFTP file at location")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTPS to SFTP Single")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS to SFTP Single")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test4.zip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "integrationtester")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "I73573r0")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://localhost/ZIP3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipTOSFTPFileAtLocation_FTPSToSFTPSingle()
-        {
-            this.UnzipTOSFTPFileAtLocation("FTPS to SFTP Single", "[[path]]", "ftp://rsaklfsvrsbspdc:1002/FORTESTING/test4.zip", "integrationtester", "I73573r0", "[[path1]]", "sftp://localhost/ZIP3", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("UnzipTOSFTP file at location")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Unzip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP to SFTP Single")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP to SFTP Single")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost/test5.zip")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://localhost/ZIP5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:archivepassword", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "Success")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        public virtual void UnzipTOSFTPFileAtLocation_SFTPToSFTPSingle()
-        {
-            this.UnzipTOSFTPFileAtLocation("SFTP to SFTP Single", "[[path]]", "sftp://localhost/test5.zip", "dev2", "Q/ulw&]", "[[path1]]", "sftp://localhost/ZIP5", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("25", "SFTP to SFTP", "[[path]]", "sftp://localhost/test5.zip", "dev2", "Q/ulw&]", "[[path1]]", "sftp://localhost/ZIP5", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
     }
 }
