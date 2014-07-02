@@ -101,16 +101,16 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                                     // The datalist in the studio used to sort
                                     // hence we always had the correct ordering in the inner and outer xml shape
                                     // Now that this is not happening we need to account for swapped shapes
-                                    BinaryDataListAlias keyAlias;
-                                    if(_keyToAliasMap.TryGetValue(col, out keyAlias))
-                                    {
-                                        var parentColumns = keyAlias.MasterEntry.Columns;
-                                        var parentColumn = keyAlias.MasterColumn;
-
-                                        internalIdx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
-
-                                        colCnt = (short)parentColumns.Count;
-                                    }
+                                    // This code resolves an issue for certain cases but causes others to fail.
+                                    // Need to find a better solution for the case it is trying to solve.
+                                    //                                    BinaryDataListAlias keyAlias;
+                                    //                                    if(_keyToAliasMap.TryGetValue(col, out keyAlias))
+                                    //                                    {
+                                    //                                        var parentColumns = keyAlias.MasterEntry.Columns;
+                                    //                                        var parentColumn = keyAlias.MasterColumn;
+                                    //                                        internalIdx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
+                                    //                                        colCnt = (short)parentColumns.Count;
+                                    //                                    }
 
                                     // FOR : Bug_10247_Outter
                                     // if -1 skip and try next key ;) 
@@ -118,10 +118,10 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                                     {
                                         IBinaryDataListItem tmp = _internalReturnValue[internalIdx];
 
-                                        if(keyAlias != null)
-                                        {
-                                            tmp.UpdateField(col);
-                                        }
+                                        //                                        if(keyAlias != null)
+                                        //                                        {
+                                        //                                            tmp.UpdateField(col);
+                                        //                                        }
 
                                         // normal object build
                                         tmp.UpdateValue(theRow.FetchValue(internalIdx, colCnt));
