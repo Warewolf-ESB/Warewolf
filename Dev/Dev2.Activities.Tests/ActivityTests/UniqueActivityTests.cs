@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -463,18 +464,145 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(Result, dsfForEachItems[0].Value);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [Description("Ensure we can use the star notation in the unique tool!")]
+        [TestCategory("DsfUniqueActivity_Execute")]
+        public void DsfUniqueActivity_Execute_DebugIsInGroupedFormWhenUsingStarNotation()
+        {
+            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string DataListWithData = "<ADL>" +
+                                            "<recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<OutVar1/></ADL>";
+            var unique = SetupArguments("<root>" + DataListWithData + "</root>"
+                , DataList
+                , "[[recset1().field2]]"
+                , "[[recset1().field1]],[[recset1().field3]]", "[[recset2(*).id]],[[recset2(*).value]]");
+
+
+            IDSFDataObject result = ExecuteProcess(null,true,null,false,true);
+            ErrorResultTO errorResult;
+            IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
+            var outputs = unique.GetDebugOutputs(bdl);
+            Assert.IsTrue(outputs[0].ResultsList.Count == 7);
+            var groups = outputs.SelectMany(a => a.ResultsList).Select(a => a.GroupName).Distinct().ToList();
+            Assert.AreEqual(groups.Count(), 3);
+            Assert.AreEqual("[[recset2().id]]", groups[1]);
+            Assert.AreEqual("[[recset2().value]]", groups[2]);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [Description("Ensure we can use the star notation in the unique tool!")]
+        [TestCategory("DsfUniqueActivity_Execute")]
+        public void DsfUniqueActivity_Execute_DebugIsInGroupedFormWhenUsingEmptyNotation()
+        {
+            const string DataList = "<ADL><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string DataListWithData = "<ADL>" +
+                                            "<recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<OutVar1/></ADL>";
+            var unique = SetupArguments("<root>" + DataListWithData + "</root>"
+                , DataList
+                , "[[recset1().field2]]"
+                , "[[recset1().field1]],[[recset1().field3]]", "[[recset2().id]],[[recset2().value]]");
+
+
+            IDSFDataObject result = ExecuteProcess(null, true, null, false, true);
+            ErrorResultTO errorResult;
+            IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
+            var outputs = unique.GetDebugOutputs(bdl);
+            Assert.IsTrue(outputs[0].ResultsList.Count == 7);
+            var groups = outputs.SelectMany(a => a.ResultsList).Select(a => a.GroupName).Distinct().ToList();
+            Assert.AreEqual(groups.Count(), 3);
+            Assert.AreEqual("[[recset2().id]]", groups[1]);
+            Assert.AreEqual("[[recset2().value]]", groups[2]);
+            //[[recset2().value]]
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [Description("Ensure we can use the star notation in the unique tool!")]
+        [TestCategory("DsfUniqueActivity_Execute")]
+        public void DsfUniqueActivity_Execute_DebugIsInGroupedFormWhenUsingScalarOut()
+        {
+            const string DataList = "<ADL><bob/><recset1><field1/><field2/><field3/></recset1><recset2><id/><value/></recset2><OutVar1/></ADL>";
+            const string DataListWithData = "<ADL>" +
+                                            "<bob></bob><recset1>" +
+                                            "<field1>1</field1><field2>a</field2><field3>Test1</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>2</field1><field2>b</field2><field3>Test2</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>3</field1><field2>a</field2><field3>Test3</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>4</field1><field2>a</field2><field3>Test4</field3>" +
+                                            "</recset1>" +
+                                            "<recset1>" +
+                                            "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
+                                            "</recset1>" +
+                                            "<OutVar1/></ADL>";
+            var unique = SetupArguments("<root>" + DataListWithData + "</root>"
+                , DataList
+                , "[[recset1().field2]]"
+                , "[[recset1().field1]],[[recset1().field3]]", "[[bob]]");
+
+
+            IDSFDataObject result = ExecuteProcess(null, true, null, false, true);
+            ErrorResultTO errorResult;
+            IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
+            var outputs = unique.GetDebugOutputs(bdl);
+            Assert.IsTrue(outputs[0].ResultsList.Count == 2);
+            var groups = outputs.SelectMany(a => a.ResultsList).Select(a => a.GroupName).Distinct().ToList();
+            Assert.AreEqual(groups.Count(a=>!String.IsNullOrEmpty(a)), 0);
+            Assert.AreEqual("[[bob]]", outputs[0].ResultsList[1].Variable);
+            Assert.AreEqual("1,2,5", outputs[0].ResultsList[1].Value);
+        }
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string inFields, string resultFields, string result)
+        private DsfUniqueActivity SetupArguments(string currentDL, string testData, string inFields, string resultFields, string result)
         {
+            var unique = new DsfUniqueActivity { InFields = inFields, ResultFields = resultFields, Result = result };
             TestStartNode = new FlowStep
             {
-                Action = new DsfUniqueActivity { InFields = inFields, ResultFields = resultFields, Result = result }
+                Action = unique
             };
 
             CurrentDl = testData;
             TestData = currentDL;
+            return unique;
         }
 
         #endregion Private Test Methods

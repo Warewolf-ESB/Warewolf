@@ -574,6 +574,19 @@ namespace Dev2.Activities.Specs.Composition
             CommonSteps.AddActivityToActivityList(parentName, activityName, del);
         }
 
+
+        //[Given(@"""(.*)"" contains an Unique ""(.*)"" as")]
+        //public void GivenContainsAnUniqueAs(string parentName, string activityName, Table table)
+        //{
+        //    var unique = new DsfUniqueActivity();
+        //    unique.DisplayName = activityName;
+        //    unique.InFields = table.Rows[0][0];
+        //    unique.ResultFields = table.Rows[0][1];
+        //    unique.Result = table.Rows[0][2];//ScenarioContext.Current.Pending();
+        //    CommonSteps.AddVariableToVariableList(table.Rows[0][2]);
+        //    CommonSteps.AddActivityToActivityList(parentName, activityName, unique);
+        //}
+
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
         {
             if(resourceModel == null || resourceModel.Environment == null)

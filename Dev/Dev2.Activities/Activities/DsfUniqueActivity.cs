@@ -179,6 +179,7 @@ namespace Dev2.Activities
             IDev2DataListUpsertPayloadBuilder<IBinaryDataListEntry> toUpsert = Dev2DataListBuilderFactory.CreateBinaryDataListUpsertBuilder(true);
             try
             {
+
                 toUpsert.IsDebug = dataObject.IsDebugMode();
                 toUpsert.AttachDebugFromExpression = false;
                 toUpsert.RecordSetDataAsCSVToScalar = true;
@@ -249,10 +250,14 @@ namespace Dev2.Activities
                             {
                                 var itemToAdd = new DebugItem();
                                 AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                                AddDebugItem(new DebugItemVariableParams(debugOutputTO, regions: targetExpressions), itemToAdd);
+                              
+                                AddDebugItem(new DebugItemVariableParams(debugOutputTO, regions: targetExpressions.ToList()), itemToAdd);
+
+                                UpdateStarNotationColumns(itemToAdd);
                                 _debugOutputs.Add(itemToAdd);
                                 innerCount++;
                             }
+  
                         }
                     }
                 }
@@ -288,6 +293,25 @@ namespace Dev2.Activities
             }
 
         }
+
+        static void UpdateStarNotationColumns(DebugItem itemToAdd)
+        {
+            var groups = itemToAdd.ResultsList.Where(a => DataListUtil.IsValueRecordset(a.Variable) && String.IsNullOrEmpty(a.GroupName) ).GroupBy(a => DataListUtil.ExtractRecordsetNameFromValue(a.Variable) + DataListUtil.ExtractFieldNameFromValue(a.Variable));
+           
+            var maxId = itemToAdd.ResultsList.Count >0? itemToAdd.ResultsList.Max(a => a.GroupIndex):0;
+            foreach(var g in groups)
+            {
+            
+                foreach(var res in g)
+                {
+                    maxId++;
+                    res.GroupIndex = maxId;
+                    res.GroupName = "[[" + DataListUtil.ExtractRecordsetNameFromValue(res.Variable) + "()." + DataListUtil.ExtractFieldNameFromValue(res.Variable) + "]]";
+                }
+            }
+        }
+
+
 
         public override enFindMissingType GetFindMissingType()
         {

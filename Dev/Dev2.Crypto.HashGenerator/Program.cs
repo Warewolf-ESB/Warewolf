@@ -29,8 +29,8 @@ namespace Dev2.Crypto.HashGenerator
                     if(args.Length == 2)
                     {
 
-                        fileName = directory.FullName+"\\"+ args[1];
-                        Console.WriteLine("output file name provided");
+                        fileName =  args[1];
+                        Console.WriteLine("output file name provided" +args[1]);
                     }
                     else
                     {
