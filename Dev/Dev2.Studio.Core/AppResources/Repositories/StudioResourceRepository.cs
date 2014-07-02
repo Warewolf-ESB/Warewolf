@@ -9,11 +9,11 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
+using ServiceStack.Common.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Threading;
-using ServiceStack.Common.Extensions;
 
 namespace Dev2.AppResources.Repositories
 {
@@ -29,8 +29,16 @@ namespace Dev2.AppResources.Repositories
         private StudioResourceRepository()
         {
             ExplorerItemModels = new ObservableCollection<ExplorerItemModel>();
-            _currentDispatcher = Dispatcher.CurrentDispatcher;
-            _invoke = _currentDispatcher.Invoke;
+            try
+            {
+                _currentDispatcher = Dispatcher.CurrentDispatcher;
+                _invoke = _currentDispatcher.Invoke;
+            }
+            catch(Exception)
+            {
+                //This is primarily for the testing as the server runs as a service and no window handle i.e. Ui dispatcher can be gotten.
+                _invoke = (action, priority) => { };
+            }
         }
 
         internal StudioResourceRepository(IExplorerItem explorerItem, Guid environmentId, Action<Action, DispatcherPriority> invoke)
