@@ -406,11 +406,23 @@ namespace Dev2.AppResources.Repositories
                 var alreadyAdded = FindItem(model => model.ResourceId == item.ResourceId && model.ResourcePath == item.ResourcePath) != null;
                 var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
                 var resourceRepository = environmentModel.ResourceRepository;
-                var resourceModel = resourceRepository.Find(model => model.ID == item.ResourceId);
+                var resourceModel = resourceRepository.FindSingle(model => model.ID == item.ResourceId);
                 if(resourceModel == null)
                 {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
+                    if(item.ResourceType >= ResourceType.DbSource)
+                    {
+                        resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
+                    }
+                    else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource)
+                    {
+                        resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, ResourceModelEqualityComparer.Current, true);
+                    }
+                    else if(item.ResourceType == ResourceType.WorkflowService)
+                    {
+                        resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, ResourceModelEqualityComparer.Current, true);
+                    }
                 }
+
                 if(parent != null && !alreadyAdded)
                 {
                     explorerItem.EnvironmentId = parent.EnvironmentId;

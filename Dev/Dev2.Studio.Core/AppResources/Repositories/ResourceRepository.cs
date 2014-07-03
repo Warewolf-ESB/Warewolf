@@ -176,9 +176,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
                 else
                 {
-                    AddResourceToStudioResourceRepository(resource, new ExecuteMessage());
                     effectedResources.Add(resource);
                     ResourceModels.Add(resource);
+                    AddResourceToStudioResourceRepository(resource, new ExecuteMessage());
                     if(ItemAdded != null)
                     {
                         ItemAdded(resource, null);

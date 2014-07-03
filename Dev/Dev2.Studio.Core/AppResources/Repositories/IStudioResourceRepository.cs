@@ -3,7 +3,6 @@ using Dev2.Models;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using Dev2.Threading;
 
