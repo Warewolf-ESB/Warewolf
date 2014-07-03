@@ -422,23 +422,25 @@ namespace Dev2.AppResources.Repositories
                         resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, ResourceModelEqualityComparer.Current, true);
                     }
                 }
-
-                if(parent != null && !alreadyAdded)
+                else
                 {
-                    explorerItem.EnvironmentId = parent.EnvironmentId;
-                    explorerItem.Parent = parent;
-                    if(parent.Children == null)
+                    if(parent != null && !alreadyAdded)
                     {
-                        parent.Children = new ObservableCollection<ExplorerItemModel>();
-                    }
-                    if(_currentDispatcher == null)
-                    {
-                        AddChildItem(parent, explorerItem);
-                    }
-                    else
-                    {
-                        PerformUpdateOnDispatcher(() => AddChildItem(parent, explorerItem));
+                        explorerItem.EnvironmentId = parent.EnvironmentId;
+                        explorerItem.Parent = parent;
+                        if(parent.Children == null)
+                        {
+                            parent.Children = new ObservableCollection<ExplorerItemModel>();
+                        }
+                        if(_currentDispatcher == null)
+                        {
+                            AddChildItem(parent, explorerItem);
+                        }
+                        else
+                        {
+                            PerformUpdateOnDispatcher(() => AddChildItem(parent, explorerItem));
 
+                        }
                     }
                 }
             }

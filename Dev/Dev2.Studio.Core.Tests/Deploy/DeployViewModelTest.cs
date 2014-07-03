@@ -35,7 +35,7 @@ namespace Dev2.Core.Tests
     public class DeployViewModelTest : DeployViewModelTestBase
     {
         Mock<IAuthorizationService> _authService;
-        
+
         [TestInitialize]
         public void Init()
         {
@@ -126,10 +126,8 @@ namespace Dev2.Core.Tests
 
             Mock<IStudioResourceRepository> mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, new Mock<IAsyncWorker>().Object));
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, mockDeployStatsCalculator.Object);
-            deployViewModel.SelectedSourceServer = s1;
+            new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, mockDeployStatsCalculator.Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
             //------------Execute Test---------------------------
-            deployViewModel.SelectedDestinationServer = s2;
             //------------Assert Results-------------------------
             mockDeployStatsCalculator.Verify(c => c.CalculateStats(It.IsAny<IEnumerable<ExplorerItemModel>>(), It.IsAny<Dictionary<string, Func<ExplorerItemModel, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats), Times.Exactly(4));
         }
@@ -396,8 +394,7 @@ namespace Dev2.Core.Tests
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(resourceTreeNode);
             mockStudioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ObservableCollection<ExplorerItemModel>());
 
-            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object,true);
-            sourceDeployNavigationViewModel.ExplorerItemModels = new ObservableCollection<ExplorerItemModel>();
+            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(eventAggregator, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object, true) { ExplorerItemModels = new ObservableCollection<ExplorerItemModel>() };
             server.Setup(svr => svr.LoadResources()).Callback(() => sourceDeployNavigationViewModel.ExplorerItemModels.Add(treeParent));
             sourceDeployNavigationViewModel.Environment = server.Object;
 
@@ -591,7 +588,7 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> destServer;
 
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
-            
+
             destServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
             destServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             deployViewModel.SelectedDestinationServer = destServer.Object;
@@ -658,7 +655,7 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> destServer;
             var deployViewModel = SetupDeployViewModel(out destEnv, out destServer);
             deployViewModel.SelectedSourceServer = null;
-      
+
             destServer.Setup(a => a.AuthorizationService).Returns(_authService.Object);
             deployViewModel.SelectedDestinationServer = destServer.Object;
             //------------Execute Test---------------------------
@@ -807,7 +804,7 @@ namespace Dev2.Core.Tests
             var a = Dev2MockFactory.SetupEnvironmentModel();
             a.Setup(x => x.AuthorizationService).Returns(_authService.Object);
             IEnvironmentModel environmentModel = a.Object;
-            
+
             TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
             new EnvironmentRepository(testEnvironmentRespository);
 
@@ -853,8 +850,7 @@ namespace Dev2.Core.Tests
             mockSourceServer.Setup(server => server.Connection.AppServerUri).Returns(new Uri("http://localhost"));
             mockSourceServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
             deployViewModel.SelectedSourceServer = mockSourceServer.Object;
-            ExplorerItemModel explorerItemModel = new ExplorerItemModel();
-            explorerItemModel.ResourceId = Guid.NewGuid();
+            ExplorerItemModel explorerItemModel = new ExplorerItemModel { ResourceId = Guid.NewGuid() };
             //------------Execute Test---------------------------
             deployViewModel.SelectDependencies(new List<ExplorerItemModel> { explorerItemModel });
             //------------Assert Results-------------------------
@@ -1029,7 +1025,7 @@ namespace Dev2.Core.Tests
             //New Mocks
             var mockedServerRepo = new Mock<IEnvironmentRepository>();
             var server = new Mock<IEnvironmentModel>();
-    
+
             server.Setup(x => x.AuthorizationService).Returns(_authService.Object);
             _authService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, It.IsAny<string>())).Returns(true);
             _authService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, It.IsAny<string>())).Returns(true);
@@ -1081,10 +1077,7 @@ namespace Dev2.Core.Tests
 
             var mockStudioResourceRepository = GetMockStudioResourceRepository();
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(resourceTreeNode);
-            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object,true);
-
-            sourceDeployNavigationViewModel.Environment = server.Object;
-            sourceDeployNavigationViewModel.ExplorerItemModels = new ObservableCollection<ExplorerItemModel>();
+            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object, true) { Environment = server.Object, ExplorerItemModels = new ObservableCollection<ExplorerItemModel>() };
 
             var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object)
             {
@@ -1143,7 +1136,7 @@ namespace Dev2.Core.Tests
         public bool ClearCalled { get; set; }
 
         public PartialNaviationViewModel(DeployNavigationViewModel model)
-            : base(model.EventAggregator, model.AsyncWorker, model.EnvironmentRepository, model.StudioResourceRepository,true)
+            : base(model.EventAggregator, model.AsyncWorker, model.EnvironmentRepository, model.StudioResourceRepository, true)
         {
 
         }

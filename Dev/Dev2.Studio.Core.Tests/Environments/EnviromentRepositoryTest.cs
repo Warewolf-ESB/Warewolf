@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Linq.Expressions;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
@@ -1165,7 +1166,7 @@ namespace Dev2.Core.Tests.Environments
                     r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(),
                                         ResourceType.Source)).Returns(models);
 
-
+                repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
                 con.Setup(c => c.IsConnected).Returns(true);
                 if(overrideExecuteCommand)
                 {
@@ -1213,7 +1214,7 @@ namespace Dev2.Core.Tests.Environments
                     r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(),
                                         ResourceType.Source)).Returns(models);
 
-
+                repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
                 con.Setup(c => c.IsConnected).Returns(true);
                 con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder());
                 con.Setup(c => c.ServerEvents).Returns(new EventPublisher());
@@ -1283,7 +1284,7 @@ namespace Dev2.Core.Tests.Environments
             var repo = new Mock<IResourceRepository>();
 
             repo.Setup(r => r.FindResourcesByID(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
-
+            repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>())).Returns(new Mock<IResourceModel>().Object);
             env.Setup(r => r.ResourceRepository).Returns(repo.Object);
 
             return env;
