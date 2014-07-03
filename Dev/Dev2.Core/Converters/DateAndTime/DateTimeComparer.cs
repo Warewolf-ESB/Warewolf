@@ -35,6 +35,7 @@ namespace Dev2.Converters.DateAndTime
         public bool TryCompare(IDateTimeDiffTO dateTimeDiffTO, out string result, out string error)
         {
             //local variable declarations
+
             result = "";
             //Creation of parser to get the DateTime Objects
             IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateParser();

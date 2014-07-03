@@ -17,6 +17,7 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -98,6 +99,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
 
 
+
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
@@ -112,7 +114,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 toUpsert.IsDebug = dataObject.IsDebugMode();
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-
+                var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+                if (!string.IsNullOrEmpty(datalist) )
+                {
+                    ValidateInput(datalist, allErrors,Input1);
+                    ValidateInput(datalist, allErrors, Input1);
+                }
                 IBinaryDataListEntry input1Entry = compiler.Evaluate(executionId, enActionType.User, string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator input1Itr = Dev2ValueObjectFactory.CreateEvaluateIterator(input1Entry);
@@ -205,6 +212,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(context, StateType.After);
                 }
             }
+        }
+
+        void ValidateInput(string datalist, ErrorResultTO allErrors,string input)
+        {
+
+            var splitIntoRegions = DataListCleaningUtils.FindAllLanguagePieces(input);
+            foreach(var region in splitIntoRegions)
+            {
+                string region1 = region;
+                var isValidExpr = new IsValidExpressionRule(() => region1, datalist)
+                {
+                    LabelText = "Input1"
+                };
+                var errValid = isValidExpr.Check();
+                if (errValid != null)
+                {
+                    var validationError = new ErrorResultTO();
+                    validationError.AddError(errValid.Message);
+                    allErrors.MergeErrors(validationError);
+                }
+            }
+
         }
 
         void DoDebugOutput(IDSFDataObject dataObject, string region, string result, Guid executionId, int indexToUpsertTo)

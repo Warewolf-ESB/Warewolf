@@ -238,6 +238,138 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(4, inputs.FetchAllEntries().Count);
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDateTimeDifference_Execute")]
+        public void DsfDateTimeDifference_Execute_LanguageInputs_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            const string input1 = "2012/[[03]]/05 09:20:30 AM";
+            const string input2 = "2012/10/01 07:15:50 AM";
+            AssertError(input1, input2);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDateTimeDifference_Execute")]
+        public void DsfDateTimeDifference_Execute_LanguageInputs_InvalidScalar_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            const string input1 = "[[2012/[[03]]/05 09:20:30 AM]]";
+            const string input2 = "2012/10/01 07:15:50 AM";
+            AssertError(input1, input2);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDateTimeDifference_Execute")]
+        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_InvalidScalar_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            const string input1 = "2012/10/01 07:15:50 AM";
+            const string input2 = "2012/[[10]]/01 07:15:50 AM";
+            AssertError(input1, input2);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDateTimeDifference_Execute")]
+        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_InvalidEncompassingScalar_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            const string input1 = "2012/10/01 07:15:50 AM";
+            const string input2 = "[[2012/10/01 07:15:50 AM]]";
+            AssertError(input1, input2);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDateTimeDifference_Execute")]
+        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_InvalidEncompassingRecSet_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            const string input1 = "2012/10/01 07:15:50 AM";
+            const string input2 = "[[1().a]]";
+            AssertError(input1, input2);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDateTimeDifference_Execute")]
+        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_InvalidEncompassingScalar_Success()
+        {
+            //------------Setup for test--------------------------
+            const string input1 = "2012/10/01 07:15:50 AM";
+            const string input2 = "[[a]]";
+            AssertError(input1, input2,false);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDateTimeDifference_Execute")]
+        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_InvalidEncompassingRecSet_Success()
+        {
+            //------------Setup for test--------------------------
+            const string input1 = "2012/10/01 07:15:50 AM";
+            const string input2 = "[[rec().a]]";
+            AssertError(input1, input2,false);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDateTimeDifference_Execute")]
+        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_PartialRecSet_Success()
+        {
+            //------------Setup for test--------------------------
+            const string input1 = "2012/10/01 07:15:50 AM";
+            const string input2 = "2012/[[rec().a]]/01";
+            AssertError(input1, input2, false);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDateTimeDifference_Execute")]
+        public void DsfDateTimeDifference_Execute_LanguageInputs_Input2_PartialScalar_Success()
+        {
+            //------------Setup for test--------------------------
+            const string input1 = "2012/10/01 07:15:50 AM";
+            const string input2 = "2012/[[a]]/01";
+            AssertError(input1, input2, false);
+        }
+// ReSharper disable UnusedParameter.Local
+        void AssertError(string input1, string input2, bool expectError = true)
+// ReSharper restore UnusedParameter.Local
+        {
+            SetupArguments(
+                "<root>" + ActivityStrings.DateTimeDiff_DataListShape + "</root>"
+                , ActivityStrings.DateTimeDiff_DataListShape
+                , input1
+                , input2
+                , "yyyy/mm/dd 12h:min:ss am/pm"
+                , "Days"
+                , "[[Result]]"
+                );
+
+            //------------Execute Test---------------------------
+            IDSFDataObject result = ExecuteProcess();
+
+            var res = Compiler.FetchErrors(result.DataListID);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            //------------Assert Results-------------------------
+            DataListRemoval(result.DataListID);
+
+            if(expectError)
+                Assert.IsTrue(res.Contains("begins with a number"));
+            else
+            {
+                Assert.IsTrue(!res.Contains("begins with a number"));
+            }
+        }
+
         [TestMethod]
         public void DateTimeDifference_GetOutputs_Expected_One_Output()
         {

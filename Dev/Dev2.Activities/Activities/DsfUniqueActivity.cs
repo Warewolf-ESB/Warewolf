@@ -147,14 +147,7 @@ namespace Dev2.Activities
                 }
                 else
                 {
-                    if(DataListUtil.IsEvaluated(token))
-                    {
-                        AddDebugInputItem(new DebugItemStaticDataParams("", token, "Return Fields"));
-                    }
-                    else
-                    {
-                        AddDebugInputItem(new DebugItemStaticDataParams(token, "Return Fields"));
-                    }
+                    AddDebugInputItem(DataListUtil.IsEvaluated(token) ? new DebugItemStaticDataParams("", token, "Return Fields") : new DebugItemStaticDataParams(token, "Return Fields"));
                 }
             }
 
@@ -251,7 +244,7 @@ namespace Dev2.Activities
                                 var itemToAdd = new DebugItem();
                                 AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
                               
-                                AddDebugItem(new DebugItemVariableParams(debugOutputTO, regions: targetExpressions.ToList()), itemToAdd);
+                                AddDebugItem(new DebugItemVariableParams(debugOutputTO, targetExpressions.ToList()), itemToAdd);
 
                                 UpdateStarNotationColumns(itemToAdd);
                                 _debugOutputs.Add(itemToAdd);

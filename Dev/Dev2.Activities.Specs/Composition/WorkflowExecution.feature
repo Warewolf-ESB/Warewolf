@@ -223,7 +223,7 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
 #	  |                       |
 #	  | [[result1]] = Success |
 #	  And the 'Delet2' in WorkFlow 'WorkflowWithAssignand2Deletetools' debug inputs as
-#	   | Records        |
+#	   | Records        |	  
 #	  And the 'Delet2' in Workflow 'WorkflowWithAssignand2Deletetools' debug outputs as  
 #	  |                       |
 #	  | [[result2]] = Failure |
@@ -264,31 +264,31 @@ Scenario: Workflow with 3 Assigns tools executing against the server
 	  | 1 | [[new]] = Warewolf |
 
 #This test is going to pass after the issue 11785 is fixed
-#Scenario: Workflow with Assign and Date and Time Difference tools executing against the server
-#	  Given I have a workflow "WorkflowWithAssignAndDateTimeDifferencetools"
-#	  And "WorkflowWithAssignAndDateTimeDifferencetools" contains an Assign "InputDates" as
-#	  | variable | value |
-#	  | [[a]]    | 2014  |
-#	  | [[b]]    | 10    |
-#	  And "WorkflowWithAssignAndDateTimeDifferencetools" contains Date and Time Difference "DateAndTime" as	
-#	  | Input1        | Input2     | Input Format | Output In | Result     |
-#	  | 2020/[[b]]/01 | 2030/01/01 | yyyy/mm/dd   | Years     | [[result]] |  
-#	  When "WorkflowWithAssignAndDateTimeDifferencetools" is executed
-#	  Then the execution has "AN" error
-#	  And the 'InputDates' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
-#	  | # | Variable | New Value |
-#	  | 1 | [[a]] =  | 2014      |
-#	  | 2 | [[b]] =  | 01.       |
-#	  And the 'InputDates' in Workflow 'WorkflowWith3Assigntools' debug outputs as  
-#	  | # |              |
-#	  | 1 | [[a]] = 2014 |
-#	  | 2 | [[b]] = 01.  |
-#	  And the 'DateAndTime' in WorkFlow 'WorkflowWith3Assigntools' debug inputs as
-#	  | Input 1       | Input 2    | Input Format | Output In |
-#	  | 2014/[[b]]/01 | 2030/01/01 | yyyy/mm/dd   | Years     |
-#	  And the 'DateAndTime' in Workflow 'WorkflowWith3Assigntools' debug outputs as 
-#	  |               |
-#	  | [[result1]] = |
+Scenario: Workflow with Assign and Date and Time Difference tools executing against the server
+	  Given I have a workflow "WorkflowWithAssignAndDateTimeDifferencetools1"
+	  And "WorkflowWithAssignAndDateTimeDifferencetools1" contains an Assign "InputDates" as
+	  | variable | value |
+	  | [[a]]    | 2014  |
+	  | [[b]]    | 10.    |
+	  And "WorkflowWithAssignAndDateTimeDifferencetools1" contains Date and Time Difference "DateAndTime" as	
+	  | Input1        | Input2     | Input Format | Output In | Result     |
+	  | 2020/[[b]]/01 | 2030/01/01 | yyyy/mm/dd   | Years     | [[result]] |  
+	  When "WorkflowWithAssignAndDateTimeDifferencetools1" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'InputDates' in WorkFlow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | 2014      |
+	  | 2 | [[b]] =  | 10.       |
+	  And the 'InputDates' in Workflow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug outputs as  
+	  | # |              |
+	  | 1 | [[a]] = 2014 |
+	  | 2 | [[b]] = 10.  |
+	  And the 'DateAndTime' in WorkFlow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug inputs as
+	  | Input 1       | Input 2    | Input Format | Output In |
+	  | 2020/[[b]]/01 = 2020/10./01 | 2030/01/01 | yyyy/mm/dd   | Years     |
+	  And the 'DateAndTime' in Workflow 'WorkflowWithAssignAndDateTimeDifferencetools1' debug outputs as 
+	  |               |
+	  | [[result]] = |
 
 
 Scenario: Workflow with Assigns DataMerge and DataSplit executing against the server
