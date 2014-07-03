@@ -20,17 +20,15 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM ** Kill The Server **
-sc stop "Warewolf Server"
 taskkill /im "Warewolf Server.exe"
 
 REM  Wait 10 seconds ;)
 ping -n 10 127.0.0.1 > nul
 
 REM ** Start The Server **
-robocopy "%DeploymentDirectory%" "%PROGRAMFILES(X86)%\Warewolf\Server" *.* /s
-sc start "Warewolf Server"
+START "%DeploymentDirectory%\Warewolf Server.exe" /D %DeploymentDirectory% "Warewolf Server.exe"
 
-REM  Wait 20 seconds ;)
-ping -n 20 127.0.0.1 > nul
+REM  Wait 10 seconds ;)
+ping -n 10 127.0.0.1 > nul
 
 exit 0

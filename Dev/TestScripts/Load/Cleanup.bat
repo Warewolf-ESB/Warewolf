@@ -19,7 +19,5 @@ REM * set TestDeploymentDir=C:\Users\INTEGR~1\AppData\Local\VSEQT\QTAgent\54371B
 REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
-sc stop "Warewolf Server"
 taskkill /im "Warewolf Server.exe"
-FOR /D %%p IN ("%DeploymentDirectory%") DO rmdir "%%p" /s /q
 exit 0
