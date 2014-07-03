@@ -1498,35 +1498,37 @@ Scenario: Workflow with Assign Calculate
 
 
 #This Test scenario should be passed after the bug 12016 is fixed
-# Scenario: Workflow with Assign and Replace by using recordset star
-# Given I have a workflow "workflowithAssignandreplaces"
-#      And "workflowithAssignandreplaces" contains an Assign "Assignee" as
-#      | variable    | value |
-#      | [[rec().a]] | a     |
-#      | [[rec().a]] | b     | 
-#	  And "WorkflowWithAssignandReplaces" contains Replace "Rep" into "[[rec().a]]" as	
-#	  | In Fields    | Find         | Replace With |
-#	  | [[rec(*).a]] | [[rec(*).a]] | Warewolf     |
-#	  When "workflowithAssignandreplaces" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Assignee' in WorkFlow 'workflowithAssignandreplaces' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | a         |
-#	  | 2 | [[rec().a]] = | b         |
-#	  And the 'Assignee' in Workflow 'workflowithAssignandreplaces' debug outputs as    
-#	  | # |                  |
-#	  | 1 | [[rec(1).a]] = a |
-#	  | 2 | [[rec(2).a]] = b |
-#	  And the 'Rep' in WorkFlow 'Test1' debug inputs as 
-#	  | In Field(s)      | Find             | Replace With |
-#	  | [[rec(1).a]] = a | [[rec(1).a]] = a |              |
-#	  | [[rec(2).a]] = b | [[rec(2).a]] = b | Warewolf     |
-#	  And the 'Rep' in Workflow 'Test1' debug outputs as
-#	  |                         |
-#	  | [[rec(1).a]] = Warewolf |
-#	  | [[rec(2).a]] = Warewolf |
-#	  | [[rec(3).a]] = 2        |
-
+ Scenario: Workflow with Assign and Replace by using recordset star
+ Given I have a workflow "workflowithAssignandreplaces"
+      And "workflowithAssignandreplaces" contains an Assign "Assignee" as
+      | variable    | value |
+      | [[rec().a]] | a     |
+      | [[rec().a]] | b     | 
+	  And "WorkflowWithAssignandReplaces" contains Replace "Rep" into "[[rec().a]]" as	
+	  | In Fields    | Find         | Replace With |
+	  | [[rec(*).a]] | [[rec(*).a]] | Warewolf     |
+	  When "workflowithAssignandreplaces" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Assignee' in WorkFlow 'workflowithAssignandreplaces' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | a         |
+	  | 2 | [[rec().a]] = | b         |
+	  And the 'Assignee' in Workflow 'workflowithAssignandreplaces' debug outputs as    
+	  | # |                  |
+	  | 1 | [[rec(1).a]] = a |
+	  | 2 | [[rec(2).a]] = b |
+	  And the 'Rep' in WorkFlow 'workflowithAssignandreplaces' debug inputs as 
+	  | In Field(s)      | Find             | Replace With |
+	  | [[rec(1).a]] = a |                  |              |
+	  | [[rec(2).a]] = b |                  |              |
+	  |                  | [[rec(1).a]] = a |              |
+	  |                  | [[rec(2).a]] = b |              |
+	  |                  |                  | Warewolf     |
+	  And the 'Rep' in Workflow 'workflowithAssignandreplaces' debug outputs as
+	  |                         |
+	  | [[rec(1).a]] = Warewolf |
+	  | [[rec(2).a]] = Warewolf |
+	  | [[rec(3).a]] = 2        |
 
 #The below 12 scenario should be passed after the bug 11994 is fixed
 
@@ -1831,36 +1833,6 @@ Scenario: Workflow with Assign Calculate
 #	  | [[result1]] = 9 |
 #	  | [[a]] =         |
 #	  | [[b]] =         |   
-
-#This Test scenario should be passed after the bug 12016 is fixed
-# Scenario: Workflow with Assign and Replace by using recordset star
-# Given I have a workflow "workflowithAssignandreplaces"
-#      And "workflowithAssignandreplaces" contains an Assign "Assignee" as
-#      | variable    | value |
-#      | [[rec().a]] | a     |
-#      | [[rec().a]] | b     | 
-#	  And "WorkflowWithAssignandReplaces" contains Replace "Rep" into "[[rec().a]]" as	
-#	  | In Fields    | Find         | Replace With |
-#	  | [[rec(*).a]] | [[rec(*).a]] | Warewolf     |
-#	  When "workflowithAssignandreplaces" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Assignee' in WorkFlow 'workflowithAssignandreplaces' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | a         |
-#	  | 2 | [[rec().a]] = | b         |
-#	  And the 'Assignee' in Workflow 'workflowithAssignandreplaces' debug outputs as    
-#	  | # |                  |
-#	  | 1 | [[rec(1).a]] = a |
-#	  | 2 | [[rec(2).a]] = b |
-#	  And the 'Rep' in WorkFlow 'Test1' debug inputs as 
-#	  | In Field(s)      | Find             | Replace With |
-#	  | [[rec(1).a]] = a | [[rec(1).a]] = a |              |
-#	  | [[rec(2).a]] = b | [[rec(2).a]] = b | Warewolf     |
-#	  And the 'Rep' in Workflow 'Test1' debug outputs as
-#	  |                         |
-#	  | [[rec(1).a]] = Warewolf |
-#	  | [[rec(1).a]] = Warewolf |
-#	  | [[rec(3).a]] = 2        |
 
 Scenario: Workflow with Assign and Sort Forward to test gaps
       Given I have a workflow "workflowithAssignandsortrec"
@@ -2359,30 +2331,3 @@ Scenario: Workflow with Assign and Unique Tool, Result rec with star
 #       |   | [[rec(2).unique]] = 20 |
 #       |   | [[rec(3).unique]] = 40 |
 #       |   | [[rec(4).unique]] = 80 |
-#
-#
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

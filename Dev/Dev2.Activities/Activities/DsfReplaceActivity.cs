@@ -117,8 +117,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeDebug(dataObject);
             try
             {
-
                 IList<string> toSearch = FieldsToSearch.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach(var s in toSearch)
+                {
+                    if(dataObject.IsDebugMode())
+                    {
+                        IBinaryDataListEntry inFieldsEntry = compiler.Evaluate(executionId, enActionType.User, s, false, out errors);
+                        AddDebugInputItem(new DebugItemVariableParams(s, "In Field(s)", inFieldsEntry, executionId));
+                    }
+                }
+
                 while(iteratorCollection.HasMoreData())
                 {
                     // now process each field for entire evaluated Where expression....                    
@@ -130,11 +139,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             allErrors.AddError("Please insert only variables into Fields To Search");
                             return;
-                        }
-                        if(dataObject.IsDebugMode())
-                        {
-                            IBinaryDataListEntry inFieldsEntry = compiler.Evaluate(executionId, enActionType.User, s, false, out errors);
-                            AddDebugInputItem(new DebugItemVariableParams(s, "In Field(s)", inFieldsEntry, executionId));
                         }
                         if(!string.IsNullOrEmpty(findValue))
                         {
