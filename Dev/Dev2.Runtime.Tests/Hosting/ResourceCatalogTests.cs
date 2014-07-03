@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading;
@@ -391,6 +392,32 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
+        public void SaveResource_WithNoResourcePath_ServerWorkspace_ExpectedResourceSavedEventFired()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.Empty;
+            const string resourceName = "CitiesDatabase";
+            var xml = XmlResource.Fetch(resourceName);
+            var resource = new DbSource(xml) { ResourcePath = "" };
+            var catalog = new ResourceCatalog();
+            var _called = false;
+            IResource _resourceInEvent = null;
+            catalog.ResourceSaved = resource1 =>
+            {
+                _called = true;
+                _resourceInEvent = resource1;
+            };
+            //------------Execute Test---------------------------
+            catalog.SaveResource(workspaceID, resource);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_called);
+            Assert.IsNotNull(_resourceInEvent);
+            Assert.AreEqual(resource.ResourceID, _resourceInEvent.ResourceID);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithNullResourcePath_ExpectedSavedAtRootLevel()
         {
             //------------Setup for test--------------------------
@@ -735,6 +762,38 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        public void GetResource_UnitTest_WebService_IncorrectType_ExpectNoResource()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "WebService";
+            SaveResources(path, null, false, true, new[] { "WebService", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var xml = XmlResource.Fetch("WeatherWebSource");
+            var resource = new WebSource(xml);
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource);
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            IResource webServiceForID = result.FirstOrDefault(resource1 => resource1.ResourceID != resource.ResourceID);
+            Assert.IsNotNull(webServiceForID);
+            var webServiceID = webServiceForID.ResourceID;
+            //------------Execute Test---------------------------
+            webServiceForID.ResourceType = ResourceType.PluginService;
+            var webService = rc.GetResource<WebService>(workspaceID, webServiceID);
+            //------------Assert Results-------------------------
+            Assert.IsNull(webService);
+        }
+
+        [TestMethod]
         public void GetResource_UnitTest_WhereTypeIsProvided_ExpectTypedResourceWebSource()
         {
             //------------Setup for test--------------------------
@@ -755,6 +814,29 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.IsNotNull(webSource);
             Assert.IsInstanceOfType(webSource, typeof(WebSource));
+        }
+
+        [TestMethod]
+        public void GetResource_UnitTest_WebSource_IncorrectType_ExpectNoResource()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            var path = Path.Combine(workspacePath, "Services");
+            Directory.CreateDirectory(path);
+            const string resourceName = "WebService";
+            SaveResources(path, null, false, true, new[] { "WebService", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var xml = XmlResource.Fetch("WeatherWebSource");
+            var resource = new WebSource(xml);
+            var catalog = new ResourceCatalog();
+            catalog.SaveResource(workspaceID, resource);
+            //------------Assert Precondition-----------------
+            //------------Execute Test---------------------------
+            resource.ResourceType = ResourceType.DbService;
+            var webSource = catalog.GetResource<WebSource>(workspaceID, resource.ResourceID);
+            //------------Assert Results-------------------------
+            Assert.IsNull(webSource);
         }
 
         #endregion
@@ -2038,6 +2120,42 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]
+        public void ResourceCatalog_UnitTest_UpdateResourceCategoryValidArguments_Fails_ExpectFailureResult()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+
+            var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Additional Setup----------------------
+            var fileName = oldResource.FilePath.Replace("Bugs", "TestCategory");
+            var directoryName = Path.GetDirectoryName(fileName);
+            if(directoryName != null)
+            {
+                Directory.CreateDirectory(directoryName);
+            }
+            File.Copy(oldResource.FilePath, fileName, true);
+            var fileStream = File.Open(fileName, FileMode.OpenOrCreate, FileAccess.Read, FileShare.Read);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, "Bugs", "TestCategory");
+            //------------Assert Results-------------------------
+            fileStream.Close();
+            File.Delete(fileName);
+            Assert.AreEqual(ExecStatus.Fail, resourceCatalogResult.Status);
+        }
+
+        [TestMethod]
+        [Description("Updates the Category of the resource")]
+        [Owner("Huggs")]
         public void ResourceCatalog_UnitTest_UpdateResourceCategoryValidArgumentsDifferentCasing_ExpectFileContentsUpdated()
         {
             //------------Setup for test--------------------------
@@ -2165,6 +2283,318 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(element);
             Assert.AreEqual("TestCategory", element.Value);
         }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        [ExpectedException(typeof(InvalidDataContractException))]
+        public void ResourceCatalog_DeleteResource_ResourceIDEmptyGuid_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            rc.DeleteResource(workspaceID, Guid.Empty, "TypeWorkflowService");
+            //------------Assert Results-------------------------            
+        }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        [ExpectedException(typeof(InvalidDataContractException))]
+        public void ResourceCatalog_DeleteResource_TypeEmptyString_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            rc.DeleteResource(workspaceID, Guid.NewGuid(), "");
+            //------------Assert Results-------------------------            
+        }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        [ExpectedException(typeof(InvalidDataContractException))]
+        public void ResourceCatalog_DeleteResource_TypeNull_ExpectException()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            rc.DeleteResource(workspaceID, Guid.NewGuid(), null);
+            //------------Assert Results-------------------------            
+        }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        public void ResourceCatalog_DeleteResource_ResourceNotFound_ExpectNoMatchResult()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            var resourceCatalogResult = rc.DeleteResource(workspaceID, Guid.NewGuid(), "TypeWorkflowService");
+            //------------Assert Results-------------------------        
+            Assert.AreEqual(ExecStatus.NoMatch, resourceCatalogResult.Status);
+        }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        public void ResourceCatalog_DeleteResource_FoundMultipleResources_ExpectDuplicateMatchResult()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            IResource resourceToUpdate = result.FirstOrDefault(resource => resource.ResourceName == "Bug6619");
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            Assert.IsNotNull(resourceToUpdate);
+            //------------Execute Test---------------------------
+            resourceToUpdate.ResourceID = oldResource.ResourceID;
+            var resourceCatalogResult = rc.DeleteResource(workspaceID, resourceToUpdate.ResourceID, "WorkflowService");
+            //------------Assert Results-------------------------        
+            Assert.AreEqual(ExecStatus.DuplicateMatch, resourceCatalogResult.Status);
+        }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        public void ResourceCatalog_DeleteResource_FoundResource_ExpectResourceDeleted()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            var resourceCatalogResult = rc.DeleteResource(workspaceID, oldResource.ResourceID, "WorkflowService");
+            //------------Assert Results-------------------------        
+            Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
+            var resourceToFind = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            Assert.IsNull(resourceToFind);
+        }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        public void ResourceCatalog_GetResource_Workflow_ExpectResource()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            var resourceFound = rc.GetResource<Workflow>(workspaceID, oldResource.ResourceID);
+            //------------Assert Results-------------------------        
+            Assert.IsNotNull(resourceFound);
+            Assert.AreEqual(oldResource.ResourceID, resourceFound.ResourceID);
+        }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        public void ResourceCatalog_GetResource_Workflow_IncorrectType_ExpectNoResource()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            oldResource.ResourceType = ResourceType.WebService;
+            var resourceFound = rc.GetResource<Workflow>(workspaceID, oldResource.ResourceID);
+            //------------Assert Results-------------------------        
+            Assert.IsNull(resourceFound);
+        }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        public void ResourceCatalog_GetResource_DbSource_ExpectResource()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "CitiesDatabase";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            var resourceFound = rc.GetResource<DbSource>(workspaceID, oldResource.ResourceID);
+            //------------Assert Results-------------------------        
+            Assert.IsNotNull(resourceFound);
+            Assert.AreEqual(oldResource.ResourceID, resourceFound.ResourceID);
+        }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        public void ResourceCatalog_GetResource_DbSource_IncorrectType_ExpectNoResource()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "CitiesDatabase";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            oldResource.ResourceType = ResourceType.WebService;
+            var resourceFound = rc.GetResource<DbSource>(workspaceID, oldResource.ResourceID);
+            //------------Assert Results-------------------------        
+            Assert.IsNull(resourceFound);
+        }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        public void ResourceCatalog_GetResource_DbService_ExpectResource()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "CatalogServiceCitiesDatabase";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            var resourceFound = rc.GetResource<DbService>(workspaceID, oldResource.ResourceID);
+            //------------Assert Results-------------------------        
+            Assert.IsNotNull(resourceFound);
+            Assert.AreEqual(oldResource.ResourceID, resourceFound.ResourceID);
+        }
+
+        [TestMethod]
+        [Owner("Huggs")]
+        public void ResourceCatalog_GetResource_DbService_ResourceNotCorrectType_ExpectNoResource()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "CatalogServiceCitiesDatabase";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            oldResource.ResourceType = ResourceType.WebService;
+            var resourceFound = rc.GetResource<DbService>(workspaceID, oldResource.ResourceID);
+            //------------Assert Results-------------------------        
+            Assert.IsNull(resourceFound);
+        }
+
 
         #endregion
 
@@ -2312,8 +2742,8 @@ namespace Dev2.Tests.Runtime.Hosting
         public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyList()
         {
             //------------Setup for test--------------------------
+            LoadActivitiesPresentationDll();
             var workspaceID = Guid.NewGuid();
-
             var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
@@ -2360,10 +2790,24 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreNotEqual(resource.ResourceID, message.UniqueID);
         }
 
+        static void LoadActivitiesPresentationDll()
+        {
+            try
+            {
+                Assembly.Load("System.Activities.Presentation");
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+                //This is for when it is run on the server. Because the server has some other way of getting DLL's
+            }
+        }
+
         [TestMethod]
         public void UpdateResourceWhereResourceIsDependedOnExpectNonEmptyListForResource()
         {
             //------------Setup for test--------------------------
+            LoadActivitiesPresentationDll();
             var workspaceID = Guid.NewGuid();
 
             var path = EnvironmentVariables.GetWorkspacePath(workspaceID);

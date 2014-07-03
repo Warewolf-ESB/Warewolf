@@ -1,14 +1,12 @@
 ﻿using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Wrappers.Interfaces;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
-using Dev2.Interfaces;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Compiler;
 using Dev2.Runtime.ESB.Management;
@@ -206,20 +204,6 @@ namespace Dev2.Runtime.Hosting
         public StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID, Version version = null)
         {
             var resource = GetResource(workspaceID, resourceID, version);
-            return GetResourceContents(resource);
-        }
-
-        /// <summary>
-        /// Gets the contents of the resource with the given name.
-        /// </summary>
-        /// <param name="workspaceID">The workspace ID to be queried.</param>
-        /// <param name="resourceName">Name of the resource.</param>
-        /// <returns>
-        /// The resource's contents or <code>string.Empty</code> if not found.
-        /// </returns>
-        public StringBuilder GetResourceContents(Guid workspaceID, string resourceName)
-        {
-            var resource = GetResource(workspaceID, resourceName);
             return GetResourceContents(resource);
         }
 
@@ -1724,15 +1708,26 @@ namespace Dev2.Runtime.Hosting
             var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase)).ToList();
             try
             {
+                var hasError = false;
                 foreach(var resource in resourcesToUpdate)
                 {
-                    UpdateResourcePath(workspaceID, resource, newCategory);
+                    var resourceCatalogResult = UpdateResourcePath(workspaceID, resource, newCategory);
+                    if(resourceCatalogResult.Status != ExecStatus.Success)
+                    {
+                        hasError = true;
+                    }
                 }
-                return new ResourceCatalogResult
+                var failureResult = new ResourceCatalogResult
+                {
+                    Status = ExecStatus.Fail,
+                    Message = string.Format("<CompilerMessage>{0} from '{1}' to '{2}'</CompilerMessage>", "Failed to Category", oldCategory, newCategory)
+                };
+                var successResult = new ResourceCatalogResult
                 {
                     Status = ExecStatus.Success,
                     Message = string.Format("<CompilerMessage>{0} from '{1}' to '{2}'</CompilerMessage>", "Updated Category", oldCategory, newCategory)
                 };
+                return hasError ? failureResult : successResult;
             }
             catch(Exception)
             {
@@ -1745,14 +1740,13 @@ namespace Dev2.Runtime.Hosting
         }
 
 
-        void UpdateResourcePath(Guid workspaceID, IResource resource, string newCategory)
+        ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string newCategory)
         {
+            var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
             var newPath = newCategory + "\\" + resource.ResourceName;
             resource.ResourcePath = newPath;
-            StringBuilder resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
-
-            XElement resourceElement = resourceContents.ToXElement();
-            XElement categoryElement = resourceElement.Element("Category");
+            var resourceElement = resourceContents.ToXElement();
+            var categoryElement = resourceElement.Element("Category");
 
             if(categoryElement == null)
             {
@@ -1762,9 +1756,9 @@ namespace Dev2.Runtime.Hosting
             {
                 categoryElement.SetValue(newPath);
             }
-            StringBuilder contents = resourceElement.ToStringBuilder();
-
-            SaveImpl(workspaceID, resource, contents);
+            var contents = resourceElement.ToStringBuilder();
+            var resourceCatalogResult = SaveImpl(workspaceID, resource, contents);
+            return resourceCatalogResult;
         }
 
         IEnumerable<IResource> GetResources(Guid workspaceID, Func<IResource, bool> filterResources)
@@ -1799,11 +1793,6 @@ namespace Dev2.Runtime.Hosting
 
             return workspaceResources.ToList();
 
-        }
-
-        public IExplorerItem GetFolderStructure(Guid workspaceId, IDirectory directory)
-        {
-            return null;
         }
 
         static ResourceForTree CreateResourceForTree(IResource resource, ResourceForTree tree)

@@ -78,16 +78,7 @@ namespace Dev2.Runtime.Hosting
                     }
             }
         }
-
-        public IExplorerRepositoryResult RenameFolder(IExplorerItem itemToRename, string newName, Guid workSpaceId)
-        {
-            if(itemToRename == null)
-            {
-                return new ExplorerRepositoryResult(ExecStatus.Fail, "Item to rename was null");
-            }
-            return RenameFolder(itemToRename.ResourcePath, newName, workSpaceId);
-        }
-
+        
         IExplorerRepositoryResult RenameExplorerItem(IExplorerItem itemToRename, Guid workSpaceId)
         {
 
@@ -113,9 +104,13 @@ namespace Dev2.Runtime.Hosting
                 {
                     return new ExplorerRepositoryResult(ExecStatus.NoMatch, "Requested folder does not exist on server. Folder: " + path);
                 }
-                Directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
-                ResourceCatalogue.RenameCategory(workSpaceId, path, newPath);
-                return new ExplorerRepositoryResult(ExecStatus.Success, "");
+                var resourceCatalogResult = ResourceCatalogue.RenameCategory(workSpaceId, path, newPath);
+                if(resourceCatalogResult.Status == ExecStatus.Success)
+                {
+                    Directory.Delete(DirectoryStructureFromPath(path), true);
+                    return new ExplorerRepositoryResult(ExecStatus.Success, "");
+                }
+                return new ExplorerRepositoryResult(ExecStatus.Fail, resourceCatalogResult.Message);
             }
             catch(Exception err)
             {
