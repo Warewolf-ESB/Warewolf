@@ -9,7 +9,7 @@ namespace Dev2.Converters.DateAndTime
     {
         #region Class Members
 
-        private static readonly Dictionary<string, Func<DateTime, DateTime, double>> _outputFormats = new Dictionary<string, Func<DateTime, DateTime, double>>();
+        private static readonly Dictionary<string, Func<DateTime, DateTime, double>> OutputFormats = new Dictionary<string, Func<DateTime, DateTime, double>>();
         private DateTime _input1;
         private DateTime _input2;
 
@@ -59,7 +59,7 @@ namespace Dev2.Converters.DateAndTime
 
                 //Try get the function according to what the OutputType is
                 Func<DateTime, DateTime, double> returnedFunc;
-                noErrorOccured = _outputFormats.TryGetValue(dateTimeDiffTO.OutputType, out returnedFunc);
+                noErrorOccured = OutputFormats.TryGetValue(dateTimeDiffTO.OutputType, out returnedFunc);
 
                 if(returnedFunc != null)
                 {
@@ -82,15 +82,15 @@ namespace Dev2.Converters.DateAndTime
         /// </summary>
         private static void CreateOutputFormatTypes()
         {
-            _outputFormats.Add("Years", ReturnYears);
-            _outputFormats.Add("Months", ReturnMonths);
-            _outputFormats.Add("Days", ReturnDays);
-            _outputFormats.Add("Weeks", ReturnWeeks);
-            _outputFormats.Add("Hours", ReturnHours);
-            _outputFormats.Add("Minutes", ReturnMinutes);
-            _outputFormats.Add("Seconds", ReturnSeconds);
-            _outputFormats.Add("Split Secs", ReturnSplitSeconds);
-            OutputFormatTypes = new List<string>(_outputFormats.Keys);
+            OutputFormats.Add("Years", ReturnYears);
+            OutputFormats.Add("Months", ReturnMonths);
+            OutputFormats.Add("Days", ReturnDays);
+            OutputFormats.Add("Weeks", ReturnWeeks);
+            OutputFormats.Add("Hours", ReturnHours);
+            OutputFormats.Add("Minutes", ReturnMinutes);
+            OutputFormats.Add("Seconds", ReturnSeconds);
+            OutputFormats.Add("Split Secs", ReturnSplitSeconds);
+            OutputFormatTypes = new List<string>(OutputFormats.Keys);
         }
 
         #endregion Private Methods
@@ -162,8 +162,8 @@ namespace Dev2.Converters.DateAndTime
         /// <returns></returns>
         private static double ReturnDays(DateTime input1, DateTime input2)
         {
-            TimeSpan _timeDiff = input2 - input1;
-            double result = _timeDiff.TotalDays;
+            TimeSpan timeDiff = input2 - input1;
+            double result = timeDiff.TotalDays;
             return result;
         }
 

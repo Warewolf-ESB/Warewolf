@@ -118,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (!string.IsNullOrEmpty(datalist) )
                 {
                     ValidateInput(datalist, allErrors,Input1);
-                    ValidateInput(datalist, allErrors, Input1);
+                    ValidateInput(datalist, allErrors, Input2);
                 }
                 IBinaryDataListEntry input1Entry = compiler.Evaluate(executionId, enActionType.User, string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, false, out errors);
                 allErrors.MergeErrors(errors);
