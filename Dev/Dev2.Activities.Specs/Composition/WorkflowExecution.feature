@@ -2014,7 +2014,8 @@ Scenario: Workflow with Assign and Sort Backward to test gaps
 #       |   | [[rec(2).unique]] = 40 |
 #       |   | [[rec(3).unique]] = 20 |
 #       |   | [[rec(4).unique]] = 30 |
-#with Assign and Unique Tool, Infields rec without star
+
+Scenario: Workflow with Assign and Unique Tool, Infields rec without star
       Given I have a workflow "workflowithAssignandUniqueToolc"
       And "workflowithAssignandUniqueToolc" contains an Assign "Records" as
 	  | variable       | value |
