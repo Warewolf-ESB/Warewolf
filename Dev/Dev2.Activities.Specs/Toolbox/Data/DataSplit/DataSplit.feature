@@ -139,19 +139,19 @@ Scenario: Split text using All split types - Some with Include selected
 	When the data split tool is executed
 	Then the split result will be
 	| vowels().letters |
-	| Index		  |
-	| Tab		  |
-	| Chars,	  |
-	| space		  |
-	| end		  |
+	| Index            |
+	| Tab              |
+	| Chars,           |
+	| space            |
+	| end              |
 	And the execution has "NO" error
 	And the debug inputs as  
-	| String to Split          | Process Direction | Skip blank rows | # |                       | With  | Using | Include | Escape |
+	| String to Split          | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
 	| IndexTab	Chars,space end | Forward           | No              | 1 | [[vowels(*).letters]] = | Index | 5     | Yes     |        |
-	|                          |                   |                  | 2 | [[vowels(*).letters]] = | Tab   |       | No      |        |
-	|                          |                   |                  | 3 | [[vowels(*).letters]] = | Chars | ars,  | Yes     | " "    |
-	|                          |                   |                  | 4 | [[vowels(*).letters]] = | Space |       | No      |        |
-	|                          |                   |                  | 5 | [[vowels(*).letters]] = | End   |       | No      |        |
+	|                          |                   |                 | 2 | [[vowels(*).letters]] = | Tab   |       | No      |        |
+	|                          |                   |                 | 3 | [[vowels(*).letters]] = | Chars | ars,  | Yes     | " "    |
+	|                          |                   |                 | 4 | [[vowels(*).letters]] = | Space |       | No      |        |
+	|                          |                   |                 | 5 | [[vowels(*).letters]] = | End   |       | No      |        |
 	And the debug output as
 	| # |                          |
 	| 1 | [[vowels(1).letters]] = Index  |
@@ -329,7 +329,13 @@ Scenario: Split blank text using All split types
 	|                 |                   |                 | 5 | [[vowels().letters]] = | End     |       | No      |        |
 	|                 |                   |                 | 6 | [[vowels().letters]] = | NewLine |       |         |        |	
 	And the debug output as
-	| # |                  |	
+	| # |                         |
+	| 1 | [[vowels(1).letters]] = |
+	| 2 | [[vowels(1).letters]] = |
+	| 3 | [[vowels(1).letters]] = |
+	| 4 | [[vowels(1).letters]] = |
+	| 5 | [[vowels(1).letters]] = |
+	| 6 | [[vowels(1).letters]] = |
 
 Scenario: Split text using Index where and Space > 
 	Given A string to split with value "123"	
@@ -371,7 +377,8 @@ Scenario: Split blank text
 	| String to Split | Process Direction | Skip blank rows | # |                         | With  | Using | Include | Escape |
 	| " "             | Forward           | No              | 1 | [[vowels(*).letters]] = | Index | 1     | No      |        |
 	And the debug output as
-	| # |                   | 
+	| # |                         |
+	| 1 | [[vowels(1).letters]] = |
 
 Scenario: Split text to a recordset using a negative Index 
 	Given A string to split with value "abcde"

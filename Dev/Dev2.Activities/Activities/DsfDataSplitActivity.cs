@@ -131,11 +131,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeDebug(dataObject);
             try
             {
-                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, SourceString, false, out errors);
+                var sourceString = SourceString ?? "";
+                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, sourceString, false, out errors);
 
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(new DebugItemVariableParams(SourceString, "String to Split", expressionsEntry, dlID));
+                    AddDebugInputItem(new DebugItemVariableParams(sourceString, "String to Split", expressionsEntry, dlID));
                     AddDebugInputItem(new DebugItemStaticDataParams(ReverseOrder ? "Backward" : "Forward", "Process Direction"));
                     AddDebugInputItem(new DebugItemStaticDataParams(SkipBlankRows ? "Yes" : "No", "Skip blank rows"));
                 }
@@ -149,7 +150,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebug(ResultsCollection, compiler, dlID);
                     }
 
-                    CheckIndex(SourceString);
+                    CheckIndex(sourceString);
                     allErrors.MergeErrors(errors);
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
@@ -233,16 +234,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         // flush the final frame ;)
 
                                         toUpsert.FlushIterationFrame();
-
-                                        if(dataObject.IsDebugMode())
-                                        {
-                                            AddResultToDebug(compiler, dlID);
-                                        }
                                         toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                                     }
                                 }
                             }
                         }
+                    }
+                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                    {
+                        AddResultToDebug(compiler, dlID);
                     }
                 }
             }
@@ -275,7 +275,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void AddResultToDebug(IDataListCompiler compiler, Guid dlID)
         {
-            ErrorResultTO errors;
             int innerCount = 1;
             foreach(DataSplitDTO dataSplitDto in ResultsCollection)
             {
@@ -285,6 +284,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     outputVariable = outputVariable.Remove(outputVariable.IndexOf(".", StringComparison.Ordinal));
                     outputVariable = outputVariable.Replace("()", "(*)") + "]]";
                 }
+                ErrorResultTO errors;
                 IBinaryDataListEntry binaryDataListEntry = compiler.Evaluate(dlID, enActionType.User, outputVariable, false, out errors);
                 string expression = dataSplitDto.OutputVariable;
                 if(expression.Contains("()."))
