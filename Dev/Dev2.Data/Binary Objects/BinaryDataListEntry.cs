@@ -584,14 +584,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     }
                 }
                 int tmpIndex = _internalObj.Keys.MaxIndex();
-                if(tmpIndex == 0)
-                {
-                    result = 1;
-                }
-                else
-                {
-                    result = tmpIndex;
-                }
+                result = tmpIndex == 0 ? 1 : tmpIndex;
             }
 
             return result;
@@ -880,12 +873,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 }
                 else
                 {
-                    var recordset = FetchRecordAt(numericIndex, out error);
-
-                    if (recordset != null)
-                    {
-                        
-                    }
                     result = DeleteRowAtIndex(numericIndex, out error);
                 }
             }
@@ -916,15 +903,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 return null;
             }
 
-            IEnumerable<string> colNames;
-            if(String.IsNullOrEmpty(field))
-            {
-                colNames = Columns.Select(column => column.ColumnName);
-            }
-            else
-            {
-                colNames = new List<string> { field };
-            }
+            IEnumerable<string> colNames = String.IsNullOrEmpty(field) ? Columns.Select(column => column.ColumnName) : new List<string> { field };
 
             IList<IBinaryDataListItem> resultList = new List<IBinaryDataListItem>();
 
