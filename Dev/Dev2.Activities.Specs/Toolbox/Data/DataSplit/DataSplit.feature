@@ -491,17 +491,17 @@ Scenario: Split text into negative recordset index
 #	| 2  | [[a]][[b]]                 |
 #
 
-Scenario Outline: Split Text by using two variables in one row second
+Scenario Outline: Split Text using type Index but Index is invalid
 	Given A string to split with value "abcd"
-	And assign to variable "[[rec().a]]" split type "Index" at '<Type>' and Include "Selected" and Escape ''
+	And assign to variable '[[rec().a]]' split type "Index" at '<Type>' and Include 'Selected' and Escape ''
 	When the data split tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
-	| # | # | String to Split | Process Direction | Skip blank rows | # |              | With  | Using | Include | Escape |
-	| # | # | abcd            | Forward           | No              | 1 | [[rec().a]]= | Index | 4     | Yes     |        |
+	| String to Split | Process Direction | Skip blank rows | # |               | With  | Using       | Include | Escape |
+	| abcd            | Forward           | No              | 1 | [[rec().a]] = | Index | <Type> = "" | Yes     |        |
 	And the debug output as
-	| # | # |               |
-	| # | 1 | [[rec().a]] = |
+	| # |               |
+	| 1 | [[rec(1).a]] = |
 Examples: 
 	| No | Type    |
 	| 1  |         |

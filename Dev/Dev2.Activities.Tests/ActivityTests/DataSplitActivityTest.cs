@@ -588,7 +588,7 @@ namespace Dev2.Tests.Activities.ActivityTests
              */
 
             _resultsCollection.Add(new DataSplitDTO("[[recset1(5).field1]]", "Index", "15", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[recset2(2).field2]]", "Index", "", 2));
+            _resultsCollection.Add(new DataSplitDTO("[[recset2(2).field2]]", "Char", "", 2));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 

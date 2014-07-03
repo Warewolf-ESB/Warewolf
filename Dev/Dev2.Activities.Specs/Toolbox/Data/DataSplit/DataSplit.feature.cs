@@ -1914,24 +1914,22 @@ this.ScenarioSetup(scenarioInfo);
             this.ScenarioCleanup();
         }
         
-        public virtual void SplitTextByUsingTwoVariablesInOneRowSecond(string no, string type, string[] exampleTags)
+        public virtual void SplitTextUsingTypeIndexButIndexIsInvalid(string no, string type, string[] exampleTags)
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split Text by using two variables in one row second", exampleTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Split Text using type Index but Index is invalid", exampleTags);
 #line 494
 this.ScenarioSetup(scenarioInfo);
 #line 495
  testRunner.Given("A string to split with value \"abcd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 496
- testRunner.And(string.Format("assign to variable \"[[rec().a]]\" split type \"Index\" at \'{0}\' and Include \"Selecte" +
-                        "d\" and Escape \'\'", type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("assign to variable \'[[rec().a]]\' split type \"Index\" at \'{0}\' and Include \'Selecte" +
+                        "d\' and Escape \'\'", type), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 497
  testRunner.When("the data split tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 498
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "#",
                         "String to Split",
                         "Process Direction",
                         "Skip blank rows",
@@ -1942,15 +1940,13 @@ this.ScenarioSetup(scenarioInfo);
                         "Include",
                         "Escape"});
             table52.AddRow(new string[] {
-                        "#",
-                        "#",
                         "abcd",
                         "Forward",
                         "No",
                         "1",
-                        "[[rec().a]]=",
+                        "[[rec().a]] =",
                         "Index",
-                        "4",
+                        string.Format("{0} = \"\"", type),
                         "Yes",
                         ""});
 #line 499
@@ -1958,12 +1954,10 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
-                        "#",
                         ""});
             table53.AddRow(new string[] {
-                        "#",
                         "1",
-                        "[[rec().a]] ="});
+                        "[[rec(1).a]] ="});
 #line 502
  testRunner.And("the debug output as", ((string)(null)), table53, "And ");
 #line hidden
@@ -1971,25 +1965,25 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split Text by using two variables in one row second")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split Text using type Index but Index is invalid")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "")]
-        public virtual void SplitTextByUsingTwoVariablesInOneRowSecond_1()
+        public virtual void SplitTextUsingTypeIndexButIndexIsInvalid_1()
         {
-            this.SplitTextByUsingTwoVariablesInOneRowSecond("1", "", ((string[])(null)));
+            this.SplitTextUsingTypeIndexButIndexIsInvalid("1", "", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split Text by using two variables in one row second")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Split Text using type Index but Index is invalid")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DataSplit")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Type", "[[%#$]]")]
-        public virtual void SplitTextByUsingTwoVariablesInOneRowSecond_2()
+        public virtual void SplitTextUsingTypeIndexButIndexIsInvalid_2()
         {
-            this.SplitTextByUsingTwoVariablesInOneRowSecond("2", "[[%#$]]", ((string[])(null)));
+            this.SplitTextUsingTypeIndexButIndexIsInvalid("2", "[[%#$]]", ((string[])(null)));
         }
         
         public virtual void DebugOutputValidationErrors(string no, string variable, string[] exampleTags)

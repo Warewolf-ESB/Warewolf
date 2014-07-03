@@ -94,7 +94,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 ScenarioContext.Current.Add("ReverseOrder", false);
             }
         }
-
+        
         static void AddVariables(string variable, string splitType, string splitAt, bool include = false, string escape = "")
         {
             List<Tuple<string, string>> variableList;

@@ -140,9 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(new DebugItemStaticDataParams(ReverseOrder ? "Backward" : "Forward", "Process Direction"));
                     AddDebugInputItem(new DebugItemStaticDataParams(SkipBlankRows ? "Yes" : "No", "Skip blank rows"));
                 }
-
                 CleanArguments(ResultsCollection);
-
                 if(ResultsCollection.Count > 0)
                 {
                     if(dataObject.IsDebugMode())
@@ -269,7 +267,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
-
             }
         }
 
@@ -464,6 +461,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach(DataSplitDTO t in args)
             {
                 var fieldName = t.OutputVariable;
+                t.At = t.At ?? "";
                 if(!string.IsNullOrEmpty(_datalistString))
                 {
                     var isValidExpr = new IsValidExpressionRule(() => fieldName, _datalistString)
@@ -541,7 +539,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 _indexCounter++;
             }
-            return string.IsNullOrEmpty(dtb.ToTokenize) ? null : dtb.Generate();
+            return string.IsNullOrEmpty(dtb.ToTokenize) || errors.HasErrors() ? null : dtb.Generate();
         }
 
         private void AddDebug(IEnumerable<DataSplitDTO> resultCollection, IDataListCompiler compiler, Guid dlID)
@@ -592,9 +590,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             int count = 0;
             while(count < args.Count)
             {
-                if(args[count].SplitType == "Index" && string.IsNullOrEmpty(args[count].At) || args[count].SplitType == "Chars" && string.IsNullOrEmpty(args[count].At))
+                if(string.IsNullOrEmpty(args[count].OutputVariable))
                 {
-                    args.RemoveAt(count);
+                    if(args[count].SplitType == "Index" && string.IsNullOrEmpty(args[count].At) ||
+                       args[count].SplitType == "Chars" && string.IsNullOrEmpty(args[count].At))
+                    {
+                        args.RemoveAt(count);
+                    }
+                    else
+                    {
+                        count ++;
+                    }
                 }
                 else
                 {
@@ -602,7 +608,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-
         #endregion Private Methods
 
         #region Get Debug Inputs/Outputs
