@@ -24,22 +24,22 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static string BuildWorkspaceLocation = @"C:\Builds\UITestRunWorkspace\";
 
-        public static string ServerLocation = BuildWorkspaceLocation + @"src\TestBinaries\Warewolf Server.exe";
+        public static string ServerLocation = BuildWorkspaceLocation + @"bin\Warewolf Server.exe";
         public static Process ServerProc;
-        public static string StudioLocation = BuildWorkspaceLocation + @"src\TestBinaries\Warewolf Studio.exe";
+        public static string StudioLocation = BuildWorkspaceLocation + @"bin\Warewolf Studio.exe";
         public static Process StudioProc;
 
         public static string LogLocation = BuildWorkspaceLocation + "UI_Test.log";
 
-        public static string RootSourceLocation = BuildWorkspaceLocation + @"src\TestBinaries\Resources\";
-        public static string RootServiceLocation = BuildWorkspaceLocation + @"src\TestBinaries\Resources\";
+        public static string RootSourceLocation = BuildWorkspaceLocation + @"bin\Resources\";
+        public static string RootServiceLocation = BuildWorkspaceLocation + @"bin\Resources\";
 
         public static string ShadowSourceLocation = BuildWorkspaceLocation + @"Resources\";
         public static string ShadowServiceLocation = BuildWorkspaceLocation + @"Resources\";
 
-        public static string ServerWorkspaceLocation = BuildWorkspaceLocation + @"src\TestBinaries\Workspaces\";
+        public static string ServerWorkspaceLocation = BuildWorkspaceLocation + @"bin\Workspaces\";
 
-        public static string RemoteServerLocation = BuildWorkspaceLocation + @"src\TestBinaries-Remote\";
+        public static string RemoteServerLocation = BuildWorkspaceLocation + @"bin-Remote\";
 
         // must be removed to have proper codedui runs
         public static string ServerSourceToDelete = "Remote Connection Integration.xml";
@@ -71,7 +71,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             if(inBuildWorkspace)
             {
                 //Ashley: Go by build workspace
-                serverBinaries = BuildWorkspaceLocation + @"src\TestBinaries";
+                serverBinaries = BuildWorkspaceLocation + @"bin";
                 uiTestRemoteResources = serverBinaries + @"\..\BPM Resources - UITestRemote\";
             }
             else
@@ -284,6 +284,10 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                     File.WriteAllText(RemoteServerConfig, data);
                 }
+            }
+            else
+            {
+                LogTestRunMessage("File not found: " + RemoteServerConfig, true);
             }
         }
 
