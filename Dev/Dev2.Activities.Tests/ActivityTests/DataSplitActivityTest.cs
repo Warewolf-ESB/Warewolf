@@ -343,14 +343,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IBinaryDataListEntry entry;
                 string error;
                 dList.TryGetEntry(data, out entry, out error);
-                if(entry.FetchAppendRecordsetIndex() == 1)
-                {
-                    isPopulated.Add(false);
-                }
-                else
-                {
-                    isPopulated.Add(true);
-                }
+                isPopulated.Add(entry.FetchAppendRecordsetIndex() != 1);
             }
 
             // remove test datalist ;)
