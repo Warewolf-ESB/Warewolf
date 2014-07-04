@@ -249,6 +249,37 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DebugOutput_DataSplitOutputIsCorrect")]
+        public void DebugOutput_WhenUsingAColumnInput_ExecutesDataSplitCorrectly()
+        {
+            try
+            {
+                //------------Setup for test--------------------------
+ 
+                ExplorerUIMap.DoubleClickWorkflow("12086", "Sprint12");
+
+                //------------Assert Results-------------------------
+
+        
+
+                RibbonUIMap.ClickDebug();
+
+                DebugUIMap.ClickExecute();
+                OutputUIMap.WaitForExecution(2500);
+                UITestControl lastStep = OutputUIMap.GetLastStep();
+                Assert.IsTrue(OutputUIMap.AssertDebugOutputContains(lastStep, new[] { "Outputs :", "[[moop]]", "=", "a" }));
+
+
+            }
+            catch (Exception e)
+            {
+                Assert.Fail("It appears there is a debug issue. [ " + e.Message + " ]");
+            }
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
         [TestCategory("DebugOutput_ContainsWorkflowOutput")]
         public void DebugOutput_WhenRunWithOutputs_ContainsWorkflowInput()
         {

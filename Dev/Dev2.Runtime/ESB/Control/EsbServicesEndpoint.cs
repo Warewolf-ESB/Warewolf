@@ -218,6 +218,13 @@ namespace Dev2.Runtime.ESB.Control
                 // TODO : Amend here to respect Inputs only when creating shape ;)
                 ErrorResultTO invokeErrors;
                 dataObject.DataListID = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), dataObject.RawPayload, theShape, out invokeErrors);
+                // The act of doing this moves the index data correctly ;)
+                // We need to remove this in the future.
+#pragma warning disable 168
+                // ReSharper disable UnusedVariable
+                var convertFrom = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
+                // ReSharper restore UnusedVariable
+#pragma warning restore 168
                 errors.MergeErrors(invokeErrors);
                 dataObject.RawPayload = string.Empty;
 
