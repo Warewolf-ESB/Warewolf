@@ -153,10 +153,10 @@ namespace Dev2
         #region Private Methods
 
         /*
-         * DELETE THIS METHOD AND LOOSE A VERY IMPORTANT PART OF YOU
+         * DELETE THIS METHOD AND LOOSE A VERY IMPORTANT PART OF YOU ;)
          * 
-         * IT IS REQUIRED FOR UPDATES IN RELEASE MODE. 
-         * REMOVING IT MEANS IT IS NOT POSSIBLE FOR ME TO BUILD AND INSTALLER
+         * IT IS REQUIRED FOR UPDATES IN RELEASE MODE ;)
+         * REMOVING IT MEANS IT IS NOT POSSIBLE TO BUILD AN INSTALLER ;)
          */
         private bool CheckWindowsService()
         {

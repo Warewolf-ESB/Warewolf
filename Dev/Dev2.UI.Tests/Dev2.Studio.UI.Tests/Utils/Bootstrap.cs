@@ -22,26 +22,28 @@ namespace Dev2.Studio.UI.Tests.Utils
         private const int ServerTimeOut = 2000;
         private const int StudioTimeOut = 10000;
 
-        public static string ServerLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Warewolf Server.exe";
+        public static string BuildWorkspaceLocation = @"C:\Builds\UITestRunWorkspace\";
+
+        public static string ServerLocation = BuildWorkspaceLocation + @"src\TestBinaries\Warewolf Server.exe";
         public static Process ServerProc;
-        public static string StudioLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Warewolf Studio.exe";
+        public static string StudioLocation = BuildWorkspaceLocation + @"src\TestBinaries\Warewolf Studio.exe";
         public static Process StudioProc;
 
-        public static string LogLocation = @"C:\Builds\UITestRunWorkspace\UI_Test.log";
+        public static string LogLocation = BuildWorkspaceLocation + "UI_Test.log";
 
-        public static string RootSourceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Resources\";
-        public static string RootServiceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Resources\";
+        public static string RootSourceLocation = BuildWorkspaceLocation + @"src\TestBinaries\Resources\";
+        public static string RootServiceLocation = BuildWorkspaceLocation + @"src\TestBinaries\Resources\";
 
-        public static string ShadowSourceLocation = @"C:\Builds\UITestRunWorkspace\Resources\";
-        public static string ShadowServiceLocation = @"C:\Builds\UITestRunWorkspace\Resources\";
+        public static string ShadowSourceLocation = BuildWorkspaceLocation + @"Resources\";
+        public static string ShadowServiceLocation = BuildWorkspaceLocation + @"Resources\";
 
-        public static string WorkspaceLocation = @"C:\Builds\UITestRunWorkspace\Binaries\Workspaces\";
+        public static string ServerWorkspaceLocation = BuildWorkspaceLocation + @"src\TestBinaries\Workspaces\";
 
-        public static string RemoteServerLocation = @"C:\Builds\UITestRunWorkspace\Binaries-Remote\";
+        public static string RemoteServerLocation = BuildWorkspaceLocation + @"src\TestBinaries-Remote\";
 
         // must be removed to have proper codedui runs
-        public static string ServerSourceToDelete = @"Remote Connection Integration.xml";
-        public static string ServerSourceToDeleteCategory = @"REMOTECODEDUI";
+        public static string ServerSourceToDelete = "Remote Connection Integration.xml";
+        public static string ServerSourceToDeleteCategory = "REMOTECODEDUI";
         public static string RemoteServer = RemoteServerLocation + "Warewolf Server.exe";
         public static string RemoteServerConfig = RemoteServerLocation + "Warewolf Server.exe.config";
 
@@ -50,57 +52,72 @@ namespace Dev2.Studio.UI.Tests.Utils
         static bool _isLocal = false;
 
         /// <summary>
-        /// Inits the ServerLocation.
+        /// Inits the ServerLocation and RemoteServerLocation.
+        /// Ashley: Can drop the complexity of this [AssemblyInitialize] significantly by refactoring it to a post build event script for this assembly.
         /// </summary>
-        /// <param name="testCtx">The test CTX.</param>
+        /// <param name="testCtx">Test context.</param>
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext testCtx)
         {
-            if(File.Exists(ServerLocation) || File.Exists(StudioLocation))
-            {
-                return;
-            }
-            //Ashley: Simulating Travs process right here in the bootstrapper for local test runs...
-            Directory.CreateDirectory(RemoteServerLocation);
-            CopyDirectory(testCtx.DeploymentDirectory, RemoteServerLocation);
+            _isLocal = testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901";
+            CreateRemoteServer(File.Exists(ServerLocation) && File.Exists(StudioLocation), testCtx.DeploymentDirectory);
+        }
 
-            var uiTestRemoteResources = testCtx.DeploymentDirectory + "\\..\\..\\..\\BPM Resources - UITestRemote\\";
+        private static void CreateRemoteServer(bool inBuildWorkspace, string deploymentDir)
+        {
+            Directory.CreateDirectory(RemoteServerLocation);
+            string serverBinaries;
+            string uiTestRemoteResources;
+            if(inBuildWorkspace)
+            {
+                //Ashley: Go by build workspace
+                serverBinaries = BuildWorkspaceLocation + @"src\TestBinaries";
+                uiTestRemoteResources = serverBinaries + @"\..\BPM Resources - UITestRemote\";
+            }
+            else
+            {
+                if(_isLocal)
+                {
+                    //Ashley: Go by running server/studio locations
+                    ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
+                    StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
+                    RootSourceLocation = StudioLocation.Replace(StudioExeName, @"Resources\");
+                    RootServiceLocation = StudioLocation.Replace(StudioExeName, @"Resources\");
+                    serverBinaries = Path.GetDirectoryName(ServerLocation);
+                    uiTestRemoteResources = serverBinaries + @"\..\BPM Resources - UITestRemote\";
+                    if(!Directory.Exists(uiTestRemoteResources))
+                    {
+                        uiTestRemoteResources = serverBinaries + @"\..\..\..\BPM Resources - UITestRemote\";
+                    }
+                }
+                else
+                {
+                    //Ashley: Go by deployment directory
+                    ServerLocation = Path.Combine(deploymentDir, ServerExeName);
+                    StudioLocation = Path.Combine(deploymentDir, StudioExeName);
+                    RootSourceLocation = StudioLocation.Replace(StudioExeName, @"Resources\");
+                    RootServiceLocation = StudioLocation.Replace(StudioExeName, @"Resources\");
+                    serverBinaries = deploymentDir;
+                    uiTestRemoteResources = serverBinaries + @"\..\BPM Resources - UITestRemote\";
+                    if(!Directory.Exists(uiTestRemoteResources))
+                    {
+                        uiTestRemoteResources = Path.Combine(serverBinaries, @"BPM Resources - UITestRemote");
+                    }
+                }
+            }
+
+            //Ashley: Create remote server
+            CopyDirectory(serverBinaries, RemoteServerLocation);
             if(Directory.Exists(uiTestRemoteResources))
             {
-                var remoteResources = Path.Combine(RemoteServerLocation, "Resources\\");
+                var remoteResources = Path.Combine(RemoteServerLocation, @"Resources");
                 Directory.Delete(remoteResources, true);
                 CopyDirectory(uiTestRemoteResources, remoteResources);
             }
-            if(testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901")
+            else
             {
-                _isLocal = true;
-                ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
-                StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
-                if(StudioLocation == null)
-                {
-                    ServerLocation = Path.Combine(testCtx.DeploymentDirectory, ServerExeName);
-                    StudioLocation = Path.Combine(testCtx.DeploymentDirectory, StudioExeName);
-                }
-                RootSourceLocation = StudioLocation.Replace(StudioExeName, "Resources\\");
-                RootServiceLocation = StudioLocation.Replace(StudioExeName, "Resources\\");
-
-                //Ashley: Simulating Travs process right here in the bootstrapper for local test runs...
-                Directory.CreateDirectory(RemoteServerLocation);
-                CopyDirectory(Path.GetDirectoryName(ServerLocation), RemoteServerLocation);
-                CopyDirectory(Path.GetDirectoryName(StudioLocation), RemoteServerLocation);
-
-                if(Directory.Exists(uiTestRemoteResources))
-                {
-                    var remoteResources = Path.Combine(RemoteServerLocation, "Resources\\");
-                    Directory.Delete(remoteResources, true);
-                    CopyDirectory(uiTestRemoteResources, remoteResources);
-                }
-
-                return;
+                LogTestRunMessage("Could not locate CodedUI Resources", true);
             }
-            var expectedServerLocation = ServerLocation.Replace("\\" + ServerExeName, string.Empty);
-            Directory.CreateDirectory(expectedServerLocation);
-            CopyDirectory(testCtx.DeploymentDirectory, expectedServerLocation);
         }
 
         private static string GetProcessPath(ManagementObjectCollection processes)
@@ -305,9 +322,9 @@ namespace Dev2.Studio.UI.Tests.Utils
         {
             try
             {
-                if(Directory.Exists(WorkspaceLocation))
+                if(Directory.Exists(ServerWorkspaceLocation))
                 {
-                    Directory.Delete(WorkspaceLocation, true);
+                    Directory.Delete(ServerWorkspaceLocation, true);
                 }
             }
             catch(Exception e)
