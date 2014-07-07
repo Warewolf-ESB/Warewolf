@@ -374,7 +374,6 @@
     <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\RemoveResourceAndCloseTabMessage.cs" />
     <Compile Include="Messages\ResetLayoutMessage.cs" />
-    <Compile Include="Messages\ResourceCheckedMessage.cs" />
     <Compile Include="Messages\EnvironmentConnectedMessage.cs" />
     <Compile Include="Messages\EnvironmentDisconnectedMessage.cs" />
     <Compile Include="Messages\IDeployMessage.cs" />

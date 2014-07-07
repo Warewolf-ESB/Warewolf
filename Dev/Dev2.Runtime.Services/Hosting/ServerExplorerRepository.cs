@@ -78,7 +78,7 @@ namespace Dev2.Runtime.Hosting
                     }
             }
         }
-        
+
         IExplorerRepositoryResult RenameExplorerItem(IExplorerItem itemToRename, Guid workSpaceId)
         {
 
@@ -108,6 +108,11 @@ namespace Dev2.Runtime.Hosting
                 if(resourceCatalogResult.Status == ExecStatus.Success)
                 {
                     Directory.Delete(DirectoryStructureFromPath(path), true);
+                    return new ExplorerRepositoryResult(ExecStatus.Success, "");
+                }
+                if(resourceCatalogResult.Status == ExecStatus.NoMatch)
+                {
+                    Directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }
                 return new ExplorerRepositoryResult(ExecStatus.Fail, resourceCatalogResult.Message);

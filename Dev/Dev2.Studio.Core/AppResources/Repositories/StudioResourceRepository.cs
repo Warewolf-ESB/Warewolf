@@ -9,7 +9,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
-using ServiceStack.Common.Extensions;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -240,7 +239,6 @@ namespace Dev2.AppResources.Repositories
         public void UpdateRootAndFoldersPermissions(Permissions modifiedPermissions, Guid environmentGuid, bool updateRoot = true)
         {
             var server = FindItem(a => a.EnvironmentId == environmentGuid && a.ResourceType == ResourceType.Server);
-            //  server.Permissions = modifiedPermissions;
             if(server != null)
             {
                 server.Descendants().Where(a => a.ResourceType == ResourceType.Folder).ToList().ForEach(a =>
@@ -323,19 +321,10 @@ namespace Dev2.AppResources.Repositories
             var oldResourcePath = item.ResourcePath;
 
 
-            string newPath = oldResourcePath.Replace(item.DisplayName, newName);
+            var newPath = oldResourcePath.Replace(item.DisplayName, newName);
 
             var environmentId = item.EnvironmentId;
             var result = GetExplorerProxy(environmentId).RenameFolder(oldResourcePath, newPath, Guid.Empty);
-            var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
-            var resourceModels = environmentModel.ResourceRepository.Find(model => model.Category.StartsWith(oldResourcePath + "\\"));
-            if(resourceModels != null)
-            {
-                resourceModels.ForEach(model =>
-                {
-                    model.Category = newPath + "\\" + model.ResourceName;
-                });
-            }
             if(result.Status != ExecStatus.Success)
             {
                 throw new Exception(result.Message);
@@ -391,38 +380,39 @@ namespace Dev2.AppResources.Repositories
 
         public void ItemAddedMessageHandler(IExplorerItem item)
         {
-            lock(_syncRoot)
+
+            var explorerItem = MapData(item, GetEnvironmentRepository());
+            var resourcePath = item.ResourcePath.Replace("\\\\", "\\");
+
+            if(!String.IsNullOrEmpty(resourcePath))
             {
-                var explorerItem = MapData(item, GetEnvironmentRepository());
-                var resourcePath = item.ResourcePath.Replace("\\\\", "\\");
+                resourcePath = resourcePath.Equals(item.DisplayName) ? "" : resourcePath.Substring(0, resourcePath.LastIndexOf("\\" + item.DisplayName, StringComparison.Ordinal));
+            }
 
-                if(!String.IsNullOrEmpty(resourcePath))
+            var environmentId = GetCurrentEnvironment();
+            var parent = FindItem(model => model.ResourcePath.Equals(resourcePath) && model.EnvironmentId == environmentId);
+            var alreadyAdded = FindItem(model => model.ResourceId == item.ResourceId && model.ResourcePath == item.ResourcePath) != null;
+            var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
+            var resourceRepository = environmentModel.ResourceRepository;
+            var resourceModel = resourceRepository.FindSingle(model => model.ID == item.ResourceId);
+            if(resourceModel == null)
+            {
+                if(item.ResourceType >= ResourceType.DbSource)
                 {
-                    resourcePath = resourcePath.Equals(item.DisplayName) ? "" : resourcePath.Substring(0, resourcePath.LastIndexOf("\\" + item.DisplayName, StringComparison.Ordinal));
+                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
                 }
-
-                var environmentId = GetCurrentEnvironment();
-                var parent = FindItem(model => model.ResourcePath.Equals(resourcePath) && model.EnvironmentId == environmentId);
-                var alreadyAdded = FindItem(model => model.ResourceId == item.ResourceId && model.ResourcePath == item.ResourcePath) != null;
-                var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
-                var resourceRepository = environmentModel.ResourceRepository;
-                var resourceModel = resourceRepository.FindSingle(model => model.ID == item.ResourceId);
-                if(resourceModel == null)
+                else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource)
                 {
-                    if(item.ResourceType >= ResourceType.DbSource)
-                    {
-                        resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
-                    }
-                    else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource)
-                    {
-                        resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, ResourceModelEqualityComparer.Current, true);
-                    }
-                    else if(item.ResourceType == ResourceType.WorkflowService)
-                    {
-                        resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, ResourceModelEqualityComparer.Current, true);
-                    }
+                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, ResourceModelEqualityComparer.Current, true);
                 }
-                else
+                else if(item.ResourceType == ResourceType.WorkflowService)
+                {
+                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.WorkflowService, ResourceModelEqualityComparer.Current, true);
+                }
+            }
+            else
+            {
+                lock(_syncRoot)
                 {
                     if(parent != null && !alreadyAdded)
                     {

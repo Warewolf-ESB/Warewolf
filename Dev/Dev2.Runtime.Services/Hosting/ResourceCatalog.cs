@@ -1108,11 +1108,11 @@ namespace Dev2.Runtime.Hosting
 
         #region SaveImpl
 
-        ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents)
+        ResourceCatalogResult SaveImpl(Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting = true)
         {
             var resources = GetResources(workspaceID);
             var conflicting = resources.FirstOrDefault(r => resource.ResourceID != r.ResourceID && r.ResourcePath != null && (r.ResourcePath.Equals(resource.ResourcePath, StringComparison.InvariantCultureIgnoreCase) && r.ResourceName.Equals(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase)));
-            if(conflicting != null && !conflicting.IsNewResource)
+            if((conflicting != null && !conflicting.IsNewResource) || ((conflicting != null && !overwriteExisting)))
             {
                 return new ResourceCatalogResult
                 {
@@ -1697,15 +1697,21 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory)
         {
-            if(oldCategory == null)
-            {
-                throw new ArgumentNullException("oldCategory", @"No value provided for oldCategory");
-            }
-            if(string.IsNullOrEmpty(newCategory))
-            {
-                throw new ArgumentNullException("newCategory", @"No value provided for oldCategory");
-            }
+            VerifyArguments(oldCategory, newCategory);
             var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase)).ToList();
+            if(resourcesToUpdate.Count == 0)
+            {
+                return new ResourceCatalogResult
+                {
+                    Status = ExecStatus.NoMatch,
+                    Message = string.Format("<CompilerMessage>No Resources found in '{0}'</CompilerMessage>", oldCategory)
+                };
+            }
+            return PerformUpdate(workspaceID, oldCategory, newCategory, resourcesToUpdate);
+        }
+
+        ResourceCatalogResult PerformUpdate(Guid workspaceID, string oldCategory, string newCategory, IEnumerable<IResource> resourcesToUpdate)
+        {
             try
             {
                 var hasError = false;
@@ -1739,15 +1745,26 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
+        static void VerifyArguments(string oldCategory, string newCategory)
+        {
+            if(oldCategory == null)
+            {
+                throw new ArgumentNullException("oldCategory", @"No value provided for oldCategory");
+            }
+            if(string.IsNullOrEmpty(newCategory))
+            {
+                throw new ArgumentNullException("newCategory", @"No value provided for oldCategory");
+            }
+        }
 
         ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string newCategory)
         {
             var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
+            var oldPath = resource.ResourcePath;
             var newPath = newCategory + "\\" + resource.ResourceName;
             resource.ResourcePath = newPath;
             var resourceElement = resourceContents.ToXElement();
             var categoryElement = resourceElement.Element("Category");
-
             if(categoryElement == null)
             {
                 resourceElement.Add(new XElement("Category", newPath));
@@ -1757,7 +1774,11 @@ namespace Dev2.Runtime.Hosting
                 categoryElement.SetValue(newPath);
             }
             var contents = resourceElement.ToStringBuilder();
-            var resourceCatalogResult = SaveImpl(workspaceID, resource, contents);
+            var resourceCatalogResult = SaveImpl(workspaceID, resource, contents, false);
+            if(resourceCatalogResult.Status != ExecStatus.Success)
+            {
+                resource.ResourcePath = oldPath;
+            }
             return resourceCatalogResult;
         }
 

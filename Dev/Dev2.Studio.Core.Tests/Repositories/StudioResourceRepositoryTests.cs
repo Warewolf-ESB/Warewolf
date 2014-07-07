@@ -1235,7 +1235,6 @@ namespace Dev2.Core.Tests.Repositories
             repository.RenameFolder(explorerItemModel, "New Name");
             //------------Assert Results-------------------------
             mockExplorerResourceRepository.Verify(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()), Times.Once());
-            Assert.AreEqual("New Name\\MyResName", mockResourceModel.Object.Category);
         }
 
         [TestMethod]

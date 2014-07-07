@@ -485,7 +485,9 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\PluginServiceEmitComplexType.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="XML\Bug6619Dup.xml" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\say hello remote.xml" />
     <EmbeddedResource Include="XML\say hello world.xml" />

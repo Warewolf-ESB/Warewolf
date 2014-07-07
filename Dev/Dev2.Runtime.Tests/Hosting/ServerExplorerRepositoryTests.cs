@@ -384,6 +384,44 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var catalogue = new Mock<IResourceCatalog>();
+            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.NoMatch, Message = "" };
+            catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
+            var factory = new Mock<IExplorerItemFactory>();
+            var dir = new Mock<IDirectory>();
+            var guid = Guid.NewGuid();
+            var res = new Mock<IResource>();
+            var explorerItem = new ServerExplorerItem(
+                "dave", guid,
+                ResourceType.DbSource,
+                new List<IExplorerItem>()
+                , Permissions.Administrator, "bob"
+                );
+            factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
+
+            dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
+            dir.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
+            var sync = new Mock<IExplorerRepositorySync>();
+            var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object);
+            catalogue.Setup(a => a.GetResourceList(It.IsAny<Guid>())).Returns(new List<IResource> { res.Object });
+            catalogue.Setup(a => a.SaveResource(It.IsAny<Guid>(), res.Object, null)).Verifiable();
+            res.Setup(a => a.ResourcePath).Returns("monkey2");
+            //------------Execute Test---------------------------
+            var result = serverExplorerRepository.RenameFolder("monkey", "moocowimpi", Guid.NewGuid());
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(result.Message, "");
+            Assert.AreEqual(result.Status, ExecStatus.Success);
+            dir.Verify(a => a.Move(It.IsAny<string>(), It.IsAny<string>()));
+            catalogue.Verify(a => a.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServerExplorerRepository_RenameFolder")]
+        public void ServerExplorerRepository_RenameFolder_ResourceRenameSuccess_OldFolderDeleted()
+        {
+            //------------Setup for test--------------------------
+            var catalogue = new Mock<IResourceCatalog>();
             ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" };
             catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
             var factory = new Mock<IExplorerItemFactory>();

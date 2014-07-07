@@ -2120,6 +2120,59 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Description("Updates the Category of the resource")]
         [Owner("Huggs")]
+        public void ResourceCatalog_RenameCategory_SameNameResource_ExpectError()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+
+            var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dup";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            rc.GetResources(workspaceID);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, "Bugs", "Testing");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Fail, resourceCatalogResult.Status);
+        }
+
+        [TestMethod]
+        [Description("Updates the Category of the resource")]
+        [Owner("Huggs")]
+        public void ResourceCatalog_RenameCategory_NoResources_ExpectErrorNoMatching()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+
+            var path = EnvironmentVariables.GetWorkspacePath(workspaceID);
+            Directory.CreateDirectory(path);
+            const string resourceName = "Bug6619Dep";
+            SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(2, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, "SomeNonExistentCategory", "TestCategory");
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.NoMatch, resourceCatalogResult.Status);
+            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
+            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            XElement element = xElement.Element("Category");
+            Assert.IsNotNull(element);
+            Assert.AreEqual("Bugs\\Bug6619Dep", element.Value);
+        }
+
+        [TestMethod]
+        [Description("Updates the Category of the resource")]
+        [Owner("Huggs")]
         public void ResourceCatalog_UnitTest_UpdateResourceCategoryValidArguments_Fails_ExpectFailureResult()
         {
             //------------Setup for test--------------------------
