@@ -1117,7 +1117,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     return;
                 }
 
-                var selectedModelItem = args.DebugState != null ? GetSelectedModelItem(args.DebugState.ID, args.DebugState.ParentID) : null;
+                var selectedModelItem = args.DebugState != null ? GetSelectedModelItem(args.DebugState.WorkSurfaceMappingId, args.DebugState.ParentID) : null;
                 if(selectedModelItem != null)
                 {
                     switch(args.SelectionType)

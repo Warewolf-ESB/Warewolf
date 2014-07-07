@@ -3,12 +3,14 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
+using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
 using Dev2.Diagnostics.Debug;
@@ -28,6 +30,7 @@ using Dev2.Threading;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -457,6 +460,76 @@ namespace Dev2.Activities.Specs.Composition
                                                     .SelectMany(s => s.ResultsList).ToList());
         }
 
+
+        [Then(@"the nested '(.*)' in WorkFlow '(.*)' debug inputs as")]
+        public void ThenTheNestedInWorkFlowDebugInputsAs(string toolName, string workflowName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates");
+
+            var toolSpecificDebug =
+                debugStates.Where(ds =>  ds.DisplayName.Equals(toolName)).ToList();
+
+            // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
+            //bool isDataMergeDebug = toolSpecificDebug.Any(t => t.Name == "Data Merge");
+
+            var commonSteps = new CommonSteps();
+            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
+                                                    .SelectMany(s => s.Inputs)
+                                                    .SelectMany(s => s.ResultsList).ToList());
+        }
+
+
+        [Then(@"the '(.*)' in WorkFlow '(.*)' has  ""(.*)"" nested children")]
+        public void ThenTheInWorkFlowHasNestedChildren(string toolName, string workflowName, int count)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates");
+
+            var Id =
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
+            var children = debugStates.Count(a => a.ParentID == Id);
+            Assert.AreEqual(children, count);
+        }
+
+
+
+        [Then(@"each nested debug item for '(.*)' in WorkFlow '(.*)' contains ""(.*)"" child                              \|")]
+        public void ThenEachNestedDebugItemForInWorkFlowContainsChild(string toolName, string workFlowName, int childCount)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates");
+
+            var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
+            id.ForEach(x=> Assert.AreEqual(childCount,debugStates.Count(a => a.ParentID == x.ID && a.DisplayName == toolName)));
+
+        }
+
+
+
+        [Then(@"each ""(.*)"" contains debug outputs for ""(.*)"" as")]
+        public void ThenEachContainsDebugOutputsForAs(string toolName, string nestedToolName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates");
+
+            var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
+            id.ForEach(x => Assert.AreEqual(1, debugStates.Count(a => a.ParentID == x.ID && a.DisplayName == nestedToolName)));
+        }
+
+
         T Get<T>(string keyName)
         {
             return ScenarioContext.Current.Get<T>(keyName);
@@ -566,12 +639,54 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsAnDeleteAs(string parentName, string activityName, Table table)
         // ReSharper restore InconsistentNaming
         {
-            var del = new DsfPathDelete();
-            del.InputPath = table.Rows[0][0];
-            del.Result = table.Rows[0][1];
-            del.DisplayName = activityName;
+            var del = new DsfPathDelete { InputPath = table.Rows[0][0], Result = table.Rows[0][1], DisplayName = activityName };
             CommonSteps.AddVariableToVariableList(table.Rows[0][1]);
             CommonSteps.AddActivityToActivityList(parentName, activityName, del);
+        }
+
+        [Given(@"""(.*)"" contains a Foreach ""(.*)"" as ""(.*)"" executions ""(.*)""")]
+        public void GivenContainsAForeachAsExecutions(string parentName, string activityName, string numberOfExecutions, int executionCount)
+        {
+            var forEach = new DsfForEachActivity { DisplayName = activityName, NumOfExections = executionCount.ToString(CultureInfo.InvariantCulture) , From = "0",ForEachType = enForEachType.NumOfExecution};
+            CommonSteps.AddActivityToActivityList(parentName, activityName, forEach);
+            ScenarioContext.Current.Add(activityName, forEach);
+        }
+
+
+        [Given(@"""(.*)"" contains workflow ""(.*)"" with mapping as")]
+// ReSharper disable InconsistentNaming
+        public void GivenContainsWorkflowWithMappingAs(string forEachName , string nestedWF, Table mappings)
+// ReSharper restore InconsistentNaming
+        {
+            var forEachAct = (DsfForEachActivity) ScenarioContext.Current[forEachName];
+            IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+            environmentModel.LoadResources();
+            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Sprint12\11714Nested").FirstOrDefault();
+            if(resource == null)
+            {
+// ReSharper disable NotResolvedInText
+                throw new ArgumentNullException("resource");
+// ReSharper restore NotResolvedInText
+            }
+            var dataMappingViewModel = GetDataMappingViewModel(resource, mappings);
+
+            var inputMapping = dataMappingViewModel.GetInputString(dataMappingViewModel.Inputs);
+            var outputMapping = dataMappingViewModel.GetOutputString(dataMappingViewModel.Outputs);
+            var activity = new DsfActivity
+            {
+
+                ServiceName = resource.Category,
+                UniqueID = resource.ID.ToString(),
+                InputMapping =  inputMapping,
+                OutputMapping = outputMapping
+               
+                
+            };
+            
+            var activityFunction = new ActivityFunc<string, bool> { Handler = activity,DisplayName = nestedWF};
+            forEachAct.DataFunc = activityFunction;
+            //ScenarioContext.Current.Pending();
         }
 
 

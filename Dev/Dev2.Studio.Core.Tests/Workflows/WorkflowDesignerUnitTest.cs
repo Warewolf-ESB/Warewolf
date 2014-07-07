@@ -2769,10 +2769,13 @@ namespace Dev2.Core.Tests.Workflows
         static void Verify_DebugSelectionChanged(ActivitySelectionType selectionType, Type selectedActivityType, bool selectsModelItem = true)
         {
             //----------------------- Setup -----------------------//
-            var states = new List<IDebugState> { new DebugState { DisplayName = "SelectionChangedTest1", ID = Guid.NewGuid() } };
+            var ID = Guid.NewGuid();
+            var states = new List<IDebugState> { new DebugState { DisplayName = "SelectionChangedTest1", ID = ID,WorkSurfaceMappingId = ID} };
+             ID = Guid.NewGuid();
             if(selectionType == ActivitySelectionType.Add || selectionType == ActivitySelectionType.Remove)
             {
-                states.Add(new DebugState { DisplayName = "SelectionChangedTest2", ID = Guid.NewGuid() });
+
+                states.Add(new DebugState { DisplayName = "SelectionChangedTest2", ID = ID,WorkSurfaceMappingId = ID});
             }
 
             #region Setup workflow

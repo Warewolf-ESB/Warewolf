@@ -633,6 +633,58 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsNotNull(forEachItemsForTest.FirstOrDefault(item => item.Name == item1NameAndValue));
             Assert.IsNotNull(forEachItemsForTest.FirstOrDefault(item => item.Value == item1NameAndValue));
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfActivity_UpdateDebugParentID")]
+        // ReSharper disable InconsistentNaming
+        public void DsfActivity_UpdateDebugParentID_UniqueIdSameIfNestingLevelNotChanged()
+        // ReSharper restore InconsistentNaming
+        {
+            var dataObject = new DsfDataObject("<Datalist></Datalist>", Guid.NewGuid())
+            {
+                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                //       if this is NOT provided which will cause the tests to fail!
+                ServerID = Guid.NewGuid(),
+                IsDebug = true,
+            };
+
+            TestNativeActivity act = new TestNativeActivity(false,"bob");
+            var originalGuid = Guid.NewGuid();
+            act.UniqueID = originalGuid.ToString();
+            act.UpdateDebugParentID(dataObject);
+            Assert.AreEqual(originalGuid.ToString(), act.UniqueID);
+            Assert.AreEqual(act.WorkSurfaceMappingId, originalGuid);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfNativeActivity_UpdateDebugParentID")]
+        // ReSharper disable InconsistentNaming
+        public void DsfNativeActivity_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
+        // ReSharper restore InconsistentNaming
+        {
+            var dataObject = new DsfDataObject("<Datalist></Datalist>", Guid.NewGuid())
+            {
+                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                //       if this is NOT provided which will cause the tests to fail!
+                ServerID = Guid.NewGuid(),
+                IsDebug = true,
+                ForEachNestingLevel = 1
+            };
+
+            TestNativeActivity act = new TestNativeActivity(false, "bob");
+            var originalGuid = Guid.NewGuid();
+            act.UniqueID = originalGuid.ToString();
+            act.UpdateDebugParentID(dataObject);
+            Assert.AreEqual(originalGuid.ToString(), act.UniqueID);
+            Assert.AreEqual(act.WorkSurfaceMappingId, originalGuid);
+
+
+        }
+
     }
 
     internal class TestNativeActivity : DsfNativeActivity<string>

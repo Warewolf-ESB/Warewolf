@@ -191,6 +191,8 @@ namespace Dev2.DynamicServices
             return false;
         }
 
+        public int ForEachNestingLevel { get; set; }
+
         public Guid ClientID { get; set; }
 
         public Guid EnvironmentID { get; set; }
@@ -231,7 +233,6 @@ namespace Dev2.DynamicServices
         public ServiceAction ExecuteAction { get; set; }
 
         private string _rawPayload;
-        string _dataList;
         public string RawPayload
         {
             get
@@ -283,17 +284,7 @@ namespace Dev2.DynamicServices
 
         public string ParentWorkflowXmlData { get; set; }
 
-        public string DataList
-        {
-            get
-            {
-                return _dataList;
-            }
-            set
-            {
-                _dataList = value;
-            }
-        }
+        public string DataList { get; set; }
 
         public ExecutionOrigin ExecutionOrigin { get; set; }
         public string ExecutionOriginDescription { get; set; }
@@ -364,6 +355,7 @@ namespace Dev2.DynamicServices
             result.ParentID = ParentID;
             result.RunWorkflowAsync = RunWorkflowAsync;
             result.IsDebugNested = IsDebugNested;
+            result.ForEachNestingLevel = ForEachNestingLevel;
             return result;
         }
 
@@ -443,24 +435,10 @@ namespace Dev2.DynamicServices
             }
 
             enTranslationDepth datalistOutMergeDepth;
-            if(Enum.TryParse(ExtractValue(xe, "DatalistOutMergeDepth"), true, out datalistOutMergeDepth))
-            {
-                DatalistOutMergeDepth = datalistOutMergeDepth;
-            }
-            else
-            {
-                DatalistOutMergeDepth = enTranslationDepth.Data_With_Blank_OverWrite;
-            }
+            DatalistOutMergeDepth = Enum.TryParse(ExtractValue(xe, "DatalistOutMergeDepth"), true, out datalistOutMergeDepth) ? datalistOutMergeDepth : enTranslationDepth.Data_With_Blank_OverWrite;
 
             DataListMergeFrequency datalistOutMergeFrequency;
-            if(Enum.TryParse(ExtractValue(xe, "DatalistOutMergeFrequency"), true, out datalistOutMergeFrequency))
-            {
-                DatalistOutMergeFrequency = datalistOutMergeFrequency;
-            }
-            else
-            {
-                DatalistOutMergeFrequency = DataListMergeFrequency.OnCompletion;
-            }
+            DatalistOutMergeFrequency = Enum.TryParse(ExtractValue(xe, "DatalistOutMergeFrequency"), true, out datalistOutMergeFrequency) ? datalistOutMergeFrequency : DataListMergeFrequency.OnCompletion;
         }
 
         private void ExtractInMergeDataFromRequest(XElement xe)
@@ -470,24 +448,10 @@ namespace Dev2.DynamicServices
             DatalistInMergeID = datalistInMergeID;
 
             enDataListMergeTypes datalistInMergeType;
-            if(Enum.TryParse(ExtractValue(xe, "DatalistInMergeType"), true, out datalistInMergeType))
-            {
-                DatalistInMergeType = datalistInMergeType;
-            }
-            else
-            {
-                DatalistInMergeType = enDataListMergeTypes.Intersection;
-            }
+            DatalistInMergeType = Enum.TryParse(ExtractValue(xe, "DatalistInMergeType"), true, out datalistInMergeType) ? datalistInMergeType : enDataListMergeTypes.Intersection;
 
             enTranslationDepth datalistInMergeDepth;
-            if(Enum.TryParse(ExtractValue(xe, "DatalistInMergeDepth"), true, out datalistInMergeDepth))
-            {
-                DatalistInMergeDepth = datalistInMergeDepth;
-            }
-            else
-            {
-                DatalistInMergeDepth = enTranslationDepth.Data_With_Blank_OverWrite;
-            }
+            DatalistInMergeDepth = Enum.TryParse(ExtractValue(xe, "DatalistInMergeDepth"), true, out datalistInMergeDepth) ? datalistInMergeDepth : enTranslationDepth.Data_With_Blank_OverWrite;
         }
 
         #endregion Private Methods

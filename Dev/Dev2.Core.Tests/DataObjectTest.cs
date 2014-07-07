@@ -101,6 +101,17 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDataObject_NestingLevel")]
+        public void DsfDataObject_NestingLevel_Get_Set_ExpectCorrectGetSet()
+        {
+            //------------Setup for test--------------------------
+            IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
+            dataObject.ForEachNestingLevel = 3;
+            Assert.AreEqual(dataObject.ForEachNestingLevel, 3);
+
+        }
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfDataObjectz_RawPayload")]
         public void DsfDataObjectz_RawPayload_WhenNotNull_ExpectRawPayload()
@@ -171,6 +182,7 @@ namespace Dev2.Tests
             dataObject.ClientID = Guid.NewGuid();
             dataObject.RunWorkflowAsync = true;
             dataObject.IsDebugNested = true;
+            dataObject.ForEachNestingLevel = 3;
             var threadsToDispose = new Dictionary<int, List<Guid>>();
             List<Guid> guidList = new List<Guid> { Guid.NewGuid() };
             threadsToDispose.Add(3, guidList);
@@ -183,7 +195,7 @@ namespace Dev2.Tests
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(50, properties.Length);
+            Assert.AreEqual(51, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -236,6 +248,7 @@ namespace Dev2.Tests
             Assert.AreEqual(dataObject.ParentID, clonedObject.ParentID);
             Assert.AreEqual(dataObject.RunWorkflowAsync, clonedObject.RunWorkflowAsync);
             Assert.AreEqual(dataObject.IsDebugNested, clonedObject.IsDebugNested);
+            Assert.AreEqual(dataObject.ForEachNestingLevel, clonedObject.ForEachNestingLevel);
         }
 
         #region Debug Mode Test

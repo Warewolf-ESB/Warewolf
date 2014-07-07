@@ -30,8 +30,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private string _forEachElementName;
         private string _displayName;
-        int _previousInputsIndex = -1;
-        int _previousOutputsIndex = -1;
+// ReSharper disable ConvertToConstant.Local
+        readonly int _previousInputsIndex = -1;
+
+        readonly int _previousOutputsIndex = -1;
+// ReSharper restore ConvertToConstant.Local
         private string _inputsToken = "*";
         private string _outputsToken = "*";
 
@@ -163,6 +166,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Execute
 
+        public override void UpdateDebugParentID(IDSFDataObject dataObject)
+        {
+            WorkSurfaceMappingId = Guid.Parse(UniqueID);
+            UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
+        }
+
+
         protected override void OnBeforeExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -171,12 +181,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
+
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
+            
 
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-
+            dataObject.ForEachNestingLevel++;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
             Guid executionID = DataListExecutionID.Get(context);
@@ -651,6 +663,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var dataObject = context.GetExtension<IDSFDataObject>();
             if(dataObject != null && operationalData != null)
             {
+
+              
                 operationalData.IncIterationCount();
 
                 if(operationalData.IndexIterator.HasMore())
@@ -677,6 +691,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 dataObject.ParentInstanceID = _previousParentID;
+                dataObject.ForEachNestingLevel--;
                 dataObject.IsDebugNested = false;
             }
         }

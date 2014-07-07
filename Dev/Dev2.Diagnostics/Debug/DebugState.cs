@@ -244,6 +244,7 @@ namespace Dev2.Diagnostics.Debug
         public string ExecutingUser { get; set; }
 
         public Guid SessionID { get; set; }
+        public Guid WorkSurfaceMappingId { get; set; }
 
         #endregion
 

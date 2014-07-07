@@ -80,5 +80,7 @@ namespace Dev2
         bool IsRemoteInvoke { get; }
         bool IsRemoteInvokeOverridden { get; set; }
         bool IsRemoteWorkflow();
+
+        int ForEachNestingLevel { get; set; }
     }
 }

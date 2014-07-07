@@ -9,6 +9,7 @@ using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
+using Dev2.DynamicServices;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -229,7 +230,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var errors = new ErrorResultTO();
             errors.AddError("bob");
-            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), enActionType.User, It.IsAny<string>(), false, out errors));
+            compiler.Setup(a => a.Evaluate(It.IsAny<Guid>(), Dev2.DataList.Contract.enActionType.User, It.IsAny<string>(), false, out errors));
             //------------Execute Test---------------------------
             var dl = new Mock<IBinaryDataList>();
             var guid = Guid.NewGuid();
@@ -246,5 +247,57 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         }
 
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfActivity_UpdateDebugParentID")]
+        // ReSharper disable InconsistentNaming
+        public void DsfActivity_UpdateDebugParentID_UniqueIdSameIfNestingLevelNotChanged()
+        // ReSharper restore InconsistentNaming
+        {
+            var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
+            {
+                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                //       if this is NOT provided which will cause the tests to fail!
+                ServerID = Guid.NewGuid(),
+                IsDebug = true,
+            };
+
+            DsfActivity act = new DsfActivity();
+            var originalGuid = Guid.NewGuid();
+            act.UniqueID = originalGuid.ToString();
+            act.UpdateDebugParentID(dataObject);
+            Assert.AreEqual(originalGuid.ToString(), act.UniqueID);
+            Assert.AreEqual(act.WorkSurfaceMappingId, originalGuid);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfActivity_UpdateDebugParentID")]
+        // ReSharper disable InconsistentNaming
+        public void DsfActivity_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
+        // ReSharper restore InconsistentNaming
+        {
+            var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
+            {
+                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                //       if this is NOT provided which will cause the tests to fail!
+                ServerID = Guid.NewGuid(),
+                IsDebug = true,
+                ForEachNestingLevel = 1
+            };
+
+            DsfActivity act = new DsfActivity();
+            var originalGuid = Guid.NewGuid();
+            act.UniqueID = originalGuid.ToString();
+            act.UpdateDebugParentID(dataObject);
+            Assert.AreNotEqual(originalGuid.ToString(), act.UniqueID);
+            Assert.AreEqual(act.WorkSurfaceMappingId, originalGuid);
+
+
+        }
     }
 }

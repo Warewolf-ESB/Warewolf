@@ -137,7 +137,7 @@ namespace Dev2.Diagnostics.Debug
         string Origin { get; }
 
         Guid SessionID { get; set; }
-
+        Guid WorkSurfaceMappingId { get; set; }
         bool IsFinalStep();
 
         bool IsFirstStep();

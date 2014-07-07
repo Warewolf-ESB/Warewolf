@@ -206,7 +206,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         InArgument<Guid> _environmentID;
         [NonSerialized]
         IAuthorizationService _authorizationService;
-
+        public override void UpdateDebugParentID(IDSFDataObject dataObject)
+        {
+            WorkSurfaceMappingId = Guid.Parse(UniqueID);
+            UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
+        }
         protected override void OnExecute(NativeActivityContext context)
         {
 
@@ -281,7 +285,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 _previousInstanceID = dataObject.ParentInstanceID;
                 dataObject.ParentID = oldResourceID;
-                dataObject.ParentInstanceID = UniqueID;
+                
+                dataObject.ParentInstanceID =  UniqueID;
                 dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
 
                 if(!DeferExecution)

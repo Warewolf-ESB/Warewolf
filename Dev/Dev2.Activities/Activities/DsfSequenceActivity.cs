@@ -116,7 +116,11 @@ namespace Dev2.Activities
             var dataObject = context.GetExtension<IDSFDataObject>();
             _previousParentID = dataObject.ParentInstanceID;
         }
-
+        public override void UpdateDebugParentID(IDSFDataObject dataObject)
+        {
+            WorkSurfaceMappingId = Guid.Parse(UniqueID);
+            UniqueID = dataObject.ForEachNestingLevel > 0 ? Guid.NewGuid().ToString() : UniqueID;
+        }
         /// <summary>
         /// When overridden runs the activity's execution logic 
         /// </summary>
@@ -124,6 +128,7 @@ namespace Dev2.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            dataObject.ForEachNestingLevel++;
             InitializeDebug(context.GetExtension<IDSFDataObject>());
             if(dataObject.IsDebugMode())
             {
@@ -153,6 +158,7 @@ namespace Dev2.Activities
             {
                 DoErrorHandling(context, compiler, dataObject);
             }
+            dataObject.ForEachNestingLevel--;
         }
 
         public override enFindMissingType GetFindMissingType()

@@ -990,6 +990,28 @@ namespace Dev2.Data.Util
         }
 
         /// <summary>
+        /// Determines whether the value is a recordset.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>
+        ///   <c>true</c> if [value is recordset] [the specified value]; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsValueScalar(string value)
+        {
+            bool result = false;
+
+            if (!string.IsNullOrEmpty(value))
+            {
+                if ( value.StartsWith(OpeningSquareBrackets) && value.EndsWith(ClosingSquareBrackets))
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Determines whether is a recordset with fields
         /// </summary>
         /// <param name="value"></param>

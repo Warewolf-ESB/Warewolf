@@ -51,7 +51,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ParentWorkflowInstanceId { get; set; }
         public SimulationMode SimulationMode { get; set; }
         public string ScenarioID { get; set; }
-
+        public Guid WorkSurfaceMappingId { get; set; }
         /// <summary>
         /// UniqueID is the InstanceID and MUST be a guid.
         /// </summary>
@@ -605,11 +605,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             Guid parentInstanceID;
             Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
-
+            UpdateDebugParentID(dataObject);
             _debugState = new DebugState
             {
                 ID = Guid.Parse(UniqueID),
                 ParentID = parentInstanceID,
+                WorkSurfaceMappingId = WorkSurfaceMappingId,
                 WorkspaceID = dataObject.WorkspaceID,
                 StateType = stateType,
                 StartTime = DateTime.Now,
@@ -630,6 +631,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             };
         }
 
+
+        public virtual void UpdateDebugParentID(IDSFDataObject dataObject)
+        {
+            WorkSurfaceMappingId = Guid.Parse(UniqueID);
+        }
         static void Copy<TItem>(IEnumerable<TItem> src, List<TItem> dest)
         {
             if(src == null || dest == null)

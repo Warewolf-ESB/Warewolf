@@ -206,7 +206,7 @@ namespace ActivityUnitTests
         /// We will mock the DSF channel to return something that we expect is shaped.
         /// </summary>
         /// <returns></returns>
-        public Mock<IEsbChannel> ExecuteForEachProcess(out IDSFDataObject dataObject)
+        public Mock<IEsbChannel> ExecuteForEachProcess(out IDSFDataObject dataObject, bool isDebug = false , int nestingLevel =0)
         {
             var svc = new ServiceAction { Name = "ForEachTestAction", ServiceName = "UnitTestService" };
             var mockChannel = new Mock<IEsbChannel>();
@@ -233,7 +233,10 @@ namespace ActivityUnitTests
             {
                 // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
                 //       if this is NOT provided which will cause the tests to fail!
-                ServerID = Guid.NewGuid()
+                ServerID = Guid.NewGuid(),
+                IsDebug =  isDebug,
+                ForEachNestingLevel = nestingLevel
+
             };
 
 

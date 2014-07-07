@@ -1,6 +1,7 @@
 ﻿using ActivityUnitTests;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
+using Dev2.DynamicServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -339,6 +340,113 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfForEach_UpdateDebugParentID")]
+// ReSharper disable InconsistentNaming
+        public void DsfForEach_UpdateDebugParentID_UniqueIdSameIfNestingLevelNotChanged()
+// ReSharper restore InconsistentNaming
+        {
+            var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
+            {
+                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                //       if this is NOT provided which will cause the tests to fail!
+                ServerID = Guid.NewGuid(),
+                IsDebug =  true,
+            };
+
+            DsfForEachActivity act = new DsfForEachActivity();
+            var originalGuid = Guid.NewGuid();
+            act.UniqueID = originalGuid.ToString();
+            act.UpdateDebugParentID(dataObject);
+            Assert.AreEqual(originalGuid.ToString(), act.UniqueID);
+            Assert.AreEqual(act.WorkSurfaceMappingId,originalGuid);
+          
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfForEach_UpdateDebugParentID")]
+// ReSharper disable InconsistentNaming
+        public void DsfForEach_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
+// ReSharper restore InconsistentNaming
+        {
+            var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
+            {
+                // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
+                //       if this is NOT provided which will cause the tests to fail!
+                ServerID = Guid.NewGuid(),
+                IsDebug = true,
+                ForEachNestingLevel = 1
+            };
+
+            DsfForEachActivity act = new DsfForEachActivity();
+            var originalGuid = Guid.NewGuid();
+            act.UniqueID = originalGuid.ToString();
+            act.UpdateDebugParentID(dataObject);
+            Assert.AreNotEqual(originalGuid.ToString(), act.UniqueID);
+            Assert.AreEqual(act.WorkSurfaceMappingId, originalGuid);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfForEach_UpdateDebugParentID")]
+        // ReSharper disable InconsistentNaming
+        public void DsfForEach_Execute_IncrementsAndChangesId_IdChanged()
+        // ReSharper restore InconsistentNaming
+        {
+           var id =  SetupArguments(
+                            ActivityStrings.ForEachCurrentDataList
+                          , ActivityStrings.ForEachDataListShape
+                          , enForEachType.InCSV
+                          , false
+                          , null
+                          , null
+                          , null
+                          , "9,5,1,"
+                          );
+           var x = id.UniqueID;
+            IDSFDataObject result;
+            ExecuteForEachProcess(out result,true,1);
+            Assert.AreNotEqual(x,id.UniqueID);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfForEach_UpdateDebugParentID")]
+        // ReSharper disable InconsistentNaming
+        public void DsfForEach_Execute_IncrementsAndChangesId_IdNotChangedIfNestingLevelIsZero()
+        // ReSharper restore InconsistentNaming
+        {
+            var id = SetupArguments(
+                             ActivityStrings.ForEachCurrentDataList
+                           , ActivityStrings.ForEachDataListShape
+                           , enForEachType.InCSV
+                           , false
+                           , null
+                           , null
+                           , null
+                           , "9,5,1,"
+                           );
+            var x = id.UniqueID;
+            IDSFDataObject result;
+            ExecuteForEachProcess(out result, true, -1);
+            Assert.AreEqual(x, id.UniqueID);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+
+
+        }
+
         #endregion Output Mapping Tests
 
         #region Private Test Methods
@@ -350,6 +458,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                     ServiceName = "MyTestService",
                     InputMapping = ActivityStrings.ForEach_Input_Mapping,
                     OutputMapping = ActivityStrings.ForEach_Output_Mapping
+                   
                 };
 
             TestData = "<ADL><innerrecset><innerrec></innerrec><innerrec2></innerrec2><innerdate></innerdate></innerrecset><innertesting><innertest></innertest></innertesting><innerScalar></innerScalar></ADL>";
@@ -377,36 +486,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             return activity;
         }
 
-        private void SetupArguments(string currentDl, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
+        private DsfForEachActivity SetupArguments(string currentDl, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
         {
             var activityFunction = new ActivityFunc<string, bool>();
-            DsfActivity activity;
-            if(inputMapping != null)
-            {
-                activity = CreateWorkflow(inputMapping, isInputMapping);
-            }
-            else
-            {
-                activity = CreateWorkflow();
-            }
+            DsfActivity activity = inputMapping != null ? CreateWorkflow(inputMapping, isInputMapping) : CreateWorkflow();
 
             activityFunction.Handler = activity;
-
+            var id = Guid.NewGuid().ToString();
+            DsfForEachActivity dsfForEachActivity = new DsfForEachActivity
+                {
+                    DataFunc = activityFunction, ForEachType = type, NumOfExections = numberExecutions, From = @from, To = to, CsvIndexes = csvIndexes, UniqueID = id
+                };
             TestStartNode = new FlowStep
             {
-                Action = new DsfForEachActivity
-                {
-                    DataFunc = activityFunction,
-                    ForEachType = type,
-                    NumOfExections = numberExecutions,
-                    From = from,
-                    To = to,
-                    CsvIndexes = csvIndexes,
-                }
+                Action = dsfForEachActivity
             };
 
             CurrentDl = testData;
             TestData = currentDl;
+            return dsfForEachActivity;
         }
 
         #endregion Private Test Methods
