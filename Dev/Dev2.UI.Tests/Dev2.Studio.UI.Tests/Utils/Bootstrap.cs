@@ -38,6 +38,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         public static string ShadowServiceLocation = BuildWorkspaceLocation + @"Resources\";
 
         public static string ServerWorkspaceLocation = BuildWorkspaceLocation + @"bin\Workspaces\";
+        public static string RemoteServerWorkspaceLocation = BuildWorkspaceLocation + @"bin-Remote\Workspaces\";
 
         public static string RemoteServerLocation = BuildWorkspaceLocation + @"bin-Remote\";
 
@@ -78,11 +79,42 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 if(_isLocal)
                 {
-                    //Ashley: Go by running server/studio locations
+                    //Ashley: Try go by running server/studio locations
                     ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
                     StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
-                    RootSourceLocation = StudioLocation.Replace(StudioExeName, @"Resources\");
-                    RootServiceLocation = StudioLocation.Replace(StudioExeName, @"Resources\");
+                    if(ServerLocation == null)
+                    {
+                        //Ashley: Try debug config output
+                        ServerLocation = Path.Combine(@"C:\Development\Dev\Dev2.Server\bin\debug", ServerExeName);
+                    }
+                    else
+                    {
+                        KillProcess(TryGetProcess(ServerProcName));
+                    }
+                    if(StudioLocation == null)
+                    {
+                        //Ashley: Try debug config output
+                        StudioLocation = Path.Combine(@"C:\Development\Dev\Dev2.Server\bin\debug", StudioExeName);
+                    }
+                    else
+                    {
+                        KillProcess(TryGetProcess(StudioProcName));
+                    }
+
+                    if(!File.Exists(ServerLocation))
+                    {
+                        //Ashley: Try test config output as a last resort
+                        ServerLocation = Path.Combine(@"C:\Development\Dev\TestBinaries", ServerExeName);
+                    }
+                    if(!File.Exists(StudioLocation))
+                    {
+                        //Ashley: Try test config output as a last resort
+                        StudioLocation = Path.Combine(@"C:\Development\Dev\TestBinaries", StudioExeName);
+                    }
+
+                    RootSourceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
+                    RootServiceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
+                    ServerWorkspaceLocation = RootServiceLocation.Replace(@"Resources\", @"Workspaces\");
                     serverBinaries = Path.GetDirectoryName(ServerLocation);
                     uiTestRemoteResources = serverBinaries + @"\..\BPM Resources - UITestRemote\";
                     if(!Directory.Exists(uiTestRemoteResources))
@@ -95,8 +127,8 @@ namespace Dev2.Studio.UI.Tests.Utils
                     //Ashley: Go by deployment directory
                     ServerLocation = Path.Combine(deploymentDir, ServerExeName);
                     StudioLocation = Path.Combine(deploymentDir, StudioExeName);
-                    RootSourceLocation = StudioLocation.Replace(StudioExeName, @"Resources\");
-                    RootServiceLocation = StudioLocation.Replace(StudioExeName, @"Resources\");
+                    RootSourceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
+                    RootServiceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
                     serverBinaries = deploymentDir;
                     uiTestRemoteResources = serverBinaries + @"\..\BPM Resources - UITestRemote\";
                     if(!Directory.Exists(uiTestRemoteResources))
@@ -107,6 +139,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
 
             //Ashley: Create remote server
+            KillProcess(TryGetProcess(ServerProcName));
             CopyDirectory(serverBinaries, RemoteServerLocation);
             if(Directory.Exists(uiTestRemoteResources))
             {
@@ -330,6 +363,10 @@ namespace Dev2.Studio.UI.Tests.Utils
                 {
                     Directory.Delete(ServerWorkspaceLocation, true);
                 }
+                if(Directory.Exists(RemoteServerWorkspaceLocation))
+                {
+                    Directory.Delete(RemoteServerWorkspaceLocation, true);
+                }
             }
             catch(Exception e)
             {
@@ -426,7 +463,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         private static ManagementObjectCollection TryGetProcess(string procName)
         {
             var processName = procName;
-            var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + "%'");
+            var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + ".exe'");
             //initialize the searcher with the query it is
             //supposed to execute
             using(ManagementObjectSearcher searcher = new ManagementObjectSearcher(query))
