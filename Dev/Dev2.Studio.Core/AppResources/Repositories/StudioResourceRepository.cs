@@ -395,7 +395,7 @@ namespace Dev2.AppResources.Repositories
             var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
             var resourceRepository = environmentModel.ResourceRepository;
             var resourceModel = resourceRepository.FindSingle(model => model.ID == item.ResourceId);
-            if(resourceModel == null)
+            if(resourceModel == null && item.ResourceType != ResourceType.Folder)
             {
                 if(item.ResourceType >= ResourceType.DbSource)
                 {

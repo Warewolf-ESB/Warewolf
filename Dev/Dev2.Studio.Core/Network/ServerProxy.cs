@@ -336,7 +336,6 @@ namespace Dev2.Network
             {
                 ItemAddedMessageAction(serverExplorerItem);
             }
-            //Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
         }
 
         public Action<IExplorerItem> ItemItemDeletedMessageAction { get; set; }

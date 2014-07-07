@@ -1567,6 +1567,48 @@ namespace Dev2.Core.Tests.Repositories
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioResourceRepository_ItemAddedMessageHandler")]
+        public void StudioResourceRepository_ItemAddedMessageHandler_ItemIsFolder_AddedSuccessfully()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+
+            var parent = new ServerExplorerItem
+                {
+                    ResourceType = ResourceType.Folder,
+                    DisplayName = "SUB FOLDER",
+                    ResourceId = Guid.NewGuid(),
+                    Permissions = Permissions.Contribute,
+                    ResourcePath = "MANFOLDER\\SUB FOLDER"
+                };
+            var mockResourceRepo = SetupEnvironmentRepo(Guid.Empty);
+            mockResourceRepo.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.Is<Studio.Core.AppResources.Enums.ResourceType>(type => type == Studio.Core.AppResources.Enums.ResourceType.Service), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()));
+            // ReSharper disable ObjectCreationAsStatement
+            new StudioResourceRepository(parent, Guid.Empty, _invoke)
+                // ReSharper restore ObjectCreationAsStatement
+                {
+                    GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                    GetCurrentEnvironment = () => Guid.Empty
+                };
+
+            var studioResourceRepository = StudioResourceRepository.Instance;
+            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            //------------Execute Test---------------------------
+            studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
+                {
+                    DisplayName = "TEST FOLDER",
+                    ResourcePath = "MANFOLDER\\SUB FOLDER\\TEST FOLDER",
+                    ResourceType = ResourceType.Folder
+                });
+            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            //------------Assert Results-------------------------
+            mockResourceRepo.Verify(repository => repository.ReloadResource(It.IsAny<Guid>(), It.Is<Studio.Core.AppResources.Enums.ResourceType>(type => type == Studio.Core.AppResources.Enums.ResourceType.Service), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()), Times.Never());
+            Assert.AreEqual(0, before);
+            Assert.AreEqual(1, after);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("StudioResourceRepository_ItemAddedMessageHandler")]
         public void StudioResourceRepository_ItemAddedMessageHandler_ItemNotFoundInResourceRepo_Source_AddedSuccessfully()
         {
             //------------Setup for test--------------------------

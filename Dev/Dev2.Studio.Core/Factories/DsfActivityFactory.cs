@@ -10,13 +10,15 @@ namespace Dev2.Studio.Core.Factories
 {
     public static class DsfActivityFactory
     {
-        public static DsfActivity CreateDsfActivity(IContextualResourceModel resource, DsfActivity activity, bool ifNullCreateNew, IEnvironmentRepository environmentRepository, bool isDesignerLocalhost)
+        public static DsfActivity CreateDsfActivity(IContextualResourceModel resource, DsfActivity activity,
+                    bool ifNullCreateNew, IEnvironmentRepository environmentRepository, bool isDesignerLocalhost)
         {
-            if(activity == null)
+            var activityToUpdate = activity;
+            if(activityToUpdate == null)
             {
                 if(ifNullCreateNew)
                 {
-                    activity = new DsfActivity();
+                    activityToUpdate = new DsfActivity();
                 }
                 else
                 {
@@ -27,35 +29,42 @@ namespace Dev2.Studio.Core.Factories
             if(resource != null)
             {
                 var activeEnvironment = environmentRepository.ActiveEnvironment;
-                // PBI 9135 - 2013.07.15 - TWR - Added
-                activity.ResourceID = resource.ID;
-                if(resource.Environment != null)
-                {
-                    var idToUse = resource.Environment.ID;
-
-                    // when we have an active remote environment that we are designing against, set it as local to that environment ;)
-                    if(activeEnvironment.ID == resource.Environment.ID && idToUse != Guid.Empty && !isDesignerLocalhost)
-                    {
-                        idToUse = Guid.Empty;
-                    }
-
-                    activity.EnvironmentID = idToUse;
-                }
-
-                if(resource.ResourceType == ResourceType.WorkflowService)
-                {
-                    //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                    WorkflowPropertyInterigator.SetActivityProperties(resource, ref activity);
-                }
-                //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                else if(resource.ResourceType == ResourceType.Service)
-                {
-                    //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
-                    WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity);
-                }
+                activityToUpdate.ResourceID = resource.ID;
+                SetCorrectEnvironmentId(resource, activityToUpdate, isDesignerLocalhost, activeEnvironment);
+                activityToUpdate = SetActivityProperties(resource, activityToUpdate);
             }
 
-            activity.ExplicitDataList = null;
+            activityToUpdate.ExplicitDataList = null;
+            return activityToUpdate;
+        }
+
+        static void SetCorrectEnvironmentId(IContextualResourceModel resource, DsfActivity activity, bool isDesignerLocalhost, IEnvironmentModel activeEnvironment)
+        {
+            if(resource.Environment != null)
+            {
+                var idToUse = resource.Environment.ID;
+
+                // when we have an active remote environment that we are designing against, set it as local to that environment ;)
+                if(activeEnvironment.ID == resource.Environment.ID && idToUse != Guid.Empty && !isDesignerLocalhost)
+                {
+                    idToUse = Guid.Empty;
+                }
+
+                activity.EnvironmentID = idToUse;
+            }
+        }
+
+        static DsfActivity SetActivityProperties(IContextualResourceModel resource, DsfActivity activity)
+        {
+            switch(resource.ResourceType)
+            {
+                case ResourceType.WorkflowService:
+                    WorkflowPropertyInterigator.SetActivityProperties(resource, ref activity);
+                    break;
+                case ResourceType.Service:
+                    WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity);
+                    break;
+            }
             return activity;
         }
     }
