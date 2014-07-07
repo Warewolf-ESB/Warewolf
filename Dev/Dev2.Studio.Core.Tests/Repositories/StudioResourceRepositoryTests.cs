@@ -1772,7 +1772,7 @@ namespace Dev2.Core.Tests.Repositories
         [TestCategory("StudioResourceRepository_GetEnvironmentModel")]
         public void StudioResourceRepository_GetEnvironmentModel_NullItemReturnsFalse()
         {
-            Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(new Mock<IEnvironmentModel>().Object, null));
+            Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(new Mock<IEnvironmentModel>().Object, null, Guid.NewGuid()));
         }
 
 
@@ -1782,7 +1782,7 @@ namespace Dev2.Core.Tests.Repositories
         [TestCategory("StudioResourceRepository_GetEnvironmentModel")]
         public void StudioResourceRepository_GetEnvironmentModel_NullEnvReturnsFalse()
         {
-            Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(null, new ServerExplorerItem()));
+            Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(null, new ServerExplorerItem(), Guid.NewGuid()));
         }
 
         [TestMethod]
@@ -1795,7 +1795,7 @@ namespace Dev2.Core.Tests.Repositories
             mockConnection.Setup(a => a.WebServerUri).Returns(new Uri("http://www.bob.com"));
             environmentModel.Setup(a => a.Connection).Returns(mockConnection.Object);
 
-            Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(environmentModel.Object, new ServerExplorerItem { WebserverUri = null }));
+            Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(environmentModel.Object, new ServerExplorerItem { WebserverUri = null }, Guid.NewGuid()));
         }
 
         [TestMethod]
@@ -1808,16 +1808,18 @@ namespace Dev2.Core.Tests.Repositories
 
             environmentModel.Setup(a => a.Connection).Returns(mockConnection.Object);
 
-            Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(environmentModel.Object, new ServerExplorerItem { WebserverUri = "bob" }));
+            Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(environmentModel.Object, new ServerExplorerItem { WebserverUri = "bob" }, Guid.NewGuid()));
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioResourceRepository_GetEnvironmentModel")]
-        public void StudioResourceRepository_GetEnvironmentModel_HasMatchingConnection_ReturnsTrue()
+        public void StudioResourceRepository_GetEnvironmentModel_HasMatchingID_ReturnsTrue()
         {
             //------------Setup for test--------------------------
             var environmentModel = new Mock<IEnvironmentModel>();
+            var environmentId = Guid.NewGuid();
+            environmentModel.Setup(model => model.ID).Returns(environmentId);
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://bob:3142/"));
             var serverID = Guid.NewGuid();
@@ -1825,26 +1827,7 @@ namespace Dev2.Core.Tests.Repositories
             environmentModel.Setup(a => a.Connection).Returns(mockConnection.Object);
             ServerExplorerItem serverExplorerItem = new ServerExplorerItem { WebserverUri = "http://bob:3142/", ServerId = serverID };
             //------------Execute Test---------------------------
-            var found = StudioResourceRepository.GetEnvironmentModel(environmentModel.Object, serverExplorerItem);
-            //------------Assert Results-------------------------
-            Assert.IsTrue(found);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("StudioResourceRepository_GetEnvironmentModel")]
-        public void StudioResourceRepository_GetEnvironmentModel_HasMatchingMachineName_ReturnsTrue()
-        {
-            //------------Setup for test--------------------------
-            var environmentModel = new Mock<IEnvironmentModel>();
-            var mockConnection = new Mock<IEnvironmentConnection>();
-            mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://bob1:3142/"));
-            var serverID = Guid.NewGuid();
-            mockConnection.Setup(connection => connection.ServerID).Returns(serverID);
-            environmentModel.Setup(a => a.Connection).Returns(mockConnection.Object);
-            ServerExplorerItem serverExplorerItem = new ServerExplorerItem { WebserverUri = string.Format("http://{0}:3142/", Environment.MachineName), ServerId = serverID };
-            //------------Execute Test---------------------------
-            var found = StudioResourceRepository.GetEnvironmentModel(environmentModel.Object, serverExplorerItem);
+            var found = StudioResourceRepository.GetEnvironmentModel(environmentModel.Object, serverExplorerItem, environmentId);
             //------------Assert Results-------------------------
             Assert.IsTrue(found);
         }
@@ -1992,7 +1975,7 @@ namespace Dev2.Core.Tests.Repositories
 
             environmentModel.Setup(a => a.Connection).Returns(mockConnection.Object);
 
-            Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(environmentModel.Object, new ServerExplorerItem { WebserverUri = "bob" }));
+            Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(environmentModel.Object, new ServerExplorerItem { WebserverUri = "bob" }, Guid.NewGuid()));
         }
 
         private IExplorerItem GetTestData(string workFlowId = "DF279411-F678-4FCC-BE88-A1B613EE51E3",

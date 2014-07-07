@@ -49,7 +49,7 @@ namespace Dev2.AppResources.Repositories
             if(explorerItem != null)
             {
                 var environmentRepository = GetEnvironmentRepository();
-                var explorerItems = MapData(explorerItem, environmentRepository);
+                var explorerItems = MapData(explorerItem, environmentRepository, environmentId);
                 LoadItemsToTree(environmentId, explorerItems);
             }
             Instance = this;
@@ -380,8 +380,8 @@ namespace Dev2.AppResources.Repositories
 
         public void ItemAddedMessageHandler(IExplorerItem item)
         {
-
-            var explorerItem = MapData(item, GetEnvironmentRepository());
+            var environmentId = GetCurrentEnvironment();
+            var explorerItem = MapData(item, GetEnvironmentRepository(), environmentId);
             var resourcePath = item.ResourcePath.Replace("\\\\", "\\");
 
             if(!String.IsNullOrEmpty(resourcePath))
@@ -389,7 +389,6 @@ namespace Dev2.AppResources.Repositories
                 resourcePath = resourcePath.Equals(item.DisplayName) ? "" : resourcePath.Substring(0, resourcePath.LastIndexOf("\\" + item.DisplayName, StringComparison.Ordinal));
             }
 
-            var environmentId = GetCurrentEnvironment();
             var parent = FindItem(model => model.ResourcePath.Equals(resourcePath) && model.EnvironmentId == environmentId);
             var alreadyAdded = FindItem(model => model.ResourceId == item.ResourceId && model.ResourcePath == item.ResourcePath) != null;
             var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
@@ -554,10 +553,10 @@ namespace Dev2.AppResources.Repositories
         {
             var explorerResourceRepository = GetExplorerProxy(environmentId);
             var explorerItem = explorerResourceRepository.Load(environmentId);
-            return MapData(explorerItem, GetEnvironmentRepository());
+            return MapData(explorerItem, GetEnvironmentRepository(), environmentId);
         }
 
-        private ExplorerItemModel MapData(IExplorerItem item, IEnvironmentRepository environmentRepository)
+        private ExplorerItemModel MapData(IExplorerItem item, IEnvironmentRepository environmentRepository, Guid environmentId)
         {
             if(item == null)
             {
@@ -568,7 +567,8 @@ namespace Dev2.AppResources.Repositories
             string displayname = item.DisplayName;
             if(item.ResourceType == ResourceType.Server)
             {
-                IEnvironmentModel environmentModel = environmentRepository.FindSingle(model => GetEnvironmentModel(model, item));
+                // ReSharper disable ImplicitlyCapturedClosure
+                IEnvironmentModel environmentModel = environmentRepository.FindSingle(model => GetEnvironmentModel(model, item, environmentId));
                 if(environmentModel != null && environmentModel.Connection != null)
                 {
                     displayname = environmentModel.DisplayName;
@@ -577,7 +577,7 @@ namespace Dev2.AppResources.Repositories
 
             return new ExplorerItemModel
             {
-                Children = item.Children == null ? new ObservableCollection<ExplorerItemModel>() : new ObservableCollection<ExplorerItemModel>(item.Children.Select(i => MapData(i, environmentRepository))),
+                Children = item.Children == null ? new ObservableCollection<ExplorerItemModel>() : new ObservableCollection<ExplorerItemModel>(item.Children.Select(i => MapData(i, environmentRepository, environmentId))),
                 DisplayName = displayname,
                 ResourceType = item.ResourceType,
                 ResourceId = item.ResourceId,
@@ -585,28 +585,17 @@ namespace Dev2.AppResources.Repositories
                 ResourcePath = item.ResourcePath,
                 IsExplorerExpanded = isExpanded
             };
+            // ReSharper restore ImplicitlyCapturedClosure
         }
 
-        public static bool GetEnvironmentModel(IEnvironmentModel model, IExplorerItem item)
+        public static bool GetEnvironmentModel(IEnvironmentModel model, IExplorerItem item, Guid environmentId)
         {
             if(item != null && model != null)
             {
-                var itemServerUri = item.WebserverUri;
-                var environmentConnection = model.Connection;
-                var webServerUri = environmentConnection.WebServerUri;
-                if(!string.IsNullOrEmpty(itemServerUri) && environmentConnection != null && webServerUri != null)
+                var found = model.ID == environmentId;
+                if(found)
                 {
-                    Uri actualUri;
-                    Uri.TryCreate(itemServerUri, UriKind.RelativeOrAbsolute, out actualUri);
-                    var found = environmentConnection.ServerID == item.ServerId && String.Equals(webServerUri.ToString(), itemServerUri, StringComparison.InvariantCultureIgnoreCase) && actualUri.Port == webServerUri.Port;
-                    if(found)
-                    {
-                        return true;
-                    }
-                    if(itemServerUri.ToLower().Contains(Environment.MachineName.ToLower()) && actualUri.Port == webServerUri.Port)
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
             return false;
