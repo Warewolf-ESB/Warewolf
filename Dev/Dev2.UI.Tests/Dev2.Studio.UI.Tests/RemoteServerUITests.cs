@@ -14,7 +14,6 @@ namespace Dev2.Studio.UI.Tests
     /// These are UI tests based on using a remote server
     /// </summary>
     [CodedUITest]
-    //[Ignore]//Ashley: Pending work item 12095
     public class RemoteServerUiTests : UIMapBase
     {
         #region Const
@@ -391,6 +390,7 @@ namespace Dev2.Studio.UI.Tests
         }
 
         [TestMethod]
+        [Ignore]//Ashley: Pending 12095 (interupting run)
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemotePluginService_PluginServiceIsEdited()
