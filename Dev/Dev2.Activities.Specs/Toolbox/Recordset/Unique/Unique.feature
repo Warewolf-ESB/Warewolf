@@ -101,7 +101,7 @@ Scenario: Find unique records using a negative recordset index for In Field
 	| In Field(s) | [[rs(-1).row]] = |                 |
 	|             |                  | [[rs().row]]  = |
 	And the debug output as 
-	|  |                     |
+	|  |                    |
 	|  | [[rec().unique]] = |
 
 Scenario: Find unique records using a * for In Field
