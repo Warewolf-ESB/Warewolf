@@ -1453,6 +1453,7 @@ Scenario: Workflow with Assign and ForEach
       | variable | value    |
       | [[a]]    | warewolf |  
         
+ #Bug - 12160       
 #Scenario: Workflow with ForEach which contains assign
 #      Given I have a workflow "WFWithForEachContainsAssign"
 #	  And "WFWithForEachContainsAssign" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
@@ -1478,7 +1479,7 @@ Scenario: Workflow with Assign and ForEach
 #       | variable     | value |
 #       | [[rec(2).a]] | Test  |  
 #
-#
+##Bug - 12160  
 #Scenario: Workflow with ForEach which contains Sequence
 #      Given I have a workflow "WFWithForEachContainsSequence"
 #	  And "WFWithForEachContainsSequence" contains an Assign "RecVal" as
@@ -1534,7 +1535,8 @@ Scenario: Workflow with Assign and ForEach
 #	  And the 'System info' child"2" in Workflow 'Seq1' debug outputs as   
 #	  | # |                       |
 #	  | 1 | [[rec(1).d]] = String |
-#
+
+##Bug - 12160  
 #Scenario: Executing ForEach in Rec with star which contains Sequence
 #      Given I have a workflow "WFWithForEachwithRecContainsSequence"
 #	  And "WFWithForEachContainsSequence" contains an Assign "RecVal" as
@@ -1604,7 +1606,7 @@ Scenario: Workflow with Assign and ForEach
 #	  | # |                       |
 #	  | 1 | [[rec(2).d]] = String |
 #
-#
+##Bug - 12160  
 #Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 #      Given I have a workflow "WFWithForEachInsideforEach"
 #      And I have a workflow "WFWithForEachInsideforEach" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "2"
