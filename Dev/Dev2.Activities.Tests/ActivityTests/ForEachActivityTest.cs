@@ -360,7 +360,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
             Assert.AreEqual(originalGuid.ToString(), act.UniqueID);
-            Assert.AreEqual(act.WorkSurfaceMappingId,originalGuid);
+            Assert.AreEqual(act.GetWorkSurfaceMappingId(), originalGuid);
           
 
         }
@@ -386,7 +386,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
             Assert.AreNotEqual(originalGuid.ToString(), act.UniqueID);
-            Assert.AreEqual(act.WorkSurfaceMappingId, originalGuid);
+            Assert.AreEqual(act.GetWorkSurfaceMappingId(), originalGuid);
 
 
         }

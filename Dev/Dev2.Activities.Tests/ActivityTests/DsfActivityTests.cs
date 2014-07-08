@@ -269,7 +269,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
             Assert.AreEqual(originalGuid.ToString(), act.UniqueID);
-            Assert.AreEqual(act.WorkSurfaceMappingId, originalGuid);
+            Assert.AreEqual(act.GetWorkSurfaceMappingId(), originalGuid);
 
 
         }
@@ -287,7 +287,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 //       if this is NOT provided which will cause the tests to fail!
                 ServerID = Guid.NewGuid(),
                 IsDebug = true,
-                ForEachNestingLevel = 1
+                ForEachNestingLevel = 1 
             };
 
             DsfActivity act = new DsfActivity();
@@ -295,7 +295,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
             Assert.AreNotEqual(originalGuid.ToString(), act.UniqueID);
-            Assert.AreEqual(act.WorkSurfaceMappingId, originalGuid);
+            Assert.AreEqual(act.GetWorkSurfaceMappingId(), originalGuid);
 
 
         }

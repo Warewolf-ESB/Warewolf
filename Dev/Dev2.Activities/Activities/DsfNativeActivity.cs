@@ -51,7 +51,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ParentWorkflowInstanceId { get; set; }
         public SimulationMode SimulationMode { get; set; }
         public string ScenarioID { get; set; }
-        public Guid WorkSurfaceMappingId { get; set; }
+        protected Guid WorkSurfaceMappingId { get; set; }
         /// <summary>
         /// UniqueID is the InstanceID and MUST be a guid.
         /// </summary>
@@ -746,5 +746,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+#region workSurfaceMappingId
+        public Guid GetWorkSurfaceMappingId()
+        {
+            return WorkSurfaceMappingId;
+        }
+#endregion
+
     }
 }

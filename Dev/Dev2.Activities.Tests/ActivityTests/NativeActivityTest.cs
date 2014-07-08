@@ -55,13 +55,17 @@ namespace Dev2.Tests.Activities.ActivityTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorWithNullDebugDispatcher_Expected_ArgumentNullException()
         {
+// ReSharper disable ObjectCreationAsStatement
             new TestActivity(null);
+// ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
         public void ConstructorWithDebugDispatcher_Expected_NoArgumentNullException()
         {
+// ReSharper disable ObjectCreationAsStatement
             new TestActivity(DebugDispatcher.Instance);
+// ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -374,9 +378,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                     else
                     {
                         var foundCount = 0;
+// ReSharper disable LoopCanBeConvertedToQuery
                         foreach(var field in fields)
+// ReSharper restore LoopCanBeConvertedToQuery
                         {
+// ReSharper disable LoopCanBeConvertedToQuery
                             foreach(var expectedValue in expectedValues)
+// ReSharper restore LoopCanBeConvertedToQuery
                             {
                                 if(field.FieldName == expectedValue.Key && expectedValue.Value.Contains(field.TheValue))
                                 {
@@ -654,7 +662,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
             Assert.AreEqual(originalGuid.ToString(), act.UniqueID);
-            Assert.AreEqual(act.WorkSurfaceMappingId, originalGuid);
+            Assert.AreEqual(act.GetWorkSurfaceMappingId(), originalGuid);
 
 
         }
@@ -680,7 +688,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
             Assert.AreEqual(originalGuid.ToString(), act.UniqueID);
-            Assert.AreEqual(act.WorkSurfaceMappingId, originalGuid);
+            Assert.AreEqual(act.GetWorkSurfaceMappingId(), originalGuid);
 
 
         }
