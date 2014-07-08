@@ -1453,6 +1453,340 @@ Scenario: Workflow with Assign and ForEach
       | variable | value    |
       | [[a]]    | warewolf |  
         
+#Scenario: Workflow with ForEach which contains assign
+#      Given I have a workflow "WFWithForEachContainsAssign"
+#	  And "WFWithForEachContainsAssign" contains a Foreach "ForEachTest" as "NumOfExecution" executions "2"
+#	  And "ForEachTest" contains an Assign "Assign" as
+#	    | variable    | value |
+#	    | [[rec().a]] | Test  |
+#      When "WFWithForEachContainsAssign" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'ForEachTest' in WorkFlow 'WFWithForEachContainsAssign' debug inputs as 
+#	    |                 | Number |
+#	    | No. of Executes | 2      |
+#      And the 'ForEachTest' in WorkFlow 'WFWithForEachContainsAssign' has  "2" nested children 
+#	  And "ForEachTest" child "1" contains debug inputs for "Assign" as 
+#	   | # | Variable     | New Value |
+#	   | 1 | [[rec().a]]= | Test      |
+#	  And  "ForEachTest" child"1" contains debug outputs for "Assign" as
+#       | variable     | value |
+#       | [[rec(1).a]] | Test  |  
+#	   And  "ForEachTest" child"2" contains debug inputs for "Assign" as 
+#	   | # | Variable     | New Value |
+#	   | 1 | [[rec().a]]= | Test      |
+#	  And  "ForEachTest" child"2" contains debug outputs for "Assign" as
+#       | variable     | value |
+#       | [[rec(2).a]] | Test  |  
+#
+#
+#Scenario: Workflow with ForEach which contains Sequence
+#      Given I have a workflow "WFWithForEachContainsSequence"
+#	  And "WFWithForEachContainsSequence" contains an Assign "RecVal" as
+#	  | variable     | value |
+#	  | [[rec(1).a]] | 123   |
+#	  | [[rec(1).b]] | 456   |
+#	  And "WFWithForEachContainsSequence" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "2"
+#	  And "WFWithForEachContainsSequence" contains a Sequence "Seq1" as
+#	   And "Seq1" contains Data Merge "Data Merge" into "[[rec(1).c]]" as
+#	  | Variable     | Type | Using | Padding | Alignment |
+#	  | [[rec(1).a]] | None |       |         | Left      |
+#	  | [[rec(1).b]] | None |       |         | Left      |
+#	   And "Seq1" contains Gather System Info "System info" as
+#	  | Variable     | Selected    |
+#	  | [[rec(1).d]] | Date & Time |
+#	  When "WFWithForEachContainsSequence" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'RecVal' in WorkFlow 'WFWithForEachContainsSequence' debug inputs as 
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rec(1).a]] = | 123       |
+#	  | 2 | [[rec(1).b]] = | 456       |
+#	  And the 'RecVal' in Workflow 'WFWithForEachContainsSequence' debug outputs as 
+#	  | # |                      |
+#	  | 1 | [[rec(1).a]]  =  123 |
+#	  | 2 | [[rec(1).b]]  =  456 |
+#	   And the 'ForEachTest' in WorkFlow 'WFWithForEachContainsSequence' debug inputs as 
+#	  |                 | Number |
+#	  | No. of Executes | 2      |
+#      And the 'ForEachTest' in WorkFlow 'WFWithForEachContainsSequence' has  "2" nested children 
+#	  And the 'Data Merge' child"1" in WorkFlow 'Seq1' debug inputs as 
+#	  | # |                    | With | Using | Pad | Align |
+#	  | 1 | [[rec(1).a]] = 123 | None | ""    | ""  | Left  |
+#	  | 2 | [[rec(1).b]] = 456 | None | ""    | ""  | Left  |
+#	  And the 'Data Merge' child"1" in Workflow 'Seq1' debug outputs as  
+#	  |                       |
+#	  | [[rec(1).c]] = 123456 |
+#      And the 'System info' child"1" in WorkFlow 'Seq1' debug inputs as
+#	  | # |                |             |
+#	  | 1 | [[rec(1).d]] = | Date & Time |
+#	  And the 'System info' child"1" in Workflow 'Seq1' debug outputs as   
+#	  | # |                       |
+#	  | 1 | [[rec(1).d]] = String |
+#	    And the 'Data Merge' child"2" in WorkFlow 'Seq1' debug inputs as 
+#	  | # |                    | With | Using | Pad | Align |
+#	  | 1 | [[rec(1).a]] = 123 | None | ""    | ""  | Left  |
+#	  | 2 | [[rec(1).b]] = 456 | None | ""    | ""  | Left  |
+#	  And the 'Data Merge' child"2" in Workflow 'Seq1' debug outputs as  
+#	  |                       |
+#	  | [[rec(1).c]] = 123456 |
+#      And the 'System info' child"2" in WorkFlow 'Seq1' debug inputs as
+#	  | # |                |             |
+#	  | 1 | [[rec(1).d]] = | Date & Time |
+#	  And the 'System info' child"2" in Workflow 'Seq1' debug outputs as   
+#	  | # |                       |
+#	  | 1 | [[rec(1).d]] = String |
+#
+#Scenario: Executing ForEach in Rec with star which contains Sequence
+#      Given I have a workflow "WFWithForEachwithRecContainsSequence"
+#	  And "WFWithForEachContainsSequence" contains an Assign "RecVal" as
+#	  | variable     | value    |
+#	  | [[rec(1).a]] | 123      |
+#	  | [[rec(1).b]] | 456      |
+#	  | [[rec(2).a]] | Test     |
+#	  | [[rec(2).b]] | Warewolf |
+#	  And "WFWithForEachContainsSequence" contains a Foreach "ForEachTest1" as "In Recordset" executions "[[rec(*)]]"
+#	  And "ForEachTest1" contains a Sequence "Seq1" as
+#	   And "Seq1" contains Data Merge "Data Merge" into "[[rec(1).c]]" as
+#	  | Variable     | Type | Using | Padding | Alignment |
+#	  | [[rec(*).a]] | None |       |         | Left      |
+#	  | [[rec(*).b]] | None |       |         | Left      |
+#	   And "Seq1" contains Gather System Info "System info" as
+#	  | Variable     | Selected    |
+#	  | [[rec(*).d]] | Date & Time |
+#	  When "WFWithForEachwithRecContainsSequence" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'RecVal' in WorkFlow 'WFWithForEachwithRecContainsSequence' debug inputs as 
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rec(1).a]] = | 123       |
+#	  | 2 | [[rec(1).b]] = | 456       |
+#	  | 3 | [[rec(2).a]] = | Test      |
+#	  | 4 | [[rec(2).b]] = | Warewolf  |
+#	  And the 'RecVal' in Workflow 'WFWithForEachwithRecContainsSequence' debug outputs as 
+#	  | # |                          |
+#	  | 1 | [[rec(1).a]]  =  123     |
+#	  | 2 | [[rec(1).b]]  =  456     |
+#	  | 3 | [[rec(2).a]] =  Test     |
+#	  | 4 | [[rec(2).b]] =  Warewolf |
+#	  And the 'ForEachTest' in WorkFlow 'WFWithForEachContainsSequence' debug inputs as 
+#	  | recordset               |
+#	  | [[rec(1).a]] = 123      |
+#	  | [[rec(1).b]] = 234      |
+#	  | [[rec(1).c]] =          |
+#	  | [[rec(1).d]] =          |
+#	  | [[rec(2).a]] = Test     |
+#	  | [[rec(2).b]] = Warewolf |
+#	  | [[rec(2).c]] =          |
+#	  | [[rec(2).d]]  =         |
+#      And the 'ForEachTest' in WorkFlow 'WFWithForEachContainsSequence' has  "2" nested children
+#	  And the 'Data Merge' child "1,1" in WorkFlow 'Seq1' debug inputs as 
+#	  | # |                    | With | Using | Pad | Align |
+#	  | 1 | [[rec(1).a]] = 123 | None | ""    | ""  | Left  |
+#	  | 2 | [[rec(1).b]] = 456 | None | ""    | ""  | Left  |
+#	  And the 'Data Merge' child"1,1" in Workflow 'Seq1' debug outputs as  
+#	  |                       |
+#	  | [[rec(1).c]] = 123456 |
+#      And the 'System info' child"1,2" in WorkFlow 'Seq1' debug inputs as
+#	  | # |                |             |
+#	  | 1 | [[rec(1).d]] = | Date & Time |
+#	  And the 'System info' child"1,2" in Workflow 'Seq1' debug outputs as   
+#	  | # |                       |
+#	  | 1 | [[rec(1).d]] = String |
+#	   And the 'Data Merge' child"2,1" in WorkFlow 'Seq1' debug inputs as 
+#	  | # |                    | With | Using | Pad | Align |
+#	  | 1 | [[rec(2).a]] = 123 | None | ""    | ""  | Left  |
+#	  | 2 | [[rec(2).b]] = 456 | None | ""    | ""  | Left  |
+#	  And the 'Data Merge' child"2,1" in Workflow 'Seq1' debug outputs as  
+#	  |                       |
+#	  | [[rec(2).c]] = 123456 |
+#      And the 'System info' child"2,2" in WorkFlow 'Seq1' debug inputs as
+#	  | # |                |             |
+#	  | 1 | [[rec(2).d]] = | Date & Time |
+#	  And the 'System info' child"2,2" in Workflow 'Seq1' debug outputs as   
+#	  | # |                       |
+#	  | 1 | [[rec(2).d]] = String |
+#
+#
+#Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
+#      Given I have a workflow "WFWithForEachInsideforEach"
+#      And I have a workflow "WFWithForEachInsideforEach" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "2"
+#	  And I have a workflow "ForEachTest1" contains a Foreach "ForEachTest2" as "NumOfExecution" executions "2"
+#	  And I have a workflow "ForEachTest2" contains a Foreach "ForEachTest3" as "NumOfExecution" executions "2"
+#	  And "ForEachTest3" contains an Assign "Testingoutput" as
+#	  | variable     | value    |
+#	  | [[rec(1).a]] | 123      |
+#	  When "WFWithForEachInsideforEach" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'ForEachTest1' in WorkFlow 'WFWithForEachInsideforEach' debug inputs as 
+#	  |                 | Number |
+#	  | No. of Executes | 2      |
+#	  And the 'ForEachTest1' in WorkFlow 'WFWithForEachInsideforEach' has  "2" nested children
+#        And the 'ForEachTest2' in WorkFlow 'ForEachTest1' debug inputs as 
+#	           |                 | Number |
+#	           | No. of Executes | 2      |
+#               And the 'ForEachTest2' in WorkFlow 'ForEachTest1' has  "2" nested children
+#	           And the 'ForEachTest3' in WorkFlow 'ForEachTest2' debug inputs as 
+#	           |                 | Number |
+#	           | No. of Executes | 2      |
+#	           And the 'ForEachTest3' in WorkFlow 'ForEachTest2' has  "2" nested children
+#	               And the 'Testingoutput' child "1,1" in WorkFlow 'ForEachTest3' debug inputs as 
+#	               | # | Variable       | New Value |
+#	               | 1 | [[rec(1).a]] = | 123       |
+#	               And the 'Testingoutput' child "1,2 in Workflow 'ForEachTest3' debug outputs as 
+#	               | # |                          |
+#	               | 1 | [[rec(1).a]]  =  123     |
+#	                And the 'Testingoutput' child "2,1" in WorkFlow 'ForEachTest3' debug inputs as 
+#	               | # | Variable       | New Value |
+#	               | 1 | [[rec(1).a]] = | 123       |
+#	               And the 'Testingoutput' child "2,2 in Workflow 'ForEachTest3' debug outputs as 
+#	               | # |                          |
+#	               | 1 | [[rec(1).a]]  =  123     |
+#				   And the 'ForEachTest3' in WorkFlow 'ForEachTest2' debug inputs as 
+#				   |                 | Number |
+#				   | No. of Executes | 2      |
+#				   And the 'ForEachTest3' in WorkFlow 'ForEachTest2' has  "2" nested children
+#				   And the 'Testingoutput' child "1,1" in WorkFlow 'ForEachTest3' debug inputs as 
+#	               | # | Variable       | New Value |
+#	               | 1 | [[rec(1).a]] = | 123       |
+#	               And the 'Testingoutput' child "1,2 in Workflow 'ForEachTest3' debug outputs as 
+#	               | # |                          |
+#	               | 1 | [[rec(1).a]]  =  123     |
+#	                And the 'Testingoutput' child "2,1" in WorkFlow 'ForEachTest3' debug inputs as 
+#	               | # | Variable       | New Value |
+#	               | 1 | [[rec(1).a]] = | 123       |
+#	               And the 'Testingoutput' child "2,2 in Workflow 'ForEachTest3' debug outputs as 
+#	               | # |                          |
+#	               | 1 | [[rec(1).a]]  =  123     |
+#	          And the 'ForEachTest2' in WorkFlow 'ForEachTest1' debug inputs as 
+#	                |                 | Number |
+#	                | No. of Executes | 2      |
+#                    And the 'ForEachTest2' in WorkFlow 'ForEachTest1' has  "2" nested children
+#	                And the 'ForEachTest3' in WorkFlow 'ForEachTest2' debug inputs as 
+#	                |                 | Number |
+#	                | No. of Executes | 2      |
+#	                And the 'ForEachTest3' in WorkFlow 'ForEachTest2' has  "2" nested children
+#	                 And the 'Testingoutput' child "1,1" in WorkFlow 'ForEachTest3' debug inputs as 
+#	               | # | Variable       | New Value |
+#	               | 1 | [[rec(1).a]] = | 123       |
+#	               And the 'Testingoutput' child "1,2 in Workflow 'ForEachTest3' debug outputs as 
+#	               | # |                          |
+#	               | 1 | [[rec(1).a]]  =  123     |
+#	                And the 'Testingoutput' child "2,1" in WorkFlow 'ForEachTest3' debug inputs as 
+#	               | # | Variable       | New Value |
+#	               | 1 | [[rec(1).a]] = | 123       |
+#	               And the 'Testingoutput' child "2,2 in Workflow 'ForEachTest3' debug outputs as 
+#	               | # |                          |
+#	               | 1 | [[rec(1).a]]  =  123     |
+#				   And the 'ForEachTest3' in WorkFlow 'ForEachTest2' debug inputs as 
+#				   |                 | Number |
+#				   | No. of Executes | 2      |
+#				   And the 'ForEachTest3' in WorkFlow 'ForEachTest2' has  "2" nested children
+#				   And the 'Testingoutput' child "1,1" in WorkFlow 'ForEachTest3' debug inputs as 
+#	               | # | Variable       | New Value |
+#	               | 1 | [[rec(1).a]] = | 123       |
+#	               And the 'Testingoutput' child "1,2 in Workflow 'ForEachTest3' debug outputs as 
+#	               | # |                          |
+#	               | 1 | [[rec(1).a]]  =  123     |
+#	                And the 'Testingoutput' child "2,1" in WorkFlow 'ForEachTest3' debug inputs as 
+#	               | # | Variable       | New Value |
+#	               | 1 | [[rec(1).a]] = | 123       |
+#	               And the 'Testingoutput' child "2,2 in Workflow 'ForEachTest3' debug outputs as 
+#	               | # |                          |
+#	               | 1 | [[rec(1).a]]  =  123     |
+#  
+  #Bug 12159
+#  Before you look into this spec plz connect to "Integration Connection" server and search for Unique data workflow and debug.
+#   Observe the output.	
+#Scenario: Executing remote workflow which contains For Each with assign
+#	      Given I have a workflow "TestAssignAndRemote"
+#          And "TestAssignAndRemote" contains "Unique data" from server "Integration Connection" with mapping as
+#          When "TestAssignAndRemote" is executed
+#	      Then the workflow execution has "NO" error
+#		  And the 'Assign for sequence' in WorkFlow 'workflowithAssignandsequence' debug inputs as
+#	      | # | Variable                         | New Value |
+#	      | 1 | [[Student().firstname]] =        | Murali    |
+#	      | 2 | [[Student().lastname]]  =        | naidu     |
+#	      | 3 | [[Student().firstname]] =        | Rak       |
+#	      | 4 | [[Student().lastname]]  =        | m         |
+#	      | 5 | [[Student().firstname]] =        | Murali    |
+#	      | 6 |
+#	      |   | [[Student(1).lastname]] =  naidu |
+#	      |   | [[Student(2).lastname]] =  m     |
+#	      |   | [[Student(3).lastname]] =        |
+#	       And the 'Assign for sequence' in Workflow 'workflowithAssignandsequence' debug outputs as    
+#	      | # |                                   |
+#	      | 1 | [[Student(1).firstname]] =  Murali |
+#	      | 2 | [[Student(1).lastname]]  =  naidu  |
+#	      | 3 | [[Student(2).firstname]] =  Rak    |
+#	      | 4 | [[Student().lastname]]  =  m      |
+#	      | 5 | [[Student().firstname]] =  Murali |
+#	      | 6 | [[Student(1).lastname]] =  naidu  |
+#	      |   | [[Student(2).lastname]] =  naidu  |
+#	      |   | [[Student(3).lastname]] =  naidu  |
+#		  And the 'ForEachTest1' in WorkFlow 'WFWithForEachInsideforEach' debug inputs as 
+#	       | Recordset                         |
+#	       | [[Student(1).firstname]] = Murali |
+#	       | [[Student(1).lastname]] = naidu   |
+#	       | [[Student(1).fullname]] =         |
+#	       | [[Student(1).date]] =             |
+#	       | [[Student(2).firstname]] = Rak    |
+#	       | [[Student(2).lastname]] = naidu   |
+#	       | [[Student(2).fullname]] =         |
+#	       | [[Student(2).date]] =             |
+#	       | [[Student(3).firstname]] = Murali |
+#	       | [[Student(3).lastname]] = naidu   |
+#	       | [[Student(3).fullname]] =         |
+#	       | [[Student(3).date]] =             |
+#	       And the 'ForEachTest1' in WorkFlow 'WFWithForEachInsideforEach' has  "3" nested children
+#		        And the 'Data Merge' child 1,1 in WorkFlow 'Sequence' debug inputs as
+#	            | # |                                   | With | Using | Pad | Align |
+#	            | 1 | [[Student(1).firstname]] = Murali | None | ""    | ""  | Left  |
+#	            | 2 | [[Student(1).lastname]] = naidu   | None | ""    | ""  | Left  |
+#	            And the 'Data Merge' child 1,1 in Workflow 'Sequence' debug outputs as
+#	            |                                      |
+#	            | [[Student(1).fullname]]= Muralinaidu |
+#	            And the 'System info' child 1,2 in WorkFlow 'Sequence' debug inputs as
+#	            | # |                       |             |
+#	            | 1 | [[Student(1).date]] = | Date & Time |
+#	            And the 'System info' child 1,2 in Workflow 'Sequence' debug outputs as   
+#	            | # |                             |
+#	            | 1 | [[Student(1).date]]= String |
+#				And the 'Data Merge' child 2,1 in WorkFlow 'Sequence' debug inputs as
+#	            | # |                                 | With | Using | Pad | Align |
+#	            | 1 | [[Student(2).firstname]] = Rak  | None | ""    | ""  | Left  |
+#	            | 2 | [[Student(2).lastname]] = naidu | None | ""    | ""  | Left  |
+#	            And the 'Data Merge' child 2,1 in Workflow 'Sequence' debug outputs as
+#	            |                                   |
+#	            | [[Student(2).fullname]]= Raknaidu |
+#	            And the 'System info' child 2,2 in WorkFlow 'Sequence' debug inputs as
+#	            | # |                       |             |
+#	            | 1 | [[Student(2).date]] = | Date & Time |
+#	            And the 'System info' child 2,2 in Workflow 'Sequence' debug outputs as   
+#	            | # |                             |
+#	            | 1 | [[Student(2).date]]= String |
+#				And the 'Data Merge' child 3,1 in WorkFlow 'Sequence' debug inputs as
+#	            | # |                                   | With | Using | Pad | Align |
+#	            | 1 | [[Student(3).firstname]] = Murali | None | ""    | ""  | Left  |
+#	            | 2 | [[Student(3).lastname]] = naidu   | None | ""    | ""  | Left  |
+#	            And the 'Data Merge' child 3,1 in Workflow 'Sequence' debug outputs as
+#	            |                                      |
+#	            | [[Student(3).fullname]]= Muralinaidu |
+#	            And the 'System info' child 3,2 in WorkFlow 'Sequence' debug inputs as
+#	            | # |                       |             |
+#	            | 1 | [[Student(3).date]] = | Date & Time |
+#	            And the 'System info' child 3,2 in Workflow 'Sequence' debug outputs as   
+#	            | # |                             |
+#	            | 1 | [[Student(3).date]]= String |
+#          And the 'Unique rec' in WorkFlow 'workflowithAssignandUnique' debug inputs as
+#            | #           |                                       | Return Fields |
+#            | In Field(s) | [[Student(1).fullname]] = Muralinaidu |               |
+#            |             | [[Student(2).fullname]] = Raknaidu    |               |
+#            |             | [[Student(3).fullname]] = Muralinaidu |               |
+#            |             |                                       | [[rs().row]]  |
+#           And the 'Unique rec' in Workflow 'workflowithAssignandUnique' debug outputs as  
+#            | # |                                    |
+#            | 1 | [[list(1).students]] = Muralinaidu |
+#            |   | [[list(2).students]] = Raknaidu    |
+#             
+
 
 
 #This Test should pass after the bug 11539 is fixed
