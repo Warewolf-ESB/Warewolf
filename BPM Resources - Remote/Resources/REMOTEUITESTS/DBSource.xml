@@ -1,0 +1,36 @@
+
+<Source ID="adacfadf-2b60-487c-a627-471388bee6fb" Version="1.0" Name="DBSource" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>DBSource</DisplayName>
+  <Category>REMOTEUITESTS\DBSource</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>7Ktfotu7QXcrkA0mb4k42yL5KlM=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>SiAq32AMLN2m0a/mGs28zKyNy3v9atzv2bZeLBEkNL+eZoILB1SpyXSlVSmcwPOxD5FNFLT/WV4sCVSn41SEjsZzKBqSho78iKjZLEDVDzv222DXHA2KEZzNynb3Y1klg69K1ZfuGR/6xFln8ZHHKBITL3t+sPCtPoQNj4zTM2s=</SignatureValue>
+  </Signature>
+</Source>
