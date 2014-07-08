@@ -331,7 +331,7 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         static void CloseAllInstancesOfIE()
         {
-            var browsers = new[] { "iexplore", "chrome" };
+            var browsers = new[] { "iexplore" };
 
             foreach(var browser in browsers)
             {

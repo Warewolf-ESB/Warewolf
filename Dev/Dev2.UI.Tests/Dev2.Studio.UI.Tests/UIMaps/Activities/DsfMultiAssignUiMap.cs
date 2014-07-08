@@ -18,7 +18,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
                 DragToolOntoDesigner(ToolType.Assign);
             }
         }
-        
+
+        public void DragToolOntoDesigner()
+        {
+            Activity = ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign, TheTab);
+        }
+
         public void EnterTextIntoVariable(int index, string stringToEnter)
         {
             WpfTable table = GetLargeViewTable();

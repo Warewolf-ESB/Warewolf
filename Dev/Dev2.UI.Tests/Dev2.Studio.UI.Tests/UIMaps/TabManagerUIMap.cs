@@ -154,8 +154,9 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                 {
                     var tabs = tabManager.GetChildren();
 
-                    foreach(var tab in tabs)
+                    for(int index = tabs.Count - 1; index >= 0; index--)
                     {
+                        var tab = tabs[index];
                         CloseTab_Click_No(tab);
                     }
                 }
@@ -183,23 +184,30 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             if(CloseTab(theTab))
             {
-                var tabNameControl = theTab.GetChildren().FirstOrDefault(c => c.ClassName == "Uia.TextBlock");
-
                 UITestControlCollection saveDialogButtons = null;
-                if(tabNameControl != null)
+                try
                 {
-                    if(tabNameControl.FriendlyName.EndsWith("*"))
+                    var tabNameControl = theTab.GetChildren().FirstOrDefault(c => c.ClassName == "Uia.TextBlock");
+                    if(tabNameControl != null)
                     {
-                        saveDialogButtons = GetWorkflowNotSavedButtons();
+                        if(tabNameControl.FriendlyName.EndsWith("*"))
+                        {
+                            saveDialogButtons = GetWorkflowNotSavedButtons();
+                        }
+                        else if(tabNameControl.FriendlyName == "Scheduler")
+                        {
+                            saveDialogButtons = GetWorkflowNotSavedButtons("Scheduler Task has changes");
+                        }
+                        else if(tabNameControl.FriendlyName == "Settings")
+                        {
+                            saveDialogButtons = GetWorkflowNotSavedButtons("Security Settings have changed");
+                        }
                     }
-                    else if(tabNameControl.FriendlyName == "Scheduler")
-                    {
-                        saveDialogButtons = GetWorkflowNotSavedButtons("Scheduler Task has changes");
-                    }
-                    else if(tabNameControl.FriendlyName == "Settings")
-                    {
-                        saveDialogButtons = GetWorkflowNotSavedButtons("Security Settings have changed");
-                    }
+                }
+                catch(Exception)
+                {
+                    return true;
+                    //This is empty because if the pop cant be found then the tab must just close;)
                 }
                 // Only if we expect a save dialog should we search for it ;)
                 if(saveDialogButtons != null)

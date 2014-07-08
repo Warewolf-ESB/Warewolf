@@ -42,7 +42,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             {
                 Point pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(dsfActivityUiMap.TheTab);
                 dsfActivityUiMap.Activity = ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Comment, dsfActivityUiMap.TheTab, pointToDragTo);
-                Playback.Wait(500);
+                Playback.Wait(50);
                 RibbonUIMap.DebugShortcutKeyPress();
                 var stepType = OutputUIMap.GetStep(2);
 

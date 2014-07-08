@@ -146,9 +146,11 @@ namespace Dev2.Studio.UI.Tests.Extensions
             {
                 throw new Exception("Cannot enter text in a non editable control");
             }
-
-            editControl.Text = text;
-            control.WaitForControlReady();
+            if(editControl.Text != text)
+            {
+                editControl.Text = text;
+                control.WaitForControlReady();
+            }
         }
 
         public static void AppendText(this UITestControl control, string text)

@@ -178,6 +178,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             return ValidateResourceExists(workflowName, folderName, ServiceType.Workflows, serverName);
         }
 
+        public bool ValidateHasResource(string workflowName, string serverName = "localhost")
+        {
+            return ValidateResourceExists(workflowName, serverName);
+        }
+
         public void RightClickDeployProject(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
@@ -296,6 +301,31 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             ExplorerUIMap.EnterExplorerSearchText(resourceName);
             UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName);
+            Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
+            Mouse.Move(p);
+            Playback.Wait(500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            Playback.Wait(1000);
+            SendKeys.SendWait("{DOWN}");
+            Playback.Wait(100);
+            SendKeys.SendWait("{DOWN}");
+            Playback.Wait(100);
+            SendKeys.SendWait("{DOWN}");
+            Playback.Wait(100);
+            SendKeys.SendWait("{DOWN}");
+            Playback.Wait(100);
+            SendKeys.SendWait("{ENTER}");
+            PopupDialogUIMap.WaitForDialog();
+            Playback.Wait(100);
+            var confirmationDialog = UIBusinessDesignStudioWindow.GetChildren()[0];
+            var yesButton = confirmationDialog.GetChildren().FirstOrDefault(c => c.FriendlyName == "Yes");
+            Mouse.Click(yesButton, new Point(10, 10));
+        }
+
+        public void RightClickDeleteResource(string resourceName, string categoryName, string serverName)
+        {
+            ExplorerUIMap.EnterExplorerSearchText(resourceName);
+            UITestControl theControl = GetServiceItem(serverName, categoryName, resourceName);
             Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Playback.Wait(500);
@@ -644,6 +674,26 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 ExplorerUIMap.EnterExplorerSearchText(resourceName);
                 Playback.Wait(1000);
                 UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), folderName, resourceName);
+                if(theControl == null)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch(Exception)
+            {
+
+                return false;
+            }
+        }
+
+        private bool ValidateResourceExists(string resourceName, string serverName = "localhost")
+        {
+            try
+            {
+                ExplorerUIMap.EnterExplorerSearchText(resourceName);
+                Playback.Wait(1000);
+                UITestControl theControl = GetServiceItem(serverName, resourceName);
                 if(theControl == null)
                 {
                     return false;

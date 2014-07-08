@@ -681,7 +681,7 @@ namespace Dev2.Studio.UI.Tests
         public void WaitForResourcesToLoad()
         {
             //wait for resource tree to load
-            Playback.Wait(10000);
+            Playback.Wait(5000);
         }
 
         public void EnterTextIntoWizardTextBox(int numTabs, string textToEnter, int waitAftertextEntered = 0)
@@ -710,7 +710,7 @@ namespace Dev2.Studio.UI.Tests
 
         #region Init
 
-        public void Init()
+        public static void Init()
         {
             try
             {

@@ -47,9 +47,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
         {
             var debugWindow = GetDebugWindow();
             int counter = 0;
-            while(debugWindow == null && counter < 5)
+            while(debugWindow == null && counter <= 5)
             {
-                Playback.Wait(1000);
+                Playback.Wait(500);
                 debugWindow = GetDebugWindow();
                 counter++;
             }
@@ -77,8 +77,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
             {
                 return true;
             }
-                return false;
-            }
+            return false;
+        }
 
         public void ClickXMLTab()
         {
