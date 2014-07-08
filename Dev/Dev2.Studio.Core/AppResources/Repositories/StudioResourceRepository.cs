@@ -1,13 +1,16 @@
-﻿using Dev2.Common.Common;
+﻿using System.Windows;
+using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Explorer;
 using Dev2.Interfaces;
 using Dev2.Models;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using System;
 using System.Collections.ObjectModel;
@@ -28,6 +31,7 @@ namespace Dev2.AppResources.Repositories
         private StudioResourceRepository()
         {
             ExplorerItemModels = new ObservableCollection<ExplorerItemModel>();
+
             try
             {
                 _currentDispatcher = Dispatcher.CurrentDispatcher;
@@ -319,19 +323,15 @@ namespace Dev2.AppResources.Repositories
                 return;
             }
             var oldResourcePath = item.ResourcePath;
-
-
             var newPath = oldResourcePath.Replace(item.DisplayName, newName);
-
             var environmentId = item.EnvironmentId;
             var result = GetExplorerProxy(environmentId).RenameFolder(oldResourcePath, newPath, Guid.Empty);
-            if(result.Status != ExecStatus.Success)
-            {
-                throw new Exception(result.Message);
-            }
-
             var explorerItemModel = LoadEnvironment(environmentId);
             LoadItemsToTree(environmentId, explorerItemModel);
+            if(result.Status != ExecStatus.Success)
+            {
+                EventPublishers.Aggregator.Publish(new DisplayMessageBoxMessage("Error Renaming Folder", "Conflicting resources found in destination folder.", MessageBoxImage.Warning));
+            }
         }
 
         public void AddResouceItem(IContextualResourceModel resourceModel)

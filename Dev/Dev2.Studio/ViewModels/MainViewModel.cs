@@ -75,6 +75,7 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<ShowReverseDependencyVisualizer>,
                                         IHandle<GetContextualEnvironmentCallbackMessage>,
                                         IHandle<FileChooserMessage>,
+                                        IHandle<DisplayMessageBoxMessage>,
                                         IPartImportsSatisfiedNotification
     {
         #region Fields
@@ -1634,5 +1635,14 @@ namespace Dev2.Studio.ViewModels
         {
             return IsBusyDownloadingInstaller != null && IsBusyDownloadingInstaller();
         }
+
+        #region Implementation of IHandle<DisplayMessageBoxMessage>
+
+        public void Handle(DisplayMessageBoxMessage message)
+        {
+            PopupProvider.Show(message.Message, message.Heading, MessageBoxButton.OK, message.MessageBoxImage, "");
+        }
+
+        #endregion
     }
 }

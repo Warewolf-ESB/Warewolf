@@ -1008,10 +1008,6 @@ namespace Dev2.Models
                 EventPublishers.Aggregator.Publish(new UpdateWorksurfaceFlowNodeDisplayName(ResourceId, DisplayName, newName));
                 EventPublishers.Aggregator.Publish(new UpdateWorksurfaceDisplayName(ResourceId, DisplayName, newName));
             }
-            if(ResourceType == ResourceType.Folder)
-            {
-                ResourcePath = ResourcePath.Replace(DisplayName, newName);
-            }
 
         }
         [ExcludeFromCodeCoverage]

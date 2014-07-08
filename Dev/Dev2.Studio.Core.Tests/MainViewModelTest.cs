@@ -1185,6 +1185,20 @@ namespace Dev2.Core.Tests
             Assert.IsInstanceOfType(MainViewModel, typeof(IHandle<FileChooserMessage>));
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("MainViewModel_Handle")]
+        public void MainViewModel_Handle_DisplayMessageBoxMessage_True()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            CreateFullExportsAndVm();
+
+            //------------Assert Results-------------------------
+            Assert.IsInstanceOfType(MainViewModel, typeof(IHandle<DisplayMessageBoxMessage>));
+        }
+
         #endregion
 
         #region DeactivateItem
@@ -2150,6 +2164,33 @@ namespace Dev2.Core.Tests
             var isDownloading = viewModel.IsDownloading();
             //------------Assert Results-------------------------
             Assert.IsFalse(isDownloading);
+        }
+
+        [TestMethod]
+        [TestCategory("MainViewModel_Handle_DisplayMessageBoxMessage")]
+        [Owner("Hagashen Naidu")]
+        public void MainViewModel_HandleMessageBoxMessage_CallsPopupShow()
+        {
+            //------------Setup for test--------------------------
+            CompositionInitializer.InitializeForMeflessBaseViewModel();
+            var localhost = new Mock<IEnvironmentModel>();
+            localhost.Setup(e => e.ID).Returns(Guid.Empty);
+            localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });
+            environmentRepository.Setup(c => c.Source).Returns(localhost.Object);
+            var eventPublisher = new Mock<IEventAggregator>();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var versionChecker = new Mock<IVersionChecker>();
+            var browserPopupController = new Mock<IBrowserPopupController>();
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = null };
+            Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(controller => controller.Show("Some message", "Some heading", MessageBoxButton.OK, MessageBoxImage.Warning, "")).Verifiable();
+            viewModel.PopupProvider = mockPopupController.Object;
+            //------------Execute Test---------------------------
+            viewModel.Handle(new DisplayMessageBoxMessage("Some heading", "Some message", MessageBoxImage.Warning));
+            //------------Assert Results-------------------------
+            mockPopupController.Verify(controller => controller.Show("Some message", "Some heading", MessageBoxButton.OK, MessageBoxImage.Warning, ""));
         }
 
         [TestMethod]

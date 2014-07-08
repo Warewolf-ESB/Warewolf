@@ -262,6 +262,7 @@
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
     <Compile Include="Controller\IPopUp.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
+    <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
     <Compile Include="ResolveExampleResourceNames.Designer.cs">
       <DependentUpon>ResolveExampleResourceNames.resx</DependentUpon>
       <AutoGen>True</AutoGen>

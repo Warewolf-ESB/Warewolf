@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
+using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
@@ -1235,6 +1236,50 @@ namespace Dev2.Core.Tests.Repositories
             repository.RenameFolder(explorerItemModel, "New Name");
             //------------Assert Results-------------------------
             mockExplorerResourceRepository.Verify(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("StudioResourceRepository_RenameFolder")]
+        public void StudioResourceRepository_RenameFolder_RenameFail_PublishesDisplayMessage()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            mockExplorerResourceRepository.Setup(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
+                                          .Returns(new ExplorerRepositoryResult(ExecStatus.Fail, "Success"))
+                                          .Verifiable();
+            Mock<IEventAggregator> aggregator = new Mock<IEventAggregator>();
+            DisplayMessageBoxMessage actualMessage = null;
+            aggregator.Setup(a => a.Publish(It.IsAny<DisplayMessageBoxMessage>())).Callback<object>(msg =>
+            {
+                actualMessage = msg as DisplayMessageBoxMessage;
+            });
+            EventPublishers.Aggregator = aggregator.Object;
+            var environmentId = Guid.NewGuid();
+            var workflowId = Guid.NewGuid();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.SetupProperty(model => model.Category);
+            mockResourceModel.SetupProperty(model => model.ResourceName);
+            mockResourceModel.Object.Category = "MyCat";
+            mockResourceModel.Object.ResourceName = "MyResName";
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.Find(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(new List<IResourceModel> { mockResourceModel.Object });
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            mockEnvironment.Setup(model => model.ID).Returns(environmentId);
+            GetEnvironmentRepository(mockEnvironment);
+            var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
+            {
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object
+            };
+            //------------Execute Test---------------------------
+            var explorerItemModel = repository.ExplorerItemModels[0].Children[0];
+            explorerItemModel.ResourcePath = "folder1";
+            repository.RenameFolder(explorerItemModel, "New Name");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(actualMessage);
+            Assert.AreEqual("Error Renaming Folder", actualMessage.Heading);
+            Assert.AreEqual("Conflicting resources found in destination folder.", actualMessage.Message);
+            Assert.AreEqual(MessageBoxImage.Warning, actualMessage.MessageBoxImage);
         }
 
         [TestMethod]
