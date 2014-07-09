@@ -3,7 +3,6 @@ using Dev2.AppResources.Repositories;
 using Dev2.Data.ServiceModel;
 using Dev2.Models;
 using Dev2.Network;
-using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -32,31 +31,35 @@ namespace Dev2.Activities.Specs.Explorer
             {
                 Assert.Fail("Warewolf server not running or file not accessible '" + serverProcessPath + "'.");
             }
-            var basePath = Path.Combine(Path.GetDirectoryName(serverProcessPath), "Resources");
-            var workingDirectory = Path.Combine(basePath, root);
-            Console.WriteLine(workingDirectory);
-            if(Directory.Exists(workingDirectory))
+            var directoryName = Path.GetDirectoryName(serverProcessPath);
+            if(directoryName != null)
             {
-                Directory.Delete(workingDirectory, true);
+                var basePath = Path.Combine(directoryName, "Resources");
+                var workingDirectory = Path.Combine(basePath, root);
+                Console.WriteLine(workingDirectory);
+                if(Directory.Exists(workingDirectory))
+                {
+                    Directory.Delete(workingDirectory, true);
+                }
+
+                Directory.CreateDirectory(workingDirectory);
+                paths.Remove(root);
+
+                foreach(var p in paths)
+                {
+                    Directory.CreateDirectory(workingDirectory + @"\" + p);
+                    workingDirectory += @"\" + p;
+                }
+
+                ScenarioContext.Current.Add("path", path);
+                ScenarioContext.Current.Add("basePath", basePath);
+                ScenarioContext.Current.Add("workingDirectory", workingDirectory);
             }
-
-            Directory.CreateDirectory(workingDirectory);
-            paths.Remove(root);
-
-            foreach(var p in paths)
-            {
-                Directory.CreateDirectory(workingDirectory + @"\" + p);
-                workingDirectory += @"\" + p;
-            }
-
-            ScenarioContext.Current.Add("path", path);
-            ScenarioContext.Current.Add("basePath", basePath);
-            ScenarioContext.Current.Add("workingDirectory", workingDirectory);
         }
 
         private static string GetServerProcessPath()
         {
-            var query = new System.Management.SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + ServerProcessName + "%'");
+            var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + ServerProcessName + "%'");
             ManagementObjectCollection processes;
             //initialize the searcher with the query it is
             //supposed to execute
@@ -69,7 +72,7 @@ namespace Dev2.Activities.Specs.Explorer
                     return null;
                 }
             }
-            if(processes == null || processes.Count == 0)
+            if(processes.Count == 0)
             {
                 return null;
             }
@@ -108,7 +111,7 @@ namespace Dev2.Activities.Specs.Explorer
                             DisplayName = folderName,
                             EnvironmentId = localhost,
                             ResourcePath = resourcePath + "\\" + folderName,
-                            Permissions = Permissions.Contribute,
+                            Permissions = Services.Security.Permissions.Contribute,
                             ResourceType = ResourceType.Folder,
                             Parent = parent
                         });
@@ -214,7 +217,7 @@ namespace Dev2.Activities.Specs.Explorer
                         Parent = parent,
                         DisplayName = oldResourceName,
                         ResourcePath = resourcePath + "\\" + displayName,
-                        Permissions = Permissions.Contribute
+                        Permissions = Services.Security.Permissions.Contribute
                     };
                     parent.Children.Add(child);
                 }
@@ -257,7 +260,7 @@ namespace Dev2.Activities.Specs.Explorer
                             Parent = parent,
                             DisplayName = resourceToDelete,
                             ResourcePath = resourcePath + "\\" + resourceToDelete,
-                            Permissions = Permissions.Contribute
+                            Permissions = Services.Security.Permissions.Contribute
                         };
                     parent.Children.Add(child);
                 }

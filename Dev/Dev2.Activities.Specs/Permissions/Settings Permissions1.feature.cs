@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Activities.Specs.Explorer
+namespace Dev2.Activities.Specs.Permissions
 {
     using TechTalk.SpecFlow;
     
@@ -24,7 +24,7 @@ namespace Dev2.Activities.Specs.Explorer
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "Settings.feature"
+#line 1 "Settings Permissions.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
@@ -49,7 +49,7 @@ namespace Dev2.Activities.Specs.Explorer
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Settings")))
             {
-                Dev2.Activities.Specs.Explorer.SettingsFeature.FeatureSetup(null);
+                Dev2.Activities.Specs.Permissions.SettingsFeature.FeatureSetup(null);
             }
         }
         

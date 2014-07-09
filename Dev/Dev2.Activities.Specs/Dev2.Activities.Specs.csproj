@@ -117,12 +117,7 @@
       <DependentUpon>Explorer.feature</DependentUpon>
     </Compile>
     <Compile Include="Explorer\ExplorerSteps.cs" />
-    <Compile Include="Permissions\Settings.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Settings Permissions.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Permissions\Settings Permissions.feature.cs">
+    <Compile Include="Permissions\Settings Permissions1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Settings Permissions.feature</DependentUpon>
@@ -410,6 +405,10 @@
       <LastGenOutput>Language Parser.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="Permissions\Settings Permissions.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput>
+    </None>
     <None Include="runtests.cmd" />
     <None Include="SpecRunTestProfile.xsd">
       <SubType>Designer</SubType>
