@@ -217,7 +217,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void MoveFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/MoveFolderOnFileSystemTest");
-            string expected = @"<MoveFileRes>Success</MoveFileRes><CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes><MoveFileErr></MoveFileErr><CreateFileErr></CreateFileErr><DeleteFileErr></DeleteFileErr>";
+            string expected = @"<MoveFileRes>Success</MoveFileRes><CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes><CreateFileErr></CreateFileErr><MoveFileErr></MoveFileErr><DeleteFileErr></DeleteFileErr>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
