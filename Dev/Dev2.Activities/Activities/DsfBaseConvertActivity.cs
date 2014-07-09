@@ -86,7 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 CleanArgs();
-           //     IsSingleValueRule.ApplyIsSingleValueRule(this.Result, allErrors);
+    
                 toUpsert.IsDebug = dataObject.IsDebugMode();
 
                 foreach(BaseConvertTO item in ConvertCollection)

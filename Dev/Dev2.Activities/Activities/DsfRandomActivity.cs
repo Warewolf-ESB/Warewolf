@@ -86,7 +86,7 @@ namespace Dev2.Activities
 
             try
             {
-                IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
+
 
                 if(!errors.HasErrors())
                 {

@@ -101,7 +101,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             int iterationIndex;
             try
             {
-                IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
+
                 IList<string> toSearch = FieldsToSearch.Split(',');
                 if(dataObject.IsDebugMode())
                 {
