@@ -2498,7 +2498,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             var translator = new Mock<IDataListTranslator>();
             var binaryDataList = new Mock<IBinaryDataList>();
             translator.Setup(m => m.ConvertToDataTable(binaryDataList.Object, "", out errors, PopulateOptions.IgnoreBlankRows)).Returns(new DataTable("TBA"));
+// ReSharper disable ImplicitlyCapturedClosure
             translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Returns("<DataList><PASSED/></DataList>");
+// ReSharper restore ImplicitlyCapturedClosure
             dataListServer.Setup(m => m.GetTranslator(DataListFormat.CreateFormat(GlobalConstants._DATATABLE, EmitionTypes.XML, ""))).Returns(translator.Object);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
             //------------Execute Test---------------------------
@@ -2519,7 +2521,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             var translator = new Mock<IDataListTranslator>();
             var binaryDataList = new Mock<IBinaryDataList>();
             translator.Setup(m => m.ConvertToDataTable(binaryDataList.Object, "", out errors, PopulateOptions.IgnoreBlankRows)).Throws(new Exception());
+// ReSharper disable ImplicitlyCapturedClosure
             translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Returns("<DataList><PASSED/></DataList>");
+// ReSharper restore ImplicitlyCapturedClosure
             dataListServer.Setup(m => m.GetTranslator(DataListFormat.CreateFormat(GlobalConstants._DATATABLE, EmitionTypes.XML, ""))).Returns(translator.Object);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
             //------------Execute Test---------------------------
