@@ -128,6 +128,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Settings Permissions.feature</DependentUpon>
     </Compile>
+    <Compile Include="Permissions\SettingsPermissionsSteps.cs" />
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
