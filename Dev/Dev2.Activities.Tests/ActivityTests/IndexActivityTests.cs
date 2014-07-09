@@ -243,6 +243,27 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("IndexActivity_Execute")]
+        public void IndexActivity_Execute_MultipleResultsFields_Error()
+        {
+            SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListShape,
+                           "ABCFDEFGH", "All Occurrences", "F", "Left To Right", "[[res]][[bes]]", "0");
+            IDSFDataObject result = ExecuteProcess();
+           
+
+
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(actual.Contains("The result field only allows a single result"));
+        }
+
+        [TestMethod]
         public void Index_Recordset_With_Star_AllOccurrences_Expected_Seven_Different_Indexs_Returned()
         {
             SetupArguments(ActivityStrings.IndexDataListShape, ActivityStrings.IndexDataListWithData,

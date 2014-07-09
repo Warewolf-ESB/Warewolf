@@ -77,7 +77,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            ErrorResultTO errors;
             Guid executionId = DataListExecutionID.Get(context);
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
 
@@ -86,6 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 CleanArgs();
+           //     IsSingleValueRule.ApplyIsSingleValueRule(this.Result, allErrors);
                 toUpsert.IsDebug = dataObject.IsDebugMode();
 
                 foreach(BaseConvertTO item in ConvertCollection)
@@ -96,7 +97,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         item.ToExpression = item.FromExpression;
                     }
-
+                    IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
                     var fieldName = item.FromExpression;
                     fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
                     var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);

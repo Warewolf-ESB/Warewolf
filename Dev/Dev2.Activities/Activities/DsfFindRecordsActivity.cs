@@ -16,6 +16,7 @@ using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
 using Dev2.Utilities;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -130,11 +131,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
             Guid executionID = dataObject.DataListID;
-
+            
             InitializeDebug(dataObject);
             try
             {
-
+                IsSingleValueRule.ApplyIsSingleValueRule(Result,allErrors);
                 // Fetch all fields to search....
                 IList<string> toSearch = FieldsToSearch.Split(',');
                 // now process each field for entire evaluated Where expression....
@@ -177,7 +178,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 allErrors.MergeErrors(errors);
                                 string concatRes = string.Empty;
 
+// ReSharper disable LoopCanBeConvertedToQuery
                                 foreach(string r in results)
+// ReSharper restore LoopCanBeConvertedToQuery
                                 {
                                     concatRes = string.Concat(concatRes, r, ",");
                                 }

@@ -17,6 +17,7 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
 using Dev2.Util;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -28,8 +29,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// </New>
     public class DsfFindRecordsMultipleCriteriaActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
-        IList<FindRecordsTO> _resultsCollection;
-
         #region Properties
 
         /// <summary>
@@ -71,7 +70,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             : base("Find Record Index")
         {
             // Initialise all the properties here
-            _resultsCollection = new List<FindRecordsTO>();
+            ResultsCollection = new List<FindRecordsTO>();
             FieldsToSearch = string.Empty;
             Result = string.Empty;
             StartIndex = string.Empty;
@@ -97,9 +96,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var executionID = dataObject.DataListID;
 
             InitializeDebug(dataObject);
+
+           
             int iterationIndex;
             try
             {
+                IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
                 IList<string> toSearch = FieldsToSearch.Split(',');
                 if(dataObject.IsDebugMode())
                 {
@@ -108,14 +110,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 allErrors.MergeErrors(errorResultTO);
                 IEnumerable<string> results = new List<string>();
-                IEnumerable<string> resultsDuringSearch;
-                var concatRes = string.Empty;
                 var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 toUpsert.IsDebug = dataObject.IsDebugMode();
                 bool isFirstIteration = true;
+// ReSharper disable ForCanBeConvertedToForeach
                 for(var i = 0; i < ResultsCollection.Count; i++)
+// ReSharper restore ForCanBeConvertedToForeach
                 {
-                    resultsDuringSearch = new List<string>();
+                    IEnumerable<string> resultsDuringSearch = new List<string>();
                     var currenSearchResults = new List<string>();
                     IDev2IteratorCollection itrCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
 
@@ -176,7 +178,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                           itrCollection.FetchNextRow(toItr).TheValue);
                                 ValidateRequiredFields(searchTO, out errorResultTO);
                                 allErrors.MergeErrors(errorResultTO);
+// ReSharper disable ConvertClosureToMethodGroup
                                 (RecordsetInterrogator.FindRecords(toSearchList, searchTO, out errorResultTO)).ToList().ForEach(it => iterationResults.Add(it));
+// ReSharper restore ConvertClosureToMethodGroup
 
                                 if(RequireAllFieldsToMatch)
                                 {
@@ -186,14 +190,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 else
                                 {
                                     resultsDuringSearch = currenSearchResults.Union(iterationResults);
-                                    if(RequireAllTrue)
-                                    {
-                                        currenSearchResults = new List<string>();
-                                    }
-                                    else
-                                    {
-                                        currenSearchResults = resultsDuringSearch.ToList();
-                                    }
+                                    currenSearchResults = RequireAllTrue ? new List<string>() : resultsDuringSearch.ToList();
                                 }
                                 isFirstFieldIteration = false;
 
@@ -227,49 +224,58 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 var regions = DataListCleaningUtils.SplitIntoRegions(Result);
-                foreach(var region in regions)
+                IsSingleValueRule rule = new IsSingleValueRule(()=>Result);
+                var singleresError = rule.Check();
+                if (singleresError != null)
+                    allErrors.AddError(singleresError.Message);
+                else
                 {
-
-                    var allResults = results as IList<string> ?? results.ToList();
-                    // ReSharper restore PossibleMultipleEnumeration
-                    if(allResults.Count == 0)
+                    foreach (var region in regions)
                     {
-                        allResults.Add("-1");
-                    }
-
-                    if(!DataListUtil.IsValueRecordset(region))
-                    {
-                        foreach(var r in allResults)
+                        string concatRes = String.Empty;
+                        var allResults = results as IList<string> ?? results.ToList();
+                        // ReSharper restore PossibleMultipleEnumeration
+                        if (allResults.Count == 0)
                         {
-                            concatRes = string.Concat(concatRes, r, ",");
+                            allResults.Add("-1");
                         }
 
-                        if(concatRes.EndsWith(","))
+                        if (!DataListUtil.IsValueRecordset(region))
                         {
-                            concatRes = concatRes.Remove(concatRes.Length - 1);
-                        }
-                        toUpsert.Add(region, concatRes);
-                        toUpsert.FlushIterationFrame();
-                    }
-                    else
-                    {
-                        iterationIndex = 0;
+// ReSharper disable LoopCanBeConvertedToQuery
+                            foreach (var r in allResults)
+// ReSharper restore LoopCanBeConvertedToQuery
+                            {
+                                concatRes = string.Concat(concatRes, r, ",");
+                            }
 
-                        foreach(var r in allResults)
-                        {
-                            toUpsert.Add(region, r);
+                            if (concatRes.EndsWith(","))
+                            {
+                                concatRes = concatRes.Remove(concatRes.Length - 1);
+                            }
+                            toUpsert.Add(region, concatRes);
                             toUpsert.FlushIterationFrame();
-                            iterationIndex++;
                         }
-                    }
-                    compiler.Upsert(executionID, toUpsert, out errorResultTO);
-                    allErrors.MergeErrors(errorResultTO);
-
-                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
-                    {
-                        foreach(var debugTo in toUpsert.DebugOutputs)
+                        else
                         {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugTo));
+                            iterationIndex = 0;
+
+                            foreach (var r in allResults)
+                            {
+                                toUpsert.Add(region, r);
+                                toUpsert.FlushIterationFrame();
+                                iterationIndex++;
+                            }
+                        }
+                        compiler.Upsert(executionID, toUpsert, out errorResultTO);
+                        allErrors.MergeErrors(errorResultTO);
+
+                        if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                        {
+                            foreach (var debugTo in toUpsert.DebugOutputs)
+                            {
+                                AddDebugOutputItem(new DebugItemVariableParams(debugTo));
+                            }
                         }
                     }
                 }
@@ -578,17 +584,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return ResultsCollection.Count(findRecordsTO => !findRecordsTO.CanRemove());
         }
 
-        public IList<FindRecordsTO> ResultsCollection
-        {
-            get
-            {
-                return _resultsCollection;
-            }
-            set
-            {
-                _resultsCollection = value;
-            }
-        }
+        public IList<FindRecordsTO> ResultsCollection { get; set; }
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {

@@ -12,6 +12,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities
@@ -183,6 +184,8 @@ namespace Dev2.Activities
                 List<string> cols = BreakAndValidate(dlID, compiler, InFields, dataObject, true, out errors,
                                                      out rsEntry);
                 allErrors.MergeErrors(errors);
+
+                //IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
 
                 // Use row data?!, nope use row indexes ;)
                 List<string> resultFields = BreakAndValidate(dlID, compiler, ResultFields, dataObject,

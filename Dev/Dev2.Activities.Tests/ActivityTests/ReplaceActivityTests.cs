@@ -26,6 +26,23 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Replace Positive Tests
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfReplaceActivity_Execute")]
+        public void DsfReplaceActivity_Execute_MultipleResults_ExpectError()
+        {
+            SetupArguments(ActivityStrings.ReplaceSpecialCharsDataListWithData, ActivityStrings.ReplaceSpecialCharsDataListShape, "[[SpecialChar]]", @"\*+?|{[()^$# ", "It Worked", "[[res]],[[noot]]", false);
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+        }
+
+
         //Added for - Bug 9937
         [TestMethod]
         [Owner("Massimo Guerrera")]

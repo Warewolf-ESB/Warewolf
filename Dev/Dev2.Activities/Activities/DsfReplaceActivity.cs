@@ -16,6 +16,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -117,6 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             InitializeDebug(dataObject);
             try
             {
+
                 IList<string> toSearch = FieldsToSearch.Split(new[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach(var s in toSearch)
@@ -127,30 +129,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugInputItem(new DebugItemVariableParams(s, "In Field(s)", inFieldsEntry, executionId));
                     }
                 }
-
-                while(iteratorCollection.HasMoreData())
-                {
-                    // now process each field for entire evaluated Where expression....                    
-                    var findValue = iteratorCollection.FetchNextRow(itrFind).TheValue;
-                    var replaceWithValue = iteratorCollection.FetchNextRow(itrReplace).TheValue;
-                    foreach(string s in toSearch)
+                     var rule = new IsSingleValueRule(() => Result);
+                    var single = rule.Check();
+                    if (single != null)
                     {
-                        if(!DataListUtil.IsEvaluated(s))
-                        {
-                            allErrors.AddError("Please insert only variables into Fields To Search");
-                            return;
-                        }
-                        if(!string.IsNullOrEmpty(findValue))
-                        {
-                            IBinaryDataListEntry entryToReplaceIn;
-                            toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue, CaseMatch, toUpsert, out errors, out replacementCount, out entryToReplaceIn);
-                        }
-
-                        replacementTotal += replacementCount;
-
-                        allErrors.MergeErrors(errors);
+                        allErrors.AddError(single.Message);
                     }
-                }
+                    else
+                    {
+                        while (iteratorCollection.HasMoreData())
+                        {
+                            // now process each field for entire evaluated Where expression....                    
+                            var findValue = iteratorCollection.FetchNextRow(itrFind).TheValue;
+                            var replaceWithValue = iteratorCollection.FetchNextRow(itrReplace).TheValue;
+                            foreach (string s in toSearch)
+                            {
+                                if (!DataListUtil.IsEvaluated(s))
+                                {
+                                    allErrors.AddError("Please insert only variables into Fields To Search");
+                                    return;
+                                }
+                                if (!string.IsNullOrEmpty(findValue))
+                                {
+                                    IBinaryDataListEntry entryToReplaceIn;
+                                    toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue, CaseMatch, toUpsert, out errors, out replacementCount, out entryToReplaceIn);
+                                }
+
+                                replacementTotal += replacementCount;
+
+                                allErrors.MergeErrors(errors);
+                            }
+                        }
+                    }
                 if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(new DebugItemVariableParams(Find, "Find", expressionsEntryFind, executionId));
@@ -183,7 +193,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugOutputItem(new DebugItemStaticDataParams("0", Result, ""));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DisplayAndWriteError("DsfReplaceActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);

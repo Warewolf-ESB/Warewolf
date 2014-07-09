@@ -133,7 +133,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 var sourceString = SourceString ?? "";
                 IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, sourceString, false, out errors);
-
+                
                 if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(new DebugItemVariableParams(sourceString, "String to Split", expressionsEntry, dlID));
@@ -141,6 +141,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(new DebugItemStaticDataParams(SkipBlankRows ? "Yes" : "No", "Skip blank rows"));
                 }
                 CleanArguments(ResultsCollection);
+                ResultsCollection.ToList().ForEach(a=>IsSingleValueRule.ApplyIsSingleValueRule(a.OutputVariable,allErrors));
                 if(ResultsCollection.Count > 0)
                 {
                     if(dataObject.IsDebugMode())
@@ -317,6 +318,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var dataSplitDto = ResultsCollection[pos];
             var outputVariable = dataSplitDto.OutputVariable;
             CheckIndex(outputVariable);
+   
             CheckIndex(dataSplitDto.EscapeChar);
             if(!string.IsNullOrEmpty(outputVariable))
             {

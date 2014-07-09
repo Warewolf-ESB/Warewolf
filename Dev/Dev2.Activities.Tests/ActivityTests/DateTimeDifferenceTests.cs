@@ -383,6 +383,30 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual(1, outputs.FetchAllEntries().Count);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDateTimeDifference_Execute")]
+        public void DsfDateTimeDifference_Execute_MultipleResults_ExpectErrors()
+        {
+            SetupArguments(
+                           ActivityStrings.DateTimeDifferenceDataListWithData
+                         , ActivityStrings.DateTimeDifferenceDataListShape
+                         , "[[recset1(*).f1]]"
+                         , "[[recset2(*).f2]]"
+                         , "dd/mm/yyyy"
+                         , "Days"
+                         , "[[resCol(*).res]][[g]]"
+                         );
+
+            IDSFDataObject result = ExecuteProcess();
+            string error;
+            IList<IBinaryDataListItem> results;
+            GetRecordSetFieldValueFromDataList(result.DataListID, "resCol", "res", out results, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+        }
+
         #endregion Get Input/Output Tests
 
         #region Private Test Methods

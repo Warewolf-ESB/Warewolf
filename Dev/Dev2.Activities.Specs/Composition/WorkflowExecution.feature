@@ -1865,307 +1865,297 @@ Scenario: Workflow with Assign and ForEach
 
 #The below 12 scenario should be passed after the bug 11994 is fixed
 
-#Scenario: Workflow with Assign and Find Record index
-#      Given I have a workflow "WFWithAssignandFindRecordindex"
-#	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
-#      | # | variable     | value    |
-#      | # | [[rec(1).a]] | Warewolf |
-#	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord" into result as "[[a]][[b]]"
-#      | # | In Field     | #        | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
-#      | # | [[rec(*).a]] | 1        | =          | Warewolf | YES                            | NO |
-#	  When "WFWithAssignandFindRecordindex" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-#	  | # | Variable       | New Value |
-#	  | 1 | [[rec(1).a]] = | Warewolf  | 
-#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
-#	  | # |                                  |
-#	  | 1 | [[rec(1).a]]         =  Warewolf |
-#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-#	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-#	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
-#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
-#	  |           |
-#	  | [[a]] = 1 |
-#	  | [[b]] = 1 |
+Scenario: Workflow with Assign and Find Record index
+      Given I have a workflow "WFWithAssignandFindRecordindex"
+	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
+      | # | variable     | value    |
+      | # | [[rec(1).a]] | Warewolf |
+	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord" into result as "[[a]][[b]]"
+      | # | In Field     | #        | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+      | # | [[rec().a]] | 1        | =          | Warewolf | YES                            | NO |
+	  When "WFWithAssignandFindRecordindex" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = | Warewolf  | 
+	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
+	  | # |                                  |
+	  | 1 | [[rec(1).a]]         =  Warewolf |
+	  And the 'FindRecord' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
+	  And the 'FindRecord' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
+	  |            |
+	  | [[a]] = -1 |
+	  | [[b]] = -1 |
 #	
-#Scenario: Testing Count with two variables in Result field
-#      Given I have a workflow "WorkflowforCount"
-#      And "WorkflowforCount" contains an Assign "Rec To Convert" as
-#	  | variable    | value |
-#	  | [[rec().a]] | 1213  |
-#	  | [[rec().a]] | 4561  |
-#	  And "WorkflowforCount" contains Count Record "CountRec" on "[[rec(*)]]" into "[[count]][[a]]"
-#	  When "WorkflowforCount" is executed
-#	  Then the workflow execution has "AN" error	
-#      And the 'Rec To Convert' in WorkFlow 'WorkflowforCount' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | 1213      |
-#	  | 2 | [[rec().a]] = | 4561      |
-#	  And the 'Rec To Convert' in Workflow 'WorkflowforCount' debug outputs as    
-#	  | # |                     |
-#	  | 1 | [[rec(1).a]] = 1213 |
-#	  | 2 | [[rec(2).a]] = 4561 |
-#	  And the 'CountRec' in WorkFlow 'WorkflowforCount' debug inputs as
-#	  | Recordset            |
-#	  | [[rec(1).a]] = 1213 |
-#	  | [[rec(2).a]] = 4561 |
-#	  And the 'CountRec' in Workflow 'WorkflowforCount' debug outputs as    
-#	  |               |
-#	  | [[count]] = 2 |
-#	  | [[a]] =       |
+Scenario: Testing Count with two variables in Result field
+      Given I have a workflow "WorkflowforCount"
+      And "WorkflowforCount" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[rec().a]] | 1213  |
+	  | [[rec().a]] | 4561  |
+	  And "WorkflowforCount" contains Count Record "CountRec" on "[[rec()]]" into "[[count]][[a]]"
+	  When "WorkflowforCount" is executed
+	  Then the workflow execution has "AN" error	
+      And the 'Rec To Convert' in WorkFlow 'WorkflowforCount' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | 1213      |
+	  | 2 | [[rec().a]] = | 4561      |
+	  And the 'Rec To Convert' in Workflow 'WorkflowforCount' debug outputs as    
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = 1213 |
+	  | 2 | [[rec(2).a]] = 4561 |
+	  And the 'CountRec' in WorkFlow 'WorkflowforCount' debug inputs as
+	  | Recordset            |
+	  | [[rec(1).a]] = 1213 |
+	  | [[rec(2).a]] = 4561 |
+	  And the 'CountRec' in Workflow 'WorkflowforCount' debug outputs as    
+	  |               |
 #
-#Scenario: Testing Length with two variables in Result field
-#      Given I have a workflow "WorkflowforLength"
-#      And "WorkflowforLength" contains an Assign "Rec To Convert" as
-#	  | variable    | value |
-#	  | [[rec().a]] | 1213  |
-#	  | [[rec().a]] | 4561  |
-#	  And "WorkflowforLength" contains Length "Len" on "[[rec(*)]]" into "[[length]][[a]]"
-#	  When "WorkflowforLength" is executed
-#	  Then the workflow execution has "AN" error	
-#      And the 'Rec To Convert' in WorkFlow 'WorkflowforLength' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | 1213      |
-#	  | 2 | [[rec().a]] = | 4561      |
-#	  And the 'Rec To Convert' in Workflow 'WorkflowforLength' debug outputs as    
-#	  | # |                     |
-#	  | 1 | [[rec(1).a]] = 1213 |
-#	  | 2 | [[rec(2).a]] = 4561 |
-#	  And the 'Len' in WorkFlow 'WorkflowforLength' debug inputs as
-#	  | Recordset           |
-#	  | [[rec(1).a]] = 1213 |
-#	  | [[rec(2).a]] = 4561 |
-#	  And the 'Len' in Workflow 'WorkflowforLength' debug outputs as    
-#	  |                |
-#	  | [[length]] = 2 |
-#	  | [[a]] =        |
+Scenario: Testing Length with two variables in Result field
+      Given I have a workflow "WorkflowforLength"
+      And "WorkflowforLength" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[rec().a]] | 1213  |
+	  | [[rec().a]] | 4561  |
+	  And "WorkflowforLength" contains Length "Len" on "[[rec(*)]]" into "[[length]][[a]]"
+	  When "WorkflowforLength" is executed
+	  Then the workflow execution has "AN" error	
+      And the 'Rec To Convert' in WorkFlow 'WorkflowforLength' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | 1213      |
+	  | 2 | [[rec().a]] = | 4561      |
+	  And the 'Rec To Convert' in Workflow 'WorkflowforLength' debug outputs as    
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = 1213 |
+	  | 2 | [[rec(2).a]] = 4561 |
+	  And the 'Len' in WorkFlow 'WorkflowforLength' debug inputs as
+	  | Recordset           |
+	  | [[rec(1).a]] = 1213 |
+	  | [[rec(2).a]] = 4561 |
+	  And the 'Len' in Workflow 'WorkflowforLength' debug outputs as    
+	  |                |
+	  |                |
+
+Scenario: Testing Find Index with two variables in Result field
+      Given I have a workflow "WorkflowforFI"
+      And "WorkflowforFI" contains an Assign "Rec To Convert" as
+	  | variable    | value |
+	  | [[rec().a]] | 141   |
+	  | [[rec().a]] | 4561  |
+	  And "WorkflowforFI" contains Find Index "Index" into "[[a]][[indexResult]]" as
+	  | In Fields    | Index         | Character | Direction     |
+	  | [[rec(*).a]] | All Occurence | 1         | Left to Right |	
+	  When "WorkflowforFI" is executed  	  
+	  Then the workflow execution has "AN" error	
+      And the 'Rec To Convert' in WorkFlow 'WorkflowforFI' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | 141       |
+	  | 2 | [[rec().a]] = | 4561      |
+	  And the 'Rec To Convert' in Workflow 'WorkflowforFI' debug outputs as    
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = 141  |
+	  | 2 | [[rec(2).a]] = 4561 |
+	  And the 'Index' in WorkFlow 'WorkflowforFI' debug inputs as
+	  | In Field            | Index         | Characters | Direction     |
+	  | [[rec(1).a]] = 141  |               |            |               |
+	  | [[rec(2).a]] = 4561 | All Occurence | 1          | Left to Right |
+	  And the 'Index' in Workflow 'WorkflowforFI' debug outputs as
+	  |                   |
+
 #
-#Scenario: Testing Find Index with two variables in Result field
-#      Given I have a workflow "WorkflowforFI"
-#      And "WorkflowforFI" contains an Assign "Rec To Convert" as
-#	  | variable    | value |
-#	  | [[rec().a]] | 141   |
-#	  | [[rec().a]] | 4561  |
-#	  And "WorkflowforFI" contains Find Index "Index" into "[[a]][[indexResult]]" as
-#	  | In Fields    | Index         | Character | Direction     |
-#	  | [[rec(*).a]] | All Occurence | 1         | Left to Right |	
-#	  When "WorkflowforFI" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Rec To Convert' in WorkFlow 'WorkflowforFI' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | 141       |
-#	  | 2 | [[rec().a]] = | 4561      |
-#	  And the 'Rec To Convert' in Workflow 'WorkflowforFI' debug outputs as    
-#	  | # |                     |
-#	  | 1 | [[rec(1).a]] = 141  |
-#	  | 2 | [[rec(2).a]] = 4561 |
-#	  And the 'Index' in WorkFlow 'WorkflowforFI' debug inputs as
-#	  | In Field            | Index         | Characters | Direction     |
-#	  | [[rec(1).a]] = 141  |               |            |               |
-#	  | [[rec(2).a]] = 4561 | All Occurence | 1          | Left to Right |
-#	  And the 'Index' in Workflow 'WorkflowforFI' debug outputs as
-#	  |                   |
-#	  | [[a]]  = 1,3,4    |
-#	  | [[indexResult]] = |
-#
-#Scenario: Testing Data Merge with two variables in Result field
-#      Given I have a workflow "WorkflowforDataMerge"
-#      And "WorkflowforDataMerge" contains an Assign "Rec To Convert" as
-#	  | variable    | value    |
-#	  | [[rec().a]] | Test     |
-#	  | [[rec().a]] | Warewolf |
-#	  And "WorkflowforDataMerge" contains Data Merge "Data Merge" into "[[result]][[a]]" as	
-#	  | Variable     | Type | Using | Padding | Alignment |
-#	  | [[rec(1).a]] | None |       |         | Left      |
-#	  | [[rec(2).a]] | None |       |         | Left      |
-#	  When "WorkflowforDataMerge" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Rec To Convert' in WorkFlow 'WorkflowforDataMerge' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | Test      |
-#	  | 2 | [[rec().a]] = | Warewolf  |
-#	  And the 'Rec To Convert' in Workflow 'WorkflowforDataMerge' debug outputs as    
-#	  | # |                         |
-#	  | 1 | [[rec(1).a]] = Test     |
-#	  | 2 | [[rec(2).a]] = Warewolf |
-#	 And the 'Data Merge' in WorkFlow 'WorkflowforDataMerge' debug inputs as 
-#	  | # |                         | With | Using | Pad | Align |
-#	  | 1 | [[rec(1).a]] = Test     | None | ""    | ""  | Left  |
-#	  | 2 | [[rec(2).a]] = Warewolf | None | ""    | ""  | Left  |
-#	  And the 'Data Merge' in Workflow 'WorkflowforDataMerge' debug outputs as  
-#	  |                           |
-#	  | [[result]] = TestWarewolf |
-#	  | [[a]] =                   |
-#
-#Scenario: Testing Data Split with two variables in Result field
-#      Given I have a workflow "WorkflowforDatasplit"
-#      And "WorkflowforDatasplit" contains an Assign "Rec To Convert" as
-#	  | variable    | value    |
-#	  | [[rec().a]] | Test     |
-#	  | [[rec().a]] | Warewolf |
-#	  And "WorkflowforDatasplit" contains Data Split "Data Split" as
-#	  | String       | Variable        | Type  | At | Include    | Escape |
-#	  | [[rec(1).a]] | [[fr().a]][[a]] | Index | 2  | Unselected |        |
-#	  |              | [[fr().b]][[b]] | Index | 2  | Unselected |        |
-#	  When "WorkflowforDatasplit" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Rec To Convert' in WorkFlow 'WorkflowforDatasplit' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | Test      |
-#	  | 2 | [[rec().a]] = | Warewolf  |
-#	  And the 'Rec To Convert' in Workflow 'WorkflowforDatasplit' debug outputs as    
-#	  | # |                         |
-#	  | 1 | [[rec(1).a]] = Test     |
-#	  | 2 | [[rec(2).a]] = Warewolf |
-#	 And the 'Data Split' in WorkFlow 'WorkflowforDatasplit' debug inputs as 
-#	  | String to Split     | Process Direction | Skip blank rows | # |                   | With  | Using | Include | Escape |
-#	  | [[rec(1).a]] = Test | Forward           | No              | 1 | [[fr().a]][[a]] = | Index | 2     | No      |        |
-#	  |                     |                   |                 | 2 | [[fr().b]][[b]] = | Index | 2     | No      |        |
-#	  And the 'Data Split' in Workflow 'WorkflowforDatasplit' debug outputs as  
-#	  | # |                    |
-#	  | 1 | [[fr(1).a]][[a]] = |
-#	  | 2 | [[fr(1).b]][[b]] = |
+Scenario: Testing Data Merge with two variables in Result field
+      Given I have a workflow "WorkflowforDataMerge"
+      And "WorkflowforDataMerge" contains an Assign "Rec To Convert" as
+	  | variable    | value    |
+	  | [[rec().a]] | Test     |
+	  | [[rec().a]] | Warewolf |
+	  And "WorkflowforDataMerge" contains Data Merge "Data Merge" into "[[result]][[a]]" as	
+	  | Variable     | Type | Using | Padding | Alignment |
+	  | [[rec(1).a]] | None |       |         | Left      |
+	  | [[rec(2).a]] | None |       |         | Left      |
+	  When "WorkflowforDataMerge" is executed  	  
+	  Then the workflow execution has "AN" error	
+      And the 'Rec To Convert' in WorkFlow 'WorkflowforDataMerge' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | Test      |
+	  | 2 | [[rec().a]] = | Warewolf  |
+	  And the 'Rec To Convert' in Workflow 'WorkflowforDataMerge' debug outputs as    
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = Test     |
+	  | 2 | [[rec(2).a]] = Warewolf |
+	 And the 'Data Merge' in WorkFlow 'WorkflowforDataMerge' debug inputs as 
+	  | # |                         | With | Using | Pad | Align |
+	  | 1 | [[rec(1).a]] = Test     | None | ""    | ""  | Left  |
+	  | 2 | [[rec(2).a]] = Warewolf | None | ""    | ""  | Left  |
+	  And the 'Data Merge' in Workflow 'WorkflowforDataMerge' debug outputs as  
+	  |                   |
+	  | [[result]][[a]] = |  
+
+Scenario: Testing Data Split with two variables in Result field
+      Given I have a workflow "WorkflowforDatasplit"
+      And "WorkflowforDatasplit" contains an Assign "Rec To Convert" as
+	  | variable    | value    |
+	  | [[rec().a]] | Test     |
+	  | [[rec().a]] | Warewolf |
+	  And "WorkflowforDatasplit" contains Data Split "Data Split" as
+	  | String       | Variable        | Type  | At | Include    | Escape |
+	  | [[rec(1).a]] | [[fr().a]][[a]] | Index | 2  | Unselected |        |
+	  |              | [[fr().b]][[b]] | Index | 2  | Unselected |        |
+	  When "WorkflowforDatasplit" is executed  	  
+	  Then the workflow execution has "AN" error	
+      And the 'Rec To Convert' in WorkFlow 'WorkflowforDatasplit' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | Test      |
+	  | 2 | [[rec().a]] = | Warewolf  |
+	  And the 'Rec To Convert' in Workflow 'WorkflowforDatasplit' debug outputs as    
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = Test     |
+	  | 2 | [[rec(2).a]] = Warewolf |
+	 And the 'Data Split' in WorkFlow 'WorkflowforDatasplit' debug inputs as 
+	  | String to Split     | Process Direction | Skip blank rows | # |                   | With  | Using | Include | Escape |
+	  | [[rec(1).a]] = Test | Forward           | No              | 1 | [[fr().a]][[a]] = | Index | 2     | No      |        |
+	  |                     |                   |                 | 2 | [[fr().b]][[b]] = | Index | 2     | No      |        |
+	  And the 'Data Split' in Workflow 'WorkflowforDatasplit' debug outputs as  
+	  | # |                    |
+	  | 1 | [[fr(1).aa]] = |
+	  | 2 | [[fr(1).bb]] = |
 #	
-#Scenario: Testing Replace with two variables in Result field
-#      Given I have a workflow "WorkflowforReplace"
-#      And "WorkflowforReplace" contains an Assign "Rec To Convert" as
-#	  | variable    | value    |
-#	  | [[rec().a]] | Test     |
-#	  | [[rec().a]] | Warewolf |
-#	  And "WorkflowforReplace" contains Replace "Replac" into "[[a]][[b]][[c]]" as	
-#	  | In Fields    | Find | Replace With |
-#	  | [[rec(*).a]] | Test | rocks        |
-#	  When "WorkflowforReplace" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Rec To Convert' in WorkFlow 'WorkflowforReplace' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | Test      |
-#	  | 2 | [[rec().a]] = | Warewolf  |
-#	  And the 'Rec To Convert' in Workflow 'WorkflowforReplace' debug outputs as    
-#	  | # |                         |
-#	  | 1 | [[rec(1).a]] = Test     |
-#	  | 2 | [[rec(2).a]] = Warewolf |
-#	  And the 'Replac' in WorkFlow 'WorkflowforReplace' debug inputs as 	
-#	  | In Field(s)             | Find | Replace With |
-#	  | [[rec(1).a]] = Test     |      |              |
-#	  | [[rec(2).a]] = Warewolf | Test | rocks        |
-#	  And the 'Replac' in Workflow 'WorkflowforReplace' debug outputs as 
-#	  |                      |
-#	  | [[rec(1).a]] = rocks |
-#	  | [[a]] = 1            |
-#	  | [[b]] =              |
-#	  | [[c]] =              |
+Scenario: Testing Replace with two variables in Result field
+      Given I have a workflow "WorkflowforReplace"
+      And "WorkflowforReplace" contains an Assign "Rec To Convert" as
+	  | variable    | value    |
+	  | [[rec().a]] | Test     |
+	  | [[rec().a]] | Warewolf |
+	  And "WorkflowforReplace" contains Replace "Replac" into "[[a]][[b]][[c]]" as	
+	  | In Fields    | Find | Replace With |
+	  | [[rec(*).a]] | Test | rocks        |
+	  When "WorkflowforReplace" is executed  	  
+	  Then the workflow execution has "AN" error	
+      And the 'Rec To Convert' in WorkFlow 'WorkflowforReplace' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | Test      |
+	  | 2 | [[rec().a]] = | Warewolf  |
+	  And the 'Rec To Convert' in Workflow 'WorkflowforReplace' debug outputs as    
+	  | # |                         |
+	  | 1 | [[rec(1).a]] = Test     |
+	  | 2 | [[rec(2).a]] = Warewolf |
+	  And the 'Replac' in WorkFlow 'WorkflowforReplace' debug inputs as 	
+	  | In Field(s)             | Find | Replace With |
+	  | [[rec(1).a]] = Test     |      |              |
+	  | [[rec(2).a]] = Warewolf | Test | rocks        |
+	  And the 'Replac' in Workflow 'WorkflowforReplace' debug outputs as 
+	  |                   |
+	  | [[a]][[b]][[c]] = |
 #	
-#Scenario: Testing Calculate with two variables in Result field
-#      Given I have a workflow "WorkflowforCal"
-#      And "WorkflowforCal" contains an Assign "Values" as
-#	  | variable | value |
-#	  | [[a]]    | 1     |
-#	  | [[b]]    | 2     |
-#	 And "WorkflowforCal" contains Calculate "Calculate1" with formula "[[a]]+[[b]]" into "[[result]][[c]]"	 
-#	  When "WorkflowforCal" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Values' in WorkFlow 'WorkflowforCal' debug inputs as
-#	  | # | Variable | New Value |
-#	  | 1 | [[a]] =  | 1         |
-#	  | 2 | [[b]] =  | 2         |
-#	  And the 'Values' in Workflow 'WorkflowforCal' debug outputs as    
-#	  | # |           |
-#	  | 1 | [[a]] = 1 |
-#	  | 2 | [[b]] = 2 |
-#	  And the 'Calculate1' in WorkFlow 'WorkflowforCal' debug inputs as 
-#      | fx =                  |
-#      | [[a]]+[[b]] = 1+2 = 2 |           
-#      And the 'Calculate1' in Workflow 'WorkflowforCal' debug outputs as  
-#	  |                |
-#	  | [[result]] = 3 |
-#	  | [[c]] =        |
+Scenario: Testing Calculate with two variables in Result field
+      Given I have a workflow "WorkflowforCal"
+      And "WorkflowforCal" contains an Assign "Values" as
+	  | variable | value |
+	  | [[a]]    | 1     |
+	  | [[b]]    | 2     |
+	 And "WorkflowforCal" contains Calculate "Calculate1" with formula "[[a]]+[[b]]" into "[[result]][[c]]"	 
+	  When "WorkflowforCal" is executed  	  
+	  Then the workflow execution has "AN" error	
+      And the 'Values' in WorkFlow 'WorkflowforCal' debug inputs as
+	  | # | Variable | New Value |
+	  | 1 | [[a]] =  | 1         |
+	  | 2 | [[b]] =  | 2         |
+	  And the 'Values' in Workflow 'WorkflowforCal' debug outputs as    
+	  | # |           |
+	  | 1 | [[a]] = 1 |
+	  | 2 | [[b]] = 2 |
+	  And the 'Calculate1' in WorkFlow 'WorkflowforCal' debug inputs as 
+      | fx =                  |
+      | [[a]]+[[b]] = 1+2 = 2 |           
+      And the 'Calculate1' in Workflow 'WorkflowforCal' debug outputs as  
+	  |                  |
+	  | [[result]][[c]] = |
 #
-#Scenario: Testing Format Numbers with two variables in Result field
-#      Given I have a workflow "Workflowforfn"
-#	  And "Workflowforfn" contains Format Number "Fnumber" as 
-#	  | Number  | Rounding Selected | Rounding To | Decimal to show | Result                |
-#	  | 123.568 | Up                | 2           | 2               | [[fresult]][[a]][[b]] |
-#	  When "Workflowforfn" is executed  	  
-#	  Then the workflow execution has "AN" error
-#	  And the 'Fnumber' in WorkFlow 'Workflowforfn' debug inputs as 	
-#	  | Number  | Rounding | Rounding Value | Decimals to show |
-#	  | 123.568 | Up       | 2              | 2                |
-#	  And the 'Fnumber' in Workflow 'Workflowforfn' debug outputs as 
-#	  |                      |
-#	  | [[fresult]] = 123.57 |
-#	  | [[a]] =              |
-#	  | [[b]] =              |
+Scenario: Testing Format Numbers with two variables in Result field
+      Given I have a workflow "Workflowforfn"
+	  And "Workflowforfn" contains an Assign "Values" as
+	  | variable | value |
+	  | [[a]]    | 1     |
+	  | [[b]]    | 2     |
+	  And "Workflowforfn" contains Format Number "Fnumber" as 
+	  | Number  | Rounding Selected | Rounding To | Decimal to show | Result                |
+	  | 123.568 | Up                | 2           | 2               | [[fresult]][[a]][[b]] |
+	  When "Workflowforfn" is executed  	  
+	  Then the workflow execution has "AN" error
+	  And the 'Fnumber' in WorkFlow 'Workflowforfn' debug inputs as 	
+	  | Number  | Rounding | Rounding Value | Decimals to show |
+	  | 123.568 | Up       | 2              | 2                |
+	  And the 'Fnumber' in Workflow 'Workflowforfn' debug outputs as 
+	  |                         |
+	  | [[fresult]][[a]][[b]] = |
+
+ Scenario: Testing Random Numbers with two variables in Result field
+      Given I have a workflow "Workflowforrandom"
+	  And "Workflowforfn" contains an Assign "Values" as
+	  | variable | value |
+	  | [[a]]    | 1     |
+	  | [[b]]    | 2     |
+	  And "Workflowforrandom" contains Random "Rand1" as
+	  | Type    | From | To | Result               |
+	  | Numbers | 1    | 10 | [[result]][[a]][[b]] |
+	  When "Workflowforrandom" is executed  	  
+	  Then the workflow execution has "AN" error
+	  And the 'Rand1' in WorkFlow 'Workflowforrandom' debug inputs as 
+	  | Random  | From | To |
+	  | Numbers | 1    | 10 |
+      And the 'Rand1' in Workflow 'Workflowforrandom' debug outputs as
+	  |                    |
+	  | [[result]][[a]][[b]] = |
 #
-# Scenario: Testing Random Numbers with two variables in Result field
-#      Given I have a workflow "Workflowforrandom"
-#	  And "Workflowforrandom" contains Random "Rand1" as
-#	  | Type    | From | To | Result               |
-#	  | Numbers | 1    | 10 | [[result]][[a]][[b]] |
-#	  When "Workflowforrandom" is executed  	  
-#	  Then the workflow execution has "AN" error
-#	  And the 'Rand1' in WorkFlow 'Workflowforrandom' debug inputs as 
-#	  | Random  | From | To |
-#	  | Numbers | 1    | 10 |
-#      And the 'Rand1' in Workflow 'Workflowforrandom' debug outputs as
-#	  |                    |
-#	  | [[result]] = Int32 |
-#	  | [[a]] =            |
-#	  | [[b]] =            |
-#
-#Scenario: Testing Date and Time with two variables in Result field
-#      Given I have a workflow "WorkflowforDT"
-#      And "WorkflowforDT" contains an Assign "Rec To Convert" as
-#	  | variable    | value      |
-#	  | [[rec().a]] | 12/01/2001 |
-#	  And "WorkflowforDT" contains Date and Time "AddDate" as
-#      | Input       | Input Format | Add Time | Output Format | Result            |
-#      | [[rec().a]] | dd/mm/yyyy   | 1        | dd/mm/yyyy    | [[res]][[a]][[b]] |	
-#	  When "WorkflowforDT" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Rec To Convert' in WorkFlow 'WorkflowforDT' debug inputs as
-#	  | # | Variable      | New Value  |
-#	  | 1 | [[rec().a]] = | 12/01/2001 |
-#	  And the 'Rec To Convert' in Workflow 'WorkflowforDT' debug outputs as    
-#	  | # |                           |
-#	  | 1 | [[rec(1).a]] = 12/01/2001 |
-#	  And the 'AddDate' in WorkFlow 'WorkflowforDT' debug inputs as
-#	   | Input                     | Input Format | Add Time |   | Output Format |
-#	   | [[rec(1).a]] = 12/01/2001 | dd/mm/yyyy   | Years    | 1 | dd/mm/yyyy    |	
-#	  And the 'AddDate' in Workflow 'WorkflowforDT' debug outputs as   
-#	   |                      |
-#	   | [[res]] = 12/01/2002 |
-#	   | [[a]] =              |
-#	   | [[b]]] =             |
+Scenario: Testing Date and Time with two variables in Result field
+      Given I have a workflow "WorkflowforDT"
+      And "WorkflowforDT" contains an Assign "Rec To Convert" as
+	  | variable    | value      |
+	  | [[rec().a]] | 12/01/2001 |
+	  And "WorkflowforDT" contains Date and Time "AddDate" as
+      | Input       | Input Format | Add Time | Output Format | Result            |
+      | [[rec().a]] | dd/mm/yyyy   | 1        | dd/mm/yyyy    | [[res]][[a]][[b]] |	
+	  When "WorkflowforDT" is executed  	  
+	  Then the workflow execution has "AN" error	
+      And the 'Rec To Convert' in WorkFlow 'WorkflowforDT' debug inputs as
+	  | # | Variable      | New Value  |
+	  | 1 | [[rec().a]] = | 12/01/2001 |
+	  And the 'Rec To Convert' in Workflow 'WorkflowforDT' debug outputs as    
+	  | # |                           |
+	  | 1 | [[rec(1).a]] = 12/01/2001 |
+	  And the 'AddDate' in WorkFlow 'WorkflowforDT' debug inputs as
+	   | Input                     | Input Format | Add Time |   | Output Format |
+	   | [[rec(1).a]] = 12/01/2001 | dd/mm/yyyy   | Years    | 1 | dd/mm/yyyy    |	
+	  And the 'AddDate' in Workflow 'WorkflowforDT' debug outputs as   
+	   |                    |
+	   | [[res]][[a]][[b]] = |
 #	   
-#Scenario: Testing Date Time Diff with two variables in Result field
-#      Given I have a workflow "WorkflowforDateTimeDiff"
-#      And "WorkflowforDateTimeDiff" contains an Assign "Values" as
-#	  | variable    | value      |
-#	  | [[rec().a]] | 01/01/2001 |
-#	  | [[rec().a]] | 01/01/2010 |
-#	  And "WorkflowforDateTimeDiff" contains Date and Time Difference "DateAndTime" as	
-#	  | Input1       | Input2       | Input Format | Output In | Result               |
-#	  | [[rec(1).a]] | [[rec(2).a]] | dd/mm/yyyy   | Years     | [[result]][[a]][[b]] |	   
-#	  When "WorkflowforDateTimeDiff" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Values' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
-#	  | # | Variable      | New Value  |
-#	  | 1 | [[rec().a]] = | 01/01/2001 |
-#	  | 2 | [[rec().a]] = | 01/01/2010 |
-#	  And the 'Values' in Workflow 'WorkflowforDateTimeDiff' debug outputs as    
-#	  | # |                           |
-#	  | 1 | [[rec(1).a]] = 01/01/2001 |
-#	  | 2 | [[rec(2).a]] = 01/01/2010 |
-#	  And the 'DateAndTime' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
-#	  | Input 1                   | Input 2                   | Input Format | Output In |
-#	  | [[rec(1).a]] = 01/01/2001 | [[rec(2).a]] = 01/01/2010 | dd/mm/yyyy   | Years     |
-#	  And the 'DateAndTime' in Workflow 'WorkflowforDateTimeDiff' debug outputs as 
-#	  |                 |
-#	  | [[result1]] = 9 |
-#	  | [[a]] =         |
-#	  | [[b]] =         |   
+Scenario: Testing Date Time Diff with two variables in Result field
+      Given I have a workflow "WorkflowforDateTimeDiff"
+      And "WorkflowforDateTimeDiff" contains an Assign "Values" as
+	  | variable    | value      |
+	  | [[rec().a]] | 01/01/2001 |
+	  | [[rec().a]] | 01/01/2010 |
+	  And "WorkflowforDateTimeDiff" contains Date and Time Difference "DateAndTime" as	
+	  | Input1       | Input2       | Input Format | Output In | Result               |
+	  | [[rec(1).a]] | [[rec(2).a]] | dd/mm/yyyy   | Years     | [[result]][[a]][[b]] |	   
+	  When "WorkflowforDateTimeDiff" is executed  	  
+	  Then the workflow execution has "AN" error	
+      And the 'Values' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
+	  | # | Variable      | New Value  |
+	  | 1 | [[rec().a]] = | 01/01/2001 |
+	  | 2 | [[rec().a]] = | 01/01/2010 |
+	  And the 'Values' in Workflow 'WorkflowforDateTimeDiff' debug outputs as    
+	  | # |                           |
+	  | 1 | [[rec(1).a]] = 01/01/2001 |
+	  | 2 | [[rec(2).a]] = 01/01/2010 |
+	  And the 'DateAndTime' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
+	  | Input 1                   | Input 2                   | Input Format | Output In |
+	  | [[rec(1).a]] = 01/01/2001 | [[rec(2).a]] = 01/01/2010 | dd/mm/yyyy   | Years     |
+	  And the 'DateAndTime' in Workflow 'WorkflowforDateTimeDiff' debug outputs as 
+	  |  |
 
 Scenario: Workflow with Assign and Sort Forward to test gaps
       Given I have a workflow "workflowithAssignandsortrec"

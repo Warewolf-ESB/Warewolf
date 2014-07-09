@@ -189,6 +189,7 @@
     <Compile Include="Utils\MockDsfNativeActivity.cs" />
     <Compile Include="Utils\StringComparer.cs" />
     <Compile Include="Validation\IsSingleRecordSetRuleTests.cs" />
+    <Compile Include="Validation\IsSingleValueRuleTests.cs" />
     <Compile Include="Validation\IsValidExpressionRuleTests.cs" />
     <Compile Include="WorkflowHelperTests.cs" />
     <Compile Include="XML\XmlResource.cs" />

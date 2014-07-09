@@ -11,6 +11,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -73,7 +74,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
                 allErrors.MergeErrors(errors);
-                if(!allErrors.HasErrors())
+                if (!allErrors.HasErrors())
                 {
                     string err;
                     IBinaryDataListEntry recset;
@@ -83,52 +84,63 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     bdl.TryGetEntry(rs, out recset, out err);
                     allErrors.AddError(err);
 
-                    if(dataObject.IsDebugMode())
+                    if (dataObject.IsDebugMode())
                     {
                         AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Recordset", recset, executionId));
                     }
-
-                    if(recset != null)
+                    var rule = new IsSingleValueRule(() => CountNumber);
+                    var single = rule.Check();
+                    if (single != null)
                     {
-                        if(recset.Columns != null && CountNumber != string.Empty)
+                        allErrors.AddError(single.Message);
+                    }
+                    else
+                    {
+                        if (recset != null)
                         {
-                            if(recset.IsEmpty())
+                            if (recset.Columns != null && CountNumber != string.Empty)
                             {
-                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
+                                if (recset.IsEmpty())
                                 {
-                                    compiler.Upsert(executionId, region, "0", out errors);
-                                    if(dataObject.IsDebugMode())
+                                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
                                     {
-                                        AddDebugOutputItem(new DebugOutputParams(region, "0", executionId, 0));
+                                        compiler.Upsert(executionId, region, "0", out errors);
+                                        if (dataObject.IsDebugMode())
+                                        {
+                                            AddDebugOutputItem(new DebugOutputParams(region, "0", executionId, 0));
+                                        }
+                                        allErrors.MergeErrors(errors);
                                     }
-                                    allErrors.MergeErrors(errors);
                                 }
+                                else
+                                {
+
+
+
+                                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
+                                    {
+                                        int cnt = recset.ItemCollectionSize();
+                                        compiler.Upsert(executionId, region, cnt.ToString(CultureInfo.InvariantCulture), out errors);
+                                        if (dataObject.IsDebugMode())
+                                        {
+                                            AddDebugOutputItem(new DebugOutputParams(region, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
+                                        }
+                                        allErrors.MergeErrors(errors);
+                                    }
+
+                                }
+
+                                allErrors.MergeErrors(errors);
                             }
-                            else
+                            else if (recset.Columns == null)
                             {
-                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
-                                {
-                                    int cnt = recset.ItemCollectionSize();
-                                    compiler.Upsert(executionId, region, cnt.ToString(CultureInfo.InvariantCulture), out errors);
-                                    if(dataObject.IsDebugMode())
-                                    {
-                                        AddDebugOutputItem(new DebugOutputParams(region, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
-                                    }
-                                    allErrors.MergeErrors(errors);
-                                }
+                                allErrors.AddError(RecordsetName + " is not a recordset");
                             }
-
-                            allErrors.MergeErrors(errors);
+                            else if (CountNumber == string.Empty)
+                            {
+                                allErrors.AddError("Blank result variable");
+                            }
                         }
-                        else if(recset.Columns == null)
-                        {
-                            allErrors.AddError(RecordsetName + " is not a recordset");
-                        }
-                        else if(CountNumber == string.Empty)
-                        {
-                            allErrors.AddError("Blank result variable");
-                        }
-
                         allErrors.MergeErrors(errors);
                     }
                 }
@@ -138,16 +150,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                if (hasErrors)
                 {
                     DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
-                    if(hasErrors)
+                    if (hasErrors)
                     {
-                        AddDebugOutputItem(new DebugItemStaticDataParams("", ""));
+                       // AddDebugOutputItem(new DebugItemStaticDataParams("", ""));
                     }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

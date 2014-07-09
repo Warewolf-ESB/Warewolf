@@ -15,6 +15,7 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -115,6 +116,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(decimalPlacesToShow, "Decimals to show", decimalPlacesToShowIterator.FetchEntry(), executionId);
                 }
                 // Loop data ;)
+                var rule = new IsSingleValueRule(() => Result);
+                var single = rule.Check();
+
                 while(colItr.HasMoreData())
                 {
                     int decimalPlacesToShowValue;
@@ -138,6 +142,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
                     var result = _numberFormatter.Format(formatNumberTo);
 
+                    if (single != null)
+                    {
+                        allErrors.AddError(single.Message);
+                    }
+                    else
                     UpdateResultRegions(toUpsert, result);
                 }
                 compiler.Upsert(executionId, toUpsert, out errors);

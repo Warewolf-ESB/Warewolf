@@ -66,24 +66,18 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         //2013.06.03: Ashley Lewis for bug 9498 - multiple regions in result
         [TestMethod]
-        public void RecordsetLengthOutputToMultipleScalars_Expected_AllScalarValuesCorrectlySetToRecordSetCount()
+        public void RecordsetLengthOutputToMultipleScalars_Expected_ErrorReturned()
         {
 
-            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShapeWithExtraScalar + "</root>", "<root><recset1><field1/></recset1><TestCountvar/><AnotherTestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]], [[AnotherTestCountvar]]");
+            SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShapeWithExtraScalar + "</root>", "<root><recset1><field1/></recset1><TestCountvar/><AnotherTestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]][[AnotherTestCountvar]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = @"5";
-            string firstActual;
-            string secondActual;
-            string error;
-            GetScalarValueFromDataList(result.DataListID, "TestCountvar", out firstActual, out error);
-            GetScalarValueFromDataList(result.DataListID, "AnotherTestCountvar", out secondActual, out error);
+            var res = Compiler.HasErrors(result.DataListID);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(expected, firstActual);
-            Assert.AreEqual(expected, secondActual);
+            Assert.IsTrue(res);
 
         }
 

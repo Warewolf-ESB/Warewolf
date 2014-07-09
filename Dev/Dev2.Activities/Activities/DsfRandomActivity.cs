@@ -13,6 +13,7 @@ using Dev2.DataList.Contract.Builders;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Util;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
@@ -85,6 +86,8 @@ namespace Dev2.Activities
 
             try
             {
+                IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
+
                 if(!errors.HasErrors())
                 {
 
@@ -104,7 +107,7 @@ namespace Dev2.Activities
                         AddDebugInputItem(Length, From, To, fromEntry, toEntry, lengthEntry, executionId, RandomType);
                     }
                     Dev2Random dev2Random = new Dev2Random();
-                    while(colItr.HasMoreData())
+                    while (colItr.HasMoreData())
                     {
                         int lengthNum = -1;
                         int fromNum = -1;
@@ -114,14 +117,14 @@ namespace Dev2.Activities
                         string toValue = colItr.FetchNextRow(toItr).TheValue;
                         string lengthValue = colItr.FetchNextRow(lengthItr).TheValue;
 
-                        if(RandomType != enRandomType.Guid)
+                        if (RandomType != enRandomType.Guid)
                         {
-                            if(RandomType == enRandomType.Numbers)
+                            if (RandomType == enRandomType.Numbers)
                             {
                                 #region Getting the From
 
                                 fromNum = GetFromValue(fromValue, out errors);
-                                if(errors.HasErrors())
+                                if (errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -132,7 +135,7 @@ namespace Dev2.Activities
                                 #region Getting the To
 
                                 toNum = GetToValue(toValue, out errors);
-                                if(errors.HasErrors())
+                                if (errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -145,7 +148,7 @@ namespace Dev2.Activities
                                 #region Getting the Length
 
                                 lengthNum = GetLengthValue(lengthValue, out errors);
-                                if(errors.HasErrors())
+                                if (errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -157,10 +160,19 @@ namespace Dev2.Activities
                         string value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                        var rule = new IsSingleValueRule(() => Result);
+                        var single = rule.Check();
+                        if (single != null)
                         {
-                            toUpsert.Add(region, value);
-                            toUpsert.FlushIterationFrame();
+                            allErrors.AddError(single.Message);
+                        }
+                        else
+                        {
+                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                            {
+                                toUpsert.Add(region, value);
+                                toUpsert.FlushIterationFrame();
+                            }
                         }
                     }
                     compiler.Upsert(executionId, toUpsert, out errors);

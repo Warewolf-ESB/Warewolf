@@ -16,6 +16,7 @@ using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Interfaces;
+using Dev2.Validation;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -84,7 +85,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     outIndex++;
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.StringToConvert, false, out errors);
                     allErrors.MergeErrors(errors);
-
+                    IsSingleValueRule.ApplyIsSingleValueRule(item.ExpressionToConvert, allErrors);
                     if(dataObject.IsDebugMode())
                     {
                         var debugItem = new DebugItem();
@@ -311,14 +312,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string currentName = modelProperty.ComputedValue as string;
                 if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
                 {
-                    if(currentName.Contains(" ("))
-                    {
-                        currentName = currentName.Remove(currentName.IndexOf(" (", StringComparison.Ordinal));
-                    }
-                    else
-                    {
-                        currentName = currentName.Remove(currentName.IndexOf("(", StringComparison.Ordinal));
-                    }
+                    currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
                 }
                 currentName = currentName + " (" + (count - 1) + ")";
                 return currentName;

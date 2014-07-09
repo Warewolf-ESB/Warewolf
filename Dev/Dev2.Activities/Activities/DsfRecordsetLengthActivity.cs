@@ -10,6 +10,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -67,8 +68,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Process if no errors
             try
             {
+
                 if(!string.IsNullOrWhiteSpace(RecordsetName))
                 {
+                   
+
                     IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
                     allErrors.MergeErrors(errors);
 
@@ -84,48 +88,60 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Recordset", recset, executionId));
                     }
-
-                    if(recset != null)
+                    var rule = new IsSingleValueRule(() => RecordsLength);
+                    var single = rule.Check();
+                    if (single != null)
                     {
-                        if(recset.Columns != null && RecordsLength != string.Empty)
+                        allErrors.AddError(single.Message);
+                    }
+                    else
+                    {
+                        if (recset != null)
                         {
-                            if(recset.IsEmpty())
+                            if (recset.Columns != null && RecordsLength != string.Empty)
                             {
-                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(RecordsLength))
+                                if (recset.IsEmpty())
                                 {
-                                    compiler.Upsert(executionId, region, "0", out errors);
-                                    if(dataObject.IsDebugMode())
+                                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(RecordsLength))
                                     {
-                                        AddDebugOutputItem(new DebugOutputParams(region, "0", executionId, 0));
+                                        compiler.Upsert(executionId, region, "0", out errors);
+                                        if (dataObject.IsDebugMode())
+                                        {
+                                            AddDebugOutputItem(new DebugOutputParams(region, "0", executionId, 0));
+                                        }
+                                        allErrors.MergeErrors(errors);
                                     }
-                                    allErrors.MergeErrors(errors);
                                 }
+                                else
+                                {
+
+
+
+
+                                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(RecordsLength))
+                                    {
+                                        int cnt = recset.FetchAppendRecordsetIndex() - 1;
+                                        compiler.Upsert(executionId, region, cnt.ToString(CultureInfo.InvariantCulture), out errors);
+                                        if (dataObject.IsDebugMode())
+                                        {
+                                            AddDebugOutputItem(new DebugOutputParams(region, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
+                                        }
+                                        allErrors.MergeErrors(errors);
+                                    }
+                                }
+
+
+                                allErrors.MergeErrors(errors);
                             }
-                            else
+                            else if (recset.Columns == null)
                             {
-                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(RecordsLength))
-                                {
-                                    int cnt = recset.FetchAppendRecordsetIndex() - 1;
-                                    compiler.Upsert(executionId, region, cnt.ToString(CultureInfo.InvariantCulture), out errors);
-                                    if(dataObject.IsDebugMode())
-                                    {
-                                        AddDebugOutputItem(new DebugOutputParams(region, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
-                                    }
-                                    allErrors.MergeErrors(errors);
-                                }
+                                allErrors.AddError(RecordsetName + " is not a recordset");
                             }
-
-                            allErrors.MergeErrors(errors);
+                            else if (RecordsLength == string.Empty)
+                            {
+                                allErrors.AddError("Blank result variable");
+                            }
                         }
-                        else if(recset.Columns == null)
-                        {
-                            allErrors.AddError(RecordsetName + " is not a recordset");
-                        }
-                        else if(RecordsLength == string.Empty)
-                        {
-                            allErrors.AddError("Blank result variable");
-                        }
-
                         allErrors.MergeErrors(errors);
                     }
                 }
@@ -148,7 +164,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(hasErrors)
                     {
-                        AddDebugOutputItem(new DebugItemStaticDataParams("", ""));
+                       // AddDebugOutputItem(new DebugItemStaticDataParams("", ""));
                     }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

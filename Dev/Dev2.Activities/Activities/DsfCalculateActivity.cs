@@ -10,6 +10,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.MathOperations;
 using Dev2.Util;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -67,6 +68,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Process if no errors
             try
             {
+                IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
+
                 if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(executionId);

@@ -689,7 +689,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 210
  testRunner.When("the data find index tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 211
- testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         "In Field",
@@ -706,14 +706,6 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table27.AddRow(new string[] {
-                        "[[res]] = 4,8,12"});
-            table27.AddRow(new string[] {
-                        "[[rs(1).a]] = 4"});
-            table27.AddRow(new string[] {
-                        "[[rs(2).a]] = 8"});
-            table27.AddRow(new string[] {
-                        "[[rs(3).a]] = 12"});
 #line 215
  testRunner.And("the debug output as", ((string)(null)), table27, "And ");
 #line hidden

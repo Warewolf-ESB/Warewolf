@@ -264,6 +264,7 @@
     <Compile Include="Utilities\Outputs.cs" />
     <Compile Include="Utilities\StringAttributeRefectionUtils.cs" />
     <Compile Include="Validation\IsSingleRecordSetRule.cs" />
+    <Compile Include="Validation\IsSingleValueRuleSet.cs" />
     <Compile Include="Validation\IsValidExpressionRule.cs">
       <SubType>Code</SubType>
     </Compile>

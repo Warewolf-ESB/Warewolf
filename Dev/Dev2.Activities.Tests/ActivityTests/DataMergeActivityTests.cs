@@ -108,6 +108,26 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDataMergeActivity_Execute")]
+        public void DsfDataMergeActivity_Execute_MultipleResults_ExpectError()
+        {
+            _mergeCollection.Add(new DataMergeDTO("[[Customers(4).FirstName]]", "Chars", " works at ", 1, "", "Left"));
+            _mergeCollection.Add(new DataMergeDTO("[[CompanyName]]", "Chars", ".", 2, "", "Left"));
+            SetupArguments(ActivityStrings.DataMergeDataListWithData, ActivityStrings.DataMergeDataListShape, "[[res]],[[bob]]", _mergeCollection);
+            IDSFDataObject result = ExecuteProcess();
+
+
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "Dev2System.Dev2Error", out actual, out error);
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(actual.Contains("The result field only allows a single result"));
+        }
+
+        [TestMethod]
         public void Merge_Two_Recordsets_Char_Merge_Expected_Data_Merged_Together_Success()
         {
             _mergeCollection.Add(new DataMergeDTO("[[Customers(*).FirstName]]", "Chars", "'s phone number is ", 1, "", "Left"));

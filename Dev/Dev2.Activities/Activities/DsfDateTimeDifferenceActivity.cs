@@ -112,12 +112,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+
                 toUpsert.IsDebug = dataObject.IsDebugMode();
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
                 var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
-                if (!string.IsNullOrEmpty(datalist) )
+                if (!string.IsNullOrEmpty(datalist))
                 {
-                    ValidateInput(datalist, allErrors,Input1);
+                    ValidateInput(datalist, allErrors, Input1);
                     ValidateInput(datalist, allErrors, Input2);
                 }
                 IBinaryDataListEntry input1Entry = compiler.Evaluate(executionId, enActionType.User, string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, false, out errors);
@@ -135,7 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListEvaluateIterator ifItr = Dev2ValueObjectFactory.CreateEvaluateIterator(inputFormatEntry);
                 colItr.AddIterator(ifItr);
 
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, "Input 1", input1Entry, executionId);
                     AddDebugInputItem(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, "Input 2", input2Entry, executionId);
@@ -145,7 +146,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 int indexToUpsertTo = 1;
 
-                while(colItr.HasMoreData())
+                while (colItr.HasMoreData())
                 {
                     IDateTimeDiffTO transObj = ConvertToDateTimeDiffTO(colItr.FetchNextRow(input1Itr).TheValue,
                                                                        colItr.FetchNextRow(input2Itr).TheValue,
@@ -156,10 +157,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //Call the TryComparer method on the DateTimeComparer and pass it the IDateTimeDiffTO created from the ConvertToDateTimeDiffTO Method                
                     string result;
                     string error;
-                    if(comparer.TryCompare(transObj, out result, out error))
+                    if (comparer.TryCompare(transObj, out result, out error))
                     {
                         string expression;
-                        if(DataListUtil.IsValueRecordset(Result) &&
+                        if (DataListUtil.IsValueRecordset(Result) &&
                             DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
                             expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
@@ -170,9 +171,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                        var rule = new IsSingleValueRule(() => Result);
+                        var single = rule.Check();
+                        if (single != null)
                         {
-                            toUpsert.Add(region, result);
+                            allErrors.AddError(single.Message);
+                        }
+                        else
+                        {
+                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                            {
+                                toUpsert.Add(region, result);
+                            }
                         }
                     }
                     else
@@ -185,15 +195,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
-                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
+                    foreach (var debugOutputTo in toUpsert.DebugOutputs)
                     {
                         AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 allErrors.AddError(e.Message);
             }
@@ -201,12 +211,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 // Handle Errors
-                if(allErrors.HasErrors())
+                if (allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfDateTimeDifferenceActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

@@ -173,14 +173,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             row.Alignment = string.Empty;
                         }
 
-                        if(DataListUtil.IsEvaluated(row.Alignment))
-                        {
-                            AddDebugItem(new DebugItemStaticDataParams("", row.Alignment, "Align"), debugItem);
-                        }
-                        else
-                        {
-                            AddDebugItem(new DebugItemStaticDataParams(row.Alignment, "Align"), debugItem);
-                        }
+                        AddDebugItem(DataListUtil.IsEvaluated(row.Alignment) ? new DebugItemStaticDataParams("", row.Alignment, "Align") : new DebugItemStaticDataParams(row.Alignment, "Align"), debugItem);
 
                         _debugInputs.Add(debugItem);
                     }
@@ -256,20 +249,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
+                            var rule = new IsSingleValueRule(() => Result);
+                            var single = rule.Check();
+                            if (single != null)
                             {
-                                toUpsert.Add(region, mergeOperations.MergeData.ToString());
-                                toUpsert.FlushIterationFrame();
-                                compiler.Upsert(executionId, toUpsert, out errorResultTO);
-                                allErrors.MergeErrors(errorResultTO);
+                                allErrors.AddError(single.Message);
                             }
-                            if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                            else
                             {
-                                foreach(var debugOutputTo in toUpsert.DebugOutputs)
+                                foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                                 {
-                                    if(debugOutputTo.LeftEntry != null && debugOutputTo.TargetEntry != null)
+                                    toUpsert.Add(region, mergeOperations.MergeData.ToString());
+                                    toUpsert.FlushIterationFrame();
+                                    compiler.Upsert(executionId, toUpsert, out errorResultTO);
+                                    allErrors.MergeErrors(errorResultTO);
+                                }
+                                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                                {
+                                    foreach (var debugOutputTo in toUpsert.DebugOutputs)
                                     {
-                                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
+                                        if (debugOutputTo.LeftEntry != null && debugOutputTo.TargetEntry != null)
+                                        {
+                                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
+                                        }
                                     }
                                 }
                             }
@@ -412,14 +414,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 string currentName = modelProperty.ComputedValue as string;
                 if(currentName != null && (currentName.Contains("(") && currentName.Contains(")")))
                 {
-                    if(currentName.Contains(" ("))
-                    {
-                        currentName = currentName.Remove(currentName.IndexOf(" (", StringComparison.Ordinal));
-                    }
-                    else
-                    {
-                        currentName = currentName.Remove(currentName.IndexOf("(", StringComparison.Ordinal));
-                    }
+                    currentName = currentName.Remove(currentName.Contains(" (") ? currentName.IndexOf(" (", StringComparison.Ordinal) : currentName.IndexOf("(", StringComparison.Ordinal));
                 }
                 currentName = currentName + " (" + (count - 1) + ")";
                 return currentName;

@@ -328,5 +328,31 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(result, dsfForEachItems[0].Value);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfNumberFormatActivity_Execute")]
+        public void DsfNumberFormatActivity_Execute_MultipleResults_ExpectError()
+        {
+            SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
+                             "[[res]],[[bes]]", "123.123", enRoundingType.None, "", "");
+            IDSFDataObject result = ExecuteProcess();
+
+            string actual;
+            string error;
+            string systemError;
+
+            GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out systemError, out error);
+
+            GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+        }
+
     }
 }

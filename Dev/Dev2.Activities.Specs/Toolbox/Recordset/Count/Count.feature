@@ -127,8 +127,8 @@ Scenario: Count a number of records in a recordset with 0 rows
 #	And the debug inputs as  
 #	| Recordset          |
 #	And the debug output as 
-	|              |
-	| [[result]] = |
+	#|              |
+	#| [[result]] = |
 
 Scenario: Count a number of records when two recordsets are defined.
 	Given I have a recordset with this shape

@@ -97,7 +97,7 @@ Scenario: Replace when text to find is negative recordset index
 	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer | [[my(-1).text]] = | Warewolf user |
 	And the debug output as 
 	|                |
-	| [[result]] = 0 |
+	| [[result]] =  |
 
 Scenario: Replace when the replace with is negative recordset index
 	Given I have a replace variable "[[sentence]]" equal to "Dear Mr XXXX, We welcome you as a customer"
@@ -111,7 +111,7 @@ Scenario: Replace when the replace with is negative recordset index
 	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer | XXXX | [[my(-1).text]] = |
 	And the debug output as 
 	|                 |
-	| [[result]] = 0 |
+	| [[result]] =  |
 
 Scenario: Replace when negative recordset index is input
 	Given I have a sentence "[[my(-1).sentence]]"
@@ -124,4 +124,4 @@ Scenario: Replace when negative recordset index is input
 	| [[my(-1).sentence]] = | XXXX | YYYY         |
 	And the debug output as 
 	|                |
-	| [[result]] = 0 |
+	| [[result]] =  |

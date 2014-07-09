@@ -256,6 +256,33 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(actual != "0");
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfDateTimeTool_Execute")]
+        public void DsfDateTimeTool_Execute_MultipleResults_ExpectError()
+        {
+            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            SetupArguments(currDL
+                         , currDL
+                         , "2012/11/27 04:12:41 PM"
+                         , "yyyy/mm/dd 12h:min:ss am/pm"
+                         , "yyyy/mm/dd 12h:min:ss am/pm"
+                         , "Hours"
+                         , 10
+                         , "[[MyTestResult]][[moot]]");
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "MyTestResult", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID)); 
+        }
+
         #endregion DateTime Tests
 
         #region Get Input/Output Tests

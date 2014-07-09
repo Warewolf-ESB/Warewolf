@@ -208,13 +208,9 @@ Scenario: Output values in multiple result variables
 	And I selected direction as "Left to Right"
 	And result variable as "[[res]],[[rs(*).a]]"
 	When the data find index tool is executed
-	Then the execution has "NO" error
+	Then the execution has "An" error
 	And the debug inputs as
 	| In Field     | Index           | Characters | Direction     |
 	| abc3cde3fgh3 | All Occurrences | 3          | Left to Right |
 	And the debug output as
 	|                   |
-	| [[res]] = 4,8,12 |
-	| [[rs(1).a]] = 4  |
-	| [[rs(2).a]] = 8  |
-	| [[rs(3).a]] = 12 |

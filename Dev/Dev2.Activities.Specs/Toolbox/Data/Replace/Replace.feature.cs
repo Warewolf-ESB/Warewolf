@@ -349,7 +349,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table12 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table12.AddRow(new string[] {
-                        "[[result]] = 0"});
+                        "[[result]] ="});
 #line 98
  testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
@@ -392,7 +392,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table14.AddRow(new string[] {
-                        "[[result]] = 0"});
+                        "[[result]] ="});
 #line 112
  testRunner.And("the debug output as", ((string)(null)), table14, "And ");
 #line hidden
@@ -432,7 +432,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table16 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table16.AddRow(new string[] {
-                        "[[result]] = 0"});
+                        "[[result]] ="});
 #line 125
  testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden

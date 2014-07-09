@@ -492,9 +492,9 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("parentWorkflowName", out parentWorkflowName);
             var debugStates = Get<List<IDebugState>>("debugStates");
 
-            var Id =
+            var id =
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList().Select(a => a.ID).First();
-            var children = debugStates.Count(a => a.ParentID == Id);
+            var children = debugStates.Count(a => a.ParentID == id);
             Assert.AreEqual(children, count);
         }
 
@@ -687,6 +687,31 @@ namespace Dev2.Activities.Specs.Composition
             var activityFunction = new ActivityFunc<string, bool> { Handler = activity,DisplayName = nestedWF};
             forEachAct.DataFunc = activityFunction;
             //ScenarioContext.Current.Pending();
+        }
+
+
+        [Given(@"""(.*)"" contains Find Record Index ""(.*)"" into result as ""(.*)""")]
+        public void GivenContainsFindRecordIndexIntoResultAs(string parentName, string activityName, string result, Table table)
+        {
+            DsfFindRecordsMultipleCriteriaActivity act = new DsfFindRecordsMultipleCriteriaActivity();
+            act.DisplayName = activityName;
+            act.Result = result;
+            foreach(var rule in table.Rows)
+            {
+                act.ResultsCollection.Add(new FindRecordsTO(rule[4],rule[3],0));
+                act.FieldsToSearch = String.IsNullOrEmpty(act.FieldsToSearch) ? rule[1] : "," + rule[1];
+                act.RequireAllFieldsToMatch = rule[5].ToUpper().Trim()=="YES";
+                act.RequireAllTrue = rule[6].ToUpper().Trim() == "YES";
+            }
+            CommonSteps.AddActivityToActivityList(parentName, activityName, act);
+        }
+
+
+        [Given(@"""(.*)"" contains Length ""(.*)"" on ""(.*)"" into ""(.*)""")]
+        public void GivenContainsLengthOnInto(string parentName, string activityName, string recordSet, string result)
+        {
+            DsfRecordsetLengthActivity len = new DsfRecordsetLengthActivity { DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet };
+            CommonSteps.AddActivityToActivityList(parentName, activityName, len);
         }
 
 

@@ -16,6 +16,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
+using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
 // ReSharper disable CheckNamespace
@@ -113,7 +114,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Process if no errors
             try
             {
-
+                IsSingleValueRule.ApplyIsSingleValueRule(Result,allErrors);
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 toUpsert.IsDebug = (dataObject.IsDebugMode());
                 toUpsert.ResourceID = dataObject.ResourceID;

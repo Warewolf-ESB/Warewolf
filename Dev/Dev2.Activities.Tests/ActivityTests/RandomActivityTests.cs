@@ -616,6 +616,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(Result, dsfForEachItems[0].Value);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfRandomActivity_Execute")]
+        public void DsfRandomActivity_Execute_MultipleResultOutputs_ExpectError()
+        {
+            SetupArguments(ActivityStrings.RandomActivityDataListWithData, ActivityStrings.RandomActivityDataListShape, enRandomType.Numbers, "[[recset2(*).field2]]", "[[recset1(*).field1]]", string.Empty, "[[recset2().field2]][[bob]]");
+
+            IDSFDataObject result = ExecuteProcess();
+
+            string error;
+            IList<IBinaryDataListItem> dataListItems;
+            GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "field2", out dataListItems, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+        }
+
 
         #region Private Test Methods
 

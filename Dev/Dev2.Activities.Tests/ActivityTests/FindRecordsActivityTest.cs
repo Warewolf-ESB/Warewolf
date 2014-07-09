@@ -324,6 +324,35 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(res);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfFindRecordsActivity_Execute")]
+        public void DsfFindRecordsActivity_Execute_MultipleResultField_ExpectError()
+        {
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfFindRecordsActivity
+                {
+                    FieldsToSearch = "[[Recset().Field1]],[[Recset().Field2]],[[Recset().Field3]]",
+                    SearchCriteria = "2",
+                    SearchType = ">",
+                    StartIndex = "",
+                    Result = "[[a]][[b]]"
+                }
+            };
+
+            CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
+            TestData = "<root>" + ActivityStrings.FindRecords_PreDataList + "</root>";
+            IDSFDataObject result = ExecuteProcess();
+
+            var res = Compiler.HasErrors(result.DataListID);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(res);
+        }
+
         #region Get Input/Output Tests
 
         [TestMethod]

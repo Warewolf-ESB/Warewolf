@@ -152,6 +152,28 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfCalculateActivity_OnExecute")]
+        public void DsfCalculateActivity_OnExecute_Error_MultipleResultFields()
+        {
+
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfCalculateActivity { Expression = @"sum(10,20)", Result = "[[scalar]][[rec]]" }
+            };
+
+            TestData = @"<ADL><scalar></scalar></ADL>";
+            //TestData = ActivityStrings.CalculateActivityDataList;
+            IDSFDataObject result = ExecuteProcess();
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+        }
+
+
+        [TestMethod]
         public void CalculateActivity_CommaSeperatedArgs_Expected_EvalPerformed()
         {
 
