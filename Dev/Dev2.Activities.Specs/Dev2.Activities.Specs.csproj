@@ -117,11 +117,6 @@
       <DependentUpon>Explorer.feature</DependentUpon>
     </Compile>
     <Compile Include="Explorer\ExplorerSteps.cs" />
-    <Compile Include="Permissions\Settings Permissions1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Settings Permissions.feature</DependentUpon>
-    </Compile>
     <Compile Include="Language Parser\Language Parser.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
