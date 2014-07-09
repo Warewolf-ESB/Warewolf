@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="990ff556-907b-45d6-b342-a8e0feea8c74" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:20168/RulesService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="RulesService.wsdl" MetadataType="Wsdl" ID="af584dfe-bff7-42eb-b2be-06fa9becf528" SourceId="1" SourceUrl="http://localhost:20168/RulesService.svc?wsdl" />
+    <MetadataFile FileName="RulesService.disco" MetadataType="Disco" ID="487a5148-6ef3-4b1b-8e71-3d1f44b02bb6" SourceId="1" SourceUrl="http://localhost:20168/RulesService.svc?disco" />
+    <MetadataFile FileName="RulesService.xsd" MetadataType="Schema" ID="dfb407f2-61be-416f-816c-b408d15f2a78" SourceId="1" SourceUrl="http://localhost:20168/RulesService.svc?xsd=xsd3" />
+    <MetadataFile FileName="RulesService1.xsd" MetadataType="Schema" ID="4cd44995-3b16-437a-9446-65cee2d6238a" SourceId="1" SourceUrl="http://localhost:20168/RulesService.svc?xsd=xsd2" />
+    <MetadataFile FileName="RulesService2.xsd" MetadataType="Schema" ID="7ec9a4c0-71bd-4c9b-ba54-2c8e1e80c384" SourceId="1" SourceUrl="http://localhost:20168/RulesService.svc?xsd=xsd1" />
+    <MetadataFile FileName="RulesService3.xsd" MetadataType="Schema" ID="36f65e2d-2a77-4bfe-9746-91faf8532557" SourceId="1" SourceUrl="http://localhost:20168/RulesService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
