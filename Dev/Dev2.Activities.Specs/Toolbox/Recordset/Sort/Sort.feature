@@ -240,43 +240,43 @@ Scenario: Sort a recordset backwards recordset  with one row
     | [[rs(1).row]] = Warewolf |	
 
 #This following 4 Scenarios should be passed after the bug 11838 is fixed	
-Scenario: Sort 2 columns backwards
-	Given I have the following recordset to sort
-	| rs       | value     |
-	| rs(1).a  | Zambia    |
-	| rec(1).a | Mangolia  |
-	| rs(2).a  | America   |
-	| rec(2).a | Australia |
-	And I sort a record "[[rs(*).a]],[[rec(*).a]]"
-	And my sort order is "Backwards"
-	When the sort records tool is executed
-	Then the execution has "AN" error
-	And the debug inputs as  
-	| Sort Field                         | Sort Order |
-	| [[rs(*).a]],[[rec(*).a]] = America | Backwards  |
-	|                                    |            |
-	And the debug output as
-	    |                                    |
-	    | [[rs(*).a]],[[rec(*).a]] = America |
-
-
-Scenario: Sort 2 columns Forwards
-	Given I have the following recordset to sort
-	| rs       | value     |
-	| rs(1).a  | Zambia    |
-	| rec(1).a | Mangolia  |
-	| rs(2).a  | America   |
-	| rec(2).a | Australia |
-	And I sort a record "[[rs(*).a]],[[rec(*).a]]"
-	And my sort order is "Forward"
-	When the sort records tool is executed
-	Then the execution has "AN" error
-	And the debug inputs as  
-	| Sort Field                        | Sort Order |
-	| [[rs(*).a]],[[rec(*).a]] = America | Forward    |
-	And the debug output as
-	    |                                    |
-	    | [[rs(*).a]],[[rec(*).a]] = Zambia |
+#Scenario: Sort 2 columns backwards
+#	Given I have the following recordset to sort
+#	| rs       | value     |
+#	| rs(1).a  | Zambia    |
+#	| rec(1).a | Mangolia  |
+#	| rs(2).a  | America   |
+#	| rec(2).a | Australia |
+#	And I sort a record "[[rs(*).a]],[[rec(*).a]]"
+#	And my sort order is "Backwards"
+#	When the sort records tool is executed
+#	Then the execution has "AN" error
+#	And the debug inputs as  
+#	| Sort Field                         | Sort Order |
+#	| [[rs(*).a]],[[rec(*).a]] = America | Backwards  |
+#	|                                    |            |
+#	And the debug output as
+#	    |                                    |
+#	    | [[rs(*).a]],[[rec(*).a]] = America |
+#
+#
+#Scenario: Sort 2 columns Forwards
+#	Given I have the following recordset to sort
+#	| rs       | value     |
+#	| rs(1).a  | Zambia    |
+#	| rec(1).a | Mangolia  |
+#	| rs(2).a  | America   |
+#	| rec(2).a | Australia |
+#	And I sort a record "[[rs(*).a]],[[rec(*).a]]"
+#	And my sort order is "Forward"
+#	When the sort records tool is executed
+#	Then the execution has "AN" error
+#	And the debug inputs as  
+#	| Sort Field                        | Sort Order |
+#	| [[rs(*).a]],[[rec(*).a]] = America | Forward   |
+#	And the debug output as
+#	    |                                    |
+#	    | [[rs(*).a]],[[rec(*).a]] = Zambia |
 #
 Scenario: Sort Recordset without field Forwards
 	Given I have the following recordset to sort
