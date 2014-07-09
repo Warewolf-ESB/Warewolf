@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using Dev2.Common;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.PathOperations;
 using Nuane.Net;
@@ -24,6 +25,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         /// </summary>
         protected static void StartSftpServer()
         {
+            ServerLogger.LogDebug("ServerStartup");
             lock (ServerLock)
             {
                 if (Server == null)
@@ -47,6 +49,9 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             // ReSharper disable EmptyGeneralCatchClause
 
+
+            ServerLogger.LogDebug("Cleanup");
+
             var broker = ActivityIOFactory.CreateOperationsBroker();
             string destLocation;
             if (ScenarioContext.Current != null && ScenarioContext.Current.TryGetValue(CommonSteps.ActualDestinationHolder, out destLocation))
@@ -65,6 +70,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 catch (Exception)
                 {
+                    ServerLogger.LogDebug("Cleanup Error");
                 //    throw;
                 }
             }
@@ -86,6 +92,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 catch (Exception)
                 {
+                    ServerLogger.LogDebug("Cleanup Error");
                     //The file may already be deleted
                    // throw;
                 }
@@ -102,6 +109,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 if (Server != null)
                 {
+                    ServerLogger.LogDebug("Server Shutdown");
                     Server.Bindings.Clear();
                     Server.Stop();
 
