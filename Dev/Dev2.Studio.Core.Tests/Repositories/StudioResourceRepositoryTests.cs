@@ -63,7 +63,7 @@ namespace Dev2.Core.Tests.Repositories
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()))
-                                          .Returns(new ServerExplorerItem())
+                                          .Returns(new ServerExplorerItem { DisplayName = "some name" })
                                           .Verifiable();
 
             SetupEnvironmentRepo(Guid.Empty);
@@ -1884,6 +1884,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(model => model.DisplayName).Returns("some resource name");
             var connection = new Mock<IEnvironmentConnection>();
 
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();

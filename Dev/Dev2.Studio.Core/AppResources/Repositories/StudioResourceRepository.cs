@@ -396,7 +396,11 @@ namespace Dev2.AppResources.Repositories
             var resourceModel = resourceRepository.FindSingle(model => model.ID == item.ResourceId);
             if(resourceModel == null && item.ResourceType != ResourceType.Folder)
             {
-                if(item.ResourceType >= ResourceType.DbSource)
+                if(item.ResourceType == ResourceType.ServerSource)
+                {
+                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Server, ResourceModelEqualityComparer.Current, true);
+                }
+                else if(item.ResourceType >= ResourceType.DbSource)
                 {
                     resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
                 }
@@ -565,7 +569,7 @@ namespace Dev2.AppResources.Repositories
             bool isExpanded = item.ResourceType == ResourceType.Server;
 
             string displayname = item.DisplayName;
-            if(item.ResourceType == ResourceType.Server)
+            if((item.ResourceType == ResourceType.Server && environmentId != Guid.Empty) || (environmentId == Guid.Empty && displayname.ToLower() == Environment.MachineName.ToLower()))
             {
                 // ReSharper disable ImplicitlyCapturedClosure
                 IEnvironmentModel environmentModel = environmentRepository.FindSingle(model => GetEnvironmentModel(model, item, environmentId));
