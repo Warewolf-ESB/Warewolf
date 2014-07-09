@@ -10,7 +10,6 @@
   <Scripts setupScript="TestScripts\UI\Startup.bat" cleanupScript="TestScripts\UI\Cleanup.bat" />
   <Execution>
     <Hosts skipUnhostableTests="false" />
-    <Timeouts runTimeout="5400000" testTimeout="300000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>

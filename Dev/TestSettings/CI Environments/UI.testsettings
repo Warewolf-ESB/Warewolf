@@ -10,7 +10,6 @@
   <Execution location="Remote">
     <Buckets size="1" />
     <Hosts skipUnhostableTests="false" />
-    <Timeouts runTimeout="5400000" testTimeout="300000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>
