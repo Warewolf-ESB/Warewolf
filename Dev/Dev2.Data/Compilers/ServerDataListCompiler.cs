@@ -311,7 +311,6 @@ namespace Dev2.Server.Datalist
 
         public Guid Upsert(NetworkContext ctx, Guid curDLID, IList<string> expression, IList<string> values, out ErrorResultTO errors)
         {
-
             IDev2DataListUpsertPayloadBuilder<string> payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
             ErrorResultTO allErrors = new ErrorResultTO();
 
@@ -389,11 +388,7 @@ namespace Dev2.Server.Datalist
 
             if(definitions != null)
             {
-                if(typeOf == enDev2ArgumentType.Input)
-                {
-                    result = InternalShape(ctx, curDLID, definitions, typeOf, out errors);
-                }
-                else if(typeOf == enDev2ArgumentType.Output)
+                if(typeOf == enDev2ArgumentType.Input || typeOf == enDev2ArgumentType.Output)
                 {
                     result = InternalShape(ctx, curDLID, definitions, typeOf, out errors);
                 }
@@ -610,15 +605,7 @@ namespace Dev2.Server.Datalist
         {
             IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
             IList<IDev2Definition> defs = parser.Parse(definitions);
-            if(defs.Count > 0)
-            {
-                result = InternalShape(ctx, curDLID, defs, typeOf, out errors);
-            }
-            else
-            {
-                // default to a union since there are no defs....
-                result = UnionDataList(curDLID, ref errors, result);
-            }
+            result = defs.Count > 0 ? InternalShape(ctx, curDLID, defs, typeOf, out errors) : UnionDataList(curDLID, ref errors, result);
             return result;
         }
 
@@ -637,15 +624,7 @@ namespace Dev2.Server.Datalist
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
             IList<IDev2Definition> defs = parser.Parse(definitions);
-            if(defs.Count > 0)
-            {
-                result = InternalShape(ctx, curDLID, defs, typeOf, out errors, isTransactionallyScoped, result);
-            }
-            else
-            {
-                // default to a clone because there is nothing here ;)
-                result = CloneDataList(curDLID, ref errors, result, true);
-            }
+            result = defs.Count > 0 ? InternalShape(ctx, curDLID, defs, typeOf, out errors, isTransactionallyScoped, result) : CloneDataList(curDLID, ref errors, result, true);
             return result;
         }
 
@@ -757,21 +736,24 @@ namespace Dev2.Server.Datalist
             return returnVal;
         }
 
-        public void ConditionalMerge(NetworkContext ctx, DataListMergeFrequency conditions,
+        public Guid ConditionalMerge(NetworkContext ctx, DataListMergeFrequency conditions,
             Guid destinationDatalistID, Guid sourceDatalistID, DataListMergeFrequency datalistMergeFrequency,
             enDataListMergeTypes datalistMergeType, enTranslationDepth datalistMergeDepth)
         {
+            Guid mergeId = Guid.Empty;
             if(conditions.HasFlag(datalistMergeFrequency) && destinationDatalistID != Guid.Empty && sourceDatalistID != Guid.Empty)
             {
                 ErrorResultTO errors;
-                Merge(ctx, destinationDatalistID, sourceDatalistID, datalistMergeType, datalistMergeDepth, false, out errors);
+                mergeId = Merge(ctx, destinationDatalistID, sourceDatalistID, datalistMergeType, datalistMergeDepth, false, out errors);
 
                 if(errors != null && errors.HasErrors())
                 {
                     ErrorResultTO tmpErrors;
-                    UpsertSystemTag(destinationDatalistID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out tmpErrors);
+                  mergeId =  UpsertSystemTag(destinationDatalistID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out tmpErrors);
                 }
             }
+
+            return mergeId;
         }
 
         public Guid TransferSystemTags(NetworkContext ctx, Guid parentDLID, Guid childDLID, bool parentToChild, out ErrorResultTO errors)
@@ -917,7 +899,6 @@ namespace Dev2.Server.Datalist
 
             return returnVal;
         }
-
 
         public Guid ConvertTo(NetworkContext ctx, DataListFormat typeOf, byte[] payload, string shape, out ErrorResultTO errors)
         {
@@ -1074,13 +1055,11 @@ namespace Dev2.Server.Datalist
 
         public Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, string val, out ErrorResultTO errors)
         {
-
             return UpsertSystemTag<string>(curDLID, tag, val, out errors);
         }
 
         public Guid UpsertSystemTag(Guid curDLID, enSystemTag tag, IBinaryDataListEntry val, out ErrorResultTO errors)
         {
-
             return UpsertSystemTag<IBinaryDataListEntry>(curDLID, tag, val, out errors);
         }
 
@@ -1326,14 +1305,7 @@ namespace Dev2.Server.Datalist
             Guid shellId;
             if(typeOf == enDev2ArgumentType.Input)
             {
-                if(overRideShapeID != Guid.Empty)
-                {
-                    shellId = overRideShapeID;
-                }
-                else
-                {
-                    shellId = ConvertTo(ctx, DataListFormat.CreateFormat(GlobalConstants._XML), empty, theShape, out errors);
-                }
+                shellId = overRideShapeID != Guid.Empty ? overRideShapeID : ConvertTo(ctx, DataListFormat.CreateFormat(GlobalConstants._XML), empty, theShape, out errors);
             }
             else
             {
@@ -1794,8 +1766,6 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
-
-
         private IBinaryDataListEntry InternalDataListEvaluateV2(EvaluateRuleSet rules)
         {
             if(IsEvaluated(rules.Expression))
@@ -1894,8 +1864,6 @@ namespace Dev2.Server.Datalist
             }
         }
 
-
-
         /// <summary>
         /// Binds the variable.
         /// </summary>
@@ -1930,16 +1898,7 @@ namespace Dev2.Server.Datalist
 
             var idx = token.Option.RecordsetIndex;
 
-            string colsToKeep;
-
-            if(!string.IsNullOrEmpty(field))
-            {
-                colsToKeep = field;
-            }
-            else
-            {
-                colsToKeep = GlobalConstants.AllColumns;
-            }
+            string colsToKeep = !string.IsNullOrEmpty(field) ? field : GlobalConstants.AllColumns;
 
             if(bdl.TryGetEntry(rs, out val, out error))
             {
@@ -1947,16 +1906,7 @@ namespace Dev2.Server.Datalist
 
                 if(idxType == enRecordsetIndexType.Numeric || idxType == enRecordsetIndexType.Blank)
                 {
-                    int myIdx;
-                    if(idxType == enRecordsetIndexType.Numeric)
-                    {
-                        myIdx = Int32.Parse(idx);
-                    }
-                    else
-                    {
-                        myIdx = val.FetchLastRecordsetIndex();
-                    }
-
+                    int myIdx = idxType == enRecordsetIndexType.Numeric ? Int32.Parse(idx) : val.FetchLastRecordsetIndex();
                     var res = val.Clone(enTranslationDepth.Shape, bdl.UID, out error);
                     res.MakeRecordsetEvaluateReady(myIdx, colsToKeep, out error);
                     errors.AddError(error);
@@ -2157,7 +2107,21 @@ namespace Dev2.Server.Datalist
                                 allErrors.MergeErrors(invokeError);
                             }
                             allErrors.MergeErrors(errors);
-
+                            if(payload.IsDebug)
+                            {
+                                if(evaluatedValue == null)
+                                {
+                                    allErrors.AddError("Problems Evaluating Expression [ " + frameItem.Value + " ]");
+                                }
+                                else
+                                {
+                                    debugTO.RightEntry = evaluatedValue;
+                                    debugTO.RightEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
+                                    ErrorResultTO invokeError;
+                                    ProcessRightSide(debugTO, frameItem, bdl, out invokeError);
+                                    allErrors.MergeErrors(invokeError);
+                                }
+                            }
                             // check entry cache based upon type ;)
                             IBinaryDataListEntry entry;
                             if(part.Option.IsScalar)
@@ -2437,21 +2401,6 @@ namespace Dev2.Server.Datalist
                                         entry.FetchRecordsetIndexes().RemoveGap(toRemoveFromGap);
                                         toRemoveFromGap = -1;
                                     }
-                                }
-                            }
-                            if(payload.IsDebug)
-                            {
-                                if(evaluatedValue == null)
-                                {
-                                    allErrors.AddError("Problems Evaluating Expression [ " + frameItem.Value + " ]");
-                                }
-                                else
-                                {
-                                    debugTO.RightEntry = evaluatedValue;
-                                    debugTO.RightEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
-                                    ErrorResultTO invokeError;
-                                    ProcessRightSide(debugTO, frameItem, bdl, out invokeError);
-                                    allErrors.MergeErrors(invokeError);
                                 }
                             }
                             if(payload.IsDebug)

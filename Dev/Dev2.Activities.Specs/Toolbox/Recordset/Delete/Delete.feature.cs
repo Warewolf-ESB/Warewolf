@@ -289,7 +289,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table14 = new TechTalk.SpecFlow.Table(new string[] {
                         "Records"});
             table14.AddRow(new string[] {
-                        "[[rs([[index]])]] = 6"});
+                        "[[rs(2)]] = 6"});
 #line 80
  testRunner.And("the debug inputs as", ((string)(null)), table14, "And ");
 #line hidden

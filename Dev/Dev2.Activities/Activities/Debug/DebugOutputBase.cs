@@ -31,6 +31,8 @@ namespace Dev2.Activities.Debug
         public List<DebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, string labelText, int indexToUse = -1)
         {
             var results = new List<DebugItemResult>();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out ErrorsTo);
 
             if(
                 !(expression.Contains(GlobalConstants.CalculateTextConvertPrefix) &&
@@ -98,8 +100,6 @@ namespace Dev2.Activities.Debug
                     if (DataListUtil.IsValueRecordset(expression) &&
                         (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Blank))
                     {
-                        IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                        IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out ErrorsTo);
                         if (indexToUse == -1)
                         {
                             IBinaryDataListEntry tmpEntry;
@@ -126,9 +126,9 @@ namespace Dev2.Activities.Debug
                     {
                         var strIndx = DataListUtil.ExtractIndexRegionFromRecordset(expression);
                         int indx;
-                        if (int.TryParse(strIndx, out indx))
+                        if(int.TryParse(strIndx, out indx))
                         {
-                            if (indx > 0)
+                            if(indx > 0)
                             {
                                 IBinaryDataListItem item = dlEntry.FetchScalar();
                                 CreateScalarDebugItems(expression, item.TheValue, labelText, results, "", groupIndex);
@@ -141,6 +141,16 @@ namespace Dev2.Activities.Debug
                         else
                         {
                             IBinaryDataListItem itemx = dlEntry.FetchScalar();
+                            
+                            if(!string.IsNullOrEmpty(strIndx))
+                            {
+                                IBinaryDataListEntry indexBinaryEntry;
+                                string error;
+                                dataList.TryGetEntry(strIndx, out indexBinaryEntry, out error);
+                                IBinaryDataListItem indexItem = indexBinaryEntry.FetchScalar();
+                                expression = expression.Replace(string.Format("({0})", strIndx), string.Format("({0})", indexItem.TheValue));
+                            }
+
                             CreateScalarDebugItems(expression, itemx.TheValue, labelText, results, "", groupIndex);
                         }
                     }

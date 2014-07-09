@@ -78,11 +78,11 @@ Scenario: Delete a record using an index from a variable
 	| rs().row | 3   |
 	And the execution has "NO" error
 	And the debug inputs as  	
-	| Records               |
-	| [[rs([[index]])]] = 6 |
+	| Records       |
+	| [[rs(2)]] = 6 |
 	And the debug output as  
-	|                       |
-	| [[result]] = Success |	
+	|                      |
+	| [[result]] = Success |
 
 Scenario: Delete a record using a star notation
 	Given I have the following recordset

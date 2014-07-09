@@ -1,13 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Enums;
+using Dev2.Data.DataListCache;
+using Dev2.Data.Enums;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.TO;
+using Dev2.Diagnostics;
 using Dev2.DynamicServices.Test;
+using Dev2.Server.DataList;
+using Dev2.Server.DataList.Translators;
 using Dev2.Server.Datalist;
+using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.BinaryDataList
@@ -239,8 +250,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
             payload.Add("[[rec2([[idx]]).b]]", "[[rec(*).a]]");
-
-
             //------------Execute Test---------------------------
             Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
 
@@ -321,6 +330,50 @@ namespace Dev2.Data.Tests.BinaryDataList
             StringAssert.Contains(rightAuditItems[2].Expression, "[[rec(*).a]]");
             StringAssert.Contains(rightAuditItems[2].RawExpression, "[[rec(3).a]]");
             StringAssert.Contains(rightAuditItems[2].BoundValue, "3");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenDebugActiveAndEvaluatedIndexOfStarInToAndFromExpressionOneRowInARecordset_ExpectCorrectExpressionAuditData()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2([[idx]]).b]]", "[[rec([[idx]]).a]]");
+
+
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+
+            //------------Assert Results-------------------------
+            var debugItems = payload.DebugOutputs;
+            Assert.AreEqual(dlID, result);
+            Assert.IsNotNull(debugItems);
+            Assert.AreEqual(1, debugItems.Count);
+
+            var item = debugItems[0];
+            var leftAudit = item.LeftEntry.ComplexExpressionAuditor;
+            var rightAudit = item.RightEntry.ComplexExpressionAuditor;
+            var leftAuditItems = leftAudit.FetchAuditItems();
+            var rightAuditItems = rightAudit.FetchAuditItems();
+
+            Assert.IsNull(item.Expression);
+            Assert.AreEqual(1, item.UsedRecordsetIndex);
+            Assert.AreEqual(1, leftAuditItems.Count);
+            Assert.AreEqual(1, rightAuditItems.Count);
+            StringAssert.Contains(leftAuditItems[0].Expression, "[[rec2(*).b]]");
+            StringAssert.Contains(leftAuditItems[0].RawExpression, "[[rec2(1).b]]");
+            StringAssert.Contains(rightAuditItems[0].Expression, "[[rec(*).a]]");
+            StringAssert.Contains(rightAuditItems[0].RawExpression, "[[rec(1).a]]");
+            StringAssert.Contains(rightAuditItems[0].BoundValue, "1");
         }
 
         [TestMethod]
@@ -499,7 +552,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             Assert.IsFalse(errors.HasErrors());
             Assert.AreEqual("f1.1", res1);
-
         }
 
         [TestMethod]
@@ -623,7 +675,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             Assert.IsFalse(errors.HasErrors());
             Assert.AreEqual("[[rs1(1).f1]]", res1);
-
         }
 
         [TestMethod]
@@ -1658,7 +1709,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             var actual = tmpRS.TryFetchRecordsetColumnAtIndex("f1", 2, out error).TheValue;
             Assert.AreEqual("r1f1.2", actual);
-
         }
 
         [TestMethod]
@@ -1679,7 +1729,6 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string expected = "[[input]]";
 
             Assert.AreEqual(expected, result);
-
         }
 
         [TestMethod]
@@ -1700,7 +1749,1345 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string expected = "[[rs2(*).input]]";
 
             Assert.AreEqual(expected, result);
-
         }
-    }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [ExpectedException(typeof(Exception))]
+        [TestCategory("ServerDataListCompiler_Evaluate")]
+        public void ServerDataListCompiler_Evaluate_ActionTypeIsInternalAndRecordsetIndexIsAScalaButDoesntExistOnTheDataList_ThrowsException()
+        {
+           //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            //------------Execute Test---------------------------
+          _sdlc.Evaluate(null, dlID, enActionType.Internal, "[[rs1([[junk]]).f1]]", out errors);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Evaluate")]
+        public void ServerDataListCompiler_Evaluate_ActionTypeIsInternalAndRecorsetAndItsIndexExistsInTheDataList_Success()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.Internal, "[[rs1([[scalar1]]).f1]]", out errors);
+            //------------Assert---------------------------
+            Assert.AreEqual("Success", result.FetchScalar().TheValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Evaluate")]
+        public void ServerDataListCompiler_Evaluate_ActionTypeIsInternalAndRecorsetExistsInTheDataList_Success()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.Internal, "[[rs1(1).f1]]", out errors);
+            //------------Assert---------------------------
+            Assert.AreEqual("Success", result.FetchScalar().TheValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Evaluate")]
+        public void ServerDataListCompiler_Evaluate_ActionTypeIsInternalAndRecorsetExistsInTheDataListButRowIndexDoesnt_Success()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.Internal, "[[rs1(8).f1]]", out errors);
+            //------------Assert---------------------------
+            Assert.AreEqual("Failure", result.FetchScalar().TheValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Evaluate")]
+        public void ServerDataListCompiler_Evaluate_ActionTypeIsCalculateSubstitutionAndVariableIsScalar_CalculatedValue()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.CalculateSubstitution, "[[scalar1]]", out errors);
+            //------------Assert---------------------------
+            Assert.AreEqual("1", result.FetchScalar().TheValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Evaluate")]
+        public void ServerDataListCompiler_Evaluate_ActionTypeIsCalculateSubstitutionAndVariableIsRecordset_CalculatedValue()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>11.112</f1></rs1><scalar2/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.CalculateSubstitution, "[[rs1().f1]]", out errors);
+            //------------Assert---------------------------
+            Assert.AreEqual("11.112", result.FetchScalar().TheValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_GetDebugItems")]
+        public void ServerDataListCompiler_GetDebugItems_UpsertHasBeenPerformed_HasDebugItems()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "six vitamins");
+
+            _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Execute Test---------------------------
+            var debugItems = _sdlc.GetDebugItems();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(debugItems);
+            Assert.AreEqual(1, debugItems.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_CloneDataList")]
+        public void ServerDataListCompiler_CloneDataList_UpsertHasBeenPerformed_WillReturnANewID()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "six vitamins");
+
+            var upsertId = _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Execute Test---------------------------
+            var id = _sdlc.CloneDataList(upsertId, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(Guid.Empty, id);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_CloneDataList")]
+        public void ServerDataListCompiler_CloneDataList_DataListDoesnotExists_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "six vitamins");
+
+            var upsertId = Guid.NewGuid();
+            //------------Execute Test---------------------------
+            var id = _sdlc.CloneDataList(upsertId, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, id);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_FetchBinaryDataList")]
+        public void ServerDataListCompiler_FetchBinaryDataList_DataListIdDoesNotExist_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            Guid upsertID = Guid.NewGuid();
+            //------------Execute Test---------------------------
+            IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, upsertID, out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNull(bdl);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Upsert")]
+        public void ServerDataListCompiler_Upsert_ExpressionIsOnTheDataList_ReturnsId()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "six vitamins");
+            //------------Execute Test---------------------------
+            var upsertId = _sdlc.Upsert(null, dlID, "[[rec2().b]]", null, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(Guid.Empty, upsertId);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Upsert")]
+        public void ServerDataListCompiler_Upsert_ListOfExpressionsThatAreOnTheDataList_ReturnsId()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><a/><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "six vitamins");
+            //------------Execute Test---------------------------
+            var upsertId = _sdlc.Upsert(null, dlID, new List<string>{"[[rec2().a]]","[[rec2().b]]"}, new List<string>{"One", "Two"}, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(Guid.Empty, upsertId);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Upsert")]
+        public void ServerDataListCompiler_Upsert_ListOfExpressionsThatAreOnTheDataListAndBinaryDataListEntries_ReturnsId()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><a/><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "six vitamins");
+            //------------Execute Test---------------------------
+            var upsertId = _sdlc.Upsert(null, dlID, new List<string> { "[[rec2().a]]", "[[rec2().b]]" }, new List<IBinaryDataListEntry> { null, null }, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(Guid.Empty, upsertId);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Upsert")]
+        public void ServerDataListCompiler_Upsert_ListOfExpressionsThatAreOnTheDataListMisMatchInValues_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><a/><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "six vitamins");
+            //------------Execute Test---------------------------
+            var upsertId = _sdlc.Upsert(null, dlID, new List<string> { "[[rec2().a]]", "[[rec2().b]]" }, new List<IBinaryDataListEntry> { null }, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(Guid.Empty, upsertId);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_ForInputWithEmptyDev2Definitions_Id()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            //------------Execute Test---------------------------
+            Guid shapeID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, new List<IDev2Definition>(), out errors);
+           //-------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, shapeID);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_ForOutputWithEmptyDev2Definitions_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            //------------Execute Test---------------------------
+            Guid shapeID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, new List<IDev2Definition>(), out errors);
+            //-------------Assert---------------------------------
+            Assert.AreEqual(Guid.Empty, shapeID);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_InputShapeIsEmpty_CallsCloneAndReturnsId()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            //------------Execute Test---------------------------
+            var id = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, "", out errors);
+            //------------Assert Results-------------------------
+           Assert.AreNotEqual(Guid.Empty, id);
+           Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_InputShapeIsEmptyAndDatalistIdIsInvlaid_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            //------------Execute Test---------------------------
+            var id = _sdlc.Shape(null, Guid.NewGuid(), enDev2ArgumentType.Input, "", out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, id);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_OutputWhenOutputShapeIsEmpty_CallsUnionDataListAndReturnsId()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData0 = "<DataList><nullFlag/><result/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            // Create child list to branch from -- Emulate Input shaping
+            const string strData = "<DataList><nullFlag></nullFlag></DataList>";
+            data = (TestHelper.ConvertStringToByteArray(strData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>", out errors);
+            // Set ParentID
+            _sdlc.SetParentUID(dlID, parentID, out errors);
+            //------------Execute Test---------------------------
+            Guid shapedOutputID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, "", out errors);
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(Guid.Empty, shapedOutputID);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_OutputWhenOutputShapeIsEmptyAndDataListIdIsInvalid_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            //------------Execute Test---------------------------
+            Guid shapedOutputID = _sdlc.Shape(null, Guid.NewGuid(), enDev2ArgumentType.Output, "", out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, shapedOutputID);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Merge")]
+        public void ServerDataListCompiler_Merge_BothLeftAndRightDataListIdAreValid_MergesOk()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData0 = "<DataList><nullFlag/><result/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
+            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            const string strData = "<DataList><nullFlag></nullFlag></DataList>";
+            data = (TestHelper.ConvertStringToByteArray(strData));
+            Guid rightId = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>", out errors);
+            //------------Execute Test---------------------------
+            Guid shapeId = _sdlc.Merge(null, leftId, rightId, enDataListMergeTypes.Intersection ,enTranslationDepth.Shape , false, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(Guid.Empty, shapeId);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Merge")]
+        public void ServerDataListCompiler_Merge_OnlyLeftIdIsValid_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData0 = "<DataList><nullFlag/><result/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
+            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            //------------Execute Test---------------------------
+            Guid shapeId = _sdlc.Merge(null, leftId, Guid.Empty, enDataListMergeTypes.Intersection, enTranslationDepth.Shape, false, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, shapeId);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Merge")]
+        public void ServerDataListCompiler_Merge_OnlyRightDataListIdisValid_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData = "<DataList><nullFlag></nullFlag></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData));
+            Guid rightId = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>", out errors);
+            //------------Execute Test---------------------------
+            Guid shapeId = _sdlc.Merge(null, Guid.Empty, rightId, enDataListMergeTypes.Intersection, enTranslationDepth.Shape, false, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, shapeId);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConditionalMerge")]
+        public void ServerDataListCompiler_ConditionalMerge_BothLeftAndRightDataListIdAreValid_MergesOk()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData0 = "<DataList><nullFlag/><result/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
+            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            const string strData = "<DataList><nullFlag></nullFlag></DataList>";
+            data = (TestHelper.ConvertStringToByteArray(strData));
+            Guid rightId = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>", out errors);
+            //------------Execute Test---------------------------
+            var shapeId = _sdlc.ConditionalMerge(null, DataListMergeFrequency.Always, leftId, rightId, DataListMergeFrequency.Always, enDataListMergeTypes.Intersection,  enTranslationDepth.Shape);
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(Guid.Empty, shapeId);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConditionalMerge")]
+        public void ServerDataListCompiler_ConditionalMerge_OnlyTheLeftDataListIdIsValid_EmptyDataListId()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData0 = "<DataList><nullFlag/><result/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
+            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            //------------Execute Test---------------------------
+            var shapeId = _sdlc.ConditionalMerge(null, DataListMergeFrequency.Always, leftId, Guid.NewGuid(), DataListMergeFrequency.Always, enDataListMergeTypes.Intersection, enTranslationDepth.Shape);
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(Guid.Empty, shapeId);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [ExpectedException(typeof(NotImplementedException))]
+        [TestCategory("ServerDataListCompiler_TransferSystemTags")]
+        public void ServerDataListCompiler_TransferSystemTags_ThrowsException()
+        {
+             //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            //------------Execute Test---------------------------
+            _sdlc.TransferSystemTags(null, Guid.Empty, Guid.Empty, false, out errors);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_FetchChanges")]
+        public void ServerDataListCompiler_FetchChanges_Null()
+        {
+            //------------Execute Test---------------------------
+            var result = _sdlc.FetchChanges(null, Guid.Empty, StateType.After);
+            //------------Assert---------------------------------
+            Assert.IsNull(result);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_DeleteDataListByID")]
+        public void ServerDataListCompiler_DeleteDataListByID_IdExists_True()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData0 = "<DataList><nullFlag/><result/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
+            Guid id = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            //------------Execute Test---------------------------
+            var isSuccessful = _sdlc.DeleteDataListByID(id, true);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(isSuccessful);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_DeleteDataListByID")]
+        public void ServerDataListCompiler_DeleteDataListByID_IdDoesNotExists_False()
+        {
+            //------------Execute Test---------------------------
+            var isSuccessful = _sdlc.DeleteDataListByID(Guid.Empty, true);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(isSuccessful);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_PopulateDataList")]
+        public void ServerDataListCompiler_PopulateDataList_NoInputOrOutputDefinitions_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData0 = "<DataList><nullFlag/><result/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
+            Guid id = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            //------------Execute Test---------------------------
+            var shapeId = _sdlc.PopulateDataList(null, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "", "", id, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, shapeId);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_PopulateDataList")]
+        public void ServerDataListCompiler_PopulateDataList_DataListHasParentId_NewShapeId()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData0 = "<DataList><nullFlag/><result/></DataList>";
+            const string strData1 = "<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
+            Guid id = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+           const string strShape0 = "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>";
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0, out errors);
+            _sdlc.SetParentUID(id, parentID, out errors);
+            //------------Execute Test---------------------------
+            var shapeId = _sdlc.PopulateDataList(null, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), strData0, strData1, id, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(Guid.Empty, shapeId);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertAndOnlyMapInputs")]
+        public void ServerDataListCompiler_ConvertAndOnlyMapInputs_PayloadIsAValidShape_ShapeId()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData0 = "<DataList><nullFlag/><result/></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
+            //------------Execute Test---------------------------
+            Guid id = _sdlc.ConvertAndOnlyMapInputs(null, xmlFormat, data, strData0, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreNotEqual(Guid.Empty, id);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertAndOnlyMapInputs")]
+        public void ServerDataListCompiler_ConvertAndOnlyMapInputs_PayloadIsAnInValidShape_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData0 = "<DataList><nullFlag//></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
+            //------------Execute Test---------------------------
+            Guid id = _sdlc.ConvertAndOnlyMapInputs(null, xmlFormat, data, strData0, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, id);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertAndOnlyMapInputs")]
+        public void ServerDataListCompiler_ConvertAndOnlyMapInputs_DatalistFormatDoesntHaveATranslator_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string strData0 = "<DataList><nullFlag//></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
+            //------------Execute Test---------------------------
+            Guid id = _sdlc.ConvertAndOnlyMapInputs(null, DataListFormat.CreateFormat(GlobalConstants._DECISION_STACK), data, strData0, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, id);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertTo")]
+        public void ServerDataListCompiler_ConvertTo_DatalistFormatDoesntHaveATranslator_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            //------------Execute Test---------------------------
+            Guid shapeId = _sdlc.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._DECISION_STACK), data, dl, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Guid.Empty, shapeId);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertAndFilter")]
+        public void ServerDataListCompiler_ConvertAndFilter_DataListIsNull_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            var dataListServer  = new Mock<IDataListServer>();
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
+            dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns((IDataListTranslator)null);
+            var binaryDataList = new Mock<IBinaryDataList>();
+            dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
+            //------------Execute Test---------------------------
+            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData, xmlFormat, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(string.Empty, shape);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertAndFilter")]
+        public void ServerDataListCompiler_ConvertAndFilter_TranslatorIsNull_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            var dataListServer = new Mock<IDataListServer>();
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
+            dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns((IDataListTranslator)null);
+            var binaryDataList = new Mock<IBinaryDataList>();
+            dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
+            //------------Execute Test---------------------------
+            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData, xmlFormat, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(string.Empty, shape);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertAndFilter")]
+        public void ServerDataListCompiler_ConvertAndFilter_ConvertAndFilterThrowsAnException_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            var dataListServer = new Mock<IDataListServer>();
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
+            dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var translator = new Mock<IDataListTranslator>();
+            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Throws(new Exception());
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
+            var binaryDataList = new Mock<IBinaryDataList>();
+            dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
+            //------------Execute Test---------------------------
+            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData, xmlFormat, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(string.Empty, shape);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertAndFilter")]
+        public void ServerDataListCompiler_ConvertAndFilter_ConvertAndFilterReturnsShape_Shape()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            var dataListServer = new Mock<IDataListServer>();
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
+            dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var translator = new Mock<IDataListTranslator>();
+            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Returns("<DataList><PASSED/></DataList>");
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
+            var binaryDataList = new Mock<IBinaryDataList>();
+            dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
+            //------------Execute Test---------------------------
+            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData, xmlFormat, out errors);
+            //------------Assert Results-------------------------
+            Assert.AreEqual("<DataList><PASSED/></DataList>", shape);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_FetchTranslatorTypes")]
+        public void ServerDataListCompiler_FetchTranslatorTypes_ServerDataListReturnsOneFormat_OneFormat()
+        {
+            //------------Setup for test--------------------------
+            var dataListServer = new Mock<IDataListServer>();
+            dataListServer.Setup(m => m.FetchTranslatorTypes()).Returns(new List<DataListFormat> { xmlFormat });
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            //------------Execute Test---------------------------
+            var dataListFormats = sdlc.FetchTranslatorTypes();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dataListFormats);
+            Assert.AreEqual(1, dataListFormats.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertToDataTable")]
+        public void ServerDataListCompiler_ConvertToDataTable_ConvertToDataTableReturnsADataTbale_Table()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            var dataListServer = new Mock<IDataListServer>();
+            var translator = new Mock<IDataListTranslator>();
+            var binaryDataList = new Mock<IBinaryDataList>();
+            translator.Setup(m => m.ConvertToDataTable(binaryDataList.Object, "", out errors, PopulateOptions.IgnoreBlankRows)).Returns(new DataTable("TBA"));
+            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Returns("<DataList><PASSED/></DataList>");
+            dataListServer.Setup(m => m.GetTranslator(DataListFormat.CreateFormat(GlobalConstants._DATATABLE, EmitionTypes.XML, ""))).Returns(translator.Object);
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            //------------Execute Test---------------------------
+            var dataTable = sdlc.ConvertToDataTable(binaryDataList.Object, "", out errors, PopulateOptions.IgnoreBlankRows);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(dataTable);
+            Assert.AreEqual("TBA", dataTable.TableName);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertToDataTable")]
+        public void ServerDataListCompiler_ConvertToDataTable_ConvertToDataTableThrowsException_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            var dataListServer = new Mock<IDataListServer>();
+            var translator = new Mock<IDataListTranslator>();
+            var binaryDataList = new Mock<IBinaryDataList>();
+            translator.Setup(m => m.ConvertToDataTable(binaryDataList.Object, "", out errors, PopulateOptions.IgnoreBlankRows)).Throws(new Exception());
+            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Returns("<DataList><PASSED/></DataList>");
+            dataListServer.Setup(m => m.GetTranslator(DataListFormat.CreateFormat(GlobalConstants._DATATABLE, EmitionTypes.XML, ""))).Returns(translator.Object);
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            //------------Execute Test---------------------------
+            var dataTable = sdlc.ConvertToDataTable(binaryDataList.Object, "", out errors, PopulateOptions.IgnoreBlankRows);
+            //------------Assert Results-------------------------
+            Assert.IsNull(dataTable); 
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_ArgumentTypeIsDBForeach_Id()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
+            DataListServer dataListServer = new DataListServer(DataListPersistenceProviderFactory.CreateMemoryProvider());
+            dataListServer.AddTranslator(new DataListXMLTranslator());
+            var sdlc = new ServerDataListCompiler(dataListServer);
+            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            const string strShape0 = "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>";
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0, out errors);
+            _sdlc.SetParentUID(dlID, parentID, out errors);
+            //------------Execute Test---------------------------
+            Guid shapeID = sdlc.InternalShape(null, dlID,new List<IDev2Definition>{new Dev2Definition{Name = "[[scalar1]]", IsRequired = true , Value = "None",DefaultValue = "BB" }},  enDev2ArgumentType.DB_ForEach, out errors);
+            //-------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, shapeID);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_ArgumentTypeIsOutputAppendStyle_Id()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
+            DataListServer dataListServer = new DataListServer(DataListPersistenceProviderFactory.CreateMemoryProvider());
+            dataListServer.AddTranslator(new DataListXMLTranslator());
+            var sdlc = new ServerDataListCompiler(dataListServer);
+            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            const string strShape0 = "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>";
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0, out errors);
+            _sdlc.SetParentUID(dlID, parentID, out errors);
+            //------------Execute Test---------------------------
+            Guid shapeID = sdlc.InternalShape(null, dlID, new List<IDev2Definition> { new Dev2Definition { Name = "[[scalar1]]", IsRequired = true, Value = "None", DefaultValue = "BB" } }, enDev2ArgumentType.Output_Append_Style, out errors);
+            //-------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, shapeID);
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_BuildInputExpressionExtractor")]
+        public void ServerDataListCompiler_BuildInputExpressionExtractor_ArgumentTypeIsDBForeach_WillReturnAFunction()
+        {
+            //------------Setup for test--------------------------
+            DataListServer dataListServer = new DataListServer(DataListPersistenceProviderFactory.CreateMemoryProvider());
+            dataListServer.AddTranslator(new DataListXMLTranslator());
+            var sdlc = new ServerDataListCompiler(dataListServer);
+            //------------Execute Test---------------------------
+            var results = sdlc.BuildInputExpressionExtractor(enDev2ArgumentType.DB_ForEach);
+            //-------------Assert---------------------------------
+            Assert.IsNotNull(results);
+            Assert.IsInstanceOfType(results, typeof(Func<IDev2Definition, string>));
+        }
+     
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertFrom")]
+        public void ServerDataListCompiler_ConvertFrom_TranslatorConvertFromReturnsAnError_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            var dataListServer = new Mock<IDataListServer>();
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
+            dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var translator = new Mock<IDataListTranslator>();
+            var e = new ErrorResultTO();
+            e.AddError("What is crypto currency");
+            translator.Setup(m => m.ConvertFrom(It.IsAny<IBinaryDataList>(), out e)).Returns(new DataListTranslatedPayloadTO(dl));
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
+            var binaryDataList = new Mock<IBinaryDataList>();
+            dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
+            //------------Execute Test---------------------------
+            var translatedPayloadTO = sdlc.ConvertFrom(null, shapeId,enTranslationDepth.Data, xmlFormat, out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(translatedPayloadTO);
+            Assert.AreEqual(dl, translatedPayloadTO.FetchAsString());
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertFrom")]
+        public void ServerDataListCompiler_ConvertFrom_TranslatorConvertFromReturnsPayLoadTO_PayloadTO()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            var dataListServer = new Mock<IDataListServer>();
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
+            dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var translator = new Mock<IDataListTranslator>();
+            translator.Setup(m => m.ConvertFrom(It.IsAny<IBinaryDataList>(), out errors)).Returns(new DataListTranslatedPayloadTO(dl));
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
+            var binaryDataList = new Mock<IBinaryDataList>();
+            dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
+            //------------Execute Test---------------------------
+            var translatedPayloadTO = sdlc.ConvertFrom(null, shapeId, enTranslationDepth.Data, xmlFormat, out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(translatedPayloadTO);
+            Assert.AreEqual(dl, translatedPayloadTO.FetchAsString());
+            Assert.IsFalse(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertFrom")]
+        public void ServerDataListCompiler_ConvertFrom_TranslatorConvertFromThrowsException_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            var dataListServer = new Mock<IDataListServer>();
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
+            dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var translator = new Mock<IDataListTranslator>();
+            translator.Setup(m => m.ConvertFrom(It.IsAny<IBinaryDataList>(), out errors)).Throws(new Exception());
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
+            var binaryDataList = new Mock<IBinaryDataList>();
+            dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
+            //------------Execute Test---------------------------
+            var translatedPayloadTO = sdlc.ConvertFrom(null, shapeId, enTranslationDepth.Data, xmlFormat, out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNull(translatedPayloadTO);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_ConvertFrom")]
+        public void ServerDataListCompiler_ConvertFrom_ReadDataListReturnsNull_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            var dataListServer = new Mock<IDataListServer>();
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
+            dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var translator = new Mock<IDataListTranslator>();
+            translator.Setup(m => m.ConvertFrom(It.IsAny<IBinaryDataList>(), out errors)).Throws(new Exception());
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
+            dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns((IBinaryDataList)null);
+            //------------Execute Test---------------------------
+            var translatedPayloadTO = sdlc.ConvertFrom(null, shapeId, enTranslationDepth.Data, xmlFormat, out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNull(translatedPayloadTO);
+            Assert.IsTrue(errors.HasErrors());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Evaluate")]
+        public void ServerDataListCompiler_Evaluate_NineMultipliedByNine_EightyOne()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><va/></DataList>";
+            const string dlData = "<DataList><va>9</va></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            //------------Execute Test---------------------------
+            IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "!~calculation~![[va]]*[[va]]!~~calculation~!", out errors, true);
+
+            //------------Assert Results-------------------------
+            var res1 = result.FetchScalar().TheValue;
+
+            Assert.IsFalse(errors.HasErrors());
+            Assert.AreEqual("81", res1);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_MapRecordsetColumnToADifferentColumnName_ExpectOneDataList()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            string error;
+
+            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>", out errors);
+
+            const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs2().f1a]]"" Recordset=""rs1"" /></Inputs>";
+            const string outputs = @"<Outputs><Output Name=""f1b"" MapsTo=""f1b"" Value=""[[rs1(*).f1]]"" Recordset=""rs2"" /></Outputs>";
+
+            //------------Execute Test---------------------------
+            _sdlc.ShapeForSubExecution(null, dlID, childID, inputs, outputs, out errors);
+
+            IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, dlID, out errors);
+
+            IBinaryDataListEntry tmp;
+            IBinaryDataListEntry tmpRS;
+            bdl.TryGetEntry("rs1", out tmpRS, out error);
+
+            // Check scalar value
+            bdl.TryGetEntry("scalar1", out tmp, out error);
+
+            var res = tmp.FetchScalar().TheValue;
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("scalar3", res);
+            Assert.AreEqual("f1.1", tmpRS.TryFetchRecordsetColumnAtIndex("f1", 1, out error).TheValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_TryPushDataList")]
+        public void ServerDataListCompiler_TryPushDataList_DataListServerWriteDataListFails_Error()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            var dataListServer = new Mock<IDataListServer>();
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
+            dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(false);
+            var sdlc = new ServerDataListCompiler(dataListServer.Object);
+            //Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var translator = new Mock<IDataListTranslator>();
+            translator.Setup(m => m.ConvertFrom(It.IsAny<IBinaryDataList>(), out errors)).Throws(new Exception());
+            dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
+            var binaryDataList = new Mock<IBinaryDataList>();
+            dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
+            string error;
+            //------------Execute Test---------------------------
+            var result = sdlc.TryPushDataList(binaryDataList.Object, out error);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+            Assert.AreEqual("Failed to write DataList", error);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenItIsACalculatedExpression_ValidDebugTO()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2><va/></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "!~calculation~![[va]]*[[va]]!~~calculation~!");
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, result);
+            Assert.IsNotNull(payload.DebugOutputs);
+            Assert.AreEqual(1, payload.DebugOutputs.Count);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor);
+            var auditSteps = payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor.FetchAuditItems();
+            Assert.IsNotNull(auditSteps);
+            Assert.AreEqual("=87*87", auditSteps[0].BoundValue);
+            Assert.AreEqual("=[[va]]*[[va]]", auditSteps[0].Expression);
+            Assert.AreEqual("=[[va]]*[[va]]", auditSteps[0].RawExpression);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_AddAListOfValuesToUpsertRecordset_ValidDebugTO()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2><va/></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var payload = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", new List<string>{"One", "Two"});
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, result);
+            Assert.IsNotNull(payload.DebugOutputs);
+            Assert.AreEqual(1, payload.DebugOutputs.Count);
+            Assert.AreEqual("[[rec2(1).b]]", payload.DebugOutputs[0].Expression);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor);
+            var auditSteps = payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor.FetchAuditItems();
+            Assert.IsNotNull(auditSteps);
+            Assert.AreEqual("Two", auditSteps[0].BoundValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_AddAListOfValuesToUpsertRecordsetWithStar_ValidDebugTO()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2><va/></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var payload = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
+            payload.IsDebug = true;
+            payload.Add("[[rec2(*).b]]", new List<string> { "One", "Two" });
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, result);
+            Assert.IsNotNull(payload.DebugOutputs);
+            Assert.AreEqual(1, payload.DebugOutputs.Count);
+            Assert.AreEqual("[[rec2(1).b]]", payload.DebugOutputs[0].Expression);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor);
+            var auditSteps = payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor.FetchAuditItems();
+            Assert.IsNotNull(auditSteps);
+            Assert.AreEqual("Two", auditSteps[0].BoundValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_AddAListOfValuesToUpsertScalar_ValidDebugTO()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2><va/></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var payload = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
+            payload.IsDebug = true;
+            payload.Add("[[va]]", new List<string> { "One", "Two" });
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, result);
+            Assert.IsNotNull(payload.DebugOutputs);
+            Assert.AreEqual(1, payload.DebugOutputs.Count);
+            Assert.AreEqual("[[va]]", payload.DebugOutputs[0].Expression);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor);
+            var auditSteps = payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor.FetchAuditItems();
+            Assert.IsNotNull(auditSteps);
+            Assert.AreEqual("One,Two", auditSteps[0].BoundValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Upsert")]
+        public void ServerDataListCompiler_Upsert_RecordsetWithStar_ValidDebugTO()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><rec2><b>One Vitamin</b></rec2><rec2><b>Two Vitamins</b></rec2></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2(*).b]]", "six vitamins");
+            //------------Execute Test---------------------------
+            _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(payload.DebugOutputs);
+            Assert.AreEqual(1, payload.DebugOutputs.Count);
+            Assert.AreEqual("[[rec2(1).b]]", payload.DebugOutputs[0].Expression);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor);
+            var auditSteps = payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor.FetchAuditItems();
+            Assert.IsNotNull(auditSteps);
+            Assert.AreEqual("six vitamins", auditSteps[0].BoundValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Upsert")]
+        public void ServerDataListCompiler_Upsert_RecordsetWithStarAndIterativePayload_ValidDebugTO()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><rec2><b>One Vitamin</b></rec2><rec2><b>Two Vitamins</b></rec2></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+            payload.IsDebug = true;
+            payload.Add("[[rec2(*).b]]", "six vitamins");
+            //------------Execute Test---------------------------
+            _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(payload.DebugOutputs);
+            Assert.AreEqual(1, payload.DebugOutputs.Count);
+            Assert.IsNull(payload.DebugOutputs[0].Expression);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor);
+            var auditSteps = payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor.FetchAuditItems();
+            Assert.IsNotNull(auditSteps);
+            Assert.AreEqual("six vitamins", auditSteps[0].BoundValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Upsert")]
+        public void ServerDataListCompiler_Upsert_RecordsetWithANumericIndexAndIterativePayload_ValidDebugTO()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><rec2><b>One Vitamin</b></rec2><rec2><b>Two Vitamins</b></rec2></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+            payload.IsDebug = true;
+            payload.Add("[[rec2(1).b]]", "six vitamins");
+            //------------Execute Test---------------------------
+            _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(payload.DebugOutputs);
+            Assert.AreEqual(1, payload.DebugOutputs.Count);
+            Assert.IsNull(payload.DebugOutputs[0].Expression);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor);
+            var auditSteps = payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor.FetchAuditItems();
+            Assert.IsNotNull(auditSteps);
+            Assert.AreEqual("six vitamins", auditSteps[0].BoundValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Upsert")]
+        public void ServerDataListCompiler_Upsert_RecordsetWithAnInvalidIndexAndIterativePayload_ValidDebugTO()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><rec2><b>One Vitamin</b></rec2><rec2><b>Two Vitamins</b></rec2></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
+            payload.IsDebug = true;
+            payload.Add("[[rec2($).b]]", "six vitamins");
+            //------------Execute Test---------------------------
+            _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(payload.DebugOutputs);
+            Assert.AreEqual(1, payload.DebugOutputs.Count);
+            Assert.IsNull(payload.DebugOutputs[0].Expression);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor);
+            var auditSteps = payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor.FetchAuditItems();
+            Assert.IsNotNull(auditSteps);
+            Assert.AreEqual("six vitamins", auditSteps[0].BoundValue);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_AddAListOfValuesToUpsertRecordset_XXX()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><a/><b/></rec2><va/></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
+            payload.IsDebug = true;
+            payload.Add("[[rec()]]", "[[rec()]]");
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, result);
+            Assert.IsNotNull(payload.DebugOutputs);
+            Assert.AreEqual(1, payload.DebugOutputs.Count);
+            Assert.AreEqual("[[rec(4)]]", payload.DebugOutputs[0].Expression);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Shape")]
+        public void ServerDataListCompiler_Shape_WithSystemTag_ExpectErrors()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><Dev2WebServer>Dev2System.Dev2WebServer</Dev2WebServer></DataList>"));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><Dev2WebServer/></DataList>", out errors);
+            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>", out errors);
+            const string inputs = @"<Inputs><Input Name=""Dev2WebServer"" Source=""[[rs2(*).f1a]]"" /></Inputs>";
+            //------------Execute Test---------------------------
+            _sdlc.ShapeForSubExecution(null, dlID, childID, inputs, "", out errors);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(errors.HasErrors());
+            var fetchErrors = errors.FetchErrors();
+            StringAssert.Contains(fetchErrors[0], " [[Dev2WebServer]] does not exist in your variable list");
+            StringAssert.Contains(fetchErrors[1], "Invalid Data : Either empty expression or empty token list. Please check that your variable list does not contain errors.");
+            StringAssert.Contains(fetchErrors[2], "Dev2System.Dev2WebServer could not be found in the DataList");
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ServerDataListCompiler_Upsert")]
+        public void ServerDataListCompiler_Upsert_RecordsetAsCSVScalar_ValidDebugTO()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2><va/></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.RecordSetDataAsCSVToScalar = true;
+            payload.Add("[[va]]", "[[rec(*).a]]");
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, result);
+            IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, result, out errors);
+            IBinaryDataListEntry varBin;
+            string error;
+            bdl.TryGetEntry("va", out varBin, out error);
+           var val = varBin.FetchScalar().TheValue;
+           Assert.AreEqual("87,3", val);
+        }
+    }   
 }
+            

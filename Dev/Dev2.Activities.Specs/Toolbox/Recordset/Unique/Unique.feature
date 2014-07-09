@@ -150,7 +150,7 @@ Scenario: Find unique records using a negative recordset index for Return Field
 	| #           |                   | Return Fields    |
 	| In Field(s) | [[rs(4).row]] = 3 | [[rs(-1).row]] = |	
 	And the debug output as 
-	|  |                     |
+	|  |                    |
 	|  | [[rec().unique]] = |
 
 Scenario: Find unique records using a * for Return Field

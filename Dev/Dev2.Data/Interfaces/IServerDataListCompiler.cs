@@ -188,7 +188,7 @@ namespace Dev2.Server.Datalist
         /// <param name="datalistMergeFrequency">The datalist merge frequency.</param>
         /// <param name="datalistMergeType">Type of the datalist merge.</param>
         /// <param name="datalistMergeDepth">The datalist merge depth.</param>
-        void ConditionalMerge(NetworkContext ctx, DataListMergeFrequency conditions, Guid destinationDatalistID, Guid sourceDatalistID, DataListMergeFrequency datalistMergeFrequency, enDataListMergeTypes datalistMergeType, enTranslationDepth datalistMergeDepth);
+        Guid ConditionalMerge(NetworkContext ctx, DataListMergeFrequency conditions, Guid destinationDatalistID, Guid sourceDatalistID, DataListMergeFrequency datalistMergeFrequency, enDataListMergeTypes datalistMergeType, enTranslationDepth datalistMergeDepth);
 
         /// <summary>
         /// Transfer system tags from parent into child if parentToChild = true, else child to Parent if false

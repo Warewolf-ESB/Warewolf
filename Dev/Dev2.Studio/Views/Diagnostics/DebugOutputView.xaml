@@ -169,8 +169,6 @@
                                        Value="True" />
                             <Condition Binding="{Binding Content.ActivityType, Converter={StaticResource EnumToVisibilityConverterActivityTypeWorkflow}}"
                                        Value="Visible" />
-                            <Condition Binding="{Binding Content.StateType, Converter={StaticResource EnumToVisibilityConverterStateTypeAfter}}"
-                                       Value="Visible" />
                         </MultiDataTrigger.Conditions>
                         <MultiDataTrigger.Setters>
                             <Setter Property="FrameworkElement.Visibility"
