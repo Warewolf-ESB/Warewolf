@@ -14,6 +14,7 @@ using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Activities.Specs.Toolbox.FileAndFolder;
 
 namespace Dev2.Activities.Specs.BaseTypes
 {
@@ -439,6 +440,10 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 var debugItemResult = new DebugItemResult { Label = columnHeader };
                 var rowValue = row[index];
+                if(columnHeader == "Username")
+                {
+                    rowValue = rowValue.ResolveDomain();
+                }
 
                 if(rowValue.Contains(" ="))
                 {

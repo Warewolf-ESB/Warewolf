@@ -36,7 +36,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void CreateFileUsingRecordsetWithRecordsetWithIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/CreateFileUsingRecordsetWithRecordsetWithIndex");
-            const string expected = @"<CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes><Recordset index=""1""><record>C:\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithRecordsetWithIndex\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recordset>";
+            const string expected = @"<CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes><CreateFileErr></CreateFileErr><DeleteFileErr></DeleteFileErr><Recordset index=""1""><record>C:\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithRecordsetWithIndex\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recordset>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -187,7 +187,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void CopyFileToFTP()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/CreateFileCopyToFTP");
-            const string expected = @"<CopyRes>Success</CopyRes><CreateRes>Success</CreateRes><FTPDeleteRes>Success</FTPDeleteRes><LocalDeleteRes>Success</LocalDeleteRes>";
+            const string expected = @"<CopyRes>Success</CopyRes><CreateRes>Success</CreateRes><FTPDeleteRes>Success</FTPDeleteRes><LocalDeleteRes>Success</LocalDeleteRes><CreateErr></CreateErr><CopyErr></CopyErr><LocalDeleteErr></LocalDeleteErr><FTPDeleteErr></FTPDeleteErr>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -247,7 +247,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void UnZip()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/UnZipOnFileSystemTest");
-            string expected = @"<CreateFileRes>Success</CreateFileRes><ZipFileRes>Success</ZipFileRes><UnZipFileRes>Success</UnZipFileRes><DeleteFileRes1>Success</DeleteFileRes1><DeleteFileRes2>Success</DeleteFileRes2>";
+            string expected = @"<CreateFileRes>Success</CreateFileRes><ZipFileRes>Success</ZipFileRes><UnZipFileRes>Success</UnZipFileRes><DeleteFileRes1>Success</DeleteFileRes1><DeleteFileRes2>Success</DeleteFileRes2>CreateFileErr></CreateFileErr><ZipFileErr></ZipFileErr><DeleteFileErr1></DeleteFileErr1><UnZipFileErr></UnZipFileErr><DeleteFileErr2></DeleteFileErr2>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -262,7 +262,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ZipFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/ZipFolderOnFileSystemTest");
-            string expected = @"<DeleteFileRes>Success</DeleteFileRes><ZipFileRes>Success</ZipFileRes><CreateFileRes>Success</CreateFileRes>";
+            string expected = @"<DeleteFileRes>Success</DeleteFileRes><ZipFileRes>Success</ZipFileRes><CreateFileRes>Success</CreateFileRes><CreateFileErr></CreateFileErr><ZipFileErr></ZipFileErr><DeleteFileErr1></DeleteFileErr1><UnZipFileErr></UnZipFileErr><DeleteFileErr2></DeleteFileErr2>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
