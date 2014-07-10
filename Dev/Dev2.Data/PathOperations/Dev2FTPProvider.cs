@@ -149,7 +149,10 @@ namespace Dev2.Data.PathOperations
 
         SftpClient BuildSftpClient(IActivityIOPath path)
         {
-              var hostName = ExtractHostNameFromPath(path.Path);
+            
+            var hostName = ExtractHostNameFromPath(path.Path);
+            if (hostName.ToLower().StartsWith("localhost"))
+                hostName = hostName.Replace("localhost", "127.0.0.1");
             var sftp = new SftpClient(hostName, 22, path.Username, path.Password);
             sftp.OperationTimeout = new TimeSpan(0,0,0,SftpTimeoutMilliseconds);
 
