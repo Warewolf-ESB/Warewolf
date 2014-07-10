@@ -538,7 +538,8 @@ Examples:
 	| 10 | Hex          | Binary  |
 	| 11 | Hex          | Text    |
 	| 12 | Hex          | Base 64 |
-#
+
+#Bug 12177
 #Scenario Outline: Converting varibles with data  
 #	Given I have a convert variable "[[a]]" with a value of "QUE="
 #	And I convert a variable "[[a]]test" from type '<From>' to type '<To>' 
@@ -568,6 +569,7 @@ Examples:
 #	| 15 | Hex          | Hex     |
 #	| 16 | Hex          | Base 64 |
 #
+#Bug 11840
 #Scenario Outline: Converting two varibles on one row 
 #	Given I have a convert variable "[[rec(1).a]]" with a value of "text"
 #	And I have a convert variable "[[rs(1).index]]" with a value of "1"
