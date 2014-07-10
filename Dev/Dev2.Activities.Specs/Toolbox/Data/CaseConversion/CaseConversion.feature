@@ -304,12 +304,10 @@ Scenario: Convert an recordset to Upper by using index as scalar
 #	| # |                          |
 #	| 1 | [[rs(1).row]] = WAREWOLF |
 #
-
-
-@ignore
+#Bug 12178
 #Scenario Outline: Error messages when convert a Invalid variable
 #	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
-#	And I convert a variable '<Variable>' to '<To>"		
+#	And I convert a variable '<Variable>' to '<To>'	
 #	When the case conversion tool is executed
 #	Then the execution has "AN" error
 #	And the debug inputs as  
@@ -317,9 +315,8 @@ Scenario: Convert an recordset to Upper by using index as scalar
 #	| 1 | <Variable> = | <Case> |
 #	And the debug output as  
 #	| # |           |
-#	| 1 | <error> = |
 #Examples: 
-#	| No | Variable                                  | To    |
+#	| No | Variable                                  | To    | Error                                                                                                                                                                                                                                                   |
 #	| 1  | [[my(-1).var]]                            | UPPER | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |
 #	| 2  | [[var  ]]                                 | UPPER | Variable name [[var  ]] contains invalid character(s)                                                                                                                                                                                                   |
 #	| 3  | [[my(%).var]]                             | UPPER | Recordset index (q) contains invalid character(s)                                                                                                                                                                                                       |
@@ -353,7 +350,7 @@ Scenario: Convert an recordset to Upper by using index as scalar
 #
 #
 #
-
+#
 
 
 
