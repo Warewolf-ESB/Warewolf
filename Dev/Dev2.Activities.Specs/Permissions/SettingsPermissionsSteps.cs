@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
-using System.Management;
 using System.Security.Principal;
 using Dev2.Data.Settings;
 using Dev2.Network;
@@ -65,24 +64,30 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 if(!IsUserInGroup("SpecsUser", userGroup))
                 {
-                    PrincipalContext context = new PrincipalContext(ContextType.Machine);
-                    var userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.UserPrincipalName, "SpecsUser");
-                    AddUserToGroup(userGroup, context, userPrincipal);
+                    try
+                    {
+                        var id = GetUserSecurityIdentifier("SpecsUser");
+                        PrincipalContext context = new PrincipalContext(ContextType.Machine);
+                        var userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
+                        AddUserToGroup(userGroup, context, userPrincipal);
+                    }
+                    catch(Exception)
+                    {
+                        Assert.Fail("User not found");
+                    }
                 }
             }
             else
             {
                 CreateLocalWindowsAccount("SpecsUser", userGroup);
             }
-            var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#"), false);
-            reconnectModel.Name = "Other Connection";
+            var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#"), false) { Name = "Other Connection" };
             reconnectModel.Connect();
             ScenarioContext.Current.Add("currentEnvironment", reconnectModel);
         }
 
         public static bool CreateLocalWindowsAccount(string username, string groupName)
         {
-
             try
             {
                 PrincipalContext context = new PrincipalContext(ContextType.Machine);
@@ -93,10 +98,7 @@ namespace Dev2.Activities.Specs.Permissions
                 user.UserCannotChangePassword = true;
                 user.PasswordNeverExpires = true;
                 user.Save();
-
-
                 AddUserToGroup(groupName, context, user);
-
                 return true;
             }
             catch(Exception ex)
@@ -104,7 +106,6 @@ namespace Dev2.Activities.Specs.Permissions
                 Console.WriteLine(@"error creating user" + ex.Message);
                 return false;
             }
-
         }
 
         static void AddUserToGroup(string groupName, PrincipalContext context, UserPrincipal user)
@@ -120,43 +121,39 @@ namespace Dev2.Activities.Specs.Permissions
         bool AccountExists(string name)
         {
             bool accountExists = false;
-
             try
             {
-                NTAccount acct = new NTAccount(Environment.MachineName, name);
-                SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
-
+                var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
             }
             catch(IdentityNotMappedException)
             {
                 /* Invalid user account */
             }
-
             return accountExists;
+        }
+
+        static SecurityIdentifier GetUserSecurityIdentifier(string name)
+        {
+            NTAccount acct = new NTAccount(Environment.MachineName, name);
+            SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
+            return id;
         }
 
         bool IsUserInGroup(string name, string group)
         {
-            bool userInGroup = false;
-            ObjectQuery query = new ObjectQuery(String.Format("SELECT * FROM Win32_UserAccount WHERE Name='{0}' AND LocalAccount=True", name));
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher(query);
-            ManagementObjectCollection objs = searcher.Get();
-
-            foreach(ManagementObject o in objs)
+            PrincipalContext context = new PrincipalContext(ContextType.Machine);
+            GroupPrincipal usersGroup = GroupPrincipal.FindByIdentity(context, group);
+            if(usersGroup != null)
             {
-                ManagementObjectCollection related = o.GetRelated("Win32_Group");
-                if((from ManagementObject g in related
-                    let local = (bool)g["LocalAccount"]
-                    let groupName = (string)g["Name"]
-                    where local && groupName.Equals(@group, StringComparison.InvariantCultureIgnoreCase)
-                    select local).Any())
+                var principalCollection = usersGroup.Members;
+                if((from member in principalCollection
+                    select name.Equals(member.Name, StringComparison.InvariantCultureIgnoreCase)).Any())
                 {
-                    userInGroup = true;
+                    return true;
                 }
             }
-
-            return userInGroup;
+            return false;
         }
 
         [Then(@"'(.*)' resources are visible")]
@@ -180,7 +177,6 @@ namespace Dev2.Activities.Specs.Permissions
                     resourcePermissions |= permission;
                 }
             }
-
             var allMatch = environmentModel.ResourceRepository.All().All(model => model.UserPermissions == resourcePermissions);
             Assert.IsTrue(allMatch);
             environmentModel.Disconnect();
