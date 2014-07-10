@@ -187,7 +187,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void CopyFileToFTP()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/CreateFileCopyToFTP");
-            const string expected = @"<CopyRes>Success</CopyRes><CreateRes>Success</CreateRes><FTPDeleteRes>Success</FTPDeleteRes><LocalDeleteRes>Success</LocalDeleteRes><CreateErr></CreateErr><CopyErr></CopyErr><LocalDeleteErr></LocalDeleteErr><FTPDeleteErr></FTPDeleteErr>";
+            const string expected = @"<CopyRes>Success</CopyRes><CreateRes>Success</CreateRes><FTPDeleteRes>Success</FTPDeleteRes><CreateErr></CreateErr><CopyErr></CopyErr><FTPDeleteErr></FTPDeleteErr>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

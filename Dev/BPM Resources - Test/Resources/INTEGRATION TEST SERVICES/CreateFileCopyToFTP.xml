@@ -18,10 +18,8 @@
     <CopyRes Description="" IsEditable="True" ColumnIODirection="Output" />
     <CreateRes Description="" IsEditable="True" ColumnIODirection="Output" />
     <FTPDeleteRes Description="" IsEditable="True" ColumnIODirection="Output" />
-    <LocalDeleteRes Description="" IsEditable="True" ColumnIODirection="Output" />
     <CreateErr Description="" IsEditable="True" ColumnIODirection="Output" />
     <CopyErr Description="" IsEditable="True" ColumnIODirection="Output" />
-    <LocalDeleteErr Description="" IsEditable="True" ColumnIODirection="Output" />
     <FTPDeleteErr Description="" IsEditable="True" ColumnIODirection="Output" />
     <WorkingFolder Description="" IsEditable="True" ColumnIODirection="None" />
     <AppDataDir Description="" IsEditable="True" ColumnIODirection="None" />
@@ -39,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>0utNnPRE6y36SzyR51qW1o41JQU=</DigestValue>
+        <DigestValue>BFTRI1eMmVMq4Uxmbs4/dqug54U=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>UkLTupDT2oY8EPy5GiCkL0+8MfG334JB44p2EQvG1tnDPgnOVWqva1ox8fikyiA1E50SqchnRXNBQPMig/UrgoyvRamaNigWaNgvHDZxJVBakWkGLZdIGYPd5645qDgQsX7WRwtRh2QlEdOnhsMSfMvhM4aDbpOm4gCHOxMR0zg=</SignatureValue>
+    <SignatureValue>q1NIbzx7KL+oIsDpkXCFN6Wpc7ds67X27f9elKR/zknQGposY4ecsYvrn/OZ2auwQCanrtw7G0ZsvofoexblZdAw7o3l0gTE6clz+pZcdQw345WmMHVjDZQXB8gVGkc+wmSddfVWda0AX19seWLzeqpkM51Ypu0FRjCTEqIk8lQ=</SignatureValue>
   </Signature>
 </Service>
