@@ -118,12 +118,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     expression = DataListUtil.AddBracketsToValueIfNotExist(res.DisplayValue);
                                 }
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
-                                {
-                                    toUpsert.Add(region, res.TheValue);
-                                }
-                                // Upsert the entire payload
-
+                                IsSingleValueRule rule = new IsSingleValueRule(() => expression);
+                                    var singleresError = rule.Check();
+                                    if (singleresError != null)
+                                        allErrors.AddError(singleresError.Message);
+                                    else
+                                    {
+                                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                                        {
+                                            toUpsert.Add(region, res.TheValue);
+                                        }
+                                        // Upsert the entire payload
+                                    }
                                 allErrors.MergeErrors(errors);
 
 

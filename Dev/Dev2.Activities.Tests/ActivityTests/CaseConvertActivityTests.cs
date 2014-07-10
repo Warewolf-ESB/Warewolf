@@ -481,6 +481,25 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual("[[rs(*).val]]", inputs[0].Name);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DsfCaseConvert_Execute")]
+        public void DsfCaseConvert_Execute_MultipleVariablesinResults_ExpectError()
+        {
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[testVar]]", "UPPER", "[[testVar]][[b]]", 1) };
+
+            SetupArguments(@"<root><testVar>change this to upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+            string actual;
+            string error;
+            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+        }
         #endregion
 
         #region RecordSet Tests
