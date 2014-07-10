@@ -77,7 +77,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 7
         testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 8
-        testRunner.And(string.Format("it has \'{0}\' with rights \'{1}\'", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("it has \'{0}\' with \'{1}\'", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
         testRunner.When(string.Format("connected as user part of \'{0}\'", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 10
@@ -95,12 +95,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To")]
         public virtual void ServerPermissions_1()
         {
-            this.ServerPermissions("1", "Public", "Deploy To", "User", "All", "Deploy To", ((string[])(null)));
+            this.ServerPermissions("1", "Public", "Deploy To", "Users", "All", "Deploy To", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -110,12 +110,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy From")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy From")]
         public virtual void ServerPermissions_2()
         {
-            this.ServerPermissions("2", "Public", "Deploy From", "User", "All", "Deploy From", ((string[])(null)));
+            this.ServerPermissions("2", "Public", "Deploy From", "Users", "All", "Deploy From", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -125,12 +125,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "3")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "View")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "View")]
         public virtual void ServerPermissions_3()
         {
-            this.ServerPermissions("3", "Public", "View", "User", "All", "View", ((string[])(null)));
+            this.ServerPermissions("3", "Public", "View", "Users", "All", "View", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -140,12 +140,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "4")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Execute")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Execute")]
         public virtual void ServerPermissions_4()
         {
-            this.ServerPermissions("4", "Public", "Execute", "User", "All", "Execute", ((string[])(null)));
+            this.ServerPermissions("4", "Public", "Execute", "Users", "All", "Execute", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -155,12 +155,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Contribute, View, Execute")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Contribute, View, Execute")]
         public virtual void ServerPermissions_5()
         {
-            this.ServerPermissions("5", "Public", "Contribute, View, Execute", "User", "All", "Contribute, View, Execute", ((string[])(null)));
+            this.ServerPermissions("5", "Public", "Contribute, View, Execute", "Users", "All", "Contribute, View, Execute", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -170,12 +170,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Deploy From")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Deploy From")]
         public virtual void ServerPermissions_6()
         {
-            this.ServerPermissions("6", "Public", "Deploy To, Deploy From", "User", "All", "Deploy To, Deploy From", ((string[])(null)));
+            this.ServerPermissions("6", "Public", "Deploy To, Deploy From", "Users", "All", "Deploy To, Deploy From", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -185,12 +185,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "7")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "View, Execute")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "View, Execute")]
         public virtual void ServerPermissions_7()
         {
-            this.ServerPermissions("7", "Public", "View, Execute", "User", "All", "View, Execute", ((string[])(null)));
+            this.ServerPermissions("7", "Public", "View, Execute", "Users", "All", "View, Execute", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -200,12 +200,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "View, Execute, Contribute, Deploy To, Deploy From,Admin")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "View, Execute, Contribute, Deploy To, Deploy From")]
         public virtual void ServerPermissions_8()
         {
-            this.ServerPermissions("8", "Public", "View, Execute, Contribute, Deploy To, Deploy From,Admin", "User", "All", "View, Execute, Contribute, Deploy To, Deploy From", ((string[])(null)));
+            this.ServerPermissions("8", "Public", "View, Execute, Contribute, Deploy To, Deploy From,Admin", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -215,12 +215,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "9")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, View")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, View")]
         public virtual void ServerPermissions_9()
         {
-            this.ServerPermissions("9", "Public", "Deploy To, View", "User", "All", "Deploy To, View", ((string[])(null)));
+            this.ServerPermissions("9", "Public", "Deploy To, View", "Users", "All", "Deploy To, View", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -230,12 +230,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "10")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Execute")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Execute")]
         public virtual void ServerPermissions_10()
         {
-            this.ServerPermissions("10", "Public", "Deploy To, Execute", "User", "All", "Deploy To, Execute", ((string[])(null)));
+            this.ServerPermissions("10", "Public", "Deploy To, Execute", "Users", "All", "Deploy To, Execute", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -245,12 +245,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "11")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Contribute, View, Execute")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Contribute, View, Execute")]
         public virtual void ServerPermissions_11()
         {
-            this.ServerPermissions("11", "Public", "Deploy To, Contribute, View, Execute", "User", "All", "Deploy To, Contribute, View, Execute", ((string[])(null)));
+            this.ServerPermissions("11", "Public", "Deploy To, Contribute, View, Execute", "Users", "All", "Deploy To, Contribute, View, Execute", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -260,12 +260,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy From, View")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy From, View")]
         public virtual void ServerPermissions_12()
         {
-            this.ServerPermissions("12", "Public", "Deploy From, View", "User", "All", "Deploy From, View", ((string[])(null)));
+            this.ServerPermissions("12", "Public", "Deploy From, View", "Users", "All", "Deploy From, View", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -275,12 +275,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "13")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy From, Execute")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy From, Execute")]
         public virtual void ServerPermissions_13()
         {
-            this.ServerPermissions("13", "Public", "Deploy From, Execute", "User", "All", "Deploy From, Execute", ((string[])(null)));
+            this.ServerPermissions("13", "Public", "Deploy From, Execute", "Users", "All", "Deploy From, Execute", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -290,12 +290,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "14")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy From, Contribute, View, Execute")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy From, Contribute, View, Execute")]
         public virtual void ServerPermissions_14()
         {
-            this.ServerPermissions("14", "Public", "Deploy From, Contribute, View, Execute", "User", "All", "Deploy From, Contribute, View, Execute", ((string[])(null)));
+            this.ServerPermissions("14", "Public", "Deploy From, Contribute, View, Execute", "Users", "All", "Deploy From, Contribute, View, Execute", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -305,12 +305,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "15")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Deploy From, View")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Deploy From, View")]
         public virtual void ServerPermissions_15()
         {
-            this.ServerPermissions("15", "Public", "Deploy To, Deploy From, View", "User", "All", "Deploy To, Deploy From, View", ((string[])(null)));
+            this.ServerPermissions("15", "Public", "Deploy To, Deploy From, View", "Users", "All", "Deploy To, Deploy From, View", ((string[])(null)));
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
@@ -320,27 +320,12 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "16")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "Deploy To, Deploy From, Execute")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "All")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "Deploy To, Deploy From, Execute")]
         public virtual void ServerPermissions_16()
         {
-            this.ServerPermissions("16", "Public", "Deploy To, Deploy From, Execute", "User", "All", "Deploy To, Deploy From, Execute", ((string[])(null)));
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Server Permissions")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "17")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "17")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "User")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "")]
-        public virtual void ServerPermissions_17()
-        {
-            this.ServerPermissions("17", "Public", "", "User", "", "", ((string[])(null)));
+            this.ServerPermissions("16", "Public", "Deploy To, Deploy From, Execute", "Users", "All", "Deploy To, Deploy From, Execute", ((string[])(null)));
         }
     }
 }

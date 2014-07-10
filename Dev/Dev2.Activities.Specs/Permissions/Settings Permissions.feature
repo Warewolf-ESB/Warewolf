@@ -5,29 +5,28 @@
 	
 Scenario Outline: Server Permissions 
         Given I have a server "localhost"
-        And it has '<Group>' with rights '<Given rights>' 
+        And it has '<Group>' with '<Given rights>' 
         When connected as user part of '<User Group>'
         Then '<Resources>' resources are visible
         And resources should have '<Rights>'
 Examples:
         | No | Group  | Given rights                                            | User Group | Resources | Rights                                            |
-        | 1  | Public | Deploy To                                               | User       | All       | Deploy To                                         |
-        | 2  | Public | Deploy From                                             | User       | All       | Deploy From                                       |
-        | 3  | Public | View                                                    | User       | All       | View                                              |
-        | 4  | Public | Execute                                                 | User       | All       | Execute                                           |
-        | 5  | Public | Contribute, View, Execute                               | User       | All       | Contribute, View, Execute                         |
-        | 6  | Public | Deploy To, Deploy From                                  | User       | All       | Deploy To, Deploy From                            |
-        | 7  | Public | View, Execute                                           | User       | All       | View, Execute                                     |
-        | 8  | Public | View, Execute, Contribute, Deploy To, Deploy From,Admin | User       | All       | View, Execute, Contribute, Deploy To, Deploy From |
-        | 9  | Public | Deploy To, View                                         | User       | All       | Deploy To, View                                   |
-        | 10 | Public | Deploy To, Execute                                      | User       | All       | Deploy To, Execute                                |
-        | 11 | Public | Deploy To, Contribute, View, Execute                    | User       | All       | Deploy To, Contribute, View, Execute              |
-        | 12 | Public | Deploy From, View                                       | User       | All       | Deploy From, View                                 |
-        | 13 | Public | Deploy From, Execute                                    | User       | All       | Deploy From, Execute                              |
-        | 14 | Public | Deploy From, Contribute, View, Execute                  | User       | All       | Deploy From, Contribute, View, Execute            |
-        | 15 | Public | Deploy To, Deploy From, View                            | User       | All       | Deploy To, Deploy From, View                      |
-        | 16 | Public | Deploy To, Deploy From, Execute                         | User       | All       | Deploy To, Deploy From, Execute                   |
-        | 17 | Public |                                                         | User       |           |                                                   |
+        | 1  | Public | Deploy To                                               | Users      | All       | Deploy To                                         |
+        | 2  | Public | Deploy From                                             | Users      | All       | Deploy From                                       |
+        | 3  | Public | View                                                    | Users      | All       | View                                              |
+        | 4  | Public | Execute                                                 | Users      | All       | Execute                                           |
+        | 5  | Public | Contribute, View, Execute                               | Users      | All       | Contribute, View, Execute                         |
+        | 6  | Public | Deploy To, Deploy From                                  | Users      | All       | Deploy To, Deploy From                            |
+        | 7  | Public | View, Execute                                           | Users      | All       | View, Execute                                     |
+        | 8  | Public | View, Execute, Contribute, Deploy To, Deploy From,Admin | Users      | All       | View, Execute, Contribute, Deploy To, Deploy From |
+        | 9  | Public | Deploy To, View                                         | Users      | All       | Deploy To, View                                   |
+        | 10 | Public | Deploy To, Execute                                      | Users      | All       | Deploy To, Execute                                |
+        | 11 | Public | Deploy To, Contribute, View, Execute                    | Users      | All       | Deploy To, Contribute, View, Execute              |
+        | 12 | Public | Deploy From, View                                       | Users      | All       | Deploy From, View                                 |
+        | 13 | Public | Deploy From, Execute                                    | Users      | All       | Deploy From, Execute                              |
+        | 14 | Public | Deploy From, Contribute, View, Execute                  | Users      | All       | Deploy From, Contribute, View, Execute            |
+        | 15 | Public | Deploy To, Deploy From, View                            | Users      | All       | Deploy To, Deploy From, View                      |
+        | 16 | Public | Deploy To, Deploy From, Execute                         | Users      | All       | Deploy To, Deploy From, Execute                   |
 
 #
 #Scenario Outline: Setting Selected Resource Permissions for users 
