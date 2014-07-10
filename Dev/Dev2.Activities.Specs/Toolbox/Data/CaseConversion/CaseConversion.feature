@@ -255,6 +255,7 @@ Examples:
 	| 3  | SENTENCE   |
 	| 4  | TITLE CASE |
 
+
 #Bug 12177
 #Scenario Outline: Convert variables with data in one row
 #	Given I have a case convert variable "[[a]]" with a value of "Warewolf Rocks"

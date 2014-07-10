@@ -74,7 +74,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         {
             if (retrycount == 0)
                 return;
-            const int TimeOut = 15000;
+            const int TimeOut = 300000;
 
             var cancel = new CancellationTokenSource();
             Task a = new Task(RunCopy, cancel.Token);

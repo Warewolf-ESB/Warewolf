@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net;
 using Dev2.Common;
 using Dev2.Data.PathOperations.Enums;
@@ -38,7 +39,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                     Server.Keys.Add(rsaKey);
                     Server.Keys.Add(dssKey);
                     Server.Bindings.Add(IPAddress.Any, 22);
-                    Server.Users.Add(new SshUser("dev2", "Q/ulw&]", @"C:\Temp"));
+                    if (Directory.Exists(@"C:\Temp\SFTP"))
+                    Directory.Delete(@"C:\Temp\SFTP",true);
+                    Directory.CreateDirectory(@"C:\Temp\SFTP");
+                    Server.Users.Add(new SshUser("dev2", "Q/ulw&]", @"C:\Temp\SFTP"));
                     // start the server                                                    
                     Server.Start();
                 }

@@ -82,6 +82,10 @@
     <Reference Include="Org.Mentalis.Security">
       <HintPath>..\Binaries\Org.Mentalis.Security.dll</HintPath>
     </Reference>
+    <Reference Include="Renci.SshNet, Version=2014.4.6.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Renci.SshNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -95,10 +99,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Tamir.SharpSSH, Version=1.1.1.13, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Binaries\Tamir.SharpSSH.dll</HintPath>
-    </Reference>
     <Reference Include="Weave">
       <HintPath>..\Binaries\Weave.dll</HintPath>
     </Reference>
