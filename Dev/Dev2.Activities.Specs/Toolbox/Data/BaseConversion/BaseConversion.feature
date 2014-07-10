@@ -510,7 +510,77 @@ Scenario: Convert negative recordset index from base64 to binary
 	| 1 | [[my(-1).var]] = | Base 64 | Binary |
 	And the debug output as  
 	| #  |              |
-	
+
+
+#This Test scenarios should be passed after the bug 11994 is fixed
+Scenario Outline: Converting two varibles on one row 
+	Given I have a convert variable "[[a]]" with a value of "QUE="
+	And I have a convert variable "[[b]]" with a value of "QUE="
+	And I convert a variable "[[a]][[b]]" from type '<From>' to type '<To>' 
+	When the base conversion tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as  
+	| # | Convert               | From   | To   |
+	| 1 | [[a]][[b]] = QUE=QUE= | <From> | <To> |
+	And the debug output as  
+	| #  |              |
+Examples: 
+	| No | From         | To      |
+	| 1  | Base 64      | Binary  |
+	| 2  | Base 64      | Text    |
+	| 3  | Base 64      | Hex     |
+	| 4  | Binary       | Text    |
+	| 5  | Binary       | Hex     |
+	| 6  | Binary       | Base 64 |
+	| 7  | Text         | Binary  |
+	| 8  | Text         | Hex     |
+	| 9  | Text         | Base 64 |
+	| 10 | Hex          | Binary  |
+	| 11 | Hex          | Text    |
+	| 12 | Hex          | Base 64 |
+#
+#Scenario Outline: Converting varibles with data  
+#	Given I have a convert variable "[[a]]" with a value of "QUE="
+#	And I convert a variable "[[a]]test" from type '<From>' to type '<To>' 
+#	When the base conversion tool is executed
+#	Then the execution has "AN" error
+#	And the debug inputs as  
+#	| #  | Convert      | From    | To   |
+#	| 1  | [[a]]test =  | <From>  | <To> |
+#	And the debug output as  
+#	| #  |              |
+#Examples: 
+#	| no | From         | To      |
+#	| 1  | Base 64      | Binary  |
+#	| 2  | Base 64      | Text    |
+#	| 3  | Base 64      | Hex     |
+#	| 4  | Base 64      | Base 64 |
+#	| 5  | Binary       | Binary  |
+#	| 6  | Binary       | Text    |
+#	| 7  | Binary       | Hex     |
+#	| 8  | Binary       | Base 64 |
+#	| 9  | Text         | Binary  |
+#	| 10 | Text         | Text    |
+#	| 11 | Text         | Hex     |
+#	| 12 | Text         | Base 64 |
+#	| 13 | Hex          | Binary  |
+#	| 14 | Hex          | Text    |
+#	| 15 | Hex          | Hex     |
+#	| 16 | Hex          | Base 64 |
+#
+#Scenario Outline: Converting two varibles on one row 
+#	Given I have a convert variable "[[rec(1).a]]" with a value of "text"
+#	And I have a convert variable "[[rs(1).index]]" with a value of "1"
+#	And I convert a variable "[[rec([[rs(1).index]]]]" from type "Text" to type "Base64" 
+#	When the base conversion tool is executed
+#	Then the execution has "No" error
+#	And the debug inputs as  
+#	| # | Convert                                | From | To     |
+#	| 1 | [[rec([[rs(1).index]]]] = [[rec(1).a]] | Text | Base64 |
+#		And the debug output as  
+#	| # |                     |
+#	| 1 | [[rec(1).a]] = Mg== |
+
 Scenario Outline: Validation messages when Convert Invalid Variables  
 	Given I have a convert variable '<Variable>' with a value of '<Value>'
 	And I convert a variable '<Variable>' from type '<From>' to type '<To>' 	
@@ -633,4 +703,4 @@ Examples:
 	| 108 | [[{{rec(_).a}}]]]                         | 0x4141           | Hex     | Binary  | Recordset name [[{{rec]] contains invalid character(s)                                                                                                                                                                                                  |
 	| 109 | [[rec(23).[[var*]]]]                      | 0x4141           | Hex     | Binary  | Variable name [[var*]] contains invalid character(s)                                                                                                                                                                                                    |
 	| 110 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1   | 0x4141           | Hex     | Binary  | Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] contains invalid character(s)  /n  Variable name [[r"]] contains invalid character(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a number |
-	
+
