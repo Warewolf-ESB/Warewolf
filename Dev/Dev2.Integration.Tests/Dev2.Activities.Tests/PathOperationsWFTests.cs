@@ -36,7 +36,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void CreateFileUsingRecordsetWithRecordsetWithIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/CreateFileUsingRecordsetWithRecordsetWithIndex");
-            const string expected = @"<CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes><CreateFileErr></CreateFileErr><DeleteFileErr></DeleteFileErr><Recordset index=""1""><record>C:\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithRecordsetWithIndex\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recordset>";
+            string expected = @"<CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes><CreateFileErr></CreateFileErr><DeleteFileErr></DeleteFileErr><Recordset index=""1""><record>" + Environment.ExpandEnvironmentVariables("%localappdata%") + @"\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithRecordsetWithIndex\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recordset>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 

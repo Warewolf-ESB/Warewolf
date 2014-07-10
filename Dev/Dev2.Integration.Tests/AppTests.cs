@@ -30,7 +30,7 @@ namespace Dev2.Integration.Tests
 
             try
             {
-                var studioPath = GetProcessPath(StudioProcessName);
+                var studioPath = GetProcessPath(ServerProcessName);
 
                 //Pre-assert
                 Assert.IsTrue(File.Exists(studioPath), "Studio not found at " + studioPath);
