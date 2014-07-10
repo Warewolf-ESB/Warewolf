@@ -35,10 +35,15 @@ namespace Dev2.Integration.Tests
                 //Pre-assert
                 Assert.IsTrue(File.Exists(studioPath), "Studio not found at " + studioPath);
 
-                Process.Start(studioPath);
+                Process firstProcess = Process.Start(studioPath);
 
                 // Wait for Process to start, and get past the check for a duplicate process
                 Thread.Sleep(7000);
+
+                if(firstProcess == null)
+                {
+                    Assert.Fail("Cannot start first Studio instance!");
+                }
 
                 // Start a second studio, this should hit the logic that checks for a duplicate and exit
                 Process secondProcess = Process.Start(studioPath);
@@ -47,6 +52,10 @@ namespace Dev2.Integration.Tests
                 if(secondProcess != null)
                 {
                     actual = secondProcess.WaitForExit(15000);
+                }
+                else
+                {
+                    Assert.Fail("Cannot start second Studio instance!");
                 }
 
                 const string wmiQueryString = "SELECT ProcessId FROM Win32_Process WHERE Name LIKE 'Warewolf Studio%'";
