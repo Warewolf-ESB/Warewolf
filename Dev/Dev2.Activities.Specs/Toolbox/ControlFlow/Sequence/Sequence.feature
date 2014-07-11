@@ -526,7 +526,7 @@ Scenario: Sending Error in error variable and calling webservice when inner acti
 	  | Input1     | Input2     | Input Format | Output In | Result      |
 	  | 2013-11-29 | 2050-11-29 | yyyytt-mm-dd | Years     | [[result1]] |  
     And assign error to variable "[[error]]"
-    And call the web service "http://tst-ci-remote:3142/services/Test/OnError_WriteErrorSeq.xml?errorLog=[[error]]"
+    And call the web service "http://tst-ci-remote:3142/services/Test/OnError_WriteErrorSeq.xml?error=[[error]]"
     When the Sequence tool is executed
     Then the execution has "AN" error
     And the result from the web service "http://tst-ci-remote:3142/services/Test/OnError_ReadErrorSeq.xml" will have the same data as variable "[[error]]"
