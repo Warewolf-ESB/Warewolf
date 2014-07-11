@@ -3,9 +3,9 @@
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
     <DeploymentItem filename="TestBinaries\" />
-        <DeploymentItem filename="Dev2.Server\bin\Debug\" />
-		<DeploymentItem filename="Dev2.Studio\bin\Debug\" />
-	</Deployment>
+    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="DebugBin" />
+	<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="DebugBin" />
+  </Deployment>
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
   <Scripts setupScript="TestScripts\UI\Startup.bat" cleanupScript="TestScripts\UI\Cleanup.bat" />
   <Execution>
