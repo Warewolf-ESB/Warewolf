@@ -26,6 +26,7 @@ REM  Wait 10 seconds ;)
 ping -n 10 127.0.0.1 > nul
 
 REM ** Kill The Server **
+sc stop "Warewolf Server"
 taskkill /im "Warewolf Server.exe"
 
 REM  Wait 7 seconds ;)

@@ -20,6 +20,7 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 REM ** Kill The Server **
+sc stop "Warewolf Server"
 taskkill /im "Warewolf Server.exe"
 
 REM  Wait 10 seconds ;)
