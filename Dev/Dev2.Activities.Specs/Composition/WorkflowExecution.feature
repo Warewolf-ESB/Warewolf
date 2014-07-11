@@ -1970,7 +1970,19 @@ Scenario Outline: Testing Length with two variables in Result field
 Examples:
       | No    | Variable       |
       | 1     | [[length]][[a]] |
-#12180 | 2     | [[count]]*]]   |
+#12180 
+ #     | 2  | [[a]]*]]               |
+ #     | 3  | [[var@]]               |
+ #     | 4  | [[var]]00]]            |
+ #     | 5  | [[(1var)]]             |
+ #     | 6  | [[var[[a]]]]           |
+ #     | 7  | [[var.a]]              |
+ #     | 8  | [[@var]]               |
+ #     | 9  | [[var 1]]              |
+ #     | 10 | [[rec(1).[[rec().1]]]] |
+ #     | 11 | [[rec(@).a]]           |
+ #     | 12 | [[rec"()".a]]          |
+ #     | 13 | [[rec([[[[b]]]]).a]]   |
 
 
 Scenario Outline: Testing Find Index with two variables in Result field
@@ -2001,7 +2013,19 @@ Scenario Outline: Testing Find Index with two variables in Result field
 Examples: 
       | No    | Variable       |
       | 1     | [[a]][[indexResult]] |
-#12180 | 2     | [[a]]*]]   |
+#12180 
+ #     | 2  | [[a]]*]]               |
+ #     | 3  | [[var@]]               |
+ #     | 4  | [[var]]00]]            |
+ #     | 5  | [[(1var)]]             |
+ #     | 6  | [[var[[a]]]]           |
+ #     | 7  | [[var.a]]              |
+ #     | 8  | [[@var]]               |
+ #     | 9  | [[var 1]]              |
+ #     | 10 | [[rec(1).[[rec().1]]]] |
+ #     | 11 | [[rec(@).a]]           |
+ #     | 12 | [[rec"()".a]]          |
+ #     | 13 | [[rec([[[[b]]]]).a]]   |
 #
 Scenario Outline: Testing Data Merge with two variables in Result field
       Given I have a workflow "WorkflowforDataMerge"
@@ -2033,7 +2057,19 @@ Scenario Outline: Testing Data Merge with two variables in Result field
 Examples: 
       | No    | Variable       |
       | 1     | [[a]][[Result]] |
-#12180 | 2     | [[a]]*]]   |
+#12180 
+ #     | 2  | [[a]]*]]               |
+ #     | 3  | [[var@]]               |
+ #     | 4  | [[var]]00]]            |
+ #     | 5  | [[(1var)]]             |
+ #     | 6  | [[var[[a]]]]           |
+ #     | 7  | [[var.a]]              |
+ #     | 8  | [[@var]]               |
+ #     | 9  | [[var 1]]              |
+ #     | 10 | [[rec(1).[[rec().1]]]] |
+ #     | 11 | [[rec(@).a]]           |
+ #     | 12 | [[rec"()".a]]          |
+ #     | 13 | [[rec([[[[b]]]]).a]]   |
 
 
 Scenario: Testing Data Split with two variables in Result field
@@ -2095,7 +2131,19 @@ Scenario Outline: Testing Replace with two variables in Result field
 Examples: 
       | No    | Variable       |
       | 1     | [[a]][[Result]] |
-#12180 | 2     | [[a]]*]]   |
+#12180 
+ #     | 2  | [[a]]*]]               |
+ #     | 3  | [[var@]]               |
+ #     | 4  | [[var]]00]]            |
+ #     | 5  | [[(1var)]]             |
+ #     | 6  | [[var[[a]]]]           |
+ #     | 7  | [[var.a]]              |
+ #     | 8  | [[@var]]               |
+ #     | 9  | [[var 1]]              |
+ #     | 10 | [[rec(1).[[rec().1]]]] |
+ #     | 11 | [[rec(@).a]]           |
+ #     | 12 | [[rec"()".a]]          |
+ #     | 13 | [[rec([[[[b]]]]).a]]   |
 	
 Scenario Outline: Testing Calculate with two variables in Result field
       Given I have a workflow "WorkflowforCal"
@@ -2123,7 +2171,19 @@ Scenario Outline: Testing Calculate with two variables in Result field
 Examples: 
       | No    | Variable       |
       | 1     | [[a]][[Result]] |
-#12180 | 2     | [[a]]*]]   |
+#12180 
+ #     | 2  | [[a]]*]]               |
+ #     | 3  | [[var@]]               |
+ #     | 4  | [[var]]00]]            |
+ #     | 5  | [[(1var)]]             |
+ #     | 6  | [[var[[a]]]]           |
+ #     | 7  | [[var.a]]              |
+ #     | 8  | [[@var]]               |
+ #     | 9  | [[var 1]]              |
+ #     | 10 | [[rec(1).[[rec().1]]]] |
+ #     | 11 | [[rec(@).a]]           |
+ #     | 12 | [[rec"()".a]]          |
+ #     | 13 | [[rec([[[[b]]]]).a]]   |
 
 Scenario Outline: Testing Format Numbers with two variables in Result field
       Given I have a workflow "Workflowforfn"
@@ -2145,7 +2205,19 @@ Scenario Outline: Testing Format Numbers with two variables in Result field
 Examples: 
       | No    | Variable       |
       | 1     | [[a]][[Result]] |
-#12180 | 2     | [[a]]*]]   |
+#12180 
+ #     | 2  | [[a]]*]]               |
+ #     | 3  | [[var@]]               |
+ #     | 4  | [[var]]00]]            |
+ #     | 5  | [[(1var)]]             |
+ #     | 6  | [[var[[a]]]]           |
+ #     | 7  | [[var.a]]              |
+ #     | 8  | [[@var]]               |
+ #     | 9  | [[var 1]]              |
+ #     | 10 | [[rec(1).[[rec().1]]]] |
+ #     | 11 | [[rec(@).a]]           |
+ #     | 12 | [[rec"()".a]]          |
+ #     | 13 | [[rec([[[[b]]]]).a]]   |
 
 
 Scenario Outline: Testing Random Numbers with two variables in Result field
@@ -2166,10 +2238,23 @@ Scenario Outline: Testing Random Numbers with two variables in Result field
 	  |                    |
 	  | [[result]][[a]][[b]] = |
 Examples: 
-      | No    | Variable       |
-      | 1     | [[a]][[Result]] |
-#12180 | 2     | [[a]]*]]   |
-#
+      | No | Variable               |
+      | 1  | [[a]][[Result]]        |
+ #12180 
+ #     | 2  | [[a]]*]]               |
+ #     | 3  | [[var@]]               |
+ #     | 4  | [[var]]00]]            |
+ #     | 5  | [[(1var)]]             |
+ #     | 6  | [[var[[a]]]]           |
+ #     | 7  | [[var.a]]              |
+ #     | 8  | [[@var]]               |
+ #     | 9  | [[var 1]]              |
+ #     | 10 | [[rec(1).[[rec().1]]]] |
+ #     | 11 | [[rec(@).a]]           |
+ #     | 12 | [[rec"()".a]]          |
+ #     | 13 | [[rec([[[[b]]]]).a]]   |
+	  							 
+	 
 Scenario Outline: Testing Date and Time with two variables in Result field
       Given I have a workflow "WorkflowforDT"
       And "WorkflowforDT" contains an Assign "Rec To Convert" as
@@ -2195,7 +2280,19 @@ Scenario Outline: Testing Date and Time with two variables in Result field
 Examples: 
       | No    | Variable       |
       | 1     | [[a]][[Result]] |
-#12180 | 2     | [[a]]*]]   |
+#12180 
+ #     | 2  | [[a]]*]]               |
+ #     | 3  | [[var@]]               |
+ #     | 4  | [[var]]00]]            |
+ #     | 5  | [[(1var)]]             |
+ #     | 6  | [[var[[a]]]]           |
+ #     | 7  | [[var.a]]              |
+ #     | 8  | [[@var]]               |
+ #     | 9  | [[var 1]]              |
+ #     | 10 | [[rec(1).[[rec().1]]]] |
+ #     | 11 | [[rec(@).a]]           |
+ #     | 12 | [[rec"()".a]]          |
+ #     | 13 | [[rec([[[[b]]]]).a]]   |
    
 Scenario Outline: Testing Date Time Diff with two variables in Result field
       Given I have a workflow "WorkflowforDateTimeDiff"
@@ -2224,7 +2321,19 @@ Scenario Outline: Testing Date Time Diff with two variables in Result field
 Examples: 
       | No    | Variable       |
       | 1     | [[a]][[Result]] |
-#12180 | 2     | [[a]]*]]   |
+#12180 
+ #     | 2  | [[a]]*]]               |
+ #     | 3  | [[var@]]               |
+ #     | 4  | [[var]]00]]            |
+ #     | 5  | [[(1var)]]             |
+ #     | 6  | [[var[[a]]]]           |
+ #     | 7  | [[var.a]]              |
+ #     | 8  | [[@var]]               |
+ #     | 9  | [[var 1]]              |
+ #     | 10 | [[rec(1).[[rec().1]]]] |
+ #     | 11 | [[rec(@).a]]           |
+ #     | 12 | [[rec"()".a]]          |
+ #     | 13 | [[rec([[[[b]]]]).a]]   |
 
 Scenario: Workflow with Assign and Sort Forward to test gaps
       Given I have a workflow "workflowithAssignandsortrec"
