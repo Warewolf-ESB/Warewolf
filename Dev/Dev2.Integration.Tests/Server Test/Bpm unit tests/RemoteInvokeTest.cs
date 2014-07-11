@@ -115,7 +115,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             Guid id = Guid.NewGuid();
             var output = TestHelper.PostDataToWebserverAsRemoteAgent(PostData, id);
-            Assert.AreEqual("<DataList><Output>PASS</Output></DataList>", output);
+            Assert.AreEqual("<DataList><Output>PASS</Output><hero index=""1""><pushups>All of them</pushups><name>Chuck Norris</name></hero><RemoteWorkflowErrors></RemoteWorkflowErrors></DataList>", output);
         }
     }
 }
