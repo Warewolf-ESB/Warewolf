@@ -114,7 +114,7 @@ namespace Dev2.Utils
 
         public static void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel contextEnv)
         {
-            if(resource.ResourceType == ResourceType.WorkflowService && contextEnv != null)
+            if(resource != null && resource.ResourceType == ResourceType.WorkflowService && contextEnv != null)
             {
                 if(contextEnv.ID != resource.Environment.ID)
                 {
