@@ -840,10 +840,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 242
  testRunner.Given("I have a case convert variable \"[[a]]\" with a value of \"Warewolf Rocks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 243
- testRunner.And(string.Format("I convert a variable \"[[a]][[b]]\" to \'{0}\'", @case), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("variable \"[[b]]\" with a value of \"Moot\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 244
- testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("I convert a variable \"[[a]][[b]]\" to \"{0}\"", @case), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 245
+ testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 246
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
@@ -852,16 +854,18 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table39.AddRow(new string[] {
                         "1",
-                        "[[a]][[b]] = Warewolf Rocks",
+                        "[[a]][[b]] = Warewolf RocksMoot",
                         string.Format("{0}", @case)});
-#line 246
+#line 247
  testRunner.And("the debug inputs as", ((string)(null)), table39, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
-                        "",
-                        "",
+                        "#",
                         ""});
-#line 249
+            table40.AddRow(new string[] {
+                        "1",
+                        "[[a]][[b]] = Warewolf RocksMoot"});
+#line 250
  testRunner.And("the debug output as", ((string)(null)), table40, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -917,7 +921,7 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ConvertAnRecordsetToUpperByUsingIndexAsScalar()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert an recordset to Upper by using index as scalar", ((string[])(null)));
-#line 276
+#line 279
 this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
@@ -929,13 +933,13 @@ this.ScenarioSetup(scenarioInfo);
             table41.AddRow(new string[] {
                         "a",
                         "1"});
-#line 277
+#line 280
  testRunner.Given("I have a CaseConversion recordset", ((string)(null)), table41, "Given ");
-#line 281
+#line 284
  testRunner.And("I convert a variable \"[[rs([[a]]).row]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 282
+#line 285
  testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 283
+#line 286
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
@@ -946,7 +950,7 @@ this.ScenarioSetup(scenarioInfo);
                         "1",
                         "[[rs(1).row]] = warewolf",
                         "UPPER"});
-#line 284
+#line 287
  testRunner.And("the debug inputs as", ((string)(null)), table42, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
@@ -955,7 +959,7 @@ this.ScenarioSetup(scenarioInfo);
             table43.AddRow(new string[] {
                         "1",
                         "[[rs(1).row]] = WAREWOLF"});
-#line 287
+#line 290
  testRunner.And("the debug output as", ((string)(null)), table43, "And ");
 #line hidden
             this.ScenarioCleanup();

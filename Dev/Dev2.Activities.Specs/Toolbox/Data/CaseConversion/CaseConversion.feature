@@ -240,14 +240,16 @@ Scenario: Convert a negative recordset index to lowercase
 
 Scenario Outline: Convert two variables in one row
 	Given I have a case convert variable "[[a]]" with a value of "Warewolf Rocks"
-	And I convert a variable "[[a]][[b]]" to '<Case>'		
+	And variable "[[b]]" with a value of "Moot"
+	And I convert a variable "[[a]][[b]]" to "<Case>"			
 	When the case conversion tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
 	| # | Convert                       | To     |
-	| 1 | [[a]][[b]] = Warewolf Rocks   | <Case> |
+	| 1 | [[a]][[b]] = Warewolf RocksMoot  | <Case> |
 	And the debug output as  
-	|  |     |        |
+		| # |                                 |
+		| 1 | [[a]][[b]] = Warewolf RocksMoot |        
 Examples: 
 	| no | Case       |
 	| 1  | UPPER      |
