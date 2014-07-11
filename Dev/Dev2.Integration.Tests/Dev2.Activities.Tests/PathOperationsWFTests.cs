@@ -36,7 +36,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void CreateFileUsingRecordsetWithRecordsetWithIndex()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/CreateFileUsingRecordsetWithRecordsetWithIndex");
-            string expected = @"<CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes><CreateFileErr></CreateFileErr><DeleteFileErr></DeleteFileErr><Recordset index=""1""><record>" + Environment.ExpandEnvironmentVariables("%localappdata%") + @"\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithRecordsetWithIndex\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recordset>";
+            string expected = @"<CreateFileRes>Success</CreateFileRes><DeleteFileRes>Success</DeleteFileRes><CreateFileErr></CreateFileErr><DeleteFileErr></DeleteFileErr><Recordset index=""1""><record>C:\Windows\Temp\PathOperationsTestFolder\CreateFileUsingRecordsetWithRecordsetWithIndex\NewFolder\NewFolderFirstInnerFolder\NewCreatedFile.txt</record></Recordset>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
@@ -138,7 +138,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ReadFolder()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/ReadFolderFromFileSystemTest");
-            string expected = @"<CreateFileRes1>Success</CreateFileRes1><CreateFileRes2>Success</CreateFileRes2><DeleteFileRes>Success</DeleteFileRes><CreateFileErr1></CreateFileErr1><CreateFileErr2></CreateFileErr2><DeleteFileErr></DeleteFileErr><ReadFolderResult index=""1""><results>"+Environment.ExpandEnvironmentVariables("%localappdata%")+@"\Temp\PathOperationsTestFolder\ReadFolderFromFileSystemTest\OldFolder\OldFolderFirstInnerFolder\testfile1.txt</results></ReadFolderResult><ReadFolderResult index=""2""><results>"+Environment.ExpandEnvironmentVariables("%localappdata%")+@"\Temp\PathOperationsTestFolder\ReadFolderFromFileSystemTest\OldFolder\OldFolderFirstInnerFolder\testfile2.txt</results></ReadFolderResult><ReadFolderErrors index=""1""><errors></errors></ReadFolderErrors>";
+            string expected = @"<CreateFileRes1>Success</CreateFileRes1><CreateFileRes2>Success</CreateFileRes2><DeleteFileRes>Success</DeleteFileRes><CreateFileErr1></CreateFileErr1><CreateFileErr2></CreateFileErr2><DeleteFileErr></DeleteFileErr><ReadFolderResult index=""1""><results>C:\Windows\Temp\PathOperationsTestFolder\ReadFolderFromFileSystemTest\OldFolder\OldFolderFirstInnerFolder\testfile1.txt</results></ReadFolderResult><ReadFolderResult index=""2""><results>C:\Windows\Temp\PathOperationsTestFolder\ReadFolderFromFileSystemTest\OldFolder\OldFolderFirstInnerFolder\testfile2.txt</results></ReadFolderResult><ReadFolderErrors index=""1""><errors></errors></ReadFolderErrors>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
 
