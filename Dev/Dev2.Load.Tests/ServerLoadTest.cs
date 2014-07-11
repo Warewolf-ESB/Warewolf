@@ -15,7 +15,7 @@ namespace Dev2.Integration.Tests.Load_Tests
         [TestMethod]
         public void FileWith10kPrimes_Expect10kRecordsetEntries_in_Under_5Seconds()
         {
-            string path = ServerSettings.WebserverURI + "LargeDataTest";
+            string path = ServerSettings.WebserverURI + "ML-TESTING/LargeDataTest";
 
             DateTime start = DateTime.Now;
             string result = TestHelper.PostDataToWebserver(path);
@@ -24,7 +24,7 @@ namespace Dev2.Integration.Tests.Load_Tests
 
             const string exp = "<myPrimes index=\"1\"><value>Result</value></myPrimes>"; // Last value in the file
 
-            Assert.IsTrue(result.IndexOf(exp, StringComparison.Ordinal) > 0);
+            Assert.IsTrue(result.IndexOf(exp, StringComparison.Ordinal) > 0, result + " does not contain " + exp);
             // Travis.Frisinger - Bug 8579
             // Was 10.0 Moved to 2.5
             if(duration <= 225)
