@@ -755,7 +755,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destination", "[[path1]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://localhos/ZIP6")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destinationLocation", "sftp://localhost/ZIP6")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destUsername", "dev2")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:destPassword", "Q/ulw&]")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:selected", "True")]
@@ -765,7 +765,7 @@ this.ScenarioSetup(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         public virtual void UnzipFileAtLocation_25()
         {
-            this.UnzipFileAtLocation("25", "SFTP to SFTP", "[[path]]", "sftp://localhost/test5.zip", "dev2", "Q/ulw&]", "[[path1]]", "sftp://localhos/ZIP6", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
+            this.UnzipFileAtLocation("25", "SFTP to SFTP", "[[path]]", "sftp://localhost/test5.zip", "dev2", "Q/ulw&]", "[[path1]]", "sftp://localhost/ZIP6", "dev2", "Q/ulw&]", "True", "\"\"", "[[result]]", "Success", "NO", ((string[])(null)));
         }
     }
 }
