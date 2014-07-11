@@ -19,11 +19,55 @@ Scenario Outline: Read File at location
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	| Name       | source   | sourceLocation                                                       | username                     | password | resultVar       | result | errorOccured |
-	| Local      | [[path]] | c:\filetoread.txt                                                    | ""                           | ""       | [[result]]      | Guid   | NO           |
-	| UNC        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetoread.txt        | ""                           | ""       | [[result]]      | Guid   | NO           |
-	| UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetoread.txt | dev2.local\IntegrationTester | I73573r0 | [[result]]      | Guid   | NO           |
-	| FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetoread.txt                 | ""                           | ""       | [[result]]      | Guid   | NO           |
-	| FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt                 | IntegrationTester            | I73573r0 | [[result]]      | Guid   | NO           |
-	| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[result]]      | Guid   | NO           |
-	#| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                   | Q/ulw&]  | [[result]][[a]] | Guid   | AN           |
+	| NO | Name       | source   | sourceLocation                                                       | username                     | password | resultVar  | result | errorOccured |
+	| 1 | Local      | [[path]] | c:\filetoread.txt                                                    | ""                           | ""       | [[result]] | Guid   | NO           |
+	| 2 | UNC        | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\filetoread.txt        | ""                           | ""       | [[result]] | Guid   | NO           |
+	| 3 | UNC Secure | [[path]] | \\\\RSAKLFSVRSBSPDC\FileSystemShareTestingSite\Secure\filetoread.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | Guid   | NO           |
+	| 4 | FTP        | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetoread.txt                 | ""                           | ""       | [[result]] | Guid   | NO           |
+	| 5 | FTPS       | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetodele.txt                 | IntegrationTester            | I73573r0 | [[result]] | Guid   | NO           |
+	|6  | SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[result]]             | Guid   | NO           |
+#Bug 12180 #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[result]][[a]]        | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[a]]*]]               | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[var@]]               | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[var]]00]]            | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[(1var)]]             | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[var[[a]]]]           | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[var.a]]              | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[@var]]               | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[var 1]]              | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[rec(1).[[rec().1]]]] | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[rec(@).a]]           | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[rec"()".a]]          | Guid   | AN           |
+	       #| SFTP       | [[path]] | sftp://localhost/filetoread.txt                                      | dev2                         | Q/ulw&]  | [[rec([[[[b]]]]).a]]   | Guid   | AN           |
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

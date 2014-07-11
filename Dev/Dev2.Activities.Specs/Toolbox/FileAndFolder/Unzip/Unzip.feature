@@ -48,8 +48,49 @@ Scenario Outline: Unzip file at location
 	| 23 | FTP to SFTP    | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/test4.zip          | ""                | ""       | [[path1]]   | sftp://localhost/ZIP2                               | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |
 	| 24 | FTPS to SFTP   | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/test4.zip          | integrationtester | I73573r0 | [[path1]]   | sftp://localhost/ZIP3                               | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |
 	| 25 | SFTP to SFTP   | [[path]] | sftp://localhost/test5.zip                               | dev2              | Q/ulw&]  | [[path1]]   | sftp://localhost/ZIP6                                | dev2              | Q/ulw&]      | True     | ""              | [[result]] | Success | NO           |
-	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[result]][[a]] | Failure | AN           |
-	#| 27 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | ZIP0                                                | ""                | ""           | True     | ""              | [[result]]      | Success | AN           |
+#Bug 12180	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[result]][[a]]        | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[a]]*]]               | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[var@]]               | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[var]]00]]            | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[(1var)]]             | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[var[[a]]]]           | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[var.a]]              | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[@var]]               | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[var 1]]              | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[rec(1).[[rec().1]]]] | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[rec(@).a]]           | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[rec"()".a]]          | Failure | AN           |
+	#| 26 | Local to Local | [[path]] | c:\test0.zip                                             | ""                | ""       | [[path1]]   | c:\ZIP0                                             | ""                | ""           | True     | ""              | [[rec([[[[b]]]]).a]]   | Failure | AN           |
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #Bug 12091	
 #Scenario Outline: Unzip file at Invalid file location

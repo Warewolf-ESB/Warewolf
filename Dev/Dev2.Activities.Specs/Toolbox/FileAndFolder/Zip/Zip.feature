@@ -49,8 +49,28 @@ Scenario Outline: Zip file at location
 		| 23 | FTP to SFTP    | [[path]] | ftp://rsaklfsvrsbspdc:1001/FORTESTING/filetozip4.txt          | ""                | ""       | [[path1]]   | sftp://localhost/filetozip2.txt                               | dev2              | Q/ulw&]      | True     |                 | Default         | [[result]] | Success | NO           |
 		| 24 | FTPS to SFTP   | [[path]] | ftp://rsaklfsvrsbspdc:1002/FORTESTING/filetozip4.txt          | integrationtester | I73573r0 | [[path1]]   | sftp://localhost/filetozip3.txt                               | dev2              | Q/ulw&]      | True     |                 | BestCompression | [[result]] | Success | NO           |
 		| 25 | SFTP to SFTP   | [[path]] | sftp://localhost/filetozip4.txt                               | dev2              | Q/ulw&]  | [[path1]]   | sftp://localhost/filetozip4.txt                               | dev2              | Q/ulw&]      | True     |                 | NoCompression   | [[result]] | Success | NO           |
-		
-		
+#		| 26  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[result]][[a]]         | [[result]] | Success | NO           |
+#		| 27  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[a]]*]]                | [[result]] | Success | NO           |
+#		| 28  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[var@]]                | [[result]] | Success | NO           |
+#		| 29  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[var]]00]]             | [[result]] | Success | NO           |
+#		| 30  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[(1var)]]              | [[result]] | Success | NO           |
+#		| 31  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[var[[a]]]]            | [[result]] | Success | NO           |
+#		| 32  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[var.a]]               | [[result]] | Success | NO           |
+#		| 33  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[@var]]                | [[result]] | Success | NO           |
+#		| 34  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[var 1]]               | [[result]] | Success | NO           |
+#		| 35  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[rec(1).[[rec().1]]]]  | [[result]] | Success | NO           |
+#		| 36  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[rec(@).a]]            | [[result]] | Success | NO           |
+#		| 37  | Local to Local | [[path]] | c:\filetozip0.txt                                             | ""                | ""       | [[path1]]   | c:\My New0.zip                                                | ""                | ""           | True     |                 |  [[rec"()".a]]           | [[result]] | Success | NO           |
+#																																																															
+#
+#
+
+
+
+
+
+
+
 		
 ##Bug 12091	
 #Scenario Outline: Zip file at Invalid location

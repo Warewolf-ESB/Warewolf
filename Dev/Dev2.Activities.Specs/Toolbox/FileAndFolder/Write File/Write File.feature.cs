@@ -424,23 +424,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void WriteFileWithCarriageReturns()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Write file with carriage returns", ((string[])(null)));
-#line 41
+#line 73
 this.ScenarioSetup(scenarioInfo);
-#line 42
+#line 74
  testRunner.Given("I have a source path \'[[path]]\' with value \'c:\\filetowrite1.txt\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 43
+#line 75
  testRunner.And("source credentials as \'\' and \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 76
  testRunner.And("Method is \'Overwrite\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
+#line 77
  testRunner.And("the input contents from a file \'infile1WithCarriageReturn.txt\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
+#line 78
  testRunner.And("result as \'Success\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
+#line 79
     testRunner.When("the write file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 48
+#line 80
  testRunner.Then("the output contents from a file \'outfile1WithCarriageReturn.txt\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 49
+#line 81
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
