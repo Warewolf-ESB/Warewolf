@@ -471,7 +471,7 @@ namespace Dev2.Activities.Specs.Composition
             var debugStates = Get<List<IDebugState>>("debugStates");
 
             var toolSpecificDebug =
-                debugStates.Where(ds =>  ds.DisplayName.Equals(toolName)).ToList();
+                debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
 
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
             //bool isDataMergeDebug = toolSpecificDebug.Any(t => t.Name == "Data Merge");
@@ -510,7 +510,7 @@ namespace Dev2.Activities.Specs.Composition
             var debugStates = Get<List<IDebugState>>("debugStates");
 
             var id = debugStates.Where(ds => ds.DisplayName.Equals("DsfActivity")).ToList();
-            id.ForEach(x=> Assert.AreEqual(childCount,debugStates.Count(a => a.ParentID == x.ID && a.DisplayName == toolName)));
+            id.ForEach(x => Assert.AreEqual(childCount, debugStates.Count(a => a.ParentID == x.ID && a.DisplayName == toolName)));
 
         }
 
@@ -647,27 +647,27 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains a Foreach ""(.*)"" as ""(.*)"" executions ""(.*)""")]
         public void GivenContainsAForeachAsExecutions(string parentName, string activityName, string numberOfExecutions, int executionCount)
         {
-            var forEach = new DsfForEachActivity { DisplayName = activityName, NumOfExections = executionCount.ToString(CultureInfo.InvariantCulture) , From = "0",ForEachType = enForEachType.NumOfExecution};
+            var forEach = new DsfForEachActivity { DisplayName = activityName, NumOfExections = executionCount.ToString(CultureInfo.InvariantCulture), From = "0", ForEachType = enForEachType.NumOfExecution };
             CommonSteps.AddActivityToActivityList(parentName, activityName, forEach);
             ScenarioContext.Current.Add(activityName, forEach);
         }
 
 
         [Given(@"""(.*)"" contains workflow ""(.*)"" with mapping as")]
-// ReSharper disable InconsistentNaming
-        public void GivenContainsWorkflowWithMappingAs(string forEachName , string nestedWF, Table mappings)
-// ReSharper restore InconsistentNaming
+        // ReSharper disable InconsistentNaming
+        public void GivenContainsWorkflowWithMappingAs(string forEachName, string nestedWF, Table mappings)
+        // ReSharper restore InconsistentNaming
         {
-            var forEachAct = (DsfForEachActivity) ScenarioContext.Current[forEachName];
+            var forEachAct = (DsfForEachActivity)ScenarioContext.Current[forEachName];
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
             var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Sprint12\11714Nested").FirstOrDefault();
             if(resource == null)
             {
-// ReSharper disable NotResolvedInText
+                // ReSharper disable NotResolvedInText
                 throw new ArgumentNullException("resource");
-// ReSharper restore NotResolvedInText
+                // ReSharper restore NotResolvedInText
             }
             var dataMappingViewModel = GetDataMappingViewModel(resource, mappings);
 
@@ -678,13 +678,13 @@ namespace Dev2.Activities.Specs.Composition
 
                 ServiceName = resource.Category,
                 UniqueID = resource.ID.ToString(),
-                InputMapping =  inputMapping,
+                InputMapping = inputMapping,
                 OutputMapping = outputMapping
-               
-                
+
+
             };
-            
-            var activityFunction = new ActivityFunc<string, bool> { Handler = activity,DisplayName = nestedWF};
+
+            var activityFunction = new ActivityFunc<string, bool> { Handler = activity, DisplayName = nestedWF };
             forEachAct.DataFunc = activityFunction;
             //ScenarioContext.Current.Pending();
         }
@@ -698,9 +698,9 @@ namespace Dev2.Activities.Specs.Composition
             act.Result = result;
             foreach(var rule in table.Rows)
             {
-                act.ResultsCollection.Add(new FindRecordsTO(rule[4],rule[3],0));
+                act.ResultsCollection.Add(new FindRecordsTO(rule[4], rule[3], 0));
                 act.FieldsToSearch = String.IsNullOrEmpty(act.FieldsToSearch) ? rule[1] : "," + rule[1];
-                act.RequireAllFieldsToMatch = rule[5].ToUpper().Trim()=="YES";
+                act.RequireAllFieldsToMatch = rule[5].ToUpper().Trim() == "YES";
                 act.RequireAllTrue = rule[6].ToUpper().Trim() == "YES";
             }
             CommonSteps.AddActivityToActivityList(parentName, activityName, act);

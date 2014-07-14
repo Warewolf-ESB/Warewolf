@@ -1158,7 +1158,7 @@ namespace Dev2.Core.Tests.Workflows
 
                     var properties = new Dictionary<string, Mock<ModelProperty>>();
                     var propertyCollection = new Mock<ModelPropertyCollection>();
-                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository,true);
+                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
 
                     var prop = new Mock<ModelProperty>();
                     prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
@@ -1740,7 +1740,7 @@ namespace Dev2.Core.Tests.Workflows
             var properties = new Dictionary<string, Mock<ModelProperty>>();
             var propertyCollection = new Mock<ModelPropertyCollection>();
             var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
-            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository,true);
+            var testAct = DsfActivityFactory.CreateDsfActivity(crm.Object, new DsfActivity(), true, environmentRepository, true);
 
             var prop = new Mock<ModelProperty>();
             prop.Setup(p => p.ComputedValue).Returns(testAct);
@@ -2770,12 +2770,12 @@ namespace Dev2.Core.Tests.Workflows
         {
             //----------------------- Setup -----------------------//
             var ID = Guid.NewGuid();
-            var states = new List<IDebugState> { new DebugState { DisplayName = "SelectionChangedTest1", ID = ID,WorkSurfaceMappingId = ID} };
-             ID = Guid.NewGuid();
+            var states = new List<IDebugState> { new DebugState { DisplayName = "SelectionChangedTest1", ID = ID, WorkSurfaceMappingId = ID } };
+            ID = Guid.NewGuid();
             if(selectionType == ActivitySelectionType.Add || selectionType == ActivitySelectionType.Remove)
             {
 
-                states.Add(new DebugState { DisplayName = "SelectionChangedTest2", ID = ID,WorkSurfaceMappingId = ID});
+                states.Add(new DebugState { DisplayName = "SelectionChangedTest2", ID = ID, WorkSurfaceMappingId = ID });
             }
 
             #region Setup workflow
