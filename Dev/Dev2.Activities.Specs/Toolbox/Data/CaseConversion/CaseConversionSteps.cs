@@ -46,9 +46,16 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
-
+            
             variableList.Add(new Tuple<string, string>(variable, value));
         }
+
+        [Given(@"variable ""(.*)"" with a value of ""(.*)""")]
+        public void GivenVariableWithAValueOf(string variable, string value)
+        {
+            GivenIHaveACaseConvertVariableWithAValueOf(variable, value);
+        }
+
 
         [Given(@"I convert a variable ""(.*)"" to ""(.*)""")]
         public void GivenIConvertAVariableTo(string variable, string toCase)
