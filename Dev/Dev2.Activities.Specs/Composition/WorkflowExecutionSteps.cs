@@ -10,6 +10,7 @@ using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
+using Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
@@ -707,25 +708,13 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
-        [Given(@"""(.*)"" contains Length ""(.*)"" on ""(.*)"" into ""(.*)""")]
+        [Given(@"""(.*)"" contains Length ""(.*)"" on ""(.*)"" into '(.*)'")]  
         public void GivenContainsLengthOnInto(string parentName, string activityName, string recordSet, string result)
         {
             DsfRecordsetLengthActivity len = new DsfRecordsetLengthActivity { DisplayName = activityName, RecordsLength = result, RecordsetName = recordSet };
             CommonSteps.AddActivityToActivityList(parentName, activityName, len);
         }
 
-
-        //[Given(@"""(.*)"" contains an Unique ""(.*)"" as")]
-        //public void GivenContainsAnUniqueAs(string parentName, string activityName, Table table)
-        //{
-        //    var unique = new DsfUniqueActivity();
-        //    unique.DisplayName = activityName;
-        //    unique.InFields = table.Rows[0][0];
-        //    unique.ResultFields = table.Rows[0][1];
-        //    unique.Result = table.Rows[0][2];//ScenarioContext.Current.Pending();
-        //    CommonSteps.AddVariableToVariableList(table.Rows[0][2]);
-        //    CommonSteps.AddActivityToActivityList(parentName, activityName, unique);
-        //}
 
         public void ExecuteWorkflow(IContextualResourceModel resourceModel)
         {
