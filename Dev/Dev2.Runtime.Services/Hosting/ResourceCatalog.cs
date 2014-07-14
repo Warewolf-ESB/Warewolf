@@ -1717,7 +1717,7 @@ namespace Dev2.Runtime.Hosting
                 var hasError = false;
                 foreach(var resource in resourcesToUpdate)
                 {
-                    var resourceCatalogResult = UpdateResourcePath(workspaceID, resource, newCategory);
+                    var resourceCatalogResult = UpdateResourcePath(workspaceID, resource, oldCategory, newCategory);
                     if(resourceCatalogResult.Status != ExecStatus.Success)
                     {
                         hasError = true;
@@ -1757,11 +1757,11 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string newCategory)
+        ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string oldCategory, string newCategory)
         {
             var resourceContents = GetResourceContents(workspaceID, resource.ResourceID);
             var oldPath = resource.ResourcePath;
-            var newPath = newCategory + "\\" + resource.ResourceName;
+            var newPath = oldPath.Replace(oldCategory, newCategory);
             resource.ResourcePath = newPath;
             var resourceElement = resourceContents.ToXElement();
             var categoryElement = resourceElement.Element("Category");

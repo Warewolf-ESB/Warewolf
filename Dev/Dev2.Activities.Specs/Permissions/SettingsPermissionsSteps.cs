@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Principal;
+using System.Threading;
 using Dev2.Data.Settings;
 using Dev2.Network;
 using Dev2.Services.Security;
@@ -60,15 +62,18 @@ namespace Dev2.Activities.Specs.Permissions
             var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
             environmentModel.Disconnect();
 
+            UserPrincipal userPrincipal;
+            PrincipalContext context;
+            SecurityIdentifier id;
             if(AccountExists("SpecsUser"))
             {
                 if(!IsUserInGroup("SpecsUser", userGroup))
                 {
                     try
                     {
-                        var id = GetUserSecurityIdentifier("SpecsUser");
-                        PrincipalContext context = new PrincipalContext(ContextType.Machine);
-                        var userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
+                        id = GetUserSecurityIdentifier("SpecsUser");
+                        context = new PrincipalContext(ContextType.Machine);
+                        userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
                         AddUserToGroup(userGroup, context, userPrincipal);
                     }
                     catch(Exception)
@@ -81,6 +86,24 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 CreateLocalWindowsAccount("SpecsUser", userGroup);
             }
+
+            id = GetUserSecurityIdentifier("SpecsUser");
+            context = new PrincipalContext(ContextType.Machine);
+            userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
+            
+            if(userPrincipal != null)
+            {
+                Impersonator.RunAs(userPrincipal.DisplayName, "", "T35t3r!@#", () =>
+                {
+                    var windowsIdentity = WindowsIdentity.GetCurrent();
+                    if(windowsIdentity != null)
+                    {
+                        windowsIdentity.AddClaim(new Claim(ClaimTypes.Role, "Users"));
+                        Thread.CurrentPrincipal = new WindowsPrincipal(windowsIdentity);
+                    }
+                });
+            }
+
             var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#"), false) { Name = "Other Connection" };
             reconnectModel.Connect();
             ScenarioContext.Current.Add("currentEnvironment", reconnectModel);
@@ -94,9 +117,11 @@ namespace Dev2.Activities.Specs.Permissions
                 UserPrincipal user = new UserPrincipal(context);
                 user.SetPassword("T35t3r!@#");
                 user.DisplayName = username;
+                user.UserPrincipalName = username;
                 user.Name = username;
                 user.UserCannotChangePassword = true;
                 user.PasswordNeverExpires = true;
+
                 user.Save();
                 AddUserToGroup(groupName, context, user);
                 return true;
@@ -180,6 +205,51 @@ namespace Dev2.Activities.Specs.Permissions
             var allMatch = environmentModel.ResourceRepository.All().All(model => model.UserPermissions == resourcePermissions);
             Assert.IsTrue(allMatch);
             environmentModel.Disconnect();
+        }
+
+        [Given(@"Resource '(.*)' has rights '(.*)' for '(.*)'")]
+        public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
+        {
+            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
+            var resourceRepository = environmentModel.ResourceRepository;
+            var settings = resourceRepository.ReadSettings(environmentModel);
+            environmentModel.ForceLoadResources();
+
+            var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
+            Services.Security.Permissions resourcePermissions = Services.Security.Permissions.None;
+            var permissionsStrings = resourceRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            foreach(var permissionsString in permissionsStrings)
+            {
+                Services.Security.Permissions permission;
+                if(Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                {
+                    resourcePermissions |= permission;
+                }
+            }
+            var windowsGroupPermission = new WindowsGroupPermission { WindowsGroup = groupName, ResourceID = resourceModel.ID, ResourceName = resourceName, IsServer = false, Permissions = resourcePermissions };
+            settings.Security.WindowsGroupPermissions.Add(windowsGroupPermission);
+            resourceRepository.WriteSettings(environmentModel, settings);
+        }
+
+        [Then(@"'(.*)' should have '(.*)'")]
+        public void ThenShouldHave(string resourceName, string resourcePerms)
+        {
+            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            var resourceRepository = environmentModel.ResourceRepository;
+            environmentModel.ForceLoadResources();
+
+            var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
+            Services.Security.Permissions resourcePermissions = Services.Security.Permissions.None;
+            var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            foreach(var permissionsString in permissionsStrings)
+            {
+                Services.Security.Permissions permission;
+                if(Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                {
+                    resourcePermissions |= permission;
+                }
+            }
+            Assert.AreEqual(resourcePermissions, resourceModel.UserPermissions);
         }
 
     }

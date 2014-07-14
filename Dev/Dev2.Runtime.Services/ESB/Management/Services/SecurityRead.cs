@@ -49,8 +49,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 try
                 {
                     var decryptData = SecurityEncryption.Decrypt(encryptedData);
-                    var currentSecuritySettingsTO = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
-                    var permissionGroup = currentSecuritySettingsTO.WindowsGroupPermissions;
+                    var currentSecuritySettingsTo = JsonConvert.DeserializeObject<SecuritySettingsTO>(decryptData);
+                    var permissionGroup = currentSecuritySettingsTo.WindowsGroupPermissions;
 
                     // We need to change BuiltIn\Administrators to -> Warewolf Administrators ;)
                     if(permissionGroup.Count > 0)
@@ -59,16 +59,23 @@ namespace Dev2.Runtime.ESB.Management.Services
                         if(adminGrp == "BuiltIn\\Administrators")
                         {
                             permissionGroup[0].WindowsGroup = WindowsGroupPermission.BuiltInAdministratorsText;
-                            decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTO);
+                            decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
                         }
                     }
 
                     var hasGuestPermission = permissionGroup.Any(permission => permission.IsBuiltInGuests);
+                    var hasAdminPermission = permissionGroup.Any(permission => permission.IsBuiltInAdministrators);
+                    if(!hasAdminPermission)
+                    {
+                        permissionGroup.Add(WindowsGroupPermission.CreateAdministrators());
+                        permissionGroup.Sort(QuickSortForPermissions);
+                        decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
+                    }
                     if(!hasGuestPermission)
                     {
                         permissionGroup.Add(WindowsGroupPermission.CreateGuests());
                         permissionGroup.Sort(QuickSortForPermissions);
-                        decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTO);
+                        decryptData = JsonConvert.SerializeObject(currentSecuritySettingsTo);
                     }
                     return new StringBuilder(decryptData);
                 }
@@ -79,8 +86,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             var serializer = new Dev2JsonSerializer();
-            var securitySettingsTO = new SecuritySettingsTO(DefaultPermissions) { CacheTimeout = _cacheTimeout };
-            return serializer.SerializeToBuilder(securitySettingsTO);
+            var securitySettingsTo = new SecuritySettingsTO(DefaultPermissions) { CacheTimeout = _cacheTimeout };
+            return serializer.SerializeToBuilder(securitySettingsTo);
         }
 
         int QuickSortForPermissions(WindowsGroupPermission x, WindowsGroupPermission y)

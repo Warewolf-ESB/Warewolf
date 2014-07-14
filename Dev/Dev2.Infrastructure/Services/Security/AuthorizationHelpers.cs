@@ -67,10 +67,10 @@ namespace Dev2.Services.Security
                 return true;
             }
 
-            Guid resourceID;
-            if(Guid.TryParse(resource, out resourceID))
+            Guid resourceId;
+            if(Guid.TryParse(resource, out resourceId))
             {
-                return permission.ResourceID == resourceID;
+                return permission.ResourceID == resourceId;
             }
 
             // ResourceName is in the format: {categoryName}\{resourceName}

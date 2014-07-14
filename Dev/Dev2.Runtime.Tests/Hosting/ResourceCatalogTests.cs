@@ -2227,10 +2227,9 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, "Bugs".ToLower(), "TestCategory");
+            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, "Bugs", "TestCategory");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
-            Assert.AreEqual("<CompilerMessage>Updated Category from 'bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
             string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
             XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             XElement element = xElement.Element("Category");
