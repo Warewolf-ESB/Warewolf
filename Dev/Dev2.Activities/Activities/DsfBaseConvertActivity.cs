@@ -161,14 +161,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                 }
 
-                                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
-                                {
-                                    if(toUpsert != null)
-                                    {
-                                        toUpsert.Add(region, val);
-                                    }
-                                }
+                                
+                        
+                                toUpsert.Add(expression, val);
+
 
                                 if(toUpsert != null && toUpsert.HasLiveFlushing)
                                 {

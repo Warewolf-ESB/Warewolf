@@ -102,31 +102,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 if (recset.IsEmpty())
                                 {
-                                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
-                                    {
-                                        compiler.Upsert(executionId, region, "0", out errors);
+                                  
+                                        compiler.Upsert(executionId, CountNumber, "0", out errors);
                                         if (dataObject.IsDebugMode())
                                         {
-                                            AddDebugOutputItem(new DebugOutputParams(region, "0", executionId, 0));
+                                            AddDebugOutputItem(new DebugOutputParams(CountNumber, "0", executionId, 0));
                                         }
                                         allErrors.MergeErrors(errors);
-                                    }
+                                    
                                 }
                                 else
                                 {
-
-
-
-                                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(CountNumber))
-                                    {
                                         int cnt = recset.ItemCollectionSize();
-                                        compiler.Upsert(executionId, region, cnt.ToString(CultureInfo.InvariantCulture), out errors);
+                                        compiler.Upsert(executionId, CountNumber, cnt.ToString(CultureInfo.InvariantCulture), out errors);
                                         if (dataObject.IsDebugMode())
                                         {
-                                            AddDebugOutputItem(new DebugOutputParams(region, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
+                                            AddDebugOutputItem(new DebugOutputParams(CountNumber, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
                                         }
                                         allErrors.MergeErrors(errors);
-                                    }
+                                
 
                                 }
 

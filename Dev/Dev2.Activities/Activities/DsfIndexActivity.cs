@@ -186,13 +186,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 else
                 {
 
-                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                    {
-                        var rsType = DataListUtil.GetRecordsetIndexType(region);
+
+                    var rsType = DataListUtil.GetRecordsetIndexType(Result);
                         if (rsType == enRecordsetIndexType.Numeric)
                         {
 
-                            toUpsertScalar.Add(region, string.Join(",", completeResultList));
+                            toUpsertScalar.Add(Result, string.Join(",", completeResultList));
                             compiler.Upsert(executionId, toUpsertScalar, out errors);
                             allErrors.MergeErrors(errors);
                             if (!allErrors.HasErrors() && dataObject.IsDebugMode())
@@ -206,7 +205,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            toUpsert.Add(region, completeResultList);
+                            toUpsert.Add(Result, completeResultList);
                             compiler.Upsert(executionId, toUpsert, out errors);
                             allErrors.MergeErrors(errors);
                             if (!allErrors.HasErrors() && dataObject.IsDebugMode())
@@ -220,7 +219,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
                 #endregion
-                }
+                
 
             }
             catch (Exception e)

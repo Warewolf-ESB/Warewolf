@@ -179,10 +179,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                         else
                         {
-                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
-                            {
-                                toUpsert.Add(region, result);
-                            }
+         
+                                toUpsert.Add(expression, result);
+                            
                         }
                     }
                     else

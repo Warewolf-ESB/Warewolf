@@ -168,11 +168,10 @@ namespace Dev2.Activities
                         }
                         else
                         {
-                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                            {
-                                toUpsert.Add(region, value);
+                           
+                                toUpsert.Add(Result, value);
                                 toUpsert.FlushIterationFrame();
-                            }
+                            
                         }
                     }
                     compiler.Upsert(executionId, toUpsert, out errors);

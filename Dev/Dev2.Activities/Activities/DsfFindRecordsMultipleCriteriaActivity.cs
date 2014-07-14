@@ -224,14 +224,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 var regions = DataListCleaningUtils.SplitIntoRegions(Result);
-                IsSingleValueRule rule = new IsSingleValueRule(()=>Result);
+                var rule = new IsSingleValueRule(()=>Result);
                 var singleresError = rule.Check();
                 if (singleresError != null)
                     allErrors.AddError(singleresError.Message);
                 else
-                {
-                    foreach (var region in regions)
-                    {
+               {
+                 
                         string concatRes = String.Empty;
                         var allResults = results as IList<string> ?? results.ToList();
                         // ReSharper restore PossibleMultipleEnumeration
@@ -240,7 +239,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             allResults.Add("-1");
                         }
 
-                        if (!DataListUtil.IsValueRecordset(region))
+                        if (!DataListUtil.IsValueRecordset(Result))
                         {
 // ReSharper disable LoopCanBeConvertedToQuery
                             foreach (var r in allResults)
@@ -253,7 +252,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 concatRes = concatRes.Remove(concatRes.Length - 1);
                             }
-                            toUpsert.Add(region, concatRes);
+                            toUpsert.Add(Result, concatRes);
                             toUpsert.FlushIterationFrame();
                         }
                         else
@@ -262,7 +261,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             foreach (var r in allResults)
                             {
-                                toUpsert.Add(region, r);
+                                toUpsert.Add(Result, r);
                                 toUpsert.FlushIterationFrame();
                                 iterationIndex++;
                             }
@@ -277,7 +276,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 AddDebugOutputItem(new DebugItemVariableParams(debugTo));
                             }
                         }
-                    }
+                    
                 }
             }
             catch(Exception exception)

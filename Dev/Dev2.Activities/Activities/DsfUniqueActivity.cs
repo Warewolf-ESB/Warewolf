@@ -12,7 +12,6 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities
@@ -185,7 +184,7 @@ namespace Dev2.Activities
                                                      out rsEntry);
                 allErrors.MergeErrors(errors);
 
-                //IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
+  
 
                 // Use row data?!, nope use row indexes ;)
                 List<string> resultFields = BreakAndValidate(dlID, compiler, ResultFields, dataObject,
@@ -276,12 +275,10 @@ namespace Dev2.Activities
                 {
                     if(hasErrors)
                     {
-                        List<string> targetExpressions = DataListCleaningUtils.SplitIntoRegions(Result);
-                        foreach(var expression in targetExpressions)
-                        {
-                            IBinaryDataListEntry entry = compiler.Evaluate(dlID, enActionType.User, expression, false, out errors);
-                            AddDebugOutputItem(new DebugItemVariableParams(expression, "", entry, dlID));
-                        }
+
+                            IBinaryDataListEntry entry = compiler.Evaluate(dlID, enActionType.User, Result, false, out errors);
+                            AddDebugOutputItem(new DebugItemVariableParams(Result, "", entry, dlID));
+                        
                     }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

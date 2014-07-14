@@ -190,17 +190,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     concatRes = concatRes.Remove(concatRes.Length - 1);
                                 }
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                List<string> regions = DataListCleaningUtils.SplitIntoRegions(Result);
+                                DataListCleaningUtils.SplitIntoRegions(Result);
                                 //2013.06.07: Massimo Guerrera for BUG 9497 - To handle putting out to a scalar as a CSV
-                                foreach(var region in regions)
-                                {
-                                    if(!DataListUtil.IsValueRecordset(region))
+
+                                if (!DataListUtil.IsValueRecordset(Result))
                                     {
-                                        toUpsert.Add(region, concatRes);
+                                        toUpsert.Add(Result, concatRes);
                                         toUpsert.FlushIterationFrame();
                                         if(dataObject.IsDebugMode())
                                         {
-                                            AddDebugOutputItem(new DebugOutputParams(region, concatRes, executionID, iterationIndex));
+                                            AddDebugOutputItem(new DebugOutputParams(Result, concatRes, executionID, iterationIndex));
                                         }
                                     }
                                     else
@@ -209,16 +208,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                         foreach(string r in results)
                                         {
-                                            toUpsert.Add(region, r);
+                                            toUpsert.Add(Result, r);
                                             toUpsert.FlushIterationFrame();
                                             if(dataObject.IsDebugMode())
                                             {
-                                                AddDebugOutputItem(new DebugOutputParams(region, r, executionID, iterationIndex));
+                                                AddDebugOutputItem(new DebugOutputParams(Result, r, executionID, iterationIndex));
                                             }
 
                                             iterationIndex++;
                                         }
-                                    }
+                                    
                                 }
                             }
                         }

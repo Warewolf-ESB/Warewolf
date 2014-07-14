@@ -124,10 +124,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         allErrors.AddError(singleresError.Message);
                                     else
                                     {
-                                        foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
-                                        {
-                                            toUpsert.Add(region, res.TheValue);
-                                        }
+
+                                        toUpsert.Add(expression, res.TheValue);
+
                                         // Upsert the entire payload
                                     }
                                 allErrors.MergeErrors(errors);

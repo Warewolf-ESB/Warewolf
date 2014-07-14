@@ -323,16 +323,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(!string.IsNullOrEmpty(outputVariable))
             {
                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                foreach(var region in DataListCleaningUtils.SplitIntoRegions(outputVariable))
-                {
+
                     // if it already exist, flush this round ;)
-                    if(!usedTokens.Add(region))
+                    if (!usedTokens.Add(outputVariable))
                     {
                         toUpsert.FlushIterationFrame();
                     }
 
-                    toUpsert.Add(region, tmp);
-                }
+                    toUpsert.Add(outputVariable, tmp);
+                
             }
         }
 

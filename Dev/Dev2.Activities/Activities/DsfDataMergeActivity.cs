@@ -257,13 +257,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                             else
                             {
-                                foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                                {
-                                    toUpsert.Add(region, mergeOperations.MergeData.ToString());
-                                    toUpsert.FlushIterationFrame();
-                                    compiler.Upsert(executionId, toUpsert, out errorResultTO);
-                                    allErrors.MergeErrors(errorResultTO);
-                                }
+
+                                toUpsert.Add(Result, mergeOperations.MergeData.ToString());
+                                toUpsert.FlushIterationFrame();
+                                compiler.Upsert(executionId, toUpsert, out errorResultTO);
+                                allErrors.MergeErrors(errorResultTO);
+                                
                                 if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                                 {
                                     foreach (var debugOutputTo in toUpsert.DebugOutputs)

@@ -102,15 +102,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 if (recset.IsEmpty())
                                 {
-                                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(RecordsLength))
-                                    {
-                                        compiler.Upsert(executionId, region, "0", out errors);
+           
+                                        compiler.Upsert(executionId, RecordsLength, "0", out errors);
                                         if (dataObject.IsDebugMode())
                                         {
-                                            AddDebugOutputItem(new DebugOutputParams(region, "0", executionId, 0));
+                                            AddDebugOutputItem(new DebugOutputParams(RecordsLength, "0", executionId, 0));
                                         }
                                         allErrors.MergeErrors(errors);
-                                    }
+                                    
                                 }
                                 else
                                 {

@@ -185,11 +185,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void UpdateResultRegions(IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result)
         {
-            foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
-            {
-                toUpsert.Add(region, result);
+           
+                toUpsert.Add(Result, result);
                 toUpsert.FlushIterationFrame();
-            }
+            
         }
 
         #endregion

@@ -166,10 +166,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(new DebugItemVariableParams(Find, "Find", expressionsEntryFind, executionId));
                     AddDebugInputItem(new DebugItemVariableParams(ReplaceWith, "Replace With", expressionsEntryReplaceWith, executionId));
                 }
-                foreach(var region in DataListCleaningUtils.SplitIntoRegions(Result))
-                {
-                    toUpsert.Add(region, replacementTotal.ToString(CultureInfo.InvariantCulture));
-                }
+     
+                    toUpsert.Add(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
+                
 
                 // now push the result to the server
                 compiler.Upsert(executionId, toUpsert, out errors);

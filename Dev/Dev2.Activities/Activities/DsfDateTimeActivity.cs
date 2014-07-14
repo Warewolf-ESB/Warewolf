@@ -195,10 +195,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             expression = Result;
                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
-                            {
-                                toUpsert.Add(region, result);
-                            }
+                       
+                                toUpsert.Add(expression, result);
+                            
                             toUpsert.FlushIterationFrame();
                         }
                         else
