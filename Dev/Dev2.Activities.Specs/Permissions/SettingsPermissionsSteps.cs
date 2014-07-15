@@ -90,7 +90,7 @@ namespace Dev2.Activities.Specs.Permissions
             id = GetUserSecurityIdentifier("SpecsUser");
             context = new PrincipalContext(ContextType.Machine);
             userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
-            
+
             if(userPrincipal != null)
             {
                 Impersonator.RunAs(userPrincipal.DisplayName, "", "T35t3r!@#", () =>
@@ -202,8 +202,31 @@ namespace Dev2.Activities.Specs.Permissions
                     resourcePermissions |= permission;
                 }
             }
-            var allMatch = environmentModel.ResourceRepository.All().All(model => model.UserPermissions == resourcePermissions);
-            Assert.IsTrue(allMatch);
+            var resourceModels = environmentModel.ResourceRepository.All();
+            var totalNumberOfResources = resourceModels.Count;
+            var allMatch = resourceModels.Count(model => model.UserPermissions == resourcePermissions);
+            Assert.IsTrue(totalNumberOfResources - allMatch <= 1); //This is to cater for the scenerios where we specify a resource permission
+            environmentModel.Disconnect();
+        }
+
+        [Then(@"resources should not have '(.*)'")]
+        public void ThenResourcesShouldNotHave(string resourcePerms)
+        {
+            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            Services.Security.Permissions resourcePermissions = Services.Security.Permissions.None;
+            var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
+            foreach(var permissionsString in permissionsStrings)
+            {
+                Services.Security.Permissions permission;
+                if(Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
+                {
+                    resourcePermissions |= permission;
+                }
+            }
+            var resourceModels = environmentModel.ResourceRepository.All();
+            var allMatch = resourceModels.Count(model => model.UserPermissions == resourcePermissions);
+            var totalNumberOfResources = resourceModels.Count;
+            Assert.IsTrue(totalNumberOfResources - allMatch <= 1);
             environmentModel.Disconnect();
         }
 
@@ -249,7 +272,15 @@ namespace Dev2.Activities.Specs.Permissions
                     resourcePermissions |= permission;
                 }
             }
-            Assert.AreEqual(resourcePermissions, resourceModel.UserPermissions);
+            if(resourcePermissions == Services.Security.Permissions.None)
+            {
+                Assert.IsNull(resourceModel);
+            }
+            else
+            {
+                Assert.IsNotNull(resourceModel);
+                Assert.AreEqual(resourcePermissions, resourceModel.UserPermissions);
+            }
         }
 
     }
