@@ -27,6 +27,7 @@ namespace Dev2.Data.PathOperations
     {
         const int SftpTimeoutMilliseconds = 3;
 
+        // TODO : Implement as per Unlimited.Framework.Plugins.FileSystem in the Unlimited.Framework.Plugins project
         // Make sure to replace Uri with IActivity references
 
         public bool PathExist(IActivityIOPath dst)
@@ -37,11 +38,14 @@ namespace Dev2.Data.PathOperations
 
         public Stream Get(IActivityIOPath path, List<string> filesToCleanup)
         {
+
+
             Stream result = null;
             try
             {
                 if(IsStandardFtp(path))
                 {
+
                     ReadFromFtp(path, ref result);
                 }
                 else
@@ -102,24 +106,22 @@ namespace Dev2.Data.PathOperations
 
         void ReadFromSftp(IActivityIOPath path, ref Stream result, List<string> filesToCleanup)
         {
-            using(var sftp = BuildSftpClient(path))
+            var sftp = BuildSftpClient(path);
+            var ftpPath = ExtractFileNameFromPath(path.Path);
+            try
             {
-                var ftpPath = ExtractFileNameFromPath(path.Path);
-                try
-                {
-                    var tempFileName = BuildTempFileName();
-                    filesToCleanup.Add(tempFileName);
-                    var data = sftp.ReadAllBytes(ftpPath);
-                    File.WriteAllBytes(tempFileName, data);
-                    result = new FileStream(tempFileName, FileMode.Open);
-                    sftp.Disconnect();
-                }
-                catch(Exception ex)
-                {
-                    sftp.Disconnect();
-                    sftp.Dispose();
-                    throw new Exception(ex.Message, ex);
-                }
+                var tempFileName = BuildTempFileName();
+                filesToCleanup.Add(tempFileName);
+                var data = sftp.ReadAllBytes(ftpPath);
+                File.WriteAllBytes(tempFileName, data);
+                result = new FileStream(tempFileName, FileMode.Open);
+                sftp.Disconnect();
+            }
+            catch(Exception ex)
+            {
+                sftp.Disconnect();
+                sftp.Dispose();
+                throw new Exception(ex.Message, ex);
             }
         }
 
@@ -128,68 +130,78 @@ namespace Dev2.Data.PathOperations
             var tempFileName = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
             return tempFileName;
         }
-
-        Uri ExtractUriFromPath(string path)
+        string ExtractHostNameFromPath(string path)
         {
             Uri uriForSftp;
             if(Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out uriForSftp))
             {
                 try
                 {
-                    return uriForSftp;
+                    return uriForSftp.Host;
                 }
                 catch(Exception)
                 {
                     throw new Exception("The path is in the incorrect format.");
                 }
             }
-            return null;
+            return "";
         }
 
         SftpClient BuildSftpClient(IActivityIOPath path)
         {
 
-            var hostUri = ExtractUriFromPath(path.Path);
-            if(hostUri == null)
-            {
-                return null;
-            }
-            var hostName = hostUri.Host;
+            var hostName = ExtractHostNameFromPath(path.Path);
             if(hostName.ToLower().StartsWith("localhost"))
-            {
                 hostName = hostName.Replace("localhost", "127.0.0.1");
-            }
-            using(var sftp = new SftpClient(hostName, hostUri.Port == -1 ? 22 : hostUri.Port, path.Username, path.Password) { OperationTimeout = new TimeSpan(0, 0, 0, SftpTimeoutMilliseconds) })
-            {
-                try
-                {
-                    sftp.Connect();
-                }
-                catch(Exception e)
-                {
-                    ServerLogger.LogDebug("Exception Creating SFTP Client");
-                    ServerLogger.LogDebug(e.Message);
-                    ServerLogger.LogDebug(e.StackTrace);
-                    {
+            var sftp = new SftpClient(hostName, 22, path.Username, path.Password) { OperationTimeout = new TimeSpan(0, 0, 0, SftpTimeoutMilliseconds) };
 
-                    }
-                    if(e.Message.Contains("timeout"))
-                    {
-                        throw new Exception("Connection timed out.");
-                    }
-                    if(e.Message.Contains("Auth failed"))
-                    {
-                        throw new Exception(string.Format("Incorrect user name and password for {0}", path.Path));
-                    }
-                    if(path.Path.Contains("\\"))
-                    {
-                        throw new Exception(string.Format("Bad format for SFTP. Path {0}. Please correct path.", path.Path));
-                    }
-                    throw new Exception(string.Format("Error connecting to SFTP location {0}.", path.Path));
-                }
-                return sftp;
+            try
+            {
+                sftp.Connect();
             }
+            catch(Exception e)
+            {
+                ServerLogger.LogDebug("Exception Creating SFTP Client");
+                ServerLogger.LogDebug(e.Message);
+                ServerLogger.LogDebug(e.StackTrace);
+                {
+
+                }
+                if(e.Message.Contains("timeout"))
+                {
+                    throw new Exception("Connection timed out.");
+                }
+                if(e.Message.Contains("Auth failed"))
+                {
+                    throw new Exception(string.Format("Incorrect user name and password for {0}", path.Path));
+                }
+                if(path.Path.Contains("\\"))
+                {
+                    throw new Exception(string.Format("Bad format for SFTP. Path {0}. Please correct path.", path.Path));
+                }
+                throw new Exception(string.Format("Error connecting to SFTP location {0}.", path.Path));
+            }
+            return sftp;
         }
+
+        /*
+                string ExtractHostNameFromPath(string path)
+                {
+                    Uri uriForSftp;
+                    if(Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out uriForSftp))
+                    {
+                        try
+                        {
+                            return  uriForSftp.Host;
+                        }
+                        catch(Exception)
+                        {
+                            throw new Exception("The path is in the incorrect format.");
+                        }
+                    }
+                    return "";
+                }
+        */
 
         string ExtractFileNameFromPath(string path)
         {
@@ -300,30 +312,31 @@ namespace Dev2.Data.PathOperations
             var result = -1;
             if(dst != null)
             {
-                using(var sftp = BuildSftpClient(dst))
+                var sftp = BuildSftpClient(dst);
+                if(src != null)
                 {
-                    if(src != null)
+                    using(src)
                     {
-                        using(src)
+                        //byte[] payload = src.ToByteArray();
+                        //var tempFileName = Path.Combine(Path.GetTempPath(), Path.GetTempFileName());
+                        //File.WriteAllBytes(tempFileName, payload);
+                        try
                         {
-                            try
-                            {
-                                var path = ExtractFileNameFromPath(dst.Path);
-                                sftp.UploadFile(src, path);
-                                result = (int)src.Length;
-                                sftp.Disconnect();
-                                sftp.Dispose();
-                            }
-                            catch(Exception e)
-                            {
+                            var path = ExtractFileNameFromPath(dst.Path);
+                            sftp.UploadFile(src, path);
+                            result = (int)src.Length;
+                            sftp.Disconnect();
+                            sftp.Dispose();
+                        }
+                        catch(Exception e)
+                        {
 
-                                ServerLogger.LogDebug("Exception WriteToSFTP");
-                                ServerLogger.LogDebug(e.Message);
-                                ServerLogger.LogDebug(e.StackTrace);
-                                sftp.Disconnect();
-                                sftp.Dispose();
-                                throw new Exception("File was not created");
-                            }
+                            ServerLogger.LogDebug("Exception WriteToSFTP");
+                            ServerLogger.LogDebug(e.Message);
+                            ServerLogger.LogDebug(e.StackTrace);
+                            sftp.Disconnect();
+                            sftp.Dispose();
+                            throw new Exception("File was not created");
                         }
                     }
                 }
@@ -347,7 +360,7 @@ namespace Dev2.Data.PathOperations
                 }
                 else
                 {
-                    DeleteOp(src);
+                    DeleteOp(src); // file delete
                 }
             }
             catch(Exception ex)
@@ -450,26 +463,29 @@ namespace Dev2.Data.PathOperations
         IList<IActivityIOPath> ListDirectorySftp(IActivityIOPath src)
         {
             List<IActivityIOPath> result = new List<IActivityIOPath>();
-            using(var sftp = BuildSftpClient(src))
+            var sftp = BuildSftpClient(src);
+            try
             {
-                try
-                {
-                    var fromPath = ExtractFileNameFromPath(src.Path);
-                    var fileList = sftp.ListDirectory(fromPath).Select(a => a.FullName);
-                    result.AddRange(from string file in fileList
-                                    where file != ".." && file != "."
-                                    select BuildValidPathForFtp(src, file)
-                                        into uri
-                                        select ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password));
-                }
-                catch(Exception)
-                {
-                    throw new DirectoryNotFoundException(string.Format("Directory '{0}' was not found", src.Path));
-                }
-                finally
-                {
-                    sftp.Dispose();
-                }
+                var fromPath = ExtractFileNameFromPath(src.Path);
+                var fileList = sftp.ListDirectory(fromPath).Select(a => a.FullName);
+                result.AddRange(from string file in fileList
+                                where file != ".." && file != "."
+                                select BuildValidPathForFtp(src, file)
+                                    into uri
+                                    select ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password));
+            }
+            catch(Exception)
+            {
+                throw new DirectoryNotFoundException(string.Format("Directory '{0}' was not found", src.Path));
+            }
+            //catch(Exception ex)
+            //{
+            //    Logger.LogError(this, ex);
+            //    throw;
+            //}
+            finally
+            {
+                sftp.Dispose();
             }
 
             return result;
@@ -549,25 +565,23 @@ namespace Dev2.Data.PathOperations
 
         bool CreateDirectorySftp(IActivityIOPath dst)
         {
+            var sftp = BuildSftpClient(dst);
             bool result;
-            using(var sftp = BuildSftpClient(dst))
+            try
             {
-                try
-                {
-                    var fromPath = ExtractFileNameFromPath(dst.Path);
-                    sftp.CreateDirectory(fromPath);
-                    result = true;
-                }
-                catch(Exception ex)
-                {
-                    result = false;
-                    Logger.LogError(this, ex);
-                }
-                finally
-                {
-                    sftp.Disconnect();
-                    sftp.Dispose();
-                }
+                var fromPath = ExtractFileNameFromPath(dst.Path);
+                sftp.CreateDirectory(fromPath);
+                result = true;
+            }
+            catch(Exception ex)
+            {
+                result = false;
+                Logger.LogError(this, ex);
+            }
+            finally
+            {
+                sftp.Disconnect();
+                sftp.Dispose();
             }
             return result;
         }
@@ -588,6 +602,7 @@ namespace Dev2.Data.PathOperations
         {
             enPathType result = enPathType.File;
 
+            // WARN : here for now because FTP has no way of knowing of the user wants a directory or file?!?!
             if(Dev2ActivityIOPathUtils.IsDirectory(path.Path))
             {
                 result = enPathType.Directory;
@@ -790,30 +805,28 @@ namespace Dev2.Data.PathOperations
         {
             var result = new StringBuilder();
             var pathFromString = ActivityIOFactory.CreatePathFromString(path, user, pass);
-            using(var sftp = BuildSftpClient(pathFromString))
+            var sftp = BuildSftpClient(pathFromString);
+            try
             {
-                try
+                var fromPath = ExtractFileNameFromPath(pathFromString.Path);
+                var fileList = sftp.ListDirectory(fromPath);
+                sftp.Disconnect();
+                sftp.Dispose();
+                foreach(var filePath in fileList)
                 {
-                    var fromPath = ExtractFileNameFromPath(pathFromString.Path);
-                    var fileList = sftp.ListDirectory(fromPath);
-                    sftp.Disconnect();
-                    sftp.Dispose();
-                    foreach(var filePath in fileList)
+                    string filename = filePath.FullName;
+                    if(filename == ".." || filename == "." || filename.EndsWith("."))
                     {
-                        string filename = filePath.FullName;
-                        if(filename == ".." || filename == "." || filename.EndsWith("."))
-                        {
-                            continue;
-                        }
-                        result.AppendLine(filePath.FullName);
+                        continue;
                     }
+                    result.AppendLine(filePath.FullName);
                 }
-                catch(Exception ex)
-                {
-                    sftp.Dispose();
-                    Logger.LogError(this, ex);
-                    throw new Exception(string.Format("Path not found {0}. Please ensure that it exists", path));
-                }
+            }
+            catch(Exception ex)
+            {
+                sftp.Dispose();
+                Logger.LogError(this, ex);
+                throw new Exception(string.Format("Path not found {0}. Please ensure that it exists", path));
             }
             return result.ToString();
         }
@@ -960,28 +973,26 @@ namespace Dev2.Data.PathOperations
 
         bool DeleteUsingSftp(IActivityIOPath src)
         {
-            using(var sftp = BuildSftpClient(src))
+            var sftp = BuildSftpClient(src);
+            try
             {
-                try
+                var fromPath = ExtractFileNameFromPath(src.Path);
+                if(PathIs(src) == enPathType.Directory)
                 {
-                    var fromPath = ExtractFileNameFromPath(src.Path);
-                    if(PathIs(src) == enPathType.Directory)
-                    {
-                        sftp.DeleteDirectory(fromPath);
-                    }
-                    else
-                    {
-                        sftp.DeleteFile(fromPath);
-                    }
+                    sftp.DeleteDirectory(fromPath);
                 }
-                catch(Exception)
+                else
                 {
-                    throw new Exception(string.Format("Could not delete {0}. Please check the path exists.", src.Path));
+                    sftp.DeleteFile(fromPath);
                 }
-                finally
-                {
-                    sftp.Dispose();
-                }
+            }
+            catch(Exception)
+            {
+                throw new Exception(string.Format("Could not delete {0}. Please check the path exists.", src.Path));
+            }
+            finally
+            {
+                sftp.Dispose();
             }
             return true;
         }
@@ -1040,6 +1051,7 @@ namespace Dev2.Data.PathOperations
                         }
                     }
                 }
+
                 // exception will be thrown if not present
                 isAlive = true;
             }
@@ -1132,6 +1144,7 @@ namespace Dev2.Data.PathOperations
                         }
                     }
                 }
+
                 // exception will be thrown if not present
                 isAlive = true;
             }
@@ -1157,28 +1170,25 @@ namespace Dev2.Data.PathOperations
 
         bool IsDirectoryAlreadyPresentSftp(IActivityIOPath path)
         {
-            bool isAlive;
-            using(var sftpClient = BuildSftpClient(path))
+            var sftpClient = BuildSftpClient(path);
+            var isAlive = true;
+            try
             {
-                isAlive = true;
-                try
-                {
-                    var ftpPath = ExtractFileNameFromPath(path.Path);
-                    var arrayList = sftpClient.ListDirectory(ftpPath);
-                    if(arrayList == null || !arrayList.Any())
-                    {
-                        isAlive = false;
-                    }
-                }
-                catch(Exception ex)
+                var ftpPath = ExtractFileNameFromPath(path.Path);
+                var arrayList = sftpClient.ListDirectory(ftpPath);
+                if(arrayList == null || !arrayList.Any())
                 {
                     isAlive = false;
-                    Logger.LogError(this, ex);
                 }
-                finally
-                {
-                    sftpClient.Dispose();
-                }
+            }
+            catch(Exception ex)
+            {
+                isAlive = false;
+                Logger.LogError(this, ex);
+            }
+            finally
+            {
+                sftpClient.Dispose();
             }
             return isAlive;
         }
