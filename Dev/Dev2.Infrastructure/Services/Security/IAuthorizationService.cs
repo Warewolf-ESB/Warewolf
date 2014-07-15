@@ -10,9 +10,9 @@ namespace Dev2.Services.Security
         bool IsAuthorized(AuthorizationContext context, string resource);
         bool IsAuthorized(IPrincipal user, AuthorizationContext context, string resource);
         bool IsAuthorized(IAuthorizationRequest request);
-        Permissions GetResourcePermissions(Guid resourceID);
+        Permissions GetResourcePermissions(Guid resourceId);
 
-        void Remove(Guid resourceID);
+        void Remove(Guid resourceId);
 
         string JsonPermissions();
     }

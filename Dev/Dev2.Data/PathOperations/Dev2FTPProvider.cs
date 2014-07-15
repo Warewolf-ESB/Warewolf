@@ -159,7 +159,7 @@ namespace Dev2.Data.PathOperations
             {
                 hostName = hostName.Replace("localhost", "127.0.0.1");
             }
-            using(var sftp = new SftpClient(hostName, hostUri.Port, path.Username, path.Password) { OperationTimeout = new TimeSpan(0, 0, 0, SftpTimeoutMilliseconds) })
+            using(var sftp = new SftpClient(hostName, hostUri.Port == -1 ? 22 : hostUri.Port, path.Username, path.Password) { OperationTimeout = new TimeSpan(0, 0, 0, SftpTimeoutMilliseconds) })
             {
                 try
                 {

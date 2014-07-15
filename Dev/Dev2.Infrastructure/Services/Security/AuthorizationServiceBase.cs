@@ -79,16 +79,16 @@ namespace Dev2.Services.Security
             }
         }
 
-        public Permissions GetResourcePermissions(Guid resourceID)
+        public Permissions GetResourcePermissions(Guid resourceId)
         {
-            var groupPermissions = GetGroupPermissions(ClaimsPrincipal.Current, resourceID.ToString()).ToList();
+            var groupPermissions = GetGroupPermissions(ClaimsPrincipal.Current, resourceId.ToString()).ToList();
             var result = groupPermissions.Aggregate(Permissions.None, (current, gp) => current | gp.Permissions);
             return result;
         }
 
-        public virtual void Remove(Guid resourceID)
+        public virtual void Remove(Guid resourceId)
         {
-            _securityService.Remove(resourceID);
+            _securityService.Remove(resourceId);
         }
 
         public abstract bool IsAuthorized(AuthorizationContext context, string resource);
@@ -151,7 +151,22 @@ namespace Dev2.Services.Security
 
         IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
-            var groupPermissions = _securityService.Permissions.Where(p => IsInRole(principal, p) && p.Matches(resource)).ToList();
+            var serverPermissions = _securityService.Permissions;
+            var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
+
+            var groupPermissions = new List<WindowsGroupPermission>();
+            foreach(var permission in serverPermissions)
+            {
+                if(resourcePermissions.Any(groupPermission => groupPermission.WindowsGroup == permission.WindowsGroup))
+                {
+                    continue;
+                }
+                if(IsInRole(principal, permission) && permission.Matches(resource))
+                {
+                    groupPermissions.Add(permission);
+                }
+            }
+            groupPermissions.AddRange(resourcePermissions);
             FilterAdminGroupForRemote(groupPermissions);
             return groupPermissions;
         }

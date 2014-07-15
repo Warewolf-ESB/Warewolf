@@ -20,6 +20,22 @@ namespace Dev2.Activities.Specs.Permissions
     [Binding]
     public class SettingsPermissionsSteps
     {
+        [Before("Security")]
+        public void ClearSecuritySettings()
+        {
+            AppSettings.LocalHost = "http://localhost:3142";
+            var environmentModel = EnvironmentRepository.Instance.Source;
+            environmentModel.Connect();
+
+            Settings settings = new Settings
+            {
+                Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
+            };
+
+            environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
+            environmentModel.Disconnect();
+        }
+
         [Given(@"I have a server ""(.*)""")]
         public void GivenIHaveAServer(string serverName)
         {
@@ -249,6 +265,7 @@ namespace Dev2.Activities.Specs.Permissions
                     resourcePermissions |= permission;
                 }
             }
+            settings.Security.WindowsGroupPermissions.RemoveAll(permission => permission.ResourceID == resourceModel.ID || permission.IsBuiltInGuests || permission.IsBuiltInAdministrators);
             var windowsGroupPermission = new WindowsGroupPermission { WindowsGroup = groupName, ResourceID = resourceModel.ID, ResourceName = resourceName, IsServer = false, Permissions = resourcePermissions };
             settings.Security.WindowsGroupPermissions.Add(windowsGroupPermission);
             resourceRepository.WriteSettings(environmentModel, settings);
@@ -272,13 +289,8 @@ namespace Dev2.Activities.Specs.Permissions
                     resourcePermissions |= permission;
                 }
             }
-            if(resourcePermissions == Services.Security.Permissions.None)
+            if(resourceModel != null)
             {
-                Assert.IsNull(resourceModel);
-            }
-            else
-            {
-                Assert.IsNotNull(resourceModel);
                 Assert.AreEqual(resourcePermissions, resourceModel.UserPermissions);
             }
         }
