@@ -65,6 +65,8 @@ namespace Dev2.CustomControls.Progress
             _webClient.DownloadProgressChanged += OnDownloadProgressChanged;
             _dontStartUpdate = false;
             ShutDownAction = ShutdownAndInstall;
+            if (!Directory.Exists("Installers"))
+                Directory.CreateDirectory("Installers");
 
         }
 
@@ -99,6 +101,8 @@ namespace Dev2.CustomControls.Progress
         /// <param name="checkSum"></param>
         public void Download(Uri address, string tmpFileName, bool dontStartUpdate, string fileName, string checkSum)
         {
+
+ 
             _tmpFileName = tmpFileName;
             if(_file.Exists(_tmpFileName))
             {
