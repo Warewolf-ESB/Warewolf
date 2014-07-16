@@ -155,6 +155,7 @@ namespace Dev2.Services.Security
             var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
 
             var groupPermissions = new List<WindowsGroupPermission>();
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(var permission in serverPermissions)
             {
                 if(resourcePermissions.Any(groupPermission => groupPermission.WindowsGroup == permission.WindowsGroup))
@@ -166,6 +167,8 @@ namespace Dev2.Services.Security
                     groupPermissions.Add(permission);
                 }
             }
+            // ReSharper restore LoopCanBeConvertedToQuery
+
             groupPermissions.AddRange(resourcePermissions);
             FilterAdminGroupForRemote(groupPermissions);
             return groupPermissions;
