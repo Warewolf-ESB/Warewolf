@@ -59,7 +59,7 @@ namespace Dev2.Activities.Specs.Explorer
 
         private static string GetServerProcessPath()
         {
-            var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + ServerProcessName + "%'");
+            var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + ServerProcessName + ".exe'");
             ManagementObjectCollection processes;
             //initialize the searcher with the query it is
             //supposed to execute
