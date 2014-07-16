@@ -181,7 +181,7 @@ namespace Dev2.Studio.Core.Helpers
         {
             try
             {
-                return _webClient.DownloadString(StringResources.Warewolf_Checksum);
+                return _webClient.DownloadString(InstallerResources.WarewolfChecksum);
                
             }
             catch
@@ -199,7 +199,7 @@ namespace Dev2.Studio.Core.Helpers
         
             try
             {
-                var version = _webClient.DownloadString(StringResources.Warewolf_Version);
+                var version = _webClient.DownloadString(InstallerResources.WarewolfVersion);
                 return new Version(version);
             }
             catch
@@ -218,5 +218,30 @@ namespace Dev2.Studio.Core.Helpers
         }
 
         #endregion
+    }
+
+    internal class InstallerResources
+    {
+
+        public static  bool InstallerTesting
+        {
+            get { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["InstallerTesting"]); }
+        }
+
+
+        public static string WarewolfVersion
+        {
+            get
+            {
+                return InstallerTesting ? System.Configuration.ConfigurationManager.AppSettings["TestVersionLocation"] : System.Configuration.ConfigurationManager.AppSettings["VersionLocation"];
+            }
+        }
+        public static string WarewolfChecksum 
+        {   
+            get
+            {
+                return InstallerTesting?System.Configuration.ConfigurationManager.AppSettings["TestCheckSumLocation"]: System.Configuration.ConfigurationManager.AppSettings["CheckSumLocation"];
+            }  
+        }
     }
 }
