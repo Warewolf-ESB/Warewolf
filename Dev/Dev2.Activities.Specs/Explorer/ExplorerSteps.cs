@@ -288,14 +288,14 @@ namespace Dev2.Activities.Specs.Explorer
         {
             var basePath = ScenarioContext.Current.Get<string>("basePath");
             var fullPath = basePath + folderPath;
-            Assert.IsFalse(Directory.Exists(fullPath));
+            Assert.IsFalse(Directory.Exists(fullPath), "Directory does not exist " + fullPath);
         }
 
         [Then(@"an error message will be '(.*)'")]
         public void ThenAnErrorMessageWillBe(string expectedMessage)
         {
             var actualMessage = ScenarioContext.Current.Get<string>("errorMessage");
-            Assert.IsTrue(actualMessage.Contains(expectedMessage));
+            Assert.IsTrue(actualMessage.Contains(expectedMessage), actualMessage + " does not contain " + expectedMessage + ".");
         }
 
         [Given(@"I have string '(.*)'")]
