@@ -20,7 +20,7 @@ namespace Dev2.Activities.Specs.Permissions
     [Binding]
     public class SettingsPermissionsSteps
     {
-        [Before("Security")]
+        [BeforeScenario("Security")]
         public void ClearSecuritySettings()
         {
             AppSettings.LocalHost = "http://localhost:3142";
@@ -70,14 +70,12 @@ namespace Dev2.Activities.Specs.Permissions
 
             var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
+            environmentModel.Disconnect();
         }
 
         [When(@"connected as user part of '(.*)'")]
         public void WhenConnectedAsUserPartOf(string userGroup)
         {
-            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
-            environmentModel.Disconnect();
-
             UserPrincipal userPrincipal;
             PrincipalContext context;
             SecurityIdentifier id;
@@ -197,17 +195,10 @@ namespace Dev2.Activities.Specs.Permissions
             return false;
         }
 
-        [Then(@"'(.*)' resources are visible")]
-        public void ThenResourcesAreVisible(string p0)
-        {
-            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
-            environmentModel.ForceLoadResources();
-        }
-
         [Then(@"resources should have '(.*)'")]
         public void ThenResourcesShouldHave(string resourcePerms)
         {
-            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            var environmentModel = LoadResources();
             Services.Security.Permissions resourcePermissions = Services.Security.Permissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var permissionsString in permissionsStrings)
@@ -225,10 +216,29 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.Disconnect();
         }
 
+        static IEnvironmentModel LoadResources()
+        {
+            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            if(environmentModel.IsConnected)
+            {
+                if(!environmentModel.HasLoadedResources)
+                {
+                    environmentModel.ForceLoadResources();
+                }
+            }
+            else
+            {
+                environmentModel.Connect();
+                environmentModel.ForceLoadResources();
+
+            }
+            return environmentModel;
+        }
+
         [Then(@"resources should not have '(.*)'")]
         public void ThenResourcesShouldNotHave(string resourcePerms)
         {
-            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            var environmentModel = LoadResources();
             Services.Security.Permissions resourcePermissions = Services.Security.Permissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var permissionsString in permissionsStrings)
@@ -250,6 +260,10 @@ namespace Dev2.Activities.Specs.Permissions
         public void GivenResourceHasRights(string resourceName, string resourceRights, string groupName)
         {
             var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
+            if(!environmentModel.IsConnected)
+            {
+                environmentModel.Connect();
+            }
             var resourceRepository = environmentModel.ResourceRepository;
             var settings = resourceRepository.ReadSettings(environmentModel);
             environmentModel.ForceLoadResources();
@@ -265,7 +279,7 @@ namespace Dev2.Activities.Specs.Permissions
                     resourcePermissions |= permission;
                 }
             }
-            settings.Security.WindowsGroupPermissions.RemoveAll(permission => permission.ResourceID == resourceModel.ID || permission.IsBuiltInGuests || permission.IsBuiltInAdministrators);
+            settings.Security.WindowsGroupPermissions.RemoveAll(permission => permission.ResourceID == resourceModel.ID);
             var windowsGroupPermission = new WindowsGroupPermission { WindowsGroup = groupName, ResourceID = resourceModel.ID, ResourceName = resourceName, IsServer = false, Permissions = resourcePermissions };
             settings.Security.WindowsGroupPermissions.Add(windowsGroupPermission);
             resourceRepository.WriteSettings(environmentModel, settings);
@@ -294,6 +308,5 @@ namespace Dev2.Activities.Specs.Permissions
                 Assert.AreEqual(resourcePermissions, resourceModel.UserPermissions);
             }
         }
-
     }
 }

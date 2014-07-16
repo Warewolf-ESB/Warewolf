@@ -8,8 +8,7 @@ Scenario Outline: Server Permissions
         Given I have a server "localhost"
         And it has '<Group>' with '<Given rights>' 
         When connected as user part of '<User Group>'
-        Then '<Resources>' resources are visible
-        And resources should have '<Rights>'
+        Then resources should have '<Rights>'
 Examples:
         | No | Group  | Given rights                                      | User Group | Resources | Rights                                            |
         | 1  | Public | Deploy To                                         | Users      | All       | Deploy To                                         |
@@ -35,8 +34,7 @@ Scenario Outline: Setting Selected Resource Permissions for users
         And it has '<Group>' with '<Given rights>' 
         And Resource '<Resource Name>' has rights '<Resource Rights>' for '<User Group>'
         When connected as user part of '<User Group>'
-        Then '<Resources>' resources are visible
-        And '<Resource>' should have '<Permissions>'
+        Then '<Resource>' should have '<Permissions>'
 		And resources should not have '<Rights>' 
 Examples: 
         | No | Group                   | Given rights              | Resource Name           | Resource Rights           | User Group | Resources | Rights | Resource                | Permissions               |
@@ -67,8 +65,7 @@ Scenario Outline: Setting Selected Resource Permissions for users overlapping gr
         And it has '<Group>' with '<Given rights>' 
         And Resource '<Resource Name>' has rights '<Resource Rights>' for '<User Group>'
         When connected as user part of '<User Group>'
-        Then '<Resources>' resources are visible
-        And '<Resource>' should have '<Permissions>'
+        Then '<Resource>' should have '<Permissions>'
 		And resources should have '<Rights>' 
 Examples: 
         | No | Group  | Given rights                                                     | Resource Name           | Resource Rights           | User Group | Resources | Rights                                                           | Resource                | Permissions                                                       |
@@ -105,8 +102,7 @@ Scenario Outline: Setting Selected Resource Permissions for users conflicting pe
         And it has '<Group>' with '<Given rights>' 
         And Resource '<Resource Name>' has rights '<Resource Rights>' for '<User Group>'
         When connected as user part of '<User Group>'
-        Then '<Resources>' resources are visible
-        And '<Resource>' should have '<Permissions>'
+        Then '<Resource>' should have '<Permissions>'
 		And resources should have '<Rights>' 
 Examples: 
         | No | Group | Given rights                                                     | Resource Name           | Resource Rights           | User Group | Resources | Rights                                                           | Resource                | Permissions               |

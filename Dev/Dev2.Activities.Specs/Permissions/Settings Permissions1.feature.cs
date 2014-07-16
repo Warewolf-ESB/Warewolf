@@ -87,9 +87,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
         testRunner.When(string.Format("connected as user part of \'{0}\'", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
-        testRunner.Then(string.Format("\'{0}\' resources are visible", resources), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 12
-        testRunner.And(string.Format("resources should have \'{0}\'", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.Then(string.Format("resources should have \'{0}\'", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -359,21 +357,19 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users", @__tags);
-#line 33
+#line 32
 this.ScenarioSetup(scenarioInfo);
-#line 34
+#line 33
         testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 35
+#line 34
         testRunner.And(string.Format("it has \'{0}\' with \'{1}\'", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 36
+#line 35
         testRunner.And(string.Format("Resource \'{0}\' has rights \'{1}\' for \'{2}\'", resourceName, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 36
         testRunner.When(string.Format("connected as user part of \'{0}\'", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 37
+        testRunner.Then(string.Format("\'{0}\' should have \'{1}\'", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 38
-        testRunner.Then(string.Format("\'{0}\' resources are visible", resources), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 39
-        testRunner.And(string.Format("\'{0}\' should have \'{1}\'", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
   testRunner.And(string.Format("resources should not have \'{0}\'", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -788,21 +784,19 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users overlapping groups", @__tags);
-#line 65
+#line 63
 this.ScenarioSetup(scenarioInfo);
-#line 66
+#line 64
         testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 67
+#line 65
         testRunner.And(string.Format("it has \'{0}\' with \'{1}\'", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 68
+#line 66
         testRunner.And(string.Format("Resource \'{0}\' has rights \'{1}\' for \'{2}\'", resourceName, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 67
         testRunner.When(string.Format("connected as user part of \'{0}\'", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 70
-        testRunner.Then(string.Format("\'{0}\' resources are visible", resources), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 71
-        testRunner.And(string.Format("\'{0}\' should have \'{1}\'", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
+#line 68
+        testRunner.Then(string.Format("\'{0}\' should have \'{1}\'", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 69
   testRunner.And(string.Format("resources should have \'{0}\'", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1317,21 +1311,19 @@ this.ScenarioSetup(scenarioInfo);
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
             }
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Setting Selected Resource Permissions for users conflicting permissions", @__tags);
-#line 103
+#line 100
 this.ScenarioSetup(scenarioInfo);
-#line 104
+#line 101
         testRunner.Given("I have a server \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 105
+#line 102
         testRunner.And(string.Format("it has \'{0}\' with \'{1}\'", group, givenRights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 106
+#line 103
         testRunner.And(string.Format("Resource \'{0}\' has rights \'{1}\' for \'{2}\'", resourceName, resourceRights, userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 107
+#line 104
         testRunner.When(string.Format("connected as user part of \'{0}\'", userGroup), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 108
-        testRunner.Then(string.Format("\'{0}\' resources are visible", resources), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 109
-        testRunner.And(string.Format("\'{0}\' should have \'{1}\'", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 110
+#line 105
+        testRunner.Then(string.Format("\'{0}\' should have \'{1}\'", resource, permissions), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 106
   testRunner.And(string.Format("resources should have \'{0}\'", rights), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
