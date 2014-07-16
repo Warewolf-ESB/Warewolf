@@ -332,17 +332,18 @@ IF $(ConfigurationName)==Test GOTO getTestResources
 IF $(ConfigurationName)==Release GOTO getReleaseResources
 GOTO exit
 :getDebugResources
-xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Test" "$(TargetDir)"
 xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
 GOTO exit
 :getTestResources
-xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Test" "$(TargetDir)"
+xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Resources" "$(TargetDir)Resources\"
+xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Plugins" "$(TargetDir)Plugins\"
+xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Themes" "$(TargetDir)Themes\"
 xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
 xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs" "$(TargetDir)Webs\"
 GOTO exit
 :getReleaseResources
 xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
-xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\Properties" "$(TargetDir)Debug\Webs\Properties\"
+xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\Properties" "$(TargetDir)Webs\Properties\"
 xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\wwwroot" "$(TargetDir)Webs\wwwroot\"
 :exit</PostBuildEvent>
   </PropertyGroup>
