@@ -288,7 +288,7 @@ namespace Dev2.Activities.Specs.Explorer
         {
             var basePath = ScenarioContext.Current.Get<string>("basePath");
             var fullPath = basePath + folderPath;
-            Assert.IsFalse(Directory.Exists(fullPath), "Directory does not exist " + fullPath);
+            Assert.IsFalse(Directory.Exists(fullPath), "Directory does exist after delete " + fullPath);
         }
 
         [Then(@"an error message will be '(.*)'")]
