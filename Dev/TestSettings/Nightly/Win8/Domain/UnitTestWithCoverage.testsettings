@@ -11,6 +11,15 @@
     <DeploymentItem filename="TestBinaries\CefSharp\" />
     <DeploymentItem filename="TestBinaries\IronRuby.Libraries.Yaml.dll" />
     <DeploymentItem filename="TestBinaries\IronRuby.dll" />
+    <DeploymentItem filename="Dev2.Server\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" outputDirectory="DebugBin" />
+    <DeploymentItem filename="Dev2.Server\bin\Debug\IronPython.Modules.dll" outputDirectory="DebugBin" />
+    <DeploymentItem filename="Dev2.Server\bin\Debug\Microsoft.Scripting.dll" outputDirectory="DebugBin" />
+    <DeploymentItem filename="Dev2.Server\bin\Debug\IronRuby.Libraries.dll" outputDirectory="DebugBin" />
+    <DeploymentItem filename="Dev2.Server\bin\Debug\Microsoft.Dynamic.dll" outputDirectory="DebugBin" />
+    <DeploymentItem filename="Dev2.Server\bin\Debug\IronPython.dll" outputDirectory="DebugBin" />
+    <DeploymentItem filename="Dev2.Server\bin\Debug\CefSharp\" outputDirectory="DebugBin" />
+    <DeploymentItem filename="Dev2.Server\bin\Debug\IronRuby.Libraries.Yaml.dll" outputDirectory="DebugBin" />
+    <DeploymentItem filename="Dev2.Server\bin\Debug\IronRuby.dll" outputDirectory="DebugBin" />
   </Deployment>
   <Scripts cleanupScript="TestScripts\Unit\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />
