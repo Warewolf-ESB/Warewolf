@@ -23,7 +23,7 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void StartServer()
         {
-#if RELEASE
+#if ! DEBUG 
             // RELEASE
             Start("2386158864", "http://40589.tbnet1.com");
             TBApp.StartAutoSync(true);
@@ -36,7 +36,7 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void StartStudio()
         {
-#if RELEASE
+#if ! DEBUG 
             // RELEASE
             Start("2386158962", "http://94687.tbnet1.com");
 #endif
@@ -50,7 +50,7 @@ namespace Dev2.Instrumentation
             {
                 var location = Assembly.GetExecutingAssembly().Location;
                 var filePath = Path.GetDirectoryName(location);
-#if RELEASE
+#if ! DEBUG && ! TEST
                 var fvi = VersionInfo.FetchVersionInfo();
                 var productVersion = fvi;
 #else
@@ -71,7 +71,7 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void Stop()
         {
-#if RELEASE
+#if ! DEBUG 
             WriteError(TBApp.Stop());
 #endif
         }
@@ -84,7 +84,7 @@ namespace Dev2.Instrumentation
         /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
         public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName, string eventValue = null)
         {
-#if RELEASE
+#if ! DEBUG 
             TrackEvent(eventGroup, eventName.ToString(), eventValue);
 #endif
         }
@@ -97,7 +97,7 @@ namespace Dev2.Instrumentation
         /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
         public static void TrackEvent(TrackerEventGroup eventGroup, string customText, string eventValue = "")
         {
-#if RELEASE
+#if ! DEBUG 
             Perform(() => TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
 #endif
         }
@@ -110,7 +110,7 @@ namespace Dev2.Instrumentation
         /// <param name="ex">The handled exception.</param>
         public static void TrackException(string className, string methodName, Exception ex)
         {
-#if RELEASE
+#if ! DEBUG 
             var idx = className.LastIndexOf('.');
             var newClassName = className.Substring(idx + 1);
             newClassName = newClassName.Replace("`", "").Replace("1", "");
