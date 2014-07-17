@@ -1,0 +1,24 @@
+﻿http://dev2-warewolf.cloudapp.net:3142
+
+http://tst-ci-remote:3142/dsf
+
+http://remote.dev2.co.za:3142/dsf 
+
+
+
+
+
+
+
+Scenario: Workflow with 3 Assigns tools executing against the server
+	  Given I have a workflow "WorkflowWith3Assigntools"
+	  And "WorkflowWith3Assigntools" contains an Assign "Assigntool1" as
+	  | variable    | value    |
+	  | [[rec().a]] | rec(1).a |
+	   And "WorkflowWith3Assigntools" contains an Assign "Assigntool2" as
+	  | variable     | value    |
+	  | [[test]]     | rec(1).a |
+	  | [[rec(1).a]] | Warewolf |
+	   And "WorkflowWith3Assigntools" contains an Assign "Assigntool3" as
+	  | variable | value        |
+	  | [[new]]  | [[[[test]]]] |

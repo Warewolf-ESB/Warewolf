@@ -653,6 +653,7 @@
     <EmbeddedResource Include="Toolbox\FileAndFolder\Write File\testfiles\infile1WithCarriageReturn.txt" />
     <EmbeddedResource Include="Toolbox\FileAndFolder\Write File\testfiles\outfile1WithCarriageReturn.txt" />
     <EmbeddedResource Include="Composition\DBSource\testingDBSrc.xml" />
+    <EmbeddedResource Include="Toolbox\FileAndFolder\Write File\testfiles\filewithvariables.txt" />
     <Content Include="Toolbox\Recordset\SqlBulkInsert\databasesetup.txt" />
     <EmbeddedResource Include="Toolbox\FileAndFolder\Unzip\Test.zip" />
     <EmbeddedResource Include="Toolbox\Scripting\Script\testfiles\javascript_badly_formatted.txt">

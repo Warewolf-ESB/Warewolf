@@ -51,25 +51,6 @@ Scenario Outline: Write file at location
 		#| Local with Overwrite     | [[path]] | c:\filetowrite0.txt                                             | Overwrite     | warewolf rules | ""                | ""       | [[result]][[a]]        | Failure | NO           |
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Scenario: Write file with carriage returns
 	Given I have a source path '[[path]]' with value 'c:\filetowrite1.txt' 	
 	And source credentials as '' and ''	
@@ -79,4 +60,14 @@ Scenario: Write file with carriage returns
     When the write file tool is executed	
 	Then the output contents from a file 'outfile1WithCarriageReturn.txt'
 	And the execution has "NO" error
+
+Scenario: Write file when contents has varuiables that cannot be evealuated
+	Given I have a source path '[[path]]' with value 'c:\filetowrite1.txt' 	
+	And source credentials as '' and ''	
+	And Method is 'Overwrite'
+	And the input contents from a file 'filewithvariables.txt'     
+	And result as '[[res]]'
+	When the write file tool is executed	
+	Then the result variable '[[res]]' will be 'Failure'
+	And the execution has "AN" error
 	

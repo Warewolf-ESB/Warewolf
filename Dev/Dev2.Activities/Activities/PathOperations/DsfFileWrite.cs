@@ -61,6 +61,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             colItr.AddIterator(passItr);
 
             IBinaryDataListEntry contentsEntry = compiler.Evaluate(executionId, enActionType.User, FileContents, false, out errors);
+
+            if(contentsEntry == null)
+            {
+                errors.AddError("Contents could not be evaluated");
+            }
+
             allErrors.MergeErrors(errors);
             IDev2DataListEvaluateIterator contentItr = Dev2ValueObjectFactory.CreateEvaluateIterator(contentsEntry);
             colItr.AddIterator(contentItr);
@@ -88,8 +94,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 try
                 {
-                    string result = broker.PutRaw(endPoint, putTO);
-                    outputs[0].OutputStrings.Add(result);
+                    if(allErrors.HasErrors())
+                    {
+                        outputs[0].OutputStrings.Add("Failure");
+                    }
+                    else
+                    {
+                        string result = broker.PutRaw(endPoint, putTO);
+                        outputs[0].OutputStrings.Add(result);
+                    }
                 }
                 catch(Exception e)
                 {
