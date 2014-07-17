@@ -1,7 +1,7 @@
 ﻿using System;
 using Dev2.Studio.Core.Interfaces;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Activities.Services
 {
     public interface IDesignerManagementService : IDisposable

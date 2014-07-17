@@ -16,10 +16,12 @@ using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Foreach;
+using Dev2.AppResources.Repositories;
 using Dev2.Collections;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
+using Dev2.Core.Tests.Utils;
 using Dev2.Core.Tests.ViewModelTests;
 using Dev2.CustomControls.Utils;
 using Dev2.Data.Binary_Objects;
@@ -1617,6 +1619,74 @@ namespace Dev2.Core.Tests.Workflows
         }
 
         [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_DragOnToForEach")]
+        [Owner("Hagashen Naidu")]
+        // ReSharper disable InconsistentNaming
+        public void WorkflowDesignerViewModel_PerformAddItems_ForEachActivity_DragOnRemoteWorkflow()
+        // ReSharper restore InconsistentNaming
+        {
+            #region Setup view model constructor parameters
+
+            var repo = new Mock<IResourceRepository>();
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(model => model.ID).Returns(Guid.NewGuid());
+            var mockRemoteEnvironment = new Mock<IEnvironmentModel>();
+            var remoteServerID = Guid.NewGuid();
+            mockRemoteEnvironment.Setup(model => model.ID).Returns(remoteServerID);
+            var mockRemoteConnection = new Mock<IEnvironmentConnection>();
+            mockRemoteConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://remoteserver:3142/"));
+            mockRemoteEnvironment.Setup(model => model.Connection).Returns(mockRemoteConnection.Object);
+            mockResourceModel.Setup(model => model.Environment).Returns(mockRemoteEnvironment.Object);
+            repo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), It.IsAny<bool>())).Returns(mockResourceModel.Object);
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+            env.Setup(model => model.ID).Returns(Guid.Empty);
+            env.Setup(e => e.ResourceRepository).Returns(repo.Object);
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
+
+            var wh = new Mock<IWorkflowHelper>();
+
+            #endregion
+
+            GetEnvironmentRepository(env); // Set the active environment
+
+
+
+            #region setup mock ModelChangedEventArgs
+
+            var eventArgs = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
+            eventArgs.Setup(c => c.ItemsAdded).Returns((IEnumerable<ModelItem>)null);
+            var mock = new Mock<ModelProperty>();
+            DsfActivity setValue = null;
+            mock.Setup(property => property.SetValue(It.IsAny<object>())).Callback<object>(o =>
+            {
+                setValue = o as DsfActivity;
+            });
+            mock.Setup(property => property.Name).Returns("Handler");
+            eventArgs.Setup(c => c.PropertiesChanged).Returns(new List<ModelProperty> { mock.Object });
+#pragma warning restore 618
+
+            #endregion
+
+            var eventAggregator = new Mock<IEventAggregator>();
+            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object);
+            wd.SetActiveEnvironment(env.Object);
+            wd.SetDataObject(new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object));
+
+            // Execute unit
+            wd.TestModelServiceModelChanged(eventArgs.Object);
+
+            wd.Dispose();
+            Assert.IsNotNull(setValue);
+            Assert.AreEqual("http://remoteserver:3142/", setValue.ServiceUri);
+            Assert.AreEqual(remoteServerID, setValue.ServiceServer);
+        }
+
+        [TestMethod]
         [TestCategory("WorkflowDesignerViewModel_UnitTest")]
         [Description("Dropping a switch onto an auto connect node; expects an edit switch message with isnew equal to true to be published")]
         [Owner("Ashley Lewis")]
@@ -2284,6 +2354,181 @@ namespace Dev2.Core.Tests.Workflows
                     Assert.IsTrue(resourceModel.Object.ResourceName.IndexOf("*", StringComparison.Ordinal) < 0);
                     StringAssert.Contains("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
                     Assert.AreEqual("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
+                }
+                catch(Exception e)
+                {
+                    ok = false;
+                    msg = e.Message + " -> " + e.StackTrace;
+                }
+            });
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
+
+            Assert.IsTrue(ok, msg);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_DataListNotNull_ExpectFirstFocusDoesNotReflectEdit()
+        {
+            var ok = true;
+            var msg = string.Empty;
+            var t = new Thread(() =>
+            {
+                try
+                {
+                    #region Setup viewModel
+                    var workflow = new ActivityBuilder();
+                    var resourceRep = new Mock<IResourceRepository>();
+                    resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+                    var resourceModel = new Mock<IContextualResourceModel>();
+                    resourceModel.SetupAllProperties();
+                    resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+                    StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
+                    resourceModel.Object.WorkflowXaml = new StringBuilder("<a/>");
+                    resourceModel.Object.ResourceName = "Test";
+                    resourceModel.Object.DataList = "<DataList><a></a></DataList>";
+                    var workflowHelper = new Mock<IWorkflowHelper>();
+                    workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+                    workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
+                    workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
+                    var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = xamlBuilder };
+
+                    #endregion
+
+
+                    #region setup Mock ModelItem
+
+                    var properties = new Dictionary<string, Mock<ModelProperty>>();
+                    var propertyCollection = new Mock<ModelPropertyCollection>();
+                    var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
+                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
+
+                    var prop = new Mock<ModelProperty>();
+                    prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+                    prop.Setup(p => p.ComputedValue).Returns(testAct);
+                    properties.Add("Action", prop);
+
+                    propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+                    var source = new Mock<ModelItem>();
+                    source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+                    source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+
+                    #endregion
+
+                    #region setup mock to change properties
+
+                    //mock item adding - this is obsolete functionality but not refactored due to overhead
+                    var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
+                    args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
+
+                    #endregion
+
+                    //Execute
+                    var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel.Object);
+                    OpeningWorkflowsHelper.AddWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
+                    resourceModel.Object.IsWorkflowSaved = true;
+                    viewModel.TestWorkflowDesignerModelChanged();
+
+                    viewModel.Dispose();
+                    OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
+
+                    //Verify
+                    Assert.IsTrue(resourceModel.Object.IsWorkflowSaved);
+                }
+                catch(Exception e)
+                {
+                    ok = false;
+                    msg = e.Message + " -> " + e.StackTrace;
+                }
+            });
+
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+            t.Join();
+
+            Assert.IsTrue(ok, msg);
+        }
+
+        [TestMethod]
+        [Owner("Travis Frisinger")]
+        public void WorkflowDesignerViewModel_UnitTest_ViewModelModelChanged_DataListDifferent_ExpectFirstFocusDoesNotReflectEdit()
+        {
+            var ok = true;
+            var msg = string.Empty;
+            var t = new Thread(() =>
+            {
+                try
+                {
+                    #region Setup viewModel
+                    var workflow = new ActivityBuilder();
+                    var resourceRep = new Mock<IResourceRepository>();
+                    resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+
+                    var resourceModel = new Mock<IContextualResourceModel>();
+                    resourceModel.SetupAllProperties();
+                    resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+                    StringBuilder xamlBuilder = new StringBuilder(StringResources.xmlServiceDefinition);
+                    resourceModel.Object.WorkflowXaml = new StringBuilder("<a/>");
+                    resourceModel.Object.ResourceName = "Test";
+                    resourceModel.Object.DataList = "<DataList><a></a></DataList>";
+                    var workflowHelper = new Mock<IWorkflowHelper>();
+                    workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+                    workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
+                    workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
+                    var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = xamlBuilder };
+
+                    #endregion
+
+
+                    #region setup Mock ModelItem
+
+                    var properties = new Dictionary<string, Mock<ModelProperty>>();
+                    var propertyCollection = new Mock<ModelPropertyCollection>();
+                    var environmentRepository = SetupEnvironmentRepo(Guid.Empty); // Set the active environment
+                    var testAct = DsfActivityFactory.CreateDsfActivity(resourceModel.Object, new DsfActivity(), true, environmentRepository, true);
+
+                    var prop = new Mock<ModelProperty>();
+                    prop.Setup(p => p.SetValue(It.IsAny<DsfActivity>())).Verifiable();
+                    prop.Setup(p => p.ComputedValue).Returns(testAct);
+                    properties.Add("Action", prop);
+
+                    propertyCollection.Protected().Setup<ModelProperty>("Find", "Action", true).Returns(prop.Object);
+
+                    var source = new Mock<ModelItem>();
+                    source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+                    source.Setup(s => s.ItemType).Returns(typeof(FlowStep));
+
+                    #endregion
+
+                    #region setup mock to change properties
+
+                    //mock item adding - this is obsolete functionality but not refactored due to overhead
+                    var args = new Mock<ModelChangedEventArgs>();
+#pragma warning disable 618
+                    args.Setup(a => a.ItemsAdded).Returns(new List<ModelItem> { source.Object });
+#pragma warning restore 618
+
+                    #endregion
+
+                    //Execute
+                    var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(resourceModel.Object);
+                    OpeningWorkflowsHelper.AddWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
+                    resourceModel.Object.IsWorkflowSaved = true;
+                    resourceModel.Object.DataList = "<DataList><b></b></DataList>";
+                    viewModel.TestWorkflowDesignerModelChanged();
+
+                    viewModel.Dispose();
+                    OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
+
+                    //Verify
+                    Assert.IsFalse(resourceModel.Object.IsWorkflowSaved);
                 }
                 catch(Exception e)
                 {
@@ -3126,6 +3371,223 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual(ExpectedCanSave, result);
 
             resourceModel.Verify(m => m.IsAuthorized(AuthorizationContext.Contribute));
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_CanSave")]
+        [Owner("Hagashen Naidu")]
+        public void WorkflowDesignerViewModel_ExpandAllCommand_GetsCommand()
+        {
+            //----------------------- Setup -----------------------//
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+
+            #endregion
+
+            const bool ExpectedCanSave = true;
+            resourceModel.Setup(m => m.IsAuthorized(AuthorizationContext.Contribute)).Returns(ExpectedCanSave).Verifiable();
+
+            //----------------------- Execute -----------------------//
+            var expandAllCommand = viewModel.ExpandAllCommand;
+            viewModel.Dispose();
+
+            //----------------------- Assert -----------------------//
+            Assert.IsNotNull(expandAllCommand);
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_CanSave")]
+        [Owner("Hagashen Naidu")]
+        public void WorkflowDesignerViewModel_ExpandAllCommand_True_RequestExpandAll()
+        {
+            //----------------------- Setup -----------------------//
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            viewModel.SetupRequestExapandAll();
+            #endregion
+
+            const bool ExpectedCanSave = true;
+            resourceModel.Setup(m => m.IsAuthorized(AuthorizationContext.Contribute)).Returns(ExpectedCanSave).Verifiable();
+
+            //----------------------- Execute -----------------------//
+            Assert.IsFalse(viewModel.RequestedExpandAll);
+            viewModel.ExpandAllCommand.Execute(true);
+            viewModel.Dispose();
+
+            //----------------------- Assert -----------------------//
+            Assert.IsTrue(viewModel.RequestedExpandAll);
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_CanSave")]
+        [Owner("Hagashen Naidu")]
+        public void WorkflowDesignerViewModel_ExpandAllCommand_False_RequestRestoreAll()
+        {
+            //----------------------- Setup -----------------------//
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            viewModel.SetupRequestExapandAll();
+            viewModel.SetupRequestRestoreAll();
+            #endregion
+
+            const bool ExpectedCanSave = true;
+            resourceModel.Setup(m => m.IsAuthorized(AuthorizationContext.Contribute)).Returns(ExpectedCanSave).Verifiable();
+
+            //----------------------- Execute -----------------------//
+            Assert.IsFalse(viewModel.RequestedRestoreAll);
+            viewModel.ExpandAllCommand.Execute(false);
+            viewModel.Dispose();
+
+            //----------------------- Assert -----------------------//
+            Assert.IsTrue(viewModel.RequestedRestoreAll);
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_CanSave")]
+        [Owner("Hagashen Naidu")]
+        public void WorkflowDesignerViewModel_CollapseAllCommand_True_RequestCollapseAll()
+        {
+            //----------------------- Setup -----------------------//
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            viewModel.SetupRequestCollapseAll();
+            viewModel.SetupRequestRestoreAll();
+            #endregion
+
+            const bool ExpectedCanSave = true;
+            resourceModel.Setup(m => m.IsAuthorized(AuthorizationContext.Contribute)).Returns(ExpectedCanSave).Verifiable();
+
+            //----------------------- Execute -----------------------//
+            Assert.IsFalse(viewModel.RequestedCollapseAll);
+            viewModel.CollapseAllCommand.Execute(true);
+            viewModel.Dispose();
+
+            //----------------------- Assert -----------------------//
+            Assert.IsTrue(viewModel.RequestedCollapseAll);
+        }
+
+        [TestMethod]
+        [TestCategory("WorkflowDesignerViewModel_CanSave")]
+        [Owner("Hagashen Naidu")]
+        public void WorkflowDesignerViewModel_CollapseAllCommand_False_RequestRestoreAll()
+        {
+            //----------------------- Setup -----------------------//
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            viewModel.SetupRequestCollapseAll();
+            viewModel.SetupRequestRestoreAll();
+            #endregion
+
+            const bool ExpectedCanSave = true;
+            resourceModel.Setup(m => m.IsAuthorized(AuthorizationContext.Contribute)).Returns(ExpectedCanSave).Verifiable();
+
+            //----------------------- Execute -----------------------//
+            Assert.IsFalse(viewModel.RequestedRestoreAll);
+            viewModel.CollapseAllCommand.Execute(false);
+            viewModel.Dispose();
+
+            //----------------------- Assert -----------------------//
+            Assert.IsTrue(viewModel.RequestedRestoreAll);
         }
 
         [TestMethod]

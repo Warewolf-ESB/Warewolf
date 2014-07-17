@@ -96,7 +96,15 @@ namespace Dev2.Activities.Designers2.Sequence
                                 DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, true);
                                 d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
                                 d.IconPath = resource.IconPath;
-                                WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource);
+                                if(Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                                {
+                                    dynamic mvm = Application.Current.MainWindow.DataContext;
+                                    if(mvm != null && mvm.ActiveItem != null)
+                                    {
+                                        WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
+                                    }
+                                }
+
                                 ModelItem modelItem = ModelItemUtils.CreateModelItem(d);
                                 if(modelItem != null)
                                 {

@@ -53,6 +53,11 @@ namespace Dev2.Core.Tests.Workflows
             }
         }
 
+        public void SetActiveEnvironment(IEnvironmentModel environmentModel)
+        {
+            ActiveEnvironment = environmentModel;
+        }
+
         public void SetIsDesignerViewVisible(bool isVisible)
         {
             _isDesignerViewVisible = isVisible;
@@ -108,7 +113,36 @@ namespace Dev2.Core.Tests.Workflows
             DataObject = dataobject;
         }
 
+        public void SetupRequestExapandAll()
+        {
+            RequestedExpandAll = false;
+            DesignerManagementService.ExpandAllRequested += (sender, args) =>
+            {
+                RequestedExpandAll = true;
+            };
+        }
 
+        public void SetupRequestRestoreAll()
+        {
+            RequestedExpandAll = false;
+            DesignerManagementService.RestoreAllRequested += (sender, args) =>
+            {
+                RequestedRestoreAll = true;
+            };
+        }
+
+        public void SetupRequestCollapseAll()
+        {
+            RequestedExpandAll = false;
+            DesignerManagementService.CollapseAllRequested += (sender, args) =>
+            {
+                RequestedCollapseAll = true;
+            };
+        }
+
+        public bool RequestedExpandAll { get; set; }
+        public bool RequestedRestoreAll { get; set; }
+        public bool RequestedCollapseAll { get; set; }
 
         public int GetSelectedModelItemHitCount { get; private set; }
         protected override ModelItem GetSelectedModelItem(Guid itemID, Guid parentID)

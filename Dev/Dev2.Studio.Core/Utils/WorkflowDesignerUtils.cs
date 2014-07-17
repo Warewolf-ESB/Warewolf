@@ -98,22 +98,12 @@ namespace Dev2.Utils
             return result;
         }
 
-        public static void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource)
-        {
-            if(Application.Current != null &&
-                Application.Current.Dispatcher.CheckAccess()
-                && Application.Current.MainWindow != null)
-            {
-                dynamic mvm = Application.Current.MainWindow.DataContext;
-                if(mvm != null && mvm.ActiveItem != null)
-                {
-                    CheckIfRemoteWorkflowAndSetProperties(dsfActivity, resource, mvm.ActiveItem.Environment);
-                }
-            }
-        }
+
+        protected static IEnvironmentModel ActiveEnvironment { get; set; }
 
         public static void CheckIfRemoteWorkflowAndSetProperties(DsfActivity dsfActivity, IContextualResourceModel resource, IEnvironmentModel contextEnv)
         {
+            
             if(resource != null && resource.ResourceType == ResourceType.WorkflowService && contextEnv != null)
             {
                 if(contextEnv.ID != resource.Environment.ID)

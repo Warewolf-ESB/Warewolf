@@ -87,7 +87,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public delegate void SourceLocationEventHandler(SourceLocation src);
 
-        readonly IDesignerManagementService _designerManagementService;
+        protected readonly IDesignerManagementService DesignerManagementService;
         readonly IWorkflowHelper _workflowHelper;
 
         RelayCommand _collapseAllCommand;
@@ -102,7 +102,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         // ReSharper disable InconsistentNaming
         protected WorkflowDesigner _wd;
         DesignerMetadata _wdMeta;
-        DsfActivityDropViewModel _vm;
+        protected DsfActivityDropViewModel _vm;
         ResourcePickerDialog _resourcePickerDialog;
 
         VirtualizedContainerService _virtualizedContainerService;
@@ -149,7 +149,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 SetOriginalDataList(_resourceModel);
             }
-            _designerManagementService = new DesignerManagementService(resource, _resourceModel.Environment.ResourceRepository);
+            DesignerManagementService = new DesignerManagementService(resource, _resourceModel.Environment.ResourceRepository);
             if(createDesigner)
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this, liteInit);
@@ -267,11 +267,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     bool val = Convert.ToBoolean(param);
                     if(val)
                     {
-                        _designerManagementService.RequestCollapseAll();
+                        DesignerManagementService.RequestCollapseAll();
                     }
                     else
                     {
-                        _designerManagementService.RequestRestoreAll();
+                        DesignerManagementService.RequestRestoreAll();
                     }
                 }, param => true));
             }
@@ -286,11 +286,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     bool val = Convert.ToBoolean(param);
                     if(val)
                     {
-                        _designerManagementService.RequestExpandAll();
+                        DesignerManagementService.RequestExpandAll();
                     }
                     else
                     {
-                        _designerManagementService.RequestRestoreAll();
+                        DesignerManagementService.RequestRestoreAll();
                     }
                 }, param => true));
             }
@@ -439,14 +439,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     {
                                         d.IconPath = bitmapImage.UriSource.ToString();
                                     }
-                                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, theResource);
+                                    UpdateForRemote(d, theResource);
                                     //08-07-2013 Removed for bug 9789 - droppedACtivity Is already the action
                                     //Setting it twice causes double connection to startnode
                                 }
-                                //var theResource = resource.Environment.ResourceRepository.FindSingle(c => c.ID == resource.ID) as IContextualResourceModel;
-
-
-
                             }
 
                             DataObject = null;
@@ -1071,7 +1067,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 });
 
                 _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
-                _wd.Context.Services.Publish(_designerManagementService);
+                _wd.Context.Services.Publish(DesignerManagementService);
 
                 //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
                 CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
@@ -1653,7 +1649,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
                                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
                                     d.IconPath = resource.IconPath;
-
+                                    UpdateForRemote(d, resource);
                                     modelProperty.SetValue(d);
                                 }
                             }
@@ -1687,6 +1683,27 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
         }
+
+        void UpdateForRemote(DsfActivity d, IContextualResourceModel resource)
+        {
+            if(Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+            {
+                dynamic mvm = Application.Current.MainWindow.DataContext;
+                if(mvm != null && mvm.ActiveItem != null)
+                {
+                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
+                }
+            }
+            else
+            {
+                if(ActiveEnvironment != null)
+                {
+                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, ActiveEnvironment);
+                }
+            }
+        }
+
+        protected IEnvironmentModel ActiveEnvironment { get; set; }
 
         /// <summary>
         ///     Handler attached to intercept checks for executing the delete command
@@ -1764,9 +1781,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _debugSelectionChangedService = null;
             }
 
-            if(_designerManagementService != null)
+            if(DesignerManagementService != null)
             {
-                _designerManagementService.Dispose();
+                DesignerManagementService.Dispose();
             }
 
             if(_resourceModel != null)
