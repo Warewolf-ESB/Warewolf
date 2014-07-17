@@ -86,7 +86,6 @@ namespace Dev2.Runtime.WebServer.Hubs
             return base.OnConnected();
         }
 
-        #region Overrides of Hub
 
         /// <summary>
         /// Called when the connection reconnects to this hub instance.
@@ -100,6 +99,23 @@ namespace Dev2.Runtime.WebServer.Hubs
             return base.OnReconnected();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
+            if (authorizationServiceBase != null)
+            {
+                authorizationServiceBase.Dispose();
+            }
+            CompileMessageRepo.Instance.ClearObservable();
+            ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
+            if (ResourceCatalog.Instance.ResourceSaved == null)
+            {
+                ResourceCatalog.Instance.ResourceSaved = null;
+            }
+            ResourceCatalog.Instance.Dispose();
+            base.Dispose(disposing);
+        }
+
         void ConnectionActions()
         {
             var workspaceID = Server.GetWorkspaceID(Context.User.Identity);
@@ -111,7 +127,6 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         #endregion
 
-        #endregion
 
         /// <summary>
         /// Fetches the execute payload fragment.

@@ -1826,6 +1826,12 @@ namespace Dev2.Runtime.Hosting
                 ResourceType = resource.ResourceType
             };
         }
+
+        public void Dispose()
+        {
+            _workspaceLocks.Clear();
+            _workspaceResources.Clear();
+        }
     }
 
 

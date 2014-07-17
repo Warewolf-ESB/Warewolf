@@ -112,7 +112,7 @@ namespace Dev2.Activities.Specs.Permissions
                     var windowsIdentity = WindowsIdentity.GetCurrent();
                     if(windowsIdentity != null)
                     {
-                        windowsIdentity.AddClaim(new Claim(ClaimTypes.Role, "Users"));
+                        //windowsIdentity.AddClaim(new Claim(ClaimTypes.Role, "Users"));
                         Thread.CurrentPrincipal = new WindowsPrincipal(windowsIdentity);
                     }
                 });
@@ -131,7 +131,6 @@ namespace Dev2.Activities.Specs.Permissions
                 UserPrincipal user = new UserPrincipal(context);
                 user.SetPassword("T35t3r!@#");
                 user.DisplayName = username;
-                user.UserPrincipalName = username;
                 user.Name = username;
                 user.UserCannotChangePassword = true;
                 user.PasswordNeverExpires = true;
@@ -165,7 +164,7 @@ namespace Dev2.Activities.Specs.Permissions
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
             }
-            catch(IdentityNotMappedException)
+            catch(Exception)
             {
                 /* Invalid user account */
             }
