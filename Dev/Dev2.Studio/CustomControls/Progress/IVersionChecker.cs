@@ -10,5 +10,6 @@ namespace Dev2.Studio.Core.Helpers
         Version Current { get; }
         string StartPageUri { get; }
         string LatestVersionCheckSum { get; }
+        string CommunityPageUri { get;}
     }
 }

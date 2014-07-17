@@ -91,6 +91,13 @@ namespace Dev2.Studio.Core.Helpers
             }
            
         }
+        public string CommunityPageUri {
+            get
+            {
+                Check();
+                return StringResources.Uri_Community_HomePage;
+            }
+        }
 
         #endregion
 

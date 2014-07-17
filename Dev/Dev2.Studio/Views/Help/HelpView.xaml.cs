@@ -1,7 +1,7 @@
-﻿using Dev2.Studio.Core.AppResources.Browsers;
-
-// ReSharper disable once CheckNamespace
+﻿
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views.Help
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Interaction logic for HelpWindow.xaml
@@ -11,7 +11,6 @@ namespace Dev2.Studio.Views.Help
         public HelpView()
         {
             InitializeComponent();
-            BDSBrowser.Initialize();
         }
     }
 }

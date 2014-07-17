@@ -4,7 +4,6 @@
               xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
               xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
               mc:Ignorable="d"
-              xmlns:cs="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
               xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
               d:DesignHeight="300"
               d:DesignWidth="300">
@@ -18,15 +17,11 @@
                                             HorizontalAlignment="Center"
                                             Visibility="Visible" />
         <ScrollViewer>
-            <cs:WebView x:Name="BDSBrowser"
+            <WebBrowser Name="WebBrowserHost"
                         Margin="3"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Stretch"
-                        Visibility="Collapsed">
-                <cs:WebView.ContextMenu>
-                    <ContextMenu />
-                </cs:WebView.ContextMenu>
-            </cs:WebView>
+                        Visibility="Collapsed" />
         </ScrollViewer>
     </Grid>
-</UserControl>
+</UserControl>  

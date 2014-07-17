@@ -380,6 +380,8 @@
     <Compile Include="ViewModels\Deploy\NavigationViewModelBase.cs" />
     <Compile Include="ViewModels\Diagnostics\DebugStatus.cs" />
     <Compile Include="ViewModels\Diagnostics\ReportsViewerViewModel.cs" />
+    <Compile Include="ViewModels\Help\IHelpViewWrapper.cs" />
+    <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />
     <Compile Include="ViewModels\Navigation\INavigationViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DataListConversionUtils.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceContextViewModel.cs" />
@@ -434,6 +436,7 @@
     </Compile>
     <Compile Include="Webs\Callbacks\FileChooserCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\IShowDependencyProvider.cs" />
+    <Compile Include="Webs\Callbacks\NetworkHelper.cs" />
     <Compile Include="Webs\Callbacks\ShowDependencyProvider.cs" />
     <Compile Include="Webs\Callbacks\WebSourceCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\DbServiceCallbackHandler.cs" />

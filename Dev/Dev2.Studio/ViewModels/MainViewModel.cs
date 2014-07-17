@@ -44,7 +44,6 @@ using Infragistics.Windows.DockManager.Events;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Windows;
@@ -102,7 +101,6 @@ namespace Dev2.Studio.ViewModels
         private readonly bool _createDesigners;
         private ICommand _notImplementedCommand;
         private ICommand _showStartPageCommand;
-        readonly IAsyncWorker _asyncWorker;
         bool _hasActiveConnection;
         bool _canDebug = true;
 
@@ -448,8 +446,6 @@ namespace Dev2.Studio.ViewModels
             Version = versionChecker;
 
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-            _asyncWorker = asyncWorker;
-
             _createDesigners = createDesigners;
             BrowserPopupController = browserPopupController ?? new ExternalBrowserPopupController();
             StudioResourceRepository = studioResourceRepository ?? Dev2.AppResources.Repositories.StudioResourceRepository.Instance;
@@ -790,35 +786,11 @@ namespace Dev2.Studio.ViewModels
         public virtual void ShowStartPage()
         {
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
-            _asyncWorker.Start(() =>
+            WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
+            if(workSurfaceContextViewModel != null)
             {
-                var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
-
-                // PBI 9512 - 2013.06.07 - TWR: added
-                // PBI 9941 - 2013.07.07 - TWR: modified
-
-                using(var getter = new LatestWebGetter())
-                {
-                    getter.GetLatest(Version.StartPageUri, path);
-                }
-
-            }, () =>
-            {
-                var path = FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage);
-                var oldPath = FileHelper.GetFullPath(StringResources.Uri_Studio_Homepage);
-
-                //ensure the user sees a home page ;)
-                var invokePath = path;
-                if(File.Exists(oldPath) && !File.Exists(path))
-                {
-                    invokePath = oldPath;
-                }
-                WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
-                if(workSurfaceContextViewModel != null)
-                {
-                    ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(invokePath);
-                }
-            });
+                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(Version.CommunityPageUri);
+            }
         }
 
         public void ShowCommunityPage()

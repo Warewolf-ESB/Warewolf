@@ -1,23 +1,44 @@
-﻿using System.ComponentModel.Composition;
-using System.Windows;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.Help;
+using Dev2.ViewModels.Help;
+using Dev2.Webs.Callbacks;
+using System;
+using System.ComponentModel.Composition;
+using System.IO;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Help
+// ReSharper restore CheckNamespace
 {
     [Export]
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class HelpViewModel : BaseWorkSurfaceViewModel,
         IHandle<TabClosedMessage>
     {
-        private HelpView _helpView;
+        readonly INetworkHelper _network;
+
+        public IHelpViewWrapper HelpViewWrapper { get; private set; }
+        public string Uri { get; private set; }
+        public string ResourcePath { get; private set; }
+        public bool HelpViewDisposed { get; private set; }
+        public bool IsViewAvailable { get; private set; }
+
+
+        public HelpViewModel(INetworkHelper network, IHelpViewWrapper helpViewWrapper, bool isViewAvailable)
+            : base(EventPublishers.Aggregator)
+        {
+            _network = network;
+            HelpViewWrapper = helpViewWrapper;
+            IsViewAvailable = isViewAvailable;
+        }
 
         public HelpViewModel()
             : this(EventPublishers.Aggregator)
@@ -27,58 +48,94 @@ namespace Dev2.Studio.ViewModels.Help
         public HelpViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
         {
+            _network = new NetworkHelper();
+            IsViewAvailable = true;
         }
 
         public override WorkSurfaceContext WorkSurfaceContext
         {
             get { return WorkSurfaceContext.Help; }
         }
-
-        public string Uri { get; set; }
-
-        private bool isViewAvailable = true;
-
+       
         protected override void OnViewLoaded(object view)
         {
-            base.OnViewLoaded(view);
-            if(!(view is HelpView)) return;
+            base.OnViewLoaded(view);    
+            var helpView = view as HelpView;
+            if(helpView == null)
+            {
+                return;
+            }
+            HelpViewWrapper = HelpViewWrapper ?? new HelpViewWrapper(helpView);
+            OnViewisLoaded(HelpViewWrapper);
+        }
 
-            _helpView = (HelpView)view;
-            if(!isViewAvailable)
+        public void OnViewisLoaded(IHelpViewWrapper viewWrapper)
+        {
+            HelpViewWrapper = viewWrapper;
+            if(!IsViewAvailable)
             {
                 LoadBrowserUri(Uri);
             }
-
         }
 
         public void LoadBrowserUri(string uri)
         {
             Uri = uri;
-            if(_helpView == null || !Equals(_helpView, GetView()))
+
+            if(HelpViewWrapper == null)
             {
-                isViewAvailable = false;
+                IsViewAvailable = false;
             }
             else
             {
-                isViewAvailable = true;
-                _helpView.CircularProgressBar.Visibility = Visibility.Collapsed;
+                IsViewAvailable = true;
 
-                if(_helpView.BDSBrowser != null)
+                if(_network.HasConnection(uri))
                 {
-                    _helpView.BDSBrowser.Visibility = Visibility.Visible;
-                    _helpView.BDSBrowser.LoadSafe(uri);
-                    _helpView.BDSBrowser.InvalidateVisual();
+                    HelpViewWrapper.Navigate(Uri);
+                    HelpViewWrapper.WebBrowser.Navigated += (sender, args) => SuppressJavaScriptsErrors(HelpViewWrapper.WebBrowser);
+                    HelpViewWrapper.WebBrowser.LoadCompleted += (sender, args) =>
+                    {
+                        HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                        HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+                    };
+                }
+                else
+                {
+                    ResourcePath = Path.Combine(Environment.CurrentDirectory, StringResources.Uri_Studio_PageNotAvailable);
+                    HelpViewWrapper.Navigate(ResourcePath);
+                    HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                    HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
                 }
             }
         }
 
-        public void Handle(TabClosedMessage message)
+        public void SuppressJavaScriptsErrors(WebBrowser webBrowser)
         {
+            FieldInfo fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
+            if(fiComWebBrowser == null)
+            {
+                return; 
+            }
+
+            object objComWebBrowser = fiComWebBrowser.GetValue(webBrowser);
+            if(objComWebBrowser == null)
+            {
+                return;
+            }
+
+            objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { true });
+        }
+        
+        public void Handle(TabClosedMessage message)
+        {   
             this.TraceInfo(message.GetType().Name);
             if(!message.Context.Equals(this)) return;
 
             EventPublisher.Unsubscribe(this);
-            _helpView.BDSBrowser.Dispose();
+            HelpViewWrapper.WebBrowser.Dispose();
+            HelpViewDisposed = true;
         }
     }
 }
+    

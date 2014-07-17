@@ -32,6 +32,21 @@ namespace Dev2.Core.Tests.Helpers
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("VersionChecker_GetCommunityPage")]
+        public void VersionChecker_GetCommunityPage_ReturnsResourceCommunityPageUrl()
+        {
+            //------------Setup for test--------------------------
+            var checker = new Mock<VersionChecker>();
+            checker.Setup(c => c.Latest).Returns(new Version(1, 0, 0, 0));
+            checker.Setup(c => c.Current).Returns(new Version(1, 0, 0, 0));
+            //------------Execute Test---------------------------
+            var startPage = checker.Object.CommunityPageUri;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(StringResources.Uri_Community_HomePage, startPage);
+        }
+        
+        [TestMethod]
         public void VersionCheckerStartPageUriWithCurrentIsNotLatestExpectedStart()
         {
             var checker = new Mock<VersionChecker>();
@@ -41,8 +56,6 @@ namespace Dev2.Core.Tests.Helpers
             var startPage = checker.Object.StartPageUri;
             Assert.AreEqual(StringResources.Warewolf_Homepage_Start, startPage);
         }
-
-
 
         #region IsLastest Tests
 
@@ -59,9 +72,7 @@ namespace Dev2.Core.Tests.Helpers
 
             Mock<IProgressFileDownloader> mockDownloader = new Mock<IProgressFileDownloader>();
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object);
-            versionChecker.ShowPopupResult = MessageBoxResult.Yes;
-            versionChecker.CurrentVersion = new Version(0, 0, 0, 1);
+            VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.Yes, CurrentVersion = new Version(0, 0, 0, 1) };
             versionChecker.IsLatest(mockDownloader.Object, new Mock<IProgressDialog>().Object, asyncWorker.Object);
 
             Assert.AreEqual(1, versionChecker.ShowPopUpHitCount, "Do you want to download new version not displayed if latest version if higher than current version");
@@ -84,9 +95,7 @@ namespace Dev2.Core.Tests.Helpers
 
             Mock<IProgressFileDownloader> mockDownloader = new Mock<IProgressFileDownloader>();
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object);
-            versionChecker.ShowPopupResult = MessageBoxResult.No;
-            versionChecker.CurrentVersion = new Version(0, 0, 0, 1);
+            VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.No, CurrentVersion = new Version(0, 0, 0, 1) };
             versionChecker.IsLatest(mockDownloader.Object, mockPopUp.Object, asyncWorker.Object);
 
            // mockPopUp.Verify(c => c.ShowDialog(), Times.Never());
@@ -109,9 +118,7 @@ namespace Dev2.Core.Tests.Helpers
 
             Mock<IProgressFileDownloader> mockDownloader = new Mock<IProgressFileDownloader>();
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object);
-            versionChecker.ShowPopupResult = MessageBoxResult.Yes;
-            versionChecker.CurrentVersion = new Version(0, 0, 0, 1);
+            VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.Yes, CurrentVersion = new Version(0, 0, 0, 1) };
             versionChecker.IsLatest(mockDownloader.Object, mockPopUp.Object, asyncWorker.Object);
 
           //  mockPopUp.Verify(c => c.ShowDialog(), Times.Never());
@@ -240,7 +247,7 @@ namespace Dev2.Core.Tests.Helpers
             var fileWrapper = new Mock<IFile>();
             webClient.Setup(a => a.DownloadString(It.IsAny<string>())).Returns("1.2.1.1");
             fileWrapper.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
-            var versionChecker = new VersionChecker(webClient.Object, fileWrapper.Object, () => new Version(0, 0, 0, 1), (a, b, c, d, e, f) => {  return MessageBoxResult.Yes; });
+            var versionChecker = new VersionChecker(webClient.Object, fileWrapper.Object, () => new Version(0, 0, 0, 1), (a, b, c, d, e, f) => MessageBoxResult.Yes);
 
 
             var ax = versionChecker.LatestVersionCheckSum;

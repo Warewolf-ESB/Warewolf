@@ -766,25 +766,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void OnImportsSatisfiedDoesntExpectsStartpageActive()
-        {
-            CreateFullExportsAndVm();
-            var activetx = MainViewModel.ActiveItem;
-            Assert.AreEqual(activetx.WorkSurfaceViewModel.WorkSurfaceContext, WorkSurfaceContext.Workflow);
-            // ReSharper disable PossibleNullReferenceException
-            var helpvm = MainViewModel.Items.FirstOrDefault(c => c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel)).WorkSurfaceViewModel as HelpViewModel;
-            // ReSharper restore PossibleNullReferenceException
-            if(helpvm != null)
-            {
-                Assert.AreEqual(helpvm.Uri, FileHelper.GetAppDataPath(StringResources.Uri_Studio_Homepage));
-            }
-            else
-            {
-                Assert.Fail("Could not find start page.");
-            }
-        }
-
-        [TestMethod]
         public void OnImportsSatisfiedExpectsDisplayNameSet()
         {
             CreateFullExportsAndVm();
@@ -1132,9 +1113,9 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             var versionChecker = Mock.Get(MainViewModel.Version);
-            versionChecker.Setup(v => v.StartPageUri).Verifiable();
+            versionChecker.Setup(v => v.CommunityPageUri).Verifiable();
             MainViewModel.ShowStartPage();
-            versionChecker.Verify(v => v.StartPageUri);
+            versionChecker.Verify(v => v.CommunityPageUri);
         }
 
         #endregion
@@ -1806,25 +1787,7 @@ namespace Dev2.Core.Tests
         }
 
         #endregion
-
-        [TestMethod]
-        [TestCategory("MainViewModel_ShowStartPage")]
-        [Description("ShowStartPage must load start page asynchronously.")]
-        [Owner("Trevor Williams-Ros")]
-        public void MainViewModel_UnitTest_ShowStartPage_InvokesAsyncWorker()
-        {
-            SetupDefaultMef();
-            var eventPublisher = new Mock<IEventAggregator>();
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            environmentRepository.Setup(repo => repo.Source).Returns(new Mock<IEnvironmentModel>().Object);
-            var versionChecker = new Mock<IVersionChecker>();
-            var asyncWorker = new Mock<IAsyncWorker>();
-            asyncWorker.Setup(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
-            var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
-            mvm.ShowStartPage();
-            asyncWorker.Verify(w => w.Start(It.IsAny<Action>(), It.IsAny<Action>()), "ShowStartPage did not load start page asynchronously.");
-        }
-
+        
         [TestMethod]
         [TestCategory("MainViewModel_HandleDeployResourcesMessage")]
         [Description("Handle DeployResourcesMessage must open the deploy tab and select the resource in the view.")]
