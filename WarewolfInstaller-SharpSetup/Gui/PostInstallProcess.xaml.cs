@@ -65,7 +65,11 @@ namespace Gui
         private void InstallExamples()
         {
             var stream = ResourceExtractor.Fetch("Samples.zip");
-
+            var dir = Path.Combine(InstallVariables.InstallRoot, "Studio", "Installers");
+            if(!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
             if(stream == null)
             {
                 return;

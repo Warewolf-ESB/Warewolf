@@ -172,8 +172,8 @@
             <Component Id="cmp62707DDA8BD0311C71EDB96A68049F9D" Directory="dir1931D9C5012B41449415D8D0C9710DEC" Guid="{00B67EEE-C507-4FFD-8AC6-FF6EC29E161D}">
                 <File Id="fil818D36B941DA865CC6CA040563732F76" KeyPath="yes" Source="..\ProductBuild\Server\SSL Generation\CreateCertificate.bat" />
             </Component>
-            <Component Id="cmpD31F5EF4CC334564314D0673C5706C7F" Directory="dirServerRoot" Guid="{AA67B531-8C85-47CF-9CDC-2F8352AA67C2}">
-                <File Id="filB616149A55DCE0B2E9E6492125920C38" KeyPath="yes" Source="..\ProductBuild\Server\Tamir.SharpSSH.dll" />
+            <Component Id="cmpD31F5EF4CC334564314D0673C5706C7F" Directory="dirServerRoot" Guid="{78845684-822C-439C-9034-52B03CA09D6E}">
+                <File Id="filB616149A55DCE0B2E9E6492125920C38" KeyPath="yes" Source="..\ProductBuild\Server\Renci.SshNet.dll" />
             </Component>
             <Component Id="cmpF21F5EF4CC334564314D0673C5706C7F" Directory="dirServerRoot" Guid="{BC67B531-8C85-47CF-9CDC-2F8352AA67C2}">
                 <File Id="filC916149A55DCE0B2E9E6492125920C38" KeyPath="yes" Source="..\ProductBuild\Server\CubicOrange.Windows.Forms.ActiveDirectory.dll" />
@@ -632,6 +632,7 @@
         <DirectoryRef Id="dirStudioRoot">
             <Directory Id="dirE5CE26C580B3CB18D8EDA5BA33AF6AF9" Name="Help" />
             <Directory Id="dirF2DB3C44B894CD4571482EAE3116C6E1" Name="locales" />
+            <Directory Id="dir529EDB880FD14B28AD33B99A21282B69" Name="Installers" />
         </DirectoryRef>
         <ComponentGroup Id="Studio">
             <!-- Install Shortcuts -->
