@@ -56,15 +56,12 @@ namespace Dev2.Activities.Debug
                               .Replace(GlobalConstants.CalculateTextConvertSuffix, string.Empty);
             }
 
-            // TODO : Fix this to handle using the complex expression junk
-
-            // handle our standard debug output ;)
-            if (dlEntry.ComplexExpressionAuditor == null)
+            if(dlEntry.ComplexExpressionAuditor == null)
             {
                 int groupIndex = 0;
                 enRecordsetIndexType rsType = DataListUtil.GetRecordsetIndexType(expression);
 
-                if (dlEntry.IsRecordset &&
+                if(dlEntry.IsRecordset &&
                     (DataListUtil.IsValueRecordset(expression) &&
                      (rsType == enRecordsetIndexType.Star ||
                       (rsType == enRecordsetIndexType.Numeric &&
@@ -73,11 +70,11 @@ namespace Dev2.Activities.Debug
                        DataListUtil.ExtractFieldNameFromValue(expression) == string.Empty))))
                 {
                     // Added IsEmpty check for Bug 9263 ;)
-                    if (!dlEntry.IsEmpty())
+                    if(!dlEntry.IsEmpty())
                     {
                         IList<DebugItemResult> collection = CreateRecordsetDebugItems(expression, dlEntry, string.Empty,
                                                                                       -1, labelText);
-                        if (collection.Count < 2 && collection.Count > 0)
+                        if(collection.Count < 2 && collection.Count > 0)
                         {
                             collection[0].GroupName = "";
                         }
@@ -97,19 +94,19 @@ namespace Dev2.Activities.Debug
                 }
                 else
                 {
-                    if (DataListUtil.IsValueRecordset(expression) &&
+                    if(DataListUtil.IsValueRecordset(expression) &&
                         (DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Blank))
                     {
-                        if (indexToUse == -1)
+                        if(indexToUse == -1)
                         {
                             IBinaryDataListEntry tmpEntry;
                             string error;
                             dataList.TryGetEntry(DataListUtil.ExtractRecordsetNameFromValue(expression),
                                                  out tmpEntry, out error);
-                            if (tmpEntry != null)
+                            if(tmpEntry != null)
                             {
                                 int index = tmpEntry.FetchAppendRecordsetIndex() - 1;
-                                if (index > 0)
+                                if(index > 0)
                                 {
                                     groupIndex = index;
                                     expression = expression.Replace("().", string.Concat("(", index, ")."));
@@ -122,7 +119,7 @@ namespace Dev2.Activities.Debug
                         }
                     }
 
-                    if (dlEntry.IsRecordset)
+                    if(dlEntry.IsRecordset)
                     {
                         var strIndx = DataListUtil.ExtractIndexRegionFromRecordset(expression);
                         int indx;
@@ -141,14 +138,32 @@ namespace Dev2.Activities.Debug
                         else
                         {
                             IBinaryDataListItem itemx = dlEntry.FetchScalar();
-                            
+
                             if(!string.IsNullOrEmpty(strIndx))
                             {
                                 IBinaryDataListEntry indexBinaryEntry;
+                                IBinaryDataListItem indexItem = null;
                                 string error;
-                                dataList.TryGetEntry(strIndx, out indexBinaryEntry, out error);
-                                IBinaryDataListItem indexItem = indexBinaryEntry.FetchScalar();
-                                expression = expression.Replace(string.Format("({0})", strIndx), string.Format("({0})", indexItem.TheValue));
+                                if(DataListUtil.IsValueRecordset(strIndx))
+                                {
+                                    dataList.TryGetEntry(DataListUtil.ExtractRecordsetNameFromValue(strIndx),
+                                                 out indexBinaryEntry, out error);
+                                    var fieldName = DataListUtil.ExtractFieldNameFromValue(strIndx);
+                                    int index;
+                                    if(int.TryParse(DataListUtil.ExtractIndexRegionFromRecordset(strIndx), out index))
+                                    {
+                                        indexItem = indexBinaryEntry.TryFetchRecordsetColumnAtIndex(fieldName, index, out error);
+                                    }
+                                }
+                                else
+                                {
+                                    dataList.TryGetEntry(strIndx, out indexBinaryEntry, out error);
+                                    indexItem = indexBinaryEntry.FetchScalar();
+                                }
+                                if(indexItem != null)
+                                {
+                                    expression = expression.Replace(string.Format("({0})", strIndx), string.Format("({0})", indexItem.TheValue));
+                                }
                             }
 
                             CreateScalarDebugItems(expression, itemx.TheValue, labelText, results, "", groupIndex);
@@ -168,17 +183,17 @@ namespace Dev2.Activities.Debug
 
                 int idx = 1;
 
-                foreach (ComplexExpressionAuditItem item in auditor.FetchAuditItems())
+                foreach(ComplexExpressionAuditItem item in auditor.FetchAuditItems())
                 {
                     int grpIdx = idx;
                     string groupName = item.RawExpression;
                     string displayExpression = item.RawExpression;
-                    if (displayExpression.Contains("()."))
+                    if(displayExpression.Contains("()."))
                     {
                         displayExpression = displayExpression.Replace("().",
                                                                       string.Concat("(", auditor.GetMaxIndex(), ")."));
                     }
-                    if (displayExpression.Contains("(*)."))
+                    if(displayExpression.Contains("(*)."))
                     {
                         displayExpression = displayExpression.Replace("(*).", string.Concat("(", idx, ")."));
                     }
@@ -201,17 +216,17 @@ namespace Dev2.Activities.Debug
             return results;
         }
 
-        public List<DebugItemResult> CreateDebugItemForOutput(DebugTO debugTO, string labelText, List<string> regions)
+        public List<DebugItemResult> CreateDebugItemForOutput(DebugTO debugTo, string labelText, List<string> regions)
         {
             var results = new List<DebugItemResult>();
-            if(debugTO.TargetEntry != null)
+            if(debugTo.TargetEntry != null)
             {
-                GetValue(debugTO.TargetEntry, debugTO, labelText, regions, results);
+                GetValue(debugTo.TargetEntry, debugTo, labelText, regions, results);
             }
             return results;
         }
 
-        static void GetValue(IBinaryDataListEntry entry, DebugTO debugTO, string labelText, List<string> regions, List<DebugItemResult> results)
+        static void GetValue(IBinaryDataListEntry entry, DebugTO debugTo, string labelText, List<string> regions, List<DebugItemResult> results)
         {
             ComplexExpressionAuditor auditor = entry.ComplexExpressionAuditor;
             if(auditor != null)
@@ -293,7 +308,7 @@ namespace Dev2.Activities.Debug
                 {
                     Type = DebugItemResultType.Value,
                     Label = labelText,
-                    Variable = debugTO.Expression,
+                    Variable = debugTo.Expression,
                     Operator = "=",
                     GroupName = "",
                     Value = ""
@@ -301,17 +316,17 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        public List<DebugItemResult> CreateDebugItemForInput(DebugTO debugTO, string labelText, string leftLabel, string rightLabel, List<string> regions)
+        public List<DebugItemResult> CreateDebugItemForInput(DebugTO debugTo, string labelText, string leftLabel, string rightLabel, List<string> regions)
         {
             var results = new List<DebugItemResult>();
-            if(debugTO.LeftEntry != null)
+            if(debugTo.LeftEntry != null)
             {
-                GetValue(debugTO.LeftEntry, debugTO, leftLabel, regions, results);
+                GetValue(debugTo.LeftEntry, debugTo, leftLabel, regions, results);
             }
 
-            if(debugTO.RightEntry != null)
+            if(debugTo.RightEntry != null)
             {
-                GetValue(debugTO.RightEntry, debugTO, rightLabel, regions, results);
+                GetValue(debugTo.RightEntry, debugTo, rightLabel, regions, results);
             }
 
             return results;

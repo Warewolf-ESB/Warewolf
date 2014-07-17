@@ -569,19 +569,7 @@ Examples:
 #	| 15 | Hex          | Hex     |
 #	| 16 | Hex          | Base 64 |
 #
-#Bug 11840
-#Scenario Outline: Converting two varibles on one row 
-#	Given I have a convert variable "[[rec(1).a]]" with a value of "text"
-#	And I have a convert variable "[[rs(1).index]]" with a value of "1"
-#	And I convert a variable "[[rec([[rs(1).index]]]]" from type "Text" to type "Base64" 
-#	When the base conversion tool is executed
-#	Then the execution has "No" error
-#	And the debug inputs as  
-#	| # | Convert                                | From | To     |
-#	| 1 | [[rec([[rs(1).index]]]] = [[rec(1).a]] | Text | Base64 |
-#		And the debug output as  
-#	| # |                     |
-#	| 1 | [[rec(1).a]] = Mg== |
+
 
 Scenario Outline: Validation messages when Convert Invalid Variables  
 	Given I have a convert variable '<Variable>' with a value of '<Value>'

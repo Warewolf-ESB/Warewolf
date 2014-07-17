@@ -914,56 +914,6 @@ this.ScenarioSetup(scenarioInfo);
         {
             this.ConvertTwoVariablesInOneRow("4", "TITLE CASE", ((string[])(null)));
         }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Convert an recordset to Upper by using index as scalar")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "CaseConversion")]
-        public virtual void ConvertAnRecordsetToUpperByUsingIndexAsScalar()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Convert an recordset to Upper by using index as scalar", ((string[])(null)));
-#line 279
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
-                        "rs",
-                        "val"});
-            table41.AddRow(new string[] {
-                        "rs().row",
-                        "warewolf"});
-            table41.AddRow(new string[] {
-                        "a",
-                        "1"});
-#line 280
- testRunner.Given("I have a CaseConversion recordset", ((string)(null)), table41, "Given ");
-#line 284
- testRunner.And("I convert a variable \"[[rs([[a]]).row]]\" to \"UPPER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 285
- testRunner.When("the case conversion tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 286
- testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Convert",
-                        "To"});
-            table42.AddRow(new string[] {
-                        "1",
-                        "[[rs(1).row]] = warewolf",
-                        "UPPER"});
-#line 287
- testRunner.And("the debug inputs as", ((string)(null)), table42, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table43.AddRow(new string[] {
-                        "1",
-                        "[[rs(1).row]] = WAREWOLF"});
-#line 290
- testRunner.And("the debug output as", ((string)(null)), table43, "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore

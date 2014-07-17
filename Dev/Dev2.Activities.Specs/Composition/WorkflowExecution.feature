@@ -105,24 +105,24 @@ Scenario: Workflow with an assign and webservice
 
 	
 Scenario: Workflow with an assign and remote workflow
-	Given I have a workflow "TestAssignAndRemote"
-	 And "TestAssignAndRemote" contains an Assign "AssignData" as
+	Given I have a workflow "TestAssignWithRemote"
+	 And "TestAssignWithRemote" contains an Assign "AssignData" as
 	  | variable      | value |
 	  | [[inputData]] | hello |
-	And "TestAssignAndRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	And "TestAssignWithRemote" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
 	| Input to Service | From Variable | Output from Service | To Variable      |
 	| input            | [[inputData]] | output              | [[output]]       |
 	|                  |               | values(*).upper     | [[values().up]]  |
 	|                  |               | values(*).lower     | [[values().low]] |
-	  When "TestAssignAndRemote" is executed
+	  When "TestAssignWithRemote" is executed
 	  Then the workflow execution has "NO" error
-	   And the 'AssignData' in WorkFlow 'TestAssignAndRemote' debug inputs as
+	   And the 'AssignData' in WorkFlow 'TestAssignWithRemote' debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
-	  And the 'AssignData' in Workflow 'TestAssignAndRemote' debug outputs as    
+	  And the 'AssignData' in Workflow 'TestAssignWithRemote' debug outputs as    
 	  | # |                       |
 	  | 1 | [[inputData]] = hello |
-	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignAndRemote' debug inputs as
+	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote' debug inputs as
 	  |                       |
 	  | [[inputData]] = hello |
 	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
@@ -136,24 +136,11 @@ Scenario: Workflow with an assign and remote workflow
 	  | 1 | [[output]] = HELLO          |
 	  | 2 | [[values(1).upper]] = HELLO |
 	  | 3 | [[values(1).lower]] = hello |	  	 
-	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignAndRemote' debug outputs as
+	  And the 'WorkflowUsedBySpecs' in Workflow 'TestAssignWithRemote' debug outputs as
 	  |                           |
 	  | [[output]] = HELLO        |
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
-
-
-Scenario: Remote Workflow with an remote workflow
-	  Given I have server a "Remote Connection" with workflow "Bug11612_Outer"
-	  When "Remote Connection" is the active environment used to execute "Bug11612_Outer"
-	  Then the workflow execution has "NO" error
-	  And the 'BUGS\Bug11612_Inner' in WorkFlow 'Bug11612_Outer' debug inputs as
-	  |                                 |
-	  | 2                               | 
-	  | Execute workflow asynchronously: False                               | 	 
-	 And the 'BUGS\Bug11612_Inner' in Workflow 'Bug11612_Outer' debug outputs as
-	  |                  |
-	  | [[result]] = 3 |
 
 	  
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
@@ -2872,6 +2859,86 @@ Scenario: Workflow with Assign and Unique Tool, Result rec with star
        |   | [[rec(2).unique]] = 40 |
        |   | [[rec(3).unique]] = 20 |
        |   | [[rec(4).unique]] = 30 |
+
+
+Scenario: Convert an recordset to Upper by using index as scalar
+	Given I have a workflow "ConvertUsingScalarInRecursiveEvalution"
+	And "ConvertUsingScalarInRecursiveEvalution" contains an Assign "Records" as
+	  | variable     | value    |
+	  | [[rs().row]] | warewolf |
+	  | [[a]]        | 1        |
+	And "ConvertUsingScalarInRecursiveEvalution" contains case convert "Case to Convert" as
+	  | Variable          | Type  |
+	  | [[rs([[a]]).row]] | UPPER |
+	When "ConvertUsingScalarInRecursiveEvalution" is executed
+	Then the workflow execution has "NO" error
+	And the 'Records' in WorkFlow 'ConvertUsingScalarInRecursiveEvalution' debug inputs as
+	  | # | Variable       | New Value |
+	  | 1 | [[rs().row]] = | warewolf  |
+	  | 2 | [[a]] =        | 1         |
+	And the 'Records' in Workflow 'ConvertUsingScalarInRecursiveEvalution' debug outputs as  
+	  | # |                           |
+	  | 1 | [[rs(1).row]] =  warewolf |
+	  | 2 | [[a]] =  1                |
+	And the 'Case to Convert' in WorkFlow 'ConvertUsingScalarInRecursiveEvalution' debug inputs as
+	  | # | Convert                  | To    |
+	  | 1 | [[rs(1).row]] = warewolf | UPPER |
+	And the 'Case to Convert' in Workflow 'ConvertUsingScalarInRecursiveEvalution' debug outputs as
+	  | # |                          |
+	  | 1 | [[rs(1).row]] = WAREWOLF |
+
+Scenario: Convert an recordset to Upper by using index as recordset
+	Given I have a workflow "ConvertUsingRecSetInRecursiveEvalution"
+	And "ConvertUsingRecSetInRecursiveEvalution" contains an Assign "Records" as
+	  | variable       | value    |
+	  | [[rs().row]]   | warewolf |
+	  | [[rs().index]] | 1        |
+	And "ConvertUsingRecSetInRecursiveEvalution" contains case convert "Case to Convert" as
+	  | Variable                    | Type  |
+	  | [[rs([[rs(1).index]]).row]] | UPPER |
+	When "ConvertUsingRecSetInRecursiveEvalution" is executed
+	Then the workflow execution has "NO" error
+	And the 'Records' in WorkFlow 'ConvertUsingRecSetInRecursiveEvalution' debug inputs as
+	  | # | Variable         | New Value |
+	  | 1 | [[rs().row]] =   | warewolf  |
+	  | 2 | [[rs().index]] = | 1         |
+	And the 'Records' in Workflow 'ConvertUsingRecSetInRecursiveEvalution' debug outputs as  
+	  | # |                          |
+	  | 1 | [[rs(1).row]] = warewolf |
+	  | 2 | [[rs(1).index]] = 1      |
+	And the 'Case to Convert' in WorkFlow 'ConvertUsingRecSetInRecursiveEvalution' debug inputs as
+	  | # | Convert                  | To    |
+	  | 1 | [[rs(1).row]] = warewolf | UPPER |
+	And the 'Case to Convert' in Workflow 'ConvertUsingRecSetInRecursiveEvalution' debug outputs as
+	  | # |                          |
+	  | 1 | [[rs(1).row]] = WAREWOLF |
+
+#Bug 11840
+Scenario: Base Convert two varibles on one row 
+	Given I have a workflow "BaseConvertUsingRecSetInRecursiveEvalution"
+	And "BaseConvertUsingRecSetInRecursiveEvalution" contains an Assign "Records" as
+	  | variable    | value |
+	  | [[rs().a]]  | 1     |
+	  | [[rec().a]] | 2     |
+	And "BaseConvertUsingRecSetInRecursiveEvalution" contains Base convert "Base to Convert" as
+	  | Variable               | From | To      |
+	  | [[rec([[rs(1).a]]).a]] | Text | Base 64 |
+	When "BaseConvertUsingRecSetInRecursiveEvalution" is executed
+	Then the workflow execution has "NO" error
+	And the 'Records' in WorkFlow 'BaseConvertUsingRecSetInRecursiveEvalution' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs().a]] =  | 1         |
+	  | 2 | [[rec().a]] = | 2         |
+	And the 'Records' in Workflow 'BaseConvertUsingRecSetInRecursiveEvalution' debug outputs as  
+	  | # |                  |
+	  | 1 | [[rs(1).a]] = 1  |
+	  | 2 | [[rec(1).a]] = 2 |
+	And the 'Base to Convert' in WorkFlow 'BaseConvertUsingRecSetInRecursiveEvalution' debug inputs as
+	  | # | Convert           | From | To     |
+	  | 1 | [[rec(1).a]] = 2 | Text | Base 64 |
+    And the 'Base to Convert' in Workflow 'BaseConvertUsingRecSetInRecursiveEvalution' debug outputs as  
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = Mg== |
 
 #This should be passed with the bug 12160
 #Scenario: Workflow by using For Each with Raandom in it
