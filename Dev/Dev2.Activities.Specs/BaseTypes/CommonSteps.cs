@@ -322,10 +322,54 @@ namespace Dev2.Activities.Specs.BaseTypes
                     var seq = parentActivity as DsfSequenceActivity;
                     seq.Activities.Add(activity);
                 }
+                else if(parentActivity is DsfForEachActivity)
+                {
+                    var forEachActivity = parentActivity as DsfForEachActivity;
+                    var activityFunc = new ActivityFunc<string, bool> { Handler = activity };
+                    forEachActivity.DataFunc = activityFunc;
+                }
             }
             else
             {
-                activityList.Add(activityName, activity);
+                var findAllForEach = activityList.FirstOrDefault(pair =>
+                {
+                    var forEachActivity = pair.Value as DsfForEachActivity;
+                    if(forEachActivity == null)
+                        return false;
+                    return forEachActivity.DataFunc.Handler != null && forEachActivity.DataFunc != null && (forEachActivity.DataFunc.Handler as DsfForEachActivity) != null;
+                });
+                var forEachParentActivity = findAllForEach.Value as DsfForEachActivity;
+                if(forEachParentActivity != null)
+                {
+                    var activityFunc = new ActivityFunc<string, bool> { Handler = activity };
+                    DsfForEachActivity foundCorrectParentForEach = null;
+                    while(forEachParentActivity != null)
+                    {
+                        if(forEachParentActivity.DataFunc != null && forEachParentActivity.DataFunc.Handler != null && forEachParentActivity.DataFunc.Handler.DisplayName == parentName)
+                        {
+                            foundCorrectParentForEach = forEachParentActivity.DataFunc.Handler as DsfForEachActivity;
+                            break;
+                        }
+                        if(forEachParentActivity.DataFunc != null)
+                        {
+                            forEachParentActivity = forEachParentActivity.DataFunc.Handler as DsfForEachActivity;
+                        }
+                        else
+                        {
+                            forEachParentActivity = null;
+                        }
+                    }
+                    if(foundCorrectParentForEach != null)
+                    {
+                        foundCorrectParentForEach.DataFunc = activityFunc;
+                    }
+                }
+                else
+                {
+                    activityList.Add(activityName, activity);
+                }
+
+
             }
         }
 

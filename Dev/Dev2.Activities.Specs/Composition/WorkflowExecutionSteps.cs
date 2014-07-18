@@ -3,13 +3,13 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
+using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
@@ -136,6 +136,132 @@ namespace Dev2.Activities.Specs.Composition
             if(debugState.IsFinalStep() && debugState.DisplayName.Equals(workflowName))
                 _resetEvt.Set();
 
+        }
+
+        [Then(@"the '(.*)' in step (.*) for '(.*)' debug inputs as")]
+        public void ThenTheInStepForDebugInputsAs(string toolName, int stepNumber, string forEachName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
+
+            if(parentWorkflowName == forEachName)
+            {
+                workflowId = Guid.Empty;
+            }
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+
+            Assert.IsTrue(toolSpecificDebug.Count >= stepNumber);
+            var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
+
+
+            var commonSteps = new CommonSteps();
+            commonSteps.ThenTheDebugInputsAs(table, debugToUse.Inputs
+                                                    .SelectMany(item => item.ResultsList).ToList());
+        }
+
+        [Then(@"the '(.*)' in ""(.*)"" in step (.*) for '(.*)' debug inputs as")]
+        public void ThenTheInInStepForDebugInputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
+
+            if(parentWorkflowName == forEachName)
+            {
+                workflowId = Guid.Empty;
+            }
+
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            Assert.IsTrue(sequenceDebug.Count >= stepNumber);
+
+            var sequenceId = sequenceDebug[stepNumber - 1].ID;
+            var sequenceIsInForEach = sequenceDebug.Any(state => state.ID == sequenceId);
+            Assert.IsTrue(sequenceIsInForEach);
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+
+            var commonSteps = new CommonSteps();
+            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
+                                                    .SelectMany(item => item.Inputs)
+                                                    .SelectMany(item => item.ResultsList).ToList());
+
+        }
+
+        [Then(@"the '(.*)' in ""(.*)"" in step (.*) for '(.*)' debug outputs as")]
+        public void ThenTheInInStepForDebugOutputsAs(string toolName, string sequenceName, int stepNumber, string forEachName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
+
+            if(parentWorkflowName == forEachName)
+            {
+                workflowId = Guid.Empty;
+            }
+
+            var sequenceDebug = debugStates.Where(ds => ds.ParentID == workflowId).ToList();
+            Assert.IsTrue(sequenceDebug.Count >= stepNumber);
+
+            var sequenceId = sequenceDebug[stepNumber - 1].ID;
+            var sequenceIsInForEach = sequenceDebug.Any(state => state.ID == sequenceId);
+            Assert.IsTrue(sequenceIsInForEach);
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
+
+            var commonSteps = new CommonSteps();
+            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
+                                                    .SelectMany(item => item.Outputs)
+                                                    .SelectMany(item => item.ResultsList).ToList());
+        }
+
+
+        static IDebugState DebugToUse(int stepNumber, List<IDebugState> toolSpecificDebug)
+        {
+            var debugToUse = toolSpecificDebug[stepNumber - 1];
+            return debugToUse;
+        }
+
+        [Then(@"the '(.*)' in step (.*) for '(.*)' debug outputs as")]
+        public void ThenTheInStepForDebugOutputsAs(string toolName, int stepNumber, string forEachName, Table table)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(forEachName)).ID;
+
+            if(parentWorkflowName == forEachName)
+            {
+                workflowId = Guid.Empty;
+            }
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(toolName)).ToList();
+            Assert.IsTrue(toolSpecificDebug.Count >= stepNumber);
+            var debugToUse = DebugToUse(stepNumber, toolSpecificDebug);
+
+            var commonSteps = new CommonSteps();
+            commonSteps.ThenTheDebugOutputAs(table, debugToUse.Outputs
+                                                    .SelectMany(s => s.ResultsList).ToList());
         }
 
         [Given(@"""(.*)"" contains a ""(.*)"" service ""(.*)"" with mappings")]
@@ -310,6 +436,55 @@ namespace Dev2.Activities.Specs.Composition
             CommonSteps.AddActivityToActivityList(parentName, activityName, dsfSequence);
         }
 
+        [Given(@"""(.*)"" in '(.*)' contains Data Merge ""(.*)"" into ""(.*)"" as")]
+        public void GivenInContainsDataMergeIntoAs(string sequenceName, string forEachName, string activityName, string resultVariable, Table table)
+        {
+            DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
+            foreach(var tableRow in table.Rows)
+            {
+                var variable = tableRow["Variable"];
+                var type = tableRow["Type"];
+                var at = tableRow["Using"];
+                var padding = tableRow["Padding"];
+                var alignment = tableRow["Alignment"];
+
+                activity.MergeCollection.Add(new DataMergeDTO(variable, type, at, 1, padding, alignment, true));
+            }
+            CommonSteps.AddVariableToVariableList(resultVariable);
+            AddActivityToSequenceInsideForEach(sequenceName, forEachName, activity);
+        }
+
+        static void AddActivityToSequenceInsideForEach(string sequenceName, string forEachName, Activity activity)
+        {
+
+            var activityList = CommonSteps.GetActivityList();
+            var forEachActivity = activityList[forEachName] as DsfForEachActivity;
+            if(forEachActivity != null)
+            {
+                var sequenceActivity = forEachActivity.DataFunc.Handler as DsfSequenceActivity;
+                if(sequenceActivity != null && sequenceActivity.DisplayName == sequenceName)
+                {
+                    sequenceActivity.Activities.Add(activity);
+                }
+            }
+        }
+
+        [Given(@"""(.*)"" in '(.*)' contains Gather System Info ""(.*)"" as")]
+        public void GivenInContainsGatherSystemInfoAs(string sequenceName, string forEachName, string activityName, Table table)
+        {
+            var activity = new DsfGatherSystemInformationActivity { DisplayName = activityName };
+            foreach(var tableRow in table.Rows)
+            {
+                var variable = tableRow["Variable"];
+
+                CommonSteps.AddVariableToVariableList(variable);
+
+                enTypeOfSystemInformationToGather systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
+                activity.SystemInformationCollection.Add(new GatherSystemInformationTO(systemInfo, variable, 1));
+            }
+
+            AddActivityToSequenceInsideForEach(sequenceName, forEachName, activity);
+        }
 
         static StringBuilder GetInputMapping(Table table, IResourceModel resource)
         {
@@ -645,11 +820,23 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [Given(@"""(.*)"" contains a Foreach ""(.*)"" as ""(.*)"" executions ""(.*)""")]
-        public void GivenContainsAForeachAsExecutions(string parentName, string activityName, string numberOfExecutions, int executionCount)
+        public void GivenContainsAForeachAsExecutions(string parentName, string activityName, string numberOfExecutions, string executionCount)
         {
-            var forEach = new DsfForEachActivity { DisplayName = activityName, NumOfExections = executionCount.ToString(CultureInfo.InvariantCulture), From = "0", ForEachType = enForEachType.NumOfExecution };
+            enForEachType forEachType;
+            Enum.TryParse(numberOfExecutions, true, out forEachType);
+            var forEach = new DsfForEachActivity { DisplayName = activityName, ForEachType = forEachType };
+            switch(forEachType)
+            {
+                case enForEachType.NumOfExecution:
+                    forEach.NumOfExections = executionCount;
+                    break;
+                case enForEachType.InRecordset:
+                    forEach.Recordset = executionCount;
+                    break;
+            }
             CommonSteps.AddActivityToActivityList(parentName, activityName, forEach);
             ScenarioContext.Current.Add(activityName, forEach);
+
         }
 
 
@@ -693,9 +880,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains Find Record Index ""(.*)"" into result as ""(.*)""")]
         public void GivenContainsFindRecordIndexIntoResultAs(string parentName, string activityName, string result, Table table)
         {
-            DsfFindRecordsMultipleCriteriaActivity act = new DsfFindRecordsMultipleCriteriaActivity();
-            act.DisplayName = activityName;
-            act.Result = result;
+            DsfFindRecordsMultipleCriteriaActivity act = new DsfFindRecordsMultipleCriteriaActivity { DisplayName = activityName, Result = result };
             foreach(var rule in table.Rows)
             {
                 act.ResultsCollection.Add(new FindRecordsTO(rule[4], rule[3], 0));
@@ -722,14 +907,14 @@ namespace Dev2.Activities.Specs.Composition
                 return;
             }
 
-            var debugTO = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
+            var debugTo = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
 
             var clientContext = resourceModel.Environment.Connection;
             if(clientContext != null)
             {
-                var dataList = XElement.Parse(debugTO.XmlData);
-                dataList.Add(new XElement("BDSDebugMode", debugTO.IsDebugMode));
-                dataList.Add(new XElement("DebugSessionID", debugTO.SessionID));
+                var dataList = XElement.Parse(debugTo.XmlData);
+                dataList.Add(new XElement("BDSDebugMode", debugTo.IsDebugMode));
+                dataList.Add(new XElement("DebugSessionID", debugTo.SessionID));
                 dataList.Add(new XElement("EnvironmentID", resourceModel.Environment.ID));
                 WebServer.Send(WebServerMethod.POST, resourceModel, dataList.ToString(), new TestAsyncWorker());
                 _resetEvt.WaitOne();
