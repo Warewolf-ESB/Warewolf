@@ -142,6 +142,19 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
 
+
+Scenario: Remote Workflow with an remote workflow
+	  Given I have server a "Remote Connection" with workflow "Bug11612_Outer"
+	  When "Remote Connection" is the active environment used to execute "Bug11612_Outer"
+	  Then the workflow execution has "NO" error
+	  And the 'BUGS\Bug11612_Inner' in WorkFlow 'Bug11612_Outer' debug inputs as
+	  |                                        |
+	  | 2                                      |
+	  | Execute workflow asynchronously: False | 	 
+	 And the 'BUGS\Bug11612_Inner' in Workflow 'Bug11612_Outer' debug outputs as
+	  |                  |
+	  | [[result]] = 3 |
+
 	  
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
@@ -180,7 +193,44 @@ Scenario: Workflow with Assign Base Convert and Case Convert tools executing aga
       And the 'Base to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
 	  | # |                     |
 	  | 1 | [[rec(1).a]] = NTA= |
-	  
+#
+#Bug-12216
+#Scenario: Workflow with Assign Base Convert and Case Convert passing invalid variables through execution
+#	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
+#	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains an Assign "Assign1" as
+#	  | variable       | value    |
+#	  | [[rec(1).a]]   | Warewolf |
+#	  | [[rec(2).a]]   | test     |
+#	  | [[index(1).a]] | a        |
+#	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains case convert "Case to Convert" as
+#	  | Variable                  | Type  |
+#	  | [[rec([[index(1).a]]).a]] | UPPER |
+#	  And "WorkflowWithAssignBaseConvertandCaseconvert" contains Base convert "Base to Convert" as
+#	  | Variable                  | From | To      |
+#	  | [[rec([[index(1).a]]).a]] | Text | Base 64 |
+#	  When "WorkflowWithAssignBaseConvertandCaseconvert" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Assign1' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+#	  | # | Variable         | New Value |
+#	  | 1 | [[rec(1).a]] =   | Warewolf  |
+#	  | 2 | [[rec(2).a]] =   | test      |
+#	  | 3 | [[index(1).a]] = | a         |
+#	   And the 'Assign1' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+#	  | # |                          |
+#	  | 1 | [[rec(1).a]] =  Warewolf |
+#	  | 2 | [[rec(2).a]] =  test     |
+#	  | 3 | [[index(1).a]] =  a      |
+#	  And the 'Case to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+#	  | # | Convert                     | To    |
+#	  | 1 | [[rec([[index(1).a]]).a]] = | UPPER |
+#	  And the 'Case to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+#	  | # |                     |
+#	  And the 'Base to Convert' in WorkFlow 'WorkflowWithAssignBaseConvertandCaseconvert' debug inputs as
+#	  | # | Convert                     | From | To      |
+#	  | 1 | [[rec([[index(1).a]]).a]] = | Text | Base 64 |
+#      And the 'Base to Convert' in Workflow 'WorkflowWithAssignBaseConvertandCaseconvert' debug outputs as  
+#	  | # |                     |
+#	
 
 # This issue should be resolved as part of bug 12112
 #Scenario: Workflow with Assign and 2 Delete tools executing against the server
@@ -1849,8 +1899,7 @@ Scenario: Workflow with Assign and ForEach
 	  | [[rec(2).a]] = Warewolf |
 	  | [[rec(3).a]] = 2        |
 
-#The below 12 scenario should be passed after the bug 11994 is fixed
-
+#The below 12 scenario should be passed after the bug 11994 is fixe
 Scenario: Workflow with Assign and Find Record index
       Given I have a workflow "WFWithAssignandFindRecordindex"
 	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
