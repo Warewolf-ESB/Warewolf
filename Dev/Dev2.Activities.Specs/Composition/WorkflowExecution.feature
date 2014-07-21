@@ -3205,9 +3205,61 @@ Scenario: Base Convert two varibles on one row
 #       |   | [[emp(2).uni]]  = Nicholas |
 #       |   | [[emp(3).uni]]  = Cage     |
 #   
-
-
-
+#This Test should be passed after the bug 12119 is fixed
+#Scenario: Workflow with Assign and Unique to return unique data  
+#      Given I have a workflow "workflowAssinguniquetool"
+#      And "workflowAssinguniquetool" contains an Assign "Records1" as
+#	  | variable            | value    |
+#	  | [[emp().firstname]] | Smith    |
+#	  | [[emp().lastname]]  | Gordan   |
+#	  | [[emp().firstname]] | Nicholas |
+#	  | [[emp().lastname]]  | Cage     |
+#	  | [[emp().firstname]] | Cage     |
+#	  | [[emp().lastname]]  | Nicholas |
+#	  | [[emp().firstname]] | Cage     |
+#	  | [[emp().lastname]]  | Nicholas |
+#	  And "workflowAssinguniquetool" contains an Unique "Unique" as
+#	  | In Field(s)                              | Return Fields      | Result         |
+#	  | [[emp(*).firstname]],[[emp(*).lastname]] | [[emp().lastname]] | [[emp(*).uni]] |
+#	  When "workflowAssinguniquetool" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Records1' in WorkFlow 'workflowAssinguniquetool' debug inputs as
+#	  | # | Variable             | New Value |
+#	  | 1 | [[emp().firstname]]= | Smith     |
+#	  | 2 | [[emp().lastname]] = | Gordan    |
+#	  | 3 | [[emp().firstname]]= | Nicholas  |
+#	  | 4 | [[emp().lastname]] = | Cage      |
+#	  | 5 | [[emp().firstname]]= | Cage      |
+#	  | 6 | [[emp().lastname]] = | Nicholas  |
+#	  | 7 | [[emp().firstname]]= | Cage      |
+#	  | 8 | [[emp().lastname]] = | Nicholas  |
+#	  And the 'Records1' in Workflow 'workflowAssinguniquetool' debug outputs as  
+#	  | # |                                |
+#	  | 1 | [[emp(1).firstname]]=  Smith    |
+#	  | 2 | [[emp(1).lastname]] =  Gordan   |
+#	  | 3 | [[emp(2).firstname]]=  Nicholas |
+#	  | 4 | [[emp(2).lastname]] =  Cage     |
+#	  | 5 | [[emp(3).firstname]]=  Cage     |
+#	  | 6 | [[emp(3).lastname]] =  Nicholas |
+#	  | 5 | [[emp(4).firstname]]=  Cage      |
+#	  | 6 | [[emp(4).lastname]] =  Nicholas  |
+#	  And the 'Unique' in WorkFlow 'workflowAssinguniquetool' debug inputs as
+#       | #           |                                 | Return Fields       |
+#       | In Field(s) | [[emp(1).firstname]] = Smith    |                     |
+#       |             | [[emp(2).firstname]] = Nicholas |                     |
+#       |             | [[emp(3).firstname]] = Cage     |                     |
+#       |             | [[emp(4).firstname]] = Cage     |                     |
+#       |             | [[emp(1).lastname]] = Gordan    |                     |
+#       |             | [[emp(2).lastname]] = Cage      |                     |
+#       |             | [[emp(3).lastname]] = Nicholas  |                     |
+#       |             | [[emp(4).lastname]] = Nicholas  | [[emp().lastname]]] |     
+#      And the 'Unique' in Workflow 'workflowAssinguniquetool' debug outputs as  
+#       | # |                            |
+#       | 1 | [[emp(1).uni]]  = Gordan   |
+#       |   | [[emp(2).uni]]  = Cage     |
+#       |   | [[emp(3).uni]]  = Nicholas |
+     
+   
 
 
 
