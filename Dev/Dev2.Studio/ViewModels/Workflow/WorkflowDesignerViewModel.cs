@@ -67,6 +67,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.Utilities;
 using Dev2.Utils;
+using Dev2.ViewModels.Workflow;
 using Dev2.Workspaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
@@ -622,7 +623,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var workflowFields = GetWorkflowFieldsFromModelItem(flowNode);
                         foreach(var field in workflowFields)
                         {
-                            BuildDataPart(field);
+                            WorkflowDesignerDataPartUtils.BuildDataPart(field, _uniqueWorkflowParts);
                         }
                     }
                 }
@@ -732,80 +733,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             return result;
         }
 
-        void BuildDataPart(string dataPartFieldData)
-        {
-            Dev2DataLanguageParser dataLanguageParser = new Dev2DataLanguageParser();
-
-            dataPartFieldData = DataListUtil.StripBracketsFromValue(dataPartFieldData);
-            IDataListVerifyPart verifyPart;
-            string fullyFormattedStringValue;
-            string[] fieldList = dataPartFieldData.Split('.');
-            if(fieldList.Count() > 1 && !String.IsNullOrEmpty(fieldList[0]))
-            {
-                // If it's a RecordSet Containing a field
-                foreach(var item in fieldList)
-                {
-                    if(item.EndsWith(")") && item == fieldList[0])
-                    {
-                        if(item.Contains("("))
-                        {
-                            fullyFormattedStringValue = RemoveRecordSetBrace(item);
-                            var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "");
-                            if(intellisenseResult == null)
-                            {
-                                verifyPart =
-                                     IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue,
-                                         String.Empty);
-                                AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
-                            }
-
-                        }
-                    }
-                    else if(item == fieldList[1] && !(item.EndsWith(")") && item.Contains(")")))
-                    {
-                        // If it's a field to a record set
-                        var intellisenseResult = dataLanguageParser.ValidateName(item, "");
-                        if(intellisenseResult == null)
-                        {
-                            verifyPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(
-                                    RemoveRecordSetBrace(fieldList.ElementAt(0)), item);
-                            AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
-                        }
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-            }
-            else if(fieldList.Count() == 1 && !String.IsNullOrEmpty(fieldList[0]))
-            {
-                // If the workflow field is simply a scalar or a record set without a child
-                if(dataPartFieldData.EndsWith(")") && dataPartFieldData == fieldList[0])
-                {
-                    if(dataPartFieldData.Contains("("))
-                    {
-                        fullyFormattedStringValue = RemoveRecordSetBrace(fieldList[0]);
-                        var intellisenseResult = dataLanguageParser.ValidateName(fullyFormattedStringValue, "");
-                        if(intellisenseResult == null)
-                        {
-                            verifyPart = IntellisenseFactory.CreateDataListValidationRecordsetPart(fullyFormattedStringValue, String.Empty);
-                            AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
-                        }
-                    }
-                }
-                else
-                {
-                    var intellisenseResult = dataLanguageParser.ValidateName(dataPartFieldData, "");
-                    if(intellisenseResult == null)
-                    {
-                        verifyPart = IntellisenseFactory.CreateDataListValidationScalarPart(RemoveRecordSetBrace(dataPartFieldData));
-                        AddDataVerifyPart(verifyPart, verifyPart.DisplayValue);
-                    }
-                }
-            }
-        }
-
         List<String> GetActivityElements(object activity)
         {
             var assign = activity as DsfActivityAbstract<string>;
@@ -843,27 +770,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             return activityFields;
         }
 
-        string RemoveRecordSetBrace(string recordSet)
-        {
-            string fullyFormattedStringValue;
-            if(recordSet.Contains("(") && recordSet.Contains(")"))
-            {
-                fullyFormattedStringValue = recordSet.Remove(recordSet.IndexOf("(", StringComparison.Ordinal));
-            }
-            else
-            {
-                return recordSet;
-            }
-            return fullyFormattedStringValue;
-        }
 
-        void AddDataVerifyPart(IDataListVerifyPart part, string nameOfPart)
-        {
-            if(!_uniqueWorkflowParts.ContainsValue(nameOfPart))
-            {
-                _uniqueWorkflowParts.Add(part, nameOfPart);
-            }
-        }
+
+
 
         #endregion
 
@@ -897,7 +806,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _uniqueWorkflowParts = new Dictionary<IDataListVerifyPart, string>(dataPartVerifyDuplicates);
                 foreach(var s in message.ListToAdd)
                 {
-                    BuildDataPart(s);
+                    WorkflowDesignerDataPartUtils.BuildDataPart(s, _uniqueWorkflowParts);
                 }
                 IList<IDataListVerifyPart> partsToAdd = _uniqueWorkflowParts.Keys.ToList();
                 List<IDataListVerifyPart> uniqueDataListPartsToAdd = dlvm.MissingDataListParts(partsToAdd);

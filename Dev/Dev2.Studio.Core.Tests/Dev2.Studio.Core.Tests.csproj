@@ -359,6 +359,7 @@
     <Compile Include="Webs\WebSourceCallbackHandlerMock.cs" />
     <Compile Include="Webs\WebSourceCallbackHandlerTests.cs" />
     <Compile Include="WindowNavigationBehavior.cs" />
+    <Compile Include="Workflows\DesignerDataListUtilsTest.cs" />
     <Compile Include="Workflows\TestActivity.cs" />
     <Compile Include="Workflows\WorkflowDesignerViewModelMock.cs" />
     <Compile Include="Workflows\WorkflowDesignerUnitTest.cs" />

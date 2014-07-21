@@ -384,6 +384,7 @@
     <Compile Include="ViewModels\Help\HelpViewWrapper.cs" />
     <Compile Include="ViewModels\Navigation\INavigationViewModel.cs" />
     <Compile Include="ViewModels\Workflow\DataListConversionUtils.cs" />
+    <Compile Include="ViewModels\Workflow\WorkflowDesignerDataPartUtils.cs" />
     <Compile Include="ViewModels\WorkSurface\IWorkSurfaceContextViewModel.cs" />
     <Compile Include="Views\Deploy\DeployViewDialog.xaml.cs">
       <DependentUpon>DeployViewDialog.xaml</DependentUpon>

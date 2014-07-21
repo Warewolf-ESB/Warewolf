@@ -173,6 +173,38 @@ namespace Dev2.Core.Tests.Workflows
             workflowDesigner.Dispose();
         }
 
+
+        [TestMethod]
+        public void AddMissingDataListItemsWithUnusedDataListItemsExpectedItemsToBeSetToNotUsedBob()
+        {
+            var eventAggregator = new Mock<IEventAggregator>().Object;
+
+            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(GetAddMissingWorkflowXml());
+
+            var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator);
+            var dataListItems = new OptomizedObservableCollection<IDataListItemModel>();
+            IDataListItemModel dataListItem = new DataListItemModel("rec1().a", enDev2ColumnArgumentDirection.Input, string.Empty);
+            IDataListItemModel secondDataListItem = new DataListItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+
+            dataListItems.Add(dataListItem);
+            dataListItems.Add(secondDataListItem);
+
+            DataListSingleton.SetDataList(dataListViewModel);
+            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+
+            dataListViewModel.ScalarCollection.Clear();
+            dataListViewModel.RecsetCollection.Clear();
+            dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
+            WorkflowDesignerViewModel workflowDesigner = CreateWorkflowDesignerViewModel(eventAggregator, mockResourceModel.Object, null, false);
+            workflowDesigner.PopUp = mockPopUp.Object;
+
+            workflowDesigner.AddMissingWithNoPopUpAndFindUnusedDataListItems();
+            Assert.AreEqual(2, dataListViewModel.ScalarCollection.Count);
+            Assert.AreEqual(0, dataListViewModel.RecsetCollection.Count);
+            workflowDesigner.Dispose();
+        }
+
         //2013.06.24: Ashley Lewis for bug 9698 - test for get decision elements
         [TestMethod]
         public void GetDecisionElementsWithMissmatchedBracketsInADecisionFieldExpectedCorrectVariableGottenFromDecision()
