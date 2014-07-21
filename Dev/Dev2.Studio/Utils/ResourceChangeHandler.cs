@@ -8,7 +8,29 @@ using System.Collections.Generic;
 
 namespace Dev2.Utils
 {
-    public class ResourceChangeHandler
+    public interface IResourceChangeHandler
+    {
+        void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants, IResourceChangedDialog resourceChangedDialog = null);
+    }
+
+    public interface IResourceChangeHandlerFactory
+    {
+        IResourceChangeHandler Create(IEventAggregator eventPublisher);
+    }
+
+    public  class ResourceChangeHandlerFactory : IResourceChangeHandlerFactory
+    {
+        #region Implementation of IResourceChangeHandlerFactory
+
+        public IResourceChangeHandler Create(IEventAggregator eventPublisher)
+        {
+            return new ResourceChangeHandler(eventPublisher);
+        }
+
+        #endregion
+    }
+
+    public class ResourceChangeHandler : IResourceChangeHandler
     {
         readonly IEventAggregator _eventPublisher;
         public ResourceChangeHandler(IEventAggregator eventPublisher)

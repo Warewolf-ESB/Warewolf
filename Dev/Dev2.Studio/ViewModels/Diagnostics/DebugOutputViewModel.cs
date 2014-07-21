@@ -456,7 +456,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         ///     Appends the specified content.
         /// </summary>
         /// <param name="content">The content.</param>
-        public void Append(IDebugState content)
+        public virtual void Append(IDebugState content)
         {
             if(content == null || content.SessionID != SessionID)
             {

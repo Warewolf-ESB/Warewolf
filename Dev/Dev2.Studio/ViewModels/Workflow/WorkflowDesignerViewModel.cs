@@ -21,6 +21,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xaml;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Core;
@@ -1392,11 +1393,31 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     BindToModel();
                     //WorkspaceItemRepository.Instance.UpdateWorkspaceItem(ResourceModel, true);
-                    ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
-                    _workspaceSave = true;
+
+                        ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
+                        _workspaceSave = true;
+                    
                 });
             }
             AddMissingWithNoPopUpAndFindUnusedDataListItems();
+        }
+
+        public static bool ValidatResourceModel(string dataList)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(dataList)) 
+// ReSharper disable ReturnValueOfPureMethodIsNotUsed
+                    XElement.Parse(dataList);
+// ReSharper restore ReturnValueOfPureMethodIsNotUsed
+            }
+            catch(Exception)
+            {
+
+                return false;
+            }
+            return true;
+
         }
 
         /// <summary>

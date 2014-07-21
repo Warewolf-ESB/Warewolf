@@ -6,7 +6,28 @@ using Dev2.Studio.Core.Interfaces;
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Utils
 {
-    public class StudioCompileMessageRepo
+    public interface IStudioCompileMessageRepo
+    {
+        CompileMessageList GetCompileMessagesFromServer(IContextualResourceModel resourceModel);
+    }
+    public interface IStudioCompileMessageRepoFactory
+    {
+        IStudioCompileMessageRepo Create();
+    }
+
+    public class StudioCompileMessageRepoFactory : IStudioCompileMessageRepoFactory
+    {
+        #region Implementation of IStudioCompileMessageRepoFactory
+
+        public IStudioCompileMessageRepo Create()
+        {
+            return new StudioCompileMessageRepo();
+        }
+
+        #endregion
+    }
+
+    public class StudioCompileMessageRepo : IStudioCompileMessageRepo
     {
         public CompileMessageList GetCompileMessagesFromServer(IContextualResourceModel resourceModel)
         {

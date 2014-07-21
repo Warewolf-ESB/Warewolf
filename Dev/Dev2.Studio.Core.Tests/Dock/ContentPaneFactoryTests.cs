@@ -87,7 +87,7 @@ namespace Dev2.Core.Tests.Dock
                     ResourceID = Guid.NewGuid(),
                     ServerID = Guid.NewGuid(),
                     WorkSurfaceContext = WorkSurfaceContext.Workflow
-                }, workSurfaceViewModel.Object)
+                }, workSurfaceViewModel.Object, new Mock<IPopupController>().Object, (a, b) => { })
                 {
                     Parent = mainViewModel
                 };
