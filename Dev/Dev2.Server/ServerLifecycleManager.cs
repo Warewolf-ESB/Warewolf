@@ -1809,7 +1809,7 @@ namespace Dev2
             DataListFactory.CreateServerDataListCompiler();
             BinaryDataListStorageLayer.Setup();
 
-            var mbReserved = BinaryDataListStorageLayer.GetCapacityMemoryInMB();
+            var mbReserved = BinaryDataListStorageLayer.GetCapacityMemoryInMb();
 
             Write(" [ Reserving " + mbReserved.ToString("#") + " MBs of cache ] ");
 

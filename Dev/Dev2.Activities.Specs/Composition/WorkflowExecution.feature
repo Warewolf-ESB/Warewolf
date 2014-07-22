@@ -1988,30 +1988,30 @@ Scenario: Testing Count with two variables in Result field
 
 
 ##12180  -- remove this when previous is passing
- Scenario: Testing Length with two variables in Result field
-      Given I have a workflow "WorkflowforLength"
-      And "WorkflowforLength" contains an Assign "Rec To Convert" as
-	  | variable    | value |
-	  | [[rec().a]] | 1213  |
-	  | [[rec().a]] | 4561  |
-	  And "WorkflowforLength" contains Length "Len" on "[[rec(*)]]" into "[[length]][[a]]"
-	  When "WorkflowforLength" is executed
-	  Then the workflow execution has "AN" error	
-      And the 'Rec To Convert' in WorkFlow 'WorkflowforLength' debug inputs as
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | 1213      |
-	  | 2 | [[rec().a]] = | 4561      |
-	  And the 'Rec To Convert' in Workflow 'WorkflowforLength' debug outputs as    
-	  | # |                     |
-	  | 1 | [[rec(1).a]] = 1213 |
-	  | 2 | [[rec(2).a]] = 4561 |
-	  And the 'Len' in WorkFlow 'WorkflowforLength' debug inputs as
-	  | Recordset           |
-	  | [[rec(1).a]] = 1213 |
-	  | [[rec(2).a]] = 4561 |
-	  And the 'Len' in Workflow 'WorkflowforLength' debug outputs as    
-	  |                |
-	  |                |
+ #Scenario: Testing Length with two variables in Result field
+ #     Given I have a workflow "WorkflowforLength"
+ #     And "WorkflowforLength" contains an Assign "Rec To Convert" as
+	#  | variable    | value |
+	#  | [[rec().a]] | 1213  |
+	#  | [[rec().a]] | 4561  |
+	#  And "WorkflowforLength" contains Length "Len" on "[[rec(*)]]" into "[[length]][[a]]"
+	#  When "WorkflowforLength" is executed
+	#  Then the workflow execution has "AN" error	
+ #     And the 'Rec To Convert' in WorkFlow 'WorkflowforLength' debug inputs as
+	#  | # | Variable      | New Value |
+	#  | 1 | [[rec().a]] = | 1213      |
+	#  | 2 | [[rec().a]] = | 4561      |
+	#  And the 'Rec To Convert' in Workflow 'WorkflowforLength' debug outputs as    
+	#  | # |                     |
+	#  | 1 | [[rec(1).a]] = 1213 |
+	#  | 2 | [[rec(2).a]] = 4561 |
+	#  And the 'Len' in WorkFlow 'WorkflowforLength' debug inputs as
+	#  | Recordset           |
+	#  | [[rec(1).a]] = 1213 |
+	#  | [[rec(2).a]] = 4561 |
+	#  And the 'Len' in Workflow 'WorkflowforLength' debug outputs as    
+	#  |                |
+	#  |                |
 
 
 #
@@ -2820,8 +2820,8 @@ Scenario: Workflow with Assign and Unique Tool, Result rec with star
 	  When "workflowithAssignandUniqueTools" is executed
 	  Then the workflow execution has "NO" error
 	  And the 'Records' in WorkFlow 'workflowithAssignandUniqueTools' debug inputs as
-	  | # | Variable       | New Value |
-	  | 1 | [[rs(1).row]] = | 10        |
+	  | # | Variable         | New Value |
+	  | 1 | [[rs(1).row]] =  | 10        |
 	  | 2 | [[rs(1).data]] = | 10        |
 	  | 3 | [[rs(2).row]] =  | 40        |
 	  | 4 | [[rs(2).data]] = | 20        |
@@ -3102,198 +3102,189 @@ Scenario: Base Convert two varibles on one row
 #	  | # |                     |
 #	  | 1 | [[rec(1).b]] = abcd |
 
-#
 #This Test should be passed after the bug 12119 is fixed
-#Scenario: Workflow with Assign and Unique Tool
-#      Given I have a workflow "workfllowAssingunique"
-#      And "workfllowAssingunique" contains an Assign "Records" as
-#	  | variable    | value |
-#	  | [[rs(1).a]] | 19    |
-#	  | [[rs(2).a]] | 20    |
-#	  | [[rs(3).a]] | 40    |
-#	  | [[rs(4).a]] | 50    |
-#	  | [[rs(1).b]] | 19    |
-#	  | [[rs(2).b]] | 20    |
-#	  | [[rs(3).b]] | 30    |
-#	  | [[rs(4).b]] | 80    |
-#	  And "workfllowAssingunique" contains an Unique "Unique rec" as
-#	  | In Field(s)           | Return Fields | Result           |
-#	  | [[rs().a]],[[rs().b]] | [[rs().a]]    | [[rec().unique]] |
-#	  When "workfllowAssingunique" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Records' in WorkFlow 'workfllowAssingunique' debug inputs as
-#	  | # | Variable     | New Value |
-#	  | 1 | [[rs(1).a]]= | 19        |
-#	  | 2 | [[rs(2).a]]= | 20        |
-#	  | 3 | [[rs(3).a]]= | 40        |
-#	  | 4 | [[rs(4).a]]= | 50        |
-#	  | 5 | [[rs(1).b]]= | 19        |
-#	  | 6 | [[rs(2).b]]= | 20        |
-#	  | 7 | [[rs(3).b]]= | 30        |
-#	  | 8 | [[rs(4).b]]= | 80        |
-#	  And the 'Records' in Workflow 'workfllowAssingunique' debug outputs as  
-#	  | # |                   |
-#	  | 1 | [[rs(1).a]] =  19 |
-#	  | 2 | [[rs(2).a]] =  20 |
-#	  | 3 | [[rs(3).a]] =  40 |
-#	  | 4 | [[rs(4).a]] =  50 |
-#	  | 5 | [[rs(1).b]] =  19 |
-#	  | 6 | [[rs(2).b]] =  20 |
-#	  | 7 | [[rs(3).b]] =  30 |
-#	  | 8 | [[rs(4).b]] =  80 |
-#	  And the 'Unique r ec' in WorkFlow 'workfllowAssingunique' debug inputs as
-#       | #           |                  | Return Fields |
-#       | In Field(s) | [[rs(1).a]] = 19 |               |
-#       |             | [[rs(2).a]] = 20 |               |
-#       |             | [[rs(3).a]] = 40 |               |
-#       |             | [[rs(4).a]] = 50 |               |
-#       |             | [[rs(1).b]] = 19 |               |
-#       |             | [[rs(2).b]] = 20 |               |
-#       |             | [[rs(3).b]] = 30 |               |
-#       |             | [[rs(4).b]] = 80 |               |
-#       |             |                  | [[rs().a]]    |
-#      And the 'Unique rec' in Workflow 'workfllowAssingunique' debug outputs as  
-#       | # |                        |
-#       | 1 | [[rec(1).unique]] = 19 |
-#       |   | [[rec(2).unique]] = 20 |
-#       |   | [[rec(3).unique]] = 40 |
-#       |   | [[rec(4).unique]] = 80 |
-
-#This Test should be passed after the bug 12119 is fixed
-#Scenario: Workflow with Assign and Unique Tool to find unique names in diff rows
-#      Given I have a workflow "workfllowAssinguniquetools"
-#      And "workfllowAssinguniquetools" contains an Assign "Records1" as
-#	  | variable            | value    |
-#	  | [[emp().firstname]] | Smith    |
-#	  | [[emp().lastname]]  | Gordan   |
-#	  | [[emp().firstname]] | Nicholas |
-#	  | [[emp().lastname]]  | Cage     |
-#	  | [[emp().firstname]] | Cage     |
-#	  | [[emp().lastname]]  | Nicholas |
-#	  And "workfllowAssinguniquetools" contains an Unique "Unique" as
-#	  | In Field(s)                              | Return Fields       | Result         |
-#	  | [[emp(*).firstname]],[[emp(*).lastname]] | [[emp().firstname]] | [[emp(*).uni]] |
-#	  When "workfllowAssinguniquetools" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Records1' in WorkFlow 'workfllowAssinguniquetools' debug inputs as
-#	  | # | Variable             | New Value |
-#	  | 1 | [[emp().firstname]]= | Smith     |
-#	  | 2 | [[emp().lastname]] = | Gordan    |
-#	  | 3 | [[emp().firstname]]= | Nicholas  |
-#	  | 4 | [[emp().lastname]] = | Cage      |
-#	  | 5 | [[emp().firstname]]= | Cage      |
-#	  | 6 | [[emp().lastname]] = | Nicholas  |
-#	  And the 'Records1' in Workflow 'workfllowAssinguniquetools' debug outputs as  
-#	  | # |                                |
-#	  | 1 | [[emp(1).firstname]]=  Smith    |
-#	  | 2 | [[emp(1).lastname]] =  Gordan   |
-#	  | 3 | [[emp(2).firstname]]=  Nicholas |
-#	  | 4 | [[emp(2).lastname]] =  Cage     |
-#	  | 5 | [[emp(3).firstname]]=  Cage     |
-#	  | 6 | [[emp(3).lastname]] =  Nicholas |
-#	  And the 'Unique' in WorkFlow 'workfllowAssinguniquetools' debug inputs as
-#       | #           |                                 | Return Fields       |
-#       | In Field(s) | [[emp(1).firstname]] = Smith    |                     |
-#       |             | [[emp(2).firstname]] = Nicholas |                     |
-#       |             | [[emp(3).firstname]] = Cage     |                     |
-#       |             | [[emp(1).lastname]] = Gordan    |                     |
-#       |             | [[emp(2).lastname]] = Cage      |                     |
-#       |             | [[emp(3).lastname]] = Nicholas  | [[emp().firstname]] |     
-#      And the 'Unique' in Workflow 'workfllowAssinguniquetools' debug outputs as  
-#       | # |                           |
-#       | 1 | [[emp(1).uni]]  = Smith    |
-#       |   | [[emp(2).uni]]  = Nicholas |
-#       |   | [[emp(3).uni]]  = Cage     |
-#   
-#This Test should be passed after the bug 12119 is fixed
-#Scenario: Workflow with Assign and Unique to return unique data  
-#      Given I have a workflow "workflowAssinguniquetool"
-#      And "workflowAssinguniquetool" contains an Assign "Records1" as
-#	  | variable            | value    |
-#	  | [[emp().firstname]] | Smith    |
-#	  | [[emp().lastname]]  | Gordan   |
-#	  | [[emp().firstname]] | Nicholas |
-#	  | [[emp().lastname]]  | Cage     |
-#	  | [[emp().firstname]] | Cage     |
-#	  | [[emp().lastname]]  | Nicholas |
-#	  | [[emp().firstname]] | Cage     |
-#	  | [[emp().lastname]]  | Nicholas |
-#	  And "workflowAssinguniquetool" contains an Unique "Unique" as
-#	  | In Field(s)                              | Return Fields      | Result         |
-#	  | [[emp(*).firstname]],[[emp(*).lastname]] | [[emp().lastname]] | [[emp(*).uni]] |
-#	  When "workflowAssinguniquetool" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Records1' in WorkFlow 'workflowAssinguniquetool' debug inputs as
-#	  | # | Variable             | New Value |
-#	  | 1 | [[emp().firstname]]= | Smith     |
-#	  | 2 | [[emp().lastname]] = | Gordan    |
-#	  | 3 | [[emp().firstname]]= | Nicholas  |
-#	  | 4 | [[emp().lastname]] = | Cage      |
-#	  | 5 | [[emp().firstname]]= | Cage      |
-#	  | 6 | [[emp().lastname]] = | Nicholas  |
-#	  | 7 | [[emp().firstname]]= | Cage      |
-#	  | 8 | [[emp().lastname]] = | Nicholas  |
-#	  And the 'Records1' in Workflow 'workflowAssinguniquetool' debug outputs as  
-#	  | # |                                |
-#	  | 1 | [[emp(1).firstname]]=  Smith    |
-#	  | 2 | [[emp(1).lastname]] =  Gordan   |
-#	  | 3 | [[emp(2).firstname]]=  Nicholas |
-#	  | 4 | [[emp(2).lastname]] =  Cage     |
-#	  | 5 | [[emp(3).firstname]]=  Cage     |
-#	  | 6 | [[emp(3).lastname]] =  Nicholas |
-#	  | 5 | [[emp(4).firstname]]=  Cage      |
-#	  | 6 | [[emp(4).lastname]] =  Nicholas  |
-#	  And the 'Unique' in WorkFlow 'workflowAssinguniquetool' debug inputs as
-#       | #           |                                 | Return Fields       |
-#       | In Field(s) | [[emp(1).firstname]] = Smith    |                     |
-#       |             | [[emp(2).firstname]] = Nicholas |                     |
-#       |             | [[emp(3).firstname]] = Cage     |                     |
-#       |             | [[emp(4).firstname]] = Cage     |                     |
-#       |             | [[emp(1).lastname]] = Gordan    |                     |
-#       |             | [[emp(2).lastname]] = Cage      |                     |
-#       |             | [[emp(3).lastname]] = Nicholas  |                     |
-#       |             | [[emp(4).lastname]] = Nicholas  | [[emp().lastname]]] |     
-#      And the 'Unique' in Workflow 'workflowAssinguniquetool' debug outputs as  
-#       | # |                            |
-#       | 1 | [[emp(1).uni]]  = Gordan   |
-#       |   | [[emp(2).uni]]  = Cage     |
-#       |   | [[emp(3).uni]]  = Nicholas |
-     
+Scenario: Workflow with Assign and Unique Tool to find unique names in diff rows
+      Given I have a workflow "WorkflowUniqueWithNames"
+      And "WorkflowUniqueWithNames" contains an Assign "Records1" as
+	  | variable            | value    |
+	  | [[emp().firstname]] | Smith    |
+	  | [[emp().lastname]]  | Gordan   |
+	  | [[emp().firstname]] | Nicholas |
+	  | [[emp().lastname]]  | Cage     |
+	  | [[emp().firstname]] | Cage     |
+	  | [[emp().lastname]]  | Nicholas |
+	  And "WorkflowUniqueWithNames" contains an Unique "Unique" as
+	  | In Field(s)                              | Return Fields       | Result         |
+	  | [[emp(*).firstname]],[[emp(*).lastname]] | [[emp().firstname]] | [[emp(*).uni]] |
+	  When "WorkflowUniqueWithNames" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Records1' in WorkFlow 'WorkflowUniqueWithNames' debug inputs as
+	  | # | Variable             | New Value |
+	  | 1 | [[emp().firstname]] = | Smith     |
+	  | 2 | [[emp().lastname]] = | Gordan    |
+	  | 3 | [[emp().firstname]] = | Nicholas  |
+	  | 4 | [[emp().lastname]] = | Cage      |
+	  | 5 | [[emp().firstname]] = | Cage      |
+	  | 6 | [[emp().lastname]] = | Nicholas  |
+	  And the 'Records1' in Workflow 'WorkflowUniqueWithNames' debug outputs as  
+	  | # |                                |
+	  | 1 | [[emp(1).firstname]] =  Smith    |
+	  | 2 | [[emp(1).lastname]] =  Gordan   |
+	  | 3 | [[emp(2).firstname]] =  Nicholas |
+	  | 4 | [[emp(2).lastname]] =  Cage     |
+	  | 5 | [[emp(3).firstname]] =  Cage     |
+	  | 6 | [[emp(3).lastname]] =  Nicholas |
+	  And the 'Unique' in WorkFlow 'WorkflowUniqueWithNames' debug inputs as
+       | #           |                                 | Return Fields         |
+       | In Field(s) | [[emp(1).firstname]] = Smith    |                       |
+       |             | [[emp(2).firstname]] = Nicholas |                       |
+       |             | [[emp(3).firstname]] = Cage     |                       |
+       |             | [[emp(1).lastname]] = Gordan    |                       |
+       |             | [[emp(2).lastname]] = Cage      |                       |
+       |             | [[emp(3).lastname]] = Nicholas  |                       |
+       |             |                                 | [[emp().firstname]] = |     
+      And the 'Unique' in Workflow 'WorkflowUniqueWithNames' debug outputs as  
+       | # |                           |
+       | 1 | [[emp(1).uni]]  = Smith    |
+       |   | [[emp(2).uni]]  = Nicholas |
+       |   | [[emp(3).uni]]  = Cage     |
    
+#This Test should be passed after the bug 12119 is fixed
+Scenario: Workflow with Assign and Unique to return unique data  
+      Given I have a workflow "UniqueNamesTest"
+      And "UniqueNamesTest" contains an Assign "Records1" as
+	  | variable            | value    |
+	  | [[emp().firstname]] | Smith    |
+	  | [[emp().lastname]]  | Gordan   |
+	  | [[emp().firstname]] | Nicholas |
+	  | [[emp().lastname]]  | Cage     |
+	  | [[emp().firstname]] | Cage     |
+	  | [[emp().lastname]]  | Nicholas |
+	  | [[emp().firstname]] | Cage     |
+	  | [[emp().lastname]]  | Nicholas |
+	  And "UniqueNamesTest" contains an Unique "Unique" as
+	  | In Field(s)                              | Return Fields      | Result         |
+	  | [[emp(*).firstname]],[[emp(*).lastname]] | [[emp().lastname]] | [[emp(*).uni]] |
+	  When "UniqueNamesTest" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Records1' in WorkFlow 'UniqueNamesTest' debug inputs as
+	  | # | Variable              | New Value |
+	  | 1 | [[emp().firstname]] = | Smith     |
+	  | 2 | [[emp().lastname]] =  | Gordan    |
+	  | 3 | [[emp().firstname]] = | Nicholas  |
+	  | 4 | [[emp().lastname]] =  | Cage      |
+	  | 5 | [[emp().firstname]] = | Cage      |
+	  | 6 | [[emp().lastname]] =  | Nicholas  |
+	  | 7 | [[emp().firstname]] = | Cage      |
+	  | 8 | [[emp().lastname]] =  | Nicholas  |
+	  And the 'Records1' in Workflow 'UniqueNamesTest' debug outputs as  
+	  | # |                                  |
+	  | 1 | [[emp(1).firstname]] =  Smith    |
+	  | 2 | [[emp(1).lastname]] =  Gordan    |
+	  | 3 | [[emp(2).firstname]] =  Nicholas |
+	  | 4 | [[emp(2).lastname]] =  Cage      |
+	  | 5 | [[emp(3).firstname]] =  Cage     |
+	  | 6 | [[emp(3).lastname]] =  Nicholas  |
+	  | 7 | [[emp(4).firstname]] =  Cage     |
+	  | 8 | [[emp(4).lastname]] =  Nicholas  |
+	  And the 'Unique' in WorkFlow 'UniqueNamesTest' debug inputs as
+       | #           |                                 | Return Fields        |
+       | In Field(s) | [[emp(1).firstname]] = Smith    |                      |
+       |             | [[emp(2).firstname]] = Nicholas |                      |
+       |             | [[emp(3).firstname]] = Cage     |                      |
+       |             | [[emp(4).firstname]] = Cage     |                      |
+       |             | [[emp(1).lastname]] = Gordan    |                      |
+       |             | [[emp(2).lastname]] = Cage      |                      |
+       |             | [[emp(3).lastname]] = Nicholas  |                      |
+       |             | [[emp(4).lastname]] = Nicholas  |                      |
+       |             |                                 | [[emp().lastname]] = |    
+      And the 'Unique' in Workflow 'UniqueNamesTest' debug outputs as  
+       | # |                            |
+       | 1 | [[emp(1).uni]]  = Gordan   |
+       |   | [[emp(2).uni]]  = Cage     |
+       |   | [[emp(3).uni]]  = Nicholas |
+ 
+Scenario: Workflow with Assign and Unique Tool
+      Given I have a workflow "WorkflowAssingUnique"
+      And "WorkflowAssingUnique" contains an Assign "Records" as
+	  | variable    | value |
+	  | [[rs(1).a]] | 19    |
+	  | [[rs(2).a]] | 20    |
+	  | [[rs(3).a]] | 40    |
+	  | [[rs(4).a]] | 50    |
+	  | [[rs(1).b]] | 19    |
+	  | [[rs(2).b]] | 20    |
+	  | [[rs(3).b]] | 30    |
+	  | [[rs(4).b]] | 80    |
+	  And "WorkflowAssingUnique" contains an Unique "Unique rec" as
+	  | In Field(s)             | Return Fields | Result           |
+	  | [[rs(*).a]],[[rs(*).b]] | [[rs().a]]    | [[rec().unique]] |
+	  When "WorkflowAssingUnique" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Records' in WorkFlow 'WorkflowAssingUnique' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs(1).a]] = | 19        |
+	  | 2 | [[rs(2).a]] = | 20        |
+	  | 3 | [[rs(3).a]] = | 40        |
+	  | 4 | [[rs(4).a]] = | 50        |
+	  | 5 | [[rs(1).b]] = | 19        |
+	  | 6 | [[rs(2).b]] = | 20        |
+	  | 7 | [[rs(3).b]] = | 30        |
+	  | 8 | [[rs(4).b]] = | 80        |
+	  And the 'Records' in Workflow 'WorkflowAssingUnique' debug outputs as  
+	  | # |                   |
+	  | 1 | [[rs(1).a]] =  19 |
+	  | 2 | [[rs(2).a]] =  20 |
+	  | 3 | [[rs(3).a]] =  40 |
+	  | 4 | [[rs(4).a]] =  50 |
+	  | 5 | [[rs(1).b]] =  19 |
+	  | 6 | [[rs(2).b]] =  20 |
+	  | 7 | [[rs(3).b]] =  30 |
+	  | 8 | [[rs(4).b]] =  80 |
+	  And the 'Unique rec' in WorkFlow 'WorkflowAssingUnique' debug inputs as
+       | #           |                  | Return Fields |
+       | In Field(s) | [[rs(1).a]] = 19 |               |
+       |             | [[rs(2).a]] = 20 |               |
+       |             | [[rs(3).a]] = 40 |               |
+       |             | [[rs(4).a]] = 50 |               |
+       |             | [[rs(1).b]] = 19 |               |
+       |             | [[rs(2).b]] = 20 |               |
+       |             | [[rs(3).b]] = 30 |               |
+       |             | [[rs(4).b]] = 80 |               |
+       |             |                  | [[rs().a]] =  |
+      And the 'Unique rec' in Workflow 'WorkflowAssingUnique' debug outputs as  
+       | # |                        |
+       | 1 | [[rec(1).unique]] = 19 |
+       |   | [[rec(2).unique]] = 20 |
+       |   | [[rec(3).unique]] = 40 |
+       |   | [[rec(4).unique]] = 50 |
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#Bug 12142
+Scenario: Workflow with Calculation using Star notation
+      Given I have a workflow "WorkflowWithAssignCalculationUsingStar"
+      And "WorkflowWithAssignCalculationUsingStar" contains an Assign "Records" as
+	  | variable    | value |
+	  | [[rs(1).a]] | 19    |
+	  | [[rs(2).a]] | 20    |
+	  | [[rs(3).a]] | 40    |	 
+	  And "WorkflowWithAssignCalculationUsingStar" contains an Assign "Calculation" as
+	  | variable      | value          |
+	  | [[rec().sum]] | =[[rs(*).a]]+1 |
+	  When "WorkflowWithAssignCalculationUsingStar" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'Records' in WorkFlow 'WorkflowWithAssignCalculationUsingStar' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rs(1).a]] = | 19        |
+	  | 2 | [[rs(2).a]] = | 20        |
+	  | 3 | [[rs(3).a]] = | 40        |
+	  And the 'Records' in Workflow 'WorkflowWithAssignCalculationUsingStar' debug outputs as  
+	  | # |                   |
+	  | 1 | [[rs(1).a]] =  19 |
+	  | 2 | [[rs(2).a]] =  20 |
+	  | 3 | [[rs(3).a]] =  40 |
+	   And the 'Calculation' in WorkFlow 'WorkflowWithAssignCalculationUsingStar' debug inputs as
+	  | # | Variable        | New Value |
+	  | 1 | [[rec().sum]] = |           |
+	  And the 'Calculation' in Workflow 'WorkflowWithAssignCalculationUsingStar' debug outputs as  
+	  | # |                   |
+	  | 1 | [[rec(1).sum]] =  |

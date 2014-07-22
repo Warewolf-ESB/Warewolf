@@ -152,8 +152,10 @@
     <Compile Include="Storage\Binary Objects\FederatedStorageKey.cs" />
     <Compile Include="Storage\Binary Objects\SBinaryKeyAlias.cs" />
     <Compile Include="Storage\Binary Objects\StorageKey.cs" />
+    <Compile Include="Storage\BinaryDataListRowEqualityComparer.cs" />
     <Compile Include="Storage\Dev2BinaryStorage.cs" />
     <Compile Include="Storage\Dev2DistributedCache.cs" />
+    <Compile Include="Storage\IndexBasedBinaryDataListRow.cs" />
     <Compile Include="Storage\IndexMemoryRanageAllocator.cs" />
     <Compile Include="Storage\ProtocolBuffers\BinaryDataListAlias.cs">
       <SubType>Code</SubType>

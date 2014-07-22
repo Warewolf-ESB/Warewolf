@@ -1303,6 +1303,48 @@ namespace Dev2.Data.Tests.BinaryDataList
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("BinaryDataListEntry_Distinct")]
+        // ReSharper disable InconsistentNaming
+        public void BinaryDataListEntry_Distinct_ExpectDistinctIndexes()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            string error;
+            ErrorResultTO errors;
+            var compiler = DataListFactory.CreateDataListCompiler();
+            IBinaryDataList dl0 = Dev2BinaryDataListFactory.CreateDataList();
+
+
+            IList<Dev2Column> cols = new List<Dev2Column>();
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
+            IList<Dev2Column> colsDiff = new List<Dev2Column>();
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
+            colsDiff.Add(Dev2BinaryDataListFactory.CreateColumn("f3"));
+            // dl0 - Parent
+            dl0.TryCreateRecordsetTemplate("recset", "a recordset", cols, true, out error);
+            dl0.TryCreateRecordsetTemplate("recset2", "a recordset", colsDiff, true, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 1, out error);
+            dl0.TryCreateRecordsetValue("r4.f1.value", "f1", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 2, out error);
+            dl0.TryCreateRecordsetValue("r1.f1.value", "f1", "recset", 3, out error);
+            dl0.TryCreateRecordsetValue("r1.f2.value", "f2", "recset", 3, out error);
+
+            // push datalist
+            compiler.PushBinaryDataList(dl0.UID, dl0, out errors);
+            IBinaryDataListEntry entry;
+            dl0.TryGetEntry("recset", out entry, out error);
+
+            var distinctRows = entry.GetDistinctRows(new List<string> { "f1" });
+            Assert.IsNotNull(distinctRows);
+            Assert.AreEqual(2, distinctRows.Count);
+            Assert.AreEqual(1, distinctRows[0]);
+            Assert.AreEqual(2, distinctRows[1]);
+        }
+
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("BinaryDataListEntry_Merge")]
         // ReSharper disable InconsistentNaming

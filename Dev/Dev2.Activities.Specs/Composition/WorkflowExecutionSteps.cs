@@ -47,8 +47,19 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [Then(@"the workflow execution has ""(.*)"" error")]
-        public void ThenTheWorkflowExecutionHasError(string p0)
+        public void ThenTheWorkflowExecutionHasError(string hasError)
         {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates");
+
+            if(hasError == "AN")
+            {
+                var hasErrorState = debugStates.FirstOrDefault(state => state.HasError);
+                Assert.IsNotNull(hasErrorState);
+            }
         }
 
         [Given(@"I have server a ""(.*)"" with workflow ""(.*)""")]

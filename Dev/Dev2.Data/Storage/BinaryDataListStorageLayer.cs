@@ -11,7 +11,7 @@ namespace Dev2.Data.Storage
     public class BinaryDataListStorageLayer : IDisposable
     {
         [NonSerialized]
-        private static Dev2DistributedCache<BinaryDataListRow> LevelZeroCache;
+        private static Dev2DistributedCache<BinaryDataListRow> _levelZeroCache;
 
         bool _disposed;
 
@@ -19,9 +19,9 @@ namespace Dev2.Data.Storage
         // New Row Based Junk
         public BinaryDataListStorageLayer()
         {
-            if(LevelZeroCache == null)
+            if(_levelZeroCache == null)
             {
-                LevelZeroCache = new Dev2DistributedCache<BinaryDataListRow>(StorageSettingManager.GetSegmentSize(), StorageSettingManager.GetSegmentCount());
+                _levelZeroCache = new Dev2DistributedCache<BinaryDataListRow>(StorageSettingManager.GetSegmentSize(), StorageSettingManager.GetSegmentCount());
             }
         }
 
@@ -43,7 +43,7 @@ namespace Dev2.Data.Storage
                 throw new ArgumentNullException("overrideKey");
             }
 
-            return LevelZeroCache.RemoveAll(overrideKey);
+            return _levelZeroCache.RemoveAll(overrideKey);
 
         }
 
@@ -54,7 +54,7 @@ namespace Dev2.Data.Storage
         /// <returns></returns>
         public static int RemoveAll(IEnumerable<Guid> theList)
         {
-            return LevelZeroCache.RemoveAll(theList);
+            return _levelZeroCache.RemoveAll(theList);
         }
 
         /// <summary>
@@ -64,12 +64,12 @@ namespace Dev2.Data.Storage
         /// <returns></returns>
         public static int RemoveAll(string uniqueKey)
         {
-            return LevelZeroCache.RemoveAll(uniqueKey);
+            return _levelZeroCache.RemoveAll(uniqueKey);
         }
 
         public static void CompactMemory(bool force = false)
         {
-            LevelZeroCache.CompactMemory(force);
+            _levelZeroCache.CompactMemory(force);
         }
 
         public void Dispose()
@@ -100,9 +100,9 @@ namespace Dev2.Data.Storage
         /// </summary>
         public static void DisposeOnExit()
         {
-            if(LevelZeroCache != null)
+            if(_levelZeroCache != null)
             {
-                LevelZeroCache.DisposeOnExit();
+                _levelZeroCache.DisposeOnExit();
             }
 
         }
@@ -115,11 +115,11 @@ namespace Dev2.Data.Storage
         /// Gets the used memory information mb.
         /// </summary>
         /// <returns></returns>
-        public static double GetUsedMemoryInMB()
+        public static double GetUsedMemoryInMb()
         {
-            if(LevelZeroCache != null)
+            if(_levelZeroCache != null)
             {
-                return LevelZeroCache.UsedMemoryStorageInMB();
+                return _levelZeroCache.UsedMemoryStorageInMB();
             }
 
             return 0.0;
@@ -129,11 +129,11 @@ namespace Dev2.Data.Storage
         /// Gets the capacity memory information mb.
         /// </summary>
         /// <returns></returns>
-        public static double GetCapacityMemoryInMB()
+        public static double GetCapacityMemoryInMb()
         {
-            if(LevelZeroCache != null)
+            if(_levelZeroCache != null)
             {
-                return LevelZeroCache.CapacityMemoryStorageInMB();
+                return _levelZeroCache.CapacityMemoryStorageInMB();
             }
 
             return 0.0;
@@ -148,17 +148,17 @@ namespace Dev2.Data.Storage
         /// </summary>
         public static void Setup()
         {
-            if(LevelZeroCache == null)
+            if(_levelZeroCache == null)
             {
-                LevelZeroCache = new Dev2DistributedCache<BinaryDataListRow>(StorageSettingManager.GetSegmentSize(), StorageSettingManager.GetSegmentCount());
+                _levelZeroCache = new Dev2DistributedCache<BinaryDataListRow>(StorageSettingManager.GetSegmentSize(), StorageSettingManager.GetSegmentCount());
             }
         }
 
         public static void Teardown()
         {
-            if(LevelZeroCache != null)
+            if(_levelZeroCache != null)
             {
-                LevelZeroCache.DisposeOnExit();
+                _levelZeroCache.DisposeOnExit();
             }
         }
 
@@ -168,7 +168,7 @@ namespace Dev2.Data.Storage
 
         public bool TryGetValue(StorageKey key, short missSize, out BinaryDataListRow value)
         {
-            value = LevelZeroCache[key] ?? new BinaryDataListRow(missSize);
+            value = _levelZeroCache[key] ?? new BinaryDataListRow(missSize);
 
             return true;
         }
@@ -176,7 +176,7 @@ namespace Dev2.Data.Storage
         public bool TrySetValue(StorageKey sk, short missSize, BinaryDataListRow value)
         {
 
-            LevelZeroCache[sk] = value;
+            _levelZeroCache[sk] = value;
 
             return true;
         }
@@ -196,7 +196,7 @@ namespace Dev2.Data.Storage
 
                 StorageKey tmpKey = new StorageKey(sk.UID, idx + sk.UniqueKey);
 
-                var tmp = LevelZeroCache[tmpKey];
+                var tmp = _levelZeroCache[tmpKey];
 
                 if(tmp != null)
                 {
@@ -218,64 +218,6 @@ namespace Dev2.Data.Storage
         }
 
         #endregion
-
-    }
-
-    public class BinaryDataListRowEqualityComparer : IEqualityComparer<IndexBasedBinaryDataListRow>
-    {
-        readonly List<int> _compareCols;
-
-        #region Implementation of IEqualityComparer<in IndexBasedBinaryDataListRow>
-
-        public BinaryDataListRowEqualityComparer(List<int> compareCols)
-        {
-            _compareCols = compareCols;
-        }
-
-        /// <summary>
-        /// Determines whether the specified objects are equal.
-        /// </summary>
-        /// <param name="x">The first object of type <paramref>
-        ///                                              <name>T</name>
-        ///                                          </paramref>
-        ///     to compare.</param>
-        /// <param name="y">The second object of type <paramref>
-        ///                                               <name>T</name>
-        ///                                           </paramref>
-        ///     to compare.</param>
-        /// <returns>
-        /// true if the specified objects are equal; otherwise, false.
-        /// </returns>
-        public bool Equals(IndexBasedBinaryDataListRow x, IndexBasedBinaryDataListRow y)
-        {
-            var equal = false;
-            foreach(var compareCol in _compareCols)
-            {
-                equal = x.Row.FetchValue(compareCol, -1) == y.Row.FetchValue(compareCol, -1);
-            }
-            return equal;
-        }
-
-        /// <summary>
-        /// Returns a hash code for the specified object.
-        /// </summary>
-        /// <returns>
-        /// A hash code for the specified object.
-        /// </returns>
-        /// <param name="obj">The <see cref="T:System.Object"/> for which a hash code is to be returned.</param><exception cref="T:System.ArgumentNullException">The type of <paramref name="obj"/> is a reference type and <paramref name="obj"/> is null.</exception>
-        public int GetHashCode(IndexBasedBinaryDataListRow obj)
-        {
-            return _compareCols.Sum(compareCol => obj.Row.FetchValue(compareCol, -1).GetHashCode());
-        }
-
-        #endregion
-    }
-
-    public struct IndexBasedBinaryDataListRow
-    {
-        public BinaryDataListRow Row { get; set; }
-        public int Index { get; set; }
-
 
     }
 }

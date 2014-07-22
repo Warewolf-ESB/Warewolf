@@ -403,7 +403,7 @@ namespace Dev2.Server.Datalist
             Guid result = Guid.Empty;
             errors = new ErrorResultTO();
 
-            ServerLogger.LogMessage("PRE-" + typeOf.ToString().ToUpper() + " SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB() + " MBs ]");
+            ServerLogger.LogMessage("PRE-" + typeOf.ToString().ToUpper() + " SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb() + " MBs ]");
 
             switch(typeOf)
             {
@@ -417,7 +417,7 @@ namespace Dev2.Server.Datalist
                     break;
             }
 
-            ServerLogger.LogMessage("POST-" + typeOf.ToString().ToUpper() + " SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB() + " MBs ]");
+            ServerLogger.LogMessage("POST-" + typeOf.ToString().ToUpper() + " SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb() + " MBs ]");
 
             return result;
 
@@ -749,7 +749,7 @@ namespace Dev2.Server.Datalist
                 if(errors != null && errors.HasErrors())
                 {
                     ErrorResultTO tmpErrors;
-                  mergeId =  UpsertSystemTag(destinationDatalistID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out tmpErrors);
+                    mergeId = UpsertSystemTag(destinationDatalistID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out tmpErrors);
                 }
             }
 
@@ -2647,9 +2647,12 @@ namespace Dev2.Server.Datalist
                 var fetchNextIndex = rightSideItr.FetchNextIndex();
                 string error;
                 var binaryDataListItems = rightEntry.FetchRecordAt(fetchNextIndex, DataListUtil.ExtractFieldNameFromValue(rightSide), out error);
-                var singleItem = binaryDataListItems[0];
-                var displayValue = DataListUtil.ReplaceStarWithFixedIndex(rightSide, fetchNextIndex);
-                rightEntry.ComplexExpressionAuditor.AddAuditStep(rightSide, "", "", 1, singleItem.TheValue, displayValue);
+                if(binaryDataListItems != null && binaryDataListItems.Count > 0)
+                {
+                    var singleItem = binaryDataListItems[0];
+                    var displayValue = DataListUtil.ReplaceStarWithFixedIndex(rightSide, fetchNextIndex);
+                    rightEntry.ComplexExpressionAuditor.AddAuditStep(rightSide, "", "", 1, singleItem.TheValue, displayValue);
+                }
             }
         }
 

@@ -190,7 +190,7 @@ namespace Dev2.Runtime.ESB.Control
         /// <returns></returns>
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID, out ErrorResultTO errors)
         {
-            ServerLogger.LogMessage("START MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB().ToString("####.####") + " MBs ]");
+            ServerLogger.LogMessage("START MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
@@ -261,7 +261,7 @@ namespace Dev2.Runtime.ESB.Control
 
             }
 
-            var memoryUse = BinaryDataListStorageLayer.GetUsedMemoryInMB();
+            var memoryUse = BinaryDataListStorageLayer.GetUsedMemoryInMb();
             var logMemoryValue = memoryUse.ToString("####.####");
 
             // ReSharper disable CompareOfFloatsByEqualityOperator

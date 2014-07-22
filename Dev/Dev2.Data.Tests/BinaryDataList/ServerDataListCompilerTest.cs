@@ -1757,7 +1757,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestCategory("ServerDataListCompiler_Evaluate")]
         public void ServerDataListCompiler_Evaluate_ActionTypeIsInternalAndRecordsetIndexIsAScalaButDoesntExistOnTheDataList_ThrowsException()
         {
-           //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
             ErrorResultTO errors;
             const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
             const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
@@ -1766,7 +1766,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
 
             //------------Execute Test---------------------------
-          _sdlc.Evaluate(null, dlID, enActionType.Internal, "[[rs1([[junk]]).f1]]", out errors);
+            _sdlc.Evaluate(null, dlID, enActionType.Internal, "[[rs1([[junk]]).f1]]", out errors);
         }
 
         [TestMethod]
@@ -1978,7 +1978,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             payload.IsDebug = true;
             payload.Add("[[rec2().b]]", "six vitamins");
             //------------Execute Test---------------------------
-            var upsertId = _sdlc.Upsert(null, dlID, new List<string>{"[[rec2().a]]","[[rec2().b]]"}, new List<string>{"One", "Two"}, out errors);
+            var upsertId = _sdlc.Upsert(null, dlID, new List<string> { "[[rec2().a]]", "[[rec2().b]]" }, new List<string> { "One", "Two" }, out errors);
             //------------Assert Results-------------------------
             Assert.AreNotEqual(Guid.Empty, upsertId);
             Assert.IsFalse(errors.HasErrors());
@@ -2037,7 +2037,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
             //------------Execute Test---------------------------
             Guid shapeID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, new List<IDev2Definition>(), out errors);
-           //-------------Assert---------------------------------
+            //-------------Assert---------------------------------
             Assert.AreNotEqual(Guid.Empty, shapeID);
             Assert.IsFalse(errors.HasErrors());
         }
@@ -2070,8 +2070,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Execute Test---------------------------
             var id = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, "", out errors);
             //------------Assert Results-------------------------
-           Assert.AreNotEqual(Guid.Empty, id);
-           Assert.IsFalse(errors.HasErrors());
+            Assert.AreNotEqual(Guid.Empty, id);
+            Assert.IsFalse(errors.HasErrors());
         }
 
         [TestMethod]
@@ -2139,7 +2139,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             data = (TestHelper.ConvertStringToByteArray(strData));
             Guid rightId = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>", out errors);
             //------------Execute Test---------------------------
-            Guid shapeId = _sdlc.Merge(null, leftId, rightId, enDataListMergeTypes.Intersection ,enTranslationDepth.Shape , false, out errors);
+            Guid shapeId = _sdlc.Merge(null, leftId, rightId, enDataListMergeTypes.Intersection, enTranslationDepth.Shape, false, out errors);
             //------------Assert Results-------------------------
             Assert.AreNotEqual(Guid.Empty, shapeId);
             Assert.IsFalse(errors.HasErrors());
@@ -2193,7 +2193,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             data = (TestHelper.ConvertStringToByteArray(strData));
             Guid rightId = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>", out errors);
             //------------Execute Test---------------------------
-            var shapeId = _sdlc.ConditionalMerge(null, DataListMergeFrequency.Always, leftId, rightId, DataListMergeFrequency.Always, enDataListMergeTypes.Intersection,  enTranslationDepth.Shape);
+            var shapeId = _sdlc.ConditionalMerge(null, DataListMergeFrequency.Always, leftId, rightId, DataListMergeFrequency.Always, enDataListMergeTypes.Intersection, enTranslationDepth.Shape);
             //------------Assert Results-------------------------
             Assert.AreNotEqual(Guid.Empty, shapeId);
         }
@@ -2220,7 +2220,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         [TestCategory("ServerDataListCompiler_TransferSystemTags")]
         public void ServerDataListCompiler_TransferSystemTags_ThrowsException()
         {
-             //------------Setup for test--------------------------
+            //------------Setup for test--------------------------
             ErrorResultTO errors;
             //------------Execute Test---------------------------
             _sdlc.TransferSystemTags(null, Guid.Empty, Guid.Empty, false, out errors);
@@ -2292,7 +2292,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string strData1 = "<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
             Guid id = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
-           const string strShape0 = "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>";
+            const string strShape0 = "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>";
             Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0, out errors);
             _sdlc.SetParentUID(id, parentID, out errors);
             //------------Execute Test---------------------------
@@ -2377,7 +2377,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            var dataListServer  = new Mock<IDataListServer>();
+            var dataListServer = new Mock<IDataListServer>();
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
             dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
@@ -2498,9 +2498,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             var translator = new Mock<IDataListTranslator>();
             var binaryDataList = new Mock<IBinaryDataList>();
             translator.Setup(m => m.ConvertToDataTable(binaryDataList.Object, "", out errors, PopulateOptions.IgnoreBlankRows)).Returns(new DataTable("TBA"));
-// ReSharper disable ImplicitlyCapturedClosure
+            // ReSharper disable ImplicitlyCapturedClosure
             translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Returns("<DataList><PASSED/></DataList>");
-// ReSharper restore ImplicitlyCapturedClosure
+            // ReSharper restore ImplicitlyCapturedClosure
             dataListServer.Setup(m => m.GetTranslator(DataListFormat.CreateFormat(GlobalConstants._DATATABLE, EmitionTypes.XML, ""))).Returns(translator.Object);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
             //------------Execute Test---------------------------
@@ -2521,15 +2521,15 @@ namespace Dev2.Data.Tests.BinaryDataList
             var translator = new Mock<IDataListTranslator>();
             var binaryDataList = new Mock<IBinaryDataList>();
             translator.Setup(m => m.ConvertToDataTable(binaryDataList.Object, "", out errors, PopulateOptions.IgnoreBlankRows)).Throws(new Exception());
-// ReSharper disable ImplicitlyCapturedClosure
+            // ReSharper disable ImplicitlyCapturedClosure
             translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Returns("<DataList><PASSED/></DataList>");
-// ReSharper restore ImplicitlyCapturedClosure
+            // ReSharper restore ImplicitlyCapturedClosure
             dataListServer.Setup(m => m.GetTranslator(DataListFormat.CreateFormat(GlobalConstants._DATATABLE, EmitionTypes.XML, ""))).Returns(translator.Object);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
             //------------Execute Test---------------------------
             var dataTable = sdlc.ConvertToDataTable(binaryDataList.Object, "", out errors, PopulateOptions.IgnoreBlankRows);
             //------------Assert Results-------------------------
-            Assert.IsNull(dataTable); 
+            Assert.IsNull(dataTable);
             Assert.IsTrue(errors.HasErrors());
         }
 
@@ -2549,7 +2549,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0, out errors);
             _sdlc.SetParentUID(dlID, parentID, out errors);
             //------------Execute Test---------------------------
-            Guid shapeID = sdlc.InternalShape(null, dlID,new List<IDev2Definition>{new Dev2Definition{Name = "[[scalar1]]", IsRequired = true , Value = "None",DefaultValue = "BB" }},  enDev2ArgumentType.DB_ForEach, out errors);
+            Guid shapeID = sdlc.InternalShape(null, dlID, new List<IDev2Definition> { new Dev2Definition { Name = "[[scalar1]]", IsRequired = true, Value = "None", DefaultValue = "BB" } }, enDev2ArgumentType.DB_ForEach, out errors);
             //-------------Assert---------------------------------
             Assert.AreNotEqual(Guid.Empty, shapeID);
             Assert.IsFalse(errors.HasErrors());
@@ -2592,7 +2592,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.IsNotNull(results);
             Assert.IsInstanceOfType(results, typeof(Func<IDev2Definition, string>));
         }
-     
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ServerDataListCompiler_ConvertFrom")]
@@ -2616,7 +2616,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var binaryDataList = new Mock<IBinaryDataList>();
             dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
             //------------Execute Test---------------------------
-            var translatedPayloadTO = sdlc.ConvertFrom(null, shapeId,enTranslationDepth.Data, xmlFormat, out errors);
+            var translatedPayloadTO = sdlc.ConvertFrom(null, shapeId, enTranslationDepth.Data, xmlFormat, out errors);
             //------------Assert Results-------------------------
             Assert.IsNotNull(translatedPayloadTO);
             Assert.AreEqual(dl, translatedPayloadTO.FetchAsString());
@@ -2819,6 +2819,38 @@ namespace Dev2.Data.Tests.BinaryDataList
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_DataListItemNotFound()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2><va/></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec2().b]]", "!~calculation~![[rec(*).a]]+1!~~calculation~!");
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, result);
+            Assert.IsNotNull(payload.DebugOutputs);
+            Assert.AreEqual(1, payload.DebugOutputs.Count);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry);
+            Assert.IsNotNull(payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor);
+            var auditSteps = payload.DebugOutputs[0].RightEntry.ComplexExpressionAuditor.FetchAuditItems();
+            Assert.IsNotNull(auditSteps);
+            Assert.AreEqual(0, auditSteps.Count);
+            Assert.IsTrue(errors.HasErrors());
+            var fetchError = errors.FetchErrors()[0];
+            StringAssert.Contains(fetchError, "An error occurred while parsing { 1,2,3+1 } It appears to be malformed");
+        }
+
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
         public void ServerDataListCompiler_UpsertWithDebug_AddAListOfValuesToUpsertRecordset_ValidDebugTO()
@@ -2831,7 +2863,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
             var payload = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
             payload.IsDebug = true;
-            payload.Add("[[rec2().b]]", new List<string>{"One", "Two"});
+            payload.Add("[[rec2().b]]", new List<string> { "One", "Two" });
             //------------Execute Test---------------------------
             Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
             //------------Assert---------------------------------
@@ -3089,9 +3121,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             IBinaryDataListEntry varBin;
             string error;
             bdl.TryGetEntry("va", out varBin, out error);
-           var val = varBin.FetchScalar().TheValue;
-           Assert.AreEqual("87,3", val);
+            var val = varBin.FetchScalar().TheValue;
+            Assert.AreEqual("87,3", val);
         }
-    }   
+    }
 }
-            

@@ -29,10 +29,10 @@ namespace Dev2.DataList.Contract.Binary_Objects
         #endregion
 
         #region Ctor
-        internal BinaryDataList(Guid parentID)
+        internal BinaryDataList(Guid parentId)
         {
             UID = Guid.NewGuid();
-            ParentUID = parentID;
+            ParentUID = parentId;
             _intellisensedNamespace = new List<string>(GlobalConstants.DefaultColumnSizeLvl1);
             _intellisenseParts = new List<IDev2DataLanguageIntellisensePart>();
             _templateDict = new Dictionary<string, IBinaryDataListEntry>();
@@ -300,16 +300,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
          */
         public IBinaryDataList Merge(IBinaryDataList right, enDataListMergeTypes mergeType, enTranslationDepth depth, bool newList, out ErrorResultTO errors)
         {
-            IBinaryDataList mergeResult;
-
-            if(newList)
-            {
-                mergeResult = Clone(depth, out errors, false);
-            }
-            else
-            {
-                mergeResult = this;
-            }
+            IBinaryDataList mergeResult = newList ? Clone(depth, out errors, false) : this;
 
             // do the merge ;)
             ((BinaryDataList)mergeResult).MergeIntoInstance(right, mergeType, depth, out errors);
@@ -453,7 +444,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             // Have to register with Thread ID, thread ID cha
             DataListRegistar.RegisterDataListInScope(Thread.CurrentThread.ManagedThreadId, UID);
 
-            ServerLogger.LogTrace("CREATED DATALIST [ " + UID + " ] / MEMORY USAGE NOW AT [ " + BinaryDataListStorageLayer.GetUsedMemoryInMB() + " MBs ]");
+            ServerLogger.LogTrace("CREATED DATALIST [ " + UID + " ] / MEMORY USAGE NOW AT [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb() + " MBs ]");
 
         }
 
