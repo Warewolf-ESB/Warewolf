@@ -130,6 +130,12 @@
       <DependentUpon>Settings Permissions.feature</DependentUpon>
     </Compile>
     <Compile Include="Permissions\SettingsPermissionsSteps.cs" />
+    <Compile Include="Scheduler\UnknownSteps.cs" />
+    <Compile Include="Scheduler\Scheduler.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Scheduler.feature</DependentUpon>
+    </Compile>
     <Compile Include="Toolbox\ControlFlow\Decision\Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -412,6 +418,10 @@
       <LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput>
     </None>
     <None Include="runtests.cmd" />
+    <None Include="Scheduler\Scheduler.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Scheduler.feature.cs</LastGenOutput>
+    </None>
     <None Include="SpecRunTestProfile.xsd">
       <SubType>Designer</SubType>
     </None>
