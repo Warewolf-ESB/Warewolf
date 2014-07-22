@@ -209,3 +209,50 @@ Scenario: Assign Disk Available into a recordset
 	And the debug output as 
 	| # |                           |
 	| 1 | [[my(1).disks]] =  String |
+
+# This Test should be passed after the bug 12236 is fixed 
+#Scenario:Wxecuting with Incorrect Recordsets 
+#	Given I have a variable "[[rec&^[a]]().a]]" and I selected "RAM Available(MB)"	
+#	When the gather system infomartion tool is executed
+#	Then the value of the variable "[[my(2).roles]]" is a valid "String"
+#	And the execution has "AN" error
+#	And the debug output as 
+#	| # |                          |
+## This Test should be passed after the bug 12236 is fixed 
+#Scenario:Wxecuting with Incorrect Scalar variables 
+#	Given I have a variable "[[test&^]]" and I selected "RAM Available(MB)"	
+#	When the gather system infomartion tool is executed
+#	Then the value of the variable "[[my(2).roles]]" is a valid "String"
+#	And the execution has "AN" error
+#	And the debug output as 
+#	| # |                          |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

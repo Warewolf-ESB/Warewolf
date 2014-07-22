@@ -3288,3 +3288,70 @@ Scenario: Workflow with Calculation using Star notation
 	  And the 'Calculation' in Workflow 'WorkflowWithAssignCalculationUsingStar' debug outputs as  
 	  | # |                   |
 	  | 1 | [[rec(1).sum]] =  |
+
+# This Test should be passed after the bug 12236 is fixed    
+#Scenario: Workflow with Assign and Gather System Information executing with incorrect variable
+#      Given I have a workflow "workfloforGatherSystemInformationtool"
+#	  And "workfloforGatherSystemInformationtool" contains an Assign "Assign for sys" as
+#	  | variable | value |
+#	  | [[a]]    | 123   |
+#	   And "workfloforGatherSystemInformationtool" contains Gather System Info "System info" as
+#	  | Variable         | Selected    |
+#	  | [[rec[[a]]().a]] | Date & Time |
+#	  When "workfloforGatherSystemInformationtool" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Assign for sys' in WorkFlow 'workfloforGatherSystemInformationtool' debug inputs as
+#	  | # | Variable | New Value |
+#	  | 1 | [[a]]  = | 123       |
+#	  And the 'Assign for sys' in Workflow 'workfloforGatherSystemInformationtool' debug outputs as    
+#	 | #                  |             |
+#	 | 1                  | [[a]] = 123 |
+#	  And the 'System info' in WorkFlow 'workfloforGatherSystemInformationtool' debug inputs as
+#	  | # |                    |             |
+#	  | 1 | [[rec[[a]]().a]] = | Date & Time |
+#	  And the 'System info' in Workflow 'workfloforGatherSystemInformationtool' debug outputs as   
+#	  |                        |
+##	  
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
