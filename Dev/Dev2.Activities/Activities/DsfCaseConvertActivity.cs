@@ -7,6 +7,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -85,6 +86,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     outIndex++;
                     IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.StringToConvert, false, out errors);
                     allErrors.MergeErrors(errors);
+                    ValidateVariable(item.Result, compiler, dataObject, out errors);
+                    allErrors.MergeErrors(errors);
                     IsSingleValueRule.ApplyIsSingleValueRule(item.ExpressionToConvert, allErrors);
                     if(dataObject.IsDebugMode())
                     {
@@ -119,16 +122,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 }
                                 //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                                 IsSingleValueRule rule = new IsSingleValueRule(() => expression);
-                                    var singleresError = rule.Check();
-                                    if (singleresError != null)
-                                        allErrors.AddError(singleresError.Message);
-                                    else
-                                    {
+                                var singleresError = rule.Check();
+                                if(singleresError != null)
+                                    allErrors.AddError(singleresError.Message);
+                                else
+                                {
 
-                                        toUpsert.Add(expression, res.TheValue);
+                                    toUpsert.Add(expression, res.TheValue);
 
-                                        // Upsert the entire payload
-                                    }
+                                    // Upsert the entire payload
+                                }
                                 allErrors.MergeErrors(errors);
 
 
@@ -137,11 +140,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         compiler.Upsert(executionId, toUpsert, out errors);
                         if(!allErrors.HasErrors() && dataObject.IsDebugMode())
                         {
-                            foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                            foreach(var debugOutputTo in toUpsert.DebugOutputs)
                             {
                                 var debugItem = new DebugItem();
                                 AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                                AddDebugItem(new DebugItemVariableParams(debugOutputTO), debugItem);
+                                AddDebugItem(new DebugItemVariableParams(debugOutputTo), debugItem);
                                 _debugOutputs.Add(debugItem);
                             }
                             toUpsert.DebugOutputs.Clear();
@@ -177,6 +180,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }
+            }
+        }
+
+        static void ValidateVariable(string fieldName, IDataListCompiler compiler, IDSFDataObject dataObject, out ErrorResultTO errors)
+        {
+            fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
+            var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+            if(!string.IsNullOrEmpty(datalist))
+            {
+                var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist)
+                {
+                    LabelText = fieldName
+                };
+
+                var errorInfo = isValidExpr.Check();
+                if(errorInfo != null)
+                {
+                    errors.AddError(errorInfo.Message);
+                }
+
             }
         }
 
@@ -431,7 +454,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int GetCollectionCount()
         {
-            return ConvertCollection.Count(caseConvertTO => !caseConvertTO.CanRemove());
+            return ConvertCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
         }
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)

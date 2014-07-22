@@ -46,7 +46,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
                 variableList = new List<Tuple<string, string>>();
                 ScenarioContext.Current.Add("variableList", variableList);
             }
-            
+
             variableList.Add(new Tuple<string, string>(variable, value));
         }
 
@@ -58,6 +58,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
 
 
         [Given(@"I convert a variable ""(.*)"" to ""(.*)""")]
+        [Given(@"I convert a variable '(.*)' to '(.*)'")]
         public void GivenIConvertAVariableTo(string variable, string toCase)
         {
             List<Tuple<string, string>> caseConversion;

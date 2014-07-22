@@ -108,7 +108,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             const string expected = @"CHANGE THIS TO UPPER CASE";
-            StringAssert.Contains(actualRecset[1].TheValue,expected);
+            StringAssert.Contains(actualRecset[1].TheValue, expected);
             StringAssert.Contains(actualScalar, "change this to upper case");
         }
 
@@ -338,6 +338,26 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void CaseConvert_ErrorHandeling_Expected_ErrorTag()
         {
             IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[[//().rec]]", "Title Case", "", 1) };
+            SetupArguments(@"<root><testVar>change this 5435123130t lete2435r upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+            string actual;
+            string error;
+
+            GetScalarValueFromDataList(result.DataListID, "testVar", out actual, out error);
+
+            // remove test datalist ;)
+            DataListRemoval(result.DataListID);
+
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfCaseConvert_Execute")]
+        public void CaseConvert_Execute_InvalidVariable_Expected_Error()
+        {
+            IList<ICaseConvertTO> convertCollection = new List<ICaseConvertTO> { CaseConverterFactory.CreateCaseConverterTO("[rec().a]]", "Title Case", "", 1) };
             SetupArguments(@"<root><testVar>change this 5435123130t lete2435r upper case</testVar></root>", ActivityStrings.CaseConvert_DLShape, convertCollection);
 
             IDSFDataObject result = ExecuteProcess();

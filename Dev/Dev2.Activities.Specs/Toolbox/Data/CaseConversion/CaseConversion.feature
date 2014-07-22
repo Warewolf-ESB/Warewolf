@@ -277,52 +277,62 @@ Examples:
 #	| 4  | TITLE CASE                    |
 
 #Bug 12178
-#Scenario Outline: Error messages when convert a Invalid variable
-#	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
-#	And I convert a variable '<Variable>' to '<To>'	
-#	When the case conversion tool is executed
-#	Then the execution has "AN" error
-#	And the debug inputs as  
-#	| # | Convert      | To     |
-#	| 1 | <Variable> = | <Case> |
-#	And the debug output as  
-#	| # |           |
-#Examples: 
-#	| No | Variable                                  | To    | Error                                                                                                                                                                                                                                                   |
-#	| 1  | [[my(-1).var]]                            | UPPER | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |
-#	| 2  | [[var  ]]                                 | UPPER | Variable name [[var  ]] contains invalid character(s)                                                                                                                                                                                                   |
-#	| 3  | [[my(%).var]]                             | UPPER | Recordset index (q) contains invalid character(s)                                                                                                                                                                                                       |
-#	| 4  | [rec().a]]=]]                             | UPPER | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
-#	| 5  | [[rec'()'.a]]                             | UPPER | Recordset name [[rec'()']] contains invalid character(s)                                                                                                                                                                                                |
-#	| 6  | [[rec"()".a]]                             | UPPER | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
-#	| 7  | [[rec".a]]                                | UPPER | Variable name [[rec".a]] contains invalid character(s)                                                                                                                                                                                                  |
-#	| 8  | [[rec.a]]                                 | UPPER | Variable name [[rec.a]]  contains invalid character(s)                                                                                                                                                                                                  |
-#	| 9  | [[rec()*.a]]                              | UPPER | Variable name [[rec()*.a]] contains invalid character(s)                                                                                                                                                                                                |
-#	| 10 | [[rec().a]]*                              | UPPER | One variable only allowed in the output field                                                                                                                                                                                                           |
-#	| 11 | [[1]]                                     | UPPER | Variable name [[1]] begins with a number                                                                                                                                                                                                                |
-#	| 12 | [[@]]                                     | UPPER | Variable name [[@]] contains invalid character(s)                                                                                                                                                                                                       |
-#	| 13 | [[var#]]                                  | UPPER | Variable name [[var#]] contains invalid character(s)                                                                                                                                                                                                    |
-#	| 14 | [[var]]00]]                               | UPPER | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
-#	| 15 | [[var]]@]]                                | UPPER | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
-#	| 16 | [[var.()]]                                | UPPER | Variable name [[var.()]] contains invalid character(s)                                                                                                                                                                                                  |
-#	| 17 | [[]]                                      | UPPER | Variable [[]] is missing a name                                                                                                                                                                                                                         |
-#	| 18 | [[()]]                                    | UPPER | Variable name [[()]] contains invalid character(s)                                                                                                                                                                                                      |
-#	| 19 | [[var[[a]*]]]                             | UPPER | Variable name [[()]] contains invalid character(s)                                                                                                                                                                                                      |
-#	| 20 | [[var[[]]                                 | UPPER | Invalid region detected: An open [[ without a related close ]]                                                                                                                                                                                          |
-#	| 21 | [[var1.a]]                                | UPPER | Variable name [[var1.a]] contains invalid character(s)                                                                                                                                                                                                  |
-#	| 22 | [[rec()!a]]                               | UPPER | Recordset name [[rec()!a]] contains invalid character(s)                                                                                                                                                                                                |
-#	| 23 | [[rec()         a]]                       | UPPER | Recordset name [[rec()         a]] contains invalid character(s)                                                                                                                                                                                        |
-#	| 24 | [[{{rec(_).a}}]]]                         | UPPER | Recordset name [[{{rec]] contains invalid character(s)                                                                                                                                                                                                  |
-#	| 25 | [[rec(23).[[var*]]]]                      | UPPER | Variable name [[var*]] contains invalid character(s)                                                                                                                                                                                                    |
-#	| 26 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] | UPPER | Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] contains invalid character(s)  /n  Variable name [[r"]] contains invalid character(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a number |
-#	| 27 | [[rec().a]]&[[a]]                         | UPPER | One variable only allowed in the output field                                                                                                                                                                                                           |
-#	| 28 | a[[rec([[[[b]]]]).a]]@                    | UPPER | Variable name a[[rec([[[[b]]]]).a]]@  contains invalid character(s)                                                                                                                                                                                     |
-#	| 29 | [[rec()                                   | UPPER | Recordset variable that needs a field name(s)                                                                                                                                                                                                           |
-#
-#
-#
-#
-#
+Scenario Outline: Error messages when convert a Invalid variable
+	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
+	And I convert a variable '<Variable>' to '<To>'	
+	When the case conversion tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as  
+	| # | Convert      | To     |
+	| 1 | <Variable> = | <To> |
+	And the debug output as  
+	| # |              |
+	| 1 | <Variable> = |
+Examples: 
+	| No | Variable                                  | To    | Error                                                                                                                                                                                                                                                   |
+	| 1  | [[my(-1).var]]                            | UPPER | Recordset index -1 is not greater than zero                                                                                                                                                                                                             |
+	| 2  | [[var  ]]                                 | UPPER | Variable name [[var  ]] contains invalid character(s)                                                                                                                                                                                                   |
+	| 3  | [[my(%).var]]                             | UPPER | Recordset index (q) contains invalid character(s)                                                                                                                                                                                                       |
+	| 4  | [[rec'()'.a]]                             | UPPER | Recordset name [[rec'()']] contains invalid character(s)                                                                                                                                                                                                |
+	| 5  | [[rec"()".a]]                             | UPPER | Recordset name [[rec"()"]] contains invalid character(s)                                                                                                                                                                                                |
+	| 6  | [[rec".a]]                                | UPPER | Variable name [[rec".a]] contains invalid character(s)                                                                                                                                                                                                  |
+	| 7  | [[rec.a]]                                 | UPPER | Variable name [[rec.a]]  contains invalid character(s)                                                                                                                                                                                                  |
+	| 8  | [[rec()*.a]]                              | UPPER | Variable name [[rec()*.a]] contains invalid character(s)                                                                                                                                                                                                |
+	| 9 | [[rec().a]]*                              | UPPER | One variable only allowed in the output field                                                                                                                                                                                                           |
+	| 10 | [[1]]                                     | UPPER | Variable name [[1]] begins with a number                                                                                                                                                                                                                |
+	| 11 | [[@]]                                     | UPPER | Variable name [[@]] contains invalid character(s)                                                                                                                                                                                                       |
+	| 12 | [[var#]]                                  | UPPER | Variable name [[var#]] contains invalid character(s)                                                                                                                                                                                                    |
+	| 13 | [[var]]00]]                               | UPPER | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
+	| 14 | [[var]]@]]                                | UPPER | Invalid region detected: A close ]] without a related open [[                                                                                                                                                                                           |
+	| 15 | [[var.()]]                                | UPPER | Variable name [[var.()]] contains invalid character(s)                                                                                                                                                                                                  |
+	| 16 | [[]]                                      | UPPER | Variable [[]] is missing a name                                                                                                                                                                                                                         |
+	| 17 | [[()]]                                    | UPPER | Variable name [[()]] contains invalid character(s)                                                                                                                                                                                                      |
+	| 18 | [[var[[a]*]]]                             | UPPER | Variable name [[()]] contains invalid character(s)                                                                                                                                                                                                      |
+	| 19 | [[var[[]]                                 | UPPER | Invalid region detected: An open [[ without a related close ]]                                                                                                                                                                                          |
+	| 20 | [[var1.a]]                                | UPPER | Variable name [[var1.a]] contains invalid character(s)                                                                                                                                                                                                  |
+	| 21 | [[rec()!a]]                               | UPPER | Recordset name [[rec()!a]] contains invalid character(s)                                                                                                                                                                                                |
+	| 22 | [[rec()         a]]                       | UPPER | Recordset name [[rec()         a]] contains invalid character(s)                                                                                                                                                                                        |
+	| 23 | [[{{rec(_).a}}]]]                         | UPPER | Recordset name [[{{rec]] contains invalid character(s)                                                                                                                                                                                                  |
+	| 24 | [[rec(23).[[var*]]]]                      | UPPER | Variable name [[var*]] contains invalid character(s)                                                                                                                                                                                                    |
+	| 25 | [[r(q).a]][[r()..]][[r"]][[r()]][[]][[1]] | UPPER | Recordset index (q) contains invalid character(s)  /n  Recordset name [[r()..]] contains invalid character(s)  /n  Variable name [[r"]] contains invalid character(s)  /n Variable [[]] is missing a name  /n  Variable name [[1]] begins with a number |
+	| 26 | [[rec().a]]&[[a]]                         | UPPER | One variable only allowed in the output field                                                                                                                                                                                                           |
+	| 27 | a[[rec([[[[b]]]]).a]]@                    | UPPER | Variable name a[[rec([[[[b]]]]).a]]@  contains invalid character(s)                                                                                                                                                                                     |
+	| 28 | [[rec()                                   | UPPER | Recordset variable that needs a field name(s)                                                                                                                                                                                                           |
+
+
+Scenario: Convert a invalid variable valid text
+	Given I have a case convert variable "[[my().sentenct]]" with a value of "Warewolf Rocks"
+	And I convert a variable "[rec().a]]=]]" to "UPPER"		
+	When the case conversion tool is executed
+	Then the execution has "AN" error
+	And the debug inputs as  
+	| # | Convert         | To    |
+	| 1 | [rec().a]]=]] = | UPPER |
+	And the debug output as  
+	| # |                 |
+	| 1 | = [rec().a]]=]] |
+
+
 
 
 
