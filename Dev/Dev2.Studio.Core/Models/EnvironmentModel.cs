@@ -1,7 +1,4 @@
-﻿using System;
-using System.Network;
-using System.Windows;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Communication;
 using Dev2.Messages;
@@ -13,6 +10,9 @@ using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Workspaces;
+using System;
+using System.Network;
+using System.Windows;
 using Action = System.Action;
 
 // ReSharper disable CheckNamespace
@@ -252,7 +252,7 @@ namespace Dev2.Studio.Core.Models
 
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
-            RaiseNetworkStateChanged(e.ToState == NetworkState.Online);
+            RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
         }
 
         void RaiseNetworkStateChanged(bool isOnline)

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using Dev2.Studio.UI.Tests;
+﻿using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System;
+using System.Drawing;
+using System.Linq;
+using System.Windows.Forms;
 using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 // ReSharper disable CheckNamespace
@@ -119,6 +119,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
             UITestControl clickRibbonMenuItem = ClickRibbonMenuItem("UI_RibbonDebugBtn_AutoID");
             DebugUIMap.WaitForDebugWindow(7000);
             return clickRibbonMenuItem;
+        }
+
+        public UITestControl OpenDeploy()
+        {
+            return ClickRibbonMenuItem("Deploy", 20000);
+        }
+
+        public UITestControl OpenScheduler()
+        {
+            return ClickRibbonMenuItem("Scheduler", 20000);
+        }
+
+        public UITestControl OpenManageSettings()
+        {
+            return ClickRibbonMenuItem("Manage Settings", 20000);
         }
 
         public UITestControl ClickRibbonMenuItem(string itemName, int waitAmt = 100)

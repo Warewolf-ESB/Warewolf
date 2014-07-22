@@ -102,6 +102,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             return null;
         }
 
+        public UITestControl GetConnectControl(string controlType, string friendlyName)
+        {
+            var kids = _explorerNewConnectionControl.GetChildren();
+
+            if(kids != null)
+            {
+                return kids.FirstOrDefault(c => c.ControlType.Name == controlType && c.FriendlyName == friendlyName);
+            }
+
+            return null;
+        }
+
         public UITestControl GetLocalServer()
         {
             var firstTreeChild = _explorerTree.GetChildren()[0];
@@ -346,6 +358,30 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             var yesButton = confirmationDialog.GetChildren().FirstOrDefault(c => c.FriendlyName == "Yes");
             Mouse.Click(yesButton, new Point(10, 10));
         }
+
+        public void RightClickRemoveResource(string resourceName, string categoryName, string serverName)
+        {
+            ExplorerUIMap.EnterExplorerSearchText(resourceName);
+            UITestControl theControl = GetServiceItem(serverName, categoryName, resourceName);
+            Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
+            Mouse.Move(p);
+            Playback.Wait(500);
+            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
+            Playback.Wait(1000);
+            SendKeys.SendWait("{DOWN}");
+            Playback.Wait(100);
+            SendKeys.SendWait("{DOWN}");
+            Playback.Wait(100);
+            SendKeys.SendWait("{DOWN}");
+            Playback.Wait(100);
+            SendKeys.SendWait("{ENTER}");
+            PopupDialogUIMap.WaitForDialog();
+            Playback.Wait(100);
+            var confirmationDialog = UIBusinessDesignStudioWindow.GetChildren()[0];
+            var yesButton = confirmationDialog.GetChildren().FirstOrDefault(c => c.FriendlyName == "Yes");
+            Mouse.Click(yesButton, new Point(10, 10));
+        }
+
 
         public bool ServiceExists(string serverName, string serviceType, string folderName, string projectName)
         {
@@ -730,5 +766,55 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 Playback.Wait(5000);
             }
         }
+
+        public void SelectServer(string serverName)
+        {
+            var serverList = GetConnectControl("ComboBox") as WpfComboBox;
+            if (serverList != null)
+            {
+                var serverItem = serverList.Items.ToList().FirstOrDefault(c => c.FriendlyName == serverName);
+                if(serverItem != null)
+                {
+                    serverList.SelectedIndex = serverList.Items.IndexOf(serverItem);
+                }
+            }
+        }
+
+        public bool IsServerIsConnected(string serverName)
+        {
+            var serverList = GetConnectControl("ComboBox") as WpfComboBox;
+            if(serverList != null)
+            {
+                var serverItem = serverList.Items.ToList().FirstOrDefault(c => c.FriendlyName == serverName);
+                if(serverItem != null)
+                {
+                    serverList.SelectedIndex = serverList.Items.IndexOf(serverItem);
+                }
+            }
+
+            return false;
+        }
+
+        public void ChooseServerWithKeyboard(UITestControl uITestControl, string connection)
+        {
+            var serverList = GetConnectControl("ComboBox") as WpfComboBox;
+            Mouse.Click(serverList);
+            Keyboard.SendKeys("{UP}{UP}{UP}{UP}{UP}{UP}{UP}{ENTER}");
+            Playback.Wait(2000);
+        }
+
+        public void ChooseSourceServer(UITestControl uITestControl, string connection)
+        {
+            var serverList = GetConnectControl("ComboBox") as WpfComboBox;
+            if(serverList != null)
+            {
+                var serverItem = serverList.Items.ToList().FirstOrDefault(c => c.FriendlyName == connection);
+                if(serverItem != null)
+                {
+                    serverList.SelectedIndex = serverList.Items.IndexOf(serverItem);
+                }
+            }
+        }
     }
 }
+    

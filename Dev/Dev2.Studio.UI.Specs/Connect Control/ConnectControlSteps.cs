@@ -1,554 +1,514 @@
-﻿using System;
+﻿using Dev2.Studio.UI.Tests;
+using Dev2.Studio.UI.Tests.Enums;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Studio.UI.Specs.Connect_Control
 {
     [Binding]
-    public class ConnectControlSteps
+    public class ConnectControlSteps : UIMapBase
     {
-        [Given(@"select server source ""(.*)"" in ""(.*)""")]
-        public void GivenSelectServerSourceIn(string p0, string p1)
+
+        [Given(@"right click rename ""(.*)"" to ""(.*)""")]
+        public void GivenRightClickRenameTo(string serverName, string newName)
+        {
+            ExplorerUIMap.RightClickRenameResource(serverName, "", ServiceType.Sources, newName);
+        }
+        
+        [When(@"I click Test Connection")]
+        public void WhenIClickTestConnection()
+        {
+            NewServerUIMap.ClickTestConnection();
+        }
+
+        [Then(@"Enter username as ""(.*)"" as password as ""(.*)""")]
+        public void ThenEnterUsernameAsAsPasswordAs(string userName, string password)
+        {
+            NewServerUIMap.EnterUserName(userName);
+            NewServerUIMap.EnterPassword(password);
+        }
+        
+        [Given(@"I am connected to the server ""(.*)""")]
+        public void GivenIAmConnectedToTheServer(string serverName)
+        {
+            ExplorerUIMap.ClickServerInServerDDL(serverName);
+            var item = ExplorerUIMap.GetConnectControl("Button", "Connect");
+            Mouse.Click(item);
+            Playback.Wait(1000);
+        }
+        
+        [When(@"'(.*)' should be updated with connected ""(.*)""")]
+        public void WhenShouldBeUpdatedWithConnected(string p0, string p1)
+        {
+            //TJ-TODO:- Do we need to assert here
+            // ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I click on ""(.*)"" on connect control in '(.*)'")]
+        public void WhenIClickOnOnConnectControlIn(string p0, string p1)
         {
             ScenarioContext.Current.Pending();
         }
-        
-        [Given(@"right click on selected ""(.*)"" in ""(.*)""")]
-        public void GivenRightClickOnSelectedIn(string p0, string p1)
+
+        [When(@"I click Save Connection")]
+        public void WhenIClickSaveConnection()
         {
-            ScenarioContext.Current.Pending();
+            NewServerUIMap.ClickSave();
         }
-        
-        [Given(@"select ""(.*)"" on right click ""(.*)""")]
-        public void GivenSelectOnRightClick(string p0, string p1)
+
+        [When(@"I save the connection as ""(.*)""")]
+        public void WhenISaveTheConnectionAs(string serverName)
         {
-            ScenarioContext.Current.Pending();
+            NewServerUIMap.SaveNameInDialog(serverName);
         }
-        
-        [Given(@"""(.*)"" the selected source to ""(.*)""")]
-        public void GivenTheSelectedSourceTo(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Given(@"I open the connections in “Explorer”")]
-        public void GivenIOpenTheConnectionsInExplorer()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Given(@"I open the connections in “Explorer” connect control")]
-        public void GivenIOpenTheConnectionsInExplorerConnectControl()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Given(@"new remote server ""(.*)"" is ""(.*)""")]
-        public void GivenNewRemoteServerIs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Given(@"I open the connections in '(.*)' connect control")]
-        public void GivenIOpenTheConnectionsInConnectControl(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Given(@"click on 'Settings tab")]
-        public void GivenClickOnSettingsTab()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Given(@"click on ""(.*)"" tab")]
-        public void GivenClickOnTab(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I select ""(.*)"" in “Explorer” connections")]
-        public void WhenISelectInExplorerConnections(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I click ""(.*)"" in “New Server” dialog")]
-        public void WhenIClickInNewServerDialog(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"Test Connection is ""(.*)"" in “New Server” dialog")]
-        public void WhenTestConnectionIsInNewServerDialog(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I click ""(.*)""")]
-        public void WhenIClick(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I enter Name ""(.*)"" in “Save” dialog")]
-        public void WhenIEnterNameInSaveDialog(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I click on “Save"" in “Save” dialog")]
-        public void WhenIClickOnSaveInSaveDialog()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
+
         [When(@"I click on ""(.*)""")]
         [When(@"I click on '(.*)'")]
-        public void WhenIClickOn(string p0)
+        [When(@"I click on '(.*)'")]
+        [Given(@"I click on '(.*)'")]
+        [Given(@"I click on ""(.*)""")]
+        public void WhenIClickOn(string tabName)
         {
-            ScenarioContext.Current.Pending();
+            var tab = tabName.ToLower();
+            if(tab == "deploy")
+            {
+                RibbonUIMap.OpenDeploy();
+            }
+            else if(tab == "manage settings")
+            {
+                RibbonUIMap.ClickManageSecuritySettings();
+            }
+            else if(tab == "scheduler")
+            {
+                RibbonUIMap.OpenScheduler();
+            }
+            else if(tab.Contains("setting"))
+            {
+                RibbonUIMap.OpenManageSettings();
+            }
         }
-        
-        [When(@"I select ""(.*)"" in “Scheduler” connections")]
-        public void WhenISelectInSchedulerConnections(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I open the connections in “Source Server”")]
-        public void WhenIOpenTheConnectionsInSourceServer()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I select ""(.*)"" in “Source Server” connections")]
-        public void WhenISelectInSourceServerConnections(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I open the connections in “Destination server”")]
-        public void WhenIOpenTheConnectionsInDestinationServer()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I select ""(.*)"" in “Destination server” connections")]
-        public void WhenISelectInDestinationServerConnections(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I open the connections in “Explorer” connect control")]
-        public void WhenIOpenTheConnectionsInExplorerConnectControl()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I select ""(.*)"" in ""(.*)"" connections")]
-        [When(@"I select ""(.*)"" in '(.*)' connections")]
-        public void WhenISelectInConnections(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I click on ""(.*)"" in '(.*)' connect control")]
-        [When(@"I click on ""(.*)"" in ""(.*)"" connect control")]
-        public void WhenIClickOnInConnectControl(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
+
         [When(@"I click on ""(.*)"" in ""(.*)"" conncet control")]
         [When(@"I click on ""(.*)"" in '(.*)' conncet control")]
-        public void WhenIClickOnInConncetControl(string p0, string p1)
+        [When(@"I click on '(.*)' in '(.*)' connect control")]
+        [When(@"I click on ""(.*)"" in '(.*)' connect control")]
+        [When(@"I click on ""(.*)"" in ""(.*)"" connect control")]
+        [Given(@"""(.*)"" is ""(.*)"" in ""(.*)"" connect control")]
+        public void WhenIClickOnInConncetControl(string controlName, string at)
         {
-            ScenarioContext.Current.Pending();
+            var where = at.ToLower();
+            UITestControl control;
+
+            if(where.Contains("destination"))
+            {
+                control = DeployUIMap.GetDestinationContolByFriendlyName(GetActiveTab(), controlName);
+                Mouse.Click(control);
+            }
+            else if(where.Contains("source"))
+            {
+                control = DeployUIMap.GetSourceContolByFriendlyName(GetActiveTab(), controlName);
+                Mouse.Click(control);
+            }
+            else if(where.Contains("explorer"))
+            {
+                control = ExplorerUIMap.GetConnectControl("Button", controlName);
+                Mouse.Click(control);
+            }
+            else if(where == "scheduler")
+            {
+                control = SchedulerUiMap.GetConnectControl("Button", controlName);
+                Mouse.Click(control);
+            }
+            else if(where == "manage settings" || where == "settings")
+            {
+                control = SecurityUiMap.GetConnectControl("Button", controlName);
+                Mouse.Click(control);
+            }
         }
-                
-        [When(@"I click on ""(.*)"" on '(.*)' conncet control")]
-        public void WhenIClickOnOnConncetControl(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I click ""(.*)"" Connection"" in “Edit” dialog")]
-        public void WhenIClickConnectionInEditDialog(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"Test Connection is ""(.*)"" in “Edit” dialog")]
-        public void WhenTestConnectionIsInEditDialog(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I open the connections in ""(.*)""")]
-        public void WhenIOpenTheConnectionsIn(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"select ""(.*)"" on right click ""(.*)""")]
-        public void WhenSelectOnRightClick(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [When(@"I click on ""(.*)"" on ""(.*)""")]
-        public void WhenIClickOnOn(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-            
-        
+
+        [When(@"""(.*)"" is ""(.*)"" in ""(.*)"" connect control")]
         [Then(@"""(.*)"" is """"(.*)"" in ""(.*)"" connect control")]
         [Then(@"""(.*)"" is ""(.*)"" in ""(.*)"" connect control")]
         [Then(@"""(.*)"" is """"(.*)"" in '(.*)' connect control")]
-        public void ThenIsInConnectControl(string p0, string p1, string p2)
+        [Then(@"""(.*)"" is ""(.*)"" in '(.*)' connect control")]
+        [When(@"""(.*)"" is ""(.*)"" in '(.*)' connect control")]
+        [When(@"'(.*)' is '(.*)' in '(.*)' connect control")]
+        public void ThenIsInConnectControl(string serverName, string enabledStatus, string at)
         {
-            ScenarioContext.Current.Pending();
+            var where = at.ToLower();
+            var enabled = enabledStatus.ToLower() == "enabled";
+
+            if(where.Contains("destination"))
+            {
+                var sourceEditConnectionButton = DeployUIMap.GetDestinationEditConnectionButton(GetActiveTab()) as WpfButton;
+                Assert.IsNotNull(sourceEditConnectionButton);
+                Assert.AreEqual(enabled, sourceEditConnectionButton.Enabled);
+            }
+            else if(where.Contains("source"))
+            {
+                var sourceEditConnectionButton = DeployUIMap.GetSourceEditConnectionButton(GetActiveTab()) as WpfButton;
+                Assert.IsNotNull(sourceEditConnectionButton);
+                Assert.AreEqual(enabled, sourceEditConnectionButton.Enabled);
+            }
+            else if(where.Contains("explorer"))
+            {
+                var button = ExplorerUIMap.GetConnectControl("Button");
+                if(button != null)
+                {
+                    Assert.AreEqual(enabled, button.Enabled);
+                }
+            }
+            else if(where == "scheduler")
+            {
+                var button = SchedulerUiMap.GetConnectControl("Button");
+                if(button != null)
+                {
+                    Assert.AreEqual(enabled, button.Enabled);
+                }
+            }
+            else if(where == "manage settings" || where == "settings")
+            {
+                var button = SecurityUiMap.GetConnectControl("Button");
+                if(button != null)
+                {
+                    Assert.AreEqual(enabled, button.Enabled);
+                }
+            }
         }
         
-        [Then(@"""(.*)"" is ""(.*)"" in ""(.*)"" conncet control")]
-        [Then(@"""(.*)"" is ""(.*)"" in '(.*)' conncet control")]
-        public void ThenIsInConncetControl(string p0, string p1, string p2)
+        [When(@"I select ""(.*)"" from the connections list in the '(.*)'")]
+        [When(@"I select ""(.*)"" from the connections list in the ""(.*)""")]
+        [Given(@"I select ""(.*)"" from the connections list in the ""(.*)""")]
+        public void WhenISelectFromTheConnectionsListInThe(string connection, string at)
         {
-            ScenarioContext.Current.Pending();
+            var where = at.ToLower();
+
+            if(where == "explorer")
+            {
+                if(connection == "New Remote Server...")
+                {
+                    ExplorerUIMap.ChooseServerWithKeyboard(TabManagerUIMap.GetActiveTab(), connection);
+
+                    UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
+
+                    if(uiTestControl == null)
+                    {
+                        Assert.Fail("Error - Failed to show new server wizard!");
+                    }
+                }
+                else
+                {
+                    ExplorerUIMap.ChooseSourceServer(TabManagerUIMap.GetActiveTab(), connection);
+                }
+            }
+            else if(where == "destination")
+            {
+                if(connection == "New Remote Server...")
+                {
+                    DeployUIMap.ChooseSourceServerWithKeyboard(TabManagerUIMap.GetActiveTab(), connection);
+
+                    UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
+
+                    if(uiTestControl == null)
+                    {
+                        Assert.Fail("Error - Failed to show new server wizard!");
+                    }
+                }
+                else
+                {
+                    DeployUIMap.ChooseSourceServer(TabManagerUIMap.GetActiveTab(), connection);
+                }
+            }
+            else if(where == "source")
+            {
+                if(connection == "New Remote Server...")
+                {
+                    DeployUIMap.ChooseDestinationServerWithKeyboard(TabManagerUIMap.GetActiveTab(), connection);
+
+                    UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
+
+                    if(uiTestControl == null)
+                    {
+                        Assert.Fail("Error - Failed to show new server wizard!");
+                    }
+                }
+                else
+                {
+                    DeployUIMap.ChooseDestinationServer(TabManagerUIMap.GetActiveTab(), connection);
+                }
+            }
+            else if(where == "settings" || where == "manage settings")
+            {
+                if(connection == "New Remote Server...")
+                {
+                    SecurityUiMap.ChooseDestinationServerWithKeyboard(connection);
+
+                    UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
+
+                    if(uiTestControl == null)
+                    {
+                        Assert.Fail("Error - Failed to show new server wizard!");
+                    }
+                }
+                else
+                {
+                    SecurityUiMap.ChooseDestinationServer(connection);
+                }
+            }
+            else if(where == "scheduler")
+            {
+                if(connection == "New Remote Server...")
+                {
+                    SchedulerUiMap.ChooseServerWithKeyboard(connection);
+
+                    UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
+
+                    if(uiTestControl == null)
+                    {
+                        Assert.Fail("Error - Failed to show new server wizard!");
+                    }
+                }
+                else
+                {
+                    SchedulerUiMap.ChooseServer(connection);
+                }
+            }
+            Playback.Wait(5000);
         }
-        
-        [Then(@"I open the connections in ""(.*)"" connect control")]
-        [Then(@"I open the connections in '(.*)' connect control")]
-        public void ThenIOpenTheConnectionsInConnectControl(string p0)
+
+        [When(@"I click Save")]
+        public void WhenIClickSave()
         {
-            ScenarioContext.Current.Pending();
+            NewServerUIMap.ClickSave();
         }
-        
-        [Then(@"""(.*)"" and ""(.*)"" are shown in “Explorer” connections")]
-        public void ThenAndAreShownInExplorerConnections(string p0, string p1)
+
+        [Then(@"I enter the address ""(.*)"" in the connections dialog")]
+        public void ThenIEnterTheAddressInTheConnectionsDialog(string serverAddress)
         {
-            ScenarioContext.Current.Pending();
+            NewServerUIMap.EnterServerAddress(serverAddress);
         }
-        
-        [Then(@"""(.*)"" dialog is displayed")]
-        public void ThenDialogIsDisplayed(string p0)
+
+        [Then(@"I select authentication type ""(.*)""")]
+        public void ThenISelectAuthenticationType(string authenticationType)
         {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"I enter Address ""(.*)"" in “New Server” dialog")]
-        [Then(@"I enter Address ""(.*)"" in “Edit--Savedserver” dialog")]
-        public void ThenIEnterAddressInNewServerDialog(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"I select Authentication Type ""(.*)"" in “New Server” dialog")]
-        public void ThenISelectAuthenticationTypeInNewServerDialog(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"“Save Connection""(.*)""Enabled"" in “New Server” dialog")]
-        public void ThenSaveConnectionEnabledInNewServerDialog(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"“Save"" should be “Enabled” in “Save” dialog")]
-        public void ThenSaveShouldBeEnabledInSaveDialog()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        //[Then(@"new server ""(.*)"" should be ""(.*)""")]
-        //public void ThenNewServerShouldBe(string p0, string p1)
-        //{
-        //    ScenarioContext.Current.Pending();
-        //}
-        
-        [Then(@"""(.*)"" and ""(.*)"" text box ""(.*)""")]
-        public void ThenAndTextBox(string p0, string p1, string p2)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"Enter ""(.*)"" as ""(.*)""")]
-        public void ThenEnterAs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"Password ""(.*)"" as ""(.*)""")]
-        public void ThenPasswordAs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
+            NewServerUIMap.SelectAuthenticationType(authenticationType);
         }
         
         [Then(@"""(.*)"" tab is opened")]
-        public void ThenTabIsOpened(string p0)
+        [When(@"""(.*)"" tab is opened")]
+        public void ThenTabIsOpened(string tabName)
         {
-            ScenarioContext.Current.Pending();
+            var activeTabName = TabManagerUIMap.GetActiveTabName();
+            Assert.AreEqual(tabName, activeTabName);
         }
-        
+
         [Then(@"""(.*)"" with server permissions ""(.*)"" is ""(.*)""")]
         public void ThenWithServerPermissionsIs(string p0, string p1, string p2)
         {
-            ScenarioContext.Current.Pending();
+            
         }
         
-        [Then(@"I open the connections in “Settings” connect control")]
-        public void ThenIOpenTheConnectionsInSettingsConnectControl()
+
+        [When(@"I right click delete the server ""(.*)"" from the Explorer")]
+        public void WhenIRightClickDeleteTheServerFromTheExplorer(string serverName)
         {
-            ScenarioContext.Current.Pending();
+            ExplorerUIMap.RightClickDeleteResource(serverName, "", "localhost");
         }
-        
-        [Then(@"""(.*)"" and ""(.*)"" are shown in “Settings” connections")]
-        public void ThenAndAreShownInSettingsConnections(string p0, string p1)
+
+
+        [When(@"I right click and remove the server ""(.*)"" from the Explorer")]
+        public void WhenIRightClickAndRemoveTheServerFromTheExplorer(string serverName)
         {
-            ScenarioContext.Current.Pending();
+            ExplorerUIMap.RightClickRemoveResource(serverName, "", "localhost");
         }
         
-        [Then(@"new server ""(.*)"" should be ""(.*)"" in ""(.*)""")]
-        public void ThenNewServerShouldBeIn(string p0, string p1, string p2)
+        UITestControl GetActiveTab()
         {
-            ScenarioContext.Current.Pending();
+            return TabManagerUIMap.GetActiveTab();
         }
-        
-        [Then(@"""(.*)"" are updated to new server ""(.*)""")]
-        public void ThenAreUpdatedToNewServer(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"I open the connections in “Scheduler” connect control")]
-        public void ThenIOpenTheConnectionsInSchedulerConnectControl()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" and ""(.*)"" are shown in “Scheduler” connections")]
-        public void ThenAndAreShownInSchedulerConnections(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" tasks are updated to new server ""(.*)""")]
-        public void ThenTasksAreUpdatedToNewServer(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" is connected to ""(.*)"" in connect control")]
-        public void ThenIsConnectedToInConnectControl(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
+
         [Then(@"""(.*)"" is connected to ""(.*)""")]
         [Then(@"'(.*)' is connected to ""(.*)""")]
         public void ThenIsConnectedTo(string p0, string p1)
         {
-            ScenarioContext.Current.Pending();
+            var uiTestControl = GetActiveTab();
+            var destinationServerList = DeployUIMap.GetDestinationServerList(uiTestControl) as WpfComboBox;
+            Assert.IsNotNull(destinationServerList);
+            Assert.AreEqual(p1, destinationServerList.SelectedItem);
         }
-        
-        [Then(@"""(.*)"" and ""(.*)"" are shown in “Source Server” connections")]
-        public void ThenAndAreShownInSourceServerConnections(string p0, string p1)
+
+        [Then(@"the server ""(.*)"" will not be in the explorer connections")]
+        public void ThenTheServerWillNotBeInTheExplorerConnections(string serverName)
         {
-            ScenarioContext.Current.Pending();
+            var explorerServerList = ExplorerUIMap.GetConnectControl("ComboBox") as WpfComboBox;
+            Assert.IsNotNull(explorerServerList);
+            var uiTestControlCollection = explorerServerList.Items.GetValuesOfControls();
+            CollectionAssert.DoesNotContain(uiTestControlCollection, serverName);
         }
-        
-        [Then(@"""(.*)"" is updated to new server ""(.*)"" Resources")]
-        public void ThenIsUpdatedToNewServerResources(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" and ""(.*)"" are shown in “Destination server” connections")]
-        public void ThenAndAreShownInDestinationServerConnections(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" saved servers are shown in “Explorer” connections")]
-        public void ThenSavedServersAreShownInExplorerConnections(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
+
         [Then(@"saved server ""(.*)"" is selected in '(.*)' connect control")]
         [Then(@"saved server ""(.*)"" is selected in ""(.*)"" connect control")]
-        public void ThenSavedServerIsSelectedInConnectControl(string p0, string p1)
+        public void ThenSavedServerIsSelectedInConnectControl(string servername, string at)
         {
-            ScenarioContext.Current.Pending();
-        }
-                    
-        [Then(@"""(.*)"" should be ""(.*)""")]
-        public void ThenShouldBe(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
+            WpfComboBox comboBox;
+            var where = at.ToLower();
+            if(where.Contains("destination"))
+            {
+                comboBox = DeployUIMap.GetSourceContolByFriendlyName(GetActiveTab(), "ComboBox") as WpfComboBox;
+                Assert.IsNotNull(comboBox);
+                Assert.AreEqual(servername, comboBox.SelectedItem);
+
+            }
+            else if(where.Contains("source"))
+            {
+                comboBox = DeployUIMap.GetDestinationContolByFriendlyName(GetActiveTab(), "ComboBox") as WpfComboBox;
+                Assert.IsNotNull(comboBox);
+                Assert.AreEqual(servername, comboBox.SelectedItem);
+            }
+            else if(where.Contains("explorer"))
+            {
+                comboBox = ExplorerUIMap.GetConnectControl("ComboBox") as WpfComboBox;
+                Assert.IsNotNull(comboBox);
+                Assert.AreEqual(servername, comboBox.SelectedItem);
+            }
+            else if(where == "scheduler")
+            {
+                comboBox = SchedulerUiMap.GetConnectControl("ComboBox") as WpfComboBox;
+                Assert.IsNotNull(comboBox);
+                Assert.AreEqual(servername, comboBox.SelectedItem);
+            }
+            else if(where == "manage settings" || where == "settings")
+            {
+                comboBox = SecurityUiMap.GetConnectControl("ComboBox") as WpfComboBox;
+                Assert.IsNotNull(comboBox);
+                Assert.AreEqual(servername, comboBox.SelectedItem);
+            }
         }
         
         [Then(@"all ""(.*)"" resources should be ""(.*)"" in ""(.*)""")]
         [Then(@"all ""(.*)"" resources should be ""(.*)"" in '(.*)'")]
+        [When(@"all ""(.*)"" resources should be ""(.*)"" in '(.*)'")]
         public void ThenAllResourcesShouldBeIn(string p0, string p1, string p2)
         {
-            ScenarioContext.Current.Pending();
+            //TJ-TODO:- Confirm what to assert here
         }
-                
+
+        [Given(@"""(.*)"" saved servers are ""(.*)"" in '(.*)' connections")]
         [Then(@"""(.*)"" saved servers are ""(.*)"" in '(.*)' connections")]
         [Then(@"""(.*)"" saved servers are ""(.*)"" in ""(.*)"" connections")]
         public void ThenSavedServersAreInConnections(string p0, string p1, string p2)
         {
-            ScenarioContext.Current.Pending();
-        }
-                
-        [Then(@"""(.*)"" is ""(.*)"" in 'Settings connect control")]
-        public void ThenIsInSettingsConnectControl(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
+            //TJ-TODO:- How do we assert against all servers
+            //ScenarioContext.Current.Pending();
         }
         
-        [Then(@"""(.*)"" is ""(.*)"" in 'Settings conncet control")]
-        public void ThenIsInSettingsConncetControl(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"'(.*)' should be updated with connected ""(.*)""")]
-        public void ThenShouldBeUpdatedWithConnected(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" is ""(.*)"" in 'Settings Security Server connect control")]
-        public void ThenIsInSettingsSecurityServerConnectControl(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" is ""(.*)"" in 'Settings Security Server conncet control")]
-        public void ThenIsInSettingsSecurityServerConncetControl(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" ""(.*)"" dialog is displayed")]
-        public void ThenDialogIsDisplayed(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"I enter Address ""(.*)"" in “Edit” dialog")]
-        public void ThenIEnterAddressInEditDialog(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"I select ""(.*)"" ""(.*)"" in “New Server” dialog")]
-        public void ThenISelectInNewServerDialog(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"“Save Connection""(.*)""Enabled"" in “Edit” dialog")]
-        public void ThenSaveConnectionEnabledInEditDialog(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"enter Name ""(.*)"" in “Save” dialog is ""(.*)""")]
-        public void ThenEnterNameInSaveDialogIs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" is ""(.*)"" in ""(.*)"" dialog")]
-        public void ThenIsInDialog(string p0, string p1, string p2)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" server ""(.*)"" should be ""(.*)"" in ""(.*)""")]
-        [Then(@"""(.*)"" server ""(.*)"" should be ""(.*)"" in '(.*)'")]
-        public void ThenServerShouldBeIn(string p0, string p1, string p2, string p3)
-        {
-            ScenarioContext.Current.Pending();
-        }
-                
         [Then(@"""(.*)"" should be available in ""(.*)"" connections")]
         public void ThenShouldBeAvailableInConnections(string p0, string p1)
         {
-            ScenarioContext.Current.Pending();
+            //TJ-TODO:- Replace with collections assert of available servers
+            // ScenarioContext.Current.Pending();
+        }
+
+        [When(@"I click Cancel")]
+        public void WhenIClickCancel()
+        {
+            NewServerUIMap.ClickCancel();
+        }
+
+        [Then(@"the following ""(.*)"" connections are shown")]
+        public void ThenTheFollowingConnectionsAreShown(string at, Table table)
+        {
+            var where = at.ToLower();
+            UITestControl currentTab = new UITestControl();
+
+            if(where.Contains("current"))
+            {
+                currentTab = GetActiveTab();
+            }
+
+            if(where.Contains("explorer") || currentTab == null)
+            {
+                var explorerServerList = ExplorerUIMap.GetConnectControl("ComboBox") as WpfComboBox;
+                Assert.IsNotNull(explorerServerList);
+                var uiTestControlCollection = explorerServerList.Items.GetValuesOfControls();
+                var servers = table.Rows.ToList();
+                foreach(var server in servers)
+                {
+                    var value = server.Values.ToList()[0];
+                    CollectionAssert.Contains(uiTestControlCollection, value);
+                }
+            }
+            else if(where.Contains("destination"))
+            {
+                var uiTestControl = GetActiveTab();
+                var destinationServerList = DeployUIMap.GetDestinationServerList(uiTestControl) as WpfComboBox;
+                Assert.IsNotNull(destinationServerList);
+                var uiTestControlCollection = destinationServerList.Items.GetValuesOfControls();
+                var servers = table.Rows.ToList();
+                foreach(var server in servers)
+                {
+                    CollectionAssert.Contains(uiTestControlCollection, server);
+                }
+            }
+            else if(where.Contains("source"))
+            {
+                var uiTestControl = GetActiveTab();
+                var sourceServerList = DeployUIMap.GetSourceServerList(uiTestControl) as WpfComboBox;
+                Assert.IsNotNull(sourceServerList);
+                var uiTestControlCollection = sourceServerList.Items.GetValuesOfControls();
+                var servers = table.Rows.ToList();
+                foreach(var server in servers)
+                {
+                    CollectionAssert.Contains(uiTestControlCollection, server);
+                }
+            }
+            else if(where.Contains("scheduler"))
+            {
+                var schedulerServerList = SchedulerUiMap.GetConnectControl("ComboBox") as WpfComboBox;
+                Assert.IsNotNull(schedulerServerList);
+                var uiTestControlCollection = schedulerServerList.Items.GetValuesOfControls();
+                var servers = table.Rows.ToList();
+                foreach(var server in servers)
+                {
+                    var value = server.Values.ToList()[0];
+                    CollectionAssert.Contains(uiTestControlCollection, value);
+                }
+            }
+            else if(where.Contains("settings"))
+            {
+                var securityServerList = SecurityUiMap.GetConnectControl("ComboBox") as WpfComboBox;
+                Assert.IsNotNull(securityServerList);
+                var uiTestControlCollection = securityServerList.Items.GetValuesOfControls();
+                var servers = table.Rows.ToList();
+                foreach(var server in servers)
+                {
+                    var value = server.Values.ToList()[0];
+                    CollectionAssert.Contains(uiTestControlCollection, value);
+                }
+            }
+        }
+
+        [Then(@"new server ""(.*)"" should be ""(.*)"" in ""(.*)""")]
+        [Then(@"new server ""(.*)"" should be ""(.*)"" in '(.*)'")]
+        public void ThenNewServerShouldBeIn(string serverName, string connectedState, string at)
+        {   
+            //TJ-TODO:- Currently not possible to validate the connected status
         }
         
-        [Then(@"select server source ""(.*)"" in ""(.*)""")]
-        public void ThenSelectServerSourceIn(string p0, string p1)
+        [When(@"""(.*)"" server ""(.*)"" should be ""(.*)"" in '(.*)'")]
+        public void WhenServerShouldBeIn(string p0, string p1, string p2, string p3)
         {
             ScenarioContext.Current.Pending();
         }
-        
-        [Then(@"I open the connections in “Explorer”")]
-        public void ThenIOpenTheConnectionsInExplorer()
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"select ""(.*)"" server in ""(.*)""")]
-        public void ThenSelectServerIn(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" Servername should be ""(.*)""")]
-        public void ThenServernameShouldBe(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"", ""(.*)"" and ""(.*)"" are shown in “Explorer” connections")]
-        [Then(@"following are ""(.*)"" in ""(.*)"" connections")]
-        public void ThenAndAreShownInExplorerConnections(string p0, string p1, string p2)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"""(.*)"" is ""(.*)""")]
-        public void ThenIs(string p0, string p1)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
+
         [Then(@"Connect control ""(.*)"" option is ""(.*)"" in '(.*)'")]
-        [Then(@"Connect control ""(.*)"" option is ""(.*)"" in ""(.*)""")]
         public void ThenConnectControlOptionIsIn(string p0, string p1, string p2)
         {
             ScenarioContext.Current.Pending();
         }
         
-        [Then(@"""(.*)"" is ""(.*)"" with ""(.*)"" option")]
-        public void ThenIsWithOption(string p0, string p1, string p2)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"all ""(.*)"" permission ""(.*)"" in ""(.*)""")]
-        public void ThenAllPermissionIn(string p0, string p1, string p2)
-        {
-            ScenarioContext.Current.Pending();
-        }
-        
-        [Then(@"all ""(.*)"" Schedules ""(.*)"" in ""(.*)""")]
-        public void ThenAllSchedulesIn(string p0, string p1, string p2)
-        {
-            ScenarioContext.Current.Pending();
-        }
-                
-        [Then(@"""(.*)"" is ""(.*)"" in '(.*)'")]
-        public void ThenIsIn(string p0, string p1, string p2)
-        {
-            ScenarioContext.Current.Pending();
-        }
     }
 }

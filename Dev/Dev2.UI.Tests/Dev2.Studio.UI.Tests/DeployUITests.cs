@@ -39,7 +39,7 @@ namespace Dev2.Studio.UI.Tests
             Assert.IsFalse(DeployUIMap.IsDeployButtonEnabled(deployTab));
 
             // Connect to a Destination Server
-            DeployUIMap.ChooseDestinationServer(deployTab, "_localhost");
+            DeployUIMap.ChooseDestinationServer(deployTab, "localhost");
 
             var result = DeployUIMap.IsDeployButtonEnabled(deployTab);
 
@@ -58,7 +58,7 @@ namespace Dev2.Studio.UI.Tests
 
             // Set ourself as the destination server
             UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy");
-            DeployUIMap.ChooseDestinationServer(deployTab, "_localhost");
+            DeployUIMap.ChooseDestinationServer(deployTab, "localhost");
 
             // Make sure the Destination server has items
             Assert.IsTrue(DeployUIMap.DoesDestinationServerHaveItems(deployTab));

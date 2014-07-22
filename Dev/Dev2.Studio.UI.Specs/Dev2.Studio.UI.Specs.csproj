@@ -61,6 +61,12 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connect Control\Connect Control1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Connect Control.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Connect Control\ConnectControlSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Workflow.feature.cs">
       <AutoGen>True</AutoGen>
@@ -72,6 +78,10 @@
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="Connect Control\Connect Control.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Connect Control1.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="Workflow.feature">

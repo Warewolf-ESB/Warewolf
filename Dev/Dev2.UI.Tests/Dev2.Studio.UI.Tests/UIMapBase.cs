@@ -21,8 +21,10 @@ using Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.PluginSourceMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ResourceChangedPopUpUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.SaveDialogUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.Scheduler;
 using Dev2.Studio.UI.Tests.UIMaps.ServerWizardClasses;
 using Dev2.Studio.UI.Tests.UIMaps.ServiceDetailsUIMapClasses;
+using Dev2.Studio.UI.Tests.UIMaps.Settings;
 using Dev2.Studio.UI.Tests.UIMaps.SwitchUIMapClasses;
 using Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses;
 using Dev2.Studio.UI.Tests.Utils;
@@ -199,11 +201,47 @@ namespace Dev2.Studio.UI.Tests
                 return _deployUIMap;
             }
         }
-
-
+        
         private DeployViewUIMap _deployUIMap;
 
         #endregion Deploy UI Map
+
+        #region Security UI Map
+
+        public SecuritySettingsUiMap SecurityUiMap
+        {
+            get
+            {
+                if(_securityUiMap == null)
+                {
+                    _securityUiMap = new SecuritySettingsUiMap();
+                }
+                return _securityUiMap;
+            }
+        }
+            
+        private SecuritySettingsUiMap _securityUiMap;
+
+        #endregion Security UI Map  
+        
+        #region Scheduler UI Map
+
+        public SchedulerUiMap SchedulerUiMap
+        {
+            get
+            {
+                if(_schedulerUiMap == null)
+                {
+                    _schedulerUiMap = new SchedulerUiMap();
+                }
+                return _schedulerUiMap;
+            }
+        }
+
+        private SchedulerUiMap _schedulerUiMap;
+
+        #endregion Security UI Map  
+
 
         #region Dock Manager UI Map
 

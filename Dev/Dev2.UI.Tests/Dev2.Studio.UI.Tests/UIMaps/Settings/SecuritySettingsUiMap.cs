@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Windows.Automation;
 using Dev2.Studio.UI.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -24,6 +25,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Settings
         #region VisualTreePaths
         private readonly string[] _resourceGridPath = new[] { "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel", "UI_SettingsView_AutoID", "SecurityViewContent", "ResourcePermissionsDataGrid" };
         private readonly string[] _savebuttonPath = new[] { "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel", "UI_SettingsView_AutoID", SaveButtonId };
+        private readonly string[] _connectControl = new[] { "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel", "UI_SettingsView_AutoID", "ConnectUserControl" };
         private readonly string[] _resourceHelpButtonPath = new[] { "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel", "UI_SettingsView_AutoID", "SecurityViewContent", ResourceHelpButtonId };
         private readonly string[] _serverHelpButtonPath = new[] { "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel", "UI_SettingsView_AutoID", "SecurityViewContent", ServerHelpButtonId };
         private readonly string[] _helpViewCloseButtonPath = new[] { "Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel", "UI_SettingsView_AutoID", "SecurityViewContent", HelpViewCloseButtonId };
@@ -213,5 +215,48 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Settings
             }
             return false;
         }
+
+        public void ChooseDestinationServerWithKeyboard(string connection)
+        {
+            UITestControl serverList = GetConnectControl("ComboBox");
+            Mouse.Click(serverList);
+            Keyboard.SendKeys("{UP}{UP}{UP}{UP}{UP}{UP}{UP}{ENTER}");
+            Playback.Wait(2000);
+        }
+
+        public UITestControl GetConnectControl(string controlType)
+        {
+            var kids = _activeTab.GetChildByAutomationIDPath(_connectControl).GetChildren();
+
+            if(kids != null)
+            {
+                return kids.FirstOrDefault(c => c.ControlType.Name == controlType);
+            }
+
+            return null;
+        }
+
+        public UITestControl GetConnectControl(string controlType, string controlName)
+        {
+            var kids = _activeTab.GetChildByAutomationIDPath(_connectControl).GetChildren();
+
+            if(kids != null)
+            {
+                return kids.FirstOrDefault(c => c.ControlType.Name == controlType && c.FriendlyName == controlName);
+            }
+
+            return null;
+        }
+
+        public void ChooseDestinationServer(string connection)
+        {
+            UITestControl destinationServerList = GetConnectControl("ComboBox");
+            WpfComboBox comboBox = (WpfComboBox)destinationServerList;
+            var serverItem = comboBox.Items.ToList().FirstOrDefault(c => c.FriendlyName == connection);
+            if(serverItem != null)
+            {
+                comboBox.SelectedIndex = comboBox.Items.IndexOf(serverItem);
+            }
+        }
     }
-}
+}   

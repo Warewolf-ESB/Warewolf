@@ -1,31 +1,25 @@
 ﻿namespace Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Drawing;
-    using System.Windows.Input;
-    using System.CodeDom.Compiler;
-    using System.Text.RegularExpressions;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
-    using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
-    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
-    using MouseButtons = System.Windows.Forms.MouseButtons;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+    using System;
+    using System.Drawing;
     using System.Windows.Forms;
-    
-    
+    using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
+
+
     // Due to the Chromium nature of the control, Points have to be used, as the UI Tester cannot get actual items.
     public partial class NewServerUIMap
     {
         public void EnterServerAddress(string address)
         {
             WpfWindow theWindow = GetNewServerWindow();
-            Point p = new Point(theWindow.BoundingRectangle.Left + 300, theWindow.BoundingRectangle.Top + 125);
-            Mouse.Move(p);
-            Mouse.Click();
-            SendKeys.SendWait(address);
+            if(theWindow != null)
+            {
+                SendKeys.SendWait("{TAB}");
+                System.Threading.Thread.Sleep(500);
+                SendKeys.SendWait(address);
+            }
         }
 
         public void ClearServerAddress()
@@ -55,14 +49,14 @@
             }
         }
 
-       
+
 
         public void CloseWindow()
         {
-//            WpfWindow theWindow = GetNewServerWindow();
-//            Point p = new Point(theWindow.BoundingRectangle.Left + theWindow.BoundingRectangle.Width - 25, theWindow.BoundingRectangle.Top + 5);
-//            Mouse.Move(p);
-//            Mouse.Click();
+            //            WpfWindow theWindow = GetNewServerWindow();
+            //            Point p = new Point(theWindow.BoundingRectangle.Left + theWindow.BoundingRectangle.Width - 25, theWindow.BoundingRectangle.Top + 5);
+            //            Mouse.Move(p);
+            //            Mouse.Click();
 
             #region Variable Declarations
             UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[0];
@@ -123,6 +117,92 @@
             WpfWindow theWindow = GetNewServerWindow();
             Point p = new Point(theWindow.BoundingRectangle.Left + 700, theWindow.BoundingRectangle.Top + 525);
             Mouse.Click(p);
+        }
+
+        public void SelectAuthenticationType(string p0)
+        {
+            WpfWindow theWindow = GetNewServerWindow();
+            if(theWindow != null)
+            {
+                SendKeys.SendWait("{TAB}");
+                Playback.Wait(1000);
+                switch(p0)
+                {
+                    case "Windows":
+                        {
+                            Keyboard.SendKeys("{LEFT}{ENTER}");
+                            break;
+                        }
+                    case "User":
+                        {
+                            Keyboard.SendKeys("{RIGHT}{ENTER}");
+                            break;
+                        }
+                    case "Public":
+                        {
+                            Keyboard.SendKeys("{RIGHT}{RIGHT}{ENTER}");
+                            break;
+                        }
+                }
+            }
+        }
+
+        public void ClickTestConnection()
+        {
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(1000);
+            SendKeys.SendWait("{ENTER}");
+            Playback.Wait(1000);
+        }
+
+        public void ClickSave()
+        {
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(500);
+            SendKeys.SendWait("{ENTER}");
+            Playback.Wait(500);
+        }
+
+        public void ClickCancel()
+        {
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(500);
+            SendKeys.SendWait("{TAB}");
+            Playback.Wait(500);
+            SendKeys.SendWait("{ENTER}");
+            Playback.Wait(500);
+        }
+
+        public void SaveNameInDialog(string serverName)
+        {
+            SendKeys.SendWait("{TAB}{TAB}{TAB}");
+            Playback.Wait(500);
+            SendKeys.SendWait("{ENTER}");
+            SendKeys.SendWait(serverName);
+        }
+
+        public void EnterUserName(string userName)
+        {
+            WpfWindow theWindow = GetNewServerWindow();
+            if(theWindow != null)
+            {
+                SendKeys.SendWait("{TAB}");
+                System.Threading.Thread.Sleep(500);
+                SendKeys.SendWait("{ENTER}");
+                SendKeys.SendWait(userName);
+            }
+        }
+
+        public void EnterPassword(string password)
+        {
+            WpfWindow theWindow = GetNewServerWindow();
+            if(theWindow != null)
+            {
+                SendKeys.SendWait("{TAB}");
+                System.Threading.Thread.Sleep(500);
+                SendKeys.SendWait("{ENTER}");
+                SendKeys.SendWait(password);
+            }
         }
     }
 }

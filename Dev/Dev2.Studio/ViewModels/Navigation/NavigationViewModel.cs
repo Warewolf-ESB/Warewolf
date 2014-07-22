@@ -182,7 +182,10 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return;
             }
             IsRefreshing = false;
-            StudioResourceRepository.Disconnect(e.ID);
+            if(e.IsConnected)
+            {
+                StudioResourceRepository.Disconnect(e.ID);
+            }
         }
 
         public void Handle(AddServerToExplorerMessage message)

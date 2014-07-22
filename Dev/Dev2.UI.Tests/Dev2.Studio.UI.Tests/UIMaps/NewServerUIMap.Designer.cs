@@ -37,7 +37,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses
         public WpfWindow GetNewServerWindow()
         {
             WpfWindow uINewServerWindow = this.UINewServerWindow;
-            uINewServerWindow.Find();
+            //uINewServerWindow.Find();
             return uINewServerWindow;
         }
 

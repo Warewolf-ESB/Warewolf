@@ -1,18 +1,20 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using System.Linq;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.Utils;
+using System;
+using System.Windows.Forms;
 
 namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 {
-    using System.Drawing;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+    using System.Drawing;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
 
 
     public partial class DeployViewUIMap : UIMapBase
     {
+
         public void SelectServers(UITestControl theTab, string sourceServer, string destinationServer)
         {
 
@@ -26,54 +28,38 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         public void ChooseSourceServer(UITestControl theTab, string serverName)
         {
             UITestControl sourceServerList = GetSourceServerList(theTab);
-            WpfComboBox wpfComboList = (WpfComboBox)sourceServerList;
-            
-            foreach(WpfListItem theItem in wpfComboList.Items)
+            WpfComboBox comboBox = (WpfComboBox)sourceServerList;
+            var serverItem = comboBox.Items.ToList().FirstOrDefault(c => c.FriendlyName == serverName);
+            if(serverItem != null)
             {
-                if(theItem.AutomationId == "U_UI_SourceServer_AutoID" + serverName)
-                {
-                    theItem.Select();
-                    break;
-                }
+                comboBox.SelectedIndex = comboBox.Items.IndexOf(serverItem);
             }
+        }
+
+        public void ChooseSourceServerWithKeyboard(UITestControl theTab, string serverName)
+        {
+            UITestControl sourceServerList = GetSourceServerList(theTab);
+            Mouse.Click(sourceServerList);
+            Keyboard.SendKeys("{DOWN}{ENTER}");
+            Playback.Wait(2000);
+        }
+
+        public void ChooseDestinationServerWithKeyboard(UITestControl theTab, string serverName)
+        {
+            UITestControl destinationServerList = GetDestinationServerList(theTab);
+            Mouse.Click(destinationServerList);
+            Keyboard.SendKeys("{UP}{ENTER}");
+            Playback.Wait(2000);
         }
 
         public void ChooseDestinationServer(UITestControl theTab, string serverName)
         {
             UITestControl destinationServerList = GetDestinationServerList(theTab);
-
-
-            //Wait for the connect control to be ready
-            int counter = 0;
-            while(!destinationServerList.Enabled && counter < 5)
+            WpfComboBox comboBox = (WpfComboBox)destinationServerList;
+            var serverItem = comboBox.Items.ToList().FirstOrDefault(c => c.FriendlyName == serverName);
+            if(serverItem != null)
             {
-                Playback.Wait(2000);
-                counter++;
-            }
-            if(!destinationServerList.Enabled)
-            {
-                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
-            }
-
-            // Click it to expand it
-            Mouse.Click(destinationServerList, new Point(10, 10));
-            Playback.Wait(500);
-
-            VisualTreeWalker vsw = new VisualTreeWalker();
-            var item = vsw.GetChildByAutomationIDPath(destinationServerList, "UI_DestinationServercbx_AutoID" + serverName);
-
-            Mouse.Click(item, new Point(5, 5));
-
-            //Wait for the connect control to be ready
-            int afterCounter = 0;
-            while(!destinationServerList.Enabled && afterCounter < 5)
-                {
-                Playback.Wait(2000);
-                afterCounter++;
-                }
-            if(!destinationServerList.Enabled)
-            {
-                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
+                comboBox.SelectedIndex = comboBox.Items.IndexOf(serverItem);
             }
         }
 
@@ -86,10 +72,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
         public bool DoesSourceServerHaveDeployItems(UITestControl theTab)
@@ -105,10 +88,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             {
                 return false;
             }
-            else
-            {
-                return true;
-            }
+            return true;
         }
 
         public void ClickDeploy(UITestControl theTab)
@@ -161,6 +141,83 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             var vstw = new VisualTreeWalker();
 
             return vstw.GetChildByAutomationIDPath(deployUserControl, "SourceNavigationView", "Navigation") as WpfTree;
+        }
+
+        public UITestControl GetSourceConnectButton(UITestControl theTab)
+        {
+            UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
+            foreach(UITestControl theControl in requiredChildren)
+            {
+                if(theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl")
+                {
+                    foreach(UITestControl tC in theControl.GetChildren())
+                    {
+                        if(tC.GetProperty("AutomationId").ToString() == "UI_SourceConnectServerbtn_AutoID")
+                        {
+                            return tC;
+
+                        }
+                    }
+
+                }
+            }
+            return null;
+        }
+
+        public UITestControl GetDestinationEditConnectionButton(UITestControl theTab)
+        {
+            UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
+            foreach(UITestControl theControl in requiredChildren)
+            {
+                if(theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl")
+                {
+                    foreach(UITestControl tC in theControl.GetChildren())
+                    {
+                        if(tC.GetProperty("AutomationId").ToString() == "UI_DestinationServerEditbtn_AutoID")
+                        {
+                            return tC;
+                        }
+                    }
+
+                }
+            }
+            return null;
+        }
+
+        public UITestControl GetDestinationConnectButton(UITestControl theTab)
+        {
+            UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
+            foreach(UITestControl theControl in requiredChildren)
+            {
+                if(theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl")
+                {
+                    foreach(UITestControl tC in theControl.GetChildren())
+                    {
+                        if(tC.GetProperty("AutomationId").ToString() == "UI_DestinationConnectServerbtn_AutoID")
+                        {
+                            return tC;
+
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        public UITestControl GetSourceContolByFriendlyName(UITestControl theTab, string controlName)
+        {
+            UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
+            return (from theControl in requiredChildren
+                    where theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl"
+                    select theControl.GetChildren().FirstOrDefault(c => c.FriendlyName == controlName && ((WpfControl)c).AutomationId.Contains("Source"))).FirstOrDefault();
+        }
+
+        public UITestControl GetDestinationContolByFriendlyName(UITestControl theTab, string controlName)
+        {
+            UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
+            return (from theControl in requiredChildren
+                    where theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl"
+                    select theControl.GetChildren().FirstOrDefault(c => c.FriendlyName == controlName && ((WpfControl)c).AutomationId.Contains("Destination"))).FirstOrDefault();
         }
     }
 }

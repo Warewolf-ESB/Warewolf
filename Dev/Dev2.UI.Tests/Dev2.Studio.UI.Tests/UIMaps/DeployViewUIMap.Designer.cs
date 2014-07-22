@@ -12,8 +12,6 @@ using Dev2.Studio.UI.Tests.Utils;
 
 namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 {
-    using Dev2.Studio.UI.Tests;
-    using Microsoft.VisualStudio.TestTools.UITest.Extension;
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
     using System.CodeDom.Compiler;
@@ -28,7 +26,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             UITestControl targetNavigationView = new UITestControl();
             foreach(UITestControl theControl in allChildren)
             {
-                if (theControl.GetProperty("AutomationId").ToString() == "TargetNavigationView")
+                if(theControl.GetProperty("AutomationId").ToString() == "TargetNavigationView")
                 {
                     targetNavigationView = theControl;
                     break;
@@ -43,16 +41,37 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             return GetDeployUserControlChildren(theTab);
         }
 
-        private UITestControl GetSourceServerList(UITestControl theTab)
+        public UITestControl GetSourceServerList(UITestControl theTab)
         {
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
-            foreach (UITestControl theControl in requiredChildren)
+            foreach(UITestControl theControl in requiredChildren)
             {
-                if (theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl")
+                if(theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl")
                 {
-                    foreach (UITestControl tC in theControl.GetChildren())
+                    foreach(UITestControl tC in theControl.GetChildren())
                     {
-                        if (tC.GetProperty("AutomationId").ToString() == "UI_SourceServercbx_AutoID")
+                        if(tC.GetProperty("AutomationId").ToString() == "UI_SourceServercbx_AutoID")
+                        {
+                            return tC;
+
+                        }
+                    }
+
+                }
+            }
+            return null;
+        }
+
+        public UITestControl GetSourceEditConnectionButton(UITestControl theTab)
+        {
+            UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
+            foreach(UITestControl theControl in requiredChildren)
+            {
+                if(theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl")
+                {
+                    foreach(UITestControl tC in theControl.GetChildren())
+                    {
+                        if(tC.GetProperty("AutomationId").ToString() == "UI_SourceServerEditbtn_AutoID")
                         {
                             return tC;
 
@@ -67,17 +86,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         private WpfEdit GetSourceServerFilterBox(UITestControl theTab)
         {
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
-            foreach (UITestControl theControl in requiredChildren)
+            foreach(UITestControl theControl in requiredChildren)
             {
                 var autoID = theControl.GetProperty("AutomationId").ToString();
-                if (autoID == "SourceNavigationView")
+                if(autoID == "SourceNavigationView")
                 {
-                    foreach (var child in theControl.GetChildren())
+                    foreach(var child in theControl.GetChildren())
                     {
                         var childAutoID = child.GetProperty("AutomationId").ToString();
-                        if (childAutoID == "FilterTextBox")
+                        if(childAutoID == "FilterTextBox")
                         {
-                            var sourceServerFilterBox = (WpfEdit) theControl.GetChildren()[0];
+                            var sourceServerFilterBox = (WpfEdit)theControl.GetChildren()[0];
                             return sourceServerFilterBox;
                         }
                     }
@@ -90,7 +109,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         private WpfEdit GetDestinationServerFilterBox(UITestControl theTab)
         {
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
-            foreach (UITestControl theControl in requiredChildren)
+            foreach(UITestControl theControl in requiredChildren)
             {
                 var autoID = theControl.GetProperty("AutomationId").ToString();
                 if(autoID == "TargetNavigationView")
@@ -109,22 +128,22 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             return null;
         }
 
-        private UITestControl GetDestinationServerList(UITestControl theTab)
+        public UITestControl GetDestinationServerList(UITestControl theTab)
         {
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
-            foreach (UITestControl theControl in requiredChildren)
+            foreach(UITestControl theControl in requiredChildren)
             {
-                if (theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl")
+                if(theControl.GetProperty("AutomationId").ToString() == "ConnectUserControl")
                 {
-                    foreach (UITestControl tC in theControl.GetChildren())
+                    foreach(UITestControl tC in theControl.GetChildren())
                     {
-                        if (tC.GetProperty("AutomationId").ToString() == "UI_DestinationServercbx_AutoID")
+                        if(tC.GetProperty("AutomationId").ToString() == "UI_DestinationServercbx_AutoID")
                         {
                             return tC;
-                            
+
                         }
                     }
-                    
+
                 }
             }
             return null;
@@ -134,13 +153,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         {
             int totalCount = 0;
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
-            for (int j = 0; j < requiredChildren.Count; j++)
+            for(int j = 0; j < requiredChildren.Count; j++)
             {
                 UITestControl theControl = requiredChildren[j];
-                if (theControl.GetProperty("Name") != null)
+                if(theControl.GetProperty("Name") != null)
                 {
                     string nameProperty = theControl.GetProperty("Name").ToString();
-                    if ((nameProperty == "Services  : ") || (nameProperty == "Workflows  : ") || (nameProperty == "Sources  : "))
+                    if((nameProperty == "Services  : ") || (nameProperty == "Workflows  : ") || (nameProperty == "Sources  : "))
                     {
                         WpfText textControl = (WpfText)requiredChildren[j + 1];
 
@@ -156,13 +175,13 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         {
             int totalCount = 0;
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
-            for (int j = 0; j < requiredChildren.Count; j++)
+            for(int j = 0; j < requiredChildren.Count; j++)
             {
                 UITestControl theControl = requiredChildren[j];
-                if (theControl.GetProperty("Name") != null)
+                if(theControl.GetProperty("Name") != null)
                 {
                     string nameProperty = theControl.GetProperty("Name").ToString();
-                    if ((nameProperty == "New Resources  : ") || (nameProperty == "Override  : "))
+                    if((nameProperty == "New Resources  : ") || (nameProperty == "Override  : "))
                     {
                         WpfText textControl = (WpfText)requiredChildren[j + 1];
 
@@ -194,11 +213,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         private WpfButton GetDeployButton(UITestControl theTab)
         {
             UITestControlCollection requiredChildren = GetDeployUserControlChildren(theTab);
-            foreach (UITestControl theControl in requiredChildren)
+            foreach(UITestControl theControl in requiredChildren)
             {
-                if (theControl.GetProperty("AutomationId") != null)
+                if(theControl.GetProperty("AutomationId") != null)
                 {
-                    if (theControl.GetProperty("AutomationId").ToString() == "UI_Deploybtn_AutoID")
+                    if(theControl.GetProperty("AutomationId").ToString() == "UI_Deploybtn_AutoID")
                     {
                         return (WpfButton)theControl;
                     }

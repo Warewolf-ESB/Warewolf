@@ -18,13 +18,7 @@ namespace Dev2.Studio.UI.Specs
             Playback.Initialize();
             Init();
         }
-
-        [Given(@"I have Warewolf running")]
-        public void GivenIHaveWarewolfRunning()
-        {
-
-        }
-
+        
         [When(@"I debug ""(.*)"" in ""(.*)""")]
         public void WhenIDebugIn(string workflowName, string folderName)
         {
