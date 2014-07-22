@@ -7,6 +7,7 @@ using System.ServiceProcess;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using System.Xml.Linq;
 using Gui.Utility;
 using Ionic.Zip;
 using Microsoft.Win32;
@@ -44,12 +45,42 @@ namespace Gui
             SwapConfigs();
             InstallExamples();
             InstallSamples();
+            UpdateWorkspaceToOpenHelloWorldWorkflow();
+        }
+
+        void UpdateWorkspaceToOpenHelloWorldWorkflow()
+        {
+            var appData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var workspaceXmlPath = Path.Combine(appData, "Warewolf", "UserInterfaceLayouts");
+            if(!Directory.Exists(workspaceXmlPath))
+            {
+                Directory.CreateDirectory(workspaceXmlPath);
+            }
+            var workspaceFileName = Path.Combine(workspaceXmlPath, "WorkspaceItems.xml");
+
+            var workspaceFileExists = File.Exists(workspaceFileName);
+            if(!workspaceFileExists)
+            {
+                File.Create(workspaceFileName).Close();
+            }
+            var xElement = workspaceFileExists ? XElement.Load(workspaceFileName) : new XElement("WorkspaceItems");
+            var workspaceItemElement = new XElement("WorkspaceItem");
+            workspaceItemElement.SetAttributeValue("ID", "acb75027-ddeb-47d7-814e-a54c37247ec1");
+            workspaceItemElement.SetAttributeValue("WorkspaceID", Guid.Empty);
+            workspaceItemElement.SetAttributeValue("ServerID", "51a58300-7e9d-4927-a57b-e5d700b11b55");
+            workspaceItemElement.SetAttributeValue("EnvironmentID", Guid.Empty);
+            workspaceItemElement.SetAttributeValue("Action", "None");
+            workspaceItemElement.SetAttributeValue("ServiceName", "Hello World");
+            workspaceItemElement.SetAttributeValue("IsWorkflowSaved", "true");
+            workspaceItemElement.SetAttributeValue("ServiceType", "DynamicService");
+            xElement.Add(workspaceItemElement);
+            File.WriteAllText(workspaceFileName, xElement.ToString());
         }
 
         void InstallSamples()
         {
             UpdateExampleResources resources = new UpdateExampleResources();
-            if (Directory.Exists(Path.Combine(InstallVariables.InstallRoot, "Server", "Services")) || Directory.Exists((Path.Combine(InstallVariables.InstallRoot, "Server", "Sources") )))
+            if(Directory.Exists(Path.Combine(InstallVariables.InstallRoot, "Server", "Services")) || Directory.Exists((Path.Combine(InstallVariables.InstallRoot, "Server", "Sources"))))
             {
                 resources.SetupSamplesFlat(Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples", "Resources.zip"), Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples"), Path.Combine(InstallVariables.InstallRoot, "Server", "Sources"));
                 resources.SetupSamplesFlat(Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples", "Resources.zip"), Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples"), Path.Combine(InstallVariables.InstallRoot, "Server", "Services"));
@@ -59,7 +90,7 @@ namespace Gui
             {
                 resources.SetupSamples(Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples", "Resources.zip"), Path.Combine(InstallVariables.InstallRoot, "Server", "PresetExamples"), Path.Combine(InstallVariables.InstallRoot, "Server", "Resources"));
             }
-            
+
         }
 
         private void InstallExamples()
@@ -675,9 +706,9 @@ namespace Gui
             Type.GetTypeFromProgID("HNetCfg.FwPolicy2"));
 
             // iterate and find matching rule name ;)
-// ReSharper disable LoopCanBeConvertedToQuery
+            // ReSharper disable LoopCanBeConvertedToQuery
             foreach(INetFwRule rule in firewallPolicy.Rules)
-// ReSharper restore LoopCanBeConvertedToQuery
+            // ReSharper restore LoopCanBeConvertedToQuery
             {
                 if(rule.Name == ruleName)
                 {
