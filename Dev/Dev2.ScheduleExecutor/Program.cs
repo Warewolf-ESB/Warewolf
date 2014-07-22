@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,8 +17,8 @@ namespace Dev2.ScheduleExecutor
     internal class Program
     {
         private const string WarewolfTaskSchedulerPath = "\\warewolf\\";
-        private static readonly string OutputPath = ConfigurationManager.AppSettings["OutputPath"];
-        private static readonly string SchedulerLogDirectory = OutputPath + "\\" + "SchedulerLogs";
+        private static readonly string OutputPath = Path.GetDirectoryName( System.Reflection.Assembly.GetExecutingAssembly().Location)+"\\DebugOutput\\";
+        private static readonly string SchedulerLogDirectory = OutputPath +  "SchedulerLogs";
         private static readonly Stopwatch Stopwatch = new Stopwatch();
         private static readonly DateTime StartTime = DateTime.Now.Subtract(new TimeSpan(0, 0, 5));
 
@@ -27,6 +26,7 @@ namespace Dev2.ScheduleExecutor
         {
             try
             {
+               // Console.ReadLine();
                 SetupForLogging();
 
                 Stopwatch.Start();
@@ -149,9 +149,10 @@ namespace Dev2.ScheduleExecutor
             var js = new Dev2JsonSerializer();
             Thread.Sleep(5000);
             string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
-
+            if (!Directory.Exists(OutputPath))
+                Directory.CreateDirectory(OutputPath);
             File.WriteAllText(
-                string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName,
+                string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName.Replace("\\","_"),
                               DateTime.Now.ToString("yyyy-MM-dd"), correlation, user),
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());
         }
@@ -211,7 +212,7 @@ namespace Dev2.ScheduleExecutor
                             }
                             string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
                             File.WriteAllText(
-                                string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName,
+                                string.Format("{0}DebugItems_{1}_{2}_{3}_{4}.txt", OutputPath, workflowName.Replace("\\", "_"),
                                               DateTime.Now.ToString("yyyy-MM-dd"), correlation, user), data);
                         }
                     }
