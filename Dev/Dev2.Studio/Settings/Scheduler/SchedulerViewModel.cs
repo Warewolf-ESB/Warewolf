@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
@@ -869,7 +870,8 @@ You need Administrator permission.");
                 var hasResult = _resourcePicker.ShowDialog(CurrentEnvironment);
                 if(hasResult)
                 {
-                    WorkflowName = _resourcePicker.SelectedResource.ResourceName;
+                    WorkflowName = _resourcePicker.SelectedResource.Category;
+                    
                     SelectedTask.ResourceId = _resourcePicker.SelectedResource.ID;
                     if(SelectedTask.Name.StartsWith("New Task"))
                     {
@@ -1016,7 +1018,7 @@ You need Administrator permission.";
         {
             _popupController.ShowSaveErrorDialog(error);
         }
-
+        [ExcludeFromCodeCoverage]
         public virtual IScheduleTrigger ShowEditTriggerDialog()
         {
             var tmpTrigger = SelectedTask.Trigger.Trigger.Instance;
@@ -1030,6 +1032,7 @@ You need Administrator permission.";
             return null;
         }
 
+        [ExcludeFromCodeCoverage]
         public virtual void GetCredentials(IScheduledResource scheduledResource)
         {
             var cancelled = false;

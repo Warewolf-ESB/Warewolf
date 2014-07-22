@@ -105,6 +105,21 @@ namespace Dev2.Core.Tests.Settings
             Assert.IsNotNull(schdulerViewModel.Errors);
         }
 
+
+            [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SchedulerViewModel_Constructor")]
+        public void SchedulerViewModel_Constructor_ValidConstruction_ShouldSetHelpText()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            var schdulerViewModel = new SchedulerViewModel();
+            //------------Assert Results-------------------------
+            Assert.AreEqual(@"To schedule a workflow execution, setup the trigger you want to use  and the workflow you want to execute.
+Warewolf leverages Windows Task Scheduler and the schedules can be viewed there as well.",schdulerViewModel.HelpText);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SchedulerViewModel_HandleServerSelectionChangedMessage")]
@@ -126,8 +141,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_ShowError_WithSaveError_HasErrorsTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel();
-            schedulerViewModel.SelectedTask = new ScheduledResourceForTest();
+            var schedulerViewModel = new SchedulerViewModel { SelectedTask = new ScheduledResourceForTest() };
 
             //------------Execute Test---------------------------
             schedulerViewModel.ShowError("Error while saving: test error");
@@ -141,8 +155,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_ShowError_WithNormalError_HasErrorsTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel();
-            schedulerViewModel.SelectedTask = new ScheduledResourceForTest();
+            var schedulerViewModel = new SchedulerViewModel { SelectedTask = new ScheduledResourceForTest() };
             var _hasErrorChange = false;
             var _errorChange = false;
 
@@ -173,8 +186,7 @@ namespace Dev2.Core.Tests.Settings
         public void SchedulerViewModel_ClearError_WithNormalError_HasErrorsSet()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel();
-            schedulerViewModel.SelectedTask = new ScheduledResourceForTest();
+            var schedulerViewModel = new SchedulerViewModel { SelectedTask = new ScheduledResourceForTest() };
             var _hasErrorChange = false;
             var _errorChange = false;
 
@@ -409,8 +421,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()) };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -429,10 +440,9 @@ namespace Dev2.Core.Tests.Settings
             resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow3").Object);
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var message = new ServerSelectionChangedMessage(mockEnvironmentModel.Object, ConnectControlInstanceType.Scheduler);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker());
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker()) { ConnectionError = @"You don't have permission to schedule on this server.
+You need Administrator permission." };
 
-            schedulerViewModel.ConnectionError = @"You don't have permission to schedule on this server.
-You need Administrator permission.";
             //------------Execute Test---------------------------
             schedulerViewModel.Handle(message);
             //------------Assert Results-------------------------
@@ -452,8 +462,7 @@ You need Administrator permission.";
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()) };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -472,11 +481,8 @@ You need Administrator permission.";
             resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow3").Object);
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var message = new ServerSelectionChangedMessage(mockEnvironmentModel.Object, ConnectControlInstanceType.Scheduler);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker());
-
-            schedulerViewModel.ConnectionError = @"You don't have permission to schedule on this server.
-You need Administrator permission.";
-
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker()) { ConnectionError = @"You don't have permission to schedule on this server.
+You need Administrator permission." };
 
             //------------Execute Test---------------------------
             schedulerViewModel.Handle(message);
@@ -496,10 +502,7 @@ You need Administrator permission.";
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.OldName = "oldname";
-            scheduledResourceForTest.Name = "name";
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            var scheduledResourceForTest = new ScheduledResourceForTest { OldName = "oldname", Name = "name", Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()) };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -565,10 +568,7 @@ You need Administrator permission.";
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.OldName = "oldname";
-            scheduledResourceForTest.Name = "name";
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            var scheduledResourceForTest = new ScheduledResourceForTest { OldName = "oldname", Name = "name", Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()) };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -633,10 +633,7 @@ You need Administrator permission.";
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.OldName = "oldname";
-            scheduledResourceForTest.Name = "name";
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            var scheduledResourceForTest = new ScheduledResourceForTest { OldName = "oldname", Name = "name", Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()) };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -704,8 +701,7 @@ You need Administrator permission.";
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()) };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -741,8 +737,7 @@ You need Administrator permission.", schedulerViewModel.ConnectionError);
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.IsDirty = true;
+            var scheduledResourceForTest = new ScheduledResourceForTest { IsDirty = true };
             resources.Add(scheduledResourceForTest);
             var schedulerViewModel = new SchedulerViewModelForTest();
             var env = new Mock<IEnvironmentModel>();
@@ -1131,8 +1126,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.IsDirty = true;
+            var scheduledResourceForTest = new ScheduledResourceForTest { IsDirty = true };
             resources.Add(scheduledResourceForTest);
             scheduledResourceForTest.UserName = "some user";
             scheduledResourceForTest.Password = "some password";
@@ -1164,8 +1158,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.IsDirty = true;
+            var scheduledResourceForTest = new ScheduledResourceForTest { IsDirty = true };
             resources.Add(scheduledResourceForTest);
             scheduledResourceForTest.UserName = "some user";
             scheduledResourceForTest.Password = "some password";
@@ -1305,8 +1298,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             var _errorChange = false;
             var _selectedHistoryChange = false;
             var schedulerViewModel = new SchedulerViewModel();
-            var activeItem = new TabItem();
-            activeItem.Header = "History";
+            var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.ActiveItem = activeItem;
             schedulerViewModel.PropertyChanged += delegate(object sender, PropertyChangedEventArgs args)
             {
@@ -1383,8 +1375,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             //------------Setup for test--------------------------
 
             var schedulerViewModel = new SchedulerViewModel();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Name = "Test";
+            var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
 
             //------------Execute Test---------------------------
@@ -1405,8 +1396,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             //------------Setup for test--------------------------
 
             var schedulerViewModel = new SchedulerViewModel();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Name = "Test";
+            var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             schedulerViewModel.Name = "";
 
@@ -1431,8 +1421,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             //------------Setup for test--------------------------
 
             var schedulerViewModel = new SchedulerViewModel();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.WorkflowName = "Test";
+            var scheduledResourceForTest = new ScheduledResourceForTest { WorkflowName = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
 
             //------------Execute Test---------------------------
@@ -1452,10 +1441,8 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             //------------Setup for test--------------------------
 
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Name = "Test";
-            var scheduledResourceForTest2 = new ScheduledResourceForTest();
-            scheduledResourceForTest2.Name = "Test2";
+            var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
+            var scheduledResourceForTest2 = new ScheduledResourceForTest { Name = "Test2" };
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
             resources.Add(scheduledResourceForTest2);
@@ -1482,10 +1469,8 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             //------------Setup for test--------------------------
 
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Name = "Test";
-            var scheduledResourceForTest2 = new ScheduledResourceForTest();
-            scheduledResourceForTest2.Name = "Test2";
+            var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
+            var scheduledResourceForTest2 = new ScheduledResourceForTest { Name = "Test2" };
             scheduledResourceForTest.IsDirty = true;
             resources.Add(scheduledResourceForTest);
             resources.Add(scheduledResourceForTest2);
@@ -1520,10 +1505,8 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             //------------Setup for test--------------------------
 
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Name = "Test";
-            var scheduledResourceForTest2 = new ScheduledResourceForTest();
-            scheduledResourceForTest2.Name = "Test2";
+            var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
+            var scheduledResourceForTest2 = new ScheduledResourceForTest { Name = "Test2" };
             scheduledResourceForTest.IsDirty = false;
             resources.Add(scheduledResourceForTest);
             resources.Add(scheduledResourceForTest2);
@@ -1548,8 +1531,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker());
-            var activeItem = new TabItem();
-            activeItem.Header = "History";
+            var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.ActiveItem = activeItem;
             var mockScheduledResourceModel = new Mock<IScheduledResourceModel>();
             var histories = new List<IResourceHistory> { new Mock<IResourceHistory>().Object };
@@ -1571,8 +1553,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             //------------Setup for test--------------------------
             var _historyMustChange = false;
             var schedulerViewModel = new SchedulerViewModel();
-            var activeItem = new TabItem();
-            activeItem.Header = "Settings";
+            var activeItem = new TabItem { Header = "Settings" };
             schedulerViewModel.PropertyChanged += (sender, args) =>
             {
                 if(args.PropertyName == "History")
@@ -1597,8 +1578,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             //------------Setup for test--------------------------
             var _historyMustChange = false;
             var schedulerViewModel = new SchedulerViewModel();
-            var activeItem = new TabItem();
-            activeItem.Header = "History";
+            var activeItem = new TabItem { Header = "History" };
             schedulerViewModel.PropertyChanged += (sender, args) =>
             {
                 if(args.PropertyName == "History")
@@ -1618,9 +1598,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Validation_NoErrorsWhenNothingSelected()
         {
             var resourceModel = new Mock<IScheduledResourceModel>();
-            var resources = new ObservableCollection<IScheduledResource>();
-            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
-            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"), new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
             resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
 
             var schedulerViewModel = new SchedulerViewModel
@@ -1636,18 +1614,14 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Validation_NoErrorOnSelected()
         {
             var resourceModel = new Mock<IScheduledResourceModel>();
-            var resources = new ObservableCollection<IScheduledResource>();
-            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
-            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"), new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
             resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
 
             var schedulerViewModel = new SchedulerViewModel
-            {
-                ScheduledResourceModel = resourceModel.Object
-            };
+                {
+                    ScheduledResourceModel = resourceModel.Object, SelectedTask = resources[0], Name = "monkeys"
+                };
             // validation occurs on property changes
-            schedulerViewModel.SelectedTask = resources[0];
-            schedulerViewModel.Name = "monkeys";
             Assert.IsFalse(schedulerViewModel.HasErrors);
 
         }
@@ -1658,18 +1632,14 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Validation_IfDuplicateNames()
         {
             var resourceModel = new Mock<IScheduledResourceModel>();
-            var resources = new ObservableCollection<IScheduledResource>();
-            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 });
-            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
             resourceModel.Setup(a => a.ScheduledResources).Returns(resources);
 
             var schedulerViewModel = new SchedulerViewModel
                 {
-                    ScheduledResourceModel = resourceModel.Object
+                    ScheduledResourceModel = resourceModel.Object, SelectedTask = resources[0], Name = "dave"
                 };
             //create duplicate name
-            schedulerViewModel.SelectedTask = resources[0];
-            schedulerViewModel.Name = "dave";
             Assert.IsTrue(schedulerViewModel.HasErrors);
             Assert.AreEqual("There is already a task with the same name", schedulerViewModel.Error);
             Assert.IsTrue(resources.All(a => a.Errors.HasErrors()));
@@ -1685,9 +1655,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
             var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker());
-            var resources = new ObservableCollection<IScheduledResource>();
-            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 });
-            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
 
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1732,9 +1700,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
-            var resources = new ObservableCollection<IScheduledResource>();
-            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 });
-            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
 
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1787,9 +1753,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
-            var resources = new ObservableCollection<IScheduledResource>();
-            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 });
-            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
 
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1824,9 +1788,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(false).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
-            var resources = new ObservableCollection<IScheduledResource>();
-            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 });
-            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
 
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1858,9 +1820,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             env.Setup(a => a.AuthorizationService).Returns(auth.Object);
             auth.Setup(a => a.IsAuthorized(AuthorizationContext.Administrator, null)).Returns(true).Verifiable();
             schedulerViewModel.CurrentEnvironment = env.Object;
-            var resources = new ObservableCollection<IScheduledResource>();
-            resources.Add(new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 });
-            resources.Add(new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c"));
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") { NumberOfHistoryToKeep = 1 }, new ScheduledResource("dave", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "c") };
 
             var resourceModel = new Mock<IScheduledResourceModel>();
             resourceModel.Setup(c => c.ScheduledResources).Returns(resources);
@@ -1978,8 +1938,7 @@ You need Administrator permission.", schedulerViewModel.Error);
         public void SchedulerViewModel_AddWorkflow_WithNewTaskNameSet_WorkflowNameChangedAndNameChanged()
         {
             //------------Setup for test--------------------------
-            var resources = new ObservableCollection<IScheduledResource>();
-            resources.Add(new ScheduledResource("New Task1", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { NumberOfHistoryToKeep = 1 });
+            var resources = new ObservableCollection<IScheduledResource> { new ScheduledResource("New Task1", SchedulerStatus.Enabled, DateTime.MaxValue, new Mock<IScheduleTrigger>().Object, "TestFlow1") { NumberOfHistoryToKeep = 1 } };
             var mockEnvironmentModel = new Mock<IEnvironmentModel>();
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
@@ -1995,8 +1954,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow3").Object);
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
 
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker());
-            schedulerViewModel.CurrentEnvironment = mockEnvironmentModel.Object;
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker()) { CurrentEnvironment = mockEnvironmentModel.Object };
             Mock<IResourcePickerDialog> mockResourcePickerDialog = new Mock<IResourcePickerDialog>();
             mockResourcePickerDialog.Setup(c => c.ShowDialog(It.IsAny<IEnvironmentModel>())).Returns(true);
             mockResourcePickerDialog.Setup(c => c.SelectedResource).Returns(setupResourceModelMock.Object);
@@ -2037,7 +1995,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             Assert.IsTrue(_taskListChange);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
             Assert.AreEqual("TestFlow2", schedulerViewModel.Name);
-            Assert.AreEqual("TestFlow2", schedulerViewModel.WorkflowName);
+            Assert.AreEqual("Category\\Testing", schedulerViewModel.WorkflowName);
             Assert.AreEqual(resId, schedulerViewModel.SelectedTask.ResourceId);
         }
 
@@ -2050,9 +2008,7 @@ You need Administrator permission.", schedulerViewModel.Error);
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
-            scheduledResourceForTest.IsDirty = true;
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()), IsDirty = true };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -2072,9 +2028,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             var message = new ServerSelectionChangedMessage(mockEnvironmentModel.Object, ConnectControlInstanceType.Scheduler);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker());
-            schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            schedulerViewModel.CurrentEnvironment = null;
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker()) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
             //------------Execute Test---------------------------
             schedulerViewModel.Handle(message);
             //------------Assert Results-------------------------
@@ -2086,13 +2040,121 @@ You need Administrator permission.", schedulerViewModel.Error);
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SchedulerViewModel_HandleServerSelectionChangedMessage")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SchedulerViewModel_HandleServerSelectedServerConnectedMessage_InvalidMessage_DoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var resources = new ObservableCollection<IScheduledResource>();
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()), IsDirty = true };
+            resources.Add(scheduledResourceForTest);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializeObject = serializer.SerializeToBuilder(resources);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(serializeObject);
+            mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            ResourceRepository resourceRepo = new ResourceRepository(mockEnvironmentModel.Object);
+            var setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow2");
+            resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow1").Object);
+            resourceRepo.Add(setupResourceModelMock.Object);
+            resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow3").Object);
+            mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
+            var message = new SelectedServerConnectedMessage(null);
+            var popup = new Mock<IPopupController>();
+            popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker()) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
+            //------------Execute Test---------------------------
+            schedulerViewModel.Handle(message);
+            //------------Assert Results-------------------------
+            Assert.IsNull(schedulerViewModel.CurrentEnvironment);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SchedulerViewModel_HandleServerSelectionChangedMessage")]
+        public void SchedulerViewModel_HandleServerSelectedServerConnectedMessage_ValidMessageDiffEnv_DoesOnServerChanged()
+        {
+            //------------Setup for test--------------------------
+            var resources = new ObservableCollection<IScheduledResource>();
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()), IsDirty = true };
+            resources.Add(scheduledResourceForTest);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializeObject = serializer.SerializeToBuilder(resources);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(serializeObject);
+            mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            ResourceRepository resourceRepo = new ResourceRepository(mockEnvironmentModel.Object);
+            var setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow2");
+            resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow1").Object);
+            resourceRepo.Add(setupResourceModelMock.Object);
+            resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow3").Object);
+            mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
+            var message = new SelectedServerConnectedMessage(mockEnvironmentModel.Object);
+            var popup = new Mock<IPopupController>();
+            popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker()) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
+            //------------Execute Test---------------------------
+            schedulerViewModel.Handle(message);
+            //------------Assert Results-------------------------
+            Assert.IsNull(schedulerViewModel.CurrentEnvironment);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SchedulerViewModel_HandleServerSelectionChangedMessage")]
+        public void SchedulerViewModel_HandleServerSelectedServerConnectedMessage_ValidMessageSameEnv_DoesOnServerChanged()
+        {
+            //------------Setup for test--------------------------
+            var resources = new ObservableCollection<IScheduledResource>();
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()), IsDirty = true };
+            resources.Add(scheduledResourceForTest);
+            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializeObject = serializer.SerializeToBuilder(resources);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockConnection.Setup(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(serializeObject);
+            mockConnection.Setup(connection => connection.WorkspaceID).Returns(Guid.NewGuid());
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+            mockEnvironmentModel.Setup(model => model.IsConnected).Returns(true);
+            ResourceRepository resourceRepo = new ResourceRepository(mockEnvironmentModel.Object);
+            var setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow2");
+            resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow1").Object);
+            resourceRepo.Add(setupResourceModelMock.Object);
+            
+            resourceRepo.Add(Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, "TestFlow3").Object);
+            mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
+            var message = new SelectedServerConnectedMessage(mockEnvironmentModel.Object);
+            var popup = new Mock<IPopupController>();
+            popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel);
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker()) { CurrentEnvironment = mockEnvironmentModel.Object, SelectedTask = scheduledResourceForTest };
+
+            //------------Execute Test---------------------------
+            schedulerViewModel.Handle(message);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(schedulerViewModel.CurrentEnvironment);
+
+        }
+
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SchedulerViewModel_HandleServerSelectionChangedMessage")]
         public void SchedulerViewModel_HandleServerSelectionChangedMessage_DirtyTask_LoseChanges()
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
-            scheduledResourceForTest.IsDirty = true;
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()), IsDirty = true };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -2112,9 +2174,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             var message = new ServerSelectionChangedMessage(mockEnvironmentModel.Object, ConnectControlInstanceType.Scheduler);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.No);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker());
-            schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            schedulerViewModel.CurrentEnvironment = null;
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker()) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
             //------------Execute Test---------------------------
             schedulerViewModel.Handle(message);
             //------------Assert Results-------------------------
@@ -2129,9 +2189,7 @@ You need Administrator permission.", schedulerViewModel.Error);
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
-            scheduledResourceForTest.IsDirty = true;
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()), IsDirty = true };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -2151,8 +2209,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             var message = new ServerSelectionChangedMessage(mockEnvironmentModel.Object, ConnectControlInstanceType.Scheduler);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker());
-            schedulerViewModel.SelectedTask = scheduledResourceForTest;
+            var schedulerViewModel = new SchedulerViewModelForTest(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker()) { SelectedTask = scheduledResourceForTest };
 
             #region Environment 2
             var mockEnvironmentModel2 = new Mock<IEnvironmentModel>();
@@ -2190,9 +2247,7 @@ You need Administrator permission.", schedulerViewModel.Error);
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
-            scheduledResourceForTest.IsDirty = true;
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()), IsDirty = true };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -2211,9 +2266,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.No);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker());
-            schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            schedulerViewModel.CurrentEnvironment = null;
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker()) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
             //------------Execute Test---------------------------
             Assert.IsTrue(schedulerViewModel.DoDeactivate());
             //------------Assert Results-------------------------
@@ -2227,9 +2280,7 @@ You need Administrator permission.", schedulerViewModel.Error);
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
-            scheduledResourceForTest.IsDirty = true;
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()), IsDirty = true };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -2248,9 +2299,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker());
-            schedulerViewModel.SelectedTask = scheduledResourceForTest;
-            schedulerViewModel.CurrentEnvironment = null;
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker()) { SelectedTask = scheduledResourceForTest, CurrentEnvironment = null };
             //------------Execute Test---------------------------
             Assert.IsFalse(schedulerViewModel.DoDeactivate());
             //------------Assert Results-------------------------
@@ -2265,9 +2314,7 @@ You need Administrator permission.", schedulerViewModel.Error);
         {
             //------------Setup for test--------------------------
             var resources = new ObservableCollection<IScheduledResource>();
-            var scheduledResourceForTest = new ScheduledResourceForTest();
-            scheduledResourceForTest.Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
-            scheduledResourceForTest.IsDirty = true;
+            var scheduledResourceForTest = new ScheduledResourceForTest { Trigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory()), IsDirty = true };
             resources.Add(scheduledResourceForTest);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
@@ -2286,8 +2333,7 @@ You need Administrator permission.", schedulerViewModel.Error);
             mockEnvironmentModel.Setup(c => c.ResourceRepository).Returns(resourceRepo);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Yes);
-            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker());
-            schedulerViewModel.SelectedTask = scheduledResourceForTest;
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, popup.Object, new TestAsyncWorker()) { SelectedTask = scheduledResourceForTest };
 
             var auth = new Mock<IAuthorizationService>();
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -2349,8 +2395,7 @@ You need Administrator permission.", schedulerViewModel.Error);
 
         public override IScheduleTrigger ShowEditTriggerDialog()
         {
-            DailyTrigger dailyTrigger = new DailyTrigger();
-            dailyTrigger.StartBoundary = new DateTime(2013, 04, 01, 02, 21, 25);
+            DailyTrigger dailyTrigger = new DailyTrigger { StartBoundary = new DateTime(2013, 04, 01, 02, 21, 25) };
             return SchedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, dailyTrigger));
         }
 
