@@ -180,6 +180,9 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="..\ProductBuild\Samples.zip">
+      <Link>UnpackResources\Samples.zip</Link>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="app.manifest">
       <SubType>Designer</SubType>
@@ -191,7 +194,6 @@
     <AppDesigner Include="Properties\" />
     <None Include="ResourceFiles\PrivacyStatement.rtf" />
     <None Include="ResourceFiles\WAREWOLF_EULA_EN.rtf" />
-    <EmbeddedResource Include="UnpackResources\Samples.zip" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="SetupApplication.xaml">
