@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.ServiceProcess;
 using System.Threading;
 using System.Windows;
@@ -64,17 +65,23 @@ namespace Gui
                 File.Create(workspaceFileName).Close();
             }
             var xElement = workspaceFileExists ? XElement.Load(workspaceFileName) : new XElement("WorkspaceItems");
-            var workspaceItemElement = new XElement("WorkspaceItem");
-            workspaceItemElement.SetAttributeValue("ID", "acb75027-ddeb-47d7-814e-a54c37247ec1");
-            workspaceItemElement.SetAttributeValue("WorkspaceID", Guid.Empty);
-            workspaceItemElement.SetAttributeValue("ServerID", "51a58300-7e9d-4927-a57b-e5d700b11b55");
-            workspaceItemElement.SetAttributeValue("EnvironmentID", Guid.Empty);
-            workspaceItemElement.SetAttributeValue("Action", "None");
-            workspaceItemElement.SetAttributeValue("ServiceName", "Hello World");
-            workspaceItemElement.SetAttributeValue("IsWorkflowSaved", "true");
-            workspaceItemElement.SetAttributeValue("ServiceType", "DynamicService");
-            xElement.Add(workspaceItemElement);
-            File.WriteAllText(workspaceFileName, xElement.ToString());
+            var hasHelloWorld = from element in xElement.Elements()
+                                where element.Attribute("ServiceName").Value == "Hello World"
+                                select element;
+            if(!hasHelloWorld.Any())
+            {
+                var workspaceItemElement = new XElement("WorkspaceItem");
+                workspaceItemElement.SetAttributeValue("ID", "acb75027-ddeb-47d7-814e-a54c37247ec1");
+                workspaceItemElement.SetAttributeValue("WorkspaceID", Guid.Empty);
+                workspaceItemElement.SetAttributeValue("ServerID", "51a58300-7e9d-4927-a57b-e5d700b11b55");
+                workspaceItemElement.SetAttributeValue("EnvironmentID", Guid.Empty);
+                workspaceItemElement.SetAttributeValue("Action", "None");
+                workspaceItemElement.SetAttributeValue("ServiceName", "Hello World");
+                workspaceItemElement.SetAttributeValue("IsWorkflowSaved", "true");
+                workspaceItemElement.SetAttributeValue("ServiceType", "DynamicService");
+                xElement.Add(workspaceItemElement);
+                File.WriteAllText(workspaceFileName, xElement.ToString());
+            }
         }
 
         void InstallSamples()
