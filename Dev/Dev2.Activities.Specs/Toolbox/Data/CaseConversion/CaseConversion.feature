@@ -326,11 +326,11 @@ Scenario: Convert a invalid variable valid text
 	When the case conversion tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as  
-	| # | Convert         | To    |
-	| 1 | [rec().a]]=]] = | UPPER |
+	| # | Convert       | To    |
+	| 1 | [rec().a]]=]] | UPPER |
 	And the debug output as  
-	| # |                 |
-	| 1 | = [rec().a]]=]] |
+	| # |               |
+	| 1 | [rec().a]]=]] |
 
 
 

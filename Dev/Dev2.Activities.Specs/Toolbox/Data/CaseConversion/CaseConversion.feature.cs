@@ -1347,7 +1347,7 @@ this.ScenarioSetup(scenarioInfo);
                         "To"});
             table43.AddRow(new string[] {
                         "1",
-                        "[rec().a]]=]] =",
+                        "[rec().a]]=]]",
                         "UPPER"});
 #line 328
  testRunner.And("the debug inputs as", ((string)(null)), table43, "And ");
@@ -1357,7 +1357,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table44.AddRow(new string[] {
                         "1",
-                        "= [rec().a]]=]]"});
+                        "[rec().a]]=]]"});
 #line 331
  testRunner.And("the debug output as", ((string)(null)), table44, "And ");
 #line hidden
