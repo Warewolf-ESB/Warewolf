@@ -8,7 +8,7 @@ using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Settings.Scheduler
 {
-    class ClientScheduledResourceModel : IScheduledResourceModel
+    public class ClientScheduledResourceModel : IScheduledResourceModel
     {
         private readonly IEnvironmentModel _model;
         ObservableCollection<IScheduledResource> _scheduledResources;

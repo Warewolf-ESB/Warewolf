@@ -27,7 +27,7 @@ namespace Dev2.Activities.Specs.Permissions
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
 
-            Settings settings = new Settings
+            Data.Settings.Settings settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
             };
@@ -63,7 +63,7 @@ namespace Dev2.Activities.Specs.Permissions
                     groupPermssions.Permissions |= permission;
                 }
             }
-            Settings settings = new Settings
+            Data.Settings.Settings settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };

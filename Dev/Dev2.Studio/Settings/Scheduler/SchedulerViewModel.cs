@@ -781,7 +781,7 @@ You need Administrator permission.");
 
 
 
-        void CreateNewTask()
+        public void CreateNewTask()
         {
             var dev2DailyTrigger = new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger());
             var scheduleTrigger = _schedulerFactory.CreateTrigger(TaskState.Ready, dev2DailyTrigger);
