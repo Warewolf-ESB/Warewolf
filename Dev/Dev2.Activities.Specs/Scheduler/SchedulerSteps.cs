@@ -154,7 +154,7 @@ namespace Dev2.Activities.Specs.Scheduler
             if(scheduler != null)
             {
                 scheduler.ActiveItem = new TabItem {Header = "History"};
-    
+                Thread.Sleep(5000);
 // ReSharper disable RedundantAssignment
                 IList<IResourceHistory> x = scheduler.ScheduledResourceModel.CreateHistory(scheduler.SelectedTask).ToList();
 // ReSharper restore RedundantAssignment
