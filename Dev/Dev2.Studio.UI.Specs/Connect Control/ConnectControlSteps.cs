@@ -15,7 +15,7 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
         [Given(@"right click rename ""(.*)"" to ""(.*)""")]
         public void GivenRightClickRenameTo(string serverName, string newName)
         {
-            ExplorerUIMap.RightClickRenameResource(serverName, "", ServiceType.Sources, newName);
+            ExplorerUIMap.RightClickRenameResource(serverName, "", newName);
         }
         
         [When(@"I click Test Connection")]

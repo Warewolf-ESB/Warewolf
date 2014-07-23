@@ -32,11 +32,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
     {
         private UITestControl _variableExplorer;
 
-        VisualTreeWalker vtw = new VisualTreeWalker();
-
         public VariablesUIMap()
         {
-            _variableExplorer = vtw.GetControlFromRoot(1, true, "Uia.DataListView");
+            _variableExplorer = VisualTreeWalker.GetControlFromRoot(1, true, 1, "Uia.DataListView");
         }
 
         private UITestControl GetUpdateButton()
@@ -51,12 +49,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 
         private UITestControl GetScalarVariables()
         {
-            return vtw.GetChildByAutomationIDPath(_variableExplorer, "ScalarExplorer").GetChildren()[0];
+            return VisualTreeWalker.GetChildByAutomationIDPath(_variableExplorer, "ScalarExplorer").GetChildren()[0];
         }
 
         private UITestControl GetRecordsetVariables()
         {
-            return vtw.GetChildByAutomationIDPath(_variableExplorer, "ScalarExplorer").GetChildren()[1];
+            return VisualTreeWalker.GetChildByAutomationIDPath(_variableExplorer, "ScalarExplorer").GetChildren()[1];
         }
 
         private UITestControl GetRecordSetList()

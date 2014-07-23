@@ -14,19 +14,25 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         public OutputUIMap()
         {
-            var vstw = new VisualTreeWalker();
-
-            _outputPane = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput");
-            vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Edit");
-            _outputStatus = vstw.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Dev2StatusBarAutomationID", "StatusBar");
-
+            //_outputPane = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "OutputPane", "DebugOutput");
+            //_outputEdit = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "OutputPane", "Edit");
+            //_outputStatus = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "OutputPane", "Edit", "Dev2StatusBarAutomationID", "StatusBar");
+            _outputPane = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "Zfb2fe4b8a0e84c8fb3fda8601e62a61e", "Zae7dc5529efd48379e593356fee56c4c", "OutputPane", "DebugOutput");
+            if(_outputPane == null)
+            {
+                _outputPane = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput");
+            }
+            //_outputEdit = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "Zfb2fe4b8a0e84c8fb3fda8601e62a61e", "Zae7dc5529efd48379e593356fee56c4c", "OutputPane", "DebugOutput", "Edit");
+            _outputStatus = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "Zfb2fe4b8a0e84c8fb3fda8601e62a61e", "Zae7dc5529efd48379e593356fee56c4c", "OutputPane", "DebugOutput", "Dev2StatusBarAutomationID", "StatusBar");
+            if(_outputStatus == null)
+            {
+                _outputStatus = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z96bb9badc4b148518ea4eff80920f8d9", "OutputPane", "DebugOutput", "Dev2StatusBarAutomationID", "StatusBar");
+            }
         }
 
         private WpfTree GetOutputTree()
         {
-            var vstw = new VisualTreeWalker();
-
-            var debugOutputTree = vstw.GetChildByAutomationIDPath(_outputPane, "Uia.TreeView");
+            var debugOutputTree = VisualTreeWalker.GetChildByAutomationIDPath(_outputPane, "Uia.TreeView");
             return debugOutputTree as WpfTree;
         }
 

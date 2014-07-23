@@ -510,7 +510,7 @@ namespace Dev2.Studio.UI.Tests
             // Open the Explorer
             ExplorerUIMap.EnterExplorerSearchText(resourceToUse);
 
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", resourceToUse);
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "INTEGRATION TEST SERVICES", resourceToUse);
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, innerResource);
@@ -577,7 +577,7 @@ namespace Dev2.Studio.UI.Tests
                                                 theStartButton.BoundingRectangle.Y + 100);
 
             // Get a sample workflow
-            ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, resourceToUse, "INTEGRATION TEST SERVICES", ServiceType.Workflows);
+            ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, resourceToUse, "INTEGRATION TEST SERVICES");
 
             UITestControl controlOnWorkflow = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, resourceToUse, 100);
             Mouse.Click(controlOnWorkflow, new Point(5, 5));

@@ -44,23 +44,50 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             Playback.Wait(2000);
         }
 
+        public void ChooseDestinationServer(UITestControl theTab, string serverName)
+        {
+            UITestControl destinationServerList = GetDestinationServerList(theTab);
+
+
+            //Wait for the connect control to be ready
+            int counter = 0;
+            while(!destinationServerList.Enabled && counter < 5)
+            {
+                Playback.Wait(2000);
+                counter++;
+            }
+            if(!destinationServerList.Enabled)
+            {
+                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
+            }
+
+            // Click it to expand it
+            Mouse.Click(destinationServerList, new Point(10, 10));
+            Playback.Wait(500);
+
+            var item = VisualTreeWalker.GetChildByAutomationIDPath(destinationServerList, "UI_DestinationServercbx_AutoID" + serverName);
+
+            Mouse.Click(item, new Point(5, 5));
+
+            //Wait for the connect control to be ready
+            int afterCounter = 0;
+            while(!destinationServerList.Enabled && afterCounter < 5)
+            {
+                Playback.Wait(2000);
+                afterCounter++;
+            }
+            if(!destinationServerList.Enabled)
+            {
+                throw new Exception("The connect control drop down is still disabled after 10 sec wait.");
+            }
+        }
+
         public void ChooseDestinationServerWithKeyboard(UITestControl theTab, string serverName)
         {
             UITestControl destinationServerList = GetDestinationServerList(theTab);
             Mouse.Click(destinationServerList);
             Keyboard.SendKeys("{UP}{ENTER}");
             Playback.Wait(2000);
-        }
-
-        public void ChooseDestinationServer(UITestControl theTab, string serverName)
-        {
-            UITestControl destinationServerList = GetDestinationServerList(theTab);
-            WpfComboBox comboBox = (WpfComboBox)destinationServerList;
-            var serverItem = comboBox.Items.ToList().FirstOrDefault(c => c.FriendlyName == serverName);
-            if(serverItem != null)
-            {
-                comboBox.SelectedIndex = comboBox.Items.IndexOf(serverItem);
-            }
         }
 
         public bool DoSourceAndDestinationCountsMatch(UITestControl theTab)
@@ -138,9 +165,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
         {
             var activeTab = TabManagerUIMap.GetActiveTab();
             var deployUserControl = GetDeployUserControl(activeTab);
-            var vstw = new VisualTreeWalker();
 
-            return vstw.GetChildByAutomationIDPath(deployUserControl, "SourceNavigationView", "Navigation") as WpfTree;
+
+            return VisualTreeWalker.GetChildByAutomationIDPath(deployUserControl, "SourceNavigationView", "Navigation") as WpfTree;
         }
 
         public UITestControl GetSourceConnectButton(UITestControl theTab)

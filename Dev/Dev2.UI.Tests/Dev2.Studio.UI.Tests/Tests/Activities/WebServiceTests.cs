@@ -51,8 +51,8 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
                 WebServiceWizardUIMap.ClickMappingTab();
                 WebServiceWizardUIMap.EnterDataIntoMappingTextBox(6, newMapping);
-                WebServiceWizardUIMap.ClickSaveButton(2);
-                
+                WebServiceWizardUIMap.TabToSaveButton(2);
+
                 ResourceChangedPopUpUIMap.ClickCancel();
 
                 //Assert the the error button is there
@@ -97,7 +97,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             KeyboardCommands.SendEnter(2000);
 
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
-            UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
+            UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned");
 
             using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
             {
@@ -140,7 +140,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             KeyboardCommands.SendEnter(2000);
 
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
-            UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
+            UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned");
 
             using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
             {
@@ -178,7 +178,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             KeyboardCommands.SendEnter(2000);
 
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
-            UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
+            UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned");
 
             using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
             {
@@ -215,7 +215,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             KeyboardCommands.SendEnter(2000);
 
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);
-            UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned", ServiceType.Services);
+            UITestControl activityControl = ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, newWebserviceName, "Unassigned");
 
             using(var activity = new DsfActivityUiMap(false) { Activity = activityControl, TheTab = theTab })
             {

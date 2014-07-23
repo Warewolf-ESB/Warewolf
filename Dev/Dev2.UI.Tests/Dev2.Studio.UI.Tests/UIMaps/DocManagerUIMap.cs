@@ -15,9 +15,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses
 
         public DocManagerUIMap()
         {
-            var vstw = new VisualTreeWalker();
+            
 
-            _dockManager = vstw.GetControl("UI_DocManager_AutoID");
+            _dockManager = VisualTreeWalker.GetControl("UI_DocManager_AutoID");
         }
 
         /// <summary>

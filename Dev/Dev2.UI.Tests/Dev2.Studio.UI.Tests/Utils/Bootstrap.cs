@@ -15,142 +15,62 @@ namespace Dev2.Studio.UI.Tests.Utils
     [TestClass]
     public class Bootstrap
     {
+        private const bool enableLocalRestart = false;
+
         private const string ServerProcName = "Warewolf Server";
         private const string StudioProcName = "Warewolf Studio";
         private const string ServerExeName = ServerProcName + ".exe";
         private const string StudioExeName = StudioProcName + ".exe";
-        private const int ServerTimeOut = 2000;
-        private const int StudioTimeOut = 10000;
+        private const int ServerTimeOut = 3000;
+        private const int StudioTimeOut = 12000;
 
-        public static string BuildWorkspaceLocation = @"C:\Builds\UITestRunWorkspace\";
+        public static string LogLocation = @"C:\UI_Test.log";
+        public static string BuildDirectory = @"C:\Builds\UITestRunWorkspace";//If UI tests are going to be run with no deploy by a build agent
 
-        public static string ServerLocation = BuildWorkspaceLocation + @"bin\Warewolf Server.exe";
-        public static Process ServerProc;
-        public static string StudioLocation = BuildWorkspaceLocation + @"bin\Warewolf Studio.exe";
-        public static Process StudioProc;
-
-        public static string LogLocation = BuildWorkspaceLocation + "UI_Test.log";
-
-        public static string RootSourceLocation = BuildWorkspaceLocation + @"bin\Resources\";
-        public static string RootServiceLocation = BuildWorkspaceLocation + @"bin\Resources\";
-
-        public static string ShadowSourceLocation = BuildWorkspaceLocation + @"Resources\";
-        public static string ShadowServiceLocation = BuildWorkspaceLocation + @"Resources\";
-
-        public static string ServerWorkspaceLocation = BuildWorkspaceLocation + @"bin\Workspaces\";
-        public static string RemoteServerWorkspaceLocation = BuildWorkspaceLocation + @"bin-Remote\Workspaces\";
-
-        public static string RemoteServerLocation = BuildWorkspaceLocation + @"bin-Remote\";
-
-        // must be removed to have proper codedui runs
-        public static string ServerSourceToDelete = "Remote Connection Integration.xml";
-        public static string ServerSourceToDeleteCategory = "REMOTECODEDUI";
-        public static string RemoteServer = RemoteServerLocation + "Warewolf Server.exe";
-        public static string RemoteServerConfig = RemoteServerLocation + "Warewolf Server.exe.config";
+        public static string ServerLocation;
+        public static string StudioLocation;
+        private static string ResourceLocation;
+        private static string ServerWorkspaceLocation;
 
         public static int WaitMS = 5000;
 
-        static bool _isLocal = false;
+        public static bool isLocal = false;
 
         /// <summary>
-        /// Inits the ServerLocation and RemoteServerLocation.
-        /// Ashley: Can drop the complexity of this [AssemblyInitialize] significantly by refactoring it to a post build event script for this assembly.
+        /// Inits the ServerLocation.
         /// </summary>
         /// <param name="testCtx">Test context.</param>
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext testCtx)
         {
-            _isLocal = testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901";
-            CreateRemoteServer(File.Exists(ServerLocation) && File.Exists(StudioLocation), testCtx.DeploymentDirectory);
+            isLocal = testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901";
+            ResolvePathsToTestAgainst(!isLocal ? Path.Combine(testCtx.DeploymentDirectory, "DebugBin") : null);
         }
 
-        private static void CreateRemoteServer(bool inBuildWorkspace, string deploymentDir)
+        private static void ResolvePathsToTestAgainst(string deployDirectory = null)
         {
-            Directory.CreateDirectory(RemoteServerLocation);
-            string serverBinaries;
-            string uiTestRemoteResources;
-            if(inBuildWorkspace)
+            ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
+            StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
+            if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
             {
-                //Ashley: Go by build workspace
-                serverBinaries = BuildWorkspaceLocation + @"bin";
-                uiTestRemoteResources = serverBinaries + @"\..\BPM Resources - UITestRemote\";
+                //Try debug bin or deployed resources
+                ServerLocation = Path.Combine(deployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Server\bin\Debug"), ServerExeName);
+                StudioLocation = Path.Combine(deployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Studio\bin\Debug"), StudioExeName);
             }
-            else
+            if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
             {
-                if(_isLocal)
-                {
-                    //Ashley: Try go by running server/studio locations
-                    ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
-                    StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
-                    if(ServerLocation == null)
-                    {
-                        //Ashley: Try debug config output
-                        ServerLocation = Path.Combine(@"C:\Development\Dev\Dev2.Server\bin\debug", ServerExeName);
-                    }
-                    else
-                    {
-                        KillProcess(TryGetProcess(ServerProcName));
-                    }
-                    if(StudioLocation == null)
-                    {
-                        //Ashley: Try debug config output
-                        StudioLocation = Path.Combine(@"C:\Development\Dev\Dev2.Server\bin\debug", StudioExeName);
-                    }
-                    else
-                    {
-                        KillProcess(TryGetProcess(StudioProcName));
-                    }
-
-                    if(!File.Exists(ServerLocation))
-                    {
-                        //Ashley: Try test config output as a last resort
-                        ServerLocation = Path.Combine(@"C:\Development\Dev\TestBinaries", ServerExeName);
-                    }
-                    if(!File.Exists(StudioLocation))
-                    {
-                        //Ashley: Try test config output as a last resort
-                        StudioLocation = Path.Combine(@"C:\Development\Dev\TestBinaries", StudioExeName);
-                    }
-
-                    RootSourceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
-                    RootServiceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
-                    ServerWorkspaceLocation = RootServiceLocation.Replace(@"Resources\", @"Workspaces\");
-                    serverBinaries = Path.GetDirectoryName(ServerLocation);
-                    uiTestRemoteResources = serverBinaries + @"\..\BPM Resources - UITestRemote\";
-                    if(!Directory.Exists(uiTestRemoteResources))
-                    {
-                        uiTestRemoteResources = serverBinaries + @"\..\..\..\BPM Resources - UITestRemote\";
-                    }
-                }
-                else
-                {
-                    //Ashley: Go by deployment directory
-                    ServerLocation = Path.Combine(deploymentDir, ServerExeName);
-                    StudioLocation = Path.Combine(deploymentDir, StudioExeName);
-                    RootSourceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
-                    RootServiceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
-                    serverBinaries = deploymentDir;
-                    uiTestRemoteResources = serverBinaries + @"\..\BPM Resources - UITestRemote\";
-                    if(!Directory.Exists(uiTestRemoteResources))
-                    {
-                        uiTestRemoteResources = Path.Combine(serverBinaries, @"BPM Resources - UITestRemote");
-                    }
-                }
+                //Try build workspace directory
+                ServerLocation = Path.Combine(BuildDirectory, "bin", ServerExeName);
+                StudioLocation = Path.Combine(BuildDirectory, "bin", StudioExeName);
             }
-
-            //Ashley: Create remote server
-            KillProcess(TryGetProcess(ServerProcName));
-            CopyDirectory(serverBinaries, RemoteServerLocation);
-            if(Directory.Exists(uiTestRemoteResources))
+            if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
             {
-                var remoteResources = Path.Combine(RemoteServerLocation, @"Resources");
-                Directory.Delete(remoteResources, true);
-                CopyDirectory(uiTestRemoteResources, remoteResources);
+                LogTestRunMessage("Could not locate binaries to test against.", true);
             }
-            else
-            {
-                LogTestRunMessage("Could not locate CodedUI Resources", true);
-            }
+            //Set resource location
+            ResourceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
+            //Set workspace location
+            ServerWorkspaceLocation = ServerLocation.Replace(ServerExeName, @"Workspaces\");
         }
 
         private static string GetProcessPath(ManagementObjectCollection processes)
@@ -162,54 +82,32 @@ namespace Dev2.Studio.UI.Tests.Utils
             return (from ManagementObject process in processes select (process.Properties["ExecutablePath"].Value ?? string.Empty).ToString()).FirstOrDefault();
         }
 
-        private static void CopyDirectory(string from, string to)
-        {
-            foreach(var dirPath in Directory.GetDirectories(from, "*", SearchOption.AllDirectories))
-            {
-                Directory.CreateDirectory(dirPath.Replace(from, to));
-            }
-            foreach(var newPath in Directory.GetFiles(from, "*.*", SearchOption.AllDirectories))
-            {
-                if(newPath.ToLower().Contains("version"))
-                {
-                    continue;
-                }
-                File.Copy(newPath, newPath.Replace(from, to), true);
-            }
-        }
-
         public static void Init()
         {
-            var serverProcess = TryGetProcess(ServerProcName);
-            var studioProcess = TryGetProcess(StudioProcName);
-
             // Remove old log files ;)
             if(File.Exists(LogLocation))
             {
                 File.Delete(LogLocation);
             }
 
-            if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
+            //Check for runnning server/studio
+            var studioProc = TryGetProcess(StudioProcName);
+            var serverProc = TryGetProcess(ServerProcName);
+
+            if(serverProc == null || studioProc == null || enableLocalRestart || !(Environment.CurrentDirectory.Contains(BuildDirectory) && isLocal))
             {
                 // term any existing studio processes ;)
-                KillProcess(studioProcess);
+                KillProcess(studioProc);
                 // term any existing server processes ;)
-                KillProcess(serverProcess);
+                KillProcess(serverProc);
 
-                // remote workspaces to avoid mutation issues
+                // remove workspaces to avoid mutation issues
                 RemoveWorkspaces();
 
-                // remove hanging source that causes issues
-                RemoveProblemServerSources();
-
                 StartServer(ServerLocation);
-                StartStudio();
+                StartStudio(StudioLocation);
 
                 Thread.Sleep(WaitMS);
-            }
-            else
-            {
-                LogTestRunMessage("Could not locate CodedUI Binaries", true);
             }
         }
 
@@ -220,19 +118,8 @@ namespace Dev2.Studio.UI.Tests.Utils
         {
             if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
             {
-                if(ServerProc != null && !ServerProc.HasExited)
-                {
-                    ServerProc.Kill();
-                }
-
                 //Server was deployed and started, stop it now.
                 KillProcess(TryGetProcess(ServerProcName));
-
-                if(StudioProc != null && !StudioProc.HasExited)
-                {
-                    StudioProc.Kill();
-                }
-
 
                 //Studio was deployed and started, stop it now.
                 KillProcess(TryGetProcess(StudioProcName));
@@ -242,7 +129,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                 LogTestRunMessage("Could not locate CodedUI Binaries", true);
             }
 
-            if(!_isLocal)
+            if(!isLocal)
             {
                 // Now clean up next test run ;)
                 CloseAllInstancesOfIE();
@@ -255,7 +142,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// <param name="sourceName">Name of the source.</param>
         public static void DeleteSource(string sourceName, string serviceCategory = null)
         {
-            var path = RootServiceLocation + (serviceCategory != null ? (serviceCategory + "\\") : string.Empty) + sourceName;
+            var path = ResourceLocation + (serviceCategory != null ? (serviceCategory + "\\") : string.Empty) + sourceName;
             if(File.Exists(path))
             {
                 File.Delete(path);
@@ -268,65 +155,16 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// <param name="serviceName">Name of the service.</param>
         public static void DeleteService(string serviceName, string serviceCategory = null)
         {
-            var path = RootServiceLocation + (serviceCategory != null ? (serviceCategory + "\\") : string.Empty) + serviceName;
+            var path = ResourceLocation + (serviceCategory != null ? (serviceCategory + "\\") : string.Empty) + serviceName;
             if(File.Exists(path))
             {
                 File.Delete(path);
             }
         }
 
-        public static void StartRemoteServer()
-        {
-            if(File.Exists(RemoteServer))
-            {
-                // Just needs the remote resources now ;(
-                AmendRemoteConfigForTest();
-
-                StartServer(RemoteServer);
-
-                Thread.Sleep(WaitMS);
-            }
-            else
-            {
-                throw Exception("No remote server found to start");
-            }
-        }
-
         private static Exception Exception(string p)
         {
             throw new NotImplementedException();
-        }
-
-        public static void AmendRemoteConfigForTest()
-        {
-
-            if(File.Exists(RemoteServerConfig))
-            {
-                var data = File.ReadAllText(RemoteServerConfig);
-
-                if(data.IndexOf("<add key=\"webServerPort\" value=\"3142\"/>", StringComparison.Ordinal) > 0)
-                {
-                    // we need to amend it ;)
-                    data = data.Replace("<add key=\"webServerPort\" value=\"3142\"/>", "<add key=\"webServerPort\" value=\"4142\"/>");
-
-                    if(data.IndexOf("<add key=\"webServerSslPort\" value=\"3143\"/>", StringComparison.Ordinal) > 0)
-                    {
-                        // we need to amend it ;)
-                        data = data.Replace("<add key=\"webServerSslPort\" value=\"3143\"/>", "<add key=\"webServerSslPort\" value=\"4143\"/>");
-                    }
-
-                    File.WriteAllText(RemoteServerConfig, data);
-                }
-            }
-            else
-            {
-                LogTestRunMessage("File not found: " + RemoteServerConfig, true);
-            }
-        }
-
-        static void RemoveProblemServerSources()
-        {
-            DeleteSource(ServerSourceToDelete, ServerSourceToDeleteCategory);
         }
 
         static void CloseAllInstancesOfIE()
@@ -349,7 +187,6 @@ namespace Dev2.Studio.UI.Tests.Utils
                     }
                 }
             }
-
         }
 
         /// <summary>
@@ -363,10 +200,6 @@ namespace Dev2.Studio.UI.Tests.Utils
                 {
                     Directory.Delete(ServerWorkspaceLocation, true);
                 }
-                if(Directory.Exists(RemoteServerWorkspaceLocation))
-                {
-                    Directory.Delete(RemoteServerWorkspaceLocation, true);
-                }
             }
             catch(Exception e)
             {
@@ -374,9 +207,9 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
         }
 
-        static void StartStudio()
+        static void StartStudio(string location)
         {
-            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, FileName = StudioLocation };
+            ProcessStartInfo startInfo = new ProcessStartInfo { CreateNoWindow = false, UseShellExecute = true, FileName = location };
 
             var started = false;
             var startCnt = 0;
@@ -385,7 +218,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 try
                 {
-                    StudioProc = Process.Start(startInfo);
+                    var StudioProc = Process.Start(startInfo);
 
                     // Wait for studio to start
                     Thread.Sleep(StudioTimeOut); // wait for server to start ;)
@@ -400,6 +233,16 @@ namespace Dev2.Studio.UI.Tests.Utils
                     // most likely a studio is already running, kill it and try again ;)
                     LogTestRunMessage("Could not locate Start Studio [ " + StudioLocation + " ] Attempt Count [ " + startCnt + " ]", true);
                     startCnt++;
+                }
+                finally
+                {
+                    if(!started)
+                    {
+                        LogTestRunMessage("Failed To Start Studio.... Aborting", true);
+                        // term any existing server processes ;)
+                        KillProcess(TryGetProcess(StudioProcName));
+                        throw new Exception("Failed to start Studio at " + location);
+                    }
                 }
             }
         }
@@ -417,7 +260,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 try
                 {
-                    ServerProc = Process.Start(startInfo);
+                    var ServerProc = Process.Start(startInfo);
 
                     // Wait for server to start
                     Thread.Sleep(ServerTimeOut); // wait for server to start ;)
@@ -440,23 +283,19 @@ namespace Dev2.Studio.UI.Tests.Utils
                         LogTestRunMessage("Failed To Start Server.... Aborting", true);
                         // term any existing server processes ;)
                         KillProcess(TryGetProcess(ServerProcName));
-                        throw new Exception("Failed To Start Server!!!!");
+                        throw new Exception("Failed to start server at " + location);
                     }
                 }
             }
         }
 
-        // here to force exit all processes 
+        // Click here to force exit all processes 
         [AssemblyCleanup]
         public static void RunTeardown()
         {
-            Teardown();
-            try
+            if(enableLocalRestart || !(Environment.CurrentDirectory.Contains(BuildDirectory) && isLocal))
             {
-                Directory.Delete(RemoteServerLocation, true);
-            }
-            catch
-            {
+                Teardown();
             }
         }
 
@@ -522,3 +361,4 @@ namespace Dev2.Studio.UI.Tests.Utils
         }
     }
 }
+

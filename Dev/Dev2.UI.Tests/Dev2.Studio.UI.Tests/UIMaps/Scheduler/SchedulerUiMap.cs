@@ -10,7 +10,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Scheduler
     public class SchedulerUiMap : UIMapBase, IDisposable
     {
         readonly UITestControl _activeTab;
-        readonly VisualTreeWalker _visualTreeWalker;
         readonly string[] _newButtonAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "New" };
         readonly string[] _nameTextboxAutoIds = { "Uia.ContentPane", "Uia.SchedulerView", "Uia.TabControl", "Settings", "UI_NameTextbox" };
         private readonly string[] _connectControl = new[] { "Uia.ContentPane", "Uia.SchedulerView", "ConnectUserControl" };
@@ -21,7 +20,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Scheduler
 
         public SchedulerUiMap()
         {
-            _visualTreeWalker = new VisualTreeWalker();
             RibbonUIMap.SchedulerShortcutKeyPress();
             _activeTab = TabManagerUIMap.GetActiveTab();
             Playback.Wait(1500);
@@ -41,19 +39,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Scheduler
 
         public void ClickNewTaskButton()
         {
-            UITestControl newButton = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _newButtonAutoIds);
+            UITestControl newButton = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _newButtonAutoIds);
             newButton.Click();
         }
 
         public string GetNameText()
         {
-            UITestControl nameTextbox = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _nameTextboxAutoIds);
+            UITestControl nameTextbox = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _nameTextboxAutoIds);
             return nameTextbox.GetText();
         }
 
         public string GetStatus()
         {
-            UITestControl statusRadioButton = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _enabledRadioButtonAutoIds);
+            UITestControl statusRadioButton = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _enabledRadioButtonAutoIds);
             if(statusRadioButton.IsSelected())
             {
                 return "Enabled";
@@ -63,19 +61,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Scheduler
 
         public string GetWorkflowName()
         {
-            UITestControl workflowNameTextbox = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _workflowNameTextBoxAutoIds);
+            UITestControl workflowNameTextbox = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _workflowNameTextBoxAutoIds);
             return workflowNameTextbox.GetText();
         }
 
         public bool GetRunAsap()
         {
-            UITestControl runAsapCheckbox = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _runAsapCheckboxAutoIds);
+            UITestControl runAsapCheckbox = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _runAsapCheckboxAutoIds);
             return runAsapCheckbox.IsChecked();
         }
 
         public string GetUsername()
         {
-            UITestControl usernameTextbox = _visualTreeWalker.GetChildByAutomationIDPath(_activeTab, _usernameTextboxAutoIds);
+            UITestControl usernameTextbox = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _usernameTextboxAutoIds);
             return usernameTextbox.GetText();
         }
 

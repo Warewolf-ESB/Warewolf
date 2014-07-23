@@ -3,8 +3,7 @@
   <Description>These are default test settings for a remote integration test run.</Description>
   <Deployment>
     <DeploymentItem filename="TestBinaries\" />
-    <DeploymentItem filename="Dev2.Server\bin\Debug\" />
-	<DeploymentItem filename="Dev2.Studio\bin\Debug\" />
+    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="DebugBin" outputDirectory="DebugBin" />
   </Deployment>
   <Scripts setupScript="TestScripts\Integration\Startup.bat" cleanupScript="TestScripts\Integration\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />

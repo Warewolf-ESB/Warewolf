@@ -41,11 +41,11 @@ namespace Dev2.Studio.UI.Tests.Tests.TabManager
 
             ExplorerUIMap.EnterExplorerSearchText("Bug_10528");
 
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", firstName);
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "INTEGRATION TEST SERVICES", firstName);
 
             var tab1 = TabManagerUIMap.GetActiveTab();
 
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "INTEGRATION TEST SERVICES", secondName);
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "INTEGRATION TEST SERVICES", secondName);
 
             var tab2 = TabManagerUIMap.GetActiveTab();
 

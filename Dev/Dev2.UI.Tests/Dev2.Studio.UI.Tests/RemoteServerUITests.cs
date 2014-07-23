@@ -18,27 +18,27 @@ namespace Dev2.Studio.UI.Tests
     {
         #region Const
 
-        const string RemoteServerName = "Remote Connection";
+        const string RemoteServerName = "Remote Connection Integration";
         const string LocalHostServerName = "localhost";
 
-        const string remoteConnectionString = "Remote Connection (http://localhost:4142/dsf)";
+        const string remoteConnectionString = "Remote Connection Integration (http://tst-ci-remote:3142/dsf)";
 
         #endregion
 
         #region Cleanup
+
         [TestInitialize]
         public void TestInit()
         {
             Init();
-            Bootstrap.StartRemoteServer();
             ExplorerUIMap.ClickServerInServerDDL(RemoteServerName);
-            ExplorerUIMap.Server_RightClick_Connect(RemoteServerName);
+            ExplorerUIMap.Server_Click_WarewolfIcon(RemoteServerName);
         }
 
         [TestCleanup]
         public void MyTestCleanup()
         {
-            TabManagerUIMap.CloseAllTabs();
+            //TabManagerUIMap.CloseAllTabs();
             Playback.Wait(1500);
             Halt();
         }
@@ -78,7 +78,7 @@ namespace Dev2.Studio.UI.Tests
                 activityUiMapBase.TheTab = tab;
                 activityUiMapBase.DragToolOntoDesigner(ToolType.Assign);
                 var activeTabName = TabManagerUIMap.GetActiveTabName();
-                StringAssert.Contains(activeTabName, "Find Records - Remote Connection *");
+                StringAssert.Contains(activeTabName, "Find Records - Remote Connection Integration *");
             }
         }
 
@@ -121,7 +121,7 @@ namespace Dev2.Studio.UI.Tests
             //Create new workflow and drag a remote workflow onto it
             using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap())
             {
-                activityUiMap.DragWorkflowOntoDesigner(remoteWorkflowName, "TESTCATEGORY", RemoteServerName);
+                activityUiMap.DragWorkflowOntoDesigner(remoteWorkflowName, "TestCategory", RemoteServerName);
 
                 //Should be able to get clean debug output
                 RibbonUIMap.DebugShortcutKeyPress();
@@ -259,7 +259,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string TextToSearchWith = "WebService1234";
             ExplorerUIMap.DoubleClickService(TextToSearchWith, "REMOTEUITESTS", RemoteServerName);
-            WebServiceWizardUIMap.ClickSaveButton(10);
+            WebServiceWizardUIMap.ClickSaveButton();
         }
 
         [TestMethod]
@@ -446,15 +446,30 @@ namespace Dev2.Studio.UI.Tests
 
                 //RENAME A WORKFLOW
                 string RenameTo = Guid.NewGuid().ToString();
-                ExplorerUIMap.RightClickRenameResource(InitialName, CategoryName, ServiceType.Workflows, RenameTo, RemoteServerName);
+                ExplorerUIMap.RightClickRenameResource(InitialName, CategoryName, RenameTo, RemoteServerName);
 
                 //DELETE A WORKFLOW
-                ExplorerUIMap.RightClickDeleteResource(RenameTo, CategoryName, ServiceType.Workflows, RemoteServerName);
+                ExplorerUIMap.RightClickDeleteResource(RenameTo, CategoryName, RemoteServerName);
                 Assert.IsFalse(ExplorerUIMap.ValidateServiceExists(RenameTo, CategoryName, RemoteServerName));
             }
 
         }
 
         #endregion
+
+        public UIMap UIMap
+        {
+            get
+            {
+                if((this.map == null))
+                {
+                    this.map = new UIMap();
+                }
+
+                return this.map;
+            }
+        }
+
+        private UIMap map;
     }
 }

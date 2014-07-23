@@ -14,10 +14,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         public ToolboxUIMap()
         {
-            var vstw = new VisualTreeWalker();
-
-            _toolTree = vstw.GetControlFromRoot(1, true, "Uia.ToolboxUserControl", "PART_Tools");
-            _toolSearch = vstw.GetControlFromRoot(1, true, "Uia.ToolboxUserControl", "PART_Search");
+            _toolTree = VisualTreeWalker.GetControlFromRoot(1, true, 0, "Uia.ToolboxUserControl", "PART_Tools");
+            _toolSearch = VisualTreeWalker.GetControlFromRoot(1, true, 0, "Uia.ToolboxUserControl", "PART_Search");
         }
 
         public void clickToolboxItem(ToolType tool)

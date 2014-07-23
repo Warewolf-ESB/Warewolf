@@ -39,7 +39,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
         /// </summary>
         public void ClickMappingTab(int x = 280)
         {
-            UITestControl uIItemImage = this.UIBusinessDesignStudioWindow.GetChildren()[0].GetChildren()[2];
+            UITestControl uIItemImage = StudioWindow.GetChildren()[0].GetChildren()[2];
             Playback.Wait(500);
             Mouse.Click(uIItemImage, new Point(x, 25));
         }
@@ -54,7 +54,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             Keyboard.SendKeys(newMappingText);
         }
 
-        public void ClickSaveButton(int numberOfTabsToSaveButton)
+        public void TabToSaveButton(int numberOfTabsToSaveButton)
         {
             var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
             wizard.WaitForControlReady();
@@ -65,6 +65,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.WebServiceWizardUIMapClasses
             }
             SendKeys.SendWait("{ENTER}");
             Playback.Wait(500);
+        }
+
+        public void ClickSaveButton()
+        {
+            var wizard = StudioWindow.GetChildren()[0].GetChildren()[2];
+            Mouse.Click(wizard, new Point(777, 527));
         }
 
         public static void Cancel()

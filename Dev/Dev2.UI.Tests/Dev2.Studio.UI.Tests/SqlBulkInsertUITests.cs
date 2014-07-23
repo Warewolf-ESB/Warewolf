@@ -100,7 +100,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("Sql Bulk Insert Large View");
 
             // Open the Workflow
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "UI Test", "Sql Bulk Insert Large View");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "UI Test", "Sql Bulk Insert Large View");
             var theTab = TabManagerUIMap.GetActiveTab();
 
             //Select a database

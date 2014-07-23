@@ -112,7 +112,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("AllTools");
 
             // Open the Workflow
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "MOCAKE", "AllTools");
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
@@ -157,7 +157,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("AllTools");
 
             // Open the Workflow
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "MOCAKE", "AllTools");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "MOCAKE", "AllTools");
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);

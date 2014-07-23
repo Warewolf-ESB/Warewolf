@@ -195,18 +195,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
 
         private UITestControlCollection GetDeployUserControlChildren(UITestControl theTab)
         {
-            var vstw = new VisualTreeWalker();
+            
 
 
-            return vstw.GetChildByAutomationIDPath(theTab, "WorkSurfaceContextViewModel", "DeployUserControl").GetChildren();
+            return VisualTreeWalker.GetChildByAutomationIDPath(theTab, "WorkSurfaceContextViewModel", "DeployUserControl").GetChildren();
 
         }
 
         private UITestControl GetDeployUserControl(UITestControl theTab)
         {
-            var vstw = new VisualTreeWalker();
+            
 
-            return vstw.GetChildByAutomationIDPath(theTab, "WorkSurfaceContextViewModel", "DeployUserControl");
+            return VisualTreeWalker.GetChildByAutomationIDPath(theTab, "WorkSurfaceContextViewModel", "DeployUserControl");
 
         }
 

@@ -19,16 +19,15 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public void DragActivityOnDropPoint(ToolType toolType)
         {
-            VisualTreeWalker vtw = new VisualTreeWalker();
-            UITestControl dropPoint = vtw.GetChildByAutomationIDPath(Activity, "SmallViewContent", "DropPoint");
+            UITestControl dropPoint = VisualTreeWalker.GetChildByAutomationIDPath(Activity, "SmallViewContent", "DropPoint");
             var boundingRectangle = dropPoint.BoundingRectangle;
             ToolboxUIMap.DragControlToWorkflowDesigner(toolType, new Point(boundingRectangle.X + 10, boundingRectangle.Y + 10));
         }
 
         public UITestControl GetActivity()
         {
-            VisualTreeWalker vtw = new VisualTreeWalker();
-            UITestControl control = vtw.GetChildByAutomationIDPath(Activity, "SmallViewContent", "DropPoint");
+            
+            UITestControl control = VisualTreeWalker.GetChildByAutomationIDPath(Activity, "SmallViewContent", "DropPoint");
             var uiTestControl = control.GetChildren()[0];
             return uiTestControl.FriendlyName == "Drop Activity Here" ? null : uiTestControl;
         }

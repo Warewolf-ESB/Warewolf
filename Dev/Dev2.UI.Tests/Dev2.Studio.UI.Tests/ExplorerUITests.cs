@@ -30,7 +30,7 @@ namespace Dev2.Studio.UI.Tests
         {
             const string NewTestResourceWithDashes = "New-Test-Resource-With-Dashes";
             const string OldResourceName = "OldResourceName";
-            ExplorerUIMap.RightClickRenameResource(OldResourceName, "Unassigned", ServiceType.Workflows, NewTestResourceWithDashes);
+            ExplorerUIMap.RightClickRenameResource(OldResourceName, "Unassigned", NewTestResourceWithDashes);
             Assert.IsTrue(ExplorerUIMap.ValidateWorkflowExists(NewTestResourceWithDashes, "Unassigned"));
             ExplorerUIMap.DoubleClickWorkflow(NewTestResourceWithDashes, "Unassigned");
         }

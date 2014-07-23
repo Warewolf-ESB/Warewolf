@@ -18,7 +18,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Playback.Wait(timeOut);
         }
 
-
         public bool TryWaitForWizard(int timeOut = 10000)
         {
             Playback.Wait(timeOut);
@@ -41,8 +40,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             UITestControlCollection uiTestControlCollection = StudioWindow.GetChildren();
             var tryGetDialog = uiTestControlCollection[0];
-            VisualTreeWalker visualTreeWalker = new VisualTreeWalker();
-            UITestControl childByAutomationIDPath = visualTreeWalker.GetChildByAutomationIDPath(tryGetDialog, autoId);
+            
+            UITestControl childByAutomationIDPath = VisualTreeWalker.GetChildByAutomationIDPath(tryGetDialog, autoId);
             WpfText wpfText = childByAutomationIDPath as WpfText;
             if(wpfText != null)
             {

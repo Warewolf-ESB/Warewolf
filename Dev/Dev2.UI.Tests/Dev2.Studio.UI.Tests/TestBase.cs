@@ -249,7 +249,7 @@ namespace Dev2.CodedUI.Tests
         {
             //Open the correct workflow
             ExplorerUIMap.EnterExplorerSearchText("Bug8372");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "WORKFLOWS", "TESTCATEGORY", "Bug8372");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "TESTCATEGORY", "Bug8372");
 
             // Run debug
             RibbonUIMap.ClickRibbonMenuItem("Debug");

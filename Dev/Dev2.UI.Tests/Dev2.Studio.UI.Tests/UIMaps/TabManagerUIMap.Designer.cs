@@ -97,7 +97,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
                 this.WindowTitles.Add(TestBase.GetStudioWindowName());
                 #endregion
 
-                //_tabMgr = new VisualTreeWalker().GetControl(new string[] { "UI_DocManager_AutoID" });
+                //_tabMgr = VisualTreeWalker.GetControl(new string[] { "UI_DocManager_AutoID" });
 
             }
 

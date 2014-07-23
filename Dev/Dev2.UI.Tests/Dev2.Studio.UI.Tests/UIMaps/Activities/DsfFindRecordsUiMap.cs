@@ -10,12 +10,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 {
     public class DsfFindRecordsUiMap : ToolsUiMapBase
     {
-        #region Fields
-
-        VisualTreeWalker _visualTreeWalker;
-
-        #endregion
-
         public DsfFindRecordsUiMap(bool createNewtab = true, bool dragFindRecordsOntoNewTab = true)
             : base(createNewtab, 1500)
         {
@@ -23,7 +17,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
             {
                 DragToolOntoDesigner(ToolType.Find);
             }
-            _visualTreeWalker = new VisualTreeWalker();
         }
 
         public void EnterTextIntoFieldsToSearch(string stringToEnter, ViewType viewType)
@@ -65,7 +58,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         private List<UITestControl> GetDataGridRowChildList(int rowNumber, ViewType viewType)
         {
-            UITestControl childByAutomationIDPath = _visualTreeWalker.GetChildByAutomationIDPath(GetView(viewType), "Table");
+            UITestControl childByAutomationIDPath = VisualTreeWalker.GetChildByAutomationIDPath(GetView(viewType), "Table");
             List<UITestControl> uiTestControlCollection = childByAutomationIDPath.GetChildren().Where(c => c.ControlType == ControlType.Row).ToList();
             return uiTestControlCollection[rowNumber].GetChildren().ToList();
         }

@@ -255,8 +255,8 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("Base64ToString");
 
             // Open the Dependancy Window twice
-            ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
-            ExplorerUIMap.RightClickShowProjectDependancies("localhost", "WORKFLOWS", "SYSTEM", "Base64ToString");
+            ExplorerUIMap.RightClickShowProjectDependancies("localhost", "SYSTEM", "Base64ToString");
+            ExplorerUIMap.RightClickShowProjectDependancies("localhost", "SYSTEM", "Base64ToString");
 
             string activeTab = TabManagerUIMap.GetActiveTabName();
             if(activeTab == "Base64ToString")

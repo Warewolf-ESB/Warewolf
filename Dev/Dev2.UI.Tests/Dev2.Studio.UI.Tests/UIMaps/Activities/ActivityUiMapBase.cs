@@ -102,12 +102,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public void DragWorkflowOntoDesigner(string workflowName, string categoryName, string serverName = "localhost", Point pointToDragTo = new Point())
         {
-            Activity = ExplorerUIMap.DragResourceOntoWorkflowDesigner(TheTab, workflowName, categoryName, ServiceType.Workflows, serverName, pointToDragTo);
+            Activity = ExplorerUIMap.DragResourceOntoWorkflowDesigner(TheTab, workflowName, categoryName, serverName, pointToDragTo);
         }
 
         public void DragServiceOntoDesigner(string serviceName, string categoryName, string serverName = "localhost", Point pointToDragTo = new Point())
         {
-            Activity = ExplorerUIMap.DragResourceOntoWorkflowDesigner(TheTab, serviceName, categoryName, ServiceType.Services, serverName, pointToDragTo);
+            Activity = ExplorerUIMap.DragResourceOntoWorkflowDesigner(TheTab, serviceName, categoryName, serverName, pointToDragTo);
         }
 
 

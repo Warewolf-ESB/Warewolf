@@ -18,8 +18,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public void EnterTextIntoComment(string textToEnter)
         {
-            VisualTreeWalker vtw = new VisualTreeWalker();
-            UITestControl textbox = vtw.GetChildByAutomationIDPath(Activity, "SmallViewContent", "InitialFocusElement");
+            UITestControl textbox = VisualTreeWalker.GetChildByAutomationIDPath(Activity, "SmallViewContent", "InitialFocusElement");
             textbox.EnterText(textToEnter);
         }
     }

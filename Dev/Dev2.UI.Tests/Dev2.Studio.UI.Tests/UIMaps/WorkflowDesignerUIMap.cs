@@ -20,7 +20,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     // ReSharper disable InconsistentNaming
     public partial class WorkflowDesignerUIMap : UIMapBase
     {
-        VisualTreeWalker vstw = new VisualTreeWalker();
+        
 
 
         public UITestControl ScrollViewer_GetVerticalScrollBar(UITestControl theTab)
@@ -991,7 +991,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </returns>
         public UITestControl GetFlowchartDesigner(UITestControl theTab)
         {
-            var flowchartDesigner = vstw.GetChildByAutomationIDPath(theTab,
+            var flowchartDesigner = VisualTreeWalker.GetChildByAutomationIDPath(theTab,
                 "WorkSurfaceContextViewModel",
                 "Uia.WorkflowDesignerView",
                 "UserControl_1",
@@ -1344,7 +1344,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <returns></returns>
         public UITestControl GetSqlBulkInsertLargeViewFirstInputTextbox(UITestControl sqlBulkInsertToolOnWorkflow)
         {
-            return vstw.GetChildByAutomationIDPath(sqlBulkInsertToolOnWorkflow, "LargeViewContent", "LargeDataGrid", "Uia.DataGridRow", "Item: Dev2.TO.DataColumnMapping, Column Display In...", "UI__Row0_InputColumn_AutoID");
+            return VisualTreeWalker.GetChildByAutomationIDPath(sqlBulkInsertToolOnWorkflow, "LargeViewContent", "LargeDataGrid", "Uia.DataGridRow", "Item: Dev2.TO.DataColumnMapping, Column Display In...", "UI__Row0_InputColumn_AutoID");
         }
 
         public void ScrollControlIntoView(UITestControl theTab, UITestControl theControl)

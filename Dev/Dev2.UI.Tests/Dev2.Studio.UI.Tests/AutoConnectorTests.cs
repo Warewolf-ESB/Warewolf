@@ -40,7 +40,7 @@ namespace Dev2.Studio.UI.Tests
         public void AutoConnectorTests_DragActivityOnStartAutoConnectorNode_AConnectorIsCreated()
         {
             UITestControl theTab = CreateWorkflow();
-            ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, "Email Service", "COMMUNICATION", ServiceType.Services);
+            ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, "Email Service", "COMMUNICATION");
             //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line
             List<UITestControl> connectors = WorkflowDesignerUIMap.GetAllConnectors();
             //Assert start auto connector worked
@@ -118,7 +118,7 @@ namespace Dev2.Studio.UI.Tests
             if(control != null)
             {
                 var point = new Point(control.BoundingRectangle.X + 120, control.BoundingRectangle.Y - 140);
-                ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, "Email Service", "COMMUNICATION", ServiceType.Services, "localhost", point);
+                ExplorerUIMap.DragResourceOntoWorkflowDesigner(theTab, "Email Service", "COMMUNICATION", "localhost", point);
                 if(WorkflowDesignerUIMap.TryCloseMappings("Email Service"))
                 {
                     //If the screen resolution is low or if the studio is windowed this point can jump as soon as the control is dragged over the work surface, the control might need to be re-dragged to hit the connector line

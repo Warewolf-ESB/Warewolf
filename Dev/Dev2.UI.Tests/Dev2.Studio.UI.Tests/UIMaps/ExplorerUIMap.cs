@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading;
-using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 
@@ -26,12 +25,36 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public ExplorerUIMap()
         {
-            var vstw = new VisualTreeWalker();
+            //Ashley: Ideally these should look like this (no dynamic IDs no indices):
+            //_explorerSearch = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
+            //_explorerNewConnectionControl = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Explorer", "ConnectUserControl");
+            //_explorerRefresh = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "UI_SourceServerRefreshbtn_AutoID");
+            GetExplorerTree();
+            _explorerSearch = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
+            if(_explorerSearch == null)
+            {
+                _explorerSearch = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
+            }
+            _explorerNewConnectionControl = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "ConnectUserControl");
+            if(_explorerNewConnectionControl == null)
+            {
+                _explorerNewConnectionControl = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "ConnectUserControl");
+            }
+            _explorerRefresh = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "UI_SourceServerRefreshbtn_AutoID");
+            if(_explorerRefresh == null)
+            {
+                _explorerRefresh = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "UI_SourceServerRefreshbtn_AutoID");
+            }
+        }
 
-            _explorerTree = vstw.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
-            _explorerSearch = vstw.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
-            _explorerNewConnectionControl = vstw.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "ConnectUserControl");
-            _explorerRefresh = vstw.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "UI_SourceServerRefreshbtn_AutoID");
+        private void GetExplorerTree()
+        {
+            //_explorerTree = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
+            _explorerTree = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
+            if(_explorerTree == null)
+            {
+                _explorerTree = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
+            }
         }
 
         public UITestControlCollection GetCategoryItems()
@@ -149,9 +172,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Mouse.Click(connectDropdown, new Point(5, 5));
         }
 
-        public void DoubleClickOpenProject(string serverName, string serviceType, string folderName, string projectName, int waitAmt = 0)
+        public void DoubleClickOpenProject(string serverName, string folderName, string projectName, int waitAmt = 0)
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
+            UITestControl theControl = null;
+            if(folderName != "Unassigned" && folderName != string.Empty)
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+            }
+            else
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+            }
             if(theControl != null)
             {
                 Point p = new Point(theControl.BoundingRectangle.X + 60, theControl.BoundingRectangle.Y + 7);
@@ -177,17 +208,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public bool ValidateServiceExists(string serviceName, string folderName, string serverName = "localhost")
         {
-            return ValidateResourceExists(serviceName, folderName, ServiceType.Services, serverName);
+            return ValidateResourceExists(serviceName, folderName, serverName);
         }
 
         public bool ValidateSourceExists(string sourceName, string folderName, string serverName = "localhost")
         {
-            return ValidateResourceExists(sourceName, folderName, ServiceType.Sources, serverName);
+            return ValidateResourceExists(sourceName, folderName, serverName);
         }
 
         public bool ValidateWorkflowExists(string workflowName, string folderName, string serverName = "localhost")
         {
-            return ValidateResourceExists(workflowName, folderName, ServiceType.Workflows, serverName);
+            return ValidateResourceExists(workflowName, folderName, serverName);
         }
 
         public bool ValidateHasResource(string workflowName, string serverName = "localhost")
@@ -195,9 +226,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             return ValidateResourceExists(workflowName, serverName);
         }
 
-        public void RightClickDeployProject(string serverName, string serviceType, string folderName, string projectName)
+        public void RightClickDeployProject(string serverName, string folderName, string projectName)
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
+            UITestControl theControl = null;
+            if(folderName != "Unassigned" && folderName != string.Empty)
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+            }
+            else
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+            }
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
@@ -242,8 +281,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Mouse.Click(ddlBase, new Point(10, 10));
             Playback.Wait(500);
 
-            VisualTreeWalker vsw = new VisualTreeWalker();
-            var item = vsw.GetChildByAutomationIDPath(ddlBase, "U_UI_ExplorerServerCbx_AutoID_" + serverName);
+            var item = VisualTreeWalker.GetChildByAutomationIDPath(ddlBase, "U_UI_ExplorerServerCbx_AutoID_" + serverName);
 
             Mouse.Click(item, new Point(5, 5));
 
@@ -309,35 +347,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             return uITvExplorerTree.GetChildren().Count;
         }
 
-        public void RightClickDeleteResource(string resourceName, string categoryName, ServiceType serviceType, string serverName)
-        {
-            ExplorerUIMap.EnterExplorerSearchText(resourceName);
-            UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName);
-            Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
-            Mouse.Move(p);
-            Playback.Wait(500);
-            Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
-            Playback.Wait(1000);
-            SendKeys.SendWait("{DOWN}");
-            Playback.Wait(100);
-            SendKeys.SendWait("{DOWN}");
-            Playback.Wait(100);
-            SendKeys.SendWait("{DOWN}");
-            Playback.Wait(100);
-            SendKeys.SendWait("{DOWN}");
-            Playback.Wait(100);
-            SendKeys.SendWait("{ENTER}");
-            PopupDialogUIMap.WaitForDialog();
-            Playback.Wait(100);
-            var confirmationDialog = UIBusinessDesignStudioWindow.GetChildren()[0];
-            var yesButton = confirmationDialog.GetChildren().FirstOrDefault(c => c.FriendlyName == "Yes");
-            Mouse.Click(yesButton, new Point(10, 10));
-        }
-
         public void RightClickDeleteResource(string resourceName, string categoryName, string serverName)
         {
             ExplorerUIMap.EnterExplorerSearchText(resourceName);
-            UITestControl theControl = GetServiceItem(serverName, categoryName, resourceName);
+            UITestControl theControl = null;
+            if(categoryName != "Unassigned" && categoryName != string.Empty)
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, categoryName, resourceName);
+            }
+            else
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, resourceName);
+            }
             Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Playback.Wait(500);
@@ -383,9 +404,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         }
 
 
-        public bool ServiceExists(string serverName, string serviceType, string folderName, string projectName)
+        public bool ServiceExists(string serverName, string folderName, string projectName)
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
+            UITestControl theControl = null;
+            if(folderName != "Unassigned" && folderName != string.Empty)
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+            }
+            else
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+            }
             return theControl != null && theControl.Exists;
         }
 
@@ -396,9 +425,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <param name="serviceType">The name of the service (EG: WORKFLOWS)</param>
         /// <param name="folderName">The name of the folder (AKA: Category - EG: BARNEY (Or CODEDUITESTCATEGORY for the CodedUI Test Default))</param>
         /// <param name="projectName">The name of the project (EG: MyWorkflow)</param>
-        public void RightClickProperties(string serverName, string serviceType, string folderName, string projectName)
+        public void RightClickProperties(string serverName, string folderName, string projectName)
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
+            UITestControl theControl = null;
+            if(folderName != "Unassigned" && folderName != string.Empty)
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+            }
+            else
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+            }
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Playback.Wait(500);
@@ -425,15 +462,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(500);
         }
 
-        public void Server_RightClick_Connect(string serverName)
+        public void Server_Click_WarewolfIcon(string serverName)
         {
             UITestControl theServer = GetServer(serverName);
             Point p = new Point(theServer.BoundingRectangle.X + 50, theServer.BoundingRectangle.Y + 5);
-            Mouse.Move(p);
-            Playback.Wait(500);
-            Mouse.Move(theServer, new Point(30, 5));
-            Mouse.Click();
-            Playback.Wait(5500);
+            Mouse.Click(theServer, new Point(30, 5));
+            Playback.Wait(15000);
         }
 
         public void Server_RightClick_NewWorkflow(string serverName)
@@ -538,9 +572,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         }
 
         // Not functioning right now ;)
-        public void RightClickShowProjectDependancies(string serverName, string serviceType, string folderName, string projectName)
+        public void RightClickShowProjectDependancies(string serverName, string folderName, string projectName)
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
+            UITestControl theControl = null;
+            if(folderName != "Unassigned" && folderName != string.Empty)
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+            }
+            else
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+            }
             theControl.WaitForControlEnabled();
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
@@ -556,9 +598,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(100);
         }
 
-        public void RightClickHelp(string serverName, string serviceType, string folderName, string projectName)
+        public void RightClickHelp(string serverName, string folderName, string projectName)
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName);
+            UITestControl theControl = null;
+            if(folderName != "Unassigned" && folderName != string.Empty)
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+            }
+            else
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+            }
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Thread.Sleep(500);
@@ -593,12 +643,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// </summary>
         /// <param name="resourceName">The name of the resource.</param>
         /// <param name="categoryName">The name of the category.</param>
-        /// <param name="serverName">Name of the server (Will default to "localhost").</param>
-        /// <param name="overrideDblClickBehavior">if set to <c>true</c> [override double click behavior].</param>        
+        /// <param name="serverName">Name of the server (Will default to "localhost").</param>      
         /// <returns></returns>
-        public UITestControl DoubleClickWorkflow(string resourceName, string categoryName, string serverName = "localhost", bool overrideDblClickBehavior = false)
+        public UITestControl DoubleClickWorkflow(string resourceName, string categoryName, string serverName = "localhost")
         {
-            DoubleClickResource(ServiceType.Workflows, resourceName, categoryName, serverName, overrideDblClickBehavior);
+            DoubleClickResource(resourceName, categoryName, serverName);
             UITestControl newTab = TabManagerUIMap.GetActiveTab();
 
             int counter = 0;
@@ -621,14 +670,22 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <param name="serverName">Name of the server (Will default to "localhost").</param>
         /// <param name="pointToDragTo">The point to drop the resource on the designer (Will default to just below the start node).</param>
         /// <param name="overrideDblClickBehavior">if set to <c>true</c> [override double click behavior].</param>        
-        public UITestControl DragResourceOntoWorkflowDesigner(UITestControl tabToDropOnto, string resourceName, string categoryName, ServiceType serviceType, string serverName = "localhost", Point pointToDragTo = new Point(), bool overrideDblClickBehavior = false)
+        public UITestControl DragResourceOntoWorkflowDesigner(UITestControl tabToDropOnto, string resourceName, string categoryName, string serverName = "localhost", Point pointToDragTo = new Point())
         {
             if(pointToDragTo.X == 0 && pointToDragTo.Y == 0)
             {
                 pointToDragTo = WorkflowDesignerUIMap.GetStartNodeBottomAutoConnectorPoint(tabToDropOnto);
             }
             EnterExplorerSearchText(resourceName);
-            UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName, overrideDblClickBehavior);
+            UITestControl theControl = null;
+            if(categoryName != "Unassigned" && categoryName != string.Empty)
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, categoryName, resourceName);
+            }
+            else
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, resourceName);
+            }
             Mouse.StartDragging(theControl);
             Playback.Wait(20);
             Mouse.StopDragging(pointToDragTo);
@@ -655,9 +712,17 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <param name="projectName">Name of the project.</param>
         /// <param name="p">The application.</param>
         /// <param name="overrideDblClickBehavior">if set to <c>true</c> [override double click behavior].</param>
-        public void DragControlToWorkflowDesigner(string serverName, string serviceType, string folderName, string projectName, Point p, bool overrideDblClickBehavior = false)
+        public void DragControlToWorkflowDesigner(string serverName, string serviceType, string folderName, string projectName, Point p)
         {
-            UITestControl theControl = GetServiceItem(serverName, serviceType, folderName, projectName, overrideDblClickBehavior);
+            UITestControl theControl = null;
+            if(folderName != "Unassigned" && folderName != string.Empty)
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+            }
+            else
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+            }
             Mouse.StartDragging(theControl);
             Playback.Wait(20);
             Mouse.StopDragging(p);
@@ -672,10 +737,18 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <param name="categoryName"></param>
         /// <param name="newName"></param>
         /// <param name="serverName"></param>
-        public void RightClickRenameResource(string resourceName, string categoryName, ServiceType serviceType, string newName, string serverName = "localhost")
+        public void RightClickRenameResource(string resourceName, string categoryName, string newName, string serverName = "localhost")
         {
             ExplorerUIMap.EnterExplorerSearchText(resourceName);
-            UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName);
+            UITestControl theControl = null;
+            if(categoryName != "Unassigned" && categoryName != string.Empty)
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, categoryName, resourceName);
+            }
+            else
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, resourceName);
+            }
             Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
             Mouse.Click(MouseButtons.Right, ModifierKeys.None, p);
@@ -703,13 +776,21 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Playback.Wait(waitAmt);
         }
 
-        private bool ValidateResourceExists(string resourceName, string folderName, ServiceType serviceType, string serverName = "localhost")
+        private bool ValidateResourceExists(string resourceName, string folderName, string serverName = "localhost")
         {
             try
             {
                 ExplorerUIMap.EnterExplorerSearchText(resourceName);
                 Playback.Wait(1000);
-                UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), folderName, resourceName);
+                UITestControl theControl = null;
+                if(folderName != "Unassigned" && folderName != string.Empty)
+                {
+                    theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, resourceName);
+                }
+                else
+                {
+                    theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, resourceName);
+                }
                 if(theControl == null)
                 {
                     return false;
@@ -743,24 +824,33 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             }
         }
 
-        public void DoubleClickSource(string sourceName, string categoryName, string serverName = "localhost", bool overrideDblClickBehavior = false)
+        public void DoubleClickSource(string sourceName, string categoryName, string serverName = "localhost")
         {
-            DoubleClickResource(ServiceType.Sources, sourceName, categoryName, serverName, overrideDblClickBehavior);
+            DoubleClickResource(sourceName, categoryName, serverName);
         }
 
-        public void DoubleClickService(string serviceName, string categoryName, string serverName = "localhost", bool overrideDblClickBehavior = false)
+        public void DoubleClickService(string serviceName, string categoryName, string serverName = "localhost")
         {
-            DoubleClickResource(ServiceType.Services, serviceName, categoryName, serverName, overrideDblClickBehavior);
+            DoubleClickResource(serviceName, categoryName, serverName);
         }
 
-        private void DoubleClickResource(ServiceType serviceType, string resourceName, string categoryName, string serverName, bool overrideDblClickBehavior = false)
+        private void DoubleClickResource(string resourceName, string categoryName, string serverName)
         {
             ExplorerUIMap.EnterExplorerSearchText(resourceName);
-            UITestControl theControl = GetServiceItem(serverName, serviceType.ToString(), categoryName, resourceName, overrideDblClickBehavior);
-            Mouse.Click(theControl, new Point(theControl.BoundingRectangle.X, theControl.BoundingRectangle.Y + 200));
+            UITestControl theControl = null;
+            //Ensure explorer tree
+            GetExplorerTree();
+            if(categoryName != "Unassigned" && categoryName != string.Empty)
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, categoryName, resourceName);
+            }
+            else
+            {
+                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, resourceName);
+            }
             Playback.Wait(100);
             Mouse.DoubleClick(theControl, new Point(theControl.BoundingRectangle.X, theControl.BoundingRectangle.Y + 200));
-            Playback.Wait(4000);
+            Playback.Wait(5000);
             if(serverName != "localhost")
             {
                 Playback.Wait(5000);
@@ -770,7 +860,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void SelectServer(string serverName)
         {
             var serverList = GetConnectControl("ComboBox") as WpfComboBox;
-            if (serverList != null)
+            if(serverList != null)
             {
                 var serverItem = serverList.Items.ToList().FirstOrDefault(c => c.FriendlyName == serverName);
                 if(serverItem != null)
@@ -817,4 +907,3 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         }
     }
 }
-    
