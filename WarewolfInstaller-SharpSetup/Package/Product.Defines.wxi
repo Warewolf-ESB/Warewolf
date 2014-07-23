@@ -4,12 +4,12 @@
     <!-- TODO : when releasing please change AppProductCode and adjust AppVersion information ;) -->
     <!-- ALWAYS UPDATE PRODUCT CODE -->
     <!-- http://www.guidgenerator.com/online-guid-generator.aspx -->
-    <?define AppProductCode = "{F2795C4D-8CB1-4AF1-8ABE-7BE4B951A398}" ?>
+    <?define AppProductCode = "{F3795C4D-8CB1-4AF1-8BBE-7BE4B951B399}" ?>
     <?define AppUpgradeCode = "{b395a097-b71a-4850-a5d5-93A402586bd0}" ?>
     <?define AppVersionMajor = "2" ?>
     <?define AppVersionMinor = "3" ?>
-    <?define AppVersionPatch = "7" ?>
-    <?define AppVersionBuild = "9" ?>
+    <?define AppVersionPatch = "8" ?>
+    <?define AppVersionBuild = "0" ?>
     <?define AppVersion = "$(var.AppVersionMajor).$(var.AppVersionMinor).$(var.AppVersionPatch).$(var.AppVersionBuild)" ?>
     <?define AppManufacturer = "Warewolf" ?>
     <?define DefaultCulture = "en" ?>
