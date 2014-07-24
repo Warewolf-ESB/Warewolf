@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 
@@ -8,16 +9,23 @@ namespace Dev2.Studio.UI.Tests.Utils
     {
         static UIMapBase.UIStudioWindow _studioWindow;
 
-        private static UITestControl GetChildByAutomationIDPathImpl(UITestControl parent, int bookmark, params string[] automationIDs)
+        private UITestControl GetChildByAutomationIDPathImpl(UITestControl parent, int bookmark, params string[] automationIDs)
         {
             //Find all children
             var children = parent.GetChildren();
             if(children == null)
             {
-                throw new UITestControlNotFoundException("Cannot find children of" + parent.GetProperty("AutomationID") +
-                    " and friendly name: " + parent.FriendlyName +
-                    " and control type: " + parent.ControlType +
-                    " and class name: " + parent.ClassName + ".");
+                try
+                {
+                    throw new UITestControlNotFoundException("Cannot find children of " + parent.GetProperty("AutomationID") +
+                        " and friendly name: " + parent.FriendlyName +
+                        " and control type: " + parent.ControlType +
+                        " and class name: " + parent.ClassName + ".");
+                }
+                catch(NullReferenceException)
+                {
+                    throw new UITestControlNotFoundException("Cannot find children of " + parent.GetProperty("AutomationID") + ".");
+                }
             }
 
             //Find some child
@@ -50,7 +58,7 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static UITestControl GetChildByAutomationIDPath(UITestControl parent, params string[] automationIDs)
         {
-            return GetChildByAutomationIDPathImpl(parent, 0, automationIDs);
+            return new VisualTreeWalker().GetChildByAutomationIDPathImpl(parent, 0, automationIDs);
         }
 
         public static UITestControl GetControl(params string[] automationIDs)
@@ -96,7 +104,7 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                     if(automationIDs.Length > 1)
                     {
-                        return GetChildByAutomationIDPathImpl(theControl, depth, automationIDs);
+                        return new VisualTreeWalker().GetChildByAutomationIDPathImpl(theControl, depth, automationIDs);
                     }
 
                     return theControl;
@@ -116,39 +124,41 @@ namespace Dev2.Studio.UI.Tests.Utils
                     {
                         var parent = tmp[splitPaneIndex];
 
-                        for(int i = 1; i < automationIDs.Length; i++)
+                        for(var i = 1; i < automationIDs.Length; i++)
                         {
-                            if(parent != null)
+                            if(parent == null)
                             {
-                                var children = parent.GetChildren();
-
-                                UITestControl canidate = null;
-                                foreach(var child in children)
-                                {
-                                    var childAutoID = child.GetProperty("AutomationID").ToString();
-
-                                    if(childAutoID == automationIDs[i] ||
-                                        childAutoID.Contains(automationIDs[i]) ||
-                                        child.FriendlyName.Contains(automationIDs[i]) ||
-                                        child.ControlType.Name.Contains(automationIDs[i]) ||
-                                        child.ClassName.Contains(automationIDs[i]))
-                                    {
-                                        canidate = child;
-                                    }
-                                }
-
-                                // all done, tag it ;)
-                                parent = canidate;
+                                continue;
                             }
+                            var children = parent.GetChildren();
+
+                            UITestControl canidate = null;
+                            foreach(var child in children)
+                            {
+                                var childAutoID = child.GetProperty("AutomationID").ToString();
+
+                                if(childAutoID == automationIDs[i] ||
+                                   childAutoID.Contains(automationIDs[i]) ||
+                                   child.FriendlyName.Contains(automationIDs[i]) ||
+                                   child.ControlType.Name.Contains(automationIDs[i]) ||
+                                   child.ClassName.Contains(automationIDs[i]))
+                                {
+                                    canidate = child;
+                                }
+                            }
+
+                            // all done, tag it ;)
+                            parent = canidate;
                         }
                         return parent;
                     }
-                    throw new UITestControlNotFoundException("Child with " + UITestControl.PropertyNames.ClassName + ": " + automationIDs[0] + " not found within parent with automation ID: " + theControl.GetProperty("AutomationID").ToString() + " and FriendlyName: " + theControl.FriendlyName + " and ControlType: " + theControl.ControlType.Name + " and ClassName: " + theControl.ClassName);
+                    if(theControl.ControlType != null)
+                    {
+                        throw new UITestControlNotFoundException("Child with " + UITestControl.PropertyNames.ClassName + ": " + automationIDs[0] + " not found within parent with automation ID: " + theControl.GetProperty("AutomationID") + " and FriendlyName: " + theControl.FriendlyName + " and ControlType: " + theControl.ControlType.Name + " and ClassName: " + theControl.ClassName);
+                    }
                 }
             }
-
             return null;
-
         }
     }
 }

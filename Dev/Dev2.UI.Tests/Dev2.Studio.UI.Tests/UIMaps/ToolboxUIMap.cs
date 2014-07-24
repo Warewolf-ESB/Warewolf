@@ -18,9 +18,9 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             _toolSearch = VisualTreeWalker.GetControlFromRoot(1, true, 0, "Uia.ToolboxUserControl", "PART_Search");
         }
 
-        public void clickToolboxItem(ToolType tool)
+        public void ClickToolboxItem(ToolType tool)
         {
-            UITestControl theControl = FindControl(tool.GetDescription());
+            var theControl = FindControl(tool.GetDescription());
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Click(p);
         }

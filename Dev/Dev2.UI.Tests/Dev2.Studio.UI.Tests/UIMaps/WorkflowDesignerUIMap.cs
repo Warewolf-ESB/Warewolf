@@ -20,9 +20,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
     // ReSharper disable InconsistentNaming
     public partial class WorkflowDesignerUIMap : UIMapBase
     {
-        
-
-
         public UITestControl ScrollViewer_GetVerticalScrollBar(UITestControl theTab)
         {
             GetScrollViewer(theTab);
@@ -977,7 +974,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             itelliList.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PART_ItemList";
             itelliList.Find();
 
-            UITestControl itelliListItem = itelliList.GetChildren()[id];
+            var itelliListItem = itelliList.GetChildren()[id];
             return itelliListItem;
             //PART_ItemList
         }

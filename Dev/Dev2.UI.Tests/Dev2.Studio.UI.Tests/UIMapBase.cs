@@ -1,4 +1,7 @@
-﻿using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
+﻿using System;
+using System.Drawing;
+using System.IO;
+using Dev2.CodedUI.Tests.TabManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.DocManagerUIMapClasses;
 using Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses;
@@ -201,7 +204,7 @@ namespace Dev2.Studio.UI.Tests
                 return _deployUIMap;
             }
         }
-        
+
         private DeployViewUIMap _deployUIMap;
 
         #endregion Deploy UI Map
@@ -219,11 +222,11 @@ namespace Dev2.Studio.UI.Tests
                 return _securityUiMap;
             }
         }
-            
+
         private SecuritySettingsUiMap _securityUiMap;
 
-        #endregion Security UI Map  
-        
+        #endregion Security UI Map
+
         #region Scheduler UI Map
 
         public SchedulerUiMap SchedulerUiMap
@@ -240,7 +243,7 @@ namespace Dev2.Studio.UI.Tests
 
         private SchedulerUiMap _schedulerUiMap;
 
-        #endregion Security UI Map  
+        #endregion Security UI Map
 
 
         #region Dock Manager UI Map
@@ -769,7 +772,6 @@ namespace Dev2.Studio.UI.Tests
 
             }
 
-            // only bootstrap if we have build in test mode - DOES NOT WORK ;(
             Bootstrap.Init();
         }
 
@@ -781,6 +783,7 @@ namespace Dev2.Studio.UI.Tests
         {
             Bootstrap.Teardown();
         }
+
         #endregion
     }
 }

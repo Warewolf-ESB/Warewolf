@@ -177,7 +177,6 @@ namespace Dev2.Studio.UI.Tests
         [TestCategory("RemoteServerUITests")]
         public void RemoteServerUITests_EditRemoteDbSource_DbSourceIsEdited()
         {
-
             // NOTE : Needs to use Dev2TestingDB
 
             const string TextToSearchWith = "DBSource";

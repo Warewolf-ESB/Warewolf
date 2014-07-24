@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management;
-using System.Security.Principal;
 using System.Threading;
+using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Studio.UI.Tests.Utils
@@ -15,7 +16,7 @@ namespace Dev2.Studio.UI.Tests.Utils
     [TestClass]
     public class Bootstrap
     {
-        private const bool enableLocalRestart = false;
+        private const bool EnableLocalRestart = false;
 
         private const string ServerProcName = "Warewolf Server";
         private const string StudioProcName = "Warewolf Studio";
@@ -29,12 +30,17 @@ namespace Dev2.Studio.UI.Tests.Utils
 
         public static string ServerLocation;
         public static string StudioLocation;
-        private static string ResourceLocation;
-        private static string ServerWorkspaceLocation;
+        private static string _resourceLocation;
+        private static string _serverWorkspaceLocation;
+        public static TestContext TestContext
+        {
+            get;
+            set;
+        }
 
-        public static int WaitMS = 5000;
+        public static int WaitMs = 5000;
 
-        public static bool isLocal = false;
+        public static bool IsLocal = false;
 
         /// <summary>
         /// Inits the ServerLocation.
@@ -43,8 +49,9 @@ namespace Dev2.Studio.UI.Tests.Utils
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext testCtx)
         {
-            isLocal = testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901";
-            ResolvePathsToTestAgainst(!isLocal ? Path.Combine(testCtx.DeploymentDirectory, "DebugBin") : null);
+            TestContext = testCtx;
+            IsLocal = testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901";
+            ResolvePathsToTestAgainst(!IsLocal ? Path.Combine(testCtx.DeploymentDirectory, "DebugBin") : null);
         }
 
         private static void ResolvePathsToTestAgainst(string deployDirectory = null)
@@ -68,12 +75,12 @@ namespace Dev2.Studio.UI.Tests.Utils
                 LogTestRunMessage("Could not locate binaries to test against.", true);
             }
             //Set resource location
-            ResourceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
+            _resourceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
             //Set workspace location
-            ServerWorkspaceLocation = ServerLocation.Replace(ServerExeName, @"Workspaces\");
+            _serverWorkspaceLocation = ServerLocation.Replace(ServerExeName, @"Workspaces\");
         }
 
-        private static string GetProcessPath(ManagementObjectCollection processes)
+        private static string GetProcessPath(ICollection processes)
         {
             if(processes == null || processes.Count == 0)
             {
@@ -94,21 +101,23 @@ namespace Dev2.Studio.UI.Tests.Utils
             var studioProc = TryGetProcess(StudioProcName);
             var serverProc = TryGetProcess(ServerProcName);
 
-            if(serverProc == null || studioProc == null || enableLocalRestart || !(Environment.CurrentDirectory.Contains(BuildDirectory) && isLocal))
+            //Don't touch the server or studio for local runs on a developers desk he might be debugging!
+            if(serverProc != null && studioProc != null && !EnableLocalRestart && (Environment.CurrentDirectory.Contains(BuildDirectory) && IsLocal))
             {
-                // term any existing studio processes ;)
-                KillProcess(studioProc);
-                // term any existing server processes ;)
-                KillProcess(serverProc);
-
-                // remove workspaces to avoid mutation issues
-                RemoveWorkspaces();
-
-                StartServer(ServerLocation);
-                StartStudio(StudioLocation);
-
-                Thread.Sleep(WaitMS);
+                return;
             }
+            // term any existing studio processes ;)
+            KillProcess(studioProc);
+            // term any existing server processes ;)
+            KillProcess(serverProc);
+
+            // remove workspaces to avoid mutation issues
+            RemoveWorkspaces();
+
+            StartServer(ServerLocation);
+            StartStudio(StudioLocation);
+
+            Thread.Sleep(WaitMs);
         }
 
         /// <summary>
@@ -116,6 +125,12 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// </summary>
         public static void Teardown()
         {
+            //Don't touch the server or studio for local runs on a developers desk he might be debugging!
+            if(!EnableLocalRestart && (Environment.CurrentDirectory.Contains(BuildDirectory) && IsLocal))
+            {
+                return;
+            }
+
             if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
             {
                 //Server was deployed and started, stop it now.
@@ -129,7 +144,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                 LogTestRunMessage("Could not locate CodedUI Binaries", true);
             }
 
-            if(!isLocal)
+            if(!IsLocal)
             {
                 // Now clean up next test run ;)
                 CloseAllInstancesOfIE();
@@ -142,7 +157,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// <param name="sourceName">Name of the source.</param>
         public static void DeleteSource(string sourceName, string serviceCategory = null)
         {
-            var path = ResourceLocation + (serviceCategory != null ? (serviceCategory + "\\") : string.Empty) + sourceName;
+            var path = _resourceLocation + (serviceCategory != null ? (serviceCategory + "\\") : string.Empty) + sourceName;
             if(File.Exists(path))
             {
                 File.Delete(path);
@@ -155,7 +170,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// <param name="serviceName">Name of the service.</param>
         public static void DeleteService(string serviceName, string serviceCategory = null)
         {
-            var path = ResourceLocation + (serviceCategory != null ? (serviceCategory + "\\") : string.Empty) + serviceName;
+            var path = _resourceLocation + (serviceCategory != null ? (serviceCategory + "\\") : string.Empty) + serviceName;
             if(File.Exists(path))
             {
                 File.Delete(path);
@@ -196,9 +211,9 @@ namespace Dev2.Studio.UI.Tests.Utils
         {
             try
             {
-                if(Directory.Exists(ServerWorkspaceLocation))
+                if(Directory.Exists(_serverWorkspaceLocation))
                 {
-                    Directory.Delete(ServerWorkspaceLocation, true);
+                    Directory.Delete(_serverWorkspaceLocation, true);
                 }
             }
             catch(Exception e)
@@ -293,10 +308,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         [AssemblyCleanup]
         public static void RunTeardown()
         {
-            if(enableLocalRestart || !(Environment.CurrentDirectory.Contains(BuildDirectory) && isLocal))
-            {
-                Teardown();
-            }
+            Teardown();
         }
 
         private static ManagementObjectCollection TryGetProcess(string procName)

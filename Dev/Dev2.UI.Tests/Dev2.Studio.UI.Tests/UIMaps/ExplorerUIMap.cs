@@ -16,7 +16,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
     using MouseButtons = System.Windows.Forms.MouseButtons;
 
     // ReSharper disable InconsistentNaming
-    public partial class ExplorerUIMap
+    public partial class ExplorerUIMap : Dev2.Studio.UI.Tests.UIMapBase
     {
         private UITestControl _explorerTree;
         private UITestControl _explorerSearch;
@@ -349,7 +349,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public void RightClickDeleteResource(string resourceName, string categoryName, string serverName)
         {
-            ExplorerUIMap.EnterExplorerSearchText(resourceName);
+            EnterExplorerSearchText(resourceName);
             UITestControl theControl = null;
             if(categoryName != "Unassigned" && categoryName != string.Empty)
             {
@@ -382,7 +382,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public void RightClickRemoveResource(string resourceName, string categoryName, string serverName)
         {
-            ExplorerUIMap.EnterExplorerSearchText(resourceName);
+            EnterExplorerSearchText(resourceName);
             UITestControl theControl = GetServiceItem(serverName, categoryName, resourceName);
             Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
@@ -739,7 +739,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// <param name="serverName"></param>
         public void RightClickRenameResource(string resourceName, string categoryName, string newName, string serverName = "localhost")
         {
-            ExplorerUIMap.EnterExplorerSearchText(resourceName);
+            EnterExplorerSearchText(resourceName);
             UITestControl theControl = null;
             if(categoryName != "Unassigned" && categoryName != string.Empty)
             {
@@ -780,7 +780,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             try
             {
-                ExplorerUIMap.EnterExplorerSearchText(resourceName);
+                EnterExplorerSearchText(resourceName);
                 Playback.Wait(1000);
                 UITestControl theControl = null;
                 if(folderName != "Unassigned" && folderName != string.Empty)
@@ -808,18 +808,12 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         {
             try
             {
-                ExplorerUIMap.EnterExplorerSearchText(resourceName);
+                EnterExplorerSearchText(resourceName);
                 Playback.Wait(1000);
-                UITestControl theControl = GetServiceItem(serverName, resourceName);
-                if(theControl == null)
-                {
-                    return false;
-                }
-                return true;
+                return GetServiceItem(serverName, resourceName) != null;
             }
             catch(Exception)
             {
-
                 return false;
             }
         }
@@ -836,7 +830,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         private void DoubleClickResource(string resourceName, string categoryName, string serverName)
         {
-            ExplorerUIMap.EnterExplorerSearchText(resourceName);
+            EnterExplorerSearchText(resourceName);
             UITestControl theControl = null;
             //Ensure explorer tree
             GetExplorerTree();
