@@ -32,7 +32,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         public static string StudioLocation;
         private static string _resourceLocation;
         private static string _serverWorkspaceLocation;
-        public static TestContext TestContext
+        public TestContext TestContext
         {
             get;
             set;
@@ -49,7 +49,6 @@ namespace Dev2.Studio.UI.Tests.Utils
         [AssemblyInitialize]
         public static void AssemblyInit(TestContext testCtx)
         {
-            TestContext = testCtx;
             IsLocal = testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901";
             ResolvePathsToTestAgainst(!IsLocal ? Path.Combine(testCtx.DeploymentDirectory, "DebugBin") : null);
         }

@@ -755,7 +755,7 @@ namespace Dev2.Studio.UI.Tests
         {
             try
             {
-                Playback.PlaybackError += PlaybackPlaybackError;
+                //Playback.PlaybackError += PlaybackPlaybackError;
 
                 Playback.PlaybackSettings.ContinueOnError = true;
                 Playback.PlaybackSettings.ShouldSearchFailFast = true;
@@ -793,12 +793,12 @@ namespace Dev2.Studio.UI.Tests
         static void PlaybackPlaybackError(object sender, PlaybackErrorEventArgs e)
         {
             //Drop image ;)
-            var imageDropFilename = Path.Combine(Bootstrap.TestContext.TestResultsDirectory, Guid.NewGuid() + ".bmp");
+            var imageDropFilename = Path.Combine(new Bootstrap().TestContext.TestResultsDirectory, Guid.NewGuid() + ".bmp");
             using(var tempImage = new Bitmap(UITestControl.Desktop.CaptureImage()))
             {
                 tempImage.Save(imageDropFilename);
             }
-            Bootstrap.TestContext.AddResultFile(imageDropFilename);
+            new Bootstrap().TestContext.AddResultFile(imageDropFilename);
         }
 
         #endregion

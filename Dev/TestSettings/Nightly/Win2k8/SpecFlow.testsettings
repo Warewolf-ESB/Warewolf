@@ -3,7 +3,7 @@
   <Description>These are default test settings for a remote acceptance test run.</Description>
   <Deployment>
     <DeploymentItem filename="TestBinaries\" />
-    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="DebugBin" />
+    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerBinDebug" />
   </Deployment>
   <Scripts setupScript="TestScripts\Acceptance\Startup.bat" cleanupScript="TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />

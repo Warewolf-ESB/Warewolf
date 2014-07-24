@@ -10,7 +10,7 @@
     <DeploymentItem filename="Binaries\Microsoft.Scripting.dll" />
     <DeploymentItem filename="Binaries\CefSharp\" />
     <DeploymentItem filename="TestBinaries\ConsoleAppToTestExecuteCommandLineActivity.exe" />
-    <DeploymentItem filename="Dev2.Server\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" outputDirectory="Binaries" />
+    <DeploymentItem filename="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" outputDirectory="ConsoleAppToTestExecuteCommandLineActivityBinDebug" />
     <DeploymentItem filename="Binaries\IronPython.Modules.dll" />
   </Deployment>
   <Scripts cleanupScript="TestScripts\Unit\Cleanup.bat" />

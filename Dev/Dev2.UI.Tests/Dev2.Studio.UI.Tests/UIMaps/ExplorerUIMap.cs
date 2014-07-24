@@ -16,7 +16,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
     using MouseButtons = System.Windows.Forms.MouseButtons;
 
     // ReSharper disable InconsistentNaming
-    public partial class ExplorerUIMap : Dev2.Studio.UI.Tests.UIMapBase
+    public partial class ExplorerUIMap
     {
         private UITestControl _explorerTree;
         private UITestControl _explorerSearch;
@@ -25,35 +25,119 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public ExplorerUIMap()
         {
-            //Ashley: Ideally these should look like this (no dynamic IDs no indices):
-            //_explorerSearch = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
-            //_explorerNewConnectionControl = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Explorer", "ConnectUserControl");
-            //_explorerRefresh = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "UI_SourceServerRefreshbtn_AutoID");
+            //Ashley: Ideally these should have no dynamic IDs:
             GetExplorerTree();
-            _explorerSearch = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
-            if(_explorerSearch == null)
+            try
             {
-                _explorerSearch = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
+                _explorerSearch = VisualTreeWalker.GetControl(
+                    "UI_DocManager_AutoID",
+                    "Z91e998e0ee8c4f069cdab9d2cd3f544e",
+                    "Z306a8df47193448e9dd2228d905d49cd",
+                    "UI_ExplorerPane_AutoID",
+                    "Uia.ExplorerView",
+                    "TheNavigationView",
+                    "FilterTextBox",
+                    "UI_DataListSearchtxt_AutoID");
             }
-            _explorerNewConnectionControl = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "ConnectUserControl");
-            if(_explorerNewConnectionControl == null)
+            catch(UITestControlNotFoundException)
+            //_explorerSearch = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
+            //if(_explorerSearch == null)
             {
-                _explorerNewConnectionControl = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "ConnectUserControl");
+                _explorerSearch = VisualTreeWalker.GetControl(
+                    "UI_DocManager_AutoID",
+                    "Zc30a7af8e0c54bb5bccfbea116f8ab0d",
+                    "Zf1166e575b5d43bb89f15f346eccb7b1",
+                    "Z3d0e8544bdbd4fbc8b0369ecfce4e928",
+                    "Explorer",
+                    "UI_ExplorerPane_AutoID",
+                    "Uia.ExplorerView",
+                    "TheNavigationView",
+                    "FilterTextBox",
+                    "UI_DataListSearchtxt_AutoID");
+                //    _explorerSearch = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
             }
-            _explorerRefresh = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "UI_SourceServerRefreshbtn_AutoID");
-            if(_explorerRefresh == null)
+            try
             {
-                _explorerRefresh = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "UI_SourceServerRefreshbtn_AutoID");
+                _explorerNewConnectionControl = VisualTreeWalker.GetControl(
+                    "UI_DocManager_AutoID",
+                    "Z91e998e0ee8c4f069cdab9d2cd3f544e",
+                    "Z306a8df47193448e9dd2228d905d49cd",
+                    "UI_ExplorerPane_AutoID",
+                    "Uia.ExplorerView",
+                    "ConnectUserControl");
+            }
+            catch(UITestControlNotFoundException)
+            //_explorerNewConnectionControl = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "ConnectUserControl");
+            //if(_explorerNewConnectionControl == null)
+            {
+                _explorerNewConnectionControl = VisualTreeWalker.GetControl(
+                    "UI_DocManager_AutoID",
+                    "Zc30a7af8e0c54bb5bccfbea116f8ab0d",
+                    "Zf1166e575b5d43bb89f15f346eccb7b1",
+                    "Z3d0e8544bdbd4fbc8b0369ecfce4e928",
+                    "Explorer",
+                    "UI_ExplorerPane_AutoID",
+                    "Uia.ExplorerView",
+                    "ConnectUserControl");
+                //_explorerNewConnectionControl = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "ConnectUserControl");
+            }
+            try
+            {
+                _explorerRefresh = VisualTreeWalker.GetControl(
+                    "UI_DocManager_AutoID",
+                    "Z91e998e0ee8c4f069cdab9d2cd3f544e",
+                    "Z306a8df47193448e9dd2228d905d49cd",
+                    "UI_ExplorerPane_AutoID",
+                    "Uia.ExplorerView",
+                    "TheNavigationView",
+                    "UI_SourceServerRefreshbtn_AutoID");
+            }
+            catch(UITestControlNotFoundException)
+            //_explorerRefresh = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "UI_SourceServerRefreshbtn_AutoID");
+            //if(_explorerRefresh == null)
+            {
+                _explorerRefresh = VisualTreeWalker.GetControl(
+                    "UI_DocManager_AutoID",
+                    "Zc30a7af8e0c54bb5bccfbea116f8ab0d",
+                    "Zf1166e575b5d43bb89f15f346eccb7b1",
+                    "Z3d0e8544bdbd4fbc8b0369ecfce4e928",
+                    "Explorer",
+                    "UI_ExplorerPane_AutoID",
+                    "Uia.ExplorerView",
+                    "TheNavigationView",
+                    "UI_SourceServerRefreshbtn_AutoID");
+                //_explorerRefresh = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "UI_SourceServerRefreshbtn_AutoID");
             }
         }
 
         private void GetExplorerTree()
         {
-            //_explorerTree = VisualTreeWalker.GetControl("UI_DocManager_AutoID", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
-            _explorerTree = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
-            if(_explorerTree == null)
+            try
             {
-                _explorerTree = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
+                _explorerTree = VisualTreeWalker.GetControl(
+                    "UI_DocManager_AutoID",
+                    "Z91e998e0ee8c4f069cdab9d2cd3f544e",
+                    "Z306a8df47193448e9dd2228d905d49cd",
+                    "UI_ExplorerPane_AutoID",
+                    "Uia.ExplorerView",
+                    "TheNavigationView",
+                    "Navigation");
+            }
+            catch(UITestControlNotFoundException)
+            //_explorerTree = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
+            //if(_explorerTree == null)
+            {
+                _explorerTree = VisualTreeWalker.GetControl(
+                    "UI_DocManager_AutoID",
+                    "Zc30a7af8e0c54bb5bccfbea116f8ab0d",
+                    "Zf1166e575b5d43bb89f15f346eccb7b1",
+                    "Z3d0e8544bdbd4fbc8b0369ecfce4e928",
+                    "Explorer",
+                    "UI_ExplorerPane_AutoID",
+                    "Uia.ExplorerView",
+                    "TheNavigationView",
+                    "Navigation");
+                //_explorerTree = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
             }
         }
 
