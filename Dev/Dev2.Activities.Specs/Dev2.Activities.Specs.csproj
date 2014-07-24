@@ -65,6 +65,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Win32.TaskScheduler.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Win32.TaskSchedulerEditor, Version=2.1.0.26659, Culture=neutral, PublicKeyToken=7be0d908c369d1a5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
+    </Reference>
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Moq.dll</HintPath>
