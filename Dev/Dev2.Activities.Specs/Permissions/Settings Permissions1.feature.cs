@@ -1302,6 +1302,26 @@ this.ScenarioSetup(scenarioInfo);
             this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("25", "Public", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "BARNEY\\DECISION TESTING", "None", "Users", "All", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", "BARNEY\\DECISION TESTING", "View, Execute, Contribute, Deploy To, Deploy From, Administrator", ((string[])(null)));
         }
         
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Setting Selected Resource Permissions for users overlapping groups")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Settings Permissions")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Security")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "26")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Group", "Public")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Given rights", "None")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource Name", "BARNEY\\DECISION TESTING")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource Rights", "Contribute, View, Execute")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:User Group", "Users")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resources", "Users")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Rights", "None")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Resource", "BARNEY\\DECISION TESTING")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Permissions", "Contribute, View, Execute")]
+        public virtual void SettingSelectedResourcePermissionsForUsersOverlappingGroups_26()
+        {
+            this.SettingSelectedResourcePermissionsForUsersOverlappingGroups("26", "Public", "None", "BARNEY\\DECISION TESTING", "Contribute, View, Execute", "Users", "Users", "None", "BARNEY\\DECISION TESTING", "Contribute, View, Execute", ((string[])(null)));
+        }
+        
         public virtual void SettingSelectedResourcePermissionsForUsersConflictingPermissions(string no, string group, string givenRights, string resourceName, string resourceRights, string userGroup, string resources, string rights, string resource, string permissions, string[] exampleTags)
         {
             string[] @__tags = new string[] {
