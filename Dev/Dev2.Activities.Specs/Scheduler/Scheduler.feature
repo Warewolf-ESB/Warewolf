@@ -23,7 +23,7 @@ Scenario: Schedule with history
 #
 Scenario: Schedule the Dice rol workflow and run
       Given I have a schedule "Diceroll01235"
-	  And "ScheduleWithHistory" executes an Workflow "Sprint 13\SchedulerSpec1" 
+	  And "ScheduleWithHistory" executes an Workflow "My Category\Dice Roll"
 	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
 	  And "ScheduleWithHistory" has a username of "dev2\IntegrationTester" and a Password of "I73573r0"
@@ -36,7 +36,7 @@ Scenario: Schedule the Dice rol workflow and run
 	  And "ScheduleWithHistory" has "2" row of history	   
 	  And the history debug output for 'ScheduleWithHistory' for row "1" is 
 		| # |                    |
-		| 1 | [[bob]] = b |
+		| 1 | [[DiceRoll]] = Int32 |
 
 Scenario: Creating task with schedule statud disabled
       Given I have a schedule "Diceroll00"

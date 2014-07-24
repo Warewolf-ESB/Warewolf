@@ -148,7 +148,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
       testRunner.Given("I have a schedule \"Diceroll01235\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 26
-   testRunner.And("\"ScheduleWithHistory\" executes an Workflow \"Sprint 13\\SchedulerSpec1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"ScheduleWithHistory\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
    testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
@@ -199,7 +199,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table4.AddRow(new string[] {
                         "1",
-                        "[[bob]] = b"});
+                        "[[DiceRoll]] = Int32"});
 #line 37
    testRunner.And("the history debug output for \'ScheduleWithHistory\' for row \"1\" is", ((string)(null)), table4, "And ");
 #line hidden
