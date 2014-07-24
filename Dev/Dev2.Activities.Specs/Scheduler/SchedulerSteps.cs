@@ -24,9 +24,9 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"I have a schedule ""(.*)""")]
         public void GivenIHaveASchedule(string scheduleName)
         {
-            var x = new TaskService();
-            var folder =x.GetFolder("Warewolf");
-            folder.DeleteTask(scheduleName,false);
+            //var x = new TaskService();
+            //var folder =x.GetFolder("Warewolf");
+            //folder.DeleteTask(scheduleName,false);
             ScenarioContext.Current.Add("ScheduleName",scheduleName);
         }
         
