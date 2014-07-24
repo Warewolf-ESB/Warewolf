@@ -570,6 +570,10 @@
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>
       <Name>Dev2.Runtime.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Scheduler\Dev2.Scheduler.csproj">
+      <Project>{4DB41F93-E0B7-454C-B4C4-B7E20671E7AB}</Project>
+      <Name>Dev2.Scheduler</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
       <Project>{632E4898-1B1B-474C-A028-D13A5C914F11}</Project>
       <Name>Dev2.UndoFramework</Name>

@@ -677,7 +677,7 @@
                                         <TextBox IsReadOnly="True"
                                                  Style="{StaticResource ReadOnlyTextBoxStyle}"
                                                  BorderThickness="0"
-                                                 Text="{Binding TaskHistoryOutput.Success, Converter={StaticResource BoolToStringConvert}, Mode=OneWay}" />
+                                                 Text="{Binding TaskHistoryOutput.Success, Mode=OneWay}" />
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

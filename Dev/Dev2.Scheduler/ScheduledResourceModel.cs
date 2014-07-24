@@ -253,9 +253,39 @@ Please contact your Warewolf System Administrator.", resource.WorkflowName));
             IList<IResourceHistory> eventList = (groupings.OrderBy(a => a.StartDate).Reverse().Take(resource.NumberOfHistoryToKeep == 0 ? int.MaxValue : resource.NumberOfHistoryToKeep).Select(
                 a =>
                 new ResourceHistory("", CreateDebugHistory(DebugHistoryPath, a.Key),
-                                    new EventInfo(a.StartDate.Value, a.StartDate.HasValue && a.EndDate.HasValue ? a.EndDate.Value.Subtract(a.StartDate.Value) : TimeSpan.MaxValue, a.EndDate.Value, a.EventId < 103, a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))//todo :usename
+                                    new EventInfo(a.StartDate.Value, a.StartDate.HasValue && a.EndDate.HasValue ? a.EndDate.Value.Subtract(a.StartDate.Value) : TimeSpan.MaxValue, a.EndDate.Value, GetRunStatus(a.EventId, DebugHistoryPath, a.Key), a.Key, a.EventId < 103 ? "" : _taskStates[a.EventId]), GetUserName(DebugHistoryPath, a.Key))
                 as IResourceHistory)).ToList();
             return eventList;
+        }
+
+        ScheduleRunStatus GetRunStatus(int eventId, string debugHistoryPath, string key)
+        {
+            bool debugExists = DebugHistoryExists(debugHistoryPath,key);
+            bool debugHasErrors = DebugHasErrors(debugHistoryPath,key);
+            bool winSuccess = eventId < 103;
+            if(debugExists && (!debugHasErrors) && winSuccess)
+                return ScheduleRunStatus.Success;
+            if (!debugExists)
+                return  ScheduleRunStatus.Unknown;
+            return  ScheduleRunStatus.Error;
+        }
+
+        bool DebugHasErrors(string debugHistoryPath, string correlationId)
+        {
+            var serializer = new Dev2JsonSerializer();
+            var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
+
+            if (file == null)
+            {
+                return false;
+            }
+
+             return  serializer.Deserialize<List<IDebugState>>(FileHelper.ReadAllText(file)).Last().HasError;
+        }
+
+        bool DebugHistoryExists(string debugHistoryPath, string correlationId)
+        {
+            return DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId))!= null;
         }
 
         private string GetUserName(string debugHistoryPath, string correlationId)

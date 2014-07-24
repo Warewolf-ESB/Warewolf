@@ -72,7 +72,7 @@ namespace Dev2.Tests.Runtime.Services
             var history = new List<IResourceHistory>
                 {
                     new ResourceHistory("", new List<IDebugState> {new DebugState()},
-                                        new EventInfo(DateTime.MinValue, TimeSpan.MaxValue, DateTime.MaxValue, true, "115"),
+                                        new EventInfo(DateTime.MinValue, TimeSpan.MaxValue, DateTime.MaxValue, ScheduleRunStatus.Error, "115"),
                                         "leon")
                 };
             var trigger = new ScheduleTrigger(TaskState.Disabled,

@@ -431,6 +431,62 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Schedule with ErrorInDebug")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Scheduler")]
+        public virtual void ScheduleWithErrorInDebug()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Schedule with ErrorInDebug", ((string[])(null)));
+#line 102
+this.ScenarioSetup(scenarioInfo);
+#line 103
+      testRunner.Given("I have a schedule \"ScheduleWithError\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 104
+   testRunner.And("\"ScheduleWithError\" executes an Workflow \"moocowimpi\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+   testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
+   testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+   testRunner.And("\"ScheduleWithError\" has a username of \"dev2\\IntegrationTester\" and a Password of " +
+                    "\"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
+                        "ScheduleType",
+                        "Interval",
+                        "StartDate",
+                        "StartTime",
+                        "Recurs",
+                        "RecursInterval",
+                        "Delay",
+                        "DelayInterval",
+                        "Repeat",
+                        "RepeatInterval",
+                        "ExpireDate",
+                        "ExpireTime"});
+            table11.AddRow(new string[] {
+                        "On a schedule",
+                        "Daily",
+                        "2014/01/01",
+                        "15:40:44",
+                        "1",
+                        "day",
+                        "1",
+                        "hour",
+                        "1",
+                        "hour",
+                        "2014/01/02",
+                        "15:40:15"});
+#line 108
+   testRunner.And("\"ScheduleWithError\" has a Schedule of", ((string)(null)), table11, "And ");
+#line 111
+   testRunner.When("the \"ScheduleWithError\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 112
+   testRunner.Then("the schedule status is \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

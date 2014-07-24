@@ -155,10 +155,10 @@ namespace Dev2.Activities.Specs.Scheduler
 // ReSharper restore RedundantAssignment
 
                 if( status == "Success")
-                    Assert.IsTrue(x[0].TaskHistoryOutput.Success);
+                    Assert.AreEqual( ScheduleRunStatus.Success, x[0].TaskHistoryOutput.Success);
                 else
                 {
-                    Assert.IsFalse(x[0].TaskHistoryOutput.Success);
+                    Assert.IsTrue(x[0].TaskHistoryOutput.Success == ScheduleRunStatus.Error || x[0].TaskHistoryOutput.Success == ScheduleRunStatus.Error);
                 }
                 ScenarioContext.Current["History"] = x;
 
@@ -249,10 +249,8 @@ namespace Dev2.Activities.Specs.Scheduler
         [AfterScenario]
         public void ScenarioCleanup()
         {
-            var x = new TaskService();
-            var folder = x.GetFolder("Warewolf");
-            var scheduleName = ScenarioContext.Current["ScheduleName"].ToString();
-            folder.DeleteTask(scheduleName, false);
+
+
         }
 
     }

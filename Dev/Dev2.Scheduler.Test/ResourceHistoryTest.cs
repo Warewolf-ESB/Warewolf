@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Diagnostics.Debug;
+using Dev2.Scheduler.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Scheduler.Test
@@ -17,7 +18,7 @@ namespace Dev2.Scheduler.Test
         // ReSharper restore InconsistentNaming
         {
             var a = new List<IDebugState>();
-            var b = new EventInfo(new DateTime(2001, 01, 01), new TimeSpan(1, 0, 0), new DateTime(2001, 01, 01), false, "sdf");
+            var b = new EventInfo(new DateTime(2001, 01, 01), new TimeSpan(1, 0, 0), new DateTime(2001, 01, 01), ScheduleRunStatus.Error, "sdf");
             var res = new ResourceHistory("output", a, b, "bob");
             Assert.AreEqual(a, res.DebugOutput);
             Assert.AreEqual(b, res.TaskHistoryOutput);

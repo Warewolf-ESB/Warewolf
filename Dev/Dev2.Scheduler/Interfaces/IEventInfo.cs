@@ -19,7 +19,7 @@ namespace Dev2.Scheduler.Interfaces
         /// <summary>
         /// State
         /// </summary>
-        bool Success { get; }
+        ScheduleRunStatus Success { get; }
         /// <summary>
         /// Windows event id
         /// </summary>
