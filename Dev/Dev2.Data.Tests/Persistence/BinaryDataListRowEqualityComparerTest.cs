@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Data.Tests.Persistence
 {
     [TestClass]
-    public class BinaryDateListRowEqualityComparerTest
+    public class BinaryDataListRowEqualityComparerTest
     {
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -18,7 +18,9 @@ namespace Dev2.Data.Tests.Persistence
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
+// ReSharper disable ObjectCreationAsStatement
             new BinaryDataListRowEqualityComparer(null);
+// ReSharper restore ObjectCreationAsStatement
             //------------Assert Results-------------------------
         }
 

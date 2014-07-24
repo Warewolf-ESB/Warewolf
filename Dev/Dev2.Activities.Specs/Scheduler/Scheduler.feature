@@ -7,15 +7,14 @@
 Scenario: Schedule with history
       Given I have a schedule "ScheduleWithHistory"
 	  And "ScheduleWithHistory" executes an Workflow "My Category\Dice Roll" 
-	   And task history "Number of history records to load" is "2"
+	  And task history "Number of history records to load" is "2"
 	  And the task status "Status" is "Enabled"
 	  And "ScheduleWithHistory" has a username of "dev2\IntegrationTester" and a Password of "I73573r0"
 	  And "ScheduleWithHistory" has a Schedule of
 	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |
 	  | On a schedule | Daily  | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
-	  When the "ScheduleWithHistory" is executed "2" times
+	  When the "ScheduleWithHistory" is executed "1" times
 	  Then the schedule status is "Success"
-	  When the "ScheduleWithHistory" has "Successfull"
 	  Then the Schedule task has "No" error
 	  And "ScheduleWithHistory" has "2" row of history	   
 	  And the history debug output for 'ScheduleWithHistory' for row "1" is 
@@ -31,7 +30,6 @@ Scenario: Schedule the Dice rol workflow and run
 	  And "ScheduleWithHistory" has a Schedule of
 	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |
 	  | On a schedule | "Daily"  | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
-	  When the "ScheduleWithHistory" has "Successfull"
 	  Then the Schedule task has "No" error
 	  When the "Diceroll01235" is executed "2" times
 	  Then the schedule status is "Success"
@@ -62,10 +60,8 @@ Scenario: Sertting schedule task "At log on"
 	  And "Diceroll1" has a Schedule of
 	  | ScheduleType | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |
 	  | At log on    | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
-	  When the "Diceroll1" has "Successfull"
 	  Then the Schedule task has "No" error
-	  When the "Diceroll1" is executed "2" times
-	  When the "Diceroll1" is executed
+	  When the "Diceroll1" is executed "1" times
 	  Then the schedule status is "Success"
 	  And "Diceroll1" has "2" row of history	   
 	  And the history debug output for 'ScheduleWithHistory' for row "1" is 
@@ -82,7 +78,23 @@ Scenario: Schedule the task with Incorrect username or password
 	  And "Diceroll1" has a Schedule of
 	  | ScheduleType | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |
 	  | At log on    | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
-	  When the "Diceroll1" has "Successfull"
 	  Then the Schedule task has "AN" error
+
+Scenario: Schedule with LocalUser
+      Given I have a schedule "LocalUserSchedule"
+	  And "LocalUserSchedule" executes an Workflow "My Category\Dice Roll" 
+	  And task history "Number of history records to load" is "2"
+	  And the task status "Status" is "Enabled"
+	  And "LocalUserSchedule" has a username of "LocalSchedulerAdmin" and a Password of "987Sched#@!"
+	  And "LocalUserSchedule" has a Schedule of
+	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |
+	  | On a schedule | Daily  | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
+	  When the "LocalUserSchedule" is executed "1" times
+	  Then the schedule status is "Success"
+	  Then the Schedule task has "No" error
+	  And "LocalUserSchedule" has "2" row of history	   
+	  And the history debug output for 'LocalUserSchedule' for row "1" is 
+	  | # |                   |
+	  | 1 | [[DiceRoll]] = Int32 |
 #	
 #

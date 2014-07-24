@@ -133,7 +133,7 @@
     <Compile Include="PathOperations\Dev2PutRawOperationTOTests.cs" />
     <Compile Include="Persistence\Dev2BinaryStorageTest.cs" />
     <Compile Include="Persistence\StorageSettingsManagerTest.cs" />
-    <Compile Include="Persistence\BinaryDateListRowEqualityComparerTest.cs" />
+    <Compile Include="Persistence\BinaryDataListRowEqualityComparerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceModel\ServiceUtilsTests.cs" />
     <Compile Include="SystemTemplates\DecisionTest.cs" />

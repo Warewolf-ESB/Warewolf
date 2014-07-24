@@ -140,12 +140,7 @@ namespace Dev2.Activities.Specs.Scheduler
             return res;
         }
 
-        [When(@"the ""(.*)"" is executed")]
-        public void WhenTheIsExecuted(string scheduleName)
-        {
 
-            
-        }
         
         [Then(@"the schedule status is ""(.*)""")]
         public void ThenTheScheduleStatusIs(string status)
@@ -154,7 +149,7 @@ namespace Dev2.Activities.Specs.Scheduler
             if(scheduler != null)
             {
                 scheduler.ActiveItem = new TabItem {Header = "History"};
-                Thread.Sleep(5000);
+                Thread.Sleep(8000);
 // ReSharper disable RedundantAssignment
                 IList<IResourceHistory> x = scheduler.ScheduledResourceModel.CreateHistory(scheduler.SelectedTask).ToList();
 // ReSharper restore RedundantAssignment
@@ -204,11 +199,7 @@ namespace Dev2.Activities.Specs.Scheduler
             ScenarioContext.Current["TaskStatus"] = status == "Enabled"?SchedulerStatus.Enabled:SchedulerStatus.Disabled;
         }
 
-        [When(@"the ""(.*)"" has ""(.*)""")]
-        public void WhenTheHas(string schedule, string status)
-        {
-         
-        }
+
 
         [Then(@"the Schedule task has ""(.*)"" error")]
         public void ThenTheScheduleTaskHasError(string error)
@@ -253,6 +244,16 @@ namespace Dev2.Activities.Specs.Scheduler
 
         }
 
+
+
+        [AfterScenario]
+        public void ScenarioCleanup()
+        {
+            var x = new TaskService();
+            var folder = x.GetFolder("Warewolf");
+            var scheduleName = ScenarioContext.Current["ScheduleName"].ToString();
+            folder.DeleteTask(scheduleName, false);
+        }
 
     }
 }
