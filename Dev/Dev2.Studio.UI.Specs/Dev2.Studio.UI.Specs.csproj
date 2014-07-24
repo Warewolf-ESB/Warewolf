@@ -67,7 +67,18 @@
       <DependentUpon>Connect Control.feature</DependentUpon>
     </Compile>
     <Compile Include="Connect Control\ConnectControlSteps.cs" />
+    <Compile Include="PermissionsUISpecs\PermissionsUISpec.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PermissionsUISpec.feature</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools Large ViewUISpecs\ToolsTestUISpecs.cs" />
+    <Compile Include="Tools Large ViewUISpecs\ToolsTestUISpecs.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToolsTestUISpecs.feature</DependentUpon>
+    </Compile>
     <Compile Include="Workflow.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -84,6 +95,14 @@
       <LastGenOutput>Connect Control1.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
+    <None Include="PermissionsUISpecs\PermissionsUISpec.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>PermissionsUISpec.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools Large ViewUISpecs\ToolsTestUISpecs.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ToolsTestUISpecs.feature.cs</LastGenOutput>
+    </None>
     <None Include="Workflow.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Workflow.feature.cs</LastGenOutput>
