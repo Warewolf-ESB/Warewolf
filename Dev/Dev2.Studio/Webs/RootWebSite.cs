@@ -27,8 +27,15 @@ namespace Dev2.Webs
             const int DialogHeight = 85;
 
             var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
-            environment.ShowWebPageDialog(SiteName, "switch/drag", callBackHandler, DialogWidth, DialogHeight, "Switch Flow");
-
+            const string RelativeUriString = "switch/drag";
+            if(!IsTestMode)
+            {
+                environment.ShowWebPageDialog(SiteName, RelativeUriString, callBackHandler, DialogWidth, DialogHeight, "Switch Flow");
+            }
+            else
+            {
+                TestModeRelativeUri = RelativeUriString;
+            }
             return callBackHandler;
         }
 
@@ -42,8 +49,15 @@ namespace Dev2.Webs
             const int DialogHeight = 161;
 
             var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
-            environment.ShowWebPageDialog(SiteName, "switch/drop", callBackHandler, DialogWidth, DialogHeight, "Switch Flow");
-
+            const string RelativeUriString = "switch/drop";
+            if(!IsTestMode)
+            {
+                environment.ShowWebPageDialog(SiteName, RelativeUriString, callBackHandler, DialogWidth, DialogHeight, "Switch Flow");
+            }
+            else
+            {
+                TestModeRelativeUri = RelativeUriString;
+            }
             return callBackHandler;
         }
 
@@ -57,8 +71,15 @@ namespace Dev2.Webs
             const int DialogHeight = 510;
 
             var callBackHandler = new Dev2DecisionCallbackHandler { ModelData = webModel };
-            environment.ShowWebPageDialog(SiteName, "decisions/wizard", callBackHandler, DialogWidth, DialogHeight, "Decision Flow");
-
+            const string RelativeUriString = "decisions/wizard";
+            if(!IsTestMode)
+            {
+                environment.ShowWebPageDialog(SiteName, RelativeUriString, callBackHandler, DialogWidth, DialogHeight, "Switch Flow");
+            }
+            else
+            {
+                TestModeRelativeUri = RelativeUriString;
+            }
             return callBackHandler;
         }
 
@@ -69,7 +90,6 @@ namespace Dev2.Webs
         //
         // TWR: 2013.02.14 - refactored to accommodate new requests
         // PBI: 801
-        // BUG: 8477
         //
         public static bool ShowDialog(IContextualResourceModel resourceModel)
         {
@@ -78,7 +98,7 @@ namespace Dev2.Webs
                 return false;
             }
 
-            string resourceID = resourceModel.ID.ToString();
+            string resourceId = resourceModel.ID.ToString();
 
             ResourceType resourceType;
             Enum.TryParse(resourceModel.ServerResourceType, out resourceType);
@@ -90,7 +110,7 @@ namespace Dev2.Webs
             else
             {
                 // we need to take the SourceID out and pass along ;)
-                var srcID = Guid.Empty.ToString();
+                var srcId = Guid.Empty.ToString();
                 if(resourceModel.WorkflowXaml != null)
                 {
                     var workflowXaml = resourceModel.WorkflowXaml;
@@ -98,15 +118,15 @@ namespace Dev2.Webs
                     try
                     {
                         var xe = workflowXaml.Replace("&", "&amp;").ToXElement();
-                        srcID = xe.AttributeSafe("SourceID");
+                        srcId = xe.AttributeSafe("SourceID");
                     }
                     catch
                     {
-                        srcID = workflowXaml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
+                        srcId = workflowXaml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
                     }
                 }
 
-                return ShowDialog(resourceModel.Environment, resourceType, null, resourceModel.Category, resourceID, srcID, ConnectControlInstanceType.Explorer, resourceModel.ResourceName);
+                return ShowDialog(resourceModel.Environment, resourceType, null, resourceModel.Category, resourceId, srcId, ConnectControlInstanceType.Explorer, resourceModel.ResourceName);
             }
             return true;
         }
@@ -115,11 +135,11 @@ namespace Dev2.Webs
 
         #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
 
-        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string cateogy, string resourceID = null, string srcID = null, ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer, string resourceName = null)
+        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string cateogy, string resourceId = null, string sourceId = null, ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer, string resourceName = null)
         {
             const int ServiceDialogHeight = 582;
             const int ServiceDialogWidth = 941;
-
+            var srcId = sourceId;
             if(environment == null)
             {
                 throw new ArgumentNullException("environment");
@@ -143,7 +163,7 @@ namespace Dev2.Webs
 
             if(environment.Connection != null)
             {
-                var workspaceID = GlobalConstants.ServerWorkspaceID;
+                var workspaceId = GlobalConstants.ServerWorkspaceID;
 
                 string pageName;
                 WebsiteCallbackHandler pageHandler;
@@ -156,7 +176,7 @@ namespace Dev2.Webs
                     case ResourceType.Server:
                         pageName = "sources/server";
                         pageHandler = new ConnectCallbackHandler(connectControlInstanceType);
-                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        if(!String.IsNullOrEmpty(resourceId) && !String.IsNullOrEmpty(resourceName))
                         {
                             leftTitle = "Edit - " + resourceName;
                         }
@@ -172,7 +192,7 @@ namespace Dev2.Webs
                     case ResourceType.ServerSource:
                         pageName = "sources/server";
                         pageHandler = new ConnectCallbackHandler(connectControlInstanceType);
-                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        if(!String.IsNullOrEmpty(resourceId) && !String.IsNullOrEmpty(resourceName))
                         {
                             leftTitle = "Edit - " + resourceName;
                         }
@@ -194,10 +214,11 @@ namespace Dev2.Webs
 
                     case ResourceType.DbSource:
                         pageName = "sources/dbsource";
+                        srcId = resourceId;
                         pageHandler = new SourceCallbackHandler();
                         width = 704;
                         height = 517;
-                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        if(!String.IsNullOrEmpty(resourceId) && !String.IsNullOrEmpty(resourceName))
                         {
                             leftTitle = "Edit - " + resourceName;
                         }
@@ -216,8 +237,9 @@ namespace Dev2.Webs
 
                     case ResourceType.PluginSource:
                         pageName = "sources/pluginsource";
+                        srcId = resourceId;
                         pageHandler = new SourceCallbackHandler();
-                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        if(!String.IsNullOrEmpty(resourceId) && !String.IsNullOrEmpty(resourceName))
                         {
                             leftTitle = "Edit - " + resourceName;
                         }
@@ -231,8 +253,9 @@ namespace Dev2.Webs
 
                     case ResourceType.EmailSource:  // PBI 953 - 2013.05.16 - TWR - Added
                         pageName = "sources/emailsource";
+                        srcId = resourceId;
                         pageHandler = new SourceCallbackHandler();
-                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        if(!String.IsNullOrEmpty(resourceId) && !String.IsNullOrEmpty(resourceName))
                         {
                             leftTitle = "Edit - " + resourceName;
                         }
@@ -246,8 +269,9 @@ namespace Dev2.Webs
 
                     case ResourceType.WebSource:    // PBI 5656 - 2013.05.20 - TWR - Added
                         pageName = "sources/websource";
+                        srcId = resourceId;
                         pageHandler = new WebSourceCallbackHandler();
-                        if(!String.IsNullOrEmpty(resourceID) && !String.IsNullOrEmpty(resourceName))
+                        if(!String.IsNullOrEmpty(resourceId) && !String.IsNullOrEmpty(resourceName))
                         {
                             leftTitle = "Edit - " + resourceName;
                         }
@@ -284,7 +308,8 @@ namespace Dev2.Webs
                     selectedPath = selectedPath.Replace("\\", "\\\\");
                 }
 
-                string relativeUriString = string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}&sourceID={5}&category={6}", pageName, workspaceID, resourceID, envirDisplayName, resourcePath, srcID, selectedPath);
+
+                string relativeUriString = string.Format("{0}?wid={1}&rid={2}&envir={3}&path={4}&sourceID={5}&category={6}", pageName, workspaceId, resourceId, envirDisplayName, resourcePath, srcId, selectedPath);
 
                 if(!IsTestMode)
                 {
@@ -293,7 +318,6 @@ namespace Dev2.Webs
                 }
                 else
                 {
-                    // TODO : return the relativeUriString generated ;)
                     TestModeRelativeUri = relativeUriString;
                 }
             }
@@ -304,12 +328,12 @@ namespace Dev2.Webs
 
         #region ShowSaveDialog
 
-        public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceID = null, bool addToTabManager = true)
+        public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId = null, bool addToTabManager = true)
         {
             ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, EnvironmentRepository.Instance, resourceModel, addToTabManager), "WorkflowService");
         }
 
-        static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string resourceID = null)
+        static void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, string type, string resourceId = null)
         {
             if(resourceModel == null)
             {
@@ -319,13 +343,16 @@ namespace Dev2.Webs
 
             if(environment == null)
             {
-                // ReSharper disable once NotResolvedInText
+                // ReSharper disable NotResolvedInText
                 throw new ArgumentNullException("resourceModel");
             }
+
+            EnvironmentRepository.Instance.ActiveEnvironment = environment;
+
             const string PageName = "dialogs/savedialog";
             const double Width = 604;
             const double Height = 450;
-            var workspaceID = GlobalConstants.ServerWorkspaceID;
+            var workspaceId = GlobalConstants.ServerWorkspaceID;
             const string LeftTitle = "Save";
             string rightTitle = environment.Name + " (" + environment.Connection.AppServerUri + ")";
             var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
@@ -336,7 +363,7 @@ namespace Dev2.Webs
                 selectedPath = selectedPath.Substring(0, lastIndexOf);
             }
             selectedPath = selectedPath.Replace("\\", "\\\\");
-            var relativeUriString = string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}&category={6}", PageName, workspaceID, resourceID, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName, selectedPath);
+            var relativeUriString = string.Format("{0}?wid={1}&rid={2}&type={3}&title={4}&envir={5}&category={6}", PageName, workspaceId, resourceId, type, HttpUtility.UrlEncode("New Workflow"), envirDisplayName, selectedPath);
             if(!IsTestMode)
             {
                 // this must be a property ;)
@@ -362,12 +389,25 @@ namespace Dev2.Webs
             const double Width = 704;
             const double Height = 517;
             const string LeftTitle = "Choose File(s)";
-            string rightTitle = environment.Name + " (" + environment.Connection.AppServerUri + ")";
+            var environmentConnection = environment.Connection;
+            if(environmentConnection != null)
+            {
+                string rightTitle = environment.Name + " (" + environmentConnection.AppServerUri + ")";
 
-            var pageHandler = new FileChooserCallbackHandler(fileChooserMessage);
+                var pageHandler = new FileChooserCallbackHandler(fileChooserMessage);
 
-            var envirDisplayName = FullyEncodeServerDetails(environment.Connection);
-            environment.ShowWebPageDialog(SiteName, string.Format("{0}?envir={1}", PageName, envirDisplayName), pageHandler, Width, Height, LeftTitle, rightTitle);
+                var envirDisplayName = FullyEncodeServerDetails(environmentConnection);
+                var relativeUriString = string.Format("{0}?envir={1}", PageName, envirDisplayName);
+                if(!IsTestMode)
+                {
+                    environment.ShowWebPageDialog(SiteName, relativeUriString, pageHandler, Width, Height, LeftTitle, rightTitle);
+                }
+                else
+                {
+                    CallBackHandler = pageHandler;
+                    TestModeRelativeUri = relativeUriString;
+                }
+            }
         }
 
         #region Encode Environment Name and Address
