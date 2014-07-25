@@ -624,17 +624,34 @@ namespace Dev2.Core.Tests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceModel_ToServiceDefinition")]
-        public void ResourceModel_ToServiceDefinition_Service_WhenHasAnAmpersand_ShouldHaveServiceDefinition()
+        public void ResourceModel_ToServiceDefinition_Service_WhenHasAnAmpersand_CanBeMadeXElement()
         {
             //------------Setup for test--------------------------
             var resourceModel = CreateResourceModel();
             resourceModel.ResourceType = ResourceType.Service;
             resourceModel.ServerResourceType = "WebService";
-            resourceModel.WorkflowXaml = new StringBuilder("this has a &");
+            const string actionTag = "<Action Name=\"SaveItWebService\"" +
+                                     " Type=\"InvokeWebService\"" +
+                                     " SourceID=\"8a5c2119-08f5-4a58-888e-bbc95b996e88\"" +
+                                     " SourceName=\"Dev2GetCountriesWebService\"" +
+                                     " SourceMethod=\"\"" +
+                                     " RequestUrl=\"?extension=[[extension]]&prefix=[[prefix]]\"" +
+                                     " RequestMethod=\"Get\"" +
+                                     " JsonPath=\"\">" +
+                                     "</Action>"
+                                     ;
+            resourceModel.WorkflowXaml = new StringBuilder(actionTag);
             //------------Execute Test---------------------------
-            var serviceDefinition = resourceModel.ToServiceDefinition().ToString();
+            var serviceDefinition = resourceModel.ToServiceDefinition().ToXElement();
             //------------Assert Results-------------------------
-            StringAssert.Contains(serviceDefinition, "this has a &amp;");
+            Assert.IsNotNull(serviceDefinition);
+            var actionsElement = serviceDefinition.Element("Actions");
+            Assert.IsNotNull(actionsElement);
+            var actionElement = actionsElement.Element("Action");
+            Assert.IsNotNull(actionElement);
+            var requestUrlAttribute = actionElement.Attribute("RequestUrl");
+            Assert.IsNotNull(requestUrlAttribute);
+            Assert.AreEqual("RequestUrl=\"?extension=[[extension]]&amp;prefix=[[prefix]]\"", requestUrlAttribute.ToString());
         }
 
         [TestMethod]
@@ -727,6 +744,153 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, errors.Count);
             Assert.AreEqual(instanceID, errors[0].InstanceID);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_ClearErrors")]
+        public void ResourceModel_ClearErrors_ClearsErrors()
+        {
+            //------------Setup for test--------------------------
+            var instanceID = Guid.NewGuid();
+
+            var err1 = new Mock<IErrorInfo>();
+            err1.Setup(e => e.InstanceID).Returns(instanceID);
+            var err2 = new Mock<IErrorInfo>();
+            err2.Setup(e => e.InstanceID).Returns(Guid.NewGuid());
+            var model = new ResourceModel(new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
+            model.AddError(err1.Object);
+            model.AddError(err2.Object);
+
+            var errorInfos = model.Errors;
+
+            //------------Assert Preconditions-------------------------
+            Assert.AreEqual(2, errorInfos.Count);
+            //------------Execute Test---------------------------
+            model.ClearErrors();
+            //-------------Assert Results------------------------
+            errorInfos = model.Errors;
+            Assert.AreEqual(0, errorInfos.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_IDataErrorInfo")]
+        public void ResourceModel_IDataErrorInfo_ThisAccessor_ResourceName()
+        {
+            //------------Setup for test--------------------------
+            var instanceID = Guid.NewGuid();
+
+            var err1 = new Mock<IErrorInfo>();
+            err1.Setup(e => e.InstanceID).Returns(instanceID);
+            var err2 = new Mock<IErrorInfo>();
+            err2.Setup(e => e.InstanceID).Returns(Guid.NewGuid());
+            var model = new ResourceModel(new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
+            model.AddError(err1.Object);
+            model.AddError(err2.Object);
+            //------------Execute Test---------------------------
+            var errMessage = model["ResourceName"];
+            //-------------Assert Results------------------------
+            Assert.IsNotNull(errMessage);
+            Assert.AreEqual("Please enter a name for this resource", errMessage);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_IDataErrorInfo")]
+        public void ResourceModel_IDataErrorInfo_ThisAccessor_IconPath()
+        {
+            //------------Setup for test--------------------------
+            var instanceID = Guid.NewGuid();
+
+            var err1 = new Mock<IErrorInfo>();
+            err1.Setup(e => e.InstanceID).Returns(instanceID);
+            var err2 = new Mock<IErrorInfo>();
+            err2.Setup(e => e.InstanceID).Returns(Guid.NewGuid());
+            var model = new ResourceModel(new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object) { IconPath = "somePath" };
+            //------------Execute Test---------------------------
+            var errMsg = model["IconPath"];
+            //-------------Assert Results------------------------
+            Assert.IsNotNull(errMsg);
+            Assert.AreEqual("Icon Path Does Not Exist or is not valid", errMsg);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_IDataErrorInfo")]
+        public void ResourceModel_IDataErrorInfo_ThisAccessor_HelpLink()
+        {
+            //------------Setup for test--------------------------
+            var instanceID = Guid.NewGuid();
+
+            var err1 = new Mock<IErrorInfo>();
+            err1.Setup(e => e.InstanceID).Returns(instanceID);
+            var err2 = new Mock<IErrorInfo>();
+            err2.Setup(e => e.InstanceID).Returns(Guid.NewGuid());
+            var model = new ResourceModel(new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object) { HelpLink = "somePath" };
+            //------------Execute Test---------------------------
+            var errMsg = model["HelpLink"];
+            //-------------Assert Results------------------------
+            Assert.IsNotNull(errMsg);
+            Assert.AreEqual("The help link is not in a valid format", errMsg);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_ClearErrors")]
+        public void ResourceModel_ClearErrors_FiresPropertyChangeForErrors()
+        {
+            //------------Setup for test--------------------------
+            var instanceID = Guid.NewGuid();
+
+            var err1 = new Mock<IErrorInfo>();
+            err1.Setup(e => e.InstanceID).Returns(instanceID);
+            var err2 = new Mock<IErrorInfo>();
+            err2.Setup(e => e.InstanceID).Returns(Guid.NewGuid());
+            var model = new ResourceModel(new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
+            model.AddError(err1.Object);
+            model.AddError(err2.Object);
+            var _propertyChangedFired = false;
+            model.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == "Errors")
+                {
+                    _propertyChangedFired = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            model.ClearErrors();
+            //-------------Assert Results------------------------
+            Assert.IsTrue(_propertyChangedFired);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceModel_ClearErrors")]
+        public void ResourceModel_ClearErrors_FiresPropertyChangeFoIsValid()
+        {
+            //------------Setup for test--------------------------
+            var instanceID = Guid.NewGuid();
+
+            var err1 = new Mock<IErrorInfo>();
+            err1.Setup(e => e.InstanceID).Returns(instanceID);
+            var err2 = new Mock<IErrorInfo>();
+            err2.Setup(e => e.InstanceID).Returns(Guid.NewGuid());
+            var model = new ResourceModel(new Mock<IEnvironmentModel>().Object, new Mock<IEventAggregator>().Object);
+            model.AddError(err1.Object);
+            model.AddError(err2.Object);
+            var _propertyChangedFired = false;
+            model.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == "IsValid")
+                {
+                    _propertyChangedFired = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            model.ClearErrors();
+            //-------------Assert Results------------------------
+            Assert.IsTrue(_propertyChangedFired);
         }
 
         public static ExecuteMessage MakeMessage(string msg)

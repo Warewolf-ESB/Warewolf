@@ -1571,8 +1571,6 @@ namespace BusinessDesignStudio.Unit.Tests
             var resources = _repo.All().ToList();
             var actual = (IContextualResourceModel)resources[0];
             Assert.AreEqual(_resourceGuid, actual.ID);
-            //Assert.AreEqual(serverID, actual.ServerID);
-            //Assert.AreEqual(version, actual.Version);
             Assert.AreEqual(true, actual.IsValid);
 
             Assert.IsNotNull(actual.Errors);
@@ -1582,6 +1580,50 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreEqual(FixType.None, error.FixType);
             Assert.AreEqual("MappingChange", error.Message);
             Assert.AreEqual("SomethingWentWrong", error.StackTrace);
+            mockStudioResourceRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Exactly(1));
+        }
+
+        [TestMethod]
+        public void ResourceRepositoryLoadWorkspaceWithValidArgsExpectedSetsProperties()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var conn = SetupConnection();
+
+            List<ErrorInfo> errors = new List<ErrorInfo>
+                {
+                    new ErrorInfo
+                        {
+                            ErrorType = ErrorType.Critical,
+                            Message = "MappingChange",
+                            StackTrace = "SomethingWentWrong",
+                            FixType = FixType.None
+                        }
+                };
+
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Data.ServiceModel.ResourceType.WorkflowService, errors);
+
+
+
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(
+                () => resourceObj);
+
+
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
+            mockStudioResourceRepository.Setup(repository => repository.ItemAddedMessageHandler(It.IsAny<IExplorerItem>())).Verifiable();
+            _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
+
+            //------------Execute Test---------------------------
+            _repo.LoadResourceFromWorkspace(_resourceGuid);
+            
+            //------------Assert Results-------------------------
+            var resources = _repo.All().ToList();
+            var actual = (IContextualResourceModel)resources[0];
+            Assert.AreEqual(_resourceGuid, actual.ID);
+            Assert.AreEqual(true, actual.IsValid);
+            
             mockStudioResourceRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Exactly(1));
         }
 
@@ -2121,6 +2163,39 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceRepository_DeployResource")]
+        public void ResourceRepository_DeployResource_WhenNormalDeploy_ExpectDeployCalled()
+        {
+            //------------Setup for test--------------------------
+            Setup();
+            var theID = Guid.NewGuid();
+
+            Mock<IResourceRepository> srcRepo = new Mock<IResourceRepository>();
+            Mock<IResourceRepository> targetRepo = new Mock<IResourceRepository>();
+
+            Mock<IEnvironmentModel> srcModel = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentModel> targetModel = new Mock<IEnvironmentModel>();
+
+            // config the repos
+            srcModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
+            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false))
+                   .Returns(_resourceModel.Object);
+
+            targetModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
+            targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Verifiable();
+
+            var theModel = new ResourceModel(srcModel.Object) { ID = theID, ResourceName = "some resource" };
+            Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
+            mockEventAg.Setup(m => m.Publish(It.IsAny<object>()));
+
+            //------------Execute Test---------------------------
+            _repo.DeployResource(theModel);
+            //------------Assert Results-------------------------
+            _environmentConnection.Verify(connection => connection.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>()));
+        }
+
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ResourceRepository_DeployResources")]
         public void ResourceRepository_DeployResources_WhenNormalDeploy_ExpectUpdatedResource()
@@ -2138,13 +2213,13 @@ namespace BusinessDesignStudio.Unit.Tests
             // config the repos
             IResourceModel findModel = new ResourceModel(targetEnvModel.Object);
             findModel.ID = theID;
+            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false))
+                  .Returns(findModel);
 
             srcEnvModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
-            srcRepo.Setup(sr => sr.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false))
-                   .Returns(findModel);
 
-            targetEnvModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
             targetRepo.Setup(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>())).Verifiable();
+            targetEnvModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
 
             Mock<IResourceModel> reloadedResource = new Mock<IResourceModel>();
             reloadedResource.Setup(res => res.ResourceName).Returns("Resource");
@@ -2171,7 +2246,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.DeployResources(srcEnvModel.Object, targetEnvModel.Object, dto, mockEventAg.Object);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual("NewXaml", findModel.WorkflowXaml.ToString());
+            targetRepo.Verify(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>()));
 
         }
 

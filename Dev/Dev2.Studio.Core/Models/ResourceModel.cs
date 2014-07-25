@@ -639,6 +639,9 @@ namespace Dev2.Studio.Core.Models
         XElement CreateServiceXElement(StringBuilder xaml)
         {
             XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
+            var content = xaml.Unescape();
+            content = content.Replace("&", "&amp;");
+            var contentElement = content.ToXElement();
             XElement service = new XElement("Service",
                 new XAttribute("ID", ID),
                 new XAttribute("Version", (Version != null) ? Version.ToString() : "1.0"),
@@ -655,7 +658,7 @@ namespace Dev2.Studio.Core.Models
                 new XElement("HelpLink", HelpLink ?? string.Empty),
                 new XElement("UnitTestTargetWorkflowService", UnitTestTargetWorkflowService ?? string.Empty),
                 dataList,
-                new XElement("Actions", xaml),
+                new XElement("Actions", contentElement),
                 new XElement("ErrorMessages", WriteErrors())
                 );
             return service;
@@ -760,10 +763,6 @@ namespace Dev2.Studio.Core.Models
             {
                 _validationService.Dispose();
             }
-//            if(_permissionsModifiedService != null)
-//            {
-//                _permissionsModifiedService.Dispose();
-//            }
             base.OnDispose();
         }
     }

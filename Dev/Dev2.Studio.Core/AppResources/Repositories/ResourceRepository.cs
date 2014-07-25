@@ -25,7 +25,6 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Utils;
 using Dev2.Utils;
@@ -79,13 +78,17 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         /// <param name="eventPublisher">The event publisher.</param>
         public void DeployResources(IEnvironmentModel sourceEnviroment, IEnvironmentModel targetEnviroment, IDeployDto dto, IEventAggregator eventPublisher)
         {
-
             //Fetch from resource repository to deploy ;)
-            IList<IResourceModel> deployableResources = dto.ResourceModels.Where(model => model != null).Select(resource => resource.ID).Select(fetchId => sourceEnviroment.ResourceRepository.FindSingle(c => c.ID == fetchId)).ToList();
+            var resourceModels = dto.ResourceModels.Where(model =>
+            {
+                var b = model != null;
+                return b;
+            });
+            var guids = resourceModels.Select(resource => resource.ID);
+            IList<IResourceModel> deployableResources = guids.Select(fetchId => sourceEnviroment.ResourceRepository.FindSingle(c => c.ID == fetchId)).ToList();
 
             // Create the real deployment payload ;)
             IDeployDto trueDto = new DeployDto { ResourceModels = deployableResources };
-
 
             // Deploy - Seems a bit silly to go out to another service only to comeback in?
             _deployService.Deploy(trueDto, targetEnviroment);
@@ -95,30 +98,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             // Inform the repo to reload the deployed resources against the targetEnviroment ;)
             foreach(var resourceToReload in deployableResources)
             {
-                var effectedResources = targetResourceRepo.ReloadResource(resourceToReload.ID, resourceToReload.ResourceType, ResourceModelEqualityComparer.Current, true);
-                if(effectedResources != null)
-                {
-                    foreach(IResourceModel resource in effectedResources)
-                    {
-                        var theId = resource.ID;
-                        var resourceToUpdate = deployableResources.FirstOrDefault(res => res.ID == theId);
-
-                        if(resourceToUpdate != null)
-                        {
-                            resourceToUpdate.Update(resource);
-                            Logger.KeepMyNamespaces(); // force vs to stop removing the damn references ;)
-                            this.TraceInfo("Publish message of type - " + typeof(UpdateResourceMessage));
-                            // For some daft reason we have two model versions?!
-                            var resourceWithContext = new ResourceModel(targetEnviroment);
-                            resourceWithContext.Update(resource);
-                            eventPublisher.Publish(new UpdateResourceMessage(resourceWithContext));
-                        }
-                    }
-                }
+                targetResourceRepo.ReloadResource(resourceToReload.ID, resourceToReload.ResourceType, ResourceModelEqualityComparer.Current, true);
             }
-            //
-            //            this.TraceInfo("Publish message of type - " + typeof(RefreshExplorerMessage));
-            //            eventPublisher.Publish(new RefreshExplorerMessage());
         }
 
 
@@ -354,18 +335,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 throw new ArgumentException(StringResources.Resource_ID_must_be_a_Guid, "resourceId");
             }
-        }
-
-        public void RenameCategory(string oldCategory, string newCategory, ResourceType resourceType)
-        {
-
-            var comsController = new CommunicationController { ServiceName = "RenameResourceCategoryService" };
-            comsController.AddPayloadArgument("OldCategory", oldCategory);
-            comsController.AddPayloadArgument("NewCategory", newCategory);
-            comsController.AddPayloadArgument("ResourceType", resourceType.ToString());
-
-            var con = _environmentModel.Connection;
-            comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
         }
 
         public void DeployResource(IResourceModel resource)
