@@ -143,10 +143,10 @@ Global
 		SccProjectUniqueName26 = SFTPServer\\Dev2.Testing.SFTPServer.csproj
 		SccProjectName26 = SFTPServer
 		SccLocalPath26 = SFTPServer
-		SccLocalPath27 = .
-		SccProjectUniqueName28 = Dev2.Explorer.Specs\\Dev2.Explorer.Specs.csproj
-		SccProjectName28 = Dev2.Explorer.Specs
-		SccLocalPath28 = Dev2.Explorer.Specs
+		SccProjectUniqueName27 = Dev2.Explorer.Specs\\Dev2.Explorer.Specs.csproj
+		SccProjectName27 = Dev2.Explorer.Specs
+		SccLocalPath27 = Dev2.Explorer.Specs
+		SccLocalPath28 = .
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

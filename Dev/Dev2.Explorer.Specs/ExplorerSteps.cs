@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dev2.AppResources.Repositories;
 using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Models;
 using Dev2.Network;
 using Dev2.Runtime.Hosting;
 using Dev2.Services.Security;
-using Dev2.Shared_Models.Explorer;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
