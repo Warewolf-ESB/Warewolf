@@ -82,7 +82,6 @@ namespace Dev2.Server.Datalist
         {
 
             ErrorResultTO allErrors = new ErrorResultTO();
-            errors = new ErrorResultTO();
             string error;
 
             IBinaryDataList theDl = TryFetchDataList(curDLID, out error);
@@ -165,65 +164,29 @@ namespace Dev2.Server.Datalist
                     // Break the expression up by , and sub in values?
                     IDev2DataLanguageParser parser = new Dev2DataLanguageParser();
                     IList<IIntellisenseResult> myParts = parser.ParseExpressionIntoParts(expression, theDl.FetchIntellisenseParts());
-
-                    // Fetch each DL expression in the master expression and evalaute
-                    // Then build up the correct string to sub in ;)
-                    foreach(IIntellisenseResult p in myParts)
+                    while(true)
                     {
-
-                        // Ensure the expression exist and it is not a range operation
-                        if(p.Type == enIntellisenseResultType.Selectable
-                            && expression.IndexOf(p.Option.DisplayValue, StringComparison.Ordinal) >= 0
-                            && expression.IndexOf((p.Option.DisplayValue + ":"), StringComparison.Ordinal) < 0
-                            && expression.IndexOf((":" + p.Option.DisplayValue), StringComparison.Ordinal) < 0)
+                        expression = GetExpression(expression, myParts, theDl, out errors);
+                        allErrors.MergeErrors(errors);
+                        myParts = parser.ParseExpressionIntoParts(expression, theDl.FetchIntellisenseParts());
+                        var rangeType = false;
+                        foreach(var p in myParts)
                         {
-                            IBinaryDataListEntry bde = InternalEvaluate(p.Option.DisplayValue, theDl, out errors);
-                            if(bde != null)
+                            // Ensure the expression exist and it is not a range operation
+                            if(!(p.Type == enIntellisenseResultType.Selectable
+                                     && expression.IndexOf(p.Option.DisplayValue, StringComparison.Ordinal) >= 0
+                                     && expression.IndexOf((p.Option.DisplayValue + ":"), StringComparison.Ordinal) < 0
+                                     && expression.IndexOf((":" + p.Option.DisplayValue), StringComparison.Ordinal) < 0))
                             {
-                                if(bde.IsRecordset)
-                                {
-                                    // recordset op - build up the correct string to inject
-                                    IIndexIterator idxItr = bde.FetchRecordsetIndexes();
-                                    StringBuilder sb = new StringBuilder();
-
-                                    while(idxItr.HasMore())
-                                    {
-                                        var fetchIdx = idxItr.FetchNextIndex();
-                                        IList<IBinaryDataListItem> items = bde.FetchRecordAt(fetchIdx, out error);
-                                        allErrors.AddError(error);
-                                        foreach(IBinaryDataListItem itm in items)
-                                        {
-                                            if(itm.TheValue != string.Empty)
-                                            {
-                                                // if numeric leave it, else append ""
-                                                string eVal = CalcPrepValue(itm.TheValue);
-                                                sb.Append(eVal);
-                                                sb.Append(",");
-                                            }
-                                        }
-                                    }
-
-                                    // Remove trailing ,
-                                    string toInject = sb.ToString();
-
-                                    //2013.02.08: Ashley Lewis - Bug 8725, Task 8797: Avoid index out of range exception on blank record set
-                                    toInject = toInject.Length > 0 ? toInject.Substring(0, (toInject.Length - 1)) : "\"\"";
-
-                                    expression = expression.Replace(p.Option.DisplayValue, toInject);
-
-                                }
-                                else
-                                {
-                                    // scalar op
-                                    string eVal = CalcPrepValue(bde.FetchScalar().TheValue);
-                                    expression = expression.Replace(p.Option.DisplayValue, eVal);
-                                }
+                                rangeType = true;
                             }
-                            allErrors.MergeErrors(errors);
+                        }
+                        if(myParts.Count == 0 || allErrors.HasErrors() || rangeType)
+                        {
+                            break;
                         }
                     }
 
-                    allErrors.MergeErrors(errors);
 
                     IBinaryDataListEntry calcResult = Dev2BinaryDataListFactory.CreateEntry(GlobalConstants.EvalautionScalar, string.Empty, theDl.UID);
                     IBinaryDataListItem calcItem = Dev2BinaryDataListFactory.CreateBinaryItem(expression, GlobalConstants.EvalautionScalar);
@@ -243,6 +206,83 @@ namespace Dev2.Server.Datalist
             errors = allErrors;
 
             return result;
+        }
+
+        string GetExpression(string expression, IEnumerable<IIntellisenseResult> myParts, IBinaryDataList theDl, out ErrorResultTO errors)
+        {
+            // Fetch each DL expression in the master expression and evalaute
+            // Then build up the correct string to sub in ;)
+            errors = new ErrorResultTO();
+            foreach(IIntellisenseResult p in myParts)
+            {
+                // Ensure the expression exist and it is not a range operation
+                if(p.Type == enIntellisenseResultType.Selectable
+                   && expression.IndexOf(p.Option.DisplayValue, StringComparison.Ordinal) >= 0
+                   && expression.IndexOf((p.Option.DisplayValue + ":"), StringComparison.Ordinal) < 0
+                   && expression.IndexOf((":" + p.Option.DisplayValue), StringComparison.Ordinal) < 0)
+                {
+                    IBinaryDataListEntry bde = InternalEvaluate(p.Option.DisplayValue, theDl, out errors);
+                    if(bde != null)
+                    {
+                        if(bde.IsRecordset)
+                        {
+                            // recordset op - build up the correct string to inject
+                            IIndexIterator idxItr = bde.FetchRecordsetIndexes();
+                            StringBuilder sb = new StringBuilder();
+
+                            while(idxItr.HasMore())
+                            {
+                                var fetchIdx = idxItr.FetchNextIndex();
+                                string error;
+                                IList<IBinaryDataListItem> items = bde.FetchRecordAt(fetchIdx, out error);
+                                errors.AddError(error);
+                                foreach(IBinaryDataListItem itm in items)
+                                {
+                                    if(itm.TheValue != string.Empty)
+                                    {
+                                        // if numeric leave it, else append ""
+                                        string eVal = itm.TheValue;
+                                        eVal = CalcPrepValue(eVal);
+                                        sb.Append(eVal);
+                                        sb.Append(",");
+                                    }
+                                }
+                            }
+
+                            // Remove trailing ,
+                            string toInject = sb.ToString();
+
+                            //2013.02.08: Ashley Lewis - Bug 8725, Task 8797: Avoid index out of range exception on blank record set
+                            toInject = toInject.Length > 0 ? toInject.Substring(0, (toInject.Length - 1)) : "\"\"";
+
+                            expression = expression.Replace(p.Option.DisplayValue, toInject);
+                            if(DataListUtil.IsEvaluated(expression))
+                            {
+                                var dataListValue = toInject.TrimStart('\"').TrimEnd('\"');
+                                expression = expression.Replace(toInject, dataListValue);
+                            }
+                        }
+                        else
+                        {
+                            // scalar op
+                            string eVal = bde.FetchScalar().TheValue;
+                            eVal = CalcPrepValue(eVal);
+                            expression = expression.Replace(p.Option.DisplayValue, eVal);
+                            if(DataListUtil.IsEvaluated(expression))
+                            {
+                                var dataListValue = eVal.TrimStart('\"').TrimEnd('\"');
+                                expression = expression.Replace(eVal, dataListValue);
+                            }
+                        }
+                    }
+                    errors.MergeErrors(errors);
+                }
+                else if(p.Type == enIntellisenseResultType.Error)
+                {
+                    errors.AddError(p.Message);
+                }
+            }
+            return expression;
         }
 
         public Guid CloneDataList(Guid curDLID, out ErrorResultTO errors)
@@ -2576,7 +2616,7 @@ namespace Dev2.Server.Datalist
             var rightSide = "";
             var boundValue = debugTO.RightEntry.FetchScalar().TheValue;
             invokeErrors = new ErrorResultTO();
-
+            var isCalcExpression = false;
             if(typeof(T) == typeof(string))
             {
                 rightSide = frame.Value as string;
@@ -2589,6 +2629,7 @@ namespace Dev2.Server.Datalist
                     var binaryDataListEntry = InternalEvaluate(rightSide, bdl, out errors);
                     invokeErrors.MergeErrors(errors);
                     boundValue = binaryDataListEntry.FetchScalar().TheValue;
+                    isCalcExpression = true;
                 }
             }
 
@@ -2597,6 +2638,12 @@ namespace Dev2.Server.Datalist
             {
 
                 var idxType = DataListUtil.GetRecordsetIndexType(rightSide);
+
+                if(idxType == enRecordsetIndexType.Error && isCalcExpression)
+                {
+                    rightEntry.ComplexExpressionAuditor.AddAuditStep(rightSide, "", "", 1, boundValue, rightSide);
+                    return;
+                }
 
                 // we have an evaluated index ;)
                 if(idxType == enRecordsetIndexType.Error)
