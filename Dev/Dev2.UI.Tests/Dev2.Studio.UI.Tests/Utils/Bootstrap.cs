@@ -26,7 +26,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         private const int StudioTimeOut = 12000;
 
         public static string LogLocation = @"C:\UI_Test.log";
-        public static string BuildDirectory = @"C:\Builds\UITestRunWorkspace";//If UI tests are going to be run with no deploy by a build agent
+        public static string BuildDirectory = @"C:\Builds\UITestRunWorkspace";//If UI tests are going to be run with no deploy by a build agent (copy this straight out of the build agent config)
 
         public static string ServerLocation;
         public static string StudioLocation;
@@ -59,19 +59,20 @@ namespace Dev2.Studio.UI.Tests.Utils
             StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
             if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
             {
-                //Try debug bin or deployed resources
-                ServerLocation = Path.Combine(deployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Server\bin\Debug"), ServerExeName);
-                StudioLocation = Path.Combine(deployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Studio\bin\Debug"), StudioExeName);
-            }
-            if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
-            {
                 //Try build workspace directory
                 ServerLocation = Path.Combine(BuildDirectory, "bin", ServerExeName);
                 StudioLocation = Path.Combine(BuildDirectory, "bin", StudioExeName);
             }
             if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
             {
+                //Try debug bin or deployed resources
+                ServerLocation = Path.Combine(deployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Server\bin\Debug"), ServerExeName);
+                StudioLocation = Path.Combine(deployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Studio\bin\Debug"), StudioExeName);
+            }
+            if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
+            {
                 LogTestRunMessage("Could not locate binaries to test against.", true);
+                throw new FileNotFoundException("Server or Studio not found: " + ServerLocation + " " + StudioLocation);
             }
             //Set resource location
             _resourceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
