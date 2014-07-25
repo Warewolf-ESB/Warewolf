@@ -60,8 +60,8 @@ namespace Dev2.Studio.UI.Tests.Utils
             if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
             {
                 //Try build workspace directory
-                ServerLocation = Path.Combine(BuildDirectory, "bin", ServerExeName);
-                StudioLocation = Path.Combine(BuildDirectory, "bin", StudioExeName);
+                ServerLocation = Path.Combine(BuildDirectory, "bin", "ServerbinDebug", ServerExeName);
+                StudioLocation = Path.Combine(BuildDirectory, "bin", "StudiobinDebug", StudioExeName);
             }
             if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
             {
@@ -72,10 +72,11 @@ namespace Dev2.Studio.UI.Tests.Utils
             if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
             {
                 LogTestRunMessage("Could not locate binaries to test against.", true);
-                throw new FileNotFoundException("Server or Studio not found: " + ServerLocation + " " + StudioLocation);
+                throw new FileNotFoundException("Server or Studio not found: " + (deployDirectory ?? ServerLocation.Substring(0, ServerLocation.IndexOf("TestResults\\")) + ServerLocation.Substring(ServerLocation.IndexOf("Dev2.")) + " " +
+                    StudioLocation.Substring(0, StudioLocation.IndexOf("TestResults\\")) + StudioLocation.Substring(StudioLocation.IndexOf("Dev2."))));
             }
             //Set resource location
-            _resourceLocation = ServerLocation.Replace(ServerExeName, @"Resources\");
+            _resourceLocation = StudioLocation.Replace(ServerExeName, @"Resources\");
             //Set workspace location
             _serverWorkspaceLocation = ServerLocation.Replace(ServerExeName, @"Workspaces\");
         }
