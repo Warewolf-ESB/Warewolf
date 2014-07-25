@@ -59,20 +59,6 @@ namespace Dev2.Activities.Specs.BaseTypes
         public void ThenTheDebugInputsAs(Table table, List<DebugItemResult> inputDebugItems, bool isDataMerge = false)
         {
             var expectedDebugItems = BuildExpectedDebugItems(table);
-            //// Data Merge is strange, account of the test where it is an issue ;)
-            //if(isDataMerge && inputDebugItems.Count == 13)
-            //{
-            //    // extra item that the studio never renders?!
-            //    inputDebugItems.RemoveAt(2);
-            //    // Now rebuild Item 1 of expectedDebugItems correctly ;)
-            //    var tmp = expectedDebugItems[1];
-            //    tmp.GroupIndex = 1;
-            //    tmp.GroupName = "[[rec([[index(1).a]]).a]] = warewolf";
-            //    tmp.Operator = "=";
-            //    tmp.Type = DebugItemResultType.Variable;
-            //    tmp.Value = "[[rec(1).a]] = warewolf";
-            //    tmp.Variable = "[[rec([[index(1).a]]).a]] = warewolf";
-            //}
             CollectionsAssert(expectedDebugItems, inputDebugItems);
         }
 
@@ -487,6 +473,14 @@ namespace Dev2.Activities.Specs.BaseTypes
                 if(columnHeader == "Username")
                 {
                     rowValue = rowValue.ResolveDomain();
+                }
+
+                if(columnHeader == "Statement")
+                {
+                    debugItemResult.Value = rowValue;
+                    debugItemResult.Type = DebugItemResultType.Value;
+                    list.Add(debugItemResult);
+                    return;
                 }
 
                 if(rowValue.Contains(" ="))

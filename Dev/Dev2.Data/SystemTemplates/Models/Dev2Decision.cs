@@ -119,7 +119,7 @@ namespace Dev2.Data.SystemTemplates.Models
                     return "If " + expandStarredIndices;
 
                 }
-                if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star)
+                if((DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star) || (DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star))
                 {
                     var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, dlid, out errors);
                     var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, dlid, out errors);

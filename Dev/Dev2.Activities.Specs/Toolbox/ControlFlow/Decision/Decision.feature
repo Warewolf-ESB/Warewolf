@@ -1087,3 +1087,16 @@ Scenario: decide if text with space is equal to same text with extra space (Fals
 	And the debug output as 
 	|    |
 	| NO |
+	
+Scenario: Decision using recordset append notation
+	Given a decision variable "[[rec(1).a]]" value "1"		
+	And is "[[rec().a]]" "IsEqual" "1"	
+	When the decision tool is executed
+	Then the decision result should be "True"
+	And the execution has "NO" error
+	And the debug inputs as  
+	|                  | Statement | Require All decisions to be True |
+	| [[rec(1).a]] = 1 | String    | YES                              |
+	And the debug output as 
+	|     |
+	| YES |

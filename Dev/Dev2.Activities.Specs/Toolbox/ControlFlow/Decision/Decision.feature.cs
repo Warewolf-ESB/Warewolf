@@ -3314,6 +3314,46 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Decision using recordset append notation")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void DecisionUsingRecordsetAppendNotation()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Decision using recordset append notation", ((string[])(null)));
+#line 1091
+this.ScenarioSetup(scenarioInfo);
+#line 1092
+ testRunner.Given("a decision variable \"[[rec(1).a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1093
+ testRunner.And("is \"[[rec().a]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1094
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1095
+ testRunner.Then("the decision result should be \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1096
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table151 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require All decisions to be True"});
+            table151.AddRow(new string[] {
+                        "[[rec(1).a]] = 1",
+                        "String",
+                        "YES"});
+#line 1097
+ testRunner.And("the debug inputs as", ((string)(null)), table151, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table152 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table152.AddRow(new string[] {
+                        "YES"});
+#line 1100
+ testRunner.And("the debug output as", ((string)(null)), table152, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
