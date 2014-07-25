@@ -17,7 +17,7 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
         {
             ExplorerUIMap.RightClickRenameResource(serverName, "", newName);
         }
-        
+
         [When(@"I click Test Connection")]
         public void WhenIClickTestConnection()
         {
@@ -30,16 +30,19 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
             NewServerUIMap.EnterUserName(userName);
             NewServerUIMap.EnterPassword(password);
         }
-        
+
         [Given(@"I am connected to the server ""(.*)""")]
         public void GivenIAmConnectedToTheServer(string serverName)
         {
             ExplorerUIMap.ClickServerInServerDDL(serverName);
-            var item = ExplorerUIMap.GetConnectControl("Button", "Connect");
-            Mouse.Click(item);
-            Playback.Wait(1000);
+            if(serverName != "localhost")
+            {
+                var item = ExplorerUIMap.GetConnectControl("Button", "Connect");
+                Mouse.Click(item);
+                Playback.Wait(1000);
+            }
         }
-        
+
         [When(@"'(.*)' should be updated with connected ""(.*)""")]
         public void WhenShouldBeUpdatedWithConnected(string p0, string p1)
         {
@@ -114,6 +117,10 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
             }
             else if(where.Contains("explorer"))
             {
+                ExplorerUIMap.WaitForResourcesToLoad();
+                ExplorerUIMap.WaitForResourcesToLoad();
+                ExplorerUIMap.WaitForResourcesToLoad();
+                ExplorerUIMap.ExplorerRefresh.WaitForControlReady();
                 control = ExplorerUIMap.GetConnectControl("Button", controlName);
                 Mouse.Click(control);
             }
@@ -178,7 +185,7 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
                 }
             }
         }
-        
+
         [When(@"I select ""(.*)"" from the connections list in the '(.*)'")]
         [When(@"I select ""(.*)"" from the connections list in the ""(.*)""")]
         [Given(@"I select ""(.*)"" from the connections list in the ""(.*)""")]
@@ -190,7 +197,7 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
             {
                 if(connection == "New Remote Server...")
                 {
-                    ExplorerUIMap.ChooseServerWithKeyboard(TabManagerUIMap.GetActiveTab(), connection);
+                    ExplorerUIMap.ClickServerInServerDDL("New Remote Server...", false);
 
                     UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
 
@@ -283,6 +290,7 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
         public void WhenIClickSave()
         {
             NewServerUIMap.ClickSave();
+            ExplorerUIMap.WaitForResourcesToLoad();
         }
 
         [Then(@"I enter the address ""(.*)"" in the connections dialog")]
@@ -296,7 +304,7 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
         {
             NewServerUIMap.SelectAuthenticationType(authenticationType);
         }
-        
+
         [Then(@"""(.*)"" tab is opened")]
         [When(@"""(.*)"" tab is opened")]
         public void ThenTabIsOpened(string tabName)
@@ -308,9 +316,9 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
         [Then(@"""(.*)"" with server permissions ""(.*)"" is ""(.*)""")]
         public void ThenWithServerPermissionsIs(string p0, string p1, string p2)
         {
-            
+
         }
-        
+
 
         [When(@"I right click delete the server ""(.*)"" from the Explorer")]
         public void WhenIRightClickDeleteTheServerFromTheExplorer(string serverName)
@@ -324,7 +332,7 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
         {
             ExplorerUIMap.RightClickRemoveResource(serverName, "", "localhost");
         }
-        
+
         UITestControl GetActiveTab()
         {
             return TabManagerUIMap.GetActiveTab();
@@ -387,7 +395,7 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
                 Assert.AreEqual(servername, comboBox.SelectedItem);
             }
         }
-        
+
         [Then(@"all ""(.*)"" resources should be ""(.*)"" in ""(.*)""")]
         [Then(@"all ""(.*)"" resources should be ""(.*)"" in '(.*)'")]
         [When(@"all ""(.*)"" resources should be ""(.*)"" in '(.*)'")]
@@ -404,7 +412,7 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
             //TJ-TODO:- How do we assert against all servers
             //ScenarioContext.Current.Pending();
         }
-        
+
         [Then(@"""(.*)"" should be available in ""(.*)"" connections")]
         public void ThenShouldBeAvailableInConnections(string p0, string p1)
         {
@@ -494,10 +502,10 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
         [Then(@"new server ""(.*)"" should be ""(.*)"" in ""(.*)""")]
         [Then(@"new server ""(.*)"" should be ""(.*)"" in '(.*)'")]
         public void ThenNewServerShouldBeIn(string serverName, string connectedState, string at)
-        {   
+        {
             //TJ-TODO:- Currently not possible to validate the connected status
         }
-        
+
         [When(@"""(.*)"" server ""(.*)"" should be ""(.*)"" in '(.*)'")]
         public void WhenServerShouldBeIn(string p0, string p1, string p2, string p3)
         {
@@ -509,6 +517,6 @@ namespace Dev2.Studio.UI.Specs.Connect_Control
         {
             ScenarioContext.Current.Pending();
         }
-        
+
     }
 }

@@ -160,7 +160,13 @@
     self.saveViewModel = SaveViewModel.create("Service/Connections/Save", self, saveContainerID);
 
     self.save = function () {
-        self.saveViewModel.showDialog(true);
+        //self.saveViewModel.showDialog(true);
+        if (self.data.resourceID() == "00000000-0000-0000-0000-000000000000") {
+            self.saveViewModel.showDialog(true);
+        } else {
+            self.saveViewModel.IsDialogLess = true;
+            self.saveViewModel.save();            
+        }
     };
 };
 

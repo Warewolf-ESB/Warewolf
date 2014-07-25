@@ -33,8 +33,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void DoRefresh()
         {
             // Click refresh
-            Mouse.Click(_explorerRefresh, new Point(5, 5));
-            _explorerRefresh.WaitForControlReady();
+            Mouse.Click(ExplorerRefresh, new Point(5, 5));
+            ExplorerRefresh.WaitForControlReady();
         }
 
         public void PinPane()

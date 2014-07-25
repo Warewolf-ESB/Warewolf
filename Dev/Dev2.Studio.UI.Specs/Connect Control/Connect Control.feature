@@ -20,6 +20,21 @@
 #       When I click Save
 #       Then new server "Servername" should be "connected" in "Explorer"
 ##
+
+#Scenario: Editting server connection does not show save dialog
+#	   Given I am connected to the server "localhost"
+#	   When I select "New Remote Server..." from the connections list in the "explorer"       
+#	   Then I enter the address "http://127.0.0.1:3142/dsf" in the connections dialog       
+#       And I select authentication type "Windows"       
+#       When I click Test Connection           
+#       When I click Save Connection       
+#	   When I save the connection as "ServerToBeEditted"       
+#       When I click Save
+#       Then new server "ServerToBeEditted" should be "connected" in "Explorer"
+#	   When I click on "Edit" in 'Explorer' connect control
+#	   When I click Test Connection           
+#       When I click Save Connection   
+
 #Scenario: Creating new server connection as Auth Type as User from Explorer      
 #	   Given I am connected to the server "localhost"
 #	   And "Edit" is "Disabled" in "Explorer" connect control
