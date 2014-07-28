@@ -458,7 +458,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var services = new TestDbServices();
 
-            const string args = @"{""resourceID"":""00000000-0000-0000-0000-000000000000"",""resourceType"":""DbService"",""resourceName"":null,""resourcePath"":null,""source"":{""ServerType"":""SqlDatabase"",""Server"":""RSAKLFSVRGENDEV"",""DatabaseName"":""Dev2TestingDB"",""Port"":1433,""AuthenticationType"":""User"",""UserID"":""testUser"",""Password"":""test123"",""ConnectionString"":""Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testUser;Password=test123;"",""ResourceID"":""eb2de0a3-4814-40b8-b825-f4601bfdb155"",""Version"":""1.0"",""ResourceType"":""DbSource"",""ResourceName"":""TU Greenpoint DB"",""ResourcePath"":""SQL SRC"",""IsValid"":false,""Errors"":null,""ReloadActions"":false},""method"":{""Name"":""dbo.pr_MapLocationsGetAll"",""SourceCode"":""-- =============================================\r<br />-- Author:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Author,,Name>\r<br />-- Create date: <Create Date,,>\r<br />-- Description:&nbsp;&nbsp;&nbsp;&nbsp;<Description,,>\r<br />-- =============================================\r<br />CREATE PROCEDURE dbo.proc_GetAllMapLocations \r<br />&nbsp;&nbsp;&nbsp;&nbsp;\r<br />AS\r<br />BEGIN\r<br />&nbsp;&nbsp;&nbsp;&nbsp;SET NOCOUNT ON;\r<br />\r<br />    SELECT MapLocationID, StreetAddress,Latitude,Longitude FROM dbo.MapLocation ORDER BY MapLocationID ASC\r<br />END\r<br />"",""Parameters"":[]},""recordset"":{""Name"":""dbo_proc_GetAllMapLocations"",""Fields"":[],""Records"":[],""HasErrors"":false,""ErrorMessage"":""""}}";
+            const string args = @"{""resourceID"":""00000000-0000-0000-0000-000000000000"",""resourceType"":""DbService"",""resourceName"":null,""resourcePath"":null,""source"":{""ServerType"":""SqlDatabase"",""Server"":""RSAKLFSVRGENDEV"",""DatabaseName"":""Dev2TestingDB"",""Port"":1433,""AuthenticationType"":""User"",""UserID"":""testUser"",""Password"":""test123"",""ConnectionString"":""Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testUser;Password=test123;"",""ResourceID"":""eb2de0a3-4814-40b8-b825-f4601bfdb155"",""Version"":""1.0"",""ResourceType"":""DbSource"",""ResourceName"":""TU Greenpoint DB"",""ResourcePath"":""SQL SRC"",""IsValid"":false,""Errors"":null,""ReloadActions"":false},""method"":{""Name"":""dbo.pr_MapLocationsGetAll"",""ExecAction"":""dbo.pr_MapLocationsGetAll"",""SourceCode"":""-- =============================================\r<br />-- Author:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Author,,Name>\r<br />-- Create date: <Create Date,,>\r<br />-- Description:&nbsp;&nbsp;&nbsp;&nbsp;<Description,,>\r<br />-- =============================================\r<br />CREATE PROCEDURE dbo.proc_GetAllMapLocations \r<br />&nbsp;&nbsp;&nbsp;&nbsp;\r<br />AS\r<br />BEGIN\r<br />&nbsp;&nbsp;&nbsp;&nbsp;SET NOCOUNT ON;\r<br />\r<br />    SELECT MapLocationID, StreetAddress,Latitude,Longitude FROM dbo.MapLocation ORDER BY MapLocationID ASC\r<br />END\r<br />"",""Parameters"":[]},""recordset"":{""Name"":""dbo_proc_GetAllMapLocations"",""Fields"":[],""Records"":[],""HasErrors"":false,""ErrorMessage"":""""}}";
 
             //------------Execute Test---------------------------
 
@@ -489,7 +489,9 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
                 Recordset = new Recordset(),
                 Method = new ServiceMethod
                 {
-                    Name = "dbo.Pr_GeneralTestNestedTransaction"
+                    Name = "dbo.Pr_GeneralTestNestedTransaction",
+                    ExecuteAction = "dbo.Pr_GeneralTestNestedTransaction"
+
                     //Name = "dbo.Pr_TestTransactionsNested"
                 },
                 Source = SqlServerTests.CreateDev2TestingDbSource()
@@ -625,7 +627,8 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
                     Parameters = new List<MethodParameter>(new[]
                     {
                         new MethodParameter { Name = "Prefix", EmptyToNull = false, IsRequired = true, Value = "b" }
-                    })
+                    }),
+                    ExecuteAction = "dbo.Pr_CitiesGetCountries"
                 },
                 Recordset = new Recordset
                 {
