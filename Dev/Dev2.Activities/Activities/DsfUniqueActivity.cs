@@ -59,7 +59,7 @@ namespace Dev2.Activities
         /// <summary>
         /// Breaks the InFields and validates they belong to the same recordset ;)
         /// </summary>
-        /// <param name="dlID">The dl ID.</param>
+        /// <param name="dlId">The dl ID.</param>
         /// <param name="compiler">The compiler.</param>
         /// <param name="token">The token.</param>
         /// <param name="dataObject">The data object.</param>
@@ -70,7 +70,7 @@ namespace Dev2.Activities
         /// <exception cref="System.Exception">Mismatched Recordsets. Encountered {  + rs +  } , but already processed {  + masterRs +  }
         /// or
         /// Invalid field {  + col +  } for recordset {  + masterRs +  }</exception>
-        private List<string> BreakAndValidate(Guid dlID, IDataListCompiler compiler, string token, IDSFDataObject dataObject, bool evaluateForDebug, out ErrorResultTO errors, out IBinaryDataListEntry rsEntry)
+        private List<string> BreakAndValidate(Guid dlId, IDataListCompiler compiler, string token, IDSFDataObject dataObject, bool evaluateForDebug, out ErrorResultTO errors, out IBinaryDataListEntry rsEntry)
         {
             var searchFields = DataListCleaningUtils.SplitIntoRegions(token);
             errors = new ErrorResultTO();
@@ -107,7 +107,7 @@ namespace Dev2.Activities
             // Now validate each column ;)
             masterRs = DataListUtil.MakeValueIntoHighLevelRecordset(masterRs, true);
             var myRs = DataListUtil.AddBracketsToValueIfNotExist(masterRs);
-            rsEntry = compiler.Evaluate(dlID, enActionType.User, myRs, false, out invokeErrors);
+            rsEntry = compiler.Evaluate(dlId, enActionType.User, myRs, false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             if(rsEntry != null)
@@ -132,7 +132,7 @@ namespace Dev2.Activities
                         // TODO : if EvaluateforDebug
                         if(!string.IsNullOrEmpty(field))
                         {
-                            var debugEval = compiler.Evaluate(dlID, enActionType.User, field, false, out invokeErrors);
+                            var debugEval = compiler.Evaluate(dlId, enActionType.User, field, false, out invokeErrors);
                             errors.MergeErrors(invokeErrors);
                             if(errors.HasErrors())
                             {
@@ -140,7 +140,7 @@ namespace Dev2.Activities
                             }
                             else
                             {
-                                AddDebugInputItem(new DebugItemVariableParams(field, "", debugEval, dlID));
+                                AddDebugInputItem(new DebugItemVariableParams(field, "", debugEval, dlId));
                             }
                         }
                     }
@@ -164,7 +164,7 @@ namespace Dev2.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid dlID = dataObject.DataListID;
+            Guid dlId = dataObject.DataListID;
             var allErrors = new ErrorResultTO();
             ErrorResultTO errors;
             Guid executionId = DataListExecutionID.Get(context);
@@ -180,21 +180,21 @@ namespace Dev2.Activities
                 IBinaryDataListEntry rsEntry;
 
                 // We need to break up by , for InFields ;)
-                List<string> cols = BreakAndValidate(dlID, compiler, InFields, dataObject, true, out errors,
+                List<string> cols = BreakAndValidate(dlId, compiler, InFields, dataObject, true, out errors,
                                                      out rsEntry);
                 allErrors.MergeErrors(errors);
 
-  
+
 
                 // Use row data?!, nope use row indexes ;)
-                List<string> resultFields = BreakAndValidate(dlID, compiler, ResultFields, dataObject,
+                List<string> resultFields = BreakAndValidate(dlId, compiler, ResultFields, dataObject,
                                                              false, out errors, out rsEntry);
                 allErrors.MergeErrors(errors);
 
-                compiler.Evaluate(dlID, enActionType.User, ResultFields, false, out errors);
+                compiler.Evaluate(dlId, enActionType.User, ResultFields, false, out errors);
                 allErrors.MergeErrors(errors);
 
-                compiler.Evaluate(dlID, enActionType.User, InFields, false, out errors);
+                compiler.Evaluate(dlId, enActionType.User, InFields, false, out errors);
                 allErrors.MergeErrors(errors);
 
                 // Fetch the unique data ;)
@@ -219,7 +219,7 @@ namespace Dev2.Activities
                             {
                                 string error;
                                 // clone, prep and shove into the upsert payload builder ;)
-                                var clone = rsEntry.Clone(enTranslationDepth.Data, dlID, out error);
+                                var clone = rsEntry.Clone(enTranslationDepth.Data, dlId, out error);
                                 allErrors.AddError(error);
                                 clone.MakeRecordsetEvaluateReady(uidx, resultFields[idx], out error);
                                 allErrors.AddError(error);
@@ -241,18 +241,18 @@ namespace Dev2.Activities
                         if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                         {
                             int innerCount = 1;
-                            foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                            foreach(var debugOutputTo in toUpsert.DebugOutputs)
                             {
                                 var itemToAdd = new DebugItem();
                                 AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                              
-                                AddDebugItem(new DebugItemVariableParams(debugOutputTO, targetExpressions.ToList()), itemToAdd);
+
+                                AddDebugItem(new DebugItemVariableParams(debugOutputTo, targetExpressions.ToList()), itemToAdd);
 
                                 UpdateStarNotationColumns(itemToAdd);
                                 _debugOutputs.Add(itemToAdd);
                                 innerCount++;
                             }
-  
+
                         }
                     }
                 }
@@ -268,17 +268,15 @@ namespace Dev2.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfUniqueActivity", allErrors);
-                    compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
 
                 if(dataObject.IsDebugMode())
                 {
-                    if(hasErrors)
+                    if(hasErrors && !String.IsNullOrEmpty(Result))
                     {
-
-                            IBinaryDataListEntry entry = compiler.Evaluate(dlID, enActionType.User, Result, false, out errors);
-                            AddDebugOutputItem(new DebugItemVariableParams(Result, "", entry, dlID));
-                        
+                        IBinaryDataListEntry entry = compiler.Evaluate(dlId, enActionType.User, Result, false, out errors);
+                        AddDebugOutputItem(new DebugItemVariableParams(Result, "", entry, dlId));
                     }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -289,12 +287,12 @@ namespace Dev2.Activities
 
         static void UpdateStarNotationColumns(DebugItem itemToAdd)
         {
-            var groups = itemToAdd.ResultsList.Where(a => DataListUtil.IsValueRecordset(a.Variable) && String.IsNullOrEmpty(a.GroupName) ).GroupBy(a => DataListUtil.ExtractRecordsetNameFromValue(a.Variable) + DataListUtil.ExtractFieldNameFromValue(a.Variable));
-           
-            var maxId = itemToAdd.ResultsList.Count >0? itemToAdd.ResultsList.Max(a => a.GroupIndex):0;
+            var groups = itemToAdd.ResultsList.Where(a => DataListUtil.IsValueRecordset(a.Variable) && String.IsNullOrEmpty(a.GroupName)).GroupBy(a => DataListUtil.ExtractRecordsetNameFromValue(a.Variable) + DataListUtil.ExtractFieldNameFromValue(a.Variable));
+
+            var maxId = itemToAdd.ResultsList.Count > 0 ? itemToAdd.ResultsList.Max(a => a.GroupIndex) : 0;
             foreach(var g in groups)
             {
-            
+
                 foreach(var res in g)
                 {
                     maxId++;
