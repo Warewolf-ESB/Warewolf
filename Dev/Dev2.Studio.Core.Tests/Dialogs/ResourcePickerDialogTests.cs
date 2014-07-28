@@ -3,7 +3,6 @@ using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Composition;
-using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Dialogs;
@@ -34,7 +33,7 @@ namespace Dev2.Core.Tests.Dialogs
     // ReSharper disable InconsistentNaming
     public class ResourcePickerDialogTests
     {
-        readonly Action<System.Action, DispatcherPriority> _Invoke = (a, b) => { };
+        Action<System.Action, DispatcherPriority> _Invoke = new Action<System.Action, DispatcherPriority>((a, b) => { });
         [TestInitialize]
         public void Initialize()
         {
@@ -48,7 +47,7 @@ namespace Dev2.Core.Tests.Dialogs
         public void ResourcePickerDialog_Constructor_NullEnvironmentRepository_ThrowsArgumentNullException()
         {
             // ReSharper disable ObjectCreationAsStatement
-            new ResourcePickerDialog(enDsfActivityType.All, null, null, null, false, StudioResourceRepository.Instance, new Mock<IConnectControlSingleton>().Object);
+            new ResourcePickerDialog(enDsfActivityType.All, null, null, null, false, StudioResourceRepository.Instance);
             // ReSharper restore ObjectCreationAsStatement
         }
 
@@ -70,7 +69,7 @@ namespace Dev2.Core.Tests.Dialogs
         public void ResourcePickerDialog_Constructor_NullEventAggregator_ThrowsArgumentNullException()
         {
             // ReSharper disable ObjectCreationAsStatement
-            new ResourcePickerDialog(enDsfActivityType.All, new Mock<IEnvironmentRepository>().Object, null, null, false, StudioResourceRepository.Instance, new Mock<IConnectControlSingleton>().Object);
+            new ResourcePickerDialog(enDsfActivityType.All, new Mock<IEnvironmentRepository>().Object, null, null, false, StudioResourceRepository.Instance);
             // ReSharper restore ObjectCreationAsStatement
         }
 
@@ -81,7 +80,7 @@ namespace Dev2.Core.Tests.Dialogs
         public void ResourcePickerDialog_Constructor_NullAsyncWorker_ThrowsArgumentNullException()
         {
             // ReSharper disable ObjectCreationAsStatement
-            new ResourcePickerDialog(enDsfActivityType.All, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object, null, false, StudioResourceRepository.Instance, new Mock<IConnectControlSingleton>().Object);
+            new ResourcePickerDialog(enDsfActivityType.All, new Mock<IEnvironmentRepository>().Object, new Mock<IEventAggregator>().Object, null, false, StudioResourceRepository.Instance);
             // ReSharper restore ObjectCreationAsStatement
         }
 
@@ -280,9 +279,16 @@ namespace Dev2.Core.Tests.Dialogs
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
-            ExplorerItemModel server2Item = new ExplorerItemModel { EnvironmentId = environment2Id, DisplayName = "Server 2", ResourceType = Data.ServiceModel.ResourceType.Server };
+            ExplorerItemModel server2Item = new ExplorerItemModel();
 
-            ExplorerItemModel resourceItemServer2 = new ExplorerItemModel { EnvironmentId = environment2Id, DisplayName = "Resource Server 2", ResourceType = Data.ServiceModel.ResourceType.WorkflowService };
+            server2Item.EnvironmentId = environment2Id;
+            server2Item.DisplayName = "Server 2";
+            server2Item.ResourceType = Data.ServiceModel.ResourceType.Server;
+
+            ExplorerItemModel resourceItemServer2 = new ExplorerItemModel();
+            resourceItemServer2.EnvironmentId = environment2Id;
+            resourceItemServer2.DisplayName = "Resource Server 2";
+            resourceItemServer2.ResourceType = Data.ServiceModel.ResourceType.WorkflowService;
             server2Item.Children.Add(resourceItemServer2);
             repository.ExplorerItemModels.Add(server2Item);
 

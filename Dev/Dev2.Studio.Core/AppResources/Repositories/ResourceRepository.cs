@@ -1,4 +1,12 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Windows;
+using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -22,14 +30,6 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Utils;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Windows;
-using System.Xml.Linq;
 
 
 // ReSharper disable CheckNamespace
@@ -1152,9 +1152,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     {
                         if(serverPermissions != Permissions.None && x.Children.Count == 0 && !x.IsRefreshing)
                         {
-                            // This code is meant for auto update should the permissions change on the server.
-                            // It is however better to use the ConnectControlSingleton as it will raise events an notify to subscribers i.e. Connect(x.EnvironmentId).
-                            // StudioResourceRepository.Load(x.EnvironmentId, x.AsyncWorker);
+                            StudioResourceRepository.Load(x.EnvironmentId, x.AsyncWorker);
                         }
                         else if(x.Descendants().Where(z => z.ResourceType != ResourceType.Server).All(a => a.Permissions == Permissions.None) && serverPermissions == Permissions.None)
                         {

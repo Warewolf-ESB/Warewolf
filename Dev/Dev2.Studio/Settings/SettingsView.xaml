@@ -7,8 +7,8 @@
              xmlns:logging="clr-namespace:Dev2.Settings.Logging"
              xmlns:security="clr-namespace:Dev2.Settings.Security"
              xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-             xmlns:ui="clr-namespace:Dev2.UI" xmlns:connections="clr-namespace:Dev2.CustomControls.Connections"
-    Padding="10"
+             xmlns:ui="clr-namespace:Dev2.UI"
+             Padding="10"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
@@ -68,16 +68,18 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <connections:ConnectControl  DataContext="{Binding ConnectControlViewModel}"
-                           Grid.Row="0"
+        <ui:ConnectControl Grid.Row="0"
                            Grid.Column="0"
                            Grid.ColumnSpan="2"
                            Width="400"
                            Margin="0,0,0,10"
-                           HorizontalAlignment="Left"
+                           HorizontalAlignment="Left"  
+                           LabelText="Server:"                           
                            ConnectButtonAutomationID="UI_SettingsServerConnectButton_AutoID"
                            EditButtonAutomationID="UI_SettingsServerEditButton_AutoID"
-                           ServerComboBoxAutomationID="UI_SettingsServerComboBox_AutoID"/>
+                           ServerComboBoxAutomationID="UI_SettingsServerComboBox_AutoID"
+                           BindToActiveEnvironment="False"
+                           ConnectControlInstanceType="Settings"/>
 
         <customControls:CircularProgressBar Grid.Row="1"
                                             Grid.Column="0"

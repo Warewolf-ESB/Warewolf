@@ -5,6 +5,7 @@ using Dev2.Core.Tests.Environments;
 using Dev2.Interfaces;
 using Dev2.Models;
 using Dev2.Services.Security;
+using Dev2.Threading;
 using Dev2.Util;
 
 #region
@@ -29,7 +30,6 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Dev2.ConnectionHelpers;
 
 
 #endregion
@@ -50,7 +50,7 @@ namespace Dev2.Core.Tests
         Mock<IContextualResourceModel> _mockResourceModel1;
         Mock<IContextualResourceModel> _mockResourceModel2;
         Mock<IContextualResourceModel> _mockResourceSourceModel;
-        readonly Action<System.Action, DispatcherPriority> _Invoke = ((a, b) => { });
+        Action<System.Action, DispatcherPriority> _Invoke = new Action<System.Action, DispatcherPriority>((a, b) => { });
         #endregion Test Variables
 
         #region Refresh Test Variables
@@ -195,7 +195,7 @@ namespace Dev2.Core.Tests
                             EnvironmentId = Guid.Empty
                         }
                     });
-            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object, new Mock<IConnectControlSingleton>().Object);
+            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object);
             //Act
             viewmodel.LoadEnvironmentResources(mockEnvironment.Object);
             //Assert
@@ -236,13 +236,13 @@ namespace Dev2.Core.Tests
             var mockStudioRepo = new Mock<IStudioResourceRepository>();
             mockStudioRepo.SetupGet(p => p.ExplorerItemModels).Returns(explorerItemModels);
 
-            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object, new Mock<IConnectControlSingleton>().Object) { SelectedItem = resource2 };
+            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object);
 
+            viewmodel.SelectedItem = resource2;
             viewmodel.Environments.Add(mockEnvironment.Object);
             viewmodel.ExplorerItemModels = explorerItemModels;
-            var connectControlSingletonMock = new Mock<IConnectControlSingleton>();
             //Act
-            viewmodel.UpdateWorkspaces(connectControlSingletonMock.Object);
+            viewmodel.UpdateWorkspaces();
             //Assert
             Assert.IsNotNull(viewmodel.ExplorerItemModels);
             Assert.AreEqual(1, viewmodel.ExplorerItemModels.Count);
@@ -253,9 +253,32 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(true, viewmodel.ExplorerItemModels[0].Children[0].Children[1].IsExplorerSelected);
         }
 
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("NavigationViewModel_LoadEnvironments")]
+        public void NavigationViewModel_LoadEnvironments_WillCallConnectEnvironmentOnce()
+        {
+            //Arrange
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
+            mockEnvironment.Setup(model => model.CanStudioExecute).Returns(true);
+            var environmentRepository = GetEnvironmentRepository(mockEnvironment);
+            var mockStudioRepo = new Mock<IStudioResourceRepository>();
+            mockStudioRepo.Setup(m => m.Load(It.IsAny<Guid>(), It.IsAny<IAsyncWorker>())).Verifiable();
+            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object);
+
+
+
+            //Act
+            viewmodel.LoadEnvironmentResources(mockEnvironment.Object);
+            //Assert
+            mockStudioRepo.Verify(m => m.Load(It.IsAny<Guid>(), It.IsAny<IAsyncWorker>()), Times.Once());
+        }
+
+
         private static IEnvironmentRepository GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
         {
-            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object) { IsLoaded = true };
+            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object);
+            repo.IsLoaded = true;
             return repo;
         }
 
@@ -543,12 +566,54 @@ namespace Dev2.Core.Tests
             _reMockEnvironmentModel.Setup(c => c.CanStudioExecute).Returns(true);
 
             //run unit
-            var connectControlSingletonMock = new Mock<IConnectControlSingleton>();
-            viewModel.UpdateWorkspaces(connectControlSingletonMock.Object);
+            viewModel.UpdateWorkspaces();
 
             //assert both localhost servers are connected
             Assert.IsTrue(viewModel.ExplorerItemModels[0].Children[0].IsConnected, "Refresh does not autoconnect to localhost");
             Assert.IsTrue(viewModel.ExplorerItemModels[0].Children[1].IsConnected, "Refresh does not autoconnect to localhost");
+        }
+
+        #endregion
+
+        #region Disconnect
+
+        [TestMethod]
+        public void EnvironmentNodeDisconnect_Expect_NodeRemovedFromRoot()
+        {
+            var viewModel = Init(false, true);
+            _mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
+            _mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
+
+            Assert.IsTrue(viewModel.ExplorerItemModels[0].ChildrenCount != 0);
+
+            var message =
+                new EnvironmentDisconnectedMessage(_mockEnvironmentModel.Object);
+            viewModel.Handle(message);
+            Assert.IsTrue(viewModel.ExplorerItemModels[0].ChildrenCount == 0);
+        }
+
+        [TestMethod]
+        public void EnvironmentNodeDisconnectExpectSetIsRefreshingToFalse()
+        {
+            var reset = new AutoResetEvent(false);
+            var viewModel = Init(false, true);
+            ThreadExecuter.RunCodeAsSTA(reset,
+                () =>
+                {
+
+                    _mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
+                    _mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
+
+                    Assert.IsTrue(viewModel.ExplorerItemModels[0].ChildrenCount != 0);
+
+                    var message =
+                        new EnvironmentDisconnectedMessage(_mockEnvironmentModel.Object);
+                    viewModel.Handle(message);
+                    Assert.IsFalse(viewModel.IsRefreshing);
+                });
+            reset.WaitOne();
+
+            Assert.IsTrue(viewModel.ExplorerItemModels[0].ChildrenCount == 0);
         }
 
         #endregion
@@ -570,6 +635,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypeServiceExpectedOnlyServicesToBeInTree()
         {
+
             Mock<IResourceRepository> mockResourceRepository;
             SetupWithOutViewModel(false, true, out mockResourceRepository);
 
@@ -621,7 +687,7 @@ namespace Dev2.Core.Tests
             var eventPublisher = new Mock<IEventAggregator>();
 
             // ReSharper disable ObjectCreationAsStatement
-            new NavigationViewModel(eventPublisher.Object, null, null, null, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object);
+            new NavigationViewModel(eventPublisher.Object, null, null, null, new Mock<IStudioResourceRepository>().Object);
             // ReSharper restore ObjectCreationAsStatement
         }
 
@@ -635,7 +701,7 @@ namespace Dev2.Core.Tests
             var environmentRepository = new Mock<IEnvironmentRepository>();
             var asyncWorker = AsyncWorkerTests.CreateVerifiableAsyncWorker();
 
-            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object);
+            var nvm = new NavigationViewModel(eventPublisher.Object, asyncWorker.Object, null, environmentRepository.Object, new Mock<IStudioResourceRepository>().Object);
 
             var environmentModel = new Mock<IEnvironmentModel>();
 
@@ -774,13 +840,17 @@ namespace Dev2.Core.Tests
             envRepo.Setup(e => e.Source).Returns(localhost.Object);
 
             ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(envRepo);
-            var localhostExplorerItemModel = new ExplorerItemModel { EnvironmentId = Guid.Empty, DisplayName = "localhost" };
+            var localhostExplorerItemModel = new ExplorerItemModel();
+            localhostExplorerItemModel.EnvironmentId = Guid.Empty;
+            localhostExplorerItemModel.DisplayName = "localhost";
 
-            ExplorerItemModel anotherEnvironment = new ExplorerItemModel { DisplayName = "Other Server", EnvironmentId = toBeRemoved.Object.ID };
+            ExplorerItemModel anotherEnvironment = new ExplorerItemModel();
+            anotherEnvironment.DisplayName = "Other Server";
+            anotherEnvironment.EnvironmentId = toBeRemoved.Object.ID;
             var studioResourceRepository = new StudioResourceRepository(localhostExplorerItemModel, _Invoke);
             studioResourceRepository.ExplorerItemModels.Add(anotherEnvironment);
             studioResourceRepository.GetExplorerProxy = guid => new Mock<IExplorerResourceRepository>().Object;
-            var viewModel = new NavigationViewModel(publisher.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, envRepo.Object, studioResourceRepository, new Mock<IConnectControlSingleton>().Object);
+            var viewModel = new NavigationViewModel(publisher.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, envRepo.Object, studioResourceRepository);
 
 
             foreach(var env in envList)
@@ -841,7 +911,12 @@ namespace Dev2.Core.Tests
                     var categoryItem = localhostItemModel.Children.FirstOrDefault(model => model.DisplayName == resourceModel.Category);
                     if(categoryItem == null)
                     {
-                        categoryItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object) { Parent = localhostItemModel, DisplayName = resourceModel.Category, EnvironmentId = Guid.Empty, ResourceType = Data.ServiceModel.ResourceType.Folder, ResourcePath = "" };
+                        categoryItem = new ExplorerItemModel();
+                        categoryItem.Parent = localhostItemModel;
+                        categoryItem.DisplayName = resourceModel.Category;
+                        categoryItem.EnvironmentId = Guid.Empty;
+                        categoryItem.ResourceType = Data.ServiceModel.ResourceType.Folder;
+                        categoryItem.ResourcePath = "";
                         localhostItemModel.Children.Add(categoryItem);
                     }
                     resourceItemModel.Parent = categoryItem;
@@ -959,7 +1034,7 @@ namespace Dev2.Core.Tests
         NavigationViewModel CreateViewModel(IEnvironmentRepository environmentRepository, Mock<IResourceRepository> mockResourceRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All)
         {
             var studioResourceRepository = BuildExplorerItems(mockResourceRepository.Object);
-            var navigationViewModel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, studioResourceRepository, new Mock<IConnectControlSingleton>().Object, isFromActivityDrop, activityType);
+            var navigationViewModel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, studioResourceRepository, isFromActivityDrop, activityType);
             return navigationViewModel;
         }
 

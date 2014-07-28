@@ -1,30 +1,31 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Data.ServiceModel;
 using Dev2.Models;
+using Dev2.Network;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Threading;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Threading;
 
 namespace Dev2.ViewModels.Deploy
 {
     public abstract class NavigationViewModelBase : SimpleBaseViewModel,
-                            IHandle<UpdateResourceMessage>
+                            IHandle<UpdateResourceMessage>,
+                            IHandle<EnvironmentConnectedMessage>,
+                            IHandle<EnvironmentDisconnectedMessage>
     {
         protected internal IAsyncWorker AsyncWorker;
         string _searchFilter = string.Empty;
+        bool _isRefreshing;
         protected internal IEventAggregator EventAggregator;
-        Visibility _circularProgressBarVisibility;
-        Visibility _refreshButtonVisibility;
-
         protected NavigationViewModelBase(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
@@ -38,53 +39,41 @@ namespace Dev2.ViewModels.Deploy
             StudioResourceRepository = studioResourceRepository;
         }
 
+        public abstract void Handle(EnvironmentConnectedMessage message);
+        public abstract void Handle(EnvironmentDisconnectedMessage message);
+
         public event EventHandler LoadResourcesCompleted;
         public IEnvironmentRepository EnvironmentRepository { get; set; }
-
-        public Visibility RefreshButtonVisibility
+        public bool IsRefreshing
         {
-            get
-            {
-                return _refreshButtonVisibility;
-            }
+            get { return _isRefreshing; }
             set
             {
-                if(value == _refreshButtonVisibility)
-                {
-                    return;
-                }
-                _refreshButtonVisibility = value;
-                NotifyOfPropertyChange("RefreshButtonVisibility");
+                _isRefreshing = value;
+                OnPropertyChanged("IsRefreshing");
             }
         }
-
-        public Visibility CircularProgressBarVisibility
-        {
-            get
-            {
-                return _circularProgressBarVisibility;
-            }
-            set
-            {
-                if(value == _circularProgressBarVisibility)
-                {
-                    return;
-                }
-                _circularProgressBarVisibility = value;
-                NotifyOfPropertyChange("CircularProgressBarVisibility");
-            }
-        }
-
         public IStudioResourceRepository StudioResourceRepository
         {
             get;
             private set;
         }
 
-        public void LoadEnvironmentResources(IEnvironmentModel environment)
+        public void LoadEnvironmentResources(IEnvironmentModel environment, List<ExplorerItemModel> expandedList = null, ExplorerItemModel selectedItem = null)
         {
             this.Warning("Navigation Resources Load - Start");
-            LoadResourcesAsync(environment);            
+            LoadResourcesAsync(environment, expandedList, selectedItem);
+        }
+
+        void UpdateIsRefreshing(IEnvironmentModel environment, bool isRefreshing)
+        {
+            IsRefreshing = isRefreshing;
+
+            var environmentTreeViewModel = Find(environment);
+            if(environmentTreeViewModel != null)
+            {
+                environmentTreeViewModel.IsRefreshing = isRefreshing;
+            }
         }
 
         /// <summary>
@@ -100,12 +89,18 @@ namespace Dev2.ViewModels.Deploy
             environment.Connect();
         }
 
-        internal Task LoadResourcesAsync(IEnvironmentModel environment, List<ExplorerItemModel> expandedList = null, ExplorerItemModel selectedItem = null)
+        internal async void LoadResourcesAsync(IEnvironmentModel environment, List<ExplorerItemModel> expandedList = null, ExplorerItemModel selectedItem = null)
         {
-            Task task = null;
-            if(AsyncWorker != null)
+            if(environment == null)
             {
-                task = AsyncWorker.Start(() =>
+                return;
+            }
+
+            UpdateIsRefreshing(environment, true);
+
+            if(AsyncWorker != null && !ServerProxy.IsShuttingDown)
+            {
+                await AsyncWorker.Start(() =>
                 {
                     if(!environment.IsConnected)
                     {
@@ -119,6 +114,7 @@ namespace Dev2.ViewModels.Deploy
                     {
                         if(environment.IsConnected && environment.CanStudioExecute)
                         {
+                            StudioResourceRepository.Load(environment.ID, AsyncWorker);
                             UpdateSearchFilter(_searchFilter);
                             SetTreeStateBack(expandedList, selectedItem);
                         }
@@ -129,13 +125,13 @@ namespace Dev2.ViewModels.Deploy
                     }
                     finally
                     {
+                        UpdateIsRefreshing(environment, false);
                         OnLoadResourcesCompleted();
                         environment.RaiseResourcesLoaded();
 
                     }
                 });
             }
-            return task;
         }
 
         /// <summary>
@@ -151,7 +147,7 @@ namespace Dev2.ViewModels.Deploy
                 try
                 {
                     var worker = new BackgroundWorker();
-                    worker.DoWork += (s, e) => Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.DataBind, new System.Action(() => DoFiltering(searhFilter)));
+                    worker.DoWork += (s, e) => Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new System.Action(() => DoFiltering(searhFilter)));
                     worker.RunWorkerAsync();
                 }
                 catch(Exception)
@@ -234,6 +230,27 @@ namespace Dev2.ViewModels.Deploy
                 parent.IsExplorerExpanded = true;
             }
         }
+
+        /// <summary>
+        /// Returns the node which represents an environment.
+        /// </summary>
+        /// <param name="environment">The environment.</param>
+        /// <param name="createIfMissing">if set to <c>true</c> [create if missing].</param>
+        /// <returns></returns>
+        public ExplorerItemModel Find(IEnvironmentModel environment, bool createIfMissing = false)
+        {
+            ExplorerItemModel returnNavigationItemViewModel = StudioResourceRepository.FindItem(vm => environment.ID == vm.EnvironmentId && vm.ResourceType == ResourceType.Server);
+
+            if(returnNavigationItemViewModel == null && createIfMissing)
+            {
+                StudioResourceRepository.Connect(environment.ID);
+                returnNavigationItemViewModel = StudioResourceRepository.FindItem(vm => environment.ID == vm.EnvironmentId);
+            }
+
+            return returnNavigationItemViewModel;
+        }
+
+
 
         /// <summary>
         /// Updates an item with in the current NavigationItemViewModel graph

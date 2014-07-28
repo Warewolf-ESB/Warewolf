@@ -1,7 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
-using Dev2.ConnectionHelpers;
 using Dev2.Models;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -29,7 +28,7 @@ namespace Dev2.Dialogs
         /// Creates a picker suitable for dropping from the toolbox.
         /// </summary>
         public ResourcePickerDialog(enDsfActivityType activityType)
-            : this(activityType, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), true, StudioResourceRepository.Instance, ConnectControlSingleton.Instance)
+            : this(activityType, EnvironmentRepository.Instance, EventPublishers.Aggregator, new AsyncWorker(), true, StudioResourceRepository.Instance)
         {
         }
 
@@ -37,18 +36,18 @@ namespace Dev2.Dialogs
         /// Creates a picker suitable for picking from the given environment.
         /// </summary>
         public ResourcePickerDialog(enDsfActivityType activityType, IEnvironmentModel source)
-            : this(activityType, EnvironmentRepository.Create(source), EventPublishers.Aggregator, new AsyncWorker(), false, StudioResourceRepository.Instance, ConnectControlSingleton.Instance)
+            : this(activityType, EnvironmentRepository.Create(source), EventPublishers.Aggregator, new AsyncWorker(), false, StudioResourceRepository.Instance)
         {
         }
 
-        public ResourcePickerDialog(enDsfActivityType activityType, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, bool isFromDrop, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton)
+        public ResourcePickerDialog(enDsfActivityType activityType, IEnvironmentRepository environmentRepository, IEventAggregator eventPublisher, IAsyncWorker asyncWorker, bool isFromDrop, IStudioResourceRepository studioResourceRepository)
         {
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-            VerifyArgument.IsNotNull("connectControlSingleton", connectControlSingleton);
 
-            _navigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, null, environmentRepository, studioResourceRepository,connectControlSingleton, isFromDrop, activityType);
+
+            _navigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, null, environmentRepository, studioResourceRepository, isFromDrop, activityType);
             _activityType = activityType;
         }
 

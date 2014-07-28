@@ -1,8 +1,9 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.AppResources.Enums;
 using Dev2.AppResources.Repositories;
-using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
+using Dev2.Messages;
 using Dev2.Models;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -30,7 +31,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 {
     public class DeployViewModel : BaseWorkSurfaceViewModel,
         IHandle<UpdateDeployMessage>,
-        IHandle<SelectItemInDeployMessage>,
+        IHandle<SelectItemInDeployMessage>, IHandle<AddServerToDeployMessage>,
         IHandle<EnvironmentDeletedMessage>
     {
         #region Class Members
@@ -56,6 +57,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         private Guid _initialItemEnvironmentID;
         private bool _isDeploying;
         private bool _deploySuccessfull;
+        private bool _initialLoad = true;
 
         private int _sourceDeployItemCount;
         private int _destinationDeployItemCount;
@@ -67,11 +69,11 @@ namespace Dev2.Studio.ViewModels.Deploy
         #region Constructor
 
         public DeployViewModel()
-            : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, Dev2.AppResources.Repositories.StudioResourceRepository.Instance, null, null)
+            : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, Dev2.AppResources.Repositories.StudioResourceRepository.Instance)
         {
         }
 
-        public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, IConnectControlViewModel sourceConnectControlVm, IConnectControlViewModel destinationConnectControlVm, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null)
+        public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null)
             : base(eventAggregator)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -84,13 +86,10 @@ namespace Dev2.Studio.ViewModels.Deploy
             DestinationServerHasDropped = false;
             StudioResourceRepository = studioResourceRepository;
             Initialize(asyncWorker, serverProvider, environmentRepository, eventAggregator, deployStatsCalculator);
-            SourceConnectControlViewModel = sourceConnectControlVm ?? new ConnectControlViewModel(ChangeSourceServer, "Source Server:", false);
-            TargetConnectControlViewModel = destinationConnectControlVm ?? new ConnectControlViewModel(ChangeDestinationServer, "Destination Server:", false);
-            TargetConnectControlViewModel.SetTargetEnvironment();
         }
 
         public DeployViewModel(Guid resourceID, Guid environmentID)
-            : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, Dev2.AppResources.Repositories.StudioResourceRepository.Instance, null, null, null, resourceID, environmentID)
+            : this(new AsyncWorker(), ServerProvider.Instance, Core.EnvironmentRepository.Instance, EventPublishers.Aggregator, Dev2.AppResources.Repositories.StudioResourceRepository.Instance, null, resourceID, environmentID)
         {
         }
 
@@ -125,40 +124,6 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion
 
         #region Properties
-
-        public IConnectControlViewModel SourceConnectControlViewModel
-        {
-            get
-            {
-                return _sourceconnectControlViewModel;
-            }
-            set
-            {
-                if(Equals(value, _sourceconnectControlViewModel))
-                {
-                    return;
-                }
-                _sourceconnectControlViewModel = value;
-                NotifyOfPropertyChange(() => SourceConnectControlViewModel);
-            }
-        }
-
-        public IConnectControlViewModel TargetConnectControlViewModel
-        {
-            get
-            {
-                return _targetConnectControlViewModel;
-            }
-            set
-            {
-                if(Equals(value, _targetConnectControlViewModel))
-                {
-                    return;
-                }
-                _targetConnectControlViewModel = value;
-                NotifyOfPropertyChange(() => TargetConnectControlViewModel);
-            }
-        }
 
         public Guid? SourceContext
         {
@@ -342,6 +307,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 {
                     _selectedSourceServer.IsConnectedChanged -= SourceEnvironmentConnectedChanged;
                 }
+
                 // ReSharper disable PossibleUnintendedReferenceComparison
                 if(value != _selectedSourceServer)
                 // ReSharper restore PossibleUnintendedReferenceComparison
@@ -352,13 +318,14 @@ namespace Dev2.Studio.ViewModels.Deploy
                 SourceServerHasDropped = false;
                 if(_selectedSourceServer != null)
                 {
+                    Source.Environment = _selectedSourceServer;
                     _selectedSourceServer.IsConnectedChanged -= SelectedSourceServerIsConnectedChanged;
                     _selectedSourceServer.IsConnectedChanged += SelectedSourceServerIsConnectedChanged;
                     _selectedSourceServer.IsConnectedChanged += SourceEnvironmentConnectedChanged;
 
                 }
                 LoadSourceEnvironment();
-                Source.Environment = _selectedSourceServer;
+
                 NotifyOfPropertyChange(() => SelectedSourceServer);
                 NotifyOfPropertyChange(() => SourceItemsSelected);
                 NotifyOfPropertyChange(() => CanDeploy);
@@ -409,16 +376,17 @@ namespace Dev2.Studio.ViewModels.Deploy
                     DestinationServerHasDropped = false;
                     if(_selectedDestinationServer != null)
                     {
+                        Target.Environment = _selectedDestinationServer;
                         _selectedDestinationServer.IsConnectedChanged -= SelectedDestinationServerIsConnectedChanged;
                         _selectedDestinationServer.IsConnectedChanged += SelectedDestinationServerIsConnectedChanged;
                     }
                     LoadDestinationEnvironment();
+                    EventPublisher.Publish(new SetConnectControlSelectedServerMessage(SelectedDestinationServer, ConnectControlInstanceType.DeployTarget));
                     NotifyOfPropertyChange(() => SelectedDestinationServer);
                     NotifyOfPropertyChange(() => SourceItemsSelected);
                     NotifyOfPropertyChange(() => CanDeploy);
                     NotifyOfPropertyChange(() => ServersAreNotTheSame);
                 }
-                Target.Environment = _selectedDestinationServer;
             }
         }
 
@@ -543,6 +511,11 @@ namespace Dev2.Studio.ViewModels.Deploy
             _targetStatPredicates.Add("Override",
                                       n => _deployStatsCalculator
                                                .DeploySummaryPredicateExisting(n, Target));
+            //            if(Target.Environments.Any())
+            //            {
+            //                IEnvironmentModel env = Target.Environments[0];
+            //                _deployStatsCalculator.ConflictingResources.ToList().ForEach(r => env.ResourceRepository.DeleteResource(r.DestinationResource));
+            //            }
             // ReSharper restore ImplicitlyCapturedClosure
         }
 
@@ -610,7 +583,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 //
                 SelectedSourceServer = servers.FirstOrDefault(s => ServerEqualityComparer.Current.Equals(s, SelectedSourceServer));
 
-                if(SelectedSourceServer == null)
+                if(SelectedSourceServer == null && _initialLoad)
                 {
                     SelectSourceServerFromInitialValue();
                 }
@@ -618,19 +591,24 @@ namespace Dev2.Studio.ViewModels.Deploy
         }
 
         /// <summary>
-        /// Change source server
+        /// Adds a new server
         /// </summary>
-        private void ChangeSourceServer(IEnvironmentModel server)
+        private void AddServer(IEnvironmentModel server, ConnectControlInstanceType connectControlInstanceType)
         {
-            SelectedSourceServer = server;
-        }
 
-        /// <summary>
-        /// Change destination server
-        /// </summary>
-        private void ChangeDestinationServer(IEnvironmentModel server)
-        {
-            SelectedDestinationServer = server;
+            if(connectControlInstanceType == ConnectControlInstanceType.DeploySource && !_initialLoad)
+            {
+                SelectedSourceServer = server;
+            }
+            if(connectControlInstanceType == ConnectControlInstanceType.DeployTarget)
+            {
+                SelectedDestinationServer = server;
+            }
+            if(_initialLoad)
+            {
+                _initialLoad = false;
+                EventPublisher.Publish(new SetConnectControlSelectedServerMessage(_selectedSourceServer, ConnectControlInstanceType.DeploySource));
+            }
         }
 
         /// <summary>
@@ -746,8 +724,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         };
         bool _destinationServerHasDropped;
         bool _sourceServerHasDropped;
-        IConnectControlViewModel _sourceconnectControlViewModel;
-        IConnectControlViewModel _targetConnectControlViewModel;
+
+
 
         /// <summary>
         /// Loads an environment for the source navigation manager
@@ -861,6 +839,13 @@ namespace Dev2.Studio.ViewModels.Deploy
             _initialItemResourceID = message.ResourceID;
             _initialItemEnvironmentID = message.EnvironmentID;
             SelectSourceServerFromInitialValue();
+        }
+
+        public void Handle(AddServerToDeployMessage message)
+        {
+            this.TraceInfo(message.GetType().Name);
+
+            AddServer(message.Server, message.ConnectControlInstanceType);
         }
 
         public void Handle(EnvironmentDeletedMessage message)

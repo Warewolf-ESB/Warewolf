@@ -1,8 +1,15 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Input;
+using Caliburn.Micro;
+using Dev2.AppResources.Enums;
 using Dev2.Common;
-using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
 using Dev2.Interfaces;
+using Dev2.Messages;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
@@ -13,16 +20,10 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Forms;
-using System.Windows.Input;
 
 namespace Dev2.Settings
 {
-    public class SettingsViewModel : BaseWorkSurfaceViewModel, IStudioTab
+    public class SettingsViewModel : BaseWorkSurfaceViewModel, IHandle<ServerSelectionChangedMessage>, IHandle<SelectedServerConnectedMessage>, IStudioTab
     {
         bool _isLoading;
         bool _isDirty;
@@ -40,14 +41,13 @@ namespace Dev2.Settings
 
         SecurityViewModel _securityViewModel;
         LoggingViewModel _loggingViewModel;
-        IConnectControlViewModel _connectControlViewModel;
 
         public SettingsViewModel()
-            : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow, null)
+            : this(EventPublishers.Aggregator, new PopupController(), new AsyncWorker(), (IWin32Window)System.Windows.Application.Current.MainWindow)
         {
         }
 
-        public SettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow, IConnectControlViewModel connectControlViewModel)
+        public SettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow)
             : base(eventPublisher)
         {
             Settings = new Data.Settings.Settings();
@@ -61,8 +61,6 @@ namespace Dev2.Settings
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
             //SaveCommand.UpdateContext(CurrentEnvironment);
             ServerChangedCommand = new RelayCommand(OnServerChanged, o => true);
-
-            ConnectControlViewModel = connectControlViewModel ?? new ConnectControlViewModel(OnServerChanged, "Server:", false);
         }
 
         public ICommand SaveCommand { get; private set; }
@@ -88,23 +86,6 @@ namespace Dev2.Settings
                 NotifyOfPropertyChange(() => HasErrors);
                 NotifyOfPropertyChange(() => IsSavedSuccessVisible);
                 NotifyOfPropertyChange(() => IsErrorsVisible);
-            }
-        }
-
-        public IConnectControlViewModel ConnectControlViewModel
-        {
-            get
-            {
-                return _connectControlViewModel;
-            }
-            set
-            {
-                if(Equals(value, _connectControlViewModel))
-                {
-                    return;
-                }
-                _connectControlViewModel = value;
-                NotifyOfPropertyChange(() => ConnectControlViewModel);
             }
         }
 
@@ -266,6 +247,11 @@ namespace Dev2.Settings
         {
             var server = obj as IEnvironmentModel;
 
+            if(Equals(CurrentEnvironment, server))
+            {
+                return;
+            }
+
             if(server == null)
             {
                 return;
@@ -275,6 +261,8 @@ namespace Dev2.Settings
             {
                 if(!DoDeactivate())
                 {
+                    _asyncWorker.Start(() => { }, () => EventPublisher.Publish(new SetConnectControlSelectedServerMessage(CurrentEnvironment, ConnectControlInstanceType.Settings)));
+
                     return;
                 }
             }
@@ -292,7 +280,14 @@ namespace Dev2.Settings
 
             _asyncWorker.Start(() =>
             {
-                Settings = CurrentEnvironment.IsConnected ? ReadSettings() : new Data.Settings.Settings { Security = new SecuritySettingsTO() };
+                if(CurrentEnvironment.IsConnected)
+                {
+                    Settings = ReadSettings();
+                }
+                else
+                {
+                    Settings = new Data.Settings.Settings { Security = new SecuritySettingsTO() };
+                }
 
             }, () =>
             {
@@ -461,6 +456,30 @@ namespace Dev2.Settings
             HasErrors = true;
             Errors = description;
         }
+
+        #region Implementation of IHandle<ServerSelectionChangedMessage>
+
+        public void Handle(ServerSelectionChangedMessage message)
+        {
+            if(message.ConnectControlInstanceType == ConnectControlInstanceType.Settings)
+            {
+                OnServerChanged(message.SelectedServer);
+            }
+        }
+
+        #endregion
+
+        #region Implementation of IHandle<SelectedServerConnectedMessage>
+
+        public void Handle(SelectedServerConnectedMessage message)
+        {
+            if(message.SelectedServer.Equals(CurrentEnvironment))
+            {
+                OnServerChanged(message.SelectedServer);
+            }
+        }
+
+        #endregion
     }
 }
 

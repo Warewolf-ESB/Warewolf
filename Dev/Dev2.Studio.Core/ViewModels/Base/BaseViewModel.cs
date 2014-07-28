@@ -2,9 +2,7 @@
 using Dev2.Composition;
 
 // ReSharper disable once CheckNamespace
-// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.ViewModels.Base
-// ReSharper restore CheckNamespace
 {
     public enum ViewModelDialogResults
     {
@@ -19,9 +17,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
     /// </summary>
     public abstract class BaseViewModel : SimpleBaseViewModel
     {
-// ReSharper disable InconsistentNaming
-        readonly protected IEventAggregator _eventPublisher;
-// ReSharper restore InconsistentNaming
+        readonly IEventAggregator _eventPublisher;
 
         #region Constructor
 
@@ -32,9 +28,7 @@ namespace Dev2.Studio.Core.ViewModels.Base
             _eventPublisher.Subscribe(this);
 
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
             SatisfyImports();
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         public IEventAggregator EventPublisher

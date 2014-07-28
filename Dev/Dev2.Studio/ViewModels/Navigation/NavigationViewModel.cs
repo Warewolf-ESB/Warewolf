@@ -2,14 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
-using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel;
 using Dev2.Models;
 using Dev2.Providers.Logs;
@@ -31,7 +29,8 @@ namespace Dev2.Studio.ViewModels.Navigation
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <date>2013/01/23</date>
-    public class NavigationViewModel : NavigationViewModelBase, INavigationViewModel
+    public class NavigationViewModel : NavigationViewModelBase,
+        IHandle<AddServerToExplorerMessage>, INavigationViewModel
     {
 
         #region private fields
@@ -40,23 +39,20 @@ namespace Dev2.Studio.ViewModels.Navigation
         readonly NavigationViewModelType _navigationViewModelType;
         bool _fromActivityDrop;
         readonly IEventAggregator _eventPublisher;
-        readonly IConnectControlSingleton _connectControlSingleton;
         ExplorerItemModel _selectedItem;
         ObservableCollection<ExplorerItemModel> _explorerItemModels;
         #endregion private fields
 
         #region ctor + init
 
-        public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton,  bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, NavigationViewModelType navigationViewModelType = NavigationViewModelType.Explorer)
+        public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, NavigationViewModelType navigationViewModelType = NavigationViewModelType.Explorer)
             : base(eventPublisher, asyncWorker, environmentRepository, studioResourceRepository)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
-            VerifyArgument.IsNotNull("connectControlSingleton", connectControlSingleton);
 
             _eventPublisher = eventPublisher;
-            _connectControlSingleton = connectControlSingleton;
             _eventPublisher.Subscribe(this);
             EnvironmentRepository = environmentRepository;
             Context = context;
@@ -66,8 +62,6 @@ namespace Dev2.Studio.ViewModels.Navigation
             _navigationViewModelType = navigationViewModelType;
             Environments = new List<IEnvironmentModel>();
             ExplorerItemModels = new ObservableCollection<ExplorerItemModel>();
-            CircularProgressBarVisibility = Visibility.Hidden;
-            RefreshButtonVisibility = Visibility.Visible;
         }
 
         #endregion ctor + intit
@@ -143,7 +137,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return _refreshMenuCommand ??
-                       (_refreshMenuCommand = new RelayCommand(param => UpdateWorkspaces(_connectControlSingleton), param => true));
+                       (_refreshMenuCommand = new RelayCommand(param => UpdateWorkspaces(), param => true));
             }
         }
         public NavigationViewModelType NavigationViewModelType
@@ -151,6 +145,56 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return _navigationViewModelType;
+            }
+        }
+
+        #endregion
+
+        #region IHandle
+
+        /// <summary>
+        /// Handles the specified environment connected message by loading the environments 
+        /// and building the tree
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/01/23</date>
+        public override void Handle(EnvironmentConnectedMessage message)
+        {
+            this.TraceInfo(message.GetType().Name);
+            var e = Environments.FirstOrDefault(o => ReferenceEquals(o, message.EnvironmentModel));
+            LoadEnvironmentResources(e);
+        }
+
+        /// <summary>
+        /// Handles the specified environment disconnected message
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <author>Jurie.smit</author>
+        /// <date>2013/01/23</date>
+        public override void Handle(EnvironmentDisconnectedMessage message)
+        {
+            this.TraceInfo(message.GetType().Name);
+            var e = Environments.FirstOrDefault(o => ReferenceEquals(o, message.EnvironmentModel));
+
+            if(e == null)
+            {
+                return;
+            }
+            IsRefreshing = false;
+            if(e.IsConnected)
+            {
+                StudioResourceRepository.Disconnect(e.ID);
+            }
+        }
+
+        public void Handle(AddServerToExplorerMessage message)
+        {
+            this.TraceInfo(message.GetType().Name);
+            AddEnvironment(message.EnvironmentModel);
+            if(message.ForceConnect)
+            {
+                LoadResourcesAsync(message.EnvironmentModel);
             }
         }
 
@@ -166,7 +210,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             VerifyArgument.IsNotNull("environment", environment);
             var environmentId = environment.ID;
 
-            StudioResourceRepository.AddServerNode(new ExplorerItemModel(_connectControlSingleton)
+            StudioResourceRepository.AddServerNode(new ExplorerItemModel
             {
                 ResourcePath = "",
                 DisplayName = environment.Name,
@@ -175,11 +219,11 @@ namespace Dev2.Studio.ViewModels.Navigation
                 IsConnected = false,
             });
 
-            if(Environments.All(e => e.ID != environmentId))
+            if(Environments.Any(e => e.ID == environmentId))
             {
-                Environments.Add(environment);
+                return;
             }
-            
+            Environments.Add(environment);
             if(environment.IsConnected || environment.IsLocalHost)
             {
                 LoadEnvironmentResources(environment);
@@ -230,21 +274,14 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// <summary>
         ///     Updates the worksapces for all environments
         /// </summary>
-        public void UpdateWorkspaces(IConnectControlSingleton connectControlSingleton)
+        public void UpdateWorkspaces()
         {
-            if(CircularProgressBarVisibility == Visibility.Visible)
+            if(IsRefreshing)
             {
                 return;
             }
-
-            CircularProgressBarVisibility = Visibility.Visible; 
-            RefreshButtonVisibility = Visibility.Hidden;
-
             var tmpSelected = SelectedItem;
             List<ExplorerItemModel> expandedList = new List<ExplorerItemModel>();
-            List<Task> loadTasks = new List<Task>();
-            List<Guid> environments = new List<Guid>();
-
             foreach(var environment in Environments.Where(c => c.IsConnected || c.IsLocalHost))
             {
                 var explorerItemModel = ExplorerItemModels.FirstOrDefault(c => c.EnvironmentId == environment.ID);
@@ -253,26 +290,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                     expandedList = explorerItemModel.Descendants().Where(c => c.IsExplorerExpanded).ToList();
                 }
 
-                if(environment != null)
-                {
-                    environments.Add(environment.ID);
-                    connectControlSingleton.SetConnectionState(environment.ID, ConnectionEnumerations.ConnectedState.Busy);
-                    var loadResourcesAsync = LoadResourcesAsync(environment, expandedList, tmpSelected);
-
-                    if(loadResourcesAsync != null)
-                    {
-                        loadTasks.Add(loadResourcesAsync);
-                    }
-                }
+                LoadEnvironmentResources(environment, expandedList, tmpSelected);
             }
-
-            var task = Task.WhenAll(loadTasks);
-            task.ContinueWith(d =>
-                {
-                    environments.ForEach(id => connectControlSingleton.SetConnectionState(id, ConnectionEnumerations.ConnectedState.Connected));
-                    CircularProgressBarVisibility = Visibility.Hidden;
-                    RefreshButtonVisibility = Visibility.Visible;
-                });
         }
 
         protected override void DoFiltering(string searhFilter)
@@ -432,7 +451,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 return;
             }
 
-            var environmentNavigationItemViewModel = StudioResourceRepository.FindItemById(environment.ID);
+            var environmentNavigationItemViewModel = Find(environment, true);
             environmentNavigationItemViewModel.IsChecked = false;
 
             LoadEnvironmentResources(environment);

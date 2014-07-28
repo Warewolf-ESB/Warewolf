@@ -100,6 +100,7 @@
     <Compile Include="Converters\BoolToStringConvert.cs" />
     <Compile Include="Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
+    <Compile Include="Converters\IsConnectedToTextConverter.cs" />
     <Compile Include="Converters\MathFunction.cs" />
     <Compile Include="Converters\MathFunctionDoubleConverter.cs" />
     <Compile Include="Adorners\SingleChildAdornerBase.cs" />

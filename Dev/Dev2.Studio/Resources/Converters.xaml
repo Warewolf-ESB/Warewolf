@@ -60,6 +60,7 @@
     <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter" TrueValue="+" FalseValue="-" />
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
     <converters2:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
+    <converters2:IsConnectedToTextConverter x:Key="IsConnectedToTextConverter" />
     <converters5:ExplorerItemModelToIconConverter x:Key="ExplorerItemModelToIconConverter" />
     <converters1:ConnectControlMultiValueBoolConverter x:Key="ConnectControlMultiValueBoolConverter" />
     <converters:AllBoolToVisibilityValueConverter x:Key="AllBoolToVisibilityValueConverter" TrueValue="Visible" FalseValue="Collapsed" />

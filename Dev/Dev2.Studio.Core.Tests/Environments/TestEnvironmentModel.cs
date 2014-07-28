@@ -13,7 +13,7 @@ namespace Dev2.Core.Tests.Environments
         Mock<IAuthorizationService> _authorizationServiceMock;
 
         public TestEnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, bool publishEventsOnDispatcherThread = true)
-            : base(id, environmentConnection, resourceRepository, new Mock<IStudioResourceRepository>().Object)
+            : base(eventPublisher, id, environmentConnection, resourceRepository, new Mock<IStudioResourceRepository>().Object, publishEventsOnDispatcherThread)
         {
         }
 

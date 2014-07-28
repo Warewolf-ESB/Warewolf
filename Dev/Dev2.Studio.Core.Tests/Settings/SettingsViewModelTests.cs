@@ -1,9 +1,13 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Linq;
+using System.Windows;
+using System.Windows.Forms;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
-using Dev2.CustomControls.Connections;
+using Dev2.Messages;
 using Dev2.Providers.Events;
 using Dev2.Services.Security;
 using Dev2.Settings;
@@ -14,10 +18,6 @@ using Dev2.Studio.Core.Models;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Linq;
-using System.Windows;
-using System.Windows.Forms;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Settings
@@ -35,7 +35,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SettingsViewModel(new Mock<IEventAggregator>().Object, null, null, null, new Mock<IConnectControlViewModel>().Object);
+            new SettingsViewModel(new Mock<IEventAggregator>().Object, null, null, null);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -51,7 +51,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, null, null, new Mock<IConnectControlViewModel>().Object);
+            new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, null, null);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -67,7 +67,7 @@ namespace Dev2.Core.Tests.Settings
 
             //------------Execute Test---------------------------
             // ReSharper disable ObjectCreationAsStatement
-            new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, null, new Mock<IConnectControlViewModel>().Object);
+            new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, null);
             // ReSharper restore ObjectCreationAsStatement
 
             //------------Assert Results-------------------------
@@ -81,7 +81,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IConnectControlViewModel>().Object);
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(settingsViewModel.ShowLogging);
@@ -94,7 +94,7 @@ namespace Dev2.Core.Tests.Settings
         public void SettingsViewModel_ShowLogging_True_OtherShowPropertiesAreFalse()
         {
             //------------Setup for test--------------------------
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IConnectControlViewModel>().Object) { ShowLogging = true };
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowLogging = true };
 
             //------------Execute Test---------------------------
 
@@ -110,7 +110,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IConnectControlViewModel>().Object) { ShowLogging = true };
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowLogging = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -128,7 +128,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IConnectControlViewModel>().Object) { ShowLogging = true };
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowLogging = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -144,7 +144,7 @@ namespace Dev2.Core.Tests.Settings
         public void SettingsViewModel_ShowSecurity_True_OtherShowPropertiesAreFalse()
         {
             //------------Setup for test--------------------------
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IConnectControlViewModel>().Object) { ShowSecurity = false };
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowSecurity = false };
 
             //------------Execute Test---------------------------
             settingsViewModel.ShowSecurity = true;
@@ -161,7 +161,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IConnectControlViewModel>().Object) { ShowSecurity = true };
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowSecurity = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -179,7 +179,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
             var propertyChanged = false;
 
-            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object, new Mock<IConnectControlViewModel>().Object) { ShowSecurity = true };
+            var settingsViewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, new Mock<IAsyncWorker>().Object, new Mock<IWin32Window>().Object) { ShowSecurity = true };
             settingsViewModel.PropertyChanged += (sender, args) => propertyChanged = true;
 
             //------------Execute Test---------------------------
@@ -346,7 +346,7 @@ You need Administrator permission.", viewModel.Errors);
         public void SettingsViewModel_ServerChangedCommand_ServerIsNull_DoesNothing()
         {
             //------------Setup for test--------------------------
-            var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object, new Mock<IConnectControlViewModel>().Object);
+            var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
             Assert.IsNull(viewModel.CurrentEnvironment);
 
             //------------Execute Test---------------------------
@@ -363,7 +363,7 @@ You need Administrator permission.", viewModel.Errors);
         public void SettingsViewModel_ServerChangedCommand_XX()
         {
             //------------Setup for test--------------------------
-            var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object, new Mock<IConnectControlViewModel>().Object);
+            var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
             Assert.IsNull(viewModel.CurrentEnvironment);
 
             //------------Execute Test---------------------------
@@ -380,7 +380,7 @@ You need Administrator permission.", viewModel.Errors);
         public void SettingsViewModel_ServerChangedCommand_ServerEnvironmentNotConnected_DoesNothing()
         {
             //------------Setup for test--------------------------
-            var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object, new Mock<IConnectControlViewModel>().Object);
+            var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, new Mock<IPopupController>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
             Assert.IsNull(viewModel.CurrentEnvironment);
 
             var server = new Mock<IEnvironmentModel>();
@@ -402,13 +402,14 @@ You need Administrator permission.", viewModel.Errors);
             var popupController = new Mock<IPopupController>();
             popupController.Setup(p => p.ShowNotConnected()).Verifiable();
 
-            var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, popupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object, new Mock<IConnectControlViewModel>().Object);
+            var viewModel = new SettingsViewModel(new Mock<IEventAggregator>().Object, popupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IWin32Window>().Object);
 
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(c => c.IsConnected).Returns(false);
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            var mockEventAgg = new Mock<IEventAggregator>();
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var server = new EnvironmentModel(Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+            var server = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             Assert.IsNull(viewModel.CurrentEnvironment);
             Assert.IsTrue(server.CanStudioExecute);
@@ -498,6 +499,28 @@ You need Administrator permission.", viewModel.Errors);
             // SecurityViewModel adds extra "new" permission
             Assert.AreEqual(serverPerms.Count + 1, viewModel.SecurityViewModel.ServerPermissions.Count);
             Assert.AreEqual(resourcePerms.Count + 1, viewModel.SecurityViewModel.ResourcePermissions.Count);
+        }
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SettingsViewModel_ServerChangedCommand")]
+        public void SettingsViewModel_ServerChangedCommand_ServerEnvironmentIsConnected_PromptsUserIfDirty()
+        {
+            //------------Setup for test--------------------------
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.SetupAllProperties();
+            mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Yes);
+            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success");
+            viewModel.IsDirty = true;
+            viewModel.SecurityViewModel.IsDirty = true;
+            //------------Execute Test---------------------------
+            var env = new Mock<IEnvironmentModel>();
+            env.Setup(a => a.Equals(It.IsAny<IEnvironmentModel>())).Returns(true);
+            viewModel.Handle(new SelectedServerConnectedMessage(env.Object));
+
+            //------------Assert Results-------------------------
+            VerifySavePopup(mockPopupController);
+
         }
 
         [TestMethod]
@@ -769,6 +792,30 @@ You need Administrator permission.", viewModel.Errors);
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SettingsViewModel_DoDeactivate")]
+        public void SettingsViewModel_DoDeactivate_CancelChangesReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.SetupAllProperties();
+            mockPopupController.Setup(controller => controller.ShowSettingsCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
+            var securityViewModel = new TestSecurityViewModel { IsDirty = true };
+            var viewModel = CreateViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
+
+            viewModel.IsDirty = true;
+            //------------Execute Test---------------------------
+            var result = viewModel.DoDeactivate();
+
+            var env = viewModel.CurrentEnvironment;
+            viewModel.Handle(new SelectedServerConnectedMessage(env));
+            //------------Assert Results-------------------------
+            mockPopupController.Verify(c => c.ShowSettingsCloseConfirmation(), Times.Once());
+            Assert.IsFalse(result);
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+        
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SettingsViewModel_DoDeactivate")]
         public void SettingsViewModel_DoDeactivate_YesSavesChanges()
         {
             //------------Setup for test--------------------------            
@@ -783,7 +830,7 @@ You need Administrator permission.", viewModel.Errors);
             var result = viewModel.DoDeactivate();
             //------------Assert Results-------------------------
 
-            Assert.IsTrue(result);
+            Assert.IsTrue(result); 
             Assert.IsFalse(viewModel.IsDirty);
         }
 

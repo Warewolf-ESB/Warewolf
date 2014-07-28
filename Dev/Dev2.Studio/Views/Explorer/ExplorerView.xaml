@@ -13,8 +13,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:explorer="clr-namespace:Dev2.Studio.ViewModels.Explorer"
              xmlns:explorer2="clr-namespace:Dev2.Models;assembly=Dev2.Studio.Core"
-    xmlns:connections="clr-namespace:Dev2.CustomControls.Connections"
-    AllowDrop="False"
+             AllowDrop="False"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance explorer:ExplorerViewModel}"
              Name="Explorer">
@@ -34,12 +33,15 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <connections:ConnectControl DataContext="{Binding ConnectControlViewModel}"
-                             Grid.ColumnSpan="2"
+        <dev2:ConnectControl Grid.ColumnSpan="2"
                              Margin="2,2,2,0"
+                             LabelText="Connect:"
                              EditButtonAutomationID="UI_ExplorerEditBtn_AutoID"
                              ConnectButtonAutomationID="UI_ExplorerConnectBtn_AutoID"
-                             ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"/>
+                             IsDropDownEnabled="{Binding DataContext.NavigationViewModel.IsRefreshing, ElementName=Explorer,Mode=TwoWay,Converter={StaticResource BooleanInvertConverter}}"
+                             ServerComboBoxAutomationID="UI_ExplorerServerCbx_AutoID"
+                             BindToActiveEnvironment="True"
+                             ConnectControlInstanceType="Explorer" />
 
         <navigationViews:NavigationView x:Name="TheNavigationView"
                                         DataContext="{Binding DataContext.NavigationViewModel, ElementName=Explorer}"

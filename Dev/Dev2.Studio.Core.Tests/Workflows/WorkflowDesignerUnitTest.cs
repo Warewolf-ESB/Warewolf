@@ -20,7 +20,6 @@ using Dev2.AppResources.Repositories;
 using Dev2.Collections;
 using Dev2.Communication;
 using Dev2.Composition;
-using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Core.Tests.ViewModelTests;
@@ -1709,7 +1708,7 @@ namespace Dev2.Core.Tests.Workflows
             var eventAggregator = new Mock<IEventAggregator>();
             var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object);
             wd.SetActiveEnvironment(env.Object);
-            wd.SetDataObject(new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IConnectControlSingleton>().Object));
+            wd.SetDataObject(new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object));
 
             // Execute unit
             wd.TestModelServiceModelChanged(eventArgs.Object);

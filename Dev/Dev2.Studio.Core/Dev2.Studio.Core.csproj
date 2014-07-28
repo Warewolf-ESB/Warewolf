@@ -228,6 +228,7 @@
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ServerEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\WebsiteLayoutObjectViewModelEqualityComparer.cs" />
+    <Compile Include="AppResources\Enums\ConnectControlInstanceType.cs" />
     <Compile Include="AppResources\Enums\NavigationViewContextType.cs" />
     <Compile Include="AppResources\Enums\ReportType.cs" />
     <Compile Include="AppResources\Enums\ResourceType.cs" />
@@ -257,14 +258,6 @@
     <Compile Include="Configuration\IRuntimeConfigurationAssemblyRepository.cs" />
     <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
     <Compile Include="AppResources\WindowManagers\XamDockManagerDockAwareWindowManager.cs" />
-    <Compile Include="ConnectionHelpers\ConnectControlEnvironment.cs" />
-    <Compile Include="ConnectionHelpers\ConnectedServerChangedEvent.cs" />
-    <Compile Include="ConnectionHelpers\ConnectEventHandlers.cs" />
-    <Compile Include="ConnectionHelpers\ConnectionEnumerations.cs" />
-    <Compile Include="ConnectionHelpers\ConnectionStatusChangedEventArg.cs" />
-    <Compile Include="ConnectionHelpers\ConnectControlSingleton.cs" />
-    <Compile Include="ConnectionHelpers\IConnectControlEnvironment.cs" />
-    <Compile Include="ConnectionHelpers\IConnectControlSingleton.cs" />
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
     <Compile Include="Controller\IPopUp.cs" />
@@ -347,6 +340,7 @@
     <Compile Include="Messages\AbstractEnvironmentMessage.cs" />
     <Compile Include="Messages\AbstractResourceMessage.cs" />
     <Compile Include="Messages\AbstractTabMessage.cs" />
+    <Compile Include="Messages\AddServerToDeployMessage.cs" />
     <Compile Include="Messages\AddServerToExplorerMessage.cs" />
     <Compile Include="Messages\AddStringListToDataListMessage.cs" />
     <Compile Include="Messages\AddWorkSurfaceMessage.cs" />
@@ -358,6 +352,9 @@
     <Compile Include="Messages\DebugOutputMessage.cs" />
     <Compile Include="Messages\FileChooserMessage.cs" />
     <Compile Include="Messages\SaveUnsavedWorkflowMessage.cs" />
+    <Compile Include="Messages\SelectedServerConnectedMessage.cs" />
+    <Compile Include="Messages\ServerSelectionChangedMessage.cs" />
+    <Compile Include="Messages\SetConnectControlSelectedServerMessage.cs" />
     <Compile Include="Messages\UpdateSelectedServer.cs" />
     <Compile Include="Messages\UpdateWorksurfaceDisplayName.cs" />
     <Compile Include="Messages\DataListItemSelectedMessage.cs" />
@@ -378,6 +375,8 @@
     <Compile Include="Messages\ITabMessage.cs" />
     <Compile Include="Messages\RemoveResourceAndCloseTabMessage.cs" />
     <Compile Include="Messages\ResetLayoutMessage.cs" />
+    <Compile Include="Messages\EnvironmentConnectedMessage.cs" />
+    <Compile Include="Messages\EnvironmentDisconnectedMessage.cs" />
     <Compile Include="Messages\IDeployMessage.cs" />
     <Compile Include="Messages\IEnvironmentMessage.cs" />
     <Compile Include="Messages\IResourceMessage.cs" />

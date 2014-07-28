@@ -1,13 +1,19 @@
-﻿using Dev2.AppResources.Repositories;
+﻿using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
 using Dev2.Communication;
+using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Security;
+using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Workspaces;
 using System;
 using System.Network;
+using System.Windows;
+using Action = System.Action;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models
@@ -15,33 +21,42 @@ namespace Dev2.Studio.Core.Models
 
     public class EnvironmentModel : ObservableObject, IEnvironmentModel
     {
+        IEventAggregator _eventPublisher;
+        bool _publishEventsOnDispatcherThread;
         IStudioResourceRepository _studioResourceRepo;
 
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
         public event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
         #region CTOR
         //, IWizardEngine wizardEngine
-        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection)
-            : this(id, environmentConnection, StudioResourceRepository.Instance)
+        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, bool publishEventsOnDispatcherThread = true)
+            : this(EventPublishers.Aggregator, id, environmentConnection, StudioResourceRepository.Instance, publishEventsOnDispatcherThread)
+        {
+        }
+
+        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread = true)// seems to be for testing
+            : this(EventPublishers.Aggregator, id, environmentConnection, resourceRepository, studioResourceRepository, publishEventsOnDispatcherThread)
         {
         }
         //, IWizardEngine wizardEngine
-        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IStudioResourceRepository studioResourceRepository) 
+        public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread = true) // seems to be for testing
         {
-            Initialize(id, environmentConnection, null, studioResourceRepository);
+            Initialize(eventPublisher, id, environmentConnection, null, studioResourceRepository, publishEventsOnDispatcherThread);
         }
 
-        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IStudioResourceRepository studioResourceRepository)
+        public EnvironmentModel(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread = true) // seems to be for testing
         {
             VerifyArgument.IsNotNull("resourceRepository", resourceRepository);
-            Initialize(id, environmentConnection, resourceRepository, studioResourceRepository);
+            Initialize(eventPublisher, id, environmentConnection, resourceRepository, studioResourceRepository, publishEventsOnDispatcherThread);
         }
 
         //, IWizardEngine wizardEngine
-        void Initialize(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IStudioResourceRepository studioResourceRepository)
+        void Initialize(IEventAggregator eventPublisher, Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository, IStudioResourceRepository studioResourceRepository, bool publishEventsOnDispatcherThread)
         {
             VerifyArgument.IsNotNull("environmentConnection", environmentConnection);
+            VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("studioResourceRepository", studioResourceRepository);
+            _eventPublisher = eventPublisher;
             _studioResourceRepo = studioResourceRepository;
             CanStudioExecute = true;
 
@@ -50,7 +65,7 @@ namespace Dev2.Studio.Core.Models
 
             // MUST set Connection before creating new ResourceRepository!!
 
-
+            _publishEventsOnDispatcherThread = publishEventsOnDispatcherThread;
 
             Connection.NetworkStateChanged += OnNetworkStateChanged;
 
@@ -143,6 +158,7 @@ namespace Dev2.Studio.Core.Models
 
             this.TraceInfo("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
             Connection.Connect();
+            _eventPublisher.Publish(new SelectedServerConnectedMessage(this));
         }
 
         public void Connect(IEnvironmentModel other)
@@ -173,6 +189,7 @@ namespace Dev2.Studio.Core.Models
             if(Connection.IsConnected)
             {
                 Connection.Disconnect();
+                _eventPublisher.Publish(new SelectedServerConnectedMessage(this));
             }
         }
 
@@ -202,8 +219,12 @@ namespace Dev2.Studio.Core.Models
         {
             if(Connection.IsConnected && CanStudioExecute)
             {
+
+
                 ResourceRepository.UpdateWorkspace(WorkspaceItemRepository.Instance.WorkspaceItems);
                 HasLoadedResources = true;
+
+
             }
         }
 
@@ -239,6 +260,31 @@ namespace Dev2.Studio.Core.Models
             RaiseIsConnectedChanged(isOnline);
             if(!isOnline)
                 HasLoadedResources = false;
+
+            AbstractEnvironmentMessage message;
+            if(isOnline)
+            {
+                message = new EnvironmentConnectedMessage(this);
+            }
+            else
+            {
+                message = new EnvironmentDisconnectedMessage(this);
+            }
+
+            if(_publishEventsOnDispatcherThread)
+            {
+                if(Application.Current != null)
+                {
+                    // application is not shutting down!!
+                    this.TraceInfo("Publish message of type - " + message.GetType());
+                    Application.Current.Dispatcher.BeginInvoke(new Action(() => _eventPublisher.Publish(message)), null);
+                }
+            }
+            else
+            {
+                this.TraceInfo("Publish message of type - " + message.GetType());
+                _eventPublisher.Publish(message);
+            }
         }
 
         #endregion

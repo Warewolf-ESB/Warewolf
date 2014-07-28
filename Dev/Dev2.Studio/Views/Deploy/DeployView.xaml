@@ -11,8 +11,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:deploy="clr-namespace:Dev2.Studio.ViewModels.Deploy"
              xmlns:models="clr-namespace:Dev2.Models;assembly=Dev2.Studio.Core"
-    xmlns:connections="clr-namespace:Dev2.CustomControls.Connections"
-    Name="DeployUserControl"
+             Name="DeployUserControl"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance deploy:DeployViewModel}">
     <Grid>
@@ -41,13 +40,23 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <connections:ConnectControl DataContext="{Binding SourceConnectControlViewModel}"
-                                     Grid.Row="0"
+                <dev2:ConnectControl Grid.Row="0"
                                      Margin="3"
+                                     LabelText="Source Server:"
                                      ConnectButtonAutomationID="UI_SourceConnectServerbtn_AutoID"
                                      EditButtonAutomationID="UI_SourceServerEditbtn_AutoID"
-                                     ServerComboBoxAutomationID="UI_SourceServercbx_AutoID">
-                </connections:ConnectControl>
+                                     ServerComboBoxAutomationID="UI_SourceServercbx_AutoID"
+                                     BindToActiveEnvironment="False"
+                                     ConnectControlInstanceType="DeploySource">
+                    <dev2:ConnectControl.IsDropDownEnabled>
+                        <MultiBinding Converter="{StaticResource ConnectControlDisableConverter}">
+                            <Binding Path="DataContext.Target.IsRefreshing"
+                                     ElementName="DeployUserControl"></Binding>
+                            <Binding Path="DataContext.Source.IsRefreshing"
+                                     ElementName="DeployUserControl"></Binding>
+                        </MultiBinding>
+                    </dev2:ConnectControl.IsDropDownEnabled>
+                </dev2:ConnectControl>
 
                 <nv:NavigationView Grid.Row="1"
                                    DataContext="{Binding Source}"
@@ -149,13 +158,23 @@
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <connections:ConnectControl DataContext="{Binding TargetConnectControlViewModel}"
-                                     Grid.Row="0"
+                <dev2:ConnectControl Grid.Row="0"
                                      Margin="3"
+                                     LabelText="Destination Server:"
                                      ConnectButtonAutomationID="UI_DestinationServerConnectbtn_AutoID"
                                      EditButtonAutomationID="UI_DestinationServerEditbtn_AutoID"
-                                     ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID">
-                </connections:ConnectControl>
+                                     ServerComboBoxAutomationID="UI_DestinationServercbx_AutoID"
+                                     BindToActiveEnvironment="False"
+                                     ConnectControlInstanceType="DeployTarget">
+                    <dev2:ConnectControl.IsDropDownEnabled>
+                        <MultiBinding Converter="{StaticResource ConnectControlDisableConverter}">
+                            <Binding Path="DataContext.Target.IsRefreshing"
+                                     ElementName="DeployUserControl"></Binding>
+                            <Binding Path="DataContext.Source.IsRefreshing"
+                                     ElementName="DeployUserControl"></Binding>
+                        </MultiBinding>
+                    </dev2:ConnectControl.IsDropDownEnabled>
+                </dev2:ConnectControl>
 
                 <nv:NavigationView Grid.Row="2"
                                    DataContext="{Binding Target}"

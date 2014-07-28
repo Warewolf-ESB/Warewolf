@@ -1,4 +1,7 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Web;
+using Dev2.AppResources.Enums;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Services.Events;
@@ -6,8 +9,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Webs.Callbacks;
-using System;
-using System.Web;
 
 namespace Dev2.Webs
 {
@@ -125,7 +126,7 @@ namespace Dev2.Webs
                     }
                 }
 
-                return ShowDialog(resourceModel.Environment, resourceType, null, resourceModel.Category, resourceId, srcId, resourceModel.ResourceName);
+                return ShowDialog(resourceModel.Environment, resourceType, null, resourceModel.Category, resourceId, srcId, ConnectControlInstanceType.Explorer, resourceModel.ResourceName);
             }
             return true;
         }
@@ -134,12 +135,11 @@ namespace Dev2.Webs
 
         #region ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourceID = null)
 
-        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string cateogy, string resourceId = null, string srcId = null, string resourceName = null)
+        public static bool ShowDialog(IEnvironmentModel environment, ResourceType resourceType, string resourcePath, string cateogy, string resourceId = null, string sourceId = null, ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer, string resourceName = null)
         {
             const int ServiceDialogHeight = 582;
             const int ServiceDialogWidth = 941;
-            bool? isSuccessful = true;
-
+            var srcId = sourceId;
             if(environment == null)
             {
                 throw new ArgumentNullException("environment");
@@ -175,7 +175,7 @@ namespace Dev2.Webs
                 {
                     case ResourceType.Server:
                         pageName = "sources/server";
-                        pageHandler = new ConnectCallbackHandler();
+                        pageHandler = new ConnectCallbackHandler(connectControlInstanceType);
                         if(!String.IsNullOrEmpty(resourceId) && !String.IsNullOrEmpty(resourceName))
                         {
                             leftTitle = "Edit - " + resourceName;
@@ -191,7 +191,7 @@ namespace Dev2.Webs
 
                     case ResourceType.ServerSource:
                         pageName = "sources/server";
-                        pageHandler = new ConnectCallbackHandler();
+                        pageHandler = new ConnectCallbackHandler(connectControlInstanceType);
                         if(!String.IsNullOrEmpty(resourceId) && !String.IsNullOrEmpty(resourceName))
                         {
                             leftTitle = "Edit - " + resourceName;
@@ -314,14 +314,14 @@ namespace Dev2.Webs
                 if(!IsTestMode)
                 {
                     // this must be a property ;)
-                    isSuccessful = environment.ShowWebPageDialog(SiteName, relativeUriString, pageHandler, width, height, leftTitle, rightTitle);
+                    environment.ShowWebPageDialog(SiteName, relativeUriString, pageHandler, width, height, leftTitle, rightTitle);
                 }
                 else
                 {
                     TestModeRelativeUri = relativeUriString;
                 }
             }
-            return isSuccessful.HasValue && isSuccessful.Value;
+            return true;
         }
 
         #endregion
@@ -394,7 +394,7 @@ namespace Dev2.Webs
             {
                 string rightTitle = environment.Name + " (" + environmentConnection.AppServerUri + ")";
 
-            var pageHandler = new FileChooserCallbackHandler(fileChooserMessage);
+                var pageHandler = new FileChooserCallbackHandler(fileChooserMessage);
 
                 var envirDisplayName = FullyEncodeServerDetails(environmentConnection);
                 var relativeUriString = string.Format("{0}?envir={1}", PageName, envirDisplayName);

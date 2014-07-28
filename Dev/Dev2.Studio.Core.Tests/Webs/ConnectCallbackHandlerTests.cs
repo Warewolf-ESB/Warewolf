@@ -1,4 +1,9 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Composition;
 using Dev2.Providers.Events;
@@ -11,10 +16,6 @@ using Dev2.Webs.Callbacks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.Webs
 {
@@ -88,7 +89,8 @@ namespace Dev2.Core.Tests.Webs
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var env = new EnvironmentModel( Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var env = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(c => c.ActiveEnvironment).Returns(env);
@@ -104,6 +106,116 @@ namespace Dev2.Core.Tests.Webs
         }
 
         [TestMethod]
+        public void SaveWithValidConnectionExpectsAddServerToExplorerMessage()
+        {
+
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+
+            var aggregator = new Mock<IEventAggregator>();
+
+            EventPublishers.Aggregator = aggregator.Object;
+
+            var currentRepository = new Mock<IEnvironmentRepository>();
+            currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
+            currentRepository.Setup(c => c.ActiveEnvironment).Returns(enviro);
+
+            var environmentId = Guid.NewGuid();
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.ID).Returns(environmentId);
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(environment.Object);
+
+            var handler = new ConnectCallbackHandler(currentRepository.Object);
+
+            aggregator.Setup(e => e.Publish(It.IsAny<AddServerToExplorerMessage>())).Verifiable();
+
+            handler.Save(ConnectionJson, null);
+
+            aggregator.Verify(e => e.Publish(It.IsAny<AddServerToExplorerMessage>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ConnectCallbackHandler_Save")]
+        public void ConnectCallbackHandler_Save_NewServer_ShouldNotHaveActiveEnvironmentRepository()
+        {
+            //------------Setup for test--------------------------
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+
+            var aggregator = new Mock<IEventAggregator>();
+
+            EventPublishers.Aggregator = aggregator.Object;
+
+            var currentRepository = new Mock<IEnvironmentRepository>();
+            currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
+            currentRepository.Setup(c => c.ActiveEnvironment).Returns(enviro);
+
+            var environmentId = Guid.NewGuid();
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.ID).Returns(environmentId);
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(environment.Object);
+
+            var handler = new ConnectCallbackHandler(currentRepository.Object);
+            IEnvironmentModel newEnvironment = null;
+            aggregator.Setup(e => e.Publish(It.IsAny<AddServerToExplorerMessage>()))
+                            .Callback<Object>(m =>
+                            {
+                                var msg = (AddServerToExplorerMessage)m;
+                                newEnvironment = msg.EnvironmentModel;
+                            });
+            //------------Execute Test---------------------------
+            handler.Save(ConnectionJson, null);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(newEnvironment);
+            Assert.AreNotEqual(enviro.ResourceRepository, newEnvironment.ResourceRepository);
+        }
+
+
+        [TestMethod]
+        public void SaveWithValidConnectionExpectsAddServerToDeployMessage()
+        {
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            var mockResourceRepo = new Mock<IResourceRepository>();
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+
+            var aggregator = new Mock<IEventAggregator>();
+
+            EventPublishers.Aggregator = aggregator.Object;
+
+            var currentRepository = new Mock<IEnvironmentRepository>();
+            currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
+            currentRepository.Setup(c => c.ActiveEnvironment).Returns(enviro);
+
+            var environment = new Mock<IEnvironmentModel>();
+            currentRepository.Setup(e => e.Fetch(It.IsAny<IEnvironmentModel>())).Returns(environment.Object);
+
+            var handler = new ConnectCallbackHandler(currentRepository.Object);
+
+            aggregator.Setup(e => e.Publish(It.IsAny<AddServerToDeployMessage>()))
+                            .Callback<Object>(m =>
+                            {
+                                var msg = (AddServerToDeployMessage)m;
+                                Assert.IsTrue(msg.Server.ID.ToString()
+                                                 .Equals(ConnectionId.ToString(CultureInfo.InvariantCulture),
+                                                         StringComparison.InvariantCultureIgnoreCase));
+                            })
+                             .Verifiable();
+
+            handler.Save(ConnectionJson, null);
+
+            aggregator.Verify(e => e.Publish(It.IsAny<AddServerToDeployMessage>()), Times.Once());
+        }
+
+        [TestMethod]
         // ReSharper disable InconsistentNaming - Unit Tests
         public void Save_WithValidConnection_Expected_InvokesSaveEnvironmentWithCategory()
         // ReSharper restore InconsistentNaming - Unit Tests
@@ -112,7 +224,8 @@ namespace Dev2.Core.Tests.Webs
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var enviro = new EnvironmentModel( Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
@@ -154,7 +267,8 @@ namespace Dev2.Core.Tests.Webs
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var enviro = new EnvironmentModel( Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+            var mockEventAgg = new Mock<IEventAggregator>();
+            var enviro = new EnvironmentModel(mockEventAgg.Object, Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
