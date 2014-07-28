@@ -21,22 +21,22 @@ Scenario: Schedule with history
 	  | # |                   |
 	  | 1 | [[DiceRoll]] = Int32 |
 #
-Scenario: Schedule the Dice rol workflow and run
-      Given I have a schedule "Diceroll01235"
-	  And "Diceroll01235" executes an Workflow "My Category\Dice Roll"
-	  And task history "Number of history records to load" is "2"
-	  And the task status "Status" is "Enabled"
-	  And "Diceroll01235" has a username of "dev2\IntegrationTester" and a Password of "I73573r0"
-	  And "Diceroll01235" has a Schedule of
-	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |
-	  | On a schedule | Daily  | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
-	  When the "Diceroll01235" is executed "1" times
-	  Then the schedule status is "Success"
-	  Then the Schedule task has "No" error
-	  And "Diceroll01235" has "2" row of history	   
-	  And the history debug output for 'ScheduleWithHistory' for row "1" is 
-		| # |                    |
-		| 1 | [[DiceRoll]] = Int32 |
+#Scenario: Schedule the Dice rol workflow and run
+#      Given I have a schedule "Diceroll01235"
+#	  And "Diceroll01235" executes an Workflow "My Category\Dice Roll"
+#	  And task history "Number of history records to load" is "2"
+#	  And the task status "Status" is "Enabled"
+#	  And "Diceroll01235" has a username of "dev2\IntegrationTester" and a Password of "I73573r0"
+#	  And "Diceroll01235" has a Schedule of
+#	  | ScheduleType  | Interval | StartDate  | StartTime | Recurs | RecursInterval | Delay | DelayInterval | Repeat | RepeatInterval | ExpireDate | ExpireTime |
+#	  | On a schedule | Daily  | 2014/01/01 | 15:40:44  | 1      | day            | 1     | hour          | 1      | hour           | 2014/01/02 | 15:40:15   |
+#	  When the "Diceroll01235" is executed "1" times
+#	  Then the schedule status is "Success"
+#	  Then the Schedule task has "No" error
+#	  And "Diceroll01235" has "2" row of history	   
+#	  And the history debug output for 'ScheduleWithHistory' for row "1" is 
+#		| # |                    |
+#		| 1 | [[DiceRoll]] = Int32 |
 
 Scenario: Creating task with schedule statud disabled
       Given I have a schedule "Diceroll00"
