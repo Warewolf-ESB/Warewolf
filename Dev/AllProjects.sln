@@ -119,8 +119,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Tests", "D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Specs", "Dev2.Studio.Core.Specs\Dev2.Studio.Core.Specs.csproj", "{96E59B04-1506-4554-B46A-B2B494116B07}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.DataBinding.Tests", "Dev2.DataBinding.Tests\Dev2.DataBinding.Tests\Dev2.DataBinding.Tests.csproj", "{50778840-8275-4D2C-8701-D5FABA5E963F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Instrumentation", "Dev2.Instrumentation\Dev2.Instrumentation.csproj", "{52F26184-CB50-4D82-B8A2-83F73D2B5011}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers", "Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj", "{1B229665-1631-4275-AFBD-CB5B7775E4CA}"
@@ -140,6 +138,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Crypto.HashGenerator", "Dev2.Crypto.HashGenerator\Dev2.Crypto.HashGenerator.csproj", "{E872FFC0-96F9-4FB8-A8D9-B498E158742B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UnitTestUtils", "Dev2.UnitTestUtils\Dev2.UnitTestUtils.csproj", "{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.DataBinding.Tests", "Dev2.DataBinding.Tests\Dev2.DataBinding.Tests.csproj", "{50778840-8275-4D2C-8701-D5FABA5E963F}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -273,39 +273,39 @@ Global
 		SccProjectUniqueName42 = Dev2.Studio.Core.Specs\\Dev2.Studio.Core.Specs.csproj
 		SccProjectName42 = Dev2.Studio.Core.Specs
 		SccLocalPath42 = Dev2.Studio.Core.Specs
-		SccProjectUniqueName43 = Dev2.DataBinding.Tests\\Dev2.DataBinding.Tests\\Dev2.DataBinding.Tests.csproj
-		SccProjectName43 = Dev2.DataBinding.Tests/Dev2.DataBinding.Tests
-		SccLocalPath43 = Dev2.DataBinding.Tests\\Dev2.DataBinding.Tests
-		SccProjectUniqueName44 = Dev2.Instrumentation\\Dev2.Instrumentation.csproj
-		SccProjectName44 = Dev2.Instrumentation
-		SccLocalPath44 = Dev2.Instrumentation
-		SccProjectUniqueName45 = Dev2.Scheduler\\Dev2.Scheduler.csproj
-		SccProjectName45 = Dev2.Scheduler
-		SccLocalPath45 = Dev2.Scheduler
-		SccProjectUniqueName46 = Dev2.ScheduleExecutor\\Dev2.ScheduleExecutor.csproj
-		SccProjectName46 = Dev2.ScheduleExecutor
-		SccLocalPath46 = Dev2.ScheduleExecutor
-		SccProjectUniqueName47 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
-		SccProjectName47 = Dev2.TaskScheduler.Wrappers
-		SccLocalPath47 = Dev2.TaskScheduler.Wrappers
-		SccProjectUniqueName48 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
-		SccProjectName48 = Dev2.TaskScheduler.Wrappers.Test
-		SccLocalPath48 = Dev2.TaskScheduler.Wrappers.Test
-		SccProjectUniqueName49 = Dev2.Scheduler.Test\\Dev2.Scheduler.Tests.csproj
-		SccProjectName49 = Dev2.Scheduler.Test
-		SccLocalPath49 = Dev2.Scheduler.Test
-		SccProjectUniqueName50 = Dev2.Load.Tests\\Dev2.Load.Tests.csproj
-		SccProjectName50 = Dev2.Load.Tests
-		SccLocalPath50 = Dev2.Load.Tests
-		SccProjectUniqueName51 = SFTPServer\\Dev2.Testing.SFTPServer.csproj
-		SccProjectName51 = SFTPServer
-		SccLocalPath51 = SFTPServer
-		SccProjectUniqueName52 = Dev2.Crypto.HashGenerator\\Dev2.Crypto.HashGenerator.csproj
-		SccProjectName52 = Dev2.Crypto.HashGenerator
-		SccLocalPath52 = Dev2.Crypto.HashGenerator
-		SccProjectUniqueName53 = Dev2.UnitTestUtils\\Dev2.UnitTestUtils.csproj
-		SccProjectName53 = Dev2.UnitTestUtils
-		SccLocalPath53 = Dev2.UnitTestUtils
+		SccProjectUniqueName43 = Dev2.Instrumentation\\Dev2.Instrumentation.csproj
+		SccProjectName43 = Dev2.Instrumentation
+		SccLocalPath43 = Dev2.Instrumentation
+		SccProjectUniqueName44 = Dev2.Scheduler\\Dev2.Scheduler.csproj
+		SccProjectName44 = Dev2.Scheduler
+		SccLocalPath44 = Dev2.Scheduler
+		SccProjectUniqueName45 = Dev2.ScheduleExecutor\\Dev2.ScheduleExecutor.csproj
+		SccProjectName45 = Dev2.ScheduleExecutor
+		SccLocalPath45 = Dev2.ScheduleExecutor
+		SccProjectUniqueName46 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
+		SccProjectName46 = Dev2.TaskScheduler.Wrappers
+		SccLocalPath46 = Dev2.TaskScheduler.Wrappers
+		SccProjectUniqueName47 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
+		SccProjectName47 = Dev2.TaskScheduler.Wrappers.Test
+		SccLocalPath47 = Dev2.TaskScheduler.Wrappers.Test
+		SccProjectUniqueName48 = Dev2.Scheduler.Test\\Dev2.Scheduler.Tests.csproj
+		SccProjectName48 = Dev2.Scheduler.Test
+		SccLocalPath48 = Dev2.Scheduler.Test
+		SccProjectUniqueName49 = Dev2.Load.Tests\\Dev2.Load.Tests.csproj
+		SccProjectName49 = Dev2.Load.Tests
+		SccLocalPath49 = Dev2.Load.Tests
+		SccProjectUniqueName50 = SFTPServer\\Dev2.Testing.SFTPServer.csproj
+		SccProjectName50 = SFTPServer
+		SccLocalPath50 = SFTPServer
+		SccProjectUniqueName51 = Dev2.Crypto.HashGenerator\\Dev2.Crypto.HashGenerator.csproj
+		SccProjectName51 = Dev2.Crypto.HashGenerator
+		SccLocalPath51 = Dev2.Crypto.HashGenerator
+		SccProjectUniqueName52 = Dev2.UnitTestUtils\\Dev2.UnitTestUtils.csproj
+		SccProjectName52 = Dev2.UnitTestUtils
+		SccLocalPath52 = Dev2.UnitTestUtils
+		SccProjectUniqueName53 = Dev2.DataBinding.Tests\\Dev2.DataBinding.Tests.csproj
+		SccProjectName53 = Dev2.DataBinding.Tests
+		SccLocalPath53 = Dev2.DataBinding.Tests
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -1121,24 +1121,6 @@ Global
 		{96E59B04-1506-4554-B46A-B2B494116B07}.Test|Mixed Platforms.Build.0 = Test|Any CPU
 		{96E59B04-1506-4554-B46A-B2B494116B07}.Test|x64.ActiveCfg = Test|Any CPU
 		{96E59B04-1506-4554-B46A-B2B494116B07}.Test|x86.ActiveCfg = Test|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|x64.ActiveCfg = Release|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|x86.ActiveCfg = Release|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|Any CPU.Build.0 = Test|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|Mixed Platforms.ActiveCfg = Test|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|Mixed Platforms.Build.0 = Test|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|x64.ActiveCfg = Test|Any CPU
-		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|x86.ActiveCfg = Test|Any CPU
 		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -1319,6 +1301,24 @@ Global
 		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Test|Mixed Platforms.Build.0 = Release|Any CPU
 		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Test|x64.ActiveCfg = Release|Any CPU
 		{034E0B3D-3BDC-4B8E-BC77-EC09877B6FBF}.Test|x86.ActiveCfg = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|x64.ActiveCfg = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Release|x86.ActiveCfg = Release|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|Any CPU.Build.0 = Test|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|Mixed Platforms.ActiveCfg = Test|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|Mixed Platforms.Build.0 = Test|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|x64.ActiveCfg = Test|Any CPU
+		{50778840-8275-4D2C-8701-D5FABA5E963F}.Test|x86.ActiveCfg = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
