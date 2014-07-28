@@ -1100,3 +1100,49 @@ Scenario: Decision using recordset append notation
 	And the debug output as 
 	|     |
 	| YES |
+
+
+#Scenario: Executing Decision with malformed variables
+#	Given a decision variable "[[a]]" value "1"		
+#	And is "[[[[a]]" "IsEqual" "1"	
+#	When the decision tool is executed
+#	Then the decision result should be "False"
+#	And the execution has "AN" error
+#	And the debug inputs as  
+#	|  | Statement | Require All decisions to be True |
+#	|  | String    | YES                              |
+#	And the debug output as 
+#	|    |
+#	| NO | 
+#
+#Scenario: Executing Decision with malformed recordset
+#	Given a decision variable "[[rec(1).a]]" value "1"		
+#	And is "[[[[rec().a]]" "IsEqual" "1"	
+#	When the decision tool is executed
+#	Then the decision result should be "False"
+#	And the execution has "AN" error
+#	And the debug inputs as  
+#	|  | Statement | Require All decisions to be True |
+#	|  | String    | YES                              |
+#	And the debug output as 
+#	|    |
+#	| NO | 
+#
+#Scenario: Executing Decision with recordset contains spcl character as index
+#	Given a decision variable "[[rec(1).a]]" value "1"		
+#	And is "[[rec(&).a]]" "IsEqual" "1"	
+#	When the decision tool is executed
+#	Then the decision result should be "False"
+#	And the execution has "AN" error
+#	And the debug inputs as  
+#	|  | Statement | Require All decisions to be True |
+#	|  | String    | YES                              |
+#	And the debug output as 
+#	|    |
+#	| NO | 
+#
+
+
+
+
+
