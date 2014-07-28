@@ -60,7 +60,7 @@ namespace Dev2.Core.Tests.Workflows
         public void LoadInputsExpectedOnlyInputsLoaded()
         {
             var mockResouce = GetMockResource();
-            mockResouce.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
+            mockResouce.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_NoInputs_XMLData);
             var serviceDebugInfo = GetMockServiceDebugInfo(mockResouce);
             serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
             var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
@@ -85,7 +85,6 @@ namespace Dev2.Core.Tests.Workflows
             {
                 Assert.AreEqual(string.Empty, input.Value);
             }
-            Assert.IsTrue(workflowInputDataviewModel.WorkflowInputs.Count == 0);
         }
 
 
@@ -111,7 +110,7 @@ namespace Dev2.Core.Tests.Workflows
             var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
             workflowInputDataviewModel.LoadWorkflowInputs();
             workflowInputDataviewModel.Save();
-            Assert.AreEqual("", workflowInputDataviewModel.DebugTO.Error);
+            Assert.AreEqual("", workflowInputDataviewModel.DebugTo.Error);
         }
 
         [TestMethod]
@@ -122,7 +121,7 @@ namespace Dev2.Core.Tests.Workflows
             var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
             workflowInputDataviewModel.LoadWorkflowInputs();
             workflowInputDataviewModel.Cancel();
-            Assert.AreEqual("", workflowInputDataviewModel.DebugTO.Error);
+            Assert.AreEqual("", workflowInputDataviewModel.DebugTo.Error);
         }
 
         [TestMethod]
@@ -164,7 +163,7 @@ namespace Dev2.Core.Tests.Workflows
             var viewModel = WorkflowInputDataViewModel.Create(mockResouce.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel);
-            Assert.IsNotNull(viewModel.DebugTO);
+            Assert.IsNotNull(viewModel.DebugTo);
         }
 
 
@@ -313,17 +312,17 @@ namespace Dev2.Core.Tests.Workflows
             var workflowInputDataViewModel = new WorkflowInputDataViewModel(serviceDebugInfoModel, debugVM.SessionID);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(rm.Object.DataList, workflowInputDataViewModel.DebugTO.DataList);
-            Assert.AreEqual(rm.Object.ResourceName, workflowInputDataViewModel.DebugTO.ServiceName);
-            Assert.AreEqual(rm.Object.ResourceName, workflowInputDataViewModel.DebugTO.WorkflowID);
+            Assert.AreEqual(rm.Object.DataList, workflowInputDataViewModel.DebugTo.DataList);
+            Assert.AreEqual(rm.Object.ResourceName, workflowInputDataViewModel.DebugTo.ServiceName);
+            Assert.AreEqual(rm.Object.ResourceName, workflowInputDataViewModel.DebugTo.WorkflowID);
             // Travis 05.12 - Was rm.Object.WorkflowXaml.ToString(), since we no longer carry strings this was silly ;)
-            Assert.AreEqual(string.Empty, workflowInputDataViewModel.DebugTO.WorkflowXaml);
-            Assert.AreEqual(serviceDebugInfoModel.ServiceInputData, workflowInputDataViewModel.DebugTO.XmlData);
-            Assert.AreEqual(rm.Object.ID, workflowInputDataViewModel.DebugTO.ResourceID);
-            Assert.AreEqual(rm.Object.ServerID, workflowInputDataViewModel.DebugTO.ServerID);
-            Assert.AreEqual(serviceDebugInfoModel.RememberInputs, workflowInputDataViewModel.DebugTO.RememberInputs);
-            Assert.AreEqual(debugVM.SessionID, workflowInputDataViewModel.DebugTO.SessionID);
-            Assert.IsTrue(workflowInputDataViewModel.DebugTO.IsDebugMode);
+            Assert.AreEqual(string.Empty, workflowInputDataViewModel.DebugTo.WorkflowXaml);
+            Assert.AreEqual(serviceDebugInfoModel.ServiceInputData, workflowInputDataViewModel.DebugTo.XmlData);
+            Assert.AreEqual(rm.Object.ID, workflowInputDataViewModel.DebugTo.ResourceID);
+            Assert.AreEqual(rm.Object.ServerID, workflowInputDataViewModel.DebugTo.ServerID);
+            Assert.AreEqual(serviceDebugInfoModel.RememberInputs, workflowInputDataViewModel.DebugTo.RememberInputs);
+            Assert.AreEqual(debugVM.SessionID, workflowInputDataViewModel.DebugTo.SessionID);
+            Assert.IsTrue(workflowInputDataViewModel.DebugTo.IsDebugMode);
         }
 
         [TestMethod]
@@ -364,9 +363,9 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual(1, workflowInputDataViewModel.SendExecuteRequestHitCount);
             Assert.IsNotNull(workflowInputDataViewModel.SendExecuteRequestPayload);
 
-            var payload = XElement.Parse(workflowInputDataViewModel.DebugTO.XmlData);
-            payload.Add(new XElement("BDSDebugMode", workflowInputDataViewModel.DebugTO.IsDebugMode));
-            payload.Add(new XElement("DebugSessionID", workflowInputDataViewModel.DebugTO.SessionID));
+            var payload = XElement.Parse(workflowInputDataViewModel.DebugTo.XmlData);
+            payload.Add(new XElement("BDSDebugMode", workflowInputDataViewModel.DebugTo.IsDebugMode));
+            payload.Add(new XElement("DebugSessionID", workflowInputDataViewModel.DebugTo.SessionID));
             payload.Add(new XElement("EnvironmentID", Guid.Empty));
 
             var expectedPayload = payload.ToString(SaveOptions.None);
@@ -402,7 +401,7 @@ namespace Dev2.Core.Tests.Workflows
             };
 
             var debugOutputViewModel = CreateDebugOutputViewModel();
-            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTO = { DataList = datalist } };
+            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } };
             workflowInputDataViewModel.LoadWorkflowInputs();
             workflowInputDataViewModel.XmlData = @"<DataList><rs><val>1</val></rs><rs><val>2</val></rs></DataList>";
             workflowInputDataViewModel.SetWorkflowInputData();
@@ -445,7 +444,7 @@ namespace Dev2.Core.Tests.Workflows
             };
 
             var debugOutputViewModel = CreateDebugOutputViewModel();
-            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTO = { DataList = datalist } };
+            var workflowInputDataViewModel = new WorkflowInputDataViewModelMock(serviceDebugInfoModel, debugOutputViewModel) { DebugTo = { DataList = datalist } };
             workflowInputDataViewModel.LoadWorkflowInputs();
             workflowInputDataViewModel.XmlData = @"<DataList><val>1</val><res>2</res></DataList>";
             workflowInputDataViewModel.SetWorkflowInputData();
@@ -498,7 +497,7 @@ namespace Dev2.Core.Tests.Workflows
     <val>2</val>
   </rs>
 </DataList>";
-            Assert.AreEqual(expectedPayload, workflowInputDataViewModel.DebugTO.XmlData);
+            Assert.AreEqual(expectedPayload, workflowInputDataViewModel.DebugTo.XmlData);
         }
 
         #region Private Methods
@@ -573,7 +572,7 @@ namespace Dev2.Core.Tests.Workflows
             mockResource.SetupGet(r => r.ResourceName).Returns(ResourceName);
             mockResource.SetupGet(r => r.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.DebugInputWindow_WorkflowXaml));
             mockResource.SetupGet(r => r.ID).Returns(_resourceID);
-            mockResource.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
+            mockResource.SetupGet(r => r.DataList).Returns(StringResourcesTest.DebugInputWindow_NoInputs_XMLData);
             return mockResource;
         }
 
@@ -621,7 +620,7 @@ namespace Dev2.Core.Tests.Workflows
             SendExecuteRequestPayload = payload;
         }
 
-        protected override void SendViewInBrowserRequest(string payload, bool isXML)
+        protected override void SendViewInBrowserRequest(string payload)
         {
             SendViewInBrowserRequestHitCount++;
             SendViewInBrowserRequestPayload = payload;

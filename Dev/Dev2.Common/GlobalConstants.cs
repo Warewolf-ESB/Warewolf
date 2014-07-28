@@ -34,6 +34,7 @@ namespace Dev2.Common
 
         //Dev2MessageBox DontShowAgainKeys
         public const string Dev2MessageBoxDesignSurfaceTabPasteDialog = "1";
+        public const string Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog = "2";
 
         // WF Constants
         // ReSharper disable InconsistentNaming

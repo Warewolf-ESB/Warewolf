@@ -19,6 +19,12 @@ namespace Dev2.Studio.Core.Network
 
     #endregion
 
+    public enum UrlType
+    {
+        XML,
+        JSON
+    }
+
     public static class WebServer
     {
 
@@ -63,26 +69,41 @@ namespace Dev2.Studio.Core.Network
             }
         }
 
-        public static void OpenInBrowser(WebServerMethod post, IContextualResourceModel resourceModel, string xmlData, bool isXml)
+        public static void OpenInBrowser(WebServerMethod post, IContextualResourceModel resourceModel, string xmlData)
+        {
+            Uri url = GetWorkflowUri(resourceModel, xmlData, UrlType.XML);
+            if(url != null)
+            {
+                Process.Start(url.ToString());
+            }
+        }
+
+        public static Uri GetWorkflowUri(IContextualResourceModel resourceModel, string xmlData, UrlType urlType)
         {
             if(resourceModel == null || resourceModel.Environment == null || resourceModel.Environment.Connection == null || !resourceModel.Environment.IsConnected)
             {
-                return;
+                return null;
             }
             var environmentConnection = resourceModel.Environment.Connection;
-            var relativeUrl = string.Format("/services/{0}.xml?", resourceModel.Category);
-            if(isXml)
+
+            string urlExtension = "xml";
+            switch(urlType)
             {
-                relativeUrl += xmlData;
+                case UrlType.XML:
+                    break;
+                case UrlType.JSON:
+                    urlExtension = "json";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException("urlType");
             }
-            else
-            {
-                relativeUrl += xmlData;
-            }
+
+            var relativeUrl = string.Format("/services/{0}.{1}?", resourceModel.Category, urlExtension);
+            relativeUrl += xmlData;
             relativeUrl += "&wid=" + environmentConnection.WorkspaceID;
             Uri url;
             Uri.TryCreate(environmentConnection.WebServerUri, relativeUrl, out url);
-            Process.Start(url.ToString());
+            return url;
         }
     }
 }

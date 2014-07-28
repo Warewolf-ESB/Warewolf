@@ -1202,7 +1202,7 @@ namespace Dev2.Core.Tests
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 4");
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, false);
@@ -1262,7 +1262,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
             resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 3");
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             mockPopUp.Setup(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Verifiable();
             var workflowHelper = new Mock<IWorkflowHelper>();
@@ -1323,7 +1323,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.ID).Returns(resourceID);
             resourceModel.Setup(m => m.IsNewWorkflow).Returns(true);
             resourceModel.Setup(m => m.IsWorkflowSaved).Returns(true);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 2");
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(resourceModel.Object, workflowHelper.Object, false);
             var contextViewModel1 = new WorkSurfaceContextViewModel(
@@ -1410,7 +1410,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
             resourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 4");
             #endregion
 
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
@@ -1461,7 +1461,7 @@ namespace Dev2.Core.Tests
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 5");
             #endregion
 
             Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);

@@ -36,10 +36,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         private RelayCommand _executeCommmand;
         private RelayCommand _cancelComand;
         private string _xmlData;
-        private readonly IContextualResourceModel _resourceModel;
+        private static IContextualResourceModel _resourceModel;
         private bool _rememberInputs;
         RelayCommand _viewInBrowserCommmand;
-        readonly DataListConversionUtils _dataListConversionUtils;
+        static DataListConversionUtils _dataListConversionUtils;
         bool _canViewInBrowser;
         bool _canDebug;
 
@@ -69,13 +69,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Ctor
 
-        public WorkflowInputDataViewModel(IServiceDebugInfoModel input, Guid sessionID)
+        public WorkflowInputDataViewModel(IServiceDebugInfoModel input, Guid sessionId)
         {
             VerifyArgument.IsNotNull("input", input);
             CanDebug = true;
             CanViewInBrowser = true;
 
-            DebugTO = new DebugTO
+            DebugTo = new DebugTO
             {
                 DataList = !string.IsNullOrEmpty(input.ResourceModel.DataList)
                                ? input.ResourceModel.DataList
@@ -88,12 +88,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 ResourceID = input.ResourceModel.ID,
                 ServerID = input.ResourceModel.ServerID,
                 RememberInputs = input.RememberInputs,
-                SessionID = sessionID
+                SessionID = sessionId
             };
 
             if(input.DebugModeSetting == DebugMode.DebugInteractive)
             {
-                DebugTO.IsDebugMode = true;
+                DebugTo.IsDebugMode = true;
             }
 
             _resourceModel = input.ResourceModel;
@@ -118,7 +118,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <summary>
         /// The transfer object that holds all the information needed for a debug session
         /// </summary>
-        public DebugTO DebugTO { get; set; }
+        public DebugTO DebugTo { get; set; }
 
         /// <summary>
         /// Collection of IDataListItems that contain all the inputs
@@ -254,14 +254,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             RequestClose();
         }
 
-        void DoSaveActions()
+        public void DoSaveActions()
         {
             SetXmlData();
-            DebugTO.XmlData = XmlData;
-            DebugTO.RememberInputs = RememberInputs;
-            if(DebugTO.DataList != null)
+            DebugTo.XmlData = XmlData;
+            DebugTo.RememberInputs = RememberInputs;
+            if(DebugTo.DataList != null)
             {
-                Broker.PersistDebugSession(DebugTO);
+                Broker.PersistDebugSession(DebugTo);
             }
         }
 
@@ -281,10 +281,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             var clientContext = _resourceModel.Environment.Connection;
             if(clientContext != null)
             {
-                var dataList = XElement.Parse(DebugTO.XmlData);
+                var dataList = XElement.Parse(DebugTo.XmlData);
                 //
-                dataList.Add(new XElement("BDSDebugMode", DebugTO.IsDebugMode));
-                dataList.Add(new XElement("DebugSessionID", DebugTO.SessionID));
+                dataList.Add(new XElement("BDSDebugMode", DebugTo.IsDebugMode));
+                dataList.Add(new XElement("DebugSessionID", DebugTo.SessionID));
                 dataList.Add(new XElement("EnvironmentID", _resourceModel.Environment.ID));
                 OnDebugExecutionStart();
                 SendExecuteRequest(dataList);
@@ -300,26 +300,25 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowserClicked);
             DoSaveActions();
-            var isXml = false;
-            string payload;
-            var allScalars = WorkflowInputs.All(item => !item.IsRecordset);
-            if(allScalars && WorkflowInputs.Count > 0)
-            {
-                payload = WorkflowInputs.Aggregate("", (current, workflowInput) => current + (workflowInput.Field + "=" + workflowInput.Value + "&")).TrimEnd('&');
-            }
-            else
-            {
-                payload = XElement.Parse(XmlData).ToString(SaveOptions.DisableFormatting);
-                isXml = true;
-            }
-            SendViewInBrowserRequest(payload, isXml);
+            string payload = BuildWebPayLoad();
+            SendViewInBrowserRequest(payload);
             SendFinishedMessage();
             RequestClose();
         }
 
-        protected virtual void SendViewInBrowserRequest(string payload, bool isXml)
+        public string BuildWebPayLoad()
         {
-            WebServer.OpenInBrowser(WebServerMethod.POST, _resourceModel, payload, isXml);
+            var allScalars = WorkflowInputs.All(item => !item.IsRecordset);
+            if(allScalars && WorkflowInputs.Count > 0)
+            {
+                return WorkflowInputs.Aggregate("", (current, workflowInput) => current + (workflowInput.Field + "=" + workflowInput.Value + "&")).TrimEnd('&');
+            }
+            return XElement.Parse(XmlData).ToString(SaveOptions.DisableFormatting);
+        }
+
+        protected virtual void SendViewInBrowserRequest(string payload)
+        {
+            WebServer.OpenInBrowser(WebServerMethod.POST, _resourceModel, payload);
         }
 
         private void SendFinishedMessage()
@@ -334,9 +333,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             //2012.10.11: massimo.guerrera - Added for PBI 5781
             SetXmlData();
-            DebugTO.XmlData = XmlData;
-            DebugTO.RememberInputs = RememberInputs;
-            if(DebugTO.DataList != null) Broker.PersistDebugSession(DebugTO); //2013.01.22: Ashley Lewis - Bug 7837
+            DebugTo.XmlData = XmlData;
+            DebugTo.RememberInputs = RememberInputs;
+            if(DebugTo.DataList != null) Broker.PersistDebugSession(DebugTo); //2013.01.22: Ashley Lewis - Bug 7837
 
             SendFinishedMessage();
             RequestClose(ViewModelDialogResults.Cancel);
@@ -349,13 +348,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             WorkflowInputs.Clear();
             Broker = Dev2StudioSessionFactory.CreateBroker();
-            DebugTO = Broker.InitDebugSession(DebugTO);
-            XmlData = DebugTO.XmlData;
-            RememberInputs = DebugTO.RememberInputs;
-            DataList = DebugTO.BinaryDataList;
+            DebugTo = Broker.InitDebugSession(DebugTo);
+            XmlData = DebugTo.XmlData;
+            RememberInputs = DebugTo.RememberInputs;
+            DataList = DebugTo.BinaryDataList;
 
             // Flipping Jurie....
-            var myList = _dataListConversionUtils.CreateListToBindTo(DebugTO.BinaryDataList);
+            var myList = _dataListConversionUtils.CreateListToBindTo(DebugTo.BinaryDataList);
 
             WorkflowInputs.AddRange(myList);
         }
@@ -373,7 +372,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 DataList.TryGetEntry(itemToAdd.Recordset, out recordset, out error);
                 if(recordset != null)
                 {
-                    IList<Dev2Column> recsetCols = recordset.Columns.Where(cc=>cc.ColumnIODirection == enDev2ColumnArgumentDirection.Input|| cc.ColumnIODirection == enDev2ColumnArgumentDirection.Both).ToList();
+                    IList<Dev2Column> recsetCols = recordset.Columns.Where(cc => cc.ColumnIODirection == enDev2ColumnArgumentDirection.Input || cc.ColumnIODirection == enDev2ColumnArgumentDirection.Both).ToList();
                     var numberOfRows = WorkflowInputs.Where(c => c.Recordset == itemToAdd.Recordset);
                     IEnumerable<IDataListItem> dataListItems = numberOfRows as IDataListItem[] ?? numberOfRows.ToArray();
                     var lastItem = dataListItems.Last();
@@ -479,7 +478,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            var dl = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), string.Empty, DebugTO.DataList ?? "<Datalist></Datalist>", out errors);
+            var dl = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), string.Empty, DebugTo.DataList ?? "<Datalist></Datalist>", out errors);
             DataList = compiler.FetchBinaryDataList(dl, out errors);
             // For some damn reason this does not always bind like it should! ;)
             Thread.Sleep(150);
@@ -515,7 +514,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void SetWorkflowInputData()
         {
             string error;
-            DataList = Broker.DeSerialize(XmlData, DebugTO.DataList, enTranslationTypes.XML, out error);
+            DataList = Broker.DeSerialize(XmlData, DebugTo.DataList, enTranslationTypes.XML, out error);
             if(string.IsNullOrEmpty(error))
             {
                 WorkflowInputs.Clear();
@@ -609,12 +608,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             return Create(resourceModel, Guid.Empty, DebugMode.Run);
         }
 
-        public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel, Guid sessionID, DebugMode debugMode)
+        public static WorkflowInputDataViewModel Create(IContextualResourceModel resourceModel, Guid sessionId, DebugMode debugMode)
         {
             VerifyArgument.IsNotNull("resourceModel", resourceModel);
             var debugInfoModel = ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, debugMode);
 
-            var result = new WorkflowInputDataViewModel(debugInfoModel, sessionID)
+            var result = new WorkflowInputDataViewModel(debugInfoModel, sessionId)
             {
                 CanDebug = resourceModel.UserPermissions.CanDebug()
             };

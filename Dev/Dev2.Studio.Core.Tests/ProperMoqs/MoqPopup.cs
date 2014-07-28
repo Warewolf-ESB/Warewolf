@@ -81,6 +81,11 @@ namespace Dev2.Core.Tests.ProperMoqs
             return _result;
         }
 
+        public MessageBoxResult ShowNoInputsSelectedWhenClickLink()
+        {
+            return _result;
+        }
+
         public MessageBoxResult ShowSaveErrorDialog(string errorMessage)
         {
             return _result;

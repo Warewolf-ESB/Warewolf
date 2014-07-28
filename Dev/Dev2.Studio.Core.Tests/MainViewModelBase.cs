@@ -207,7 +207,7 @@ namespace Dev2.Core.Tests
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Connection).Returns(connection.Object);
             env.Setup(e => e.IsConnected).Returns(true);
-            env.Setup(e => e.ID).Returns(Guid.NewGuid());
+            env.Setup(e => e.ID).Returns(ServerID);
             env.Setup(e => e.Name).Returns(string.Format("Server_{0}", rand.Next(1, 100)));
             return env;
         }
@@ -219,6 +219,7 @@ namespace Dev2.Core.Tests
             var item = new Mock<IWorkspaceItem>();
             item.SetupGet(i => i.WorkspaceID).Returns(WorkspaceID);
             item.SetupGet(i => i.ServerID).Returns(ServerID);
+            item.SetupGet(i => i.EnvironmentID).Returns(ServerID);
             item.SetupGet(i => i.ServiceName).Returns(ResourceName);
             item.SetupGet(i => i.ID).Returns(FirstResourceID);
             list.Add(item.Object);

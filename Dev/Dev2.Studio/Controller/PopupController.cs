@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.Composition;
 using System.Windows;
+using Dev2.Common;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.ViewModels.Dialogs;
 
@@ -113,6 +114,19 @@ namespace Dev2.Studio.Controller
             Description = description;
             Buttons = MessageBoxButton.YesNoCancel;
             ImageType = MessageBoxImage.Information;
+            return Show();
+        }
+
+        public MessageBoxResult ShowNoInputsSelectedWhenClickLink()
+        {
+            Header = "Did you know?";
+            var description = "You can pass variables into your workflow" + Environment.NewLine
+                              + "by selecting the Input checkbox" + Environment.NewLine +
+                              "in the Variables window.";
+            Description = description;
+            Buttons = MessageBoxButton.OK;
+            ImageType = MessageBoxImage.Information;
+            DontShowAgainKey = GlobalConstants.Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog;
             return Show();
         }
 

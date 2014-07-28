@@ -12,12 +12,20 @@
                 <ContentControl Content="{Binding Path=OutlineView}"/>
             </customControls:SplitterPanel.ContentLeft>
             <customControls:SplitterPanel.ContentRight>
+                <StackPanel>
+                    <TextBlock TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Center">
+                                <Hyperlink Command="{Binding Path=OpenWorkflowLinkCommand}"
+                                           CommandParameter="{Binding}">
+                                    <Run Text="{Binding Path=DisplayWorkflowLink,Mode=OneWay}"></Run>
+                                </Hyperlink>
+                        </TextBlock>                
                 <ContentControl Content="{Binding Path=DesignerView}" AutomationProperties.AutomationId="{Binding Path=DesignerText}" 
                         cal:Message.Attach="[Event LostKeyboardFocus] = [Action DoWorkspaceSave]">
                     <i:Interaction.Behaviors>
                         <local:WorkflowDesignerLinkBehaviours CollapseAllCommand="{Binding CollapseAllCommand}" ExpandAllCommand="{Binding ExpandAllCommand}" />
                     </i:Interaction.Behaviors>
                 </ContentControl>
+                    </StackPanel>
             </customControls:SplitterPanel.ContentRight>
         </customControls:SplitterPanel>
 

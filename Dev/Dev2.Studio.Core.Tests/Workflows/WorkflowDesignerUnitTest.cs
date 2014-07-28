@@ -1400,7 +1400,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
             resourceModel.Setup(m => m.Environment.ID).Returns(resourceEnvironmentID);
             resourceModel.Setup(m => m.Environment.Connection.WebServerUri).Returns(new Uri(ServiceUri));
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 1");
             #endregion
 
             #region Setup viewModel
@@ -1452,6 +1452,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name");
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(m => m.ResourceType).Returns(ResourceType.WorkflowService);
             resourceModel.Setup(m => m.Environment.ID).Returns(resourceEnvironmentID);
@@ -2605,7 +2606,14 @@ namespace Dev2.Core.Tests.Workflows
                     workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
                     workflowHelper.Setup(h => h.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("<x></x>"));
                     var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object) { ServiceDefinition = xamlBuilder };
-
+                    bool _propertyUpdated = false;
+                    viewModel.PropertyChanged += (sender, eventArgs) =>
+                    {
+                        if(eventArgs.PropertyName == "DisplayWorkflowLink")
+                        {
+                            _propertyUpdated = true;
+                        }
+                    };
                     #endregion
 
 
@@ -2647,6 +2655,7 @@ namespace Dev2.Core.Tests.Workflows
                     viewModel.Dispose();
 
                     //Verify
+                    Assert.IsTrue(_propertyUpdated);
                     Assert.IsTrue(resourceModel.Object.IsWorkflowSaved);
                     Assert.IsTrue(resourceModel.Object.ResourceName.IndexOf("*", StringComparison.Ordinal) < 0);
                     StringAssert.Contains("<x></x>", resourceModel.Object.WorkflowXaml.ToString());
@@ -2786,7 +2795,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(mockResRepo.Object);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 67");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
 
@@ -2833,7 +2842,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(mockResourceRepo.Object);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 13");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
 
@@ -2887,7 +2896,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRepository.Object);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 56");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
 
@@ -2931,7 +2940,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 7");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
@@ -2974,7 +2983,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 6");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
@@ -3093,7 +3102,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 5");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
@@ -3383,7 +3392,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 66");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
@@ -3394,7 +3403,7 @@ namespace Dev2.Core.Tests.Workflows
 
             const bool ExpectedCanSave = true;
             resourceModel.Setup(m => m.IsAuthorized(AuthorizationContext.Contribute)).Returns(ExpectedCanSave).Verifiable();
-
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 5");
             //----------------------- Execute -----------------------//
             var result = viewModel.CanSave;
 
@@ -3428,7 +3437,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-
+            resourceModel.Setup(model => model.ResourceName).Returns("Some workflow 44");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
@@ -3470,7 +3479,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-
+            resourceModel.Setup(model => model.ResourceName).Returns("Some workflow 332");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
@@ -3513,7 +3522,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-
+            resourceModel.Setup(model => model.ResourceName).Returns("Some workflow 34");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
@@ -3557,7 +3566,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-
+            resourceModel.Setup(model => model.ResourceName).Returns("Some workflow 22");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
@@ -3601,7 +3610,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
-
+            resourceModel.Setup(model => model.ResourceName).Returns("Some workflow");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
@@ -3646,6 +3655,7 @@ namespace Dev2.Core.Tests.Workflows
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(model => model.IsNewWorkflow).Returns(true);
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 57");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
             workflowHelper.Setup(helper => helper.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("my workflow"));
@@ -3662,6 +3672,230 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Verify(repository => repository.Save(It.IsAny<IResourceModel>()), Times.Once());
             Assert.IsNotNull(resourceModel.Object.WorkflowXaml);
             Assert.AreEqual("my workflow", resourceModel.Object.WorkflowXaml.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowDesignerModel_DoWorkspaceSave")]
+        public void WorkflowDesignerViewModel_LinkName_DataListNull_ShouldReturnUrlEmptyDataListPortion()
+        {
+            //------------Setup for test--------------------------
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
+            resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(model => model.IsNewWorkflow).Returns(true);
+            resourceModel.Setup(model => model.Category).Returns("myservice");
+            resourceModel.Setup(model => model.ResourceName).Returns("myservice");
+            resourceModel.Setup(model => model.DataList).Returns("<DataList></DataList>");
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(helper => helper.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("my workflow"));
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            resourceModel.SetupProperty(model => model.WorkflowXaml);
+
+            #endregion
+            //------------Assert Preconditions-------------------
+            Assert.IsNull(resourceModel.Object.WorkflowXaml);
+            //------------Execute Test---------------------------
+            var workflowLink = viewModel.GetWorkflowLink();
+            var displayWorkflowLink = viewModel.DisplayWorkflowLink;
+            //------------Assert Results-------------------------
+            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?<DataList></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
+            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?<DataList></DataList>", displayWorkflowLink);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowDesignerModel_DoWorkspaceSave")]
+        public void WorkflowDesignerViewModel_LinkName_HasDataListNoInputs_ShouldReturnUrlEmptyDataListPortion()
+        {
+            //------------Setup for test--------------------------
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
+            resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(model => model.IsNewWorkflow).Returns(true);
+            resourceModel.Setup(model => model.Category).Returns("myservice");
+            resourceModel.Setup(model => model.ResourceName).Returns("myservice");
+            resourceModel.Setup(model => model.DataList).Returns(StringResourcesTest.DebugInputWindow_NoInputs_XMLData);
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(helper => helper.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("my workflow"));
+            var mockPopController = new Mock<IPopupController>();
+            mockPopController.Setup(controller => controller.ShowNoInputsSelectedWhenClickLink()).Verifiable();
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, mockPopController.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            resourceModel.SetupProperty(model => model.WorkflowXaml);
+
+            #endregion
+            //------------Assert Preconditions-------------------
+            Assert.IsNull(resourceModel.Object.WorkflowXaml);
+            //------------Execute Test---------------------------
+            var workflowLink = viewModel.GetWorkflowLink();
+            var displayWorkflowLink = viewModel.DisplayWorkflowLink;
+            viewModel.OpenWorkflowLinkCommand.Execute("Do not perform action");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?<DataList></DataList>&wid=00000000-0000-0000-0000-000000000000", workflowLink);
+            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?<DataList></DataList>", displayWorkflowLink);
+            mockPopController.Verify(controller => controller.ShowNoInputsSelectedWhenClickLink(), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowDesignerModel_DoWorkspaceSave")]
+        public void WorkflowDesignerViewModel_LinkName_HasDataListHasInputs_ShouldReturnUrlWithDataListPortion()
+        {
+            //------------Setup for test--------------------------
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
+            resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(model => model.IsNewWorkflow).Returns(true);
+            resourceModel.Setup(model => model.Category).Returns("myservice");
+            resourceModel.Setup(model => model.ResourceName).Returns("myservice");
+            resourceModel.Setup(model => model.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(helper => helper.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("my workflow"));
+            var mockPopController = new Mock<IPopupController>();
+            mockPopController.Setup(controller => controller.ShowNoInputsSelectedWhenClickLink()).Verifiable();
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, mockPopController.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            resourceModel.SetupProperty(model => model.WorkflowXaml);
+
+            #endregion
+            //------------Assert Preconditions-------------------
+            Assert.IsNull(resourceModel.Object.WorkflowXaml);
+            //------------Execute Test---------------------------
+            var workflowLink = viewModel.GetWorkflowLink();
+            var displayWorkflowLink = viewModel.DisplayWorkflowLink;
+            viewModel.OpenWorkflowLinkCommand.Execute("Do not perform action");
+            //------------Assert Results-------------------------
+            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?scalar1=&scalar2=&wid=00000000-0000-0000-0000-000000000000", workflowLink);
+            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?scalar1=&scalar2=", displayWorkflowLink);
+            mockPopController.Verify(controller => controller.ShowNoInputsSelectedWhenClickLink(), Times.Never());
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("WorkflowDesignerModel_DoWorkspaceSave")]
+        public void WorkflowDesignerViewModel_LinkName_SavedDebugData_ShouldReturnUrlWithDataListUsingSavedData()
+        {
+            //------------Setup for test--------------------------
+            var workflow = new ActivityBuilder
+            {
+                Implementation = new Flowchart
+                {
+                    StartNode = CreateFlowNode(Guid.NewGuid(), "CanSaveTest", true, typeof(TestActivity))
+                }
+            };
+
+            #region Setup viewModel
+
+            var resourceRep = new Mock<IResourceRepository>();
+            resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
+            resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new ExecuteMessage());
+            resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
+            var resourceModel = new Mock<IContextualResourceModel>();
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            mockConnection.Setup(connection => connection.IsConnected).Returns(true);
+            mockConnection.Setup(connection => connection.WebServerUri).Returns(new Uri("http://myMachineName:3142"));
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(m => m.Environment).Returns(mockEnvironmentModel.Object);
+            resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
+            resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.Environment.Connection).Returns(mockConnection.Object);
+            resourceModel.Setup(model => model.IsNewWorkflow).Returns(true);
+            resourceModel.Setup(model => model.Category).Returns("myservice");
+            resourceModel.Setup(model => model.ResourceName).Returns("myservice");
+            resourceModel.Setup(model => model.DataList).Returns(StringResourcesTest.DebugInputWindow_DataList);
+            var workflowInputDataViewModel = WorkflowInputDataViewModel.Create(resourceModel.Object);
+            workflowInputDataViewModel.LoadWorkflowInputs();
+            workflowInputDataViewModel.WorkflowInputs[0].Value = "1";
+            workflowInputDataViewModel.WorkflowInputs[1].Value = "2";
+            workflowInputDataViewModel.DoSaveActions();
+            var workflowHelper = new Mock<IWorkflowHelper>();
+            workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
+            workflowHelper.Setup(helper => helper.SerializeWorkflow(It.IsAny<ModelService>())).Returns(new StringBuilder("my workflow"));
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
+            viewModel.InitializeDesigner(new Dictionary<Type, Type>());
+            resourceModel.SetupProperty(model => model.WorkflowXaml);
+
+            #endregion
+            //------------Assert Preconditions-------------------
+            Assert.IsNull(resourceModel.Object.WorkflowXaml);
+            //------------Execute Test---------------------------
+            var workflowLink = viewModel.GetWorkflowLink();
+            var displayWorkflowLink = viewModel.DisplayWorkflowLink;
+            //------------Assert Results-------------------------
+            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?scalar1=1&scalar2=2&wid=00000000-0000-0000-0000-000000000000", workflowLink);
+            Assert.AreEqual("http://mymachinename:3142/services/myservice.json?scalar1=1&scalar2=2", displayWorkflowLink);
+            workflowInputDataViewModel.WorkflowInputs[0].Value = "";
+            workflowInputDataViewModel.WorkflowInputs[1].Value = "";
+            workflowInputDataViewModel.DoSaveActions();
         }
 
         [TestMethod]
@@ -3687,6 +3921,7 @@ namespace Dev2.Core.Tests.Workflows
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(model => model.IsNewWorkflow).Returns(false);
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 9");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 
@@ -3725,6 +3960,7 @@ namespace Dev2.Core.Tests.Workflows
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
             resourceModel.Setup(model => model.IsNewWorkflow).Returns(false);
+            resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 11");
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(workflow);
 

@@ -11,6 +11,7 @@ using System.Activities.Statements;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -32,7 +33,6 @@ using Dev2.Common.Common;
 using Dev2.Composition;
 using Dev2.CustomControls.Utils;
 using Dev2.Data.Interfaces;
-using Dev2.Data.Parsers;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -60,6 +60,7 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -91,7 +92,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected readonly IDesignerManagementService DesignerManagementService;
         readonly IWorkflowHelper _workflowHelper;
-
         RelayCommand _collapseAllCommand;
 
         protected dynamic DataObject { get; set; }
@@ -157,6 +157,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 ActivityDesignerHelper.AddDesignerAttributes(this, liteInit);
             }
             OutlineViewTitle = "Navigation Pane";
+            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
+            GetWorkflowLink();
         }
 
         void SetOriginalDataList(IContextualResourceModel contextualResourceModel)
@@ -189,6 +191,45 @@ namespace Dev2.Studio.ViewModels.Workflow
             get
             {
                 return ResourceHelper.GetDisplayName(ResourceModel);
+            }
+        }
+
+        public string GetWorkflowLink()
+        {
+            if(!String.IsNullOrEmpty(_resourceModel.DataList))
+            {
+                _workflowInputDataViewModel.DebugTo.DataList = _resourceModel.DataList;
+            }
+            _workflowLink = "";
+            if(_workflowInputDataViewModel != null)
+            {
+                _workflowInputDataViewModel.LoadWorkflowInputs();
+                _workflowInputDataViewModel.SetXmlData();
+                var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
+                var workflowUri = WebServer.GetWorkflowUri(_resourceModel, buildWebPayLoad, UrlType.JSON);
+                if(workflowUri != null)
+                {
+                    _workflowLink = workflowUri.ToString();
+                }
+            }
+            NotifyOfPropertyChange(() => DisplayWorkflowLink);
+            return _workflowLink;
+        }
+
+        public string DisplayWorkflowLink
+        {
+            get
+            {
+                var workflowLink = _workflowLink;
+                if(!String.IsNullOrEmpty(workflowLink))
+                {
+                    var startIndex = workflowLink.IndexOf("&wid", StringComparison.InvariantCultureIgnoreCase);
+                    if(startIndex != -1)
+                    {
+                        return workflowLink.Remove(startIndex);
+                    }
+                }
+                return workflowLink;
             }
         }
 
@@ -295,6 +336,27 @@ namespace Dev2.Studio.ViewModels.Workflow
                         DesignerManagementService.RequestRestoreAll();
                     }
                 }, param => true));
+            }
+        }
+
+        public ICommand OpenWorkflowLinkCommand
+        {
+            get
+            {
+                return _openWorkflowLinkCommand ?? (_openWorkflowLinkCommand = new RelayCommand(param =>
+                {
+                    if(!String.IsNullOrEmpty(_workflowLink))
+                    {
+                        if(_workflowInputDataViewModel.WorkflowInputCount == 0)
+                        {
+                            PopUp.ShowNoInputsSelectedWhenClickLink();
+                        }
+                        if(param.ToString() != "Do not perform action")
+                        {
+                            Process.Start(_workflowLink);
+                        }
+                    }
+                }));
             }
         }
 
@@ -1044,12 +1106,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             });
         }
 
-        protected virtual ModelItem GetSelectedModelItem(Guid itemID, Guid parentID)
+        protected virtual ModelItem GetSelectedModelItem(Guid itemId, Guid parentId)
         {
             var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
             var selectedModelItem = (from mi in modelItems
                                      let instanceID = ModelItemUtils.GetUniqueID(mi)
-                                     where instanceID == itemID || instanceID == parentID
+                                     where instanceID == itemId || instanceID == parentId
                                      select mi).FirstOrDefault();
 
             if(selectedModelItem == null)
@@ -1246,7 +1308,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     var checkServiceDefinition = CheckServiceDefinition();
                     var checkDataList = CheckDataList();
-
+                    GetWorkflowLink();
                     ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
                     _workspaceSave = false;
                     NotifyOfPropertyChange(() => DisplayName);
@@ -1303,9 +1365,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                     BindToModel();
                     //WorkspaceItemRepository.Instance.UpdateWorkspaceItem(ResourceModel, true);
 
-                        ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
-                        _workspaceSave = true;
-                    
+                    ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
+                    _workspaceSave = true;
+
                 });
             }
             AddMissingWithNoPopUpAndFindUnusedDataListItems();
@@ -1315,10 +1377,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             try
             {
-                if (!string.IsNullOrEmpty(dataList)) 
-// ReSharper disable ReturnValueOfPureMethodIsNotUsed
+                if(!string.IsNullOrEmpty(dataList))
+                    // ReSharper disable ReturnValueOfPureMethodIsNotUsed
                     XElement.Parse(dataList);
-// ReSharper restore ReturnValueOfPureMethodIsNotUsed
+                // ReSharper restore ReturnValueOfPureMethodIsNotUsed
             }
             catch(Exception)
             {
@@ -1519,6 +1581,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         string _originalDataList;
         bool _workspaceSave;
+        WorkflowInputDataViewModel _workflowInputDataViewModel;
+        string _workflowLink;
+        ICommand _openWorkflowLinkCommand;
 
         /// <summary>
         /// Models the service model changed.
@@ -1739,7 +1804,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
                 OpeningWorkflowsHelper.PruneWorkflowFromCaches(workSurfaceKey);
             }
-
+            if(_workflowInputDataViewModel != null)
+            {
+                _workflowInputDataViewModel.Dispose();
+                _workflowInputDataViewModel = null;
+            }
             _wd = null;
             base.OnDispose();
         }

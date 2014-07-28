@@ -170,14 +170,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return effectedResources;
         }
 
-        public void LoadResourceFromWorkspace(Guid resourceId)
+        public void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId)
         {
             var con = _environmentModel.Connection;
             var comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
             comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
             comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), Enums.ResourceType.WorkflowService));
-
-            var toReloadResources = comsController.ExecuteCommand<List<SerializableResource>>(con, con.WorkspaceID);
+            var workspaceIdToUse = workspaceId.HasValue ? workspaceId.Value : con.WorkspaceID;
+            var toReloadResources = comsController.ExecuteCommand<List<SerializableResource>>(con, workspaceIdToUse);
             foreach(var serializableResource in toReloadResources)
             {
                 var resource = HydrateResourceModel(Enums.ResourceType.WorkflowService, serializableResource, _environmentModel.Connection.ServerID, true);

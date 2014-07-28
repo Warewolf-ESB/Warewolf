@@ -788,11 +788,11 @@ namespace Dev2.Studio.ViewModels
         public virtual void ShowStartPage()
         {
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
-            WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
-            if(workSurfaceContextViewModel != null)
-            {
+                WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
+                if(workSurfaceContextViewModel != null)
+                {
                 ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(Version.CommunityPageUri);
-            }
+                }
         }
 
         public void ShowCommunityPage()
@@ -1177,18 +1177,12 @@ namespace Dev2.Studio.ViewModels
                 // Get the environment for the workspace item
                 //
                 IWorkspaceItem item = GetWorkspaceItemRepository().WorkspaceItems[i];
-                IEnvironmentModel environment = null;
-                foreach(var env in EnvironmentRepository.All())
-                {
-                    if(!env.IsConnected) continue;
-                    if(env.Connection == null) break;
-                    var channel = env.Connection;
-                    if(channel.ServerID == item.ServerID)
-                        environment = env;
-                }
+                this.TraceInfo(string.Format("Start Proccessing WorkspaceItem: {0}", item.ServiceName));
+                IEnvironmentModel environment = EnvironmentRepository.All().Where(env => env.IsConnected).TakeWhile(env => env.Connection != null).FirstOrDefault(env => env.ID == item.EnvironmentID);
 
                 if(environment == null || environment.ResourceRepository == null)
                 {
+                    this.TraceInfo("Environment Not Found");
                     if(environment != null && item.EnvironmentID == environment.ID)
                     {
                         workspaceItemsToRemove.Add(item);
@@ -1196,9 +1190,10 @@ namespace Dev2.Studio.ViewModels
                 }
                 if(environment != null)
                 {
+                    this.TraceInfo(string.Format("Proccessing WorkspaceItem: {0} for Environment: {1}", item.ServiceName, environment.DisplayName));
                     if(environment.ResourceRepository != null)
                     {
-                        environment.ResourceRepository.LoadResourceFromWorkspace(item.ID);
+                        environment.ResourceRepository.LoadResourceFromWorkspace(item.ID, item.WorkspaceID);
                         var resource = environment.ResourceRepository.All().FirstOrDefault(rm =>
                         {
                             var sameEnv = true;
@@ -1215,7 +1210,8 @@ namespace Dev2.Studio.ViewModels
                         }
                         else
                         {
-                            var fetchResourceDefinition = environment.ResourceRepository.FetchResourceDefinition(environment, environment.Connection.WorkspaceID, resource.ID);
+                            this.TraceInfo(string.Format("Got Resource Model: {0} ", resource.DisplayName));
+                            var fetchResourceDefinition = environment.ResourceRepository.FetchResourceDefinition(environment, item.WorkspaceID, resource.ID);
                             resource.WorkflowXaml = fetchResourceDefinition.Message;
                             resource.IsWorkflowSaved = item.IsWorkflowSaved;
                             resource.OnResourceSaved += model => GetWorkspaceItemRepository().UpdateWorkspaceItemIsWorkflowSaved(model);

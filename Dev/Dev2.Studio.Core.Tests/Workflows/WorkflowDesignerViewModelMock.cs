@@ -21,7 +21,7 @@ namespace Dev2.Core.Tests.Workflows
 {
     public class WorkflowDesignerViewModelMock : WorkflowDesignerViewModel
     {
-        readonly Mock<WorkflowDesigner> moq = new Mock<WorkflowDesigner>();
+        readonly Mock<WorkflowDesigner> _moq = new Mock<WorkflowDesigner>();
 
         public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = false)
             : base(
@@ -30,8 +30,8 @@ namespace Dev2.Core.Tests.Workflows
                 new Mock<IPopupController>().Object,
                 createDesigner)
         {
-            moq.SetupAllProperties();
-            _wd = moq.Object;
+            _moq.SetupAllProperties();
+            _wd = _moq.Object;
         }
 
         public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IEventAggregator eventAggregator, bool createDesigner = false)
@@ -40,11 +40,22 @@ namespace Dev2.Core.Tests.Workflows
                 resource, workflowHelper,
                 new Mock<IPopupController>().Object, createDesigner)
         {
-            moq.SetupAllProperties();
-            _wd = moq.Object;
+            _moq.SetupAllProperties();
+            _wd = _moq.Object;
+        }
+
+        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, bool createDesigner = false)
+            : base(
+                new Mock<IEventAggregator>().Object,
+                resource, workflowHelper,
+                popupController, createDesigner)
+        {
+            _moq.SetupAllProperties();
+            _wd = _moq.Object;
         }
 
         bool _isDesignerViewVisible = true;
+
         protected override bool IsDesignerViewVisible
         {
             get
@@ -99,7 +110,7 @@ namespace Dev2.Core.Tests.Workflows
 
         public void VerifyLoadCalled()
         {
-            moq.Verify(w => w.Load(It.IsAny<ActivityBuilder>()), Times.Once());
+            _moq.Verify(w => w.Load(It.IsAny<ActivityBuilder>()), Times.Once());
         }
 
         public void LoadXaml()
@@ -145,14 +156,16 @@ namespace Dev2.Core.Tests.Workflows
         public bool RequestedCollapseAll { get; set; }
 
         public int GetSelectedModelItemHitCount { get; private set; }
-        protected override ModelItem GetSelectedModelItem(Guid itemID, Guid parentID)
+        protected override ModelItem GetSelectedModelItem(Guid itemId, Guid parentId)
         {
             GetSelectedModelItemHitCount++;
-            return base.GetSelectedModelItem(itemID, parentID);
+            return base.GetSelectedModelItem(itemId, parentId);
         }
 
 
         public int BringIntoViewHitCount { get; private set; }
+
+
         protected override void BringIntoView(ModelItem selectedModelItem)
         {
             BringIntoViewHitCount++;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using Dev2.Common;
 using Dev2.Studio.Controller;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -242,6 +243,47 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("Security Settings have changed", header);
             Assert.AreEqual(expectedDesc, description);
             Assert.AreEqual(MessageBoxImage.Information, imageType);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("PopupController_ShowNoInputsSelectedWhenClickLink")]
+        public void PopupController_ShowNoInputsSelectedWhenClickLink_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            string dontShowAgainKey = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
+            MessageBoxImage imageType = MessageBoxImage.Error;
+            var expectedDesc = "You can pass variables into your workflow" + Environment.NewLine
+                              + "by selecting the Input checkbox" + Environment.NewLine +
+                              "in the Variables window.";
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    imageType = img;
+                    popupWasCalled = true;
+                    dontShowAgainKey = dntShwAgKy;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            popupController.ShowNoInputsSelectedWhenClickLink();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual("Did you know?", header);
+            Assert.AreEqual(expectedDesc, description);
+            Assert.AreEqual(MessageBoxImage.Information, imageType);
+            Assert.AreEqual(GlobalConstants.Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog, dontShowAgainKey);
         }
     }
 }

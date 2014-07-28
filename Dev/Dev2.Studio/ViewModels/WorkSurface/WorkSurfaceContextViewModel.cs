@@ -8,7 +8,6 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Communication;
 using Dev2.Composition;
-using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Factory;
 using Dev2.Messages;
@@ -70,7 +69,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         bool _hasMappingChange;
         readonly IEnvironmentModel _environmentModel;
-        IPopupController _popupController;
+        readonly IPopupController _popupController;
         Action<IContextualResourceModel, bool> _saveDialogAction;
         IStudioCompileMessageRepoFactory _studioCompileMessageRepoFactory;
         IResourceChangeHandlerFactory _resourceChangeHandlerFactory;
@@ -190,7 +189,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
         }
 
-        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel,IPopupController popupController,Action<IContextualResourceModel,bool > saveDialogAction)
+        public WorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel, IPopupController popupController, Action<IContextualResourceModel, bool> saveDialogAction)
             : base(eventPublisher)
         {
             if(workSurfaceKey == null)
@@ -201,7 +200,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 throw new ArgumentNullException("workSurfaceViewModel");
             }
-            VerifyArgument.IsNotNull("popupController",popupController);
+            VerifyArgument.IsNotNull("popupController", popupController);
             WorkSurfaceKey = workSurfaceKey;
             WorkSurfaceViewModel = workSurfaceViewModel;
 
@@ -264,7 +263,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 DebugOutputViewModel.Clear();
                 var debugState = message.DebugStates.LastOrDefault();
-               
+
                 if(debugState != null)
                 {
                     debugState.StateType = StateType.Clear;
@@ -464,11 +463,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if(resourceModel.UserPermissions.IsContributor())
             {
 
-            var succesfulSave = Save(resourceModel, true);
-            if(!succesfulSave)
-            {
-                return;
-            }
+                var succesfulSave = Save(resourceModel, true);
+                if(!succesfulSave)
+                {
+                    return;
+                }
             }
 
             SetDebugStatus(DebugStatus.Configure);
@@ -479,8 +478,20 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         WorkflowInputDataViewModel SetupForDebug(IContextualResourceModel resourceModel, bool isDebug)
         {
             var inputDataViewModel = GetWorkflowInputDataViewModel(resourceModel, isDebug);
-            inputDataViewModel.DebugExecutionStart += () => DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
-            inputDataViewModel.DebugExecutionFinished += () => DebugOutputViewModel.DebugStatus = DebugStatus.Finished;
+            inputDataViewModel.DebugExecutionStart += () =>
+            {
+                DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
+                var workfloDesignerViewModel = WorkSurfaceViewModel as WorkflowDesignerViewModel;
+                if(workfloDesignerViewModel != null)
+                {
+                    workfloDesignerViewModel.GetWorkflowLink();
+                }
+            };
+            inputDataViewModel.DebugExecutionFinished += () =>
+            {
+                DebugOutputViewModel.DebugStatus = DebugStatus.Finished;
+
+            };
             return inputDataViewModel;
         }
 
@@ -544,10 +555,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 StopExecution();
                 Thread.Sleep(500);
             }
-            if (WorkflowDesignerViewModel.ValidatResourceModel(ContextualResourceModel.DataList))
+            if(WorkflowDesignerViewModel.ValidatResourceModel(ContextualResourceModel.DataList))
             {
                 var successfuleSave = Save(ContextualResourceModel, true);
-                if (!successfuleSave)
+                if(!successfuleSave)
                 {
                     return;
                 }
@@ -582,7 +593,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Save(bool isLocalSave = false, bool isStudioShutdown = false)
         {
-            Save(ContextualResourceModel, isLocalSave, isStudioShutdown:isStudioShutdown);
+            Save(ContextualResourceModel, isLocalSave, isStudioShutdown: isStudioShutdown);
             if(WorkSurfaceViewModel != null)
             {
                 WorkSurfaceViewModel.NotifyOfPropertyChange("DisplayName");
@@ -614,13 +625,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 return false;
             }
-          
+
 
             FindMissing();
 
             if(DataListViewModel != null && DataListViewModel.HasErrors)
             {
-                PopupController.Show("Please resolve the variable(s) errors below, before saving." + System.Environment.NewLine + System.Environment.NewLine + DataListViewModel.DataListErrorMessage, "Error Saving", MessageBoxButton.OK,MessageBoxImage.Error,"true" );
+                PopupController.Show("Please resolve the variable(s) errors below, before saving." + System.Environment.NewLine + System.Environment.NewLine + DataListViewModel.DataListErrorMessage, "Error Saving", MessageBoxButton.OK, MessageBoxImage.Error, "true");
 
                 return false;
             }
@@ -628,7 +639,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if(resource.IsNewWorkflow && !isLocalSave)
             {
                 _saveDialogAction(resource, addToTabManager);
-               // ShowSaveDialog(resource, addToTabManager);
+                // ShowSaveDialog(resource, addToTabManager);
                 return true;
             }
 
@@ -668,7 +679,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 return;
             }
 
-            var compileMessageList =  StudioCompileMessageRepoFactory.Create().GetCompileMessagesFromServer(resource);
+            var compileMessageList = StudioCompileMessageRepoFactory.Create().GetCompileMessagesFromServer(resource);
 
             if(compileMessageList.Count == 0)
             {
@@ -688,25 +699,25 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             if(message != null && message.Message != null)
             {
-            var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
-            if(_debugOutputViewModel != null)
-            {
-                debugstate.SessionID = _debugOutputViewModel.SessionID;
-                _debugOutputViewModel.Append(debugstate);
+                var debugstate = DebugStateFactory.Create(message.Message.ToString(), resource);
+                if(_debugOutputViewModel != null)
+                {
+                    debugstate.SessionID = _debugOutputViewModel.SessionID;
+                    _debugOutputViewModel.Append(debugstate);
+                }
             }
-        }
         }
 
         public IStudioCompileMessageRepoFactory StudioCompileMessageRepoFactory
         {
-          get
-          {
-              return _studioCompileMessageRepoFactory ?? new StudioCompileMessageRepoFactory();
-          }  
-          set
-          {
-              _studioCompileMessageRepoFactory = value;
-          }
+            get
+            {
+                return _studioCompileMessageRepoFactory ?? new StudioCompileMessageRepoFactory();
+            }
+            set
+            {
+                _studioCompileMessageRepoFactory = value;
+            }
         }
 
         public IResourceChangeHandlerFactory ResourceChangeHandlerFactory
@@ -785,7 +796,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 ContextualResourceModel.OnDesignValidationReceived -= ValidationMemoReceived;
             }
 
-            if (DataListViewModel != null && (DataListViewModel is SimpleBaseViewModel))
+            if(DataListViewModel != null && (DataListViewModel is SimpleBaseViewModel))
             {
                 DataListViewModel.Parent = null;
                 ((SimpleBaseViewModel)DataListViewModel).Dispose();

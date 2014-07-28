@@ -1616,14 +1616,14 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
 
             //------------Execute Test---------------------------
-            _repo.LoadResourceFromWorkspace(_resourceGuid);
-            
+            _repo.LoadResourceFromWorkspace(_resourceGuid, Guid.Empty);
+
             //------------Assert Results-------------------------
             var resources = _repo.All().ToList();
             var actual = (IContextualResourceModel)resources[0];
             Assert.AreEqual(_resourceGuid, actual.ID);
             Assert.AreEqual(true, actual.IsValid);
-            
+
             mockStudioResourceRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Exactly(1));
         }
 

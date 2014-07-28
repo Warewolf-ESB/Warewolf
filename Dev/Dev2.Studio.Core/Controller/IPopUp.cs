@@ -20,6 +20,7 @@ namespace Dev2.Studio.Core.Controller
         MessageBoxResult ShowNameChangedConflict(string oldName, string newName);
         MessageBoxResult ShowSettingsCloseConfirmation();
         MessageBoxResult ShowSchedulerCloseConfirmation();
+        MessageBoxResult ShowNoInputsSelectedWhenClickLink();
         MessageBoxResult ShowSaveErrorDialog(string errorMessage);
     }
 }

@@ -66,6 +66,6 @@ namespace Dev2.Studio.Core.Interfaces
 
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);
 
-        void LoadResourceFromWorkspace(Guid resourceId);
+        void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
     }
 }

@@ -16,7 +16,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-// ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
 namespace Dev2.CustomControls.Connections
 // ReSharper restore CheckNamespace

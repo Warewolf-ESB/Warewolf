@@ -102,7 +102,13 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepositoryConstructorWithNoParametersExpectedCreatesAndAddsDefaultSource()
         {
             var repo = new TestEnvironmentRespository();
-            Assert.AreEqual(1, repo.All().Count);
+            var environmentModels = repo.All().ToList();
+            Assert.AreEqual(1, environmentModels.Count);
+            var localhostEnvironment = environmentModels[0];
+            Assert.IsNotNull(localhostEnvironment);
+            StringAssert.Contains(localhostEnvironment.DisplayName.ToLower(), Environment.MachineName.ToLower());
+
+
         }
 
         #endregion

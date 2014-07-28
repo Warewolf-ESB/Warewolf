@@ -84,7 +84,7 @@ namespace Dev2.ViewModels.Deploy
         public void LoadEnvironmentResources(IEnvironmentModel environment)
         {
             this.Warning("Navigation Resources Load - Start");
-            LoadResourcesAsync(environment);
+            LoadResourcesAsync(environment);            
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace Dev2.ViewModels.Deploy
                 parent.IsExplorerExpanded = true;
             }
         }
-        
+
         /// <summary>
         /// Updates an item with in the current NavigationItemViewModel graph
         /// </summary>

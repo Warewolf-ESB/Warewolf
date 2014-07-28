@@ -573,7 +573,8 @@ namespace Dev2.Studio.Core
 
         static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias)
         {
-            var environmentConnection = new ServerProxy(applicationServerUri);
+            var acutalWebServerUri = new Uri(applicationServerUri.ToString().Replace("localhost", Environment.MachineName));
+            var environmentConnection = new ServerProxy(acutalWebServerUri);
             return new EnvironmentModel(id, environmentConnection) { Name = alias };
         }
 
