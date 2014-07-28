@@ -33,7 +33,8 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
         method: {
             Name: ko.observable(""),
             SourceCode: ko.observable(""),
-            Parameters: ko.observableArray()
+            Parameters: ko.observableArray(),
+            ExecuteAction: ko.observable("")
         },
         recordset: {
             Name: ko.observable(""),
@@ -169,6 +170,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
 
         utils.registerSelectHandler($sourceMethods, function (selectedItem) {
             self.data.method.Name(selectedItem.Name);
+            self.data.method.ExecuteAction(selectedItem.ExecuteAction);
             self.data.method.SourceCode(utils.toHtml(selectedItem.SourceCode));
             self.data.method.Parameters(selectedItem.Parameters);
         }, self.isReadOnly);
@@ -298,6 +300,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
             // MUST set these AFTER setting data.source otherwise they will be blanked!
             if (result.Method) {
                 self.data.method.Name(result.Method.Name);
+                self.data.method.ExecuteAction(result.Method.ExecuteAction);
                 self.data.method.Parameters(result.Method.Parameters);
             }
             if (result.Recordset) {

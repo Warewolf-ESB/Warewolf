@@ -19,8 +19,8 @@ namespace Dev2.Services.Sql
 
         List<string> FetchDatabases();
 
-        void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, bool> procedureProcessor,
-            Func<IDbCommand, List<IDbDataParameter>, string, bool> functionProcessor, bool continueOnProcessorException = false);
+        void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string,string, bool> procedureProcessor,
+            Func<IDbCommand, List<IDbDataParameter>, string,string, bool> functionProcessor, bool continueOnProcessorException = false);
 
         IDbCommand CreateCommand();
 

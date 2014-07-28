@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
@@ -10,10 +12,10 @@ namespace Dev2.Services.Sql
 {
     public class SqlServer : IDbServer
     {
-        SqlConnection _connection;
-        SqlCommand _command;
-        SqlTransaction _transaction;
-
+        IDbConnection _connection;
+        IDbCommand _command;
+        IDbTransaction _transaction;
+        readonly IDbFactory _factory;
         public bool IsConnected { get { return _connection != null && _connection.State == ConnectionState.Open; } }
 
         public string ConnectionString { get { return _connection == null ? null : _connection.ConnectionString; } }
@@ -22,17 +24,22 @@ namespace Dev2.Services.Sql
 
         public bool Connect(string connectionString)
         {
-            _connection = CreateConnection(connectionString);
+            _connection = _factory.CreateConnection(connectionString);
             _connection.Open();
             return true;
         }
 
         public bool Connect(string connectionString, CommandType commandType, string commandText)
         {
-            _connection = CreateConnection(connectionString);
+            _connection = _factory.CreateConnection(connectionString);
 
             VerifyArgument.IsNotNull("commandText", commandText);
-            _command = CreateCommand(_connection, commandType, commandText);
+            if(commandText.ToLower().StartsWith("select "))
+            {
+                commandType = CommandType.Text;
+            }
+
+            _command = _factory.CreateCommand(_connection, commandType, commandText);
 
             _connection.Open();
             return true;
@@ -74,7 +81,7 @@ namespace Dev2.Services.Sql
 
             const string DatabaseColumnName = "database_name";
 
-            var databases = GetSchema(_connection, "Databases");
+            var databases = GetSchemaFromConnection(_connection, "Databases");
 
             // 2013.07.10 - BUG 9933 - AL - sort database list
             var orderedRows = databases.Select("", DatabaseColumnName);
@@ -95,17 +102,12 @@ namespace Dev2.Services.Sql
             return FetchDataTable(_command);
         }
 
-        public DataTable FetchDataTable(IDbCommand command)
+        public  DataTable FetchDataTable(IDbCommand command)
         {
             VerifyArgument.IsNotNull("command", command);
 
             return ExecuteReader(command, (CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo),
-                delegate(IDataReader reader)
-                {
-                    var table = new DataTable();
-                    table.Load(reader, LoadOption.OverwriteChanges);
-                    return table;
-                });
+                                 reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
         #endregion
@@ -118,32 +120,26 @@ namespace Dev2.Services.Sql
             return FetchDataSet(_command, parameters);
         }
 
-        public DataSet FetchDataSet(SqlCommand command, params SqlParameter[] parameters)
+        public DataSet FetchDataSet(IDbCommand command, params SqlParameter[] parameters)
         {
             VerifyArgument.IsNotNull("command", command);
             AddParameters(command, parameters);
+           return _factory.FetchDataSet(command);
 
-            using(var dataSet = new DataSet())
-            {
-                using(var adapter = new SqlDataAdapter(command))
-                {
-                    adapter.Fill(dataSet);
-                }
-                return dataSet;
-            }
+
         }
 
         #endregion
 
         #region FetchStoredProcedures
 
-        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, bool> functionProcessor, bool continueOnProcessorException = false)
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string,string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string,string, bool> functionProcessor, bool continueOnProcessorException = false)
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
 
-            var proceduresDataTable = GetSchema(_connection, "Procedures");
+            var proceduresDataTable = GetSchema(_connection);
             var procedureDataColumn = GetDataColumn(proceduresDataTable, "ROUTINE_NAME");
             var procedureTypeColumn = GetDataColumn(proceduresDataTable, "ROUTINE_TYPE");
             var procedureSchemaColumn = GetDataColumn(proceduresDataTable, "SPECIFIC_SCHEMA"); // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
@@ -152,7 +148,7 @@ namespace Dev2.Services.Sql
             {
                 var fullProcedureName = GetFullProcedureName(row, procedureDataColumn, procedureSchemaColumn);
 
-                using(var command = CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
+                using(var command = _factory.CreateCommand(_connection, CommandType.StoredProcedure, fullProcedureName))
                 {
                     try
                     {
@@ -162,11 +158,15 @@ namespace Dev2.Services.Sql
 
                         if(IsStoredProcedure(row, procedureTypeColumn))
                         {
-                            procedureProcessor(command, parameters, helpText);
+                            procedureProcessor(command, parameters, helpText, fullProcedureName);
                         }
                         else if(IsFunction(row, procedureTypeColumn))
                         {
-                            functionProcessor(command, parameters, helpText);
+                            functionProcessor(command, parameters, helpText, fullProcedureName);
+                        }
+                        else if (IsTableValueFunction(row, procedureTypeColumn))
+                        {
+                            functionProcessor(command, parameters,helpText, CreateTVFCommand(fullProcedureName,parameters));
                         }
                     }
                     catch(Exception)
@@ -180,8 +180,23 @@ namespace Dev2.Services.Sql
             }
         }
 
+        string CreateTVFCommand(string fullProcedureName, List<IDbDataParameter> parameters)
+        {
+            if( parameters == null || parameters.Count == 0)
+            {
+                return string.Format("select * from {0}()", fullProcedureName);
+            }
+            var sql = new StringBuilder(string.Format("select * from {0}(", fullProcedureName));
+            for(int i = 0; i < parameters.Count; i++)
+            {
+                sql.Append(parameters[i].ParameterName);
+                sql.Append(i < parameters.Count - 1 ? "," : "");
+            }
+            sql.Append(")");
+            return sql.ToString();
+        }
 
-        private string FetchHelpTextContinueOnException(string fullProcedureName, SqlConnection con)
+        private string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
         {
             string helpText;
 
@@ -220,7 +235,7 @@ namespace Dev2.Services.Sql
                     return handler(reader);
                 }
             }
-            catch(SqlException e)
+            catch(DbException e)
             {
                 if(e.Message.Contains("There is no text for object "))
                 {
@@ -233,24 +248,9 @@ namespace Dev2.Services.Sql
             }
         }
 
-        static SqlConnection CreateConnection(string connectionString)
-        {
-            VerifyArgument.IsNotNull("connectionString", connectionString);
 
-            return new SqlConnection(connectionString);
-        }
 
-        static SqlCommand CreateCommand(SqlConnection connection, CommandType commandType, string commandText)
-        {
-            return new SqlCommand(commandText, connection)
-            {
-                CommandType = commandType,
-                CommandTimeout = (int)GlobalConstants.TransactionTimeout.TotalSeconds,
-
-            };
-        }
-
-        static void AddParameters(IDbCommand command, ICollection<IDbDataParameter> parameters)
+        public static void AddParameters(IDbCommand command, ICollection<IDbDataParameter> parameters)
         {
             command.Parameters.Clear();
             if(parameters != null && parameters.Count > 0)
@@ -262,14 +262,28 @@ namespace Dev2.Services.Sql
             }
         }
 
-        static DataTable GetSchema(SqlConnection connection, string collectionName)
+        DataTable GetSchema(IDbConnection connection)
         {
-            return connection.GetSchema(collectionName);
+
+    
+
+            const string CommandText = GlobalConstants.SchemaQuery;
+            using(var command = _factory.CreateCommand(connection,CommandType.Text,CommandText ))
+            {
+                return FetchDataTable(command);
+            }
+            
         }
 
-        static string GetHelpText(SqlConnection connection, string objectName)
+        DataTable GetSchemaFromConnection(IDbConnection connection, string collectionName)
         {
-            using(var command = CreateCommand(connection, CommandType.Text, string.Format("sp_helptext '{0}'", objectName)))
+
+            return _factory.GetSchema(connection,collectionName); //todo: fix this
+        }
+
+        string GetHelpText(IDbConnection connection, string objectName)
+        {
+            using(var command = _factory.CreateCommand(connection, CommandType.Text, string.Format("sp_helptext '{0}'", objectName)))
             {
                 return ExecuteReader(command, (CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo),
                     delegate(IDataReader reader)
@@ -305,7 +319,7 @@ namespace Dev2.Services.Sql
             return schemaName + "." + procedureName;
         }
 
-        List<IDbDataParameter> GetProcedureParameters(SqlCommand command)
+        List<IDbDataParameter> GetProcedureParameters(IDbCommand command)
         {
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
             var originalCommandText = command.CommandText;
@@ -337,27 +351,38 @@ namespace Dev2.Services.Sql
             return parameters;
         }
 
-        static bool IsStoredProcedure(DataRow row, DataColumn procedureTypeColumn)
+        public static bool IsStoredProcedure(DataRow row, DataColumn procedureTypeColumn)
         {
             if(row == null || procedureTypeColumn == null)
             {
                 return false;
             }
-            return row[procedureTypeColumn].ToString().Equals("PROCEDURE");
+            return row[procedureTypeColumn].ToString().Equals("SQL_STORED_PROCEDURE") || row[procedureTypeColumn].ToString().Equals("CLR_STORED_PROCEDURE");
         }
 
-        static bool IsFunction(DataRow row, DataColumn procedureTypeColumn)
+        public static bool IsFunction(DataRow row, DataColumn procedureTypeColumn)
         {
             if(row == null || procedureTypeColumn == null)
             {
                 return false;
             }
 
-            return !row[procedureTypeColumn].ToString().Equals("PROCEDURE");
+            return row[procedureTypeColumn].ToString().Equals("SQL_SCALAR_FUNCTION") ; 
+        }
+
+        public static bool IsTableValueFunction(DataRow row, DataColumn procedureTypeColumn)
+        {
+            if (row == null || procedureTypeColumn == null)
+            {
+                return false;
+            }
+
+            return row[procedureTypeColumn].ToString().Equals("SQL_TABLE_VALUED_FUNCTION");
         }
 
         #region IDisposable
 
+        [ExcludeFromCodeCoverage]
         ~SqlServer()
         {
             // Do not re-create Dispose clean-up code here. 
@@ -367,6 +392,16 @@ namespace Dev2.Services.Sql
         }
 
         bool _disposed;
+
+        public SqlServer()
+        {
+            _factory = new DbFactory();
+        }
+
+        public SqlServer(IDbFactory dbFactory)
+        {
+            _factory = dbFactory;
+        }
 
         // Implement IDisposable. 
         // Do not make this method virtual. 

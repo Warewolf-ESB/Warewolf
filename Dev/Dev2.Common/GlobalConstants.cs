@@ -290,10 +290,16 @@ namespace Dev2.Common
 
         public const string SchedulerFolderId = "Warewolf";
         public const string SchedulerAgentPath = @"WarewolfAgent.exe";
-        public const string SchedulerDebugPath = @"DebugOutPut\";
+        public const string SchedulerDebugPath = @"Warewolf\DebugOutPut\";
 
         public static string WebServerPort { get; set; }
         public static string WebServerSslPort { get; set; }
+        public const string SchemaQuery =@"SELECT name AS ROUTINE_NAME
+,SCHEMA_NAME(schema_id) AS SPECIFIC_SCHEMA
+,type_desc as ROUTINE_TYPE
+FROM sys.objects
+WHERE type_desc LIKE '%FUNCTION%'
+or type_desc LIKE '%Procedure%'";
 
         public static string WebServiceTimeoutMessage = "Output mapping took too long. More then 10 seconds. Please use the JSONPath feature ( green icon above ) to reduce your dataset complexity. You can find out more on JSONPath at http://goessner.net/articles/JsonPath/";
 

@@ -852,18 +852,28 @@ namespace Dev2.Studio.ViewModels.DataList
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             if(!string.IsNullOrEmpty(Resource.DataList))
             {
-                ErrorResultTO errors;
-                IBinaryDataList binarnyDl = CreateBinaryDataListFromXmlData(Resource.DataList, out errors);
-                if(!errors.HasErrors())
+                ErrorResultTO errors = new ErrorResultTO();
+                try
                 {
-                    ConvertBinaryDataListToListOfIDataListItemModels(binarnyDl, out errorString);
+                    IBinaryDataList binarnyDl = CreateBinaryDataListFromXmlData(Resource.DataList, out errors);
+                    if (!errors.HasErrors())
+                    {
+                        ConvertBinaryDataListToListOfIDataListItemModels(binarnyDl, out errorString);
+                    }
+                    else
+                    {
+                        string errorMessage = errors.FetchErrors().Aggregate(string.Empty, (current, error) => current + error);
+                        throw new Exception(errorMessage);
+                    }
+                    if (binarnyDl != null)
+                        compiler.ForceDeleteDataListByID(binarnyDl.UID);
                 }
-                else
+                catch(Exception)
                 {
-                    string errorMessage = errors.FetchErrors().Aggregate(string.Empty, (current, error) => current + error);
-                    throw new Exception(errorMessage);
+                    errors.AddError("Invalid variable list. Please insure that your variable list has valid entries");
                 }
-                compiler.ForceDeleteDataListByID(binarnyDl.UID);
+               
+
             }
             else
             {

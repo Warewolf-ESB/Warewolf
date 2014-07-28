@@ -75,12 +75,17 @@
   <ItemGroup>
     <Compile Include="ExtensiosnTests.cs" />
     <Compile Include="SqlServerTests.cs" />
+    <Compile Include="ServiceMethodTests.cs" />
     <Compile Include="WorkflowsMock.cs" />
     <Compile Include="WorkflowsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
+      <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
+      <Name>Dev2.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Services.Sql\Dev2.Services.Sql.csproj">
       <Project>{ff3115b2-370e-4e40-99c5-7d239bc28679}</Project>
       <Name>Dev2.Services.Sql</Name>

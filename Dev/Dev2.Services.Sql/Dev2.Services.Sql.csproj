@@ -55,6 +55,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DbFactory.cs" />
+    <Compile Include="IDbFactory.cs" />
     <Compile Include="IDbServer.cs" />
     <Compile Include="SqlServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -522,6 +522,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Plugins\PrimativesTestDLL.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="XML\10543.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

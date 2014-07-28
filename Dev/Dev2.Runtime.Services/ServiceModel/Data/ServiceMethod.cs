@@ -14,23 +14,23 @@ namespace Dev2.Runtime.ServiceModel.Data
         #region CTOR
 
         public ServiceMethod()
-            : this(string.Empty, string.Empty, null, null, null)
+            : this(string.Empty, string.Empty, null, null, null,null)
         {
         }
 
         public ServiceMethod(string error, string stackTrace)
-            : this("Error : " + error, stackTrace, null, null, null)
+            : this("Error : " + error, stackTrace, null, null, null,null)
         {
         }
 
-        public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters, IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs)
+        public ServiceMethod(string name, string sourceCode, IEnumerable<MethodParameter> parameters, IOutputDescription outputDescription, IEnumerable<MethodOutput> outputs,string executeAction)
         {
             Name = name;
             SourceCode = sourceCode;
             OutputDescription = outputDescription;
             Parameters = new List<MethodParameter>();
             Outputs = new List<MethodOutput>();
-
+            ExecuteAction = executeAction;
             if(parameters != null)
             {
                 Parameters.AddRange(parameters);
@@ -57,6 +57,9 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         [DataMember]
         public string FullName { get; set; }
+
+        [DataMember]
+        public string ExecuteAction { get; set; }
 
         public List<MethodOutput> Outputs { get; private set; }
 

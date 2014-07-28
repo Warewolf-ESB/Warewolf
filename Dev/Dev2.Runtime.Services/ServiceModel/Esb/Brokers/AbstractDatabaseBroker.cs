@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
@@ -59,9 +58,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             // Function to handle procedures returned by the data broker
             //
-            Func<IDbCommand, IList<IDbDataParameter>, string, bool> procedureFunc = (command, parameters, helpText) =>
+            Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> procedureFunc = (command, parameters, helpText, executeAction) =>
             {
-                var serviceMethod = CreateServiceMethod(command, parameters, helpText);
+                var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
@@ -69,9 +68,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             //
             // Function to handle functions returned by the data broker
             //
-            Func<IDbCommand, IList<IDbDataParameter>, string, bool> functionFunc = (command, parameters, helpText) =>
+            Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters, helpText,executeAction) =>
             {
-                var serviceMethod = CreateServiceMethod(command, parameters, helpText);
+                var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
@@ -94,7 +93,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         bool GetCachedResult(DbSource dbSource, out ServiceMethodList cacheResult)
         {
             TheCache.TryGetValue(dbSource.ConnectionString, out cacheResult);
-            if(cacheResult != null)
+            if (cacheResult != null)
             {
                 return true;
             }
@@ -151,38 +150,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return (payload.Replace("&lt;", "<").Replace("&gt;", ">"));
         }
 
-        static string GetXML(DataTable dataTable)
+        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode,string executeAction)
         {
-            DataTable dtCloned = dataTable.Clone();
-            foreach(DataColumn dc in dtCloned.Columns)
-                dc.DataType = typeof(string);
-            foreach(DataRow row in dataTable.Rows)
-            {
-                dtCloned.ImportRow(row);
-            }
-
-            foreach(DataRow row in dtCloned.Rows)
-            {
-                for(int i = 0; i < dtCloned.Columns.Count; i++)
-                {
-                    dtCloned.Columns[i].ReadOnly = false;
-
-                    if(string.IsNullOrEmpty(row[i].ToString()))
-                        row[i] = string.Empty;
-                }
-            }
-            dtCloned.TableName = "Table";
-
-            using(var stringWriter = new StringWriter())
-            {
-                dtCloned.WriteXml(stringWriter);
-                return stringWriter.ToString();
-            }
-        }
-
-        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode)
-        {
-            return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null);
+            return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null,executeAction);
         }
 
         static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter)
@@ -197,8 +167,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             var command = server.CreateCommand();
 
-            command.CommandText = serviceMethod.Name;
-            command.CommandType = CommandType.StoredProcedure;
+            command.CommandText = serviceMethod.ExecuteAction;
+            command.CommandType = serviceMethod.ExecuteAction.Contains("select") ? CommandType.Text : CommandType.StoredProcedure;
 
             foreach(var methodParameter in serviceMethod.Parameters)
             {

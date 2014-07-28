@@ -48,6 +48,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 new XAttribute("Type", actionType),
                 new XAttribute("SourceID", source.ResourceID),
                 new XAttribute("SourceName", source.ResourceName ?? string.Empty),
+                new XAttribute("ExecuteAction", Method.ExecuteAction ?? string.Empty),
                 new XAttribute("SourceMethod", Method.Name ?? (ResourceName ?? string.Empty)) // Required for legacy!!
                 );
 
@@ -105,7 +106,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         // BUG 10532 - Removed static and made public for testing ;)
         public ServiceMethod CreateInputsMethod(XElement action)
         {
-            var result = new ServiceMethod { Name = action.AttributeSafe("SourceMethod"), Parameters = new List<MethodParameter>() };
+            var result = new ServiceMethod { Name = action.AttributeSafe("SourceMethod"), Parameters = new List<MethodParameter>(), ExecuteAction = String.IsNullOrEmpty(action.AttributeSafe("ExecuteAction")) ? action.AttributeSafe("SourceMethod") : action.AttributeSafe("ExecuteAction") };
             foreach(var input in action.Descendants("Input"))
             {
                 if(!input.HasAttributes && input.IsEmpty)
@@ -116,16 +117,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 bool emptyToNull;
                 var typeName = input.AttributeSafe("NativeType", true);
 
-                Type tmpType;
-
-                if(string.IsNullOrEmpty(typeName))
-                {
-                    tmpType = typeof(object);
-                }
-                else
-                {
-                    tmpType = TypeExtensions.GetTypeFromSimpleName(typeName);
-                }
+                Type tmpType = string.IsNullOrEmpty(typeName) ? typeof(object) : TypeExtensions.GetTypeFromSimpleName(typeName);
 
                 // NOTE : Inlining causes debug issues, please avoid ;)
                 result.Parameters.Add(new MethodParameter
@@ -303,7 +295,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
 
                         var output = new XElement("Output",
-                            new XAttribute("OriginalName", field.Name ?? string.Empty),
+                            new XAttribute("OriginalName", field.Name),
                             new XAttribute("Name", mapsTo),  // Name MUST be same as MapsTo 
                             new XAttribute("MapsTo", mapsTo),
                             new XAttribute("Value", value),

@@ -278,7 +278,7 @@ namespace Dev2.Integration.Tests.Services.Sql
             {
                 sqlServer.Connect(dbSource.ConnectionString);
 
-                Func<IDbCommand, List<IDbDataParameter>, string, bool> procedureProcessor = (dbCommand, list, helpText) =>
+                Func<IDbCommand, List<IDbDataParameter>, string,string, bool> procedureProcessor = (dbCommand, list, helpText,bob) =>
                 {
                     if(dbCommand.CommandText == "dbo.Pr_CitiesGetCountries")
                     {
@@ -288,7 +288,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                     }
                     return true;
                 };
-                Func<IDbCommand, List<IDbDataParameter>, string, bool> functionProcessor = (dbCommand, list, helpText) =>
+                Func<IDbCommand, List<IDbDataParameter>, string,string, bool> functionProcessor = (dbCommand, list, helpText,bob) =>
                 {
                     if(dbCommand.CommandText == "dbo.fn_Greeting")
                     {
@@ -328,7 +328,7 @@ namespace Dev2.Integration.Tests.Services.Sql
             {
                 sqlServer.Connect(dbSource.ConnectionString);
 
-                Func<IDbCommand, List<IDbDataParameter>, string, bool> procedureProcessor = (dbCommand, list, helpText) =>
+                Func<IDbCommand, List<IDbDataParameter>, string,string, bool> procedureProcessor = (dbCommand, list, helpText,bob) =>
                 {
                     if(dbCommand.CommandText == "Warewolf.RunWorkflowForSql")
                     {
@@ -337,7 +337,7 @@ namespace Dev2.Integration.Tests.Services.Sql
                     }
                     return true;
                 };
-                Func<IDbCommand, List<IDbDataParameter>, string, bool> functionProcessor = (dbCommand, list, helpText) => true;
+                Func<IDbCommand, List<IDbDataParameter>, string,string, bool> functionProcessor = (dbCommand, list, helpText,bob) => true;
 
                 //------------Execute Test---------------------------
                 sqlServer.FetchStoredProcedures(procedureProcessor, functionProcessor, true);
@@ -349,6 +349,50 @@ namespace Dev2.Integration.Tests.Services.Sql
 
             //------------Assert Results-------------------------
             Verify_FetchStoredProcedures_WarewolfRunForSql(procedureCommandParameters, procedureHelpText);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SqlServer_FetchTableValuedFunctions")]
+        public void SqlServer_FetchTableValuedFunctions_AssertSelectTextIsDifferent()
+        {
+            //------------Setup for test--------------------------
+            var dbSource = CreateDev2TestingDbSource();
+
+            List<IDbDataParameter> procedureCommandParameters = null;
+            string procedureHelpText = null;
+            string select="";
+            var sqlServer = new SqlServer();
+            try
+            {
+                sqlServer.Connect(dbSource.ConnectionString);
+
+                Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor = (dbCommand, list, helpText, bob) =>
+                {
+                    if (dbCommand.CommandText == "dbo.bob")
+                    {
+                        procedureCommandParameters = list;
+                        procedureHelpText = helpText;
+                        select = bob;
+                    }
+                    return true;
+                };
+                Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor = (dbCommand, list, helpText, bob) => true;
+
+                //------------Execute Test---------------------------
+                sqlServer.FetchStoredProcedures(procedureProcessor, functionProcessor, true);
+            }
+            finally
+            {
+                sqlServer.Dispose();
+            }
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("@country", procedureCommandParameters.First().ParameterName);
+            Assert.IsTrue( procedureHelpText.Contains(@"insert into @Countries
+	select CountryID from dbo.Country"));
+            Assert.AreEqual("select * from dbo.bob(@country)", select);
         }
 
         static void Verify_DataTable_CountriesPrefixIsA(DataTable countriesDataTable)

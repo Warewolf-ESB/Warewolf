@@ -2618,6 +2618,34 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceFound = rc.GetResource<DbService>(workspaceID, oldResource.ResourceID);
             //------------Assert Results-------------------------        
             Assert.IsNotNull(resourceFound);
+            Assert.IsNotNull(resourceFound.Method.ExecuteAction);
+            Assert.AreEqual(oldResource.ResourceID, resourceFound.ResourceID);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        public void ResourceCatalog_GetResource_DbService_ExpectMethodToHaveSelect()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "10543";
+            SaveResources(path, null, false, false, new[] { "10543", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+
+            var rc = new ResourceCatalog();
+            rc.LoadWorkspace(workspaceID);
+            var result = rc.GetResources(workspaceID);
+            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            //------------Assert Precondition-----------------
+            Assert.AreEqual(1, result.Count);
+            Assert.IsNotNull(oldResource);
+            //------------Execute Test---------------------------
+            var resourceFound = rc.GetResource<DbService>(workspaceID, oldResource.ResourceID);
+            //------------Assert Results-------------------------        
+            Assert.IsNotNull(resourceFound);
+            Assert.IsTrue(resourceFound.Method.ExecuteAction.ToLower().Contains("select * from dbo.bob"));
             Assert.AreEqual(oldResource.ResourceID, resourceFound.ResourceID);
         }
 

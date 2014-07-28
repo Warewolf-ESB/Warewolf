@@ -19,14 +19,18 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_GetServiceMethods")]
         [ExpectedException(typeof(ArgumentNullException))]
+// ReSharper disable InconsistentNaming
         public void AbstractDataBaseBroker_GetServiceMethods_DbSourceIsNull_ThrowsArgumentNullException()
+// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             var broker = new TestDatabaseBroker();
 
             //------------Execute Test---------------------------
 
+#pragma warning disable 168
             var result = broker.GetServiceMethods(null);
+#pragma warning restore 168
 
             //------------Assert Results-------------------------
         }
@@ -34,7 +38,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("AbstractDataBaseBroker_GetServiceMethods")]
+// ReSharper disable InconsistentNaming
         public void AbstractDataBaseBroker_GetServiceMethods_WhenNotCached_FreshResults()
+// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             TestDatabaseBroker broker = new TestDatabaseBroker();
@@ -51,7 +57,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("AbstractDataBaseBroker_GetServiceMethods")]
+// ReSharper disable InconsistentNaming
         public void AbstractDataBaseBroker_GetServiceMethods_WhenCached_CachedResults()
+// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             TestDatabaseBroker broker = new TestDatabaseBroker();
@@ -59,8 +67,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             DbSource source = new DbSource();
 
             TestDatabaseBroker.TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
+// ReSharper disable UseObjectOrCollectionInitializer
             var methodList = new ServiceMethodList();
-            methodList.Add(new ServiceMethod("bob", "bob src", null, null, null));
+// ReSharper restore UseObjectOrCollectionInitializer
+            methodList.Add(new ServiceMethod("bob", "bob src", null, null, null,""));
 
             TestDatabaseBroker.TheCache.TryAdd(source.ConnectionString, methodList);
             //------------Execute Test---------------------------
@@ -78,17 +88,17 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("AbstractDataBaseBroker_GetServiceMethods")]
+// ReSharper disable InconsistentNaming
         public void AbstractDataBaseBroker_GetServiceMethods_WhenCachedNoRefreshRequested_FreshResults()
+// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             TestDatabaseBroker broker = new TestDatabaseBroker();
 
-            DbSource source = new DbSource();
-            source.ReloadActions = true;
+            DbSource source = new DbSource { ReloadActions = true };
 
             TestDatabaseBroker.TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
-            var methodList = new ServiceMethodList();
-            methodList.Add(new ServiceMethod("bob", "bob src", null, null, null));
+            var methodList = new ServiceMethodList { new ServiceMethod("bob", "bob src", null, null, null, null) };
 
             TestDatabaseBroker.TheCache.TryAdd(source.ConnectionString, methodList);
             //------------Execute Test---------------------------
@@ -105,7 +115,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_GetServiceMethods")]
+// ReSharper disable InconsistentNaming
         public void AbstractDataBaseBroker_GetServiceMethods_InvokesDbServerFetchStoredProcedures_Done()
+// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             var dbSource = new DbSource();
@@ -120,19 +132,19 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             dbServer.Setup(s => s.Connect(It.IsAny<string>())).Verifiable();
             dbServer.Setup(s => s.FetchStoredProcedures
                 (
-                    It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string, bool>>(),
-                    It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string, bool>>(),
+                    It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string,string, bool>>(),
+                    It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string, string, bool>>(),
                     It.IsAny<bool>())
                 )
                 .Callback(
                     (
-                        Func<IDbCommand, List<IDbDataParameter>, string, bool> procedureProcessor,
-                        Func<IDbCommand, List<IDbDataParameter>, string, bool> functionProcessor,
+                        Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+                        Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
                         bool continueOnProcessorException
                         ) =>
                     {
-                        procedureProcessor(procedureCommand, procedureCommand.Parameters.Cast<IDbDataParameter>().ToList(), "procHelpText");
-                        functionProcessor(functionCommand, functionCommand.Parameters.Cast<IDbDataParameter>().ToList(), "funcHelpText");
+                        procedureProcessor(procedureCommand, procedureCommand.Parameters.Cast<IDbDataParameter>().ToList(), "procHelpText","");
+                        functionProcessor(functionCommand, functionCommand.Parameters.Cast<IDbDataParameter>().ToList(), "funcHelpText","");
                     })
                 .Verifiable();
 
@@ -145,8 +157,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             dbServer.Verify(s => s.Connect(It.IsAny<string>()));
             dbServer.Verify(s => s.FetchStoredProcedures
                 (
-                    It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string, bool>>(),
-                    It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string, bool>>(),
+                    It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string, string, bool>>(),
+                    It.IsAny<Func<IDbCommand, List<IDbDataParameter>, string, string, bool>>(),
                     It.IsAny<bool>())
                 );
 
@@ -175,14 +187,16 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_TestService")]
         [ExpectedException(typeof(ArgumentNullException))]
+// ReSharper disable InconsistentNaming
         public void AbstractDataBaseBroker_TestService_DbServiceIsNull_ThrowsArgumentNullException()
+// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             var broker = new TestDatabaseBroker();
 
             //------------Execute Test---------------------------
 
-            var result = broker.TestService(null);
+            broker.TestService(null);
 
             //------------Assert Results-------------------------
         }
@@ -191,7 +205,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_TestService")]
         [ExpectedException(typeof(ArgumentNullException))]
+// ReSharper disable InconsistentNaming
         public void AbstractDataBaseBroker_TestService_DbServiceWithNullSource_ThrowsArgumentNullException()
+// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             var broker = new TestDatabaseBroker();
@@ -200,7 +216,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 
             //------------Execute Test---------------------------
 
-            var result = broker.TestService(dbService);
+            broker.TestService(dbService);
 
             //------------Assert Results-------------------------
         }
@@ -208,7 +224,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_TestService")]
+// ReSharper disable InconsistentNaming
         public void AbstractDataBaseBroker_TestService_InvokesDbServiceMethodInsideTransaction_Done()
+// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             var dbService = new DbService
@@ -220,7 +238,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
                     {
                         new MethodParameter { Name = "Param1", Type = typeof(string), Value = "Hello" },
                         new MethodParameter { Name = "Param2", Type = typeof(int), Value = "99" }
-                    }
+                    },
+                    ExecuteAction = "BobTestMethod"
+                    
                 }
             };
 
@@ -255,7 +275,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             dbServer.Verify(s => s.RollbackTransaction());
 
             Assert.IsNotNull(fetchDataTableCommand);
-            Assert.AreEqual(dbService.Method.Name, fetchDataTableCommand.CommandText);
+            Assert.AreEqual("BobTestMethod", fetchDataTableCommand.CommandText);
             Assert.AreEqual(dbService.Method.Parameters.Count, fetchDataTableCommand.Parameters.Count);
 
             for(var i = 0; i < dbService.Method.Parameters.Count; i++)
@@ -287,13 +307,15 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_GetDatabases")]
         [ExpectedException(typeof(ArgumentNullException))]
+// ReSharper disable InconsistentNaming
         public void AbstractDataBaseBroker_GetDatabases_DbSourceIsNull_ThrowsArgumentNullException()
+// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             var broker = new TestDatabaseBroker();
 
             //------------Execute Test---------------------------
-            var result = broker.GetDatabases(null);
+            broker.GetDatabases(null);
 
             //------------Assert Results-------------------------
         }
@@ -301,7 +323,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("AbstractDataBaseBroker_GetDatabases")]
+// ReSharper disable InconsistentNaming
         public void AbstractDataBaseBroker_GetDatabases_InvokesDbServerFetchDatabases_Done()
+// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             var dbSource = new DbSource();
@@ -313,7 +337,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
             var broker = new TestDatabaseBroker(dbServer.Object);
 
             //------------Execute Test---------------------------
-            var result = broker.GetDatabases(dbSource);
+            broker.GetDatabases(dbSource);
 
             //------------Assert Results-------------------------
             dbServer.Verify(s => s.Connect(It.IsAny<string>()));
