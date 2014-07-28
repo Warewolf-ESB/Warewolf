@@ -186,9 +186,9 @@ this.ScenarioSetup(scenarioInfo);
 #line 30
    testRunner.And("\"ScheduleWithHistory\" has a Schedule of", ((string)(null)), table3, "And ");
 #line 33
-   testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+   testRunner.When("the \"Diceroll01235\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 34
-   testRunner.When("the \"Diceroll01235\" is executed \"2\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+   testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 35
    testRunner.Then("the schedule status is \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 36
