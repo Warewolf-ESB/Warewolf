@@ -31,7 +31,7 @@ namespace Dev2.Studio.UI.Tests
         {
 
             ExplorerUIMap.EnterExplorerSearchText("ServiceExecutionTest");
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "TESTCATEGORY", "ServiceExecutionTest");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "TestCategory", "ServiceExecutionTest");
 
             PopupDialogUIMap.WaitForDialog();
             KeyboardCommands.SendKey("{F5}");

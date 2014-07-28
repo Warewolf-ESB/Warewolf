@@ -54,7 +54,7 @@ namespace Dev2.Studio.UI.Tests
         public void EnterFilterOnDestinationServer_Expected_DeployedItemsStillVisible()
         {
             ExplorerUIMap.EnterExplorerSearchText("CalculateTaxReturns");
-            ExplorerUIMap.RightClickDeployProject("localhost", "MO", "CalculateTaxReturns");
+            ExplorerUIMap.RightClickDeployProject("MO", "CalculateTaxReturns");
 
             // Set ourself as the destination server
             UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy");
@@ -81,7 +81,7 @@ namespace Dev2.Studio.UI.Tests
 
             ExplorerUIMap.EnterExplorerSearchText("PluginsReturningXMLFromComplexType");
             //------------Execute Test---------------------------
-            ExplorerUIMap.RightClickDeployProject("localhost", "INTEGRATION TEST SERVICES", "PluginsReturningXMLFromComplexType");
+            ExplorerUIMap.RightClickDeployProject("INTEGRATION TEST SERVICES", "PluginsReturningXMLFromComplexType");
             var theTab = TabManagerUIMap.GetActiveTab();
 
             ExplorerUIMap.WaitForResourcesToLoad();

@@ -39,7 +39,7 @@ namespace Dev2.Studio.UI.Tests
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_IconIsVisible()
         {
             // Open the Workflow
-            ExplorerUIMap.DoubleClickWorkflow("AllTools", "MOCAKE");
+            ExplorerUIMap.DoubleClickWorkflow("AllTools", "Mocake");
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             // Assert all the icons are visible
@@ -112,7 +112,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("AllTools");
 
             // Open the Workflow
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "MOCAKE", "AllTools");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "Mocake", "AllTools");
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);
@@ -157,7 +157,7 @@ namespace Dev2.Studio.UI.Tests
             ExplorerUIMap.EnterExplorerSearchText("AllTools");
 
             // Open the Workflow
-            ExplorerUIMap.DoubleClickOpenProject("localhost", "MOCAKE", "AllTools");
+            ExplorerUIMap.DoubleClickOpenProject("localhost", "Mocake", "AllTools");
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             var designer = WorkflowDesignerUIMap.GetFlowchartDesigner(theTab);

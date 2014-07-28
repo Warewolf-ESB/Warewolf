@@ -38,10 +38,10 @@ namespace Dev2.Studio.UI.Tests
             Clipboard.Clear();
 
             // Open the Workflow
-            var theTab = ExplorerUIMap.DoubleClickWorkflow(workflowToUse, "TESTCATEGORY");
+            var theTab = ExplorerUIMap.DoubleClickWorkflow(workflowToUse, "TestCategory");
 
             // Edit the DbService
-            ExplorerUIMap.DoubleClickService(serviceToUse, "UTILITY");
+            ExplorerUIMap.DoubleClickService(serviceToUse, "utility");
 
             //Test the service to get output mappings
             KeyboardCommands.SendTabs(11);

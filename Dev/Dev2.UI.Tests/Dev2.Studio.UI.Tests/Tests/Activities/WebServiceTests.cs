@@ -23,12 +23,14 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
         #endregion
 
         #region Cleanup
+
         [TestCleanup]
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
             Halt();
         }
+
         #endregion
 
         [TestMethod]
@@ -44,11 +46,9 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
 
             using(DsfActivityUiMap activityUiMap = new DsfActivityUiMap(false) { Activity = service, TheTab = theTab })
             {
-
                 activityUiMap.ClickEdit();
 
                 //Wizard actions
-
                 WebServiceWizardUIMap.ClickMappingTab();
                 WebServiceWizardUIMap.EnterDataIntoMappingTextBox(6, newMapping);
                 WebServiceWizardUIMap.TabToSaveButton(2);
@@ -195,23 +195,23 @@ namespace Dev2.Studio.UI.Tests.Tests.Activities
             string newGuid = Guid.NewGuid().ToString();
             string remove = newGuid.Remove(8);
             string newWebserviceName = "WebService" + remove;
+            const int WaitMs = 50;
 
             //Open wizard
             RibbonUIMap.ClickNewWebService();
-            KeyboardCommands.SendTabs(2);
-            KeyboardCommands.SendDownArrows(1);
-            KeyboardCommands.SendTabs(8);
-            KeyboardCommands.SendDownArrows(1);
-            KeyboardCommands.SendTabs(4);
-            KeyboardCommands.SelectAllText();
+            KeyboardCommands.SendTabs(2, WaitMs);
+            KeyboardCommands.SendDownArrows(1, WaitMs);
+            KeyboardCommands.SendTabs(8, WaitMs);
+            KeyboardCommands.SendDownArrows(1, WaitMs);
+            KeyboardCommands.SendTabs(4, WaitMs);
             KeyboardCommands.SendDel();
-            KeyboardCommands.SendTabs(2);
+            KeyboardCommands.SendTabs(2, WaitMs);
             KeyboardCommands.SendEnter(5000);
-            KeyboardCommands.SendTabs(1);
+            KeyboardCommands.SendTabs(1, WaitMs);
             KeyboardCommands.SendEnter(1000);
-            KeyboardCommands.SendTabs(3);
-            KeyboardCommands.SendKey(newWebserviceName);
-            KeyboardCommands.SendTabs(1);
+            KeyboardCommands.SendTabs(3, WaitMs);
+            KeyboardCommands.SendKey(newWebserviceName, WaitMs);
+            KeyboardCommands.SendTabs(1, WaitMs);
             KeyboardCommands.SendEnter(2000);
 
             UITestControl theTab = RibbonUIMap.CreateNewWorkflow(1500);

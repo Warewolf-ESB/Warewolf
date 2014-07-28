@@ -318,7 +318,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             return ValidateResourceExists(workflowName, serverName);
         }
 
-        public void RightClickDeployProject(string serverName, string folderName, string projectName)
+        public void RightClickDeployProject(string folderName, string projectName, string serverName = "localhost")
         {
             UITestControl theControl = null;
             if(folderName != "Unassigned" && folderName != string.Empty)

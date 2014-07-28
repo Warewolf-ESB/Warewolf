@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Dev2.Studio.UI.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -78,7 +79,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                 }
             }
 
-            return false;
+            throw new UITestControlNotFoundException("Output UI map cannot resolve the output status bar. Check this mapping's constructor.");
         }
 
         public UITestControlCollection GetStepInOutputWindow(UITestControl outputWindow, string stepToFind)
@@ -127,6 +128,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             //return workflowStep.Name;
             string workflowNamePrefix = "Workflow : ";
             UITestControlCollection coll = workflowStep.GetChildren();
+            if(coll == null)
+            {
+                workflowStep.DrawHighlight();
+            }
             for(int i = 0; i <= coll.Count; i++)
             {
                 if(coll[i].Name.Contains(workflowNamePrefix))

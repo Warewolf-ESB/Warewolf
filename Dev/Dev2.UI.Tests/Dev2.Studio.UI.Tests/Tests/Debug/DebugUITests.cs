@@ -62,7 +62,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
 
             //------------Setup for test--------------------------
             //Open the correct workflow
-            ExplorerUIMap.DoubleClickWorkflow("Bug9394", "TESTCATEGORY");
+            ExplorerUIMap.DoubleClickWorkflow("Bug9394", "TestCategory");
             // prime the values ;)
             RibbonUIMap.ClickDebug();
             DebugUIMap.EnterTextIntoRow(0, "1");
@@ -132,7 +132,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
 
             //------------Setup for test--------------------------
             //Open the correct workflow
-            ExplorerUIMap.DoubleClickWorkflow("Bug9394", "TESTCATEGORY");
+            ExplorerUIMap.DoubleClickWorkflow("Bug9394", "TestCategory");
 
             // prime the values ;)
             RibbonUIMap.ClickDebug();
@@ -192,7 +192,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
             {
                 //------------Setup for test--------------------------
                 //Open the correct workflow
-                ExplorerUIMap.DoubleClickWorkflow("TravsTestFlow", "TRAV");
+                ExplorerUIMap.DoubleClickWorkflow("TravsTestFlow", "Trav");
 
                 //------------Assert Results-------------------------
 
@@ -224,7 +224,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
             {
                 //------------Setup for test--------------------------
                 //Open the correct workflow
-                ExplorerUIMap.DoubleClickWorkflow("TravsTestFlow", "TRAV");
+                ExplorerUIMap.DoubleClickWorkflow("TravsTestFlow", "Trav");
 
                 //------------Assert Results-------------------------
 
@@ -287,7 +287,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
             {
                 //------------Setup for test--------------------------
                 //Open the correct workflow
-                ExplorerUIMap.DoubleClickWorkflow("TravsTestFlow", "TRAV");
+                ExplorerUIMap.DoubleClickWorkflow("TravsTestFlow", "Trav");
 
                 //------------Assert Results-------------------------
 
@@ -319,7 +319,7 @@ namespace Dev2.Studio.UI.Tests.Tests.Debug
             {
                 //------------Setup for test--------------------------
                 //Open the correct workflow
-                ExplorerUIMap.DoubleClickWorkflow("CodedUI_DebugOutputStop", "Tests");
+                ExplorerUIMap.DoubleClickWorkflow("CodedUI_DebugOutputStop", "TESTS");
                 string status = OutputUIMap.GetStatusBarStatus();
                 Assert.AreEqual("Ready", status);
                 UITestControl debugButton = RibbonUIMap.ClickDebug();

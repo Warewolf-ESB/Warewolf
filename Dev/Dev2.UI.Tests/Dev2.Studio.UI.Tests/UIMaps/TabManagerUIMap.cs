@@ -139,7 +139,7 @@ namespace Dev2.CodedUI.Tests.TabManagerUIMapClasses
         {
             try
             {
-                Mouse.Click(StudioWindow);
+                StudioWindow.SetFocus();
                 // first try closing wizards ;)
                 for(var i = 0; i < 5; i++)
                 {
