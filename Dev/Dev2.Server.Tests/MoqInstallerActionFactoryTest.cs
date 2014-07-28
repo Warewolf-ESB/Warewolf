@@ -1,4 +1,4 @@
-﻿using Dev2.MoqInstallerActions;
+﻿using Dev2.Services.Security.MoqInstallerActions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Server.Tests
