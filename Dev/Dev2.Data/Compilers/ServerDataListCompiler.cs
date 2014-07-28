@@ -174,7 +174,6 @@ namespace Dev2.Server.Datalist
                         {
                             // Ensure the expression exist and it is not a range operation
                             if(!(p.Type == enIntellisenseResultType.Selectable
-                                     && expression.IndexOf(p.Option.DisplayValue, StringComparison.Ordinal) >= 0
                                      && expression.IndexOf((p.Option.DisplayValue + ":"), StringComparison.Ordinal) < 0
                                      && expression.IndexOf((":" + p.Option.DisplayValue), StringComparison.Ordinal) < 0))
                             {

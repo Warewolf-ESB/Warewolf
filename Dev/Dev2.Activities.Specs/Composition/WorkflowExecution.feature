@@ -1476,11 +1476,38 @@ Scenario: Workflow with Assign Calculate
 	  | 3 | [[index(1).a]] = 1 |
 	  | 4 | [[rec(2).a]]   = 6 |
 	  And the 'Calculate1' in WorkFlow 'WFWithAssignCalculateindexrecordset' debug inputs as 
-      | fx =                                 |
-      | [[rec([[index(1).a]]).a]]+[[a]] = [[rec(1).a]]+1 = 2+1 |           
+      | fx =                                  |
+      | [[rec([[index(1).a]]).a]]+[[a]] = 2+1 |       
       And the 'Calculate1' in Workflow 'WFWithAssignCalculateindexrecordset' debug outputs as  
 	  |                |
 	  | [[result]] = 3 |
+
+Scenario: Workflow with Assign Calculate multiple recursion
+      Given I have a workflow "WFAssignCalculateRecursion"
+	  And "WFAssignCalculateRecursion" contains an Assign "values1" as
+      | variable     | value    |
+      | [[b]]        | rec(1).b |
+      | [[rec(1).a]] | b        |
+      | [[rec(1).b]] | 1        |
+	  And "WFAssignCalculateRecursion" contains Calculate "Calculate1" with formula "[[[[[[rec(1).a]]]]]]+1" into "[[result]]"
+	  When "WFAssignCalculateRecursion" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'values1' in WorkFlow 'WFAssignCalculateRecursion' debug inputs as 
+	  | # | Variable       | New Value |
+	  | 1 | [[b]] =        | rec(1).b  |
+	  | 2 | [[rec(1).a]] = | b         |
+	  | 3 | [[rec(1).b]] = | 1         |
+	 And the 'values1' in Workflow 'WFAssignCalculateRecursion' debug outputs as   
+	  | # |                           |
+	  | 1 | [[b]]         =  rec(1).b |
+	  | 2 | [[rec(1).a]]  =  b        |
+	  | 3 | [[rec(1).b]]   = 1        |
+	  And the 'Calculate1' in WorkFlow 'WFAssignCalculateRecursion' debug inputs as 
+      | fx =                         |
+      | [[[[[[rec(1).a]]]]]]+1 = 1+1 |       
+      And the 'Calculate1' in Workflow 'WFAssignCalculateRecursion' debug outputs as  
+	  |                |
+	  | [[result]] = 2 |
 
 #This Scenario should be passed after the bug 11714 is fixed
 Scenario: Workflow with Assign and ForEach
