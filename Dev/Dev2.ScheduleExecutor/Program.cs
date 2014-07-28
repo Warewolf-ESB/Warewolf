@@ -18,10 +18,7 @@ namespace Dev2.ScheduleExecutor
     internal class Program
     {
         private const string WarewolfTaskSchedulerPath = "\\warewolf\\";
-
-
         private static readonly string OutputPath = string.Format("{0}\\{1}", Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
-
         private static readonly string SchedulerLogDirectory = OutputPath +  "SchedulerLogs";
         private static readonly Stopwatch Stopwatch = new Stopwatch();
         private static readonly DateTime StartTime = DateTime.Now.Subtract(new TimeSpan(0, 0, 5));
@@ -30,7 +27,7 @@ namespace Dev2.ScheduleExecutor
         {
             try
             {
-                Console.ReadLine();
+
                 SetupForLogging();
 
                 Stopwatch.Start();
