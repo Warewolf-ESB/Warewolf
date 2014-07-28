@@ -101,14 +101,14 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         protected override void Dispose(bool disposing)
         {
-            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
-            if (authorizationServiceBase != null)
-            {
-                authorizationServiceBase.Dispose();
-            }
+            //            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
+            //            if (authorizationServiceBase != null)
+            //            {
+            //                authorizationServiceBase.Dispose();
+            //            }
             CompileMessageRepo.Instance.ClearObservable();
-            ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
-            if (ResourceCatalog.Instance.ResourceSaved == null)
+            //ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
+            if(ResourceCatalog.Instance.ResourceSaved == null)
             {
                 ResourceCatalog.Instance.ResourceSaved = null;
             }
