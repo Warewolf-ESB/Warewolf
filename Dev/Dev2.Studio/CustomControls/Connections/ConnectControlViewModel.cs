@@ -1,80 +1,193 @@
-﻿using System;
+﻿using Dev2.ConnectionHelpers;
+using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.ViewModels;
+using Dev2.Webs;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using Caliburn.Micro;
-using Dev2.AppResources.Enums;
-using Dev2.Data.ServiceModel;
-using Dev2.Messages;
-using Dev2.Network;
-using Dev2.Providers.Logs;
-using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.InterfaceImplementors;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
-using Dev2.Threading;
-using Dev2.Webs;
+using System.Windows.Threading;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
-namespace Dev2.UI
+namespace Dev2.CustomControls.Connections
 // ReSharper restore CheckNamespace
 {
-    public class ConnectControlViewModel : DependencyObject, INotifyPropertyChanged, IHandle<UpdateActiveEnvironmentMessage>, IHandle<SetConnectControlSelectedServerMessage>
+    public class ConnectControlViewModel : INotifyPropertyChanged, IConnectControlViewModel
     {
         #region Fields
-
-        const string NewServerText = "New Remote Server...";
-
-        readonly IAsyncWorker _asyncWorker;
-        readonly IEnvironmentModel _activeEnvironment;
-        readonly IEventAggregator _eventPublisher;
-
         ICommand _connectCommand;
         ICommand _editCommand;
         bool _isConnectButtonSpinnerVisible;
         bool _isEnabled;
-
+        bool _isDropDownEnabled;
+        string _labelText;
+        readonly bool _bindToActiveEnvironment;
+        int _selectedServerIndex;
+        readonly Dispatcher _dispatcher;
+        IConnectControlEnvironment _selectedServer;
+        readonly IMainViewModel _mainViewModel;
+        readonly IEnvironmentRepository _environmentRepository;
+        readonly Action<IEnvironmentModel> _callbackHandler;
+        readonly IConnectControlSingleton _connectControlSingleton;
+        ObservableCollection<IConnectControlEnvironment> _servers;
         #endregion
 
-        #region Ctor
-
-        public ConnectControlViewModel(IEnvironmentModel activeEnvironment, IEventAggregator eventAggregator)
-            : this(activeEnvironment, eventAggregator, new AsyncWorker())
+        public ConnectControlViewModel(Action<IEnvironmentModel> callbackHandler,
+                                       string labelText,
+                                       bool bindToActiveEnvironment)
+            : this(Application.Current as IApp,
+              EnvironmentRepository.Instance,
+              callbackHandler,
+              ConnectControlSingleton.Instance,
+              labelText,
+              bindToActiveEnvironment)
         {
-
         }
 
-        public ConnectControlViewModel(IEnvironmentModel activeEnvironment, IEventAggregator eventAggregator, IAsyncWorker asyncWorker)
+        private ConnectControlViewModel(IApp mainApp,
+                                        IEnvironmentRepository environmentRepository,
+                                        Action<IEnvironmentModel> callbackHandler,
+                                        IConnectControlSingleton connectControlSingleton,
+                                        string labelText,
+                                        bool bindToActiveEnvironment)
+            : this((mainApp != null && mainApp.MainWindow != null) ?
+              mainApp.MainWindow.DataContext as IMainViewModel : null,
+            environmentRepository,
+            callbackHandler,
+            connectControlSingleton,
+            labelText,
+            bindToActiveEnvironment)
         {
-            _asyncWorker = asyncWorker;
-            VerifyArgument.IsNotNull("eventPublisher", eventAggregator);
-            eventAggregator.Subscribe(this);
-            if(activeEnvironment != null)
+        }
+
+        internal ConnectControlViewModel(IMainViewModel mainViewModel,
+                                        IEnvironmentRepository environmentRepository,
+                                        Action<IEnvironmentModel> callbackHandler,
+                                        IConnectControlSingleton connectControlSingleton,
+                                        string labelText,
+                                        bool bindToActiveEnvironment, Action<IEnvironmentModel, ResourceType, string, string, string, string, string> openWizard = null)
+        {
+            VerifyArgument.IsNotNull("callbackHandler", callbackHandler);
+            VerifyArgument.IsNotNull("connectControlSingleton", connectControlSingleton);
+            VerifyArgument.IsNotNull("labelText", labelText);
+            VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+
+            if(Application.Current != null)
             {
-                _activeEnvironment = activeEnvironment;
+                _dispatcher = Application.Current.Dispatcher;
             }
-            ObservableCollection<IEnvironmentModel> observableCollection = new ObservableCollection<IEnvironmentModel> { CreateNewRemoteServerEnvironment() };
-            EnvironmentRepository.Instance.ItemAdded += OnEnvironmentAdded;
-            Servers = observableCollection;
-            _eventPublisher = eventAggregator;
+
             IsEnabled = true;
+            IsDropDownEnabled = true;
+            LabelText = labelText;
+            _mainViewModel = mainViewModel;
+            _environmentRepository = environmentRepository;
+            _callbackHandler = callbackHandler;
+            _connectControlSingleton = connectControlSingleton;
+            _bindToActiveEnvironment = bindToActiveEnvironment;
+            _connectControlSingleton.ConnectedStatusChanged += ConnectedStatusChanged;
+            _connectControlSingleton.ConnectedServerChanged += ConnectedServerChanged;
+
+            if(openWizard == null)
+            {
+                _openWizard = (environmentModel, resourceType, resourcePath, category, resourceId, sourceId, resourceName) => RootWebSite.ShowDialog(environmentModel, resourceType, resourcePath, category, resourceId, sourceId, resourceName);
+            }
+            else
+            {
+                _openWizard = openWizard;
+            }
+
+            SetForActiveEnvironment();
         }
 
-        void OnEnvironmentAdded(object sender, EventArgs args)
+        public void ConnectedServerChanged(object sender, ConnectedServerChangedEvent e)
         {
-            AddMissingServers();
+            var index = Servers.IndexOf(Servers.FirstOrDefault(s => s.EnvironmentModel.ID == e.EnvironmentId));
+
+            if(index != -1)
+            {
+                SelectedServerIndex = index;
+            }
         }
 
-        #endregion
+        public void ConnectedStatusChanged(object sender, ConnectionStatusChangedEventArg e)
+        {
+            var server = Servers.FirstOrDefault(c => c.EnvironmentModel.ID == e.EnvironmentId);
+            if(server == null)
+            {
+                return;
+            }
 
-        #region Properties
+            var isBusyStatus = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Busy;
+            bool isconnected;
+
+            if(isBusyStatus)
+            {
+                isconnected = false;
+                IsConnectButtonSpinnerVisible = true;
+                IsDropDownEnabled = false;
+            }
+            else
+            {
+                IsConnectButtonSpinnerVisible = false;
+                IsDropDownEnabled = true;
+                isconnected = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Connected;
+            }
+
+            server.IsConnected = isconnected;
+            server.AllowEdit = !server.EnvironmentModel.IsLocalHost && e.ConnectedStatus != ConnectionEnumerations.ConnectedState.Busy;
+
+            if(SelectedServer != null && SelectedServer.EnvironmentModel.ID == e.EnvironmentId)
+            {
+                if(e.DoCallback)
+                {
+                    _callbackHandler(server.EnvironmentModel);
+                }
+            }
+        }
+
+        public void SetTargetEnvironment()
+        {
+            var otherConnectedServers = Servers.Where(s => s.IsConnected && !s.EnvironmentModel.IsLocalHost);
+            IEnumerable<IConnectControlEnvironment> connectControlEnvironments = otherConnectedServers as IConnectControlEnvironment[] ?? otherConnectedServers.ToArray();
+            if(connectControlEnvironments.Count() == 1)
+            {
+                SelectedServerIndex = Servers.IndexOf(connectControlEnvironments.First());
+            }
+        }
 
 
+        void SetForActiveEnvironment()
+        {
+            if(_bindToActiveEnvironment && _mainViewModel != null)
+            {
+                var activeEnvironment = _mainViewModel.ActiveEnvironment;
+                var selectedServerIndex = Servers.ToList().FindIndex(c => c.EnvironmentModel.ID == activeEnvironment.ID);
+
+                if(selectedServerIndex >= 0)
+                {
+                    SelectedServerIndex = selectedServerIndex;
+                }
+            }
+
+            if(SelectedServer == null && Servers.Any())
+            {
+                var selectedServerIndex = Servers.ToList().FindIndex(c => c.EnvironmentModel.IsLocalHost);
+                if(selectedServerIndex >= 0)
+                {
+                    SelectedServerIndex = selectedServerIndex;
+                }
+            }
+        }
 
         public bool IsEnabled
         {
@@ -85,7 +198,7 @@ namespace Dev2.UI
             set
             {
                 _isEnabled = value;
-                OnPropertyChanged("IsEnabled");
+                OnPropertyChanged();
             }
         }
 
@@ -98,54 +211,32 @@ namespace Dev2.UI
             set
             {
                 _isConnectButtonSpinnerVisible = value;
-                OnPropertyChanged("IsConnectButtonSpinnerVisible");
+                OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<IEnvironmentModel> Servers { get; set; }
-
-        public IEnvironmentModel ActiveEnvironment
+        public ObservableCollection<IConnectControlEnvironment> Servers
         {
             get
             {
-                return _activeEnvironment;
+                return _servers ?? (_servers = _connectControlSingleton.Servers ?? new ObservableCollection<IConnectControlEnvironment>());
             }
         }
-
-        #endregion
-
-        #region Dependancy Properties
 
         #region IsDropDownEnabled
 
         public bool IsDropDownEnabled
         {
-            get { return (bool)GetValue(IsDropDownEnabledProperty); }
-            set { SetValue(IsDropDownEnabledProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsDropDownEnabledProperty =
-            DependencyProperty.Register("IsDropDownEnabled", typeof(bool), typeof(ConnectControlViewModel), new PropertyMetadata(true));
-
-        #endregion
-
-        #region ConnectControlInstanceType
-
-        public ConnectControlInstanceType ConnectControlInstanceType
-        {
             get
             {
-                return (ConnectControlInstanceType)GetValue(ConnectControlInstanceTypeProperty);
+                return _isDropDownEnabled;
             }
             set
             {
-                SetValue(ConnectControlInstanceTypeProperty, value);
+                _isDropDownEnabled = value;
+                OnPropertyChanged();
             }
         }
-
-        // Using a DependencyProperty as the backing store for ConnectControlInstanceType.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty ConnectControlInstanceTypeProperty =
-            DependencyProperty.Register("ConnectControlInstanceType", typeof(ConnectControlInstanceType), typeof(ConnectControlViewModel), new PropertyMetadata(ConnectControlInstanceType.Explorer));
 
         #endregion
 
@@ -153,20 +244,22 @@ namespace Dev2.UI
 
         public string LabelText
         {
-            get { return (string)GetValue(LabelTextProperty); }
-            set { SetValue(LabelTextProperty, value); }
+            get
+            {
+                return _labelText;
+            }
+            private set
+            {
+                _labelText = value;
+                OnPropertyChanged();
+            }
         }
-
-        // Using a DependencyProperty as the backing store for LabelText.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty LabelTextProperty =
-            DependencyProperty.Register("LabelText", typeof(string),
-                typeof(ConnectControlViewModel), new PropertyMetadata("Server "));
 
         #endregion
 
         #region Selected Server
 
-        public IEnvironmentModel SelectedServer
+        public IConnectControlEnvironment SelectedServer
         {
             get
             {
@@ -174,170 +267,161 @@ namespace Dev2.UI
             }
             set
             {
-                if(_selectedServer != null && _selectedServer.Equals(value))
+                _selectedServer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int SelectedServerIndex
+        {
+            get
+            {
+                return _selectedServerIndex;
+            }
+            set
+            {
+                if(value == -1 || value == _selectedServerIndex || Servers.Count <= value)
                 {
                     return;
                 }
-                _selectedServer = value;
-                OnPropertyChanged("SelectedServer");
-            }
-        }
 
-        public void SelectedServerHasChanged(IEnvironmentModel newValue, ConnectControlViewModel viewModel)
-        {
-            if(newValue != null)
-            {
-                if(newValue.IsConnected)
+                var origValue = _selectedServerIndex;
+                _selectedServerIndex = value;
+
+                var selectedServer = Servers[value];
+
+                if(selectedServer.EnvironmentModel.Name == ConnectControlSingleton.NewServerText)
                 {
-                    viewModel.SetConnectedState();
+                    int newServerIndex;
+
+                    if(!AddNewServer(out newServerIndex, OpenConnectionWizard))
+                    {
+                        if(_dispatcher != null)
+                        {
+                            _dispatcher.BeginInvoke(
+                            new Action(() =>
+                            {
+                                _selectedServerIndex = origValue;
+                                OnPropertyChanged();
+                            }),
+                            DispatcherPriority.ContextIdle,
+                            null
+                        );
+                        }
+                        else
+                        {
+                            _selectedServerIndex = origValue;
+                            OnPropertyChanged();
+                        }
+                    }
                 }
                 else
                 {
-                    viewModel.SetDisconnectedState();
+                    SelectedServer = selectedServer;
+                    _callbackHandler(selectedServer.EnvironmentModel);
                 }
-                ActionForNewRemoteServer(newValue, viewModel);
-                ActionForAlreadySavedServer(newValue, viewModel);
-                viewModel._eventPublisher.Publish(new ServerSelectionChangedMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
+                OnPropertyChanged();
             }
         }
 
-        static void ActionForAlreadySavedServer(IEnvironmentModel newValue, ConnectControlViewModel viewModel)
+        public bool AddNewServer(out int newServerIndex, Action<int> openDialog)
         {
-            if(newValue.Name != NewServerText)
+            newServerIndex = -1;
+            IEnvironmentModel newEnvironment;
+            if(ActionForNewRemoteServer(out newEnvironment, openDialog))
             {
-                switch(viewModel.ConnectControlInstanceType)
+                var selectedServerIndex = Servers.ToList().FindIndex(c => c.EnvironmentModel.ID == newEnvironment.ID);
+                if(selectedServerIndex >= 0)
                 {
-                    case ConnectControlInstanceType.Explorer:
-                        viewModel._eventPublisher.Publish(new SetSelectedItemInExplorerTree(newValue.Name));
-                        viewModel._eventPublisher.Publish(new AddServerToExplorerMessage(newValue));
-                        viewModel._eventPublisher.Publish(new SetActiveEnvironmentMessage(newValue, true));
-                        break;
-                    case ConnectControlInstanceType.DeploySource:
-                        viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
-                        break;
-                    case ConnectControlInstanceType.DeployTarget:
-                        viewModel._eventPublisher.Publish(new AddServerToDeployMessage(viewModel.SelectedServer, viewModel.ConnectControlInstanceType));
-                        break;
-                    case ConnectControlInstanceType.Settings:
-                        viewModel.AddMissingServers();
-                        break;
-                    case ConnectControlInstanceType.Scheduler:
-                        viewModel.AddMissingServers();
-                        break;
-                    case ConnectControlInstanceType.RuntimeConfiguration:
-                        break;
+                    newServerIndex = selectedServerIndex;
+                    return true;
                 }
+            }
+            return false;
+        }
+
+        bool ActionForNewRemoteServer(out IEnvironmentModel newServer, Action<int> openDialog)
+        {
+            openDialog(-1);
+            if(GetNewlyAddedServer(out newServer))
+            {
+                AddToServersCollection(newServer);
+                return true;
+            }
+            newServer = null;
+            return false;
+        }
+
+        void AddToServersCollection(IEnvironmentModel server)
+        {
+            Servers.Add(new ConnectControlEnvironment
+            {
+                EnvironmentModel = server,
+                IsConnected = server.IsConnected,
+                AllowEdit = !server.IsLocalHost
+            });
+
+            SelectedServer = Servers.Last();
+            _selectedServerIndex = Servers.IndexOf(SelectedServer);
+            if(!server.IsConnected)
+            {
+                _connectControlSingleton.ToggleConnection(SelectedServerIndex);
             }
         }
 
-        static void ActionForNewRemoteServer(IEnvironmentModel newValue, ConnectControlViewModel viewModel)
+        bool GetNewlyAddedServer(out IEnvironmentModel environment)
         {
-            if(newValue.Name == NewServerText)
+            var existingEnvironments = _environmentRepository.All();
+            if(existingEnvironments == null)
             {
-                IEnvironmentModel localHost = viewModel.Servers.FirstOrDefault(c => c.IsLocalHost);
-                if(localHost != null)
+                environment = null;
+                return false;
+            }
+
+            var newEnvironments = existingEnvironments.Except(Servers.Select(c => c.EnvironmentModel));
+            IEnumerable<IEnvironmentModel> environmentModels = newEnvironments as IEnvironmentModel[] ?? newEnvironments.ToArray();
+
+            if(!environmentModels.Any())
+            {
+                environment = null;
+                return false;
+            }
+
+            environment = environmentModels.ToList().Last();
+            return true;
+        }
+
+        private readonly Action<IEnvironmentModel, ResourceType, string, string, string, string, string> _openWizard;
+
+        public void OpenConnectionWizard(int selectedIndex)
+        {
+            var localhost = Servers.FirstOrDefault(c => c.EnvironmentModel.IsLocalHost);
+            if(localhost != null)
+            {
+                if(selectedIndex >= 0)
                 {
-                    viewModel.OpenNewConnectionWizard(localHost);
-
-                    viewModel.AddMissingServers();
+                    var environmentModel = Get(selectedIndex);
+                    _openWizard(localhost.EnvironmentModel, ResourceType.Server, null, string.Empty, environmentModel.ID.ToString(), null, environmentModel.Name);
                 }
-            }
-        }
-
-        #endregion
-
-        #region BindToActiveEnvironment
-
-        public bool BindToActiveEnvironment
-        {
-            get { return (bool)GetValue(BindToActiveEnvironmentProperty); }
-            set { SetValue(BindToActiveEnvironmentProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for BindToActiveEnvironment.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty BindToActiveEnvironmentProperty =
-            DependencyProperty.Register("BindToActiveEnvironment", typeof(bool), typeof(ConnectControlViewModel), new PropertyMetadata(false));
-        IEnvironmentModel _selectedServer;
-
-        #endregion
-
-        #endregion
-
-        #region Handlers
-
-        #region Implementation of IHandle<SetActiveEnvironmentMessage>
-
-        public void Handle(UpdateActiveEnvironmentMessage message)
-        {
-            this.TraceInfo(message.GetType().Name);
-            if(message.EnvironmentModel != null && BindToActiveEnvironment)
-            {
-                SelectedServer = message.EnvironmentModel;
-            }
-        }
-
-        #endregion
-
-        #endregion
-
-        #region Public Methods
-
-        public virtual void OpenEditConnectionWizard(IEnvironmentModel localHost)
-        {
-            RootWebSite.ShowDialog(localHost, ResourceType.Server, null, string.Empty, SelectedServer.ID.ToString(), null, ConnectControlInstanceType, SelectedServer.Name);
-        }
-
-        public virtual void OpenNewConnectionWizard(IEnvironmentModel localHost)
-        {
-            RootWebSite.ShowDialog(localHost, ResourceType.Server, null, string.Empty, null, null, ConnectControlInstanceType);
-        }
-
-        public void AddMissingServers()
-        {
-            foreach(var environmentModel in EnvironmentRepository.Instance.All())
-            {
-                if(!Servers.Contains(environmentModel))
+                else
                 {
-                    Servers.Add(environmentModel);
-                    if(BindToActiveEnvironment)
-                    {
-                        SelectedServer = environmentModel;
-                    }
+                    _openWizard(localhost.EnvironmentModel, ResourceType.Server, null, string.Empty, null, null, null);
                 }
             }
         }
 
-        public void UpdateServer(IEnvironmentModel environmentToUpdate)
+        IEnvironmentModel Get(int selectedIndex)
         {
-            var environmentModel = EnvironmentRepository.Instance.FindSingle(c => c.ID == environmentToUpdate.ID);
-            var index = Servers.IndexOf(environmentToUpdate);
-            if(index != -1 && environmentModel != null)
-            {
-                Servers[index] = environmentModel;
-            }
+            var selectedServer = Servers[selectedIndex];
+            return selectedServer.EnvironmentModel;
         }
-
-        public void LoadServers(IEnvironmentModel envModel = null)
-        {
-            Servers.Clear();
-            Servers.Add(CreateNewRemoteServerEnvironment());
-            var servers = ServerProvider.Instance.Load();
-            foreach(var server in servers)
-            {
-                Servers.Add(server);
-            }
-        }
-
-        #endregion
-
-        #region Private Methods
 
         public ICommand ConnectCommand
         {
             get
             {
                 return _connectCommand ??
-                       (_connectCommand = new RelayCommand(param => Connect()));
+                       (_connectCommand = new RelayCommand(param => _connectControlSingleton.ToggleConnection(SelectedServerIndex)));
             }
         }
 
@@ -346,76 +430,8 @@ namespace Dev2.UI
             get
             {
                 return _editCommand ??
-                       (_editCommand = new RelayCommand(param => EditConnection()));
+                       (_editCommand = new RelayCommand(param => _connectControlSingleton.EditConnection(SelectedServerIndex, OpenConnectionWizard)));
             }
-        }
-
-
-        void EditConnection()
-        {
-            if(SelectedServer != null)
-            {
-                var tempSelectedServer = SelectedServer;
-                var localhost = Servers.FirstOrDefault(c => c.IsLocalHost);
-                if(localhost != null)
-                {
-                    OpenEditConnectionWizard(localhost);
-                    var firstOrDefault = Servers.FirstOrDefault(c => c.ID == tempSelectedServer.ID);
-                    if(firstOrDefault != null)
-                    {
-                        UpdateServer(tempSelectedServer);
-                        SelectedServer = tempSelectedServer;
-                    }
-                }
-            }
-        }
-
-        void Connect()
-        {
-            if(SelectedServer != null)
-            {
-                if(!SelectedServer.IsConnected)
-                {
-                    SetBusyConnectingState();
-                    var environment = SelectedServer;
-                    _asyncWorker.Start(
-                    environment.Connect,
-                    () =>
-                    {
-                        _eventPublisher.Publish(new AddServerToExplorerMessage(environment));
-                        SetConnectedState();
-                    });
-                }
-                else
-                {
-                    SelectedServer.Disconnect();
-                    SetDisconnectedState();
-                }
-            }
-        }
-
-        void SetConnectedState()
-        {
-            IsConnectButtonSpinnerVisible = false;
-            IsEnabled = true;
-        }
-
-        void SetDisconnectedState()
-        {
-            IsConnectButtonSpinnerVisible = false;
-            IsEnabled = true;
-        }
-
-        void SetBusyConnectingState()
-        {
-            IsConnectButtonSpinnerVisible = true;
-            IsEnabled = false;
-        }
-
-        EnvironmentModel CreateNewRemoteServerEnvironment()
-        {
-            EnvironmentModel environmentModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(new Uri("http://localhost:3142"))) { Name = NewServerText };
-            return environmentModel;
         }
 
         #endregion
@@ -424,7 +440,7 @@ namespace Dev2.UI
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged(string propertyName)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             if(PropertyChanged != null)
             {
@@ -434,16 +450,25 @@ namespace Dev2.UI
 
         #endregion INotifyPropertyChanged
 
-        #region Implementation of IHandle<SetConnectControlSelectedServerMessage>
-
-        public void Handle(SetConnectControlSelectedServerMessage message)
+        public void UpdateActiveEnvironment(IEnvironmentModel environmentModel, bool isSetFromConnectControl)
         {
-            if(message != null && message.ConnectControlInstanceType == ConnectControlInstanceType && !Equals(message.SelectedServer, SelectedServer))
+            if(isSetFromConnectControl)
             {
-                SelectedServer = message.SelectedServer;
+                return;
+            }
+
+            if(environmentModel != null && _bindToActiveEnvironment)
+            {
+                var index = Servers.ToList().FindIndex(c => c.EnvironmentModel.ID == environmentModel.ID);
+                if(index >= 0)
+                {
+                    _selectedServerIndex = index;
+                    SelectedServer = Servers[index];
+                    // ReSharper disable ExplicitCallerInfoArgument
+                    OnPropertyChanged("SelectedServerIndex");
+                    // ReSharper restore ExplicitCallerInfoArgument
+                }
             }
         }
-
-        #endregion
     }
 }

@@ -11,8 +11,8 @@
              xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core;assembly=Dev2.Activities.Designers"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:help="clr-namespace:Dev2.Activities.Designers2.Core.Help;assembly=Dev2.Activities.Designers"
-             xmlns:help1="clr-namespace:Dev2.Help"
-             Padding="10"
+             xmlns:help1="clr-namespace:Dev2.Help" xmlns:connections="clr-namespace:Dev2.CustomControls.Connections"
+    Padding="10"
              d:DesignHeight="300"
              d:DesignWidth="300"
              mc:Ignorable="d"
@@ -149,16 +149,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <ui:ConnectControl Grid.Row="0"
+            <connections:ConnectControl DataContext="{Binding ConnectControlViewModel}"
+                               Grid.Row="0"
                                Grid.Column="0"
                                Width="310"
-                               LabelText="Server: "
                                HorizontalAlignment="Left"
                                ConnectButtonAutomationID="UI_SettingsServerConnectButton_AutoID"
                                EditButtonAutomationID="UI_SettingsServerEditButton_AutoID"
-                               ServerComboBoxAutomationID="UI_SettingsServerComboBox_AutoID"
-                               BindToActiveEnvironment="False"
-                               ConnectControlInstanceType="Scheduler" />
+                               ServerComboBoxAutomationID="UI_SettingsServerComboBox_AutoID"/>
             <StackPanel Grid.Row="1"
                         Grid.Column="0"
                         Orientation="Horizontal">

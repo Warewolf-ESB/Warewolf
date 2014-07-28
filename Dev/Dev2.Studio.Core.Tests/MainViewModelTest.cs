@@ -1,20 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.Globalization;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Forms;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.AppResources.Repositories;
 using Dev2.Communication;
 using Dev2.Composition;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
+using Dev2.CustomControls.Connections;
 using Dev2.Factory;
 using Dev2.Models;
 using Dev2.Providers.Events;
@@ -48,6 +39,17 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using System.Globalization;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Forms;
 using Action = System.Action;
 using FileHelper = Dev2.Studio.Core.Helpers.FileHelper;
 
@@ -118,7 +120,7 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
-            var mvm = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, null, null, null, null, null, mockStudioResourceRepository.Object);
+            var mvm = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, null, null, null, null, null, mockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object);
             mvm.Setup(c => c.ShowStartPage()).Verifiable();
 
             //construct
@@ -160,10 +162,6 @@ namespace Dev2.Core.Tests
             var newServer = new Mock<IEnvironmentModel>();
             newServer.Setup(e => e.ID).Returns(Guid.NewGuid);
             newServer.Setup(e => e.IsConnected).Returns(true); // so that we load resources
-
-            var newServerMessage = new AddServerToExplorerMessage(newServer.Object);
-            viewModel.ExplorerViewModel.Handle(newServerMessage);
-
             Assert.AreEqual(1, viewModel.AddWorkspaceItemsHitCount, "AddWorkspaceItems was invoked more than once.");
         }
 
@@ -341,24 +339,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, null, environmentRepository.Object, versionChecker.Object, false);
             Assert.IsNull(mvm);
         }
-
-        [TestMethod]
-        [TestCategory("MainViewModel_Constructor")]
-        [Owner("Hagashen Naidu")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void MainViewModel_UnitTest_Constructor_CreatesFlowControllerWithPopcontrollerFromMainViewModel()
-        {
-            //-----------------Setup ---------------------------------------------------------
-            var eventPublisher = new Mock<IEventAggregator>();
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            var versionChecker = new Mock<IVersionChecker>();
-            //-----------------Execute------------------------------------------------
-            var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
-            //-------------------Assert-----------------------------
-            Assert.IsNull(mvm);
-        }
-
+        
         [TestMethod]
         [TestCategory("MainViewModel_Constructor")]
         [Description("Constructor must initialize navigation view model load complete event")]
@@ -1566,15 +1547,6 @@ namespace Dev2.Core.Tests
         #region ActiveEnvironment
 
         [TestMethod]
-        public void SetActiveEnvironmentCallsUpdateActiveEnvironmentMessageExpectedUpdateActiveEnvironmentMessagePublished()
-        {
-            Mock<IEnvironmentModel> mockEnv = Dev2MockFactory.SetupEnvironmentModel();
-            CreateFullExportsAndVmWithEmptyRepo();
-            MainViewModel.Handle(new SetActiveEnvironmentMessage(mockEnv.Object));
-            EventAggregator.Verify(c => c.Publish(It.IsAny<UpdateActiveEnvironmentMessage>()), Times.Once());
-        }
-
-        [TestMethod]
         [TestCategory("MainViewModel_SetActiveEnvironmentMessage")]
         [Owner("Trevor Williams-Ros")]
         public void MainViewModel_SetActiveEnvironmentMessage_SetsActiveEnvironmentOnEnvironmentRepository()
@@ -1653,7 +1625,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
-            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker()) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
+            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker(), new Mock<IConnectControlViewModel>().Object) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(true);
             scheduler.SelectedTask = task.Object;
@@ -1690,7 +1662,7 @@ namespace Dev2.Core.Tests
             var mvm = new MainViewModel(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false);
             var popup = new Mock<IPopupController>();
             popup.Setup(a => a.ShowSchedulerCloseConfirmation()).Returns(MessageBoxResult.Cancel).Verifiable();
-            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker()) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
+            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), popup.Object, new AsyncWorker(), new Mock<IConnectControlViewModel>().Object) { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var task = new Mock<IScheduledResource>();
             task.Setup(a => a.IsDirty).Returns(false);
             scheduler.SelectedTask = task.Object;
@@ -1787,7 +1759,7 @@ namespace Dev2.Core.Tests
         }
 
         #endregion
-        
+
         [TestMethod]
         [TestCategory("MainViewModel_HandleDeployResourcesMessage")]
         [Description("Handle DeployResourcesMessage must open the deploy tab and select the resource in the view.")]
@@ -1870,7 +1842,7 @@ namespace Dev2.Core.Tests
             var vm = new MainViewModel(eventAggregator.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false, new Mock<IBrowserPopupController>().Object);
 
             var workSurfaceContextViewModel = new Mock<WorkSurfaceContextViewModel>(eventAggregator.Object, new WorkSurfaceKey(), new Mock<IWorkSurfaceViewModel>().Object, new Mock<IPopupController>().Object, new Action<IContextualResourceModel, bool>(
-                (a,b)=>{}));
+                (a, b) => { }));
             workSurfaceContextViewModel.Setup(v => v.Debug()).Verifiable();
 
             vm.ActiveItem = workSurfaceContextViewModel.Object;
@@ -2214,7 +2186,7 @@ namespace Dev2.Core.Tests
 
         }
         public SchedulerViewModelForTesting(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker)
-            : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker)
+            : base(eventPublisher, directoryObjectPicker, popupController, asyncWorker, new Mock<IConnectControlViewModel>().Object)
         {
 
         }
@@ -2237,7 +2209,7 @@ namespace Dev2.Core.Tests
 
         public SettingsViewModelForTest(IEventAggregator eventPublisher, IPopupController popupController,
                                        IAsyncWorker asyncWorker, IWin32Window parentWindow)
-            : base(eventPublisher, popupController, asyncWorker, parentWindow)
+            : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<IConnectControlViewModel>().Object)
         {
         }
 

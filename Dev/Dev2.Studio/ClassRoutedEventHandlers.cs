@@ -1,6 +1,5 @@
 ﻿using Dev2.Common;
 using Dev2.Composition;
-using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Controller;
 using Dev2.UI;
 using System;

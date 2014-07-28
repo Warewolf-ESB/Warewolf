@@ -1,6 +1,7 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.ExtMethods;
+using Dev2.ConnectionHelpers;
 using Dev2.Factory;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
@@ -408,6 +409,7 @@ namespace Dev2.Studio.ViewModels
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         public IVersionChecker Version { get; private set; }
+        public IConnectControlSingleton ConnectControlSingl{ get; set; }
 
         public bool HasActiveConnection
         {
@@ -431,7 +433,7 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IFeedbackInvoker feedbackInvoker = null, IStudioResourceRepository studioResourceRepository = null)
+            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IFeedbackInvoker feedbackInvoker = null, IStudioResourceRepository studioResourceRepository = null, IConnectControlSingleton connectControlSingleton = null)
             : base(eventPublisher)
         {
             if(environmentRepository == null)
@@ -444,6 +446,7 @@ namespace Dev2.Studio.ViewModels
                 throw new ArgumentNullException("versionChecker");
             }
             Version = versionChecker;
+            ConnectControlSingl = connectControlSingleton ?? ConnectControlSingleton.Instance;
 
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             _createDesigners = createDesigners;
@@ -461,7 +464,7 @@ namespace Dev2.Studio.ViewModels
 
             if(ExplorerViewModel == null)
             {
-                ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, StudioResourceRepository, false, enDsfActivityType.All, AddWorkspaceItems);
+                ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, StudioResourceRepository, ConnectControlSingl, false, enDsfActivityType.All, AddWorkspaceItems);
                 ExplorerViewModel.LoadEnvironments();
             }
         }
@@ -538,8 +541,7 @@ namespace Dev2.Studio.ViewModels
             this.TraceInfo(message.GetType().Name);
             ActiveEnvironment = message.EnvironmentModel;
             EnvironmentRepository.ActiveEnvironment = ActiveEnvironment;
-            this.TraceInfo("Publish message of type - " + typeof(UpdateActiveEnvironmentMessage));
-            EventPublisher.Publish(new UpdateActiveEnvironmentMessage(ActiveEnvironment));
+            ExplorerViewModel.UpdateActiveEnvironment(ActiveEnvironment, message.SetFromConnectControl);
         }
 
         public void Handle(ShowDependenciesMessage message)

@@ -4,9 +4,9 @@ using System;
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Messages
 {
-    public class AddServerToExplorerMessage : IMessage
+    public class AddServerNavigationMessage : IMessage
     {
-        public AddServerToExplorerMessage(IEnvironmentModel environmentModel, bool forceConnect = false, Action callBackFunction = null)
+        public AddServerNavigationMessage(IEnvironmentModel environmentModel, bool forceConnect = false, Action callBackFunction = null)
         {
             EnvironmentModel = environmentModel;
             ForceConnect = forceConnect;

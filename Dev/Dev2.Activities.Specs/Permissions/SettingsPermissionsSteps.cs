@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.DirectoryServices.AccountManagement;
-using System.Linq;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading;
-using Dev2.Data.Settings;
-using Dev2.Network;
+﻿using Dev2.Network;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
+using System.Linq;
+using System.Security.Principal;
+using System.Threading;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Activities.Specs.Permissions
@@ -118,7 +116,7 @@ namespace Dev2.Activities.Specs.Permissions
                 });
             }
 
-            var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#"), false) { Name = "Other Connection" };
+            var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#")) { Name = "Other Connection" };
             reconnectModel.Connect();
             ScenarioContext.Current.Add("currentEnvironment", reconnectModel);
         }
@@ -164,7 +162,9 @@ namespace Dev2.Activities.Specs.Permissions
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
             }
+// ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
+// ReSharper restore EmptyGeneralCatchClause
             {
                 /* Invalid user account */
             }

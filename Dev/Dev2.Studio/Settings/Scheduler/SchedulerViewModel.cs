@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Globalization;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
-using Dev2.AppResources.Enums;
 using Dev2.Common.ExtMethods;
+using Dev2.CustomControls.Connections;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.Dialogs;
 using Dev2.Interfaces;
-using Dev2.Messages;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
 using Dev2.Services.Events;
@@ -33,10 +22,20 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
 using Microsoft.Win32.TaskScheduler;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace Dev2.Settings.Scheduler
 {
-    public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHandle<ServerSelectionChangedMessage>, IHandle<SelectedServerConnectedMessage>, IHelpSource, IStudioTab
+    public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
     {
         #region Fields
 
@@ -72,18 +71,19 @@ namespace Dev2.Settings.Scheduler
         string _connectionError;
         bool _hasConnectionError;
         IEnvironmentModel _currentEnvironment;
+        IConnectControlViewModel _connectControlViewModel;
 
         #endregion
 
         #region Ctor
 
         public SchedulerViewModel()
-            : this(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker())
+            : this(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker(), null)
         {
         }
 
 
-        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker)
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IConnectControlViewModel connectControlViewModel)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
@@ -108,6 +108,7 @@ namespace Dev2.Settings.Scheduler
 
             var taskServiceConvertorFactory = new TaskServiceConvertorFactory();
             SchedulerFactory = new ClientSchedulerFactory(new Dev2TaskService(taskServiceConvertorFactory), taskServiceConvertorFactory);
+            ConnectControlViewModel = connectControlViewModel ?? new ConnectControlViewModel(OnServerChanged, "Server: ", false);
         }
 
         #endregion
@@ -162,6 +163,23 @@ namespace Dev2.Settings.Scheduler
             {
                 _isLoading = value;
                 NotifyOfPropertyChange(() => IsLoading);
+            }
+        }
+
+        public IConnectControlViewModel ConnectControlViewModel
+        {
+            get
+            {
+                return _connectControlViewModel;
+            }
+            set
+            {
+                if(Equals(value, _connectControlViewModel))
+                {
+                    return;
+                }
+                _connectControlViewModel = value;
+                NotifyOfPropertyChange(() => ConnectControlViewModel);
             }
         }
 
@@ -523,10 +541,6 @@ namespace Dev2.Settings.Scheduler
             }
             set
             {
-                if(Equals(_currentEnvironment, value))
-                {
-                    return;
-                }
                 _currentEnvironment = value;
                 NotifyOfPropertyChange(() => CurrentEnvironment);
             }
@@ -871,7 +885,7 @@ You need Administrator permission.");
                 if(hasResult)
                 {
                     WorkflowName = _resourcePicker.SelectedResource.Category;
-                    
+
                     SelectedTask.ResourceId = _resourcePicker.SelectedResource.ID;
                     if(SelectedTask.Name.StartsWith("New Task"))
                     {
@@ -888,15 +902,9 @@ You need Administrator permission.");
         void OnServerChanged(object obj)
         {
             var tmpEnv = obj as IEnvironmentModel;
-            if(Equals(CurrentEnvironment, tmpEnv))
-            {
-                return;
-            }
 
             if(!DoDeactivate())
             {
-                _asyncWorker.Start(() => { }, () => EventPublisher.Publish(new SetConnectControlSelectedServerMessage(CurrentEnvironment, ConnectControlInstanceType.Scheduler)));
-
                 return;
             }
             CurrentEnvironment = tmpEnv;
@@ -1052,29 +1060,6 @@ You need Administrator permission.";
 
         #endregion
 
-        #region Implementation of IHandle<ServerSelectionChangedMessage>
-
-        public void Handle(ServerSelectionChangedMessage message)
-        {
-            if(message != null)
-            {
-                if(message.SelectedServer == null)
-                {
-                    // ReSharper disable NotResolvedInText
-                    throw new ArgumentNullException("message.SelectedServer");
-                    // ReSharper restore NotResolvedInText
-                }
-
-                if(message.ConnectControlInstanceType == ConnectControlInstanceType.Scheduler)
-                {
-                    OnServerChanged(message.SelectedServer);
-                }
-            }
-
-        }
-
-        #endregion
-
         #region Implementation of IHelpSource
 
         public string HelpText
@@ -1093,31 +1078,6 @@ You need Administrator permission.";
         }
 
         #endregion
-
-        #region Implementation of IHandle<SelectedServerConnectedMessage>
-
-        public void Handle(SelectedServerConnectedMessage message)
-        {
-
-            if(message != null)
-            {
-                if(message.SelectedServer == null)
-                {
-                    // ReSharper disable NotResolvedInText
-                    throw new ArgumentNullException("message.SelectedServer");
-                    // ReSharper restore NotResolvedInText
-                }
-
-                if(Equals(message.SelectedServer, CurrentEnvironment))
-                {
-                    OnServerChanged(message.SelectedServer);
-                }
-            }
-        }
-
-        #endregion
-
-
     }
 }
 

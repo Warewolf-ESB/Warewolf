@@ -10,6 +10,7 @@ using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Communication;
 using Dev2.Composition;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
@@ -87,7 +88,7 @@ namespace Dev2.Core.Tests
             // ReSharper restore ObjectCreationAsStatement
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, PopupController.Object,
-                WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object);
+                WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object);
         }
 
         protected void CreateFullExportsAndVm()
@@ -110,7 +111,7 @@ namespace Dev2.Core.Tests
             FindCefSharpWpfDll();//Ashley: Load Xaml references manually...
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, PopupController.Object
-                , WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object);
+                , WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object);
 
             ActiveEnvironment = new Mock<IEnvironmentModel>();
             AuthorizationService = new Mock<IAuthorizationService>();
@@ -277,7 +278,7 @@ namespace Dev2.Core.Tests
                 .Verifiable();
             SetupDefaultMef();
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, mock.Object, new Mock<IVersionChecker>().Object, false);
+            MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, mock.Object, new Mock<IVersionChecker>().Object, false,connectControlSingleton:new Mock<IConnectControlSingleton>().Object);
             SetupForDelete();
             FirstResource.Setup(r => r.ResourceType).Returns(ResourceType.Source);
             FirstResource.Setup(r => r.ServerResourceType).Returns("Server");

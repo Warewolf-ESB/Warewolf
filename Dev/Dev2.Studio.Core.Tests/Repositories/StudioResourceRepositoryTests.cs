@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.ServiceModel;
@@ -96,7 +97,7 @@ namespace Dev2.Core.Tests.Repositories
                                           .Verifiable();
 
             var c1 = EnviromentRepositoryTest.CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, false);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
             var source = new Mock<IEnvironmentModel>();
             var repo = new TestEnvironmentRespository(source.Object, e1);
             new EnvironmentRepository(repo);
@@ -113,7 +114,7 @@ namespace Dev2.Core.Tests.Repositories
             //------------Execute Test---------------------------
             EnvironmentRepository.Instance.Save(e1);
             //------------Assert Results-------------------------
-            mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.Exactly(2));
+            mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.Exactly(1));
         }
 
         [TestMethod]
@@ -128,7 +129,7 @@ namespace Dev2.Core.Tests.Repositories
                                           .Verifiable();
 
             var c1 = EnviromentRepositoryTest.CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, false);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
             var source = new Mock<IEnvironmentModel>();
             var repo = new TestEnvironmentRespository(source.Object, e1);
             new EnvironmentRepository(repo);
@@ -146,7 +147,7 @@ namespace Dev2.Core.Tests.Repositories
             //------------Execute Test---------------------------
             EnvironmentRepository.Instance.Save(e1);
             //------------Assert Results-------------------------
-            mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.Exactly(3));
+            mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.Exactly(2));
         }
 
         [TestMethod]
@@ -161,7 +162,7 @@ namespace Dev2.Core.Tests.Repositories
                                           .Verifiable();
 
             var c1 = EnviromentRepositoryTest.CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object, false);
+            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
             var source = new Mock<IEnvironmentModel>();
             var repo = new TestEnvironmentRespository(source.Object, e1);
             new EnvironmentRepository(repo);
@@ -1934,18 +1935,18 @@ namespace Dev2.Core.Tests.Repositories
             new EnvironmentRepository(testEnvironmentRespository);
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
             //------------Execute Test---------------------------
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, studioResourceRepository.ExplorerItemModels.Count);
-            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
+            Assert.IsFalse(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioResourceRepository_AddServerNode")]
-        public void StudioResourceRepository_AddServerNode_OtherServerCollapsed()
+        public void StudioResourceRepository_AddServerNode_AllServersCollapsed()
         {
             //------------Setup for test--------------------------
             Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
@@ -1966,12 +1967,12 @@ namespace Dev2.Core.Tests.Repositories
             new EnvironmentRepository(testEnvironmentRespository);
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
             //------------Execute Test---------------------------
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, studioResourceRepository.ExplorerItemModels.Count);
-            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
+            Assert.IsFalse(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
             Assert.IsFalse(studioResourceRepository.ExplorerItemModels[0].IsExplorerSelected);
             Assert.IsFalse(studioResourceRepository.ExplorerItemModels[0].IsExplorerExpanded);
         }
@@ -1979,7 +1980,7 @@ namespace Dev2.Core.Tests.Repositories
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioResourceRepository_AddServerNode")]
-        public void StudioResourceRepository_AddServerNode_Existing_ItemExpandedAndSelected()
+        public void StudioResourceRepository_AddServerNode_Existing_ItemNotExpandedAndSelected()
         {
             //------------Setup for test--------------------------
             Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
@@ -2000,14 +2001,14 @@ namespace Dev2.Core.Tests.Repositories
             new EnvironmentRepository(testEnvironmentRespository);
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
-            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
+            ExplorerItemModel serverExplorerItem = new ExplorerItemModel(studioResourceRepository, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IConnectControlSingleton>().Object) { EnvironmentId = Guid.NewGuid(), ResourceType = ResourceType.Server };
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Execute Test---------------------------
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, studioResourceRepository.ExplorerItemModels.Count);
-            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
-            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerExpanded);
+            Assert.IsFalse(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
+            Assert.IsFalse(studioResourceRepository.ExplorerItemModels[1].IsExplorerExpanded);
         }
 
 
