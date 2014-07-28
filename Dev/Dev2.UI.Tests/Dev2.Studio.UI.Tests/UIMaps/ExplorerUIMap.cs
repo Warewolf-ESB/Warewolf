@@ -267,7 +267,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void DoubleClickOpenProject(string serverName, string folderName, string projectName, int waitAmt = 0)
         {
             UITestControl theControl = null;
-            if(folderName != "Unassigned" && folderName != string.Empty)
+            if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
                 theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
             }
@@ -321,7 +321,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void RightClickDeployProject(string folderName, string projectName, string serverName = "localhost")
         {
             UITestControl theControl = null;
-            if(folderName != "Unassigned" && folderName != string.Empty)
+            if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
                 theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
             }
@@ -499,7 +499,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public bool ServiceExists(string serverName, string folderName, string projectName)
         {
             UITestControl theControl = null;
-            if(folderName != "Unassigned" && folderName != string.Empty)
+            if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
                 theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
             }
@@ -520,7 +520,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void RightClickProperties(string serverName, string folderName, string projectName)
         {
             UITestControl theControl = null;
-            if(folderName != "Unassigned" && folderName != string.Empty)
+            if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
                 theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
             }
@@ -667,7 +667,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void RightClickShowProjectDependancies(string serverName, string folderName, string projectName)
         {
             UITestControl theControl = null;
-            if(folderName != "Unassigned" && folderName != string.Empty)
+            if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
                 theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
             }
@@ -693,7 +693,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void RightClickHelp(string serverName, string folderName, string projectName)
         {
             UITestControl theControl = null;
-            if(folderName != "Unassigned" && folderName != string.Empty)
+            if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
                 theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
             }
@@ -807,7 +807,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         public void DragControlToWorkflowDesigner(string serverName, string serviceType, string folderName, string projectName, Point p)
         {
             UITestControl theControl = null;
-            if(folderName != "Unassigned" && folderName != string.Empty)
+            if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
                 theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
             }
@@ -875,7 +875,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 EnterExplorerSearchText(resourceName);
                 Playback.Wait(1000);
                 UITestControl theControl = null;
-                if(folderName != "Unassigned" && folderName != string.Empty)
+                if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
                 {
                     theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, resourceName);
                 }

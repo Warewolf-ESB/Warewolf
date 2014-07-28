@@ -77,9 +77,10 @@ namespace Dev2.Studio.UI.Tests.UIMaps
                     var spinner = kids.FirstOrDefault(child => child.ClassName == "Uia.CircularProgressBar");
                     return spinner != null && spinner.Height != -1;
                 }
+                throw new UITestControlNotAvailableException("Output UI map's output status bar is not available at this time.");
             }
 
-            throw new UITestControlNotFoundException("Output UI map cannot resolve the output status bar. Check this mapping's constructor.");
+            throw new UITestControlNotFoundException("Output UI map cannot resolve the output status bar. Check Output UI mapping's constructor.");
         }
 
         public UITestControlCollection GetStepInOutputWindow(UITestControl outputWindow, string stepToFind)
@@ -127,12 +128,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             //return workflowStep.Name;
             string workflowNamePrefix = "Workflow : ";
-            UITestControlCollection coll = workflowStep.GetChildren();
-            if(coll == null)
+            if(workflowStep.GetParent() == null)
             {
-                workflowStep.DrawHighlight();
+                throw new UITestControlNotAvailableException(workflowStep.Name + " not available.");
             }
-            for(int i = 0; i <= coll.Count; i++)
+            UITestControlCollection coll = workflowStep.GetChildren();
+            for(int i = 0; i < coll.Count; i++)
             {
                 if(coll[i].Name.Contains(workflowNamePrefix))
                 {

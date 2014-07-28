@@ -69,11 +69,29 @@ namespace Dev2.Studio.UI.Tests.Utils
                 ServerLocation = Path.Combine(deployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Server\bin\Debug"), ServerExeName);
                 StudioLocation = Path.Combine(deployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Studio\bin\Debug"), StudioExeName);
             }
-            if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
+            if(!File.Exists(ServerLocation))
             {
-                LogTestRunMessage("Could not locate binaries to test against.", true);
-                throw new FileNotFoundException("Server or Studio not found: " + (deployDirectory ?? ServerLocation.Substring(0, ServerLocation.IndexOf("TestResults\\")) + ServerLocation.Substring(ServerLocation.IndexOf("Dev2.")) + " " +
-                    StudioLocation.Substring(0, StudioLocation.IndexOf("TestResults\\")) + StudioLocation.Substring(StudioLocation.IndexOf("Dev2."))));
+                LogTestRunMessage("Could not locate server to test against.", true);
+                if((ServerLocation.IndexOf("TestResults\\") >= 0) && (ServerLocation.IndexOf("Dev2.") >= 0))
+                {
+                    throw new FileNotFoundException("Server not found at " + (deployDirectory ?? ServerLocation.Substring(0, ServerLocation.IndexOf("TestResults\\")) + ServerLocation.Substring(ServerLocation.IndexOf("Dev2."))));
+                }
+                else
+                {
+                    throw new FileNotFoundException("Server not found at " + ServerLocation);
+                }
+            }
+            if(!File.Exists(StudioLocation))
+            {
+                LogTestRunMessage("Could not locate studio to test against.", true);
+                if((StudioLocation.IndexOf("TestResults\\") >= 0) && (StudioLocation.IndexOf("Dev2.") >= 0))
+                {
+                    throw new FileNotFoundException("Studio not found at " + (deployDirectory ?? StudioLocation.Substring(0, StudioLocation.IndexOf("TestResults\\")) + StudioLocation.Substring(StudioLocation.IndexOf("Dev2."))));
+                }
+                else
+                {
+                    throw new FileNotFoundException("Studio not found at " + StudioLocation);
+                }
             }
             //Set resource location
             _resourceLocation = StudioLocation.Replace(ServerExeName, @"Resources\");

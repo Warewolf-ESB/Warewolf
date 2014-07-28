@@ -43,11 +43,11 @@ namespace Dev2.Studio.UI.Tests.Tests.ResourcePicker
 
             Assert.IsFalse(ActivityDropUIMap.IsOkButtonEnabled());
 
-            ActivityDropUIMap.SingleClickResource("Example", "Control Flow - Decision");
+            ActivityDropUIMap.SingleClickResource("EXAMPLES", "Control Flow - Decision");
 
             Assert.IsTrue(ActivityDropUIMap.IsOkButtonEnabled());
 
-            ActivityDropUIMap.SingleClickAFolder("Example");
+            ActivityDropUIMap.SingleClickAFolder("EXAMPLES");
 
             Assert.IsFalse(ActivityDropUIMap.IsOkButtonEnabled());
 
@@ -56,7 +56,7 @@ namespace Dev2.Studio.UI.Tests.Tests.ResourcePicker
             #region Checking the double click of a resource puts it on the design surface
 
             //Select a resource in the explorer view
-            ActivityDropUIMap.SelectAResourceAndClickOk("Example", "Control Flow - Decision");
+            ActivityDropUIMap.SelectAResourceAndClickOk("EXAMPLES", "Control Flow - Decision");
 
             // Check if it exists on the designer
             bool doesControlExistOnWorkflowDesigner = WorkflowDesignerUIMap.DoesControlExistOnWorkflowDesigner(dsfActivityUiMap.TheTab, "Control Flow - Decision");
@@ -71,7 +71,7 @@ namespace Dev2.Studio.UI.Tests.Tests.ResourcePicker
             dsfActivityUiMap.DragToolOntoDesigner(ToolType.Workflow);
 
             // Single click a folder in the tree
-            ActivityDropUIMap.SingleClickResource("Example", "Control Flow - Decision");
+            ActivityDropUIMap.SingleClickResource("EXAMPLES", "Control Flow - Decision");
 
             // Click the Ok button on the window
             ActivityDropUIMap.ClickCancelButton();

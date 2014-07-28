@@ -65,7 +65,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             Mouse.Click(destinationServerList, new Point(10, 10));
             Playback.Wait(500);
 
-            var item = VisualTreeWalker.GetChildByAutomationIDPath(destinationServerList, "UI_DestinationServercbx_AutoID" + serverName);
+            var item = VisualTreeWalker.GetChildByAutomationIDPath(destinationServerList, "UI_DestinationServercbx_AutoID_" + serverName);
 
             Mouse.Click(item, new Point(5, 5));
 

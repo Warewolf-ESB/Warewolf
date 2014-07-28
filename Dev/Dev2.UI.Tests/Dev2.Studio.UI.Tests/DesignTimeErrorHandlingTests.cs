@@ -112,7 +112,6 @@ namespace Dev2.Studio.UI.Tests
                 activityUiMap.ClickFixErrors();
                 KeyboardCommands.SendKey("[[Name]]", 25);
 
-
                 activityUiMap.ClickCloseMapping();
                 Assert.IsFalse(activityUiMap.IsFixErrorButtonShowing(), "'Fix Errors' button is still visible");
             }
