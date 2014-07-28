@@ -148,14 +148,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
       testRunner.Given("I have a schedule \"Diceroll01235\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 26
-   testRunner.And("\"ScheduleWithHistory\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll01235\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
    testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
    testRunner.And("the task status \"Status\" is \"Enabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
-   testRunner.And("\"ScheduleWithHistory\" has a username of \"dev2\\IntegrationTester\" and a Password o" +
-                    "f \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll01235\" has a username of \"dev2\\IntegrationTester\" and a Password of \"I73" +
+                    "573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
@@ -172,7 +172,7 @@ this.ScenarioSetup(scenarioInfo);
                         "ExpireTime"});
             table3.AddRow(new string[] {
                         "On a schedule",
-                        "\"Daily\"",
+                        "Daily",
                         "2014/01/01",
                         "15:40:44",
                         "1",
@@ -184,15 +184,15 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/02",
                         "15:40:15"});
 #line 30
-   testRunner.And("\"ScheduleWithHistory\" has a Schedule of", ((string)(null)), table3, "And ");
+   testRunner.And("\"Diceroll01235\" has a Schedule of", ((string)(null)), table3, "And ");
 #line 33
    testRunner.When("the \"Diceroll01235\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 34
-   testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 35
    testRunner.Then("the schedule status is \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 35
+   testRunner.Then("the Schedule task has \"No\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 36
-   testRunner.And("\"ScheduleWithHistory\" has \"2\" row of history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll01235\" has \"2\" row of history", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
@@ -217,14 +217,13 @@ this.ScenarioSetup(scenarioInfo);
 #line 42
       testRunner.Given("I have a schedule \"Diceroll00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 43
-   testRunner.And("\"ScheduleWithHistory\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll00\" executes an Workflow \"My Category\\Dice Roll\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
    testRunner.And("task history \"Number of history records to load\" is \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 45
    testRunner.And("the task status \"Status\" is \"Disabled\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
-   testRunner.And("\"ScheduleWithHistory\" has a username of \"IntegrationTester\" and a Password of \"I7" +
-                    "3573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+   testRunner.And("\"Diceroll00\" has a username of \"IntegrationTester\" and a Password of \"I73573r0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
                         "ScheduleType",
@@ -253,7 +252,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/02",
                         "15:40:15"});
 #line 47
-   testRunner.And("\"ScheduleWithHistory\" has a Schedule of", ((string)(null)), table5, "And ");
+   testRunner.And("\"Diceroll00\" has a Schedule of", ((string)(null)), table5, "And ");
 #line 50
    testRunner.When("the \"Diceroll00\" is executed \"1\" times", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 51
