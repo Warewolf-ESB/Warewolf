@@ -31,13 +31,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public EsbHub()
         {
-            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
-            ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
-            ServerExplorerRepository.Instance.MessageSubscription(this);
-            if(ResourceCatalog.Instance.ResourceSaved == null)
-            {
-                ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
-            }
+
         }
 
         void ResourceSaved(IResource resource)
@@ -64,10 +58,10 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
         }
 
-        public async Task AddDebugWriter(Guid workspaceID)
+        public async Task AddDebugWriter(Guid workspaceId)
         {
-            this.LogTrace("Added Debug Writer For Workspace [ " + workspaceID + " ]");
-            var task = new Task(() => DebugDispatcher.Instance.Add(workspaceID, this));
+            this.LogTrace("Added Debug Writer For Workspace [ " + workspaceId + " ]");
+            var task = new Task(() => DebugDispatcher.Instance.Add(workspaceId, this));
             task.Start();
             await task;
         }
@@ -99,29 +93,38 @@ namespace Dev2.Runtime.WebServer.Hubs
             return base.OnReconnected();
         }
 
-        protected override void Dispose(bool disposing)
+        public override Task OnDisconnected()
         {
-            //            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
-            //            if (authorizationServiceBase != null)
-            //            {
-            //                authorizationServiceBase.Dispose();
-            //            }
+            ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
+            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
+            if(authorizationServiceBase != null)
+            {
+                authorizationServiceBase.Dispose();
+            }
             CompileMessageRepo.Instance.ClearObservable();
-            //ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
             if(ResourceCatalog.Instance.ResourceSaved == null)
             {
                 ResourceCatalog.Instance.ResourceSaved = null;
             }
             ResourceCatalog.Instance.Dispose();
-            base.Dispose(disposing);
+            return base.OnDisconnected();
         }
+
 
         void ConnectionActions()
         {
-            var workspaceID = Server.GetWorkspaceID(Context.User.Identity);
+            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
+            ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
+            ServerExplorerRepository.Instance.MessageSubscription(this);
+            if(ResourceCatalog.Instance.ResourceSaved == null)
+            {
+                ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
+            }
+
+            var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
             var hubCallerConnectionContext = Clients;
             var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
-            user.SendWorkspaceID(workspaceID);
+            user.SendWorkspaceID(workspaceId);
             user.SendServerID(HostSecurityProvider.Instance.ServerID);
         }
 
@@ -165,11 +168,11 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// </summary>
         /// <param name="envelope">The envelope.</param>
         /// <param name="endOfStream">if set to <c>true</c> [end of stream].</param>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
-        /// <param name="dataListID">The data list unique identifier.</param>
-        /// <param name="messageID">The message unique identifier.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
+        /// <param name="dataListId">The data list unique identifier.</param>
+        /// <param name="messageId">The message unique identifier.</param>
         /// <returns></returns>
-        public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceID, Guid dataListID, Guid messageID)
+        public async Task<Receipt> ExecuteCommand(Envelope envelope, bool endOfStream, Guid workspaceId, Guid dataListId, Guid messageId)
         {
             var internalServiceRequestHandler = new InternalServiceRequestHandler { ExecutingUser = Context.User };
             try
@@ -179,16 +182,16 @@ namespace Dev2.Runtime.WebServer.Hubs
                     try
                     {
                         StringBuilder sb;
-                        if(!MessageCache.TryGetValue(messageID, out sb))
+                        if(!MessageCache.TryGetValue(messageId, out sb))
                         {
                             sb = new StringBuilder();
-                            MessageCache.TryAdd(messageID, sb);
+                            MessageCache.TryAdd(messageId, sb);
                         }
                         sb.Append(envelope.Content);
 
                         if(endOfStream)
                         {
-                            MessageCache.TryRemove(messageID, out sb);
+                            MessageCache.TryRemove(messageId, out sb);
                             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                             EsbExecuteRequest request = serializer.Deserialize<EsbExecuteRequest>(sb);
 
@@ -203,7 +206,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                                 this.LogTrace("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
                             }
 
-                            var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceID, dataListID, Context.ConnectionId);
+                            var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId);
                             // Convert to chunked msg store for fetch ;)
                             var length = processRequest.Length;
                             var startIdx = 0;
@@ -221,7 +224,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                                 var future = new FutureReceipt
                                             {
                                                 PartID = q,
-                                                RequestID = messageID,
+                                                RequestID = messageId,
                                                 User = user
                                             };
 
