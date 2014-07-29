@@ -5,6 +5,7 @@ using System.Text;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.ServiceModel;
@@ -1889,7 +1890,7 @@ namespace Dev2.Core.Tests.ModelTests
             ExplorerItemModel resourceItem;
 #pragma warning disable 168
             var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, out resourceItem, mockStudioRepository.Object);
-            ExplorerItemModel childItem = new ExplorerItemModel(mockStudioRepository.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object) { DisplayName = "bob" };
+            ExplorerItemModel childItem = new ExplorerItemModel(mockStudioRepository.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IConnectControlSingleton>().Object) { DisplayName = "bob" };
             resourceItem.Children.Add(childItem);
 #pragma warning restore 168
             //------------Execute Test---------------------------
@@ -2000,42 +2001,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual("", oldName);
             Assert.AreEqual("", newName);
             Assert.AreEqual(Guid.Empty, resourceGuid);
-        }
-
-        [TestMethod]
-        [Owner("Hagshen Naidu")]
-        [TestCategory("ExplorerItemModel_RefreshCommand")]
-        public void ExplorerItemModel_RefreshCommandExecute_ExpectCallsRepo()
-        {
-            //------------Setup for test--------------------------
-            Guid resourceGuid = Guid.Empty;
-
-            var mockStudioRepository = new Mock<IStudioResourceRepository>();
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            var resourceId = Guid.NewGuid();
-            var envID = Guid.Empty;
-
-            var mockResourceModel = new Mock<IContextualResourceModel>();
-            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
-            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
-            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
-            mockEnvironment.Setup(model => model.ID).Returns(envID);
-            GetEnvironmentRepository(mockEnvironment);
-
-            mockStudioRepository.Setup(repository => repository.Load(envID, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object)).Verifiable();
-
-            const string displayName = "localhost";
-            ExplorerItemModel resourceItem;
-#pragma warning disable 168
-            var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, out resourceItem, mockStudioRepository.Object);
-#pragma warning restore 168
-            resourceItem.ResourceType = ResourceType.Folder;
-            mockResourceModel.Setup(a => a.WorkflowXaml).Returns(new StringBuilder(string.Format("Name=\"{0}\" x:Class=\"{1}\"ToolboxFriendlyName=\"{2}\"DisplayName=\"{3}\"", resourceItem.DisplayName, resourceItem.DisplayName, resourceItem.DisplayName, resourceItem.DisplayName)));
-            mockResourceModel.Setup(a => a.ResourceName).Returns(resourceItem.DisplayName);
-            //------------Execute Test---------------------------
-            serverItem.RefreshCommand.Execute(null);
-            //------------Assert Results-------------------------
-            mockStudioRepository.Verify(a => a.Load(envID, It.IsAny<IAsyncWorker>()), Times.Once());
         }
 
         [TestMethod]
@@ -2572,7 +2537,7 @@ namespace Dev2.Core.Tests.ModelTests
             var rep = new Mock<IStudioResourceRepository>();
             bool called = false;
             var worker = new Mock<IAsyncWorker>();
-            var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out outvalue, rep.Object, worker.Object);
+            var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out outvalue, rep.Object, worker.Object,new Mock<IConnectControlSingleton>().Object);
             rep.Setup(a => a.AddItem(It.IsAny<ExplorerItemModel>())).Callback((ExplorerItemModel a) =>
                 {
                     Assert.AreEqual(a.DisplayName, "New Folder");
@@ -2602,7 +2567,7 @@ namespace Dev2.Core.Tests.ModelTests
             var rep = new Mock<IStudioResourceRepository>();
             bool called = false;
             var worker = new Mock<IAsyncWorker>();
-            var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out outvalue, rep.Object, worker.Object);
+            var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out outvalue, rep.Object, worker.Object, new Mock<IConnectControlSingleton>().Object);
             rep.Setup(a => a.AddItem(It.IsAny<ExplorerItemModel>())).Callback((ExplorerItemModel a) =>
             {
                 Assert.AreEqual(a.DisplayName, "New Folder");
@@ -2644,7 +2609,7 @@ namespace Dev2.Core.Tests.ModelTests
             var rep = new Mock<IStudioResourceRepository>();
             bool called = false;
             var worker = new Mock<IAsyncWorker>();
-            var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out outvalue, rep.Object, worker.Object);
+            var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out outvalue, rep.Object, worker.Object,new Mock<IConnectControlSingleton>().Object);
             rep.Setup(a => a.AddItem(It.IsAny<ExplorerItemModel>())).Callback((ExplorerItemModel a) =>
             {
                 Assert.AreEqual(a.DisplayName, "New Folder");
@@ -2935,16 +2900,15 @@ namespace Dev2.Core.Tests.ModelTests
         [TestCategory("ExplorerItemModel_RemoveCommand")]
         public void ExplorerItemModel_RemoveCommand_ExpectRemoveCalled()
         {
-
             var rep = new Mock<IStudioResourceRepository>();
-
             var worker = new Mock<IAsyncWorker>();
             ExplorerItemModel outvalue;
-            var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out outvalue, rep.Object, worker.Object);
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            connectControlSingleton.Setup(c => c.Remove(It.IsAny<Guid>())).Verifiable();
+            var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out outvalue, rep.Object, worker.Object,connectControlSingleton.Object);
 
             explorerItemModel.RemoveCommand.Execute(null);
-            rep.Verify(a => a.RemoveEnvironment(It.IsAny<Guid>()), Times.Once());
-
+            connectControlSingleton.Verify(c => c.Remove(It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -2961,24 +2925,6 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsTrue(isChecked != null && isChecked.Value);
 
         }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ExplorerItemModel_SetIsChecked")]
-        public void ExplorerItemModel_SetIsChecked_ExpectParentUpdated()
-        {
-            ExplorerItemModel exp;
-            var item = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), out exp);
-            Assert.IsFalse(item.IsChecked != null && item.IsChecked.Value);
-            item.Children[0].SetIsChecked(true, false, true);
-
-            Assert.IsTrue(item.IsChecked != null && item.IsChecked.Value);
-            var isChecked = item.Children[0].IsChecked;
-            Assert.IsTrue(isChecked != null && isChecked.Value);
-            Assert.IsFalse(item.IsOverwrite);
-
-        }
-
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -3129,9 +3075,9 @@ namespace Dev2.Core.Tests.ModelTests
             return serverItem;
         }
 
-        static ExplorerItemModel SetupExplorerItemModelWithFolderAndOneChild(string displayName, Guid envID, Guid resourceId, out ExplorerItemModel resourceItem, IStudioResourceRepository rep, IAsyncWorker worker)
+        static ExplorerItemModel SetupExplorerItemModelWithFolderAndOneChild(string displayName, Guid envID, Guid resourceId, out ExplorerItemModel resourceItem, IStudioResourceRepository rep, IAsyncWorker worker, IConnectControlSingleton connectControlSingleton)
         {
-            var serverItem = new ExplorerItemModel(rep, worker)
+            var serverItem = new ExplorerItemModel(rep, worker, connectControlSingleton)
             {
                 ResourceType = ResourceType.Server,
                 DisplayName = displayName,
@@ -3139,7 +3085,7 @@ namespace Dev2.Core.Tests.ModelTests
                 Permissions = Permissions.Administrator,
                 EnvironmentId = envID
             };
-            var folderItem = new ExplorerItemModel(rep, worker)
+            var folderItem = new ExplorerItemModel(rep, worker, connectControlSingleton)
             {
                 ResourceType = ResourceType.Folder,
                 DisplayName = Guid.NewGuid().ToString(),
@@ -3148,7 +3094,7 @@ namespace Dev2.Core.Tests.ModelTests
                 EnvironmentId = envID
             };
 
-            resourceItem = new ExplorerItemModel(rep, worker)
+            resourceItem = new ExplorerItemModel(rep, worker, connectControlSingleton)
             {
                 ResourceType = ResourceType.WorkflowService,
                 DisplayName = Guid.NewGuid().ToString(),
@@ -3220,7 +3166,7 @@ namespace Dev2.Core.Tests.ModelTests
 
         static ExplorerItemModel SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(string displayName, Guid envID, Guid resourceId, out ExplorerItemModel resourceItem, IStudioResourceRepository repo)
         {
-            var serverItem = new ExplorerItemModel(repo, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object)
+            var serverItem = new ExplorerItemModel(repo, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IConnectControlSingleton>().Object)
             {
                 ResourceType = ResourceType.Server,
                 DisplayName = displayName,
@@ -3228,7 +3174,7 @@ namespace Dev2.Core.Tests.ModelTests
                 Permissions = Permissions.Administrator,
                 EnvironmentId = envID
             };
-            var folderItem = new ExplorerItemModel(repo, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object)
+            var folderItem = new ExplorerItemModel(repo, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IConnectControlSingleton>().Object)
             {
                 ResourceType = ResourceType.Folder,
                 DisplayName = Guid.NewGuid().ToString(),
@@ -3237,7 +3183,7 @@ namespace Dev2.Core.Tests.ModelTests
                 EnvironmentId = envID
             };
 
-            resourceItem = new ExplorerItemModel(repo, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object)
+            resourceItem = new ExplorerItemModel(repo, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IConnectControlSingleton>().Object)
             {
                 ResourceType = ResourceType.WorkflowService,
                 DisplayName = Guid.NewGuid().ToString(),

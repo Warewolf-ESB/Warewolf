@@ -1,8 +1,10 @@
 ﻿using Caliburn.Micro;
+using Dev2.CustomControls.Connections;
 using Dev2.Settings;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core.Controller;
 using Dev2.Threading;
+using Moq;
 using System.Windows.Forms;
 
 namespace Dev2.Core.Tests.Settings
@@ -14,7 +16,7 @@ namespace Dev2.Core.Tests.Settings
         }
 
         public TestSettingsViewModel(IEventAggregator eventPublisher, IPopupController popupController, IAsyncWorker asyncWorker, IWin32Window parentWindow)
-            : base(eventPublisher, popupController, asyncWorker, parentWindow)
+            : base(eventPublisher, popupController, asyncWorker, parentWindow, new Mock<IConnectControlViewModel>().Object)
         {
         }
 

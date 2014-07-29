@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition.Primitives;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
-using System.Windows.Threading;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Communication;
 using Dev2.Composition;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Interfaces;
@@ -21,11 +14,18 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.Navigation;
-using Dev2.Threading;
 using Dev2.Util;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition.Primitives;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
+using System.Windows.Threading;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests
@@ -38,7 +38,8 @@ namespace Dev2.Core.Tests
     public class DeployNavigationViewModelTest
     {
         #region Test Variables
-        Action<System.Action, DispatcherPriority> _Invoke = new Action<System.Action, DispatcherPriority>((a, b) => a());
+
+        readonly Action<System.Action, DispatcherPriority> _Invoke = (a, b) => a();
         Mock<IEnvironmentModel> _mockEnvironmentModel;
         Mock<IContextualResourceModel> _mockResourceModel;
         Mock<IContextualResourceModel> _mockResourceModel1;
@@ -46,7 +47,7 @@ namespace Dev2.Core.Tests
         Mock<IContextualResourceModel> _mockResourceSourceModel;
         Mock<IAuthorizationService> _mockAuthService;
         DeployNavigationViewModel _vm;
-
+        bool _target = true;
         #endregion Test Variables
 
 
@@ -104,7 +105,7 @@ namespace Dev2.Core.Tests
                             EnvironmentId = Guid.Empty
                         }
                     });
-            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object);
+            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object,new Mock<IConnectControlSingleton>().Object);
 
 
 
@@ -122,29 +123,9 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(Data.ServiceModel.ResourceType.Server, viewmodel.ExplorerItemModels[0].ResourceType);
         }
 
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("NavigationViewModel_LoadEnvironments")]
-        public void NavigationViewModel_LoadEnvironments_WillCallConnectEnvironmentOnce()
-        {
-            //Arrange
-            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
-            mockEnvironment.Setup(model => model.CanStudioExecute).Returns(true);
-            var environmentRepository = GetEnvironmentRepository(mockEnvironment);
-            var mockStudioRepo = new Mock<IStudioResourceRepository>();
-            mockStudioRepo.Setup(m => m.Load(It.IsAny<Guid>(), It.IsAny<IAsyncWorker>())).Verifiable();
-            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object);
-            //Act
-            viewmodel.LoadEnvironmentResources(mockEnvironment.Object);
-            //Assert
-            mockStudioRepo.Verify(m => m.Load(It.IsAny<Guid>(), It.IsAny<IAsyncWorker>()), Times.Once());
-        }
-
-
         private static IEnvironmentRepository GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
         {
-            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object);
-            repo.IsLoaded = true;
+            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object) { IsLoaded = true };
             return repo;
         }
 
@@ -219,8 +200,46 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             _vm.Filter(null);
             //------------Assert Results-------------------------
-            Assert.AreEqual(4, _vm.ExplorerItemModels[0].ChildrenCount);
+            Assert.AreEqual(2, _vm.ExplorerItemModels[0].ChildrenCount); // filter by environment Id
         }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("NavigationViewModel_EnvironmentId")]
+        public void NavigationViewModel_SetEnvironmentId()
+        {
+            //------------Setup for test--------------------------
+            Init(false, true);
+            _mockAuthService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, It.IsAny<string>())).Returns(false);
+            _mockAuthService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, It.IsAny<string>())).Returns(true);
+            _vm.Environment = _mockEnvironmentModel.Object;
+
+            //------------Preconditions---------------------------
+            Assert.AreEqual(0, _vm.ExplorerItemModels[0].ChildrenCount);
+            _mockAuthService.Verify(a => a.IsAuthorized(AuthorizationContext.DeployTo, It.IsAny<string>()));
+            _mockAuthService.Verify(a => a.IsAuthorized(AuthorizationContext.DeployFrom, It.IsAny<string>()));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("NavigationViewModel_EnvironmentId")]
+        public void NavigationViewModel_SetEnvironmentIdNotTarget()
+        {
+            //------------Setup for test--------------------------
+            _target = false;
+            Init(false, true);
+            _mockAuthService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, It.IsAny<string>())).Returns(false);
+            _mockAuthService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, It.IsAny<string>())).Returns(true);
+            _vm.Environment = _mockEnvironmentModel.Object;
+
+            //------------Preconditions---------------------------
+            Assert.AreEqual(4, _vm.ExplorerItemModels[0].ChildrenCount);
+            _mockAuthService.Verify(a => a.IsAuthorized(AuthorizationContext.DeployTo, It.IsAny<string>()));
+            _mockAuthService.Verify(a => a.IsAuthorized(AuthorizationContext.DeployFrom, It.IsAny<string>()));
+        }
+
+
 
 
 
@@ -254,29 +273,7 @@ namespace Dev2.Core.Tests
         #endregion Filtering
 
 
-
-
-
         #region Refresh Environments Tests
-
-        #endregion
-
-        #region Disconnect
-
-        [TestMethod]
-        public void EnvironmentNodeDisconnect_Expect_NodeRemovedFromRoot()
-        {
-            Init(false, true);
-            _mockEnvironmentModel.SetupGet(c => c.IsConnected).Returns(true);
-            _mockEnvironmentModel.SetupGet(c => c.Name).Returns("Mock");
-
-            Assert.IsTrue(_vm.ExplorerItemModels[0].ChildrenCount != 0);
-
-            var message =
-                new EnvironmentDisconnectedMessage(_mockEnvironmentModel.Object);
-            _vm.Handle(message);
-            Assert.IsTrue(_vm.ExplorerItemModels[0].ChildrenCount == 0);
-        }
 
         #endregion
 
@@ -330,7 +327,7 @@ namespace Dev2.Core.Tests
 
             _vm = CreateViewModel(mockResourceRepository);
             _mockEnvironmentModel.Setup(model => model.IsLocalHost).Returns(true);
-           
+
             _vm.Environment = _mockEnvironmentModel.Object;
         }
 
@@ -362,12 +359,7 @@ namespace Dev2.Core.Tests
                     var categoryItem = localhostItemModel.Children.FirstOrDefault(model => model.DisplayName == resourceModel.Category);
                     if(categoryItem == null)
                     {
-                        categoryItem = new ExplorerItemModel();
-                        categoryItem.Parent = localhostItemModel;
-                        categoryItem.DisplayName = resourceModel.Category;
-                        categoryItem.EnvironmentId = Guid.Empty;
-                        categoryItem.ResourceType = Data.ServiceModel.ResourceType.Folder;
-                        categoryItem.ResourcePath = "";
+                        categoryItem = new ExplorerItemModel { Parent = localhostItemModel, DisplayName = resourceModel.Category, EnvironmentId = Guid.Empty, ResourceType = Data.ServiceModel.ResourceType.Folder, ResourcePath = "" };
                         localhostItemModel.Children.Add(categoryItem);
                     }
                     resourceItemModel.Parent = categoryItem;
@@ -401,7 +393,7 @@ namespace Dev2.Core.Tests
             mock.SetupGet(x => x.Connection.AppServerUri).Returns(new Uri("http://localhost:3142/dsf"));
             mock.SetupGet(x => x.IsConnected).Returns(true);
             mock.Setup(x => x.Connection.ServerEvents).Returns(eventPublisher.Object);
-            mock.Setup(a => a.AuthorizationService).Returns( new Mock<IAuthorizationService>().Object);
+            mock.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             return mock;
         }
 
@@ -488,7 +480,7 @@ namespace Dev2.Core.Tests
         DeployNavigationViewModel CreateViewModel(IEnvironmentRepository environmentRepository, Mock<IResourceRepository> mockResourceRepository)
         {
             StudioResourceRepository studioResourceRepository = BuildExplorerItems(mockResourceRepository.Object);
-            var navigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, environmentRepository, studioResourceRepository,true);
+            var navigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, environmentRepository, studioResourceRepository, _target);
             return navigationViewModel;
         }
 

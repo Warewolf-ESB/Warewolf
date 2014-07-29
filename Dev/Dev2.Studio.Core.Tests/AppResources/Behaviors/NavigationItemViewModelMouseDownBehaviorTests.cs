@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Models;
 using Dev2.Providers.Events;
@@ -128,7 +129,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
             behavior.SelectOnRightClick = selectOnRightClick;
 
-            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object);
 
             //------------Execute Test---------------------------
             var result = behavior.TestOnMouseDown(explorerItemModel, 1);
@@ -159,7 +160,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
             behavior.SetActiveEnvironmentOnClick = setActiveEnvironmentOnClick;
 
-            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object);
 
             //------------Execute Test---------------------------
             var result = behavior.TestOnMouseDown(explorerItemModel, 1);
@@ -179,7 +180,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
 
             var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
 
-            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object);
 
             //------------Execute Test---------------------------
             var result = behavior.TestOnMouseDown(explorerItemModel, 1);
@@ -298,7 +299,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             resourceModel.Setup(r => r.Environment).Returns(environmentModel.Object);
             resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.View)).Returns(true);
 
-            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object);
             explorerItemModel.Permissions = Permissions.Administrator;
             //------------Execute Test---------------------------
             var result = behavior.TestOnMouseDown(explorerItemModel, clickCount);
@@ -327,7 +328,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             resourceModel.Setup(r => r.Environment).Returns(environmentModel.Object);
             resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.View)).Returns(true);
 
-            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object);
 
             //------------Execute Test---------------------------
             var result = behavior.TestOnMouseDown(explorerItemModel, 1);
@@ -367,7 +368,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             editCommand.Setup(c => c.CanExecute(It.IsAny<object>())).Returns(true);
             editCommand.Setup(c => c.Execute(It.IsAny<object>())).Verifiable();
 
-            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object);
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object);
 
             //------------Execute Test---------------------------
             var result = behavior.TestOnMouseDown(explorerItemModel, 2);

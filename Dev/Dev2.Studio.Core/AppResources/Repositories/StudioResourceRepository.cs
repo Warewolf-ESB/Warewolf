@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using Dev2.Common.Common;
+﻿using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.Explorer;
 using Dev2.Interfaces;
@@ -15,6 +14,7 @@ using Dev2.Threading;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace Dev2.AppResources.Repositories
@@ -23,6 +23,7 @@ namespace Dev2.AppResources.Repositories
     {
         private readonly Dispatcher _currentDispatcher;
         private readonly Action<Action, DispatcherPriority> _invoke;
+
         static StudioResourceRepository()
         {
             Instance = new StudioResourceRepository();
@@ -31,7 +32,6 @@ namespace Dev2.AppResources.Repositories
         private StudioResourceRepository()
         {
             ExplorerItemModels = new ObservableCollection<ExplorerItemModel>();
-
             try
             {
                 _currentDispatcher = Dispatcher.CurrentDispatcher;
@@ -57,31 +57,6 @@ namespace Dev2.AppResources.Repositories
                 LoadItemsToTree(environmentId, explorerItems);
             }
             Instance = this;
-        }
-
-        void EnvironmentRepositoryOnItemEdited(object sender, EnvironmentEditedArgs environmentEditedArgs)
-        {
-            var environmentModel = environmentEditedArgs.Environment;
-            if(environmentModel != null && environmentEditedArgs.IsConnected)
-            {
-                var environmentId = environmentModel.ID;
-                var itemModel = ExplorerItemModels.FirstOrDefault(model => model.EnvironmentId == environmentId && model.ResourceType == ResourceType.Server);
-                if(itemModel != null)
-                {
-                    itemModel.IsRefreshing = true;
-                }
-                if(environmentModel.Connection != null)
-                {
-                    if(environmentModel.Connection.AsyncWorker != null)
-                    {
-                        Load(environmentId, environmentModel.Connection.AsyncWorker);
-                    }
-                }
-                if(itemModel != null)
-                {
-                    itemModel.IsRefreshing = false;
-                }
-            }
         }
 
         //This is for testing only need better way of putting this together
@@ -121,6 +96,11 @@ namespace Dev2.AppResources.Repositories
 
         public void Load(Guid environmentId, IAsyncWorker asyncWorker)
         {
+            Load(environmentId, asyncWorker, id => { });
+        }
+
+        public void Load(Guid environmentId, IAsyncWorker asyncWorker, Action<Guid> onCompletion)
+        {
             if(asyncWorker == null)
             {
                 throw new ArgumentNullException("asyncWorker");
@@ -128,7 +108,6 @@ namespace Dev2.AppResources.Repositories
             var environmentRepository = GetEnvironmentRepository();
             if(!_isRegistered)
             {
-                environmentRepository.ItemEdited += EnvironmentRepositoryOnItemEdited;
                 _isRegistered = true;
             }
             // ReSharper disable ImplicitlyCapturedClosure
@@ -138,19 +117,24 @@ namespace Dev2.AppResources.Repositories
             {
                 if(!environmentModel.IsConnected)
                 {
-                    asyncWorker.Start(environmentModel.Connect, () =>
-                    {
-                        var explorerItemModel = LoadEnvironment(environmentId);
-                        LoadItemsToTree(environmentId, explorerItemModel);
-                    });
+                    asyncWorker.Start(environmentModel.Connect, () => LoadEnvironmentTree(environmentId, onCompletion, environmentModel));
                 }
                 else
                 {
-                    var explorerItemModel = LoadEnvironment(environmentId);
-                    LoadItemsToTree(environmentId, explorerItemModel);
+                    LoadEnvironmentTree(environmentId, onCompletion, environmentModel);
                 }
-
             }
+        }
+
+        void LoadEnvironmentTree(Guid environmentId, Action<Guid> onCompletion, IEnvironmentModel environmentModel)
+        {
+            var explorerItemModel = LoadEnvironment(environmentId);
+            if(!environmentModel.HasLoadedResources)
+            {
+                environmentModel.ForceLoadResources();
+            }
+            LoadItemsToTree(environmentId, explorerItemModel);
+            onCompletion(environmentModel.ID);
         }
 
         public void Disconnect(Guid environmentId)
@@ -276,16 +260,10 @@ namespace Dev2.AppResources.Repositories
                 i.IsExplorerSelected = false;
             });
 
-            var exists = FindItem(i => i.EnvironmentId == explorerItem.EnvironmentId && i.ResourceType == ResourceType.Server);
+            var exists = ExplorerItemModels.FirstOrDefault(i => i.EnvironmentId == explorerItem.EnvironmentId);
             if(exists == null)
             {
                 ExplorerItemModels.Add(explorerItem);
-                explorerItem.IsExplorerSelected = true;
-            }
-            else
-            {
-                exists.IsExplorerExpanded = true;
-                exists.IsExplorerSelected = true;
             }
         }
 
@@ -515,13 +493,28 @@ namespace Dev2.AppResources.Repositories
                 }
                 if(ExplorerItemModels.Any(a => a.EnvironmentId == environmentId))
                 {
-                    var index = ExplorerItemModels.IndexOf(ExplorerItemModels.First(a => a.EnvironmentId == environmentId));
+                    var index = ExplorerItemModels.IndexOf(ExplorerItemModels.FirstOrDefault(a => a.EnvironmentId == environmentId));
                     if(index >= 0)
+                    {
+                        explorerItemModel.IsRefreshing = ExplorerItemModels[index].IsRefreshing;
                         ExplorerItemModels.RemoveAt(index);
-                    ExplorerItemModels.Insert(index, explorerItemModel);
+                        ExplorerItemModels.Insert(index, explorerItemModel);
+                    }
                 }
                 else
-                    ExplorerItemModels.Add(explorerItemModel);
+                {
+                    var index = ExplorerItemModels.IndexOf(ExplorerItemModels.FirstOrDefault(a => a.EnvironmentId == environmentId));
+                    if(index >= 0)
+                    {
+                        explorerItemModel.IsRefreshing = ExplorerItemModels[index].IsRefreshing;
+                        ExplorerItemModels.RemoveAt(index);
+                        ExplorerItemModels.Insert(index, explorerItemModel);
+                    }
+                    else
+                    {
+                        ExplorerItemModels.Add(explorerItemModel);
+                    }
+                }
             }
         }
 
@@ -535,6 +528,7 @@ namespace Dev2.AppResources.Repositories
                 {
                     ExplorerItemModelSetup(explorerItemModel, environmentId);
                 }
+                explorerItemModel.IsRefreshing = ExplorerItemModels[indexToReplace].IsRefreshing;
                 ExplorerItemModels.RemoveAt(indexToReplace);
                 ExplorerItemModels.Insert(indexToReplace, explorerItemModel);
             }

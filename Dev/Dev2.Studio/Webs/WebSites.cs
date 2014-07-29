@@ -36,16 +36,16 @@ namespace Dev2.Webs
 
         #region ShowWebPageDialog(this IEnvironmentModel environment)
 
-        public static void ShowWebPageDialog(this IEnvironmentModel environment, string website, string relativeUriString, IPropertyEditorWizard callbackHandler, double width, double height, string leftTitle = "", string rightTitle = "")
+        public static bool? ShowWebPageDialog(this IEnvironmentModel environment, string website, string relativeUriString, IPropertyEditorWizard callbackHandler, double width, double height, string leftTitle = "", string rightTitle = "")
         {
             var window = CreateWebPageDialog(environment, website, relativeUriString, callbackHandler, width, height, leftTitle, rightTitle);
-            window.ShowDialog();
+            return window.ShowDialog();
         }
 
-        public static void ShowWebPageDialog(string absoluteUriString, IPropertyEditorWizard callbackHandler, double width = 800, double height = 600, string leftTitle = "", string rightTitle = "")
+        public static bool? ShowWebPageDialog(string absoluteUriString, IPropertyEditorWizard callbackHandler, double width = 800, double height = 600, string leftTitle = "", string rightTitle = "")
         {
             var window = CreateWebPageDialog(absoluteUriString, callbackHandler, width, height, leftTitle, rightTitle);
-            window.ShowDialog();
+            return window.ShowDialog();
         }
 
         #endregion

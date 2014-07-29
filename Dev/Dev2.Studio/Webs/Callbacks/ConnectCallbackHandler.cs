@@ -1,45 +1,33 @@
-﻿using System;
-using Caliburn.Micro;
-using Dev2.AppResources.Enums;
+﻿using Caliburn.Micro;
 using Dev2.Data.ServiceModel;
-using Dev2.Messages;
 using Dev2.Network;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Newtonsoft.Json;
+using System;
 
 namespace Dev2.Webs.Callbacks
 {
     public class ConnectCallbackHandler : WebsiteCallbackHandler
     {
-        #region Fields
-
-        readonly ConnectControlInstanceType _connectControlInstanceType;
-
-        #endregion
-
-
         #region CTOR
 
-        public ConnectCallbackHandler(ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer)
-            : this(EnvironmentRepository.Instance, connectControlInstanceType)
+        public ConnectCallbackHandler()
+            : this(EnvironmentRepository.Instance)
         {
         }
 
-        public ConnectCallbackHandler(IEnvironmentRepository currentEnvironmentRepository, ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer)
-            : this(EventPublishers.Aggregator, currentEnvironmentRepository, connectControlInstanceType)
+        public ConnectCallbackHandler(IEnvironmentRepository currentEnvironmentRepository)
+            : this(EventPublishers.Aggregator, currentEnvironmentRepository)
         {
         }
 
-        public ConnectCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository, ConnectControlInstanceType connectControlInstanceType = ConnectControlInstanceType.Explorer)
+        public ConnectCallbackHandler(IEventAggregator eventPublisher, IEnvironmentRepository currentEnvironmentRepository)
             : base(eventPublisher, currentEnvironmentRepository)
         {
-            _connectControlInstanceType = connectControlInstanceType;
         }
 
         #endregion
@@ -48,16 +36,6 @@ namespace Dev2.Webs.Callbacks
         {
             Save(jsonObj, environmentModel);
         }
-
-        #region Overrides of WebsiteCallbackHandler
-
-        public override void Cancel()
-        {
-            EventPublisher.Publish(new SetConnectControlSelectedServerMessage(EnvironmentRepository.Instance.ActiveEnvironment, _connectControlInstanceType));
-            base.Cancel();
-        }
-
-        #endregion
 
         #region Save
 
@@ -90,19 +68,7 @@ namespace Dev2.Webs.Callbacks
             }
             var newEnvironment = new EnvironmentModel(resourceId, connection) { Name = newConnection.ResourceName, Category = newConnection.ResourcePath };
 
-            if(defaultEnvironment != null)
-            {
-                // NOTE : NEVER EVER CALL defaultEnvironment.ResourceRepository.AddEnvironment(defaultEnvironment, newEnvironment);
-                // THERE IS NO REASON TO RE-SAVE A SAVED RESOURCE!!!!
-
-                ReloadResource(defaultEnvironment, resourceId, Studio.Core.AppResources.Enums.ResourceType.Source);
-            }
-
-            CurrentEnvironmentRepository.Save(newEnvironment);
-            this.TraceInfo("Publish message of type - " + typeof(AddServerToExplorerMessage));
-            EventPublisher.Publish(new AddServerToExplorerMessage(newEnvironment, true));
-            this.TraceInfo("Publish message of type - " + typeof(AddServerToDeployMessage));
-            EventPublisher.Publish(new AddServerToDeployMessage(newEnvironment, _connectControlInstanceType));
+            CurrentEnvironmentRepository.Save(newEnvironment);            
         }
 
         #endregion

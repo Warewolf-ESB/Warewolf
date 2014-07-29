@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
+using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel;
 using Dev2.Messages;
 using Dev2.Services.Events;
@@ -58,12 +59,20 @@ namespace Dev2.Models
         bool _isRefreshing;
         ICommand _newFolderCommand;
         readonly IAsyncWorker _asyncWorker;
+        readonly IConnectControlSingleton _connectControlSingleton;
         bool _isOverwrite;
 
         private readonly Dictionary<ResourceType, Type> _activityNames;
 
         #endregion
-        public ExplorerItemModel()
+
+
+        public ExplorerItemModel() : this(ConnectControlSingleton.Instance)
+        {
+            
+        }
+
+        public ExplorerItemModel(IConnectControlSingleton connectControlSingleton)
         {
             Children = new ObservableCollection<ExplorerItemModel>();
             _isAuthorized = true;
@@ -84,20 +93,31 @@ namespace Dev2.Models
                         ResourceType.WebService, typeof(DsfWebserviceActivity) 
                     }
                 };
+            _connectControlSingleton = connectControlSingleton;
+            _connectControlSingleton.ConnectedStatusChanged += ConnectedStatusChanged; 
+        }
+
+        private void ConnectedStatusChanged(object sender, ConnectionStatusChangedEventArg e)
+        {
+            if (EnvironmentId  == e.EnvironmentId && ResourceType == ResourceType.Server)
+            {
+                IsRefreshing = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Busy;
+            }
         }
 
         void ChildrenCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             OnChildrenChanged();
         }
-        public ExplorerItemModel(IStudioResourceRepository studioResourceRepository, IAsyncWorker asyncWorker)
-            : this()
+
+        public ExplorerItemModel(IStudioResourceRepository studioResourceRepository, IAsyncWorker asyncWorker, IConnectControlSingleton connectControlSingleton)
+            : this(connectControlSingleton)
         {
             _studioResourceRepository = studioResourceRepository;
             _asyncWorker = asyncWorker;
+            _connectControlSingleton = connectControlSingleton;
         }
-
-
+        
         #region Properties
 
         public bool CanCreateNewFolder
@@ -843,9 +863,7 @@ namespace Dev2.Models
         {
             if(ResourceType == ResourceType.Server)
             {
-                IsRefreshing = true;
-                _studioResourceRepository.Load(EnvironmentId, AsyncWorker);
-                IsRefreshing = false;
+                _connectControlSingleton.Refresh(EnvironmentId);
             }
         }
 
@@ -916,7 +934,7 @@ namespace Dev2.Models
         /// <author>Massimo Guerrera</author>
         private void Remove()
         {
-            _studioResourceRepository.RemoveEnvironment(EnvironmentId);
+            _connectControlSingleton.Remove(EnvironmentId);
         }
 
         /// <summary>
@@ -1063,7 +1081,7 @@ namespace Dev2.Models
         /// <author>Massimo Guerrera</author>
         private void Connect()
         {
-            StudioResourceRepository.Instance.Load(EnvironmentId, AsyncWorker);
+            _connectControlSingleton.ToggleConnection(EnvironmentId);
         }
 
         /// <summary>
@@ -1072,7 +1090,7 @@ namespace Dev2.Models
         /// <author>Massimo Guerrera</author>
         private void Disconnect()
         {
-            StudioResourceRepository.Instance.Disconnect(EnvironmentId);
+            _connectControlSingleton.ToggleConnection(EnvironmentId);
         }
 
         public bool IsAuthorizedDeployTo

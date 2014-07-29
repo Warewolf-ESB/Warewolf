@@ -34,11 +34,11 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
             var repo = new Mock<IResourceRepository>();
             var sRepo = new Mock<IStudioResourceRepository>();
             var connection = CreateConnection(appServerUri);
-            var environment = new EnvironmentModel(Guid.NewGuid(), connection, repo.Object,sRepo.Object, false) { Name = "conn" };
+            var environment = new EnvironmentModel(Guid.NewGuid(), connection, repo.Object,sRepo.Object) { Name = "conn" };
 
             var auxRepo = new Mock<IResourceRepository>();
             var auxConnection = CreateConnection(appServerUri);
-            var auxEnvironment = new EnvironmentModel(Guid.NewGuid(), auxConnection, auxRepo.Object,sRepo.Object, false) { Name = "auxconn" };
+            var auxEnvironment = new EnvironmentModel(Guid.NewGuid(), auxConnection, auxRepo.Object,sRepo.Object) { Name = "auxconn" };
 
             environment.Connect();
             Assert.IsTrue(environment.IsConnected);

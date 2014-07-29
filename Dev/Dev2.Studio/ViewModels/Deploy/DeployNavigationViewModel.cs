@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Models;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Dev2.ViewModels.Deploy
 {
     public class DeployNavigationViewModel : NavigationViewModelBase
     {
         IEnvironmentModel _environment;
-        private bool _target;
+        private readonly bool _target;
         public IAuthorizationService AuthorizationService { get; private set; }
         ObservableCollection<ExplorerItemModel> _explorerItemModels;
-        public DeployNavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository,bool target)
+        public DeployNavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, bool target)
             : base(eventPublisher, asyncWorker, environmentRepository, studioResourceRepository)
         {
             _target = target;
-    
+
         }
 
         public IEnvironmentModel Environment
@@ -33,14 +32,6 @@ namespace Dev2.ViewModels.Deploy
             }
             set
             {
-                if(_environment != null && _environment.Equals(value))
-                {
-                    return;
-                }
-                if(_environment != null)
-                {
-                    _environment.AuthorizationService.PermissionsChanged -= PermissionsModified;
-                }
                 _environment = value;
                 if(value != null)
                 {
@@ -49,37 +40,31 @@ namespace Dev2.ViewModels.Deploy
                 if(_environment != null)
                 {
                     FilterEnvironments(_environment);
-                    _environment.AuthorizationService.PermissionsChanged += PermissionsModified;
                 }
             }
         }
 
-        void PermissionsModified(object sender, EventArgs e)
-        {
-            FilterEnvironments(_environment);
-        }
 
         public ExplorerItemModel FindChild(IContextualResourceModel resource)
         {
-            var explorerItemModels = ExplorerItemModels.SelectMany(explorerItemModel => TreeEx.Descendants(explorerItemModel)).ToList();
+            var explorerItemModels = ExplorerItemModels.SelectMany(explorerItemModel => explorerItemModel.Descendants()).ToList();
             return resource != null ? explorerItemModels.FirstOrDefault(model => model.ResourceId == resource.ID && model.EnvironmentId == resource.Environment.ID) : null;
         }
 
         public void Filter(Func<ExplorerItemModel, bool> filter, bool fromFilter = false)
         {
-            if (filter != null)
+            if(filter == null)
             {
-                ExplorerItemModels = StudioResourceRepository.Filter(filter);
-                if (fromFilter)
-                {
-                    Iterate(model => model.IsExplorerExpanded = true);
-                }
+                return;
             }
-            else
+
+            ExplorerItemModels = StudioResourceRepository.Filter(filter);
+            if(fromFilter)
             {
-                ExplorerItemModels = StudioResourceRepository.ExplorerItemModels;
+                Iterate(model => model.IsExplorerExpanded = true);
             }
-            foreach (ExplorerItemModel explorerItemModel in ExplorerItemModels)
+
+            foreach(ExplorerItemModel explorerItemModel in ExplorerItemModels)
             {
                 explorerItemModel.IsExplorerExpanded = true;
             }
@@ -91,12 +76,12 @@ namespace Dev2.ViewModels.Deploy
         /// <param name="action"></param>
         protected void Iterate(Action<ExplorerItemModel> action)
         {
-            if (ExplorerItemModels != null && action != null)
+            if(ExplorerItemModels != null && action != null)
             {
                 var explorerItemModels = ExplorerItemModels.ToList();
                 explorerItemModels.ForEach(model =>
                 {
-                    if (model != null)
+                    if(model != null)
                     {
                         Iterate(action, model);
                     }
@@ -111,12 +96,12 @@ namespace Dev2.ViewModels.Deploy
         /// <param name="node"></param>
         void Iterate(Action<ExplorerItemModel> action, ExplorerItemModel node)
         {
-            if (node != null)
+            if(node != null)
             {
                 action(node);
-                if (node.Children != null)
+                if(node.Children != null)
                 {
-                    foreach (var child in node.Children)
+                    foreach(var child in node.Children)
                     {
                         Iterate(action, child);
                     }
@@ -131,7 +116,7 @@ namespace Dev2.ViewModels.Deploy
             }
             set
             {
-                if (Equals(value, _explorerItemModels))
+                if(Equals(value, _explorerItemModels))
                 {
                     return;
                 }
@@ -142,16 +127,20 @@ namespace Dev2.ViewModels.Deploy
 
         private void FilterEnvironments(IEnvironmentModel connection)
         {
-            if (connection != null)
+            if(connection != null)
             {
                 var isAuthorizedDeployTo = AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, Guid.Empty.ToString());
-                if (isAuthorizedDeployTo && _target)
+                if(isAuthorizedDeployTo && _target)
                 {
-                    ExplorerItemModels = new ObservableCollection<ExplorerItemModel>
-                                {
-                                    StudioResourceRepository.FindItem(env => env.EnvironmentId == connection.ID)
-                                };
-                    if (ExplorerItemModels != null && ExplorerItemModels.Count == 1 && ExplorerItemModels[0] != null)
+                    ObservableCollection<ExplorerItemModel> explorerItemModels = new ObservableCollection<ExplorerItemModel>
+                        {
+                            StudioResourceRepository.FindItem(env => env.EnvironmentId == connection.ID)
+                        };
+
+                    ExplorerItemModels.Clear();
+                    ExplorerItemModels = explorerItemModels;
+
+                    if(ExplorerItemModels != null && ExplorerItemModels.Count == 1 && ExplorerItemModels[0] != null)
                     {
                         ExplorerItemModels[0].IsDeployTargetExpanded = true;
                     }
@@ -159,33 +148,40 @@ namespace Dev2.ViewModels.Deploy
                 else
                 {
                     var isAuthorizedDeployFrom = AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, Guid.Empty.ToString());
-                    if (isAuthorizedDeployFrom && !_target)
+                    if(isAuthorizedDeployFrom && !_target)
                     {
-                        ExplorerItemModels = new ObservableCollection<ExplorerItemModel>
+                        var explorerItemModels = new ObservableCollection<ExplorerItemModel>
                             {
                                 StudioResourceRepository.FindItem(env => env.EnvironmentId == connection.ID)
                             };
-                        if (ExplorerItemModels != null && ExplorerItemModels.Count == 1 && ExplorerItemModels[0] != null)
+
+                        ExplorerItemModels.Clear();
+                        ExplorerItemModels = explorerItemModels;
+
+                        if(ExplorerItemModels != null && ExplorerItemModels.Count == 1 && ExplorerItemModels[0] != null)
                         {
                             ExplorerItemModels[0].IsDeploySourceExpanded = true;
-                        }                        
+                        }
                     }
                     else
                     {
 
                         var model = StudioResourceRepository.Filter(env => env.EnvironmentId == connection.ID);
-                        if (model != null && model.Count==1)
+                        if(model != null)
                         {
-                            StudioResourceRepository.PerformUpdateOnDispatcher(() => model[0].Children=new ObservableCollection<ExplorerItemModel>());
-                            var resourcePermissions = AuthorizationService.GetResourcePermissions(Guid.Empty);
-                            model[0].Permissions = resourcePermissions;
-                            ExplorerItemModels = model;           
+                            if(model.Count == 1)
+                            {
+                                StudioResourceRepository.PerformUpdateOnDispatcher(() => model[0].Children = new ObservableCollection<ExplorerItemModel>());
+                                var resourcePermissions = AuthorizationService.GetResourcePermissions(Guid.Empty);
+                                model[0].Permissions = resourcePermissions;
+                            }
+                            ExplorerItemModels = model;
                         }
                     }
                 }
                 Iterate(model => model.IsChecked = false);
                 Iterate(model => model.IsOverwrite = false);
-                
+
             }
         }
 
@@ -197,35 +193,15 @@ namespace Dev2.ViewModels.Deploy
             }));
         }
 
-        public override void Handle(EnvironmentConnectedMessage message)
-        {
-            var environmentModel = message.EnvironmentModel;
-            if(environmentModel != null)
-            {
-                StudioResourceRepository.Load(environmentModel.ID, AsyncWorker);
-                FilterEnvironments(environmentModel);
-            }
-        }
-
-        public override void Handle(EnvironmentDisconnectedMessage message)
-        {
-            var environmentModel = message.EnvironmentModel;
-            if(environmentModel != null)
-            {
-                StudioResourceRepository.Disconnect(environmentModel.ID);
-                FilterEnvironments(environmentModel);
-            }
-        }
-
         protected override void DoFiltering(string searhFilter)
         {
-            if (!string.IsNullOrEmpty(searhFilter))
+            if(!string.IsNullOrEmpty(searhFilter))
             {
-                Filter(model => model.DisplayName.ToLower().Contains(searhFilter.ToLower()));
+                Filter(model => model.DisplayName.ToLower().Contains(searhFilter.ToLower()) && model.EnvironmentId == Environment.ID);
             }
             else
             {
-                Filter(null);
+                Filter(model => model.EnvironmentId == Environment.ID);
             }
         }
 
@@ -256,7 +232,7 @@ namespace Dev2.ViewModels.Deploy
 
         public void RefreshEnvironment()
         {
-            StudioResourceRepository.Load(_environment.ID,AsyncWorker);
+            StudioResourceRepository.Load(_environment.ID, AsyncWorker);
             FilterEnvironments(_environment);
         }
     }

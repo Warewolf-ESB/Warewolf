@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
-using Dev2.Messages;
+using Dev2.ConnectionHelpers;
+using Dev2.CustomControls.Connections;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -14,8 +10,12 @@ using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.Linq;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Explorer
 {
     [Export]
@@ -23,39 +23,36 @@ namespace Dev2.Studio.ViewModels.Explorer
     public class ExplorerViewModel : BaseViewModel,
                                      IHandle<UpdateExplorerMessage>,
                                      IHandle<RemoveEnvironmentMessage>,
-                                     IHandle<EnvironmentDeletedMessage>,
-                                     IHandle<AddServerToExplorerMessage>,
-                                     IHandle<RefreshExplorerMessage>,
-                                     IHandle<SetSelectedItemInExplorerTree>
+                                     IHandle<EnvironmentDeletedMessage>
     {
-
+        readonly IStudioResourceRepository _studioResourceRepository;
 
         #region Class Members
-
-        readonly IAsyncWorker _asyncWorker;
-        private RelayCommand _environmentChangedCommand;
         private Guid? _context;
         System.Action _onLoadResourcesCompletedOnceOff;
-        NavigationViewModel _navigationViewModel;
+        IConnectControlViewModel _connectControlViewModel;
 
         #endregion Class Members
 
         #region Constructor
 
-        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,IStudioResourceRepository studioResourceRepository, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action onLoadResourcesCompletedOnceOff = null)
+        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action onLoadResourcesCompletedOnceOff = null, IConnectControlViewModel connectControlViewModel = null)
             : base(eventPublisher)
         {
 
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
-            _asyncWorker = asyncWorker;
+            VerifyArgument.IsNotNull("connectControlSingleton", connectControlSingleton);
             EnvironmentRepository = environmentRepository;
-            NavigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, Context, environmentRepository,studioResourceRepository, isFromActivityDrop, activityType) { Parent = this };
+            NavigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, Context, environmentRepository, studioResourceRepository, connectControlSingleton, isFromActivityDrop, activityType) { Parent = this };
             if(onLoadResourcesCompletedOnceOff != null)
             {
                 _onLoadResourcesCompletedOnceOff = onLoadResourcesCompletedOnceOff;
                 NavigationViewModel.LoadResourcesCompleted += LoadResourcesCompletedOnceOff;
             }
+
+            _studioResourceRepository = studioResourceRepository;
+            ConnectControlViewModel = connectControlViewModel ?? new ConnectControlViewModel(AddEnvironment, "Connect:", true);
         }
 
         void LoadResourcesCompletedOnceOff(object sender, EventArgs e)
@@ -75,13 +72,9 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #region Commands
 
-        public ICommand EnvironmentChangedCommand
+        public void UpdateActiveEnvironment(IEnvironmentModel environmentModel, bool isSetFromConnectControl)
         {
-            get
-            {
-                ICommand command = _environmentChangedCommand ?? (_environmentChangedCommand = new RelayCommand(param => AddEnvironment((IEnvironmentModel)param), param => true));
-                return command;
-            }
+            ConnectControlViewModel.UpdateActiveEnvironment(environmentModel, isSetFromConnectControl);
         }
 
         #endregion Commands
@@ -95,17 +88,25 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
-        public NavigationViewModel NavigationViewModel
+
+        public IConnectControlViewModel ConnectControlViewModel
         {
             get
             {
-                return _navigationViewModel;
+                return _connectControlViewModel;
             }
             set
             {
-                _navigationViewModel = value;
+                if(Equals(value, _connectControlViewModel))
+                {
+                    return;
+                }
+                _connectControlViewModel = value;
+                NotifyOfPropertyChange(() => ConnectControlViewModel);
             }
         }
+
+        public NavigationViewModel NavigationViewModel { get; set; }
 
         public Guid? Context
         {
@@ -119,21 +120,12 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #region Private Methods
 
-        private void AddEnvironment(IEnvironmentModel environmentModel, bool forceConnect = false)
+        private void AddEnvironment(IEnvironmentModel environmentModel)
         {
             if(environmentModel != null)
             {
-                _asyncWorker.Start(
-                    () =>
-                    {
-                        if(forceConnect)
-                        {
-                            environmentModel.Connect();
-                        }
-                    },
-                    () =>
-                    {
-                    });
+                NavigationViewModel.AddEnvironment(environmentModel);
+                SaveEnvironment(environmentModel);
             }
         }
 
@@ -170,7 +162,7 @@ namespace Dev2.Studio.ViewModels.Explorer
         /// <summary>
         ///     Loads the environments from the resource repository
         /// </summary>
-        public void LoadEnvironments(bool setActiveEnvironment = true)
+        public void LoadEnvironments()
         {
             if(EnvironmentRepository == null) return;
 
@@ -181,28 +173,33 @@ namespace Dev2.Studio.ViewModels.Explorer
                 EnvironmentRepository.Load();
 
             // Load the default environment
-            NavigationViewModel.AddEnvironment(EnvironmentRepository.Source);
-            this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
-            if(setActiveEnvironment)
-            {
-                EventPublisher.Publish(new SetActiveEnvironmentMessage(EnvironmentRepository.Source));
-            }
 
-            //
-            // Add last session's environments to the navigation view model
-            //
-            var sessionGuids = EnvironmentRepository.ReadSession();
-            if(sessionGuids != null && sessionGuids.Count > 0)
-            {
-                ICollection<IEnvironmentModel> environmentModels = EnvironmentRepository.All();
-                if(environmentModels.Count > 0)
+            var environmentModel = EnvironmentRepository.Source;
+            environmentModel.ResourcesLoaded += (sender, args) => _studioResourceRepository.Load(environmentModel.ID, new AsyncWorker(), OnLoadCompletion(environmentModel));
+
+        }
+
+        public Action<Guid> OnLoadCompletion(IEnvironmentModel environmentModel)
+        {
+            return id =>
                 {
-                    foreach(var environment in environmentModels.Where(e => sessionGuids.Contains(e.ID)))
+                    //NavigationViewModel.AddEnvironment(environmentModel);
+                    //
+                    // Add last session's environments to the navigation view model
+                    //
+                    var sessionGuids = EnvironmentRepository.ReadSession();
+                    if(sessionGuids != null && sessionGuids.Count > 0)
                     {
-                        NavigationViewModel.AddEnvironment(environment);
+                        ICollection<IEnvironmentModel> environmentModels = EnvironmentRepository.All();
+                        if(environmentModels.Count > 0)
+                        {
+                            foreach(var environment in environmentModels.Where(e => sessionGuids.Contains(e.ID)))
+                            {
+                                NavigationViewModel.AddEnvironment(environment);
+                            }
+                        }
                     }
-                }
-            }
+                };
         }
 
         #endregion Private Methods
@@ -223,24 +220,6 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #region IHandle
 
-        public void Handle(SetSelectedItemInExplorerTree message)
-        {
-            //            this.TraceInfo(message.GetType().Name);
-            //            // ReSharper disable OperatorIsCanBeUsed
-            //            List<ITreeNode> treeNodes = NavigationViewModel.Root.GetChildren(c => c.GetType() == typeof(EnvironmentTreeViewModel) && c.DisplayName.Contains(message.NodeNameToSelect)).ToList();
-            //            // ReSharper restore OperatorIsCanBeUsed
-            //            if(treeNodes.Count == 1)
-            //            {
-            //                treeNodes[0].IsSelected = true;
-            //            }
-        }
-
-        public void Handle(RefreshExplorerMessage message)
-        {
-            this.TraceInfo(message.GetType().Name);
-            NavigationViewModel.UpdateWorkspaces();
-        }
-
         public void Handle(UpdateExplorerMessage message)
         {
             this.TraceInfo(message.GetType().Name);
@@ -251,12 +230,6 @@ namespace Dev2.Studio.ViewModels.Explorer
         {
             this.TraceInfo(message.GetType().Name);
             RemoveEnvironment(message.EnvironmentModel);
-        }
-
-        public void Handle(AddServerToExplorerMessage message)
-        {
-            this.TraceInfo(message.GetType().Name);
-            AddEnvironment(message.EnvironmentModel, message.ForceConnect);
         }
 
         public void Handle(EnvironmentDeletedMessage message)

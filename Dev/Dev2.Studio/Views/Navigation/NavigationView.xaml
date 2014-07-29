@@ -1,68 +1,69 @@
 ﻿<UserControl x:Class="Dev2.Studio.Views.Navigation.NavigationView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
-             xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-             xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-             xmlns:trigger2="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
-             mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance navigation:NavigationViewModel}"
-             xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+    xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
+    xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+    xmlns:trigger2="clr-namespace:Dev2.CustomControls.Trigger;assembly=Dev2.CustomControls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:navigation="clr-namespace:Dev2.Studio.ViewModels.Navigation"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance navigation:NavigationViewModel}"
+    xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
 
     Name="NavigationViewUserControl">
     <Grid cal:Bind.Model="{Binding .}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        
+
         <Grid Margin="0,-2,0,-2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <customControls2:FilterTextBox x:Name="FilterTextBox"     
-                                              Grid.Column="0"
-                                           Margin="0,0,-2,0">
-                                           <!--cal:Message.Attach="[Event GotFocus] = [Action SetSelectedItemNull]">-->
+            <customControls2:FilterTextBox x:Name="FilterTextBox"
+                Grid.Column="0"
+                Margin="0,0,-2,0">
+                <!--cal:Message.Attach="[Event GotFocus] = [Action SetSelectedItemNull]">-->
                 <i:Interaction.Triggers>
                     <trigger2:DelayTextChangedEventTrigger DelayInMilliSeconds="300">
                         <cal:ActionMessage MethodName="UpdateSearchFilter">
-                            <cal:Parameter Value="{Binding ElementName=FilterTextBox, Path=SearchText}"/>
+                            <cal:Parameter Value="{Binding ElementName=FilterTextBox, Path=SearchText}" />
                         </cal:ActionMessage>
                     </trigger2:DelayTextChangedEventTrigger>
                 </i:Interaction.Triggers>
             </customControls2:FilterTextBox>
-            
-            <customControls2:CircularProgressBar Grid.Column="1" Height="22" Width="22" 
-                                                 Margin="0,0,2,0" 
-                                                 VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                    Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                                    AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID"/>
-            <Button Margin="0,0,2,0" AutomationProperties.AutomationId="UI_SourceServerRefreshbtn_AutoID" 
-                            Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Grid.Column="1" 
-                            Command="{Binding Path=RefreshMenuCommand}"
-                            Height="22" Width="22" Padding="0"
-                            Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-                <Image  Source="{StaticResource Refresh-32}" Width="14" Height="14" HorizontalAlignment="Left"/>
+
+            <customControls2:CircularProgressBar Grid.Column="1" Height="22" Width="22"
+                Margin="0,0,2,0"
+                VerticalAlignment="Center" HorizontalAlignment="Center"
+                Visibility="{Binding CircularProgressBarVisibility}"
+                AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID" />
+            <Button Margin="0,0,2,0" AutomationProperties.AutomationId="UI_SourceServerRefreshbtn_AutoID"
+                Background="Transparent" BorderBrush="Transparent" BorderThickness="0" Grid.Column="1"
+                Command="{Binding Path=RefreshMenuCommand}"
+                Height="22" Width="22" Padding="0"
+                Visibility="{Binding RefreshButtonVisibility}">
+                <Image Source="{StaticResource Refresh-32}" Width="14" Height="14" HorizontalAlignment="Left" />
             </Button>
         </Grid>
         <!--Style="{StaticResource TreeViewStyle}"
         
         ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"-->
         <TreeView x:Name="Navigation" ItemsSource="{Binding Path=ExplorerItemModels}" Grid.Row="1" Grid.ColumnSpan="2"
-                  BorderThickness="0"                        
-                  ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}"
-                  ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}">
+            BorderThickness="0"
+            ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}"
+            ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}">
             <i:Interaction.Behaviors>
-                <behaviors:TreeViewFocusOnAddBehavior/>
-                <behavior:BindableSelectedItemBehavior SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            </i:Interaction.Behaviors>            
+                <behaviors:TreeViewFocusOnAddBehavior />
+                <behavior:BindableSelectedItemBehavior
+                    SelectedItem="{Binding SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </i:Interaction.Behaviors>
         </TreeView>
     </Grid>
 </UserControl>

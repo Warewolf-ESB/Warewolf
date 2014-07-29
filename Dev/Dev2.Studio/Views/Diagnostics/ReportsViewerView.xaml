@@ -75,14 +75,14 @@
                                                     Grid.Column="1" 
                                                     Height="15" Width="15" 
                                                     VerticalAlignment="Center" HorizontalAlignment="Center"
-                                                    Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
+                                                     Visibility="{Binding CircularProgressBarVisibility}"/>
             <Button x:Name="RefreshDirectory"
                     AutomationProperties.AutomationId="UI_SourceServerRefreshbtn_AutoID" 
                     Grid.Column="1" 
                     Margin="5,0,5,0"
                     VerticalAlignment="Center"
                     Background="Transparent" BorderBrush="Transparent" BorderThickness="0"          
-                    Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                    Visibility="{Binding RefreshButtonVisibility}">
                  <Image  Source="{StaticResource Refresh-32}" Width="14" Height="14" HorizontalAlignment="Left"/>
             </Button>
         </Grid>

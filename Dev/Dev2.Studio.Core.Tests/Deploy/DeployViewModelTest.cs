@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using Caliburn.Micro;
-using Dev2.AppResources.Enums;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Composition;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Deploy;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
+using Dev2.CustomControls.Connections;
 using Dev2.Models;
 using Dev2.Providers.Events;
 using Dev2.Services.Security;
@@ -25,6 +21,11 @@ using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq.Expressions;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -68,7 +69,7 @@ namespace Dev2.Core.Tests
             var studioResourceRepository = new Mock<IStudioResourceRepository>();
             studioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ObservableCollection<ExplorerItemModel>());
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository.Object);
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object);
 
 
 
@@ -125,8 +126,10 @@ namespace Dev2.Core.Tests
             mockDeployStatsCalculator.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ExplorerItemModel>>(), It.IsAny<Dictionary<string, Func<ExplorerItemModel, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats)).Verifiable();
 
             Mock<IStudioResourceRepository> mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
-            mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, new Mock<IAsyncWorker>().Object));
-            new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, mockDeployStatsCalculator.Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
+            mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object));
+            // ReSharper disable ObjectCreationAsStatement
+            new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, mockDeployStatsCalculator.Object) { SelectedSourceServer = s1, SelectedDestinationServer = s2 };
+            // ReSharper restore ObjectCreationAsStatement
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
             mockDeployStatsCalculator.Verify(c => c.CalculateStats(It.IsAny<IEnumerable<ExplorerItemModel>>(), It.IsAny<Dictionary<string, Func<ExplorerItemModel, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out calcStats), Times.Exactly(4));
@@ -173,9 +176,9 @@ namespace Dev2.Core.Tests
             IAsyncWorker asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker().Object;
             statsCalc.Setup(s => s.SelectForDeployPredicate(It.IsAny<ExplorerItemModel>())).Returns(true);
             Mock<IStudioResourceRepository> mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
-            mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, asyncWorker));
+            mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ExplorerItemModel(mockStudioResourceRepository.Object, asyncWorker, new Mock<IConnectControlSingleton>().Object));
             IStudioResourceRepository studioResourceRepository = mockStudioResourceRepository.Object;
-            var deployViewModel = new DeployViewModel(asyncWorker, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository, statsCalc.Object)
+            var deployViewModel = new DeployViewModel(asyncWorker, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, statsCalc.Object)
             {
                 SelectedSourceServer = s1,
                 SelectedDestinationServer = s2
@@ -279,33 +282,6 @@ namespace Dev2.Core.Tests
         #endregion
 
         #region AddServerToDeployMessage
-
-        [TestMethod]
-        public void DeployViewModel_HandleAddServerToDeployMessageWithDestinationContextExpectSelectedAsDestination()
-        {
-            IEnvironmentModel server;
-            DeployViewModel vm;
-            var mockEventAggregator = new Mock<IEventAggregator>();
-
-            var envID = SetupVmForMessages(out server, out vm, mockEventAggregator);
-
-            var msg = new AddServerToDeployMessage(server, ConnectControlInstanceType.DeployTarget);
-            vm.Handle(msg);
-            Assert.IsTrue(vm.SelectedDestinationServer.ID == envID);
-        }
-
-        [TestMethod]
-        public void DeployViewModel_HandleAddServerToDeployMessageWithIsDestinationTrueExpectSelectedAsDestination()
-        {
-            IEnvironmentModel server;
-            DeployViewModel vm;
-            var envID = SetupVmForMessages(out server, out vm);
-
-            var msg = new AddServerToDeployMessage(server, ConnectControlInstanceType.DeployTarget);
-            vm.Handle(msg);
-            Assert.IsTrue(vm.SelectedDestinationServer.ID == envID);
-        }
-
         [TestMethod]
         public void DeployViewModel_IsInstanceOfIHandleEnvironmentDeleted()
         {
@@ -398,7 +374,7 @@ namespace Dev2.Core.Tests
             server.Setup(svr => svr.LoadResources()).Callback(() => sourceDeployNavigationViewModel.ExplorerItemModels.Add(treeParent));
             sourceDeployNavigationViewModel.Environment = server.Object;
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object)
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object)
             {
                 Source = sourceDeployNavigationViewModel
             };
@@ -786,7 +762,9 @@ namespace Dev2.Core.Tests
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
             TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
 
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(testEnvironmentRespository);
+            // ReSharper restore ObjectCreationAsStatement
             //------------Execute Test---------------------------
             var deployViewModel = new DeployViewModel();
             //------------Assert Results-------------------------
@@ -806,7 +784,9 @@ namespace Dev2.Core.Tests
             IEnvironmentModel environmentModel = a.Object;
 
             TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(testEnvironmentRespository);
+            // ReSharper restore ObjectCreationAsStatement
 
 
             //------------Execute Test---------------------------
@@ -817,6 +797,101 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(deployViewModel.EventPublisher);
             Assert.IsFalse(deployViewModel.DestinationServerHasDropped);
         }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DeployViewModel_SourceContext")]
+        public void DeployViewModel_SourceContext_NullValue_ExpectNewguid()
+        {
+            //------------Setup for test--------------------------
+            var a = Dev2MockFactory.SetupEnvironmentModel();
+            a.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            IEnvironmentModel environmentModel = a.Object;
+
+            TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
+            // ReSharper disable ObjectCreationAsStatement
+            new EnvironmentRepository(testEnvironmentRespository);
+            // ReSharper restore ObjectCreationAsStatement
+
+
+            //------------Execute Test---------------------------
+            var deployViewModel = new DeployViewModel(Guid.NewGuid(), Guid.Empty);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(deployViewModel.SourceContext);
+            Assert.AreNotEqual(deployViewModel.SourceContext, Guid.Empty);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DeployViewModel_DestinationContext")]
+        public void DeployViewModel_DestinationContext_NullValue_ExpectNewguid()
+        {
+            //------------Setup for test--------------------------
+            var a = Dev2MockFactory.SetupEnvironmentModel();
+            a.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            IEnvironmentModel environmentModel = a.Object;
+
+            TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
+            // ReSharper disable ObjectCreationAsStatement
+            new EnvironmentRepository(testEnvironmentRespository);
+            // ReSharper restore ObjectCreationAsStatement
+
+
+            //------------Execute Test---------------------------
+            var deployViewModel = new DeployViewModel(Guid.NewGuid(), Guid.Empty);
+
+
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(deployViewModel.DestinationContext);
+            Assert.AreNotEqual(deployViewModel.DestinationContext, Guid.Empty);
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DeployViewModel_Dispose")]
+        public void DeployViewModel_Dispose_ExpectUnsubscribeFromEventPublishers()
+        {
+            //------------Setup for test--------------------------
+
+            var agg = new Mock<IEventAggregator>();
+
+            var source = EnviromentRepositoryTest.CreateMockEnvironment();
+            var sourceConn = Mock.Get(source.Object.Connection);
+            sourceConn.Setup(c => c.Disconnect()).Verifiable();
+
+            var e1 = EnviromentRepositoryTest.CreateMockEnvironment();
+            var c1 = Mock.Get(e1.Object.Connection);
+            c1.Setup(c => c.Disconnect()).Verifiable();
+            var s1 = e1.Object;
+
+            var e2 = EnviromentRepositoryTest.CreateMockEnvironment();
+            var c2 = Mock.Get(e2.Object.Connection);
+            c2.Setup(c => c.Disconnect()).Verifiable();
+            var s2 = e2.Object;
+
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
+            serverProvider.Setup(s => s.Load()).Returns(new List<IEnvironmentModel> { s1, s2 });
+
+            var repo = new TestEnvironmentRespository(source.Object, e1.Object, e2.Object);
+            var studioResourceRepository = new Mock<IStudioResourceRepository>();
+            studioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ObservableCollection<ExplorerItemModel>());
+
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, agg.Object, studioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object);
+
+
+
+            Assert.IsTrue(source.Object.IsConnected);
+            Assert.IsTrue(s1.IsConnected);
+            Assert.IsTrue(s2.IsConnected);
+
+            deployViewModel.Dispose();
+            //------------Assert Results-------------------------
+            agg.Verify(ax => ax.Unsubscribe(It.IsAny<object>()));
+        }
+
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -1079,7 +1154,7 @@ namespace Dev2.Core.Tests
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(resourceTreeNode);
             var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object, true) { Environment = server.Object, ExplorerItemModels = new ObservableCollection<ExplorerItemModel>() };
 
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object)
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object)
             {
                 Source = sourceDeployNavigationViewModel,
                 SelectedSourceServer = server.Object
