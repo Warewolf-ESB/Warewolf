@@ -63,6 +63,27 @@
 #      Then I click "Done" on "Assign"
 #      And "Assign" tool “Small” view should be visible
 #
+#Bug 12259 
+#Scenario: Assign Large View validation Test on done buttom
+#       Given I have Warewolf running
+#       And  I click on "New Workflow"
+#       And I drag an "Assign" onto design surface
+#       Then "Assign" tool “Small” view should be visible
+#	   When I select "Show Large View" from the context menu
+#       Then "Assign" tool “Large” view should be visible
+#       And I enter variable "[[a]]" in row "1"
+#       And I press Tab "1" time
+#       And I enter Value "12"
+#	   And I enter variable "[[b]]" in row "2"
+#	   And I press Tab "1" time
+#	   And I enter Value "10"
+#	    And I enter variable "[[c]]" in row "3"
+#	   And I press Tab "1" time
+#	   And I enter Value "=[[a]]+[[b]]"
+#       When I click "Done" on "Assign"
+#	   Then "Assign" tool “Small” view should be visible
+#       
+#      
 #
 #Scenario: Data Merge Large View Test
 #       Given I have Warewolf running
