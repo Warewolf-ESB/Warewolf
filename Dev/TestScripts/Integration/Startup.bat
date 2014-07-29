@@ -28,7 +28,7 @@ ping -n 10 127.0.0.1 > nul
 
 REM Test Config binaries are deployed to root and binaries from the debug bin folder are deployed to a seperate sub-directory called DebugBin.
 IF EXIST "%DeploymentDirectory%\Warewolf Server.exe" GOTO Rootstart
-IF EXIST "%DeploymentDirectory%\ServerBinDebug\Warewolf Server.exe" GOTO DebugBinStart
+IF EXIST "%DeploymentDirectory%\ServerbinDebug\Warewolf Server.exe" GOTO DebugBinStart
 
 :RootStart
 REM ** Start Warewolf server from deploy directory root **
@@ -36,7 +36,7 @@ START "%DeploymentDirectory%\Warewolf Server.exe" /D %DeploymentDirectory% "Ware
 GOTO exit
 :DebugBinStart
 REM ** Start Warewolf server from deployed binaries built in debug config**
-START "%DeploymentDirectory%\ServerBinDebug\Warewolf Server.exe" /D %DeploymentDirectory%\DebugBin "Warewolf Server.exe"
+START "%DeploymentDirectory%\ServerbinDebug\Warewolf Server.exe" /D %DeploymentDirectory%\DebugBin "Warewolf Server.exe"
 
 :exit
 REM  Wait 20 seconds ;)
