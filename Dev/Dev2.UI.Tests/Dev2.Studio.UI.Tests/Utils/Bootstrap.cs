@@ -60,8 +60,8 @@ namespace Dev2.Studio.UI.Tests.Utils
             if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
             {
                 //Try build workspace directory
-                ServerLocation = Path.Combine(BuildDirectory, "bin", ServerExeName);
-                StudioLocation = Path.Combine(BuildDirectory, "bin", StudioExeName);
+                ServerLocation = Path.Combine(BuildDirectory, "bin", "ServerbinDebug", ServerExeName);
+                StudioLocation = Path.Combine(BuildDirectory, "bin", "StudiobinDebug", StudioExeName);
             }
             if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
             {
