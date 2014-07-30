@@ -50,11 +50,18 @@ namespace Dev2.Studio.UI.Tests.Utils
         public static void AssemblyInit(TestContext testCtx)
         {
             IsLocal = testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901";
-            ResolvePathsToTestAgainst(!IsLocal ? Path.Combine(testCtx.DeploymentDirectory, "DebugBin") : null);
+            ResolvePathsToTestAgainst(!IsLocal ? Path.Combine(testCtx.DeploymentDirectory) : null);
         }
 
-        private static void ResolvePathsToTestAgainst(string deployDirectory = null)
+        public static void ResolvePathsToTestAgainst(string deployDirectory = null)
         {
+            string serverDeployDirectory = null;
+            string studioDeployDirectory = null;
+            if(deployDirectory != null)
+            {
+                serverDeployDirectory = Path.Combine(deployDirectory, "ServerbinDebug");
+                studioDeployDirectory = Path.Combine(deployDirectory, "StudiobinDebug");
+            }
             ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
             StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
             if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
@@ -66,8 +73,8 @@ namespace Dev2.Studio.UI.Tests.Utils
             if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
             {
                 //Try debug bin or deployed resources
-                ServerLocation = Path.Combine(deployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Server\bin\Debug"), ServerExeName);
-                StudioLocation = Path.Combine(deployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Studio\bin\Debug"), StudioExeName);
+                ServerLocation = Path.Combine(serverDeployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Server\bin\Debug"), ServerExeName).Replace(Environment.ExpandEnvironmentVariables("%localappdata%") + @"\Temp", @"C:\Development\Dev");
+                StudioLocation = Path.Combine(studioDeployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Studio\bin\Debug"), StudioExeName).Replace(Environment.ExpandEnvironmentVariables("%localappdata%") + @"\Temp", @"C:\Development\Dev");
             }
             if(!File.Exists(ServerLocation))
             {

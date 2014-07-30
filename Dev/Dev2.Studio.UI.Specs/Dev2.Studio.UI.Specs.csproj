@@ -67,6 +67,7 @@
       <DependentUpon>Connect Control.feature</DependentUpon>
     </Compile>
     <Compile Include="Connect Control\ConnectControlSteps.cs" />
+    <Compile Include="ContextForTests.cs" />
     <Compile Include="PermissionsUISpecs\PermissionsUISpec.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

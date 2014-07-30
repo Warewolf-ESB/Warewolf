@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.Activities;
@@ -15,10 +16,11 @@ namespace Dev2.Studio.UI.Specs
         [BeforeTestRun]
         public static void SetupForTest()
         {
+            Bootstrap.ResolvePathsToTestAgainst(!ContextForTests.IsLocal ? Path.Combine(ContextForTests.DeploymentDirectory) : null);
             Playback.Initialize();
             Init();
         }
-        
+
         [When(@"I debug ""(.*)"" in ""(.*)""")]
         public void WhenIDebugIn(string workflowName, string folderName)
         {
@@ -165,6 +167,5 @@ namespace Dev2.Studio.UI.Specs
             Bootstrap.Teardown();
             Playback.Cleanup();
         }
-
     }
 }
