@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
@@ -69,17 +69,17 @@ namespace Dev2.Data.SystemTemplates.Models
             return result;
         }
 
-        public string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode)
+        public string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode, out ErrorResultTO errors)
         {
             StringBuilder result = new StringBuilder("");
 
             int cnt = 0;
 
-
+            errors = new ErrorResultTO();
             // build the output for decisions
             foreach(Dev2Decision dd in TheStack)
             {
-                result.Append(dd.GenerateUserFriendlyModel(dlid, Mode));
+                result.Append(dd.GenerateUserFriendlyModel(dlid, Mode, out errors));
                 // append mode if not at end
                 if((cnt + 1) < TheStack.Count)
                 {

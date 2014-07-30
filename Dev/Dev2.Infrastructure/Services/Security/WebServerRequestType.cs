@@ -24,6 +24,7 @@ namespace Dev2.Services.Security
         HubConnect,
 
         EsbOnConnected,
+        EsbOnDisconnected,
         EsbOnReconnected,
         EsbAddDebugWriter,
         EsbFetchExecutePayloadFragment,

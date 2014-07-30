@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Dev2.Communication;
+﻿using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Explorer;
@@ -9,6 +7,8 @@ using Dev2.Runtime.WebServer.Hubs;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
 using System.Dynamic;
 
 namespace Dev2.Tests.Runtime.WebServer.Hubs
@@ -147,6 +147,11 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
 
     public class MockEsbHub : EsbHub
     {
+        public MockEsbHub()
+        {
+            this.SetupEvents();
+        }
+
         public void TestOnCompilerMessageReceived(IList<CompileMessageTO> messages)
         {
             OnCompilerMessageReceived(messages);

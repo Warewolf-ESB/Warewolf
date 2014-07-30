@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Dev2.DataList.Contract;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
@@ -45,9 +46,10 @@ namespace Dev2.Data.SystemTemplates.Models
         {
             return JsonConvert.SerializeObject(this);
         }
-        
-        public string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode)
+
+        public string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode, out ErrorResultTO errors)
         {
+            errors = new ErrorResultTO();
             return "For " + CaseValue;
         }
     }

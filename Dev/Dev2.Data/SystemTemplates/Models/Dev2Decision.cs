@@ -1,10 +1,10 @@
-﻿using System;
-using System.Text;
-using Dev2.Data.Decisions.Operations;
+﻿using Dev2.Data.Decisions.Operations;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using System.Text;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
@@ -63,9 +63,10 @@ namespace Dev2.Data.SystemTemplates.Models
             return result;
         }
 
-        public string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode)
+        public string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode, out ErrorResultTO errors)
         {
-            ErrorResultTO errors;
+            errors = new ErrorResultTO();
+            ErrorResultTO allErrors = new ErrorResultTO();
             string fn = DecisionDisplayHelper.GetDisplayValue(EvaluationFn);
 
             if(PopulatedColumnCount == 0)
@@ -78,6 +79,7 @@ namespace Dev2.Data.SystemTemplates.Models
                 if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star)
                 {
                     var allValues = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, dlid, out errors);
+                    allErrors.MergeErrors(errors);
                     StringBuilder expandStarredIndex = new StringBuilder();
 
                     expandStarredIndex.Append(allValues[0] + " " + fn);
@@ -86,8 +88,10 @@ namespace Dev2.Data.SystemTemplates.Models
                     {
                         expandStarredIndex.Append(" " + mode + " " + value + " " + fn);
                     }
+                    errors = allErrors;
                     return "If " + expandStarredIndex;
                 }
+                errors = allErrors;
                 return "If " + Col1 + " " + fn + " ";
             }
 
@@ -97,33 +101,36 @@ namespace Dev2.Data.SystemTemplates.Models
                 if(DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star)
                 {
                     var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, dlid, out errors);
-
+                    allErrors.MergeErrors(errors);
                     expandStarredIndices.Append(Col1 + " " + fn + " " + allCol2Values[0]);
                     allCol2Values.RemoveAt(0);
                     foreach(var value in allCol2Values)
                     {
                         expandStarredIndices.Append(" " + mode + " " + Col1 + " " + fn + " " + value);
                     }
+                    errors = allErrors;
                     return "If " + expandStarredIndices;
                 }
                 if(DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star)
                 {
                     var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, dlid, out errors);
-
+                    allErrors.MergeErrors(errors);
                     expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + Col2);
                     allCol1Values.RemoveAt(0);
                     foreach(var value in allCol1Values)
                     {
                         expandStarredIndices.Append(" " + mode + " " + value + " " + fn + " " + Col2);
                     }
+                    errors = allErrors;
                     return "If " + expandStarredIndices;
 
                 }
                 if((DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star) || (DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star))
                 {
                     var allCol1Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, dlid, out errors);
+                    allErrors.MergeErrors(errors);
                     var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, dlid, out errors);
-
+                    allErrors.MergeErrors(errors);
                     expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + allCol2Values[0]);
                     allCol1Values.RemoveAt(0);
                     allCol2Values.RemoveAt(0);
@@ -146,24 +153,30 @@ namespace Dev2.Data.SystemTemplates.Models
                         catch(IndexOutOfRangeException)
                         {
                             errors.AddError("You appear to have recordsets of differnt sizes");
+                            allErrors.MergeErrors(errors);
                         }
                     }
+                    errors = allErrors;
                     return "If " + expandStarredIndices;
 
                 }
+                errors = allErrors;
                 return "If " + Col1 + " " + fn + " " + Col2 + " ";
             }
 
             if(PopulatedColumnCount == 3)
             {
                 var expandStarredIndices = ResolveStarredIndices(dlid, mode.ToString(), out errors);
+                allErrors.MergeErrors(errors);
                 if(!string.IsNullOrEmpty(expandStarredIndices))
                 {
+                    errors = allErrors;
                     return expandStarredIndices;
                 }
+                errors = allErrors;
                 return "If " + Col1 + " " + fn + " " + Col2 + " and " + Col3;
             }
-
+            errors = allErrors;
             return "<< Internal Error Generating Decision Model: Populated Column Count Cannot Exeed 3 >>";
         }
 

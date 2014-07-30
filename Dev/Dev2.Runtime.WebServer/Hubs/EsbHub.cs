@@ -32,7 +32,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         public EsbHub()
         {
 
-        }
+            }
 
         void ResourceSaved(IResource resource)
         {
@@ -98,7 +98,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
             var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
             if(authorizationServiceBase != null)
-            {
+        {
                 authorizationServiceBase.Dispose();
             }
             CompileMessageRepo.Instance.ClearObservable();
@@ -113,6 +113,17 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void ConnectionActions()
         {
+            SetupEvents();
+
+            var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
+            var hubCallerConnectionContext = Clients;
+            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+            user.SendWorkspaceID(workspaceId);
+            user.SendServerID(HostSecurityProvider.Instance.ServerID);
+        }
+
+        protected void SetupEvents()
+        {
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
             ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
             ServerExplorerRepository.Instance.MessageSubscription(this);
@@ -120,12 +131,6 @@ namespace Dev2.Runtime.WebServer.Hubs
             {
                 ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
             }
-
-            var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
-            var hubCallerConnectionContext = Clients;
-            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
-            user.SendWorkspaceID(workspaceId);
-            user.SendServerID(HostSecurityProvider.Instance.ServerID);
         }
 
         #endregion

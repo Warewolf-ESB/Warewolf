@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Enums;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
@@ -25,6 +20,11 @@ using Dev2.DataList.Contract.Translators;
 using Dev2.DataList.Contract.Value_Objects;
 using Dev2.Diagnostics;
 using Dev2.MathOperations;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Text;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Server.Datalist
@@ -1887,7 +1887,6 @@ namespace Dev2.Server.Datalist
                 EvaluateRuleSet ers2 = new EvaluateRuleSet(rules) { BinaryDataList = rules.BinaryDataList, Expression = rules.CompiledExpression, EvaluateToRootOnly = rules.EvaluateToRootOnly, IsDebug = rules.IsDebug };
 
                 result = InternalDataListEvaluateV2(ers2);
-
                 return result;
             }
             else

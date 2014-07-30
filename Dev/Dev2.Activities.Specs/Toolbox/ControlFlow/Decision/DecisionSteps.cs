@@ -24,10 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
 
             var decisionModels =
                 ScenarioContext.Current.Get<List<Tuple<string, enDecisionType, string, string>>>("decisionModels");
-            var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode };
-           
-            dds.TrueArmText = "YES";
-            dds.FalseArmText = "NO";
+            var dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = mode, TrueArmText = "YES", FalseArmText = "NO" };
 
             foreach(var dm in decisionModels)
             {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dev2.DataList.Contract;
+using System;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
@@ -30,7 +31,7 @@ namespace Dev2.Data.SystemTemplates.Models
         /// Generates the user friendly model.
         /// </summary>
         /// <returns></returns>
-        string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode);
+        string GenerateUserFriendlyModel(Guid dlid, Dev2DecisionMode mode, out ErrorResultTO errors);
 
     }
 }

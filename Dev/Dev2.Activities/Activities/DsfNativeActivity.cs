@@ -1,10 +1,4 @@
-﻿using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using Dev2;
+﻿using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -19,6 +13,12 @@ using Dev2.Instrumentation;
 using Dev2.Runtime.Execution;
 using Dev2.Simulation;
 using Dev2.Util;
+using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
@@ -446,8 +446,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             var dataList = compiler.FetchBinaryDataList(dataObject.DataListID, out errorsTo);
 
-            bool hasError = false;
-
             Guid remoteID;
             Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
 
@@ -486,29 +484,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                string errorMessage;
-                if(!(this is DsfFlowDecisionActivity))
-                {
-                    hasError = compiler.HasErrors(dataObject.DataListID);
+                bool hasError = compiler.HasErrors(dataObject.DataListID);
 
-                    errorMessage = String.Empty;
-                    if(hasError)
-                    {
-                        errorMessage = compiler.FetchErrors(dataObject.DataListID);
-                    }
-                }
-                else
+                var errorMessage = String.Empty;
+                if(hasError)
                 {
-                    errorMessage = compiler.FetchErrors(dataObject.DataListID, true);
-                    ErrorResultTO fullErrorList = ErrorResultTO.MakeErrorResultFromDataListString(errorMessage);
-                    if(fullErrorList.FetchErrors().Count != _tmpErrors.FetchErrors().Count)
-                    {
-                        hasError = true;
-                    }
-                    else
-                    {
-                        errorMessage = compiler.FetchErrors(dataObject.DataListID);
-                    }
+                    errorMessage = compiler.FetchErrors(dataObject.DataListID);
                 }
 
                 if(_debugState == null)
@@ -747,12 +728,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-#region workSurfaceMappingId
+        #region workSurfaceMappingId
         public Guid GetWorkSurfaceMappingId()
         {
             return WorkSurfaceMappingId;
         }
-#endregion
+        #endregion
 
     }
 }

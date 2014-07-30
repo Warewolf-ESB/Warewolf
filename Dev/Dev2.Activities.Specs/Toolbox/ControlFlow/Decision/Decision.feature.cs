@@ -3354,6 +3354,168 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Decision with malformed variables")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void ExecutingDecisionWithMalformedVariables()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Decision with malformed variables", ((string[])(null)));
+#line 1105
+this.ScenarioSetup(scenarioInfo);
+#line 1106
+ testRunner.Given("a decision variable \"[[a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1107
+ testRunner.And("is \"[[[[a]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1108
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1109
+ testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1110
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table153 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require All decisions to be True"});
+            table153.AddRow(new string[] {
+                        "[[[[a]] =",
+                        "String",
+                        "YES"});
+#line 1111
+ testRunner.And("the debug inputs as", ((string)(null)), table153, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table154 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table154.AddRow(new string[] {
+                        "NO"});
+#line 1114
+ testRunner.And("the debug output as", ((string)(null)), table154, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Decision with malformed recordset")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void ExecutingDecisionWithMalformedRecordset()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Decision with malformed recordset", ((string[])(null)));
+#line 1118
+this.ScenarioSetup(scenarioInfo);
+#line 1119
+ testRunner.Given("a decision variable \"[[rec(1).a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1120
+ testRunner.And("is \"[[[[rec().a]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1121
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1122
+ testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1123
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table155 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require All decisions to be True"});
+            table155.AddRow(new string[] {
+                        "[[[[rec().a]] =",
+                        "String",
+                        "YES"});
+#line 1124
+ testRunner.And("the debug inputs as", ((string)(null)), table155, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table156 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table156.AddRow(new string[] {
+                        "NO"});
+#line 1127
+ testRunner.And("the debug output as", ((string)(null)), table156, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Decision with recordset contains spcl character as index")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void ExecutingDecisionWithRecordsetContainsSpclCharacterAsIndex()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Decision with recordset contains spcl character as index", ((string[])(null)));
+#line 1131
+this.ScenarioSetup(scenarioInfo);
+#line 1132
+ testRunner.Given("a decision variable \"[[rec(1).a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1133
+ testRunner.And("is \"[[rec(&).a]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1134
+ testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1135
+ testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1136
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table157 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require All decisions to be True"});
+            table157.AddRow(new string[] {
+                        "[[rec(&).a]] =",
+                        "String",
+                        "YES"});
+#line 1137
+ testRunner.And("the debug inputs as", ((string)(null)), table157, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table158 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table158.AddRow(new string[] {
+                        "NO"});
+#line 1140
+ testRunner.And("the debug output as", ((string)(null)), table158, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Runtime invalid recordset variable positve test")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Decision")]
+        public virtual void RuntimeInvalidRecordsetVariablePositveTest()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Runtime invalid recordset variable positve test", ((string[])(null)));
+#line 1159
+this.ScenarioSetup(scenarioInfo);
+#line 1160
+       testRunner.Given("a decision variable \"[[A]]\" value \"rec(1).a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 1161
+       testRunner.And("a decision variable \"[[rec(1).a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1162
+       testRunner.And("is \"[[[[A]]]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 1163
+       testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 1164
+       testRunner.Then("the decision result should be \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 1165
+       testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table159 = new TechTalk.SpecFlow.Table(new string[] {
+                        "",
+                        "Statement",
+                        "Require All decisions to be True"});
+            table159.AddRow(new string[] {
+                        "[[[[A]]]] = 1",
+                        "String",
+                        "YES"});
+#line 1166
+       testRunner.And("the debug inputs as", ((string)(null)), table159, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table160 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table160.AddRow(new string[] {
+                        "YES"});
+#line 1169
+       testRunner.And("the debug output as", ((string)(null)), table160, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

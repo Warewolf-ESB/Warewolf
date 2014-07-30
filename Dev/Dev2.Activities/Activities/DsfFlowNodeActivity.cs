@@ -25,6 +25,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // The expression text is only evaluated and converted to an expression tree when CacheMetadata() is called.
         readonly CSharpValue<TResult> _expression; // BUG 9304 - 2013.05.08 - TWR - Changed type to CSharpValue
         TResult _theResult;
+        Guid _dataListID;
+        IDSFDataObject _dataObject;
 
         #region Ctor
 
@@ -80,9 +82,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            InitializeDebug(dataObject);
-            if(dataObject != null && dataObject.IsDebugMode())
+            _dataObject = context.GetExtension<IDSFDataObject>();
+            DataListFactory.CreateDataListCompiler();
+            _dataListID = _dataObject.DataListID;
+            InitializeDebug(_dataObject);
+
+            if(_dataObject.IsDebugMode())
             {
                 DispatchDebugState(context, StateType.Before);
             }
@@ -105,8 +110,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
 
             OnExecutedCompleted(context, false, false);
-
-
         }
 
         #endregion
@@ -131,20 +134,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
             var result = new List<DebugItem>();
-            IDataListCompiler c = DataListFactory.CreateDataListCompiler();
+            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+            var allErrors = new ErrorResultTO();
 
             string val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText);
 
             try
             {
-                Dev2DecisionStack dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(val);
-                string userModel = dds.GenerateUserFriendlyModel(dataList.UID, dds.Mode);
+                Dev2DecisionStack dds = compiler.ConvertFromJsonToModel<Dev2DecisionStack>(val);
+                ErrorResultTO error;
+                string userModel = dds.GenerateUserFriendlyModel(dataList.UID, dds.Mode, out error);
+                allErrors.MergeErrors(error);
 
                 foreach(Dev2Decision dev2Decision in dds.TheStack)
                 {
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col1);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col2);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col3);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col1, out  error);
+                    allErrors.MergeErrors(error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col2, out error);
+                    allErrors.MergeErrors(error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col3, out error);
+                    allErrors.MergeErrors(error);
                 }
 
                 var itemToAdd = new DebugItem();
@@ -161,14 +170,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams(dds.Mode == Dev2DecisionMode.AND ? "YES" : "NO", "Require All decisions to be True"), itemToAdd);
                 result.Add(itemToAdd);
-
             }
             catch(JsonSerializationException)
             {
                 Dev2Switch ds = new Dev2Switch { SwitchVariable = val };
                 DebugItem itemToAdd = new DebugItem();
                 ErrorResultTO errors;
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dataList.UID, enActionType.User, ds.SwitchVariable, false, out errors);
                 var debugResult = new DebugItemVariableParams(ds.SwitchVariable, "Switch on", expressionsEntry, dataList.UID);
                 itemToAdd.AddRange(debugResult.GetDebugItemResult());
@@ -176,28 +183,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                DebugItem itemToAdd = new DebugItem();
-                var debugItem = new DebugItemStaticDataParams(e.Message, "Error");
-                itemToAdd.AddRange(debugItem.GetDebugItemResult());
-                result.Add(itemToAdd);
+                allErrors.AddError(e.Message);
+            }
+            finally
+            {
+                if(allErrors.HasErrors())
+                {
+                    var serviceName = GetType().Name;
+                    DisplayAndWriteError(serviceName, allErrors);
+                    ErrorResultTO error;
+                    compiler.UpsertSystemTag(_dataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out error);
+                }
             }
 
             return result;
         }
 
-        void AddInputDebugItemResultsAfterEvaluate(List<DebugItem> result, ref string userModel, IBinaryDataList dataList, Dev2DecisionMode decisionMode, string expression, DebugItem parent = null)
+        void AddInputDebugItemResultsAfterEvaluate(List<DebugItem> result, ref string userModel, IBinaryDataList dataList, Dev2DecisionMode decisionMode, string expression, out ErrorResultTO error, DebugItem parent = null)
         {
+            error = new ErrorResultTO();
             if(expression != null && DataListUtil.IsEvaluated(expression))
             {
-                var expressiomToStringValue = EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+                DebugOutputBase debugResult;
+                if(error.HasErrors())
+                {
+                    debugResult = new DebugItemStaticDataParams("", expression, "");
+                }
+                else
+                {
+                    var expressiomToStringValue = EvaluateExpressiomToStringValue(expression, decisionMode, dataList);
+                    userModel = userModel.Replace(expression, expressiomToStringValue);
+                    ErrorResultTO errors;
+                    IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                    IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
+                    debugResult = new DebugItemVariableParams(expression, "", expressionsEntry, dataList.UID);
+                }
 
-                userModel = userModel.Replace(expression, expressiomToStringValue);
-
-                ErrorResultTO errors;
-                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
-
-                var debugResult = new DebugItemVariableParams(expression, "", expressionsEntry, dataList.UID);
                 var itemResults = debugResult.GetDebugItemResult();
 
                 List<DebugItemResult> allReadyAdded = new List<DebugItemResult>();
@@ -225,8 +246,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-
-
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
         public override List<DebugItem> GetDebugOutputs(IBinaryDataList dataList)
         {
@@ -252,9 +271,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
-            catch(Exception )
+            catch(Exception)
             {
-                if (!dataList.HasErrors())
+                if(!dataList.HasErrors())
                 {
                     itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                     result.Add(itemToAdd);
@@ -275,7 +294,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             ErrorResultTO errors;
             var dlEntry = c.Evaluate(dataList.UID, enActionType.User, expression, false, out errors);
-            if(dlEntry.IsRecordset)
+            if(dlEntry != null && dlEntry.IsRecordset)
             {
                 if(DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Numeric)
                 {
@@ -324,8 +343,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                IBinaryDataListItem scalarItem = dlEntry.FetchScalar();
-                result = scalarItem.TheValue;
+                if(dlEntry != null)
+                {
+                    var scalarItem = dlEntry.FetchScalar();
+                    result = scalarItem.TheValue;
+                }
             }
 
 

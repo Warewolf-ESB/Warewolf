@@ -9,11 +9,13 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Data.Decision
+// ReSharper restore CheckNamespace
 {
     public class Dev2DataListDecisionHandler
     {
-        private static readonly IDataListCompiler _compiler = DataListFactory.CreateDataListCompiler();
+        private static readonly IDataListCompiler Compiler = DataListFactory.CreateDataListCompiler();
         private static Dev2DataListDecisionHandler _inst;
 
         public static Dev2DataListDecisionHandler Instance
@@ -37,7 +39,7 @@ namespace Dev2.Data.Decision
             IBinaryDataListEntry tmp = EvaluateForSwitch(variableName, dlID, out errors);
             if(errors.HasErrors())
             {
-                _compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
+                Compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
             }
 
             if(tmp != null)
@@ -95,7 +97,7 @@ namespace Dev2.Data.Decision
                                 // Treat Errors special
                                 if(typeOf == enDecisionType.IsError || typeOf == enDecisionType.IsNotError)
                                 {
-                                    dd.Col1 = _compiler.EvaluateSystemEntry(dlID, enSystemTag.Dev2Error, out errors);
+                                    dd.Col1 = Compiler.EvaluateSystemEntry(dlID, enSystemTag.Dev2Error, out errors);
                                 }
 
                                 IDecisionOperation op = Dev2DecisionFactory.Instance().FetchDecisionFunction(typeOf);
@@ -121,7 +123,7 @@ namespace Dev2.Data.Decision
                                         // An error, push into the DL
                                         ErrorResultTO errorErrors;
                                         errors.AddError(e.Message);
-                                        _compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errorErrors);
+                                        Compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errorErrors);
 
                                         return false;
                                     }
@@ -159,7 +161,7 @@ namespace Dev2.Data.Decision
 
         private IBinaryDataListEntry EvaluateForSwitch(string payload, Guid dlID, out ErrorResultTO errors)
         {
-            IBinaryDataListEntry tmp = _compiler.Evaluate(dlID, enActionType.User, payload, false, out errors);
+            IBinaryDataListEntry tmp = Compiler.Evaluate(dlID, enActionType.User, payload, false, out errors);
 
             return tmp;
         }
@@ -175,7 +177,7 @@ namespace Dev2.Data.Decision
             if(payload.StartsWith("{\"TheStack\":[{") || payload.StartsWith("{'TheStack':[{"))
             {
                 //2013.05.06: Ashley Lewis for PBI 9460 - handle record-sets with stars in their index by resolving them
-                var dds = _compiler.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
+                var dds = Compiler.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
 
                 if(dds.TheStack != null)
                 {
@@ -239,10 +241,10 @@ namespace Dev2.Data.Decision
         {
             if(!String.IsNullOrEmpty(decisionColumn))
             {
-                IBinaryDataListItem binaryDataListItem;
+                IBinaryDataListItem binaryDataListItem = null;
                 ErrorResultTO errors;
-                IBinaryDataListEntry entry = _compiler.Evaluate(dlID, enActionType.User, decisionColumn, false, out errors);
-                if(entry.IsRecordset)
+                IBinaryDataListEntry entry = Compiler.Evaluate(dlID, enActionType.User, decisionColumn, false, out errors);
+                if(entry != null && entry.IsRecordset)
                 {
                     string error;
                     var indexType = DataListUtil.GetRecordsetIndexType(decisionColumn);
@@ -260,7 +262,10 @@ namespace Dev2.Data.Decision
                 }
                 else
                 {
-                    binaryDataListItem = entry.FetchScalar();
+                    if(entry != null)
+                    {
+                        binaryDataListItem = entry.FetchScalar();
+                    }
                 }
                 if(binaryDataListItem != null)
                 {
@@ -314,7 +319,7 @@ namespace Dev2.Data.Decision
             if(effectedCols[0])
             {
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-                IBinaryDataListEntry col1Entry = _compiler.Evaluate(id, enActionType.User, decision.Col1, false, out errors);
+                IBinaryDataListEntry col1Entry = Compiler.Evaluate(id, enActionType.User, decision.Col1, false, out errors);
                 IDev2DataListEvaluateIterator col1Iterator = Dev2ValueObjectFactory.CreateEvaluateIterator(col1Entry);
                 colItr.AddIterator(col1Iterator);
                 int reStackIndex = stackIndex;
@@ -328,7 +333,7 @@ namespace Dev2.Data.Decision
             if(effectedCols[1])
             {
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-                IBinaryDataListEntry col2Entry = _compiler.Evaluate(id, enActionType.User, decision.Col2, false, out errors);
+                IBinaryDataListEntry col2Entry = Compiler.Evaluate(id, enActionType.User, decision.Col2, false, out errors);
                 IDev2DataListEvaluateIterator col2Iterator = Dev2ValueObjectFactory.CreateEvaluateIterator(col2Entry);
                 colItr.AddIterator(col2Iterator);
                 int reStackIndex = stackIndex;
@@ -357,7 +362,7 @@ namespace Dev2.Data.Decision
             if(effectedCols[2])
             {
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-                IBinaryDataListEntry col3Entry = _compiler.Evaluate(id, enActionType.User, decision.Col3, false, out errors);
+                IBinaryDataListEntry col3Entry = Compiler.Evaluate(id, enActionType.User, decision.Col3, false, out errors);
                 IDev2DataListEvaluateIterator col3Iterator = Dev2ValueObjectFactory.CreateEvaluateIterator(col3Entry);
                 colItr.AddIterator(col3Iterator);
                 int reStackIndex = stackIndex;
