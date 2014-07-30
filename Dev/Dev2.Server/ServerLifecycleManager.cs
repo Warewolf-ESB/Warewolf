@@ -75,6 +75,7 @@ namespace Dev2
             }
 
             bool commandLineParameterProcessed = false;
+            ServerLogger.EnableInfoOutput = true;
             if(options.Install)
             {
                 ServerLogger.LogMessage("Starting Install");
