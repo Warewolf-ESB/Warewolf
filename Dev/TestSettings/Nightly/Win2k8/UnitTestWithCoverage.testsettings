@@ -2,7 +2,6 @@
 <TestSettings name="Unit Test with Coverage" id="3264dd0f-6fc1-4cb9-b44f-c649fef29605" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
-    <DeploymentItem filename="TestBinaries\ConsoleAppToTestExecuteCommandLineActivity.exe" />
     <DeploymentItem filename="Binaries\IronPython.Modules.dll" />
     <DeploymentItem filename="Binaries\Microsoft.Scripting.dll" />
     <DeploymentItem filename="Binaries\IronRuby.Libraries.dll" />
@@ -11,7 +10,7 @@
     <DeploymentItem filename="Binaries\CefSharp\" />
     <DeploymentItem filename="Binaries\IronRuby.Libraries.Yaml.dll" />
     <DeploymentItem filename="Binaries\IronRuby.dll" />
-    <DeploymentItem filename="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" outputDirectory="ConsoleAppToTestExecuteCommandLineActivityBinDebug" />
+    <DeploymentItem filename="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" />
   </Deployment>
   <Scripts cleanupScript="TestScripts\Unit\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld:6901" />

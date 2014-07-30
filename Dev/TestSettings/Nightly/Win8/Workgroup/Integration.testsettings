@@ -2,8 +2,7 @@
 <TestSettings name="Nightly Integration Test Settings" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
     <Deployment>
-        <DeploymentItem filename="TestBinaries\" />
-        <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerBinDebug" />
+        <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
 	</Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
   <Scripts setupScript="TestScripts\Integration\Startup.bat" cleanupScript="TestScripts\Integration\Cleanup.bat" />

@@ -9,8 +9,7 @@
     <DeploymentItem filename="Binaries\IronRuby.Libraries.dll" />
     <DeploymentItem filename="Binaries\Microsoft.Scripting.dll" />
     <DeploymentItem filename="Binaries\CefSharp\" />
-    <DeploymentItem filename="TestBinaries\ConsoleAppToTestExecuteCommandLineActivity.exe" />
-    <DeploymentItem filename="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" outputDirectory="ConsoleAppToTestExecuteCommandLineActivityBinDebug" />
+    <DeploymentItem filename="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" />
     <DeploymentItem filename="Binaries\IronPython.Modules.dll" />
   </Deployment>
   <Scripts cleanupScript="TestScripts\Unit\Cleanup.bat" />
