@@ -63,6 +63,10 @@ namespace Dev2
         {
             var result = 0;
 
+            try
+            {
+
+     
             CommandLineParameters options = new CommandLineParameters();
             CommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
             if(!parser.ParseArguments(arguments, options))
@@ -73,68 +77,79 @@ namespace Dev2
             bool commandLineParameterProcessed = false;
             if(options.Install)
             {
-
+                ServerLogger.LogMessage("Starting Install");
                 commandLineParameterProcessed = true;
 
                 if(!EnsureRunningAsAdministrator(arguments))
                 {
+                    ServerLogger.LogMessage("Cannot install because the server is not running as an admin user");
                     return result;
                 }
 
                 if(!WindowsServiceManager.Install())
                 {
                     result = 81;
+                    ServerLogger.LogMessage("Install Success Result is 81");
                 }
             }
 
             if(options.StartService)
             {
-
+                ServerLogger.LogMessage("Starting Service");
                 commandLineParameterProcessed = true;
 
                 if(!EnsureRunningAsAdministrator(arguments))
                 {
+                    ServerLogger.LogMessage("Cannot start because the server is not running as an admin user");
                     return result;
                 }
 
                 if(!WindowsServiceManager.StartService(null))
                 {
+                    ServerLogger.LogMessage("Starting Service success. result 83");
                     result = 83;
                 }
             }
 
             if(options.StopService)
             {
+                ServerLogger.LogMessage("Stopping Service");
                 commandLineParameterProcessed = true;
 
                 if(!EnsureRunningAsAdministrator(arguments))
                 {
+                    ServerLogger.LogMessage("Cannot stop because the server is not running as an admin user");
                     return result;
                 }
 
                 if(!WindowsServiceManager.StopService(null))
                 {
+                    ServerLogger.LogMessage("Stopping Service success. result 84");
                     result = 84;
                 }
             }
 
             if(options.Uninstall)
             {
+                ServerLogger.LogMessage("Uninstall Service");
                 commandLineParameterProcessed = true;
 
                 if(!EnsureRunningAsAdministrator(arguments))
                 {
+                    ServerLogger.LogMessage("Cannot uninstall because the server is not running as an admin user");
                     return result;
                 }
 
                 if(!WindowsServiceManager.Uninstall())
                 {
+                    ServerLogger.LogMessage("Uninstall Service success. result 92");
                     result = 82;
                 }
             }
 
             if(commandLineParameterProcessed)
             {
+                ServerLogger.LogMessage("Command line processed. Returning");
                 return result;
             }
 
@@ -157,7 +172,13 @@ namespace Dev2
                     ServiceBase.Run(service);
                 }
             }
-
+            }
+            catch (Exception err)
+            {
+                ServerLogger.LogError("Error Starting Server",err);
+                ServerLogger.LogError("Error Starting Server. Stack trace", err.StackTrace);
+                throw;
+            }
             return result;
         }
 
