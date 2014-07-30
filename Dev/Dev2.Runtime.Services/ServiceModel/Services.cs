@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ServiceModel
     public class WebRequestPoco
     {
         public string ResourceType { get; set; }
-        public string ResourceID { get; set; }
+        public string ResourceId { get; set; }
     }
 
     public class Services : ExceptionManager
@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Get
 
         // POST: Service/Services/Get
-        public Service Get(string args, Guid workspaceID, Guid dataListID)
+        public Service Get(string args, Guid workspaceId, Guid dataListId)
         {
             ResourceType resourceType = ResourceType.Unknown;
             try
@@ -53,8 +53,8 @@ namespace Dev2.Runtime.ServiceModel
                 var webRequestPoco = JsonConvert.DeserializeObject<WebRequestPoco>(args);
                 var resourceTypeStr = webRequestPoco.ResourceType;
                 resourceType = Resources.ParseResourceType(resourceTypeStr);
-                var resourceID = webRequestPoco.ResourceID;
-                var xmlStr = _resourceCatalog.GetResourceContents(workspaceID, Guid.Parse(resourceID));
+                var resourceId = webRequestPoco.ResourceId;
+                var xmlStr = _resourceCatalog.GetResourceContents(workspaceId, Guid.Parse(resourceId));
 
                 if(xmlStr != null && xmlStr.Length != 0)
                 {
@@ -89,14 +89,14 @@ namespace Dev2.Runtime.ServiceModel
         #region Save
 
         // POST: Service/Services/Save
-        public string Save(string args, Guid workspaceID, Guid dataListID)
+        public string Save(string args, Guid workspaceId, Guid dataListId)
         {
             try
             {
                 var service = DeserializeService(args);
-                _resourceCatalog.SaveResource(workspaceID, service);
+                _resourceCatalog.SaveResource(workspaceId, service);
 
-                if(workspaceID != GlobalConstants.ServerWorkspaceID)
+                if(workspaceId != GlobalConstants.ServerWorkspaceID)
                 {
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, service);
                 }
@@ -115,7 +115,7 @@ namespace Dev2.Runtime.ServiceModel
         #region DbMethods
 
         // POST: Service/Services/DbMethods
-        public ServiceMethodList DbMethods(string args, Guid workspaceID, Guid dataListID)
+        public ServiceMethodList DbMethods(string args, Guid workspaceId, Guid dataListId)
         {
             var result = new ServiceMethodList();
             if(!string.IsNullOrEmpty(args))
@@ -124,6 +124,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     // TODO : Extract IsForceUpdate flag
                     var source = JsonConvert.DeserializeObject<DbSource>(args);
+                    source = ResourceCatalog.Instance.GetResource<DbSource>(workspaceId, source.ResourceID);
                     var serviceMethods = FetchMethods(source);
                     result.AddRange(serviceMethods);
                 }
@@ -141,7 +142,7 @@ namespace Dev2.Runtime.ServiceModel
         #region DbTest
 
         // POST: Service/Services/DbTest
-        public Recordset DbTest(string args, Guid workspaceID, Guid dataListID)
+        public Recordset DbTest(string args, Guid workspaceId, Guid dataListId)
         {
             try
             {
@@ -241,9 +242,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #region IsReadOnly
 
-        public WebPermission IsReadOnly(string resourceID, Guid workspaceID, Guid dataListID)
+        public WebPermission IsReadOnly(string resourceId, Guid workspaceId, Guid dataListId)
         {
-            return new WebPermission { IsReadOnly = !_authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceID) };
+            return new WebPermission { IsReadOnly = !_authorizationService.IsAuthorized(AuthorizationContext.Contribute, resourceId) };
         }
 
         #endregion
