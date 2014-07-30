@@ -112,7 +112,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="..\Dev2.Integration.Tests\Services.Sql\SqlServerTests.cs">
+    <Compile Include="..\Dev2.IntegrationTests\Services.Sql\SqlServerTests.cs">
       <Link>Toolbox\Recordset\SqlBulkInsert\SqlServerTests.cs</Link>
     </Compile>
     <Compile Include="BaseTypes\CommonSteps.cs" />
