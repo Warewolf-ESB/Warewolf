@@ -519,13 +519,13 @@ namespace Gui
         private void AddTrustedSites()
         {
             const string DomainsKeyLocation = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
-            const string Domain = @"localhost";
+            string domain = Environment.MachineName.ToLower();
             //const int intratnet = 0x1; // 0x2
             const int TrustedSiteZone = 0x1; // 0x2
 
             RegistryKey currentUserKey = Registry.CurrentUser;
 
-            RegistryKey localKey = currentUserKey.GetOrCreateSubKey(DomainsKeyLocation, Domain, true);
+            RegistryKey localKey = currentUserKey.GetOrCreateSubKey(DomainsKeyLocation, domain, true);
 
             try
             {
