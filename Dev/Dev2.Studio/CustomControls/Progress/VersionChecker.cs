@@ -31,19 +31,19 @@ namespace Dev2.Studio.Core.Helpers
         {
         }
 
-        public VersionChecker(IDev2WebClient webClient,IFile fileWrapper,Func<Version> versionGetter,
-            Func<string , string , List<string> , MessageBoxImage ,
-                                            MessageBoxResult , string ,MessageBoxResult> showPopup    )
+        public VersionChecker(IDev2WebClient webClient, IFile fileWrapper, Func<Version> versionGetter,
+            Func<string, string, List<string>, MessageBoxImage,
+                                            MessageBoxResult, string, MessageBoxResult> showPopup)
         {
-          VerifyArgument.IsNotNull("webClient",webClient);
-          VerifyArgument.IsNotNull("fileWrapper", fileWrapper);
-          VerifyArgument.IsNotNull("versionGetter", versionGetter);
+            VerifyArgument.IsNotNull("webClient", webClient);
+            VerifyArgument.IsNotNull("fileWrapper", fileWrapper);
+            VerifyArgument.IsNotNull("versionGetter", versionGetter);
             _webClient = webClient;
             _fileWrapper = fileWrapper;
             _versionGetter = versionGetter;
             _showPopup = showPopup;
             _isDone = false;
-     }
+        }
 
         #region Latest
 
@@ -89,9 +89,10 @@ namespace Dev2.Studio.Core.Helpers
                 Check();
                 return _latestVersionCheckSum;
             }
-           
+
         }
-        public string CommunityPageUri {
+        public string CommunityPageUri
+        {
             get
             {
                 Check();
@@ -111,24 +112,29 @@ namespace Dev2.Studio.Core.Helpers
 
                 result = PerformDownLoad(downloader);
             });
-            
+
             return result;
+        }
+
+        public bool GetNewerVersion()
+        {
+            return Latest > Current;
         }
 
         public bool PerformDownLoad(IProgressFileDownloader downloader)
         {
-            if (Latest > Current)
+            if(Latest > Current)
             {
                 // TESTING : "grepWin-1.6.0-64.msi"
                 var latestVersionpath = FileHelper.GetFullPath(string.Format("Installers\\Warewolf-{0}.exe", Latest));
                 var path = string.Format("Installers\\tmpWarewolf--{0}.exe", Latest);
-                if (!_fileWrapper.Exists(latestVersionpath))
+                if(!_fileWrapper.Exists(latestVersionpath))
                 {
                     var downloadMessageBoxResult = ShowDownloadPopUp();
 
-                    if (downloadMessageBoxResult == MessageBoxResult.Yes || downloadMessageBoxResult == MessageBoxResult.No)
+                    if(downloadMessageBoxResult == MessageBoxResult.Yes || downloadMessageBoxResult == MessageBoxResult.No)
                     {
-                        PerformDownload(downloader, path, downloadMessageBoxResult,latestVersionpath);
+                        PerformDownload(downloader, path, downloadMessageBoxResult, latestVersionpath);
                     }
                 }
                 else
@@ -144,7 +150,7 @@ namespace Dev2.Studio.Core.Helpers
         private void PerformInstall(IProgressFileDownloader downloader, string path)
         {
             var setupMessageBoxResult = ShowStartNowPopUp();
-            if (setupMessageBoxResult == MessageBoxResult.Yes)
+            if(setupMessageBoxResult == MessageBoxResult.Yes)
             {
                 downloader.StartUpdate(path, false);
             }
@@ -156,7 +162,7 @@ namespace Dev2.Studio.Core.Helpers
             // TESTING : "https://s3-eu-west-1.amazonaws.com/warewolf/Archive/grepWin-1.6.0-64.msi"
             downloader.Download(
                 new Uri(string.Format(StringResources.Uri_DownloadPage + "Warewolf-{0}.exe", Latest)), path,
-                downloadMessageBoxResult != MessageBoxResult.Yes, latestVersionpath,_latestVersionCheckSum);
+                downloadMessageBoxResult != MessageBoxResult.Yes, latestVersionpath, _latestVersionCheckSum);
         }
 
         protected virtual MessageBoxResult ShowDownloadPopUp()
@@ -189,7 +195,7 @@ namespace Dev2.Studio.Core.Helpers
             try
             {
                 return _webClient.DownloadString(InstallerResources.WarewolfChecksum);
-               
+
             }
             catch
             {
@@ -203,7 +209,7 @@ namespace Dev2.Studio.Core.Helpers
 
         Version GetLatestVersion()
         {
-        
+
             try
             {
                 var version = _webClient.DownloadString(InstallerResources.WarewolfVersion);
@@ -230,7 +236,7 @@ namespace Dev2.Studio.Core.Helpers
     internal class InstallerResources
     {
 
-        public static  bool InstallerTesting
+        public static bool InstallerTesting
         {
             get { return bool.Parse(System.Configuration.ConfigurationManager.AppSettings["InstallerTesting"]); }
         }
@@ -243,12 +249,12 @@ namespace Dev2.Studio.Core.Helpers
                 return InstallerTesting ? System.Configuration.ConfigurationManager.AppSettings["TestVersionLocation"] : System.Configuration.ConfigurationManager.AppSettings["VersionLocation"];
             }
         }
-        public static string WarewolfChecksum 
-        {   
+        public static string WarewolfChecksum
+        {
             get
             {
-                return InstallerTesting?System.Configuration.ConfigurationManager.AppSettings["TestCheckSumLocation"]: System.Configuration.ConfigurationManager.AppSettings["CheckSumLocation"];
-            }  
+                return InstallerTesting ? System.Configuration.ConfigurationManager.AppSettings["TestCheckSumLocation"] : System.Configuration.ConfigurationManager.AppSettings["CheckSumLocation"];
+            }
         }
     }
 }

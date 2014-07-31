@@ -45,7 +45,7 @@ namespace Dev2.Core.Tests.Helpers
             //------------Assert Results-------------------------
             Assert.AreEqual(StringResources.Uri_Community_HomePage, startPage);
         }
-        
+
         [TestMethod]
         public void VersionCheckerStartPageUriWithCurrentIsNotLatestExpectedStart()
         {
@@ -98,8 +98,42 @@ namespace Dev2.Core.Tests.Helpers
             VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.No, CurrentVersion = new Version(0, 0, 0, 1) };
             versionChecker.IsLatest(mockDownloader.Object, mockPopUp.Object, asyncWorker.Object);
 
-           // mockPopUp.Verify(c => c.ShowDialog(), Times.Never());
+            // mockPopUp.Verify(c => c.ShowDialog(), Times.Never());
             mockWebClient.Verify(c => c.DownloadString(It.IsAny<string>()), Times.Exactly(2));
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("VersionChecker")]
+        [Description("Check if the app is the lastest version and show a pop up informing the user")]
+        // ReSharper disable InconsistentNaming
+        public void GetNewerVersion_LaterVersion_ReturnsTrue()
+        // ReSharper restore InconsistentNaming
+        {
+            Mock<IDev2WebClient> mockWebClient = new Mock<IDev2WebClient>();
+            mockWebClient.Setup(c => c.DownloadString(It.IsAny<string>())).Returns("0.0.0.2").Verifiable();
+
+            VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.No, CurrentVersion = new Version(0, 0, 0, 1) };
+            var newerVersion = versionChecker.GetNewerVersion();
+
+            Assert.IsTrue(newerVersion);
+        }
+
+        [TestMethod]
+        [Owner("Massimo Guerrera")]
+        [TestCategory("VersionChecker")]
+        [Description("Check if the app is the lastest version and show a pop up informing the user")]
+        // ReSharper disable InconsistentNaming
+        public void GetNewerVersion_NotLaterVersion_ReturnsFalse()
+        // ReSharper restore InconsistentNaming
+        {
+            Mock<IDev2WebClient> mockWebClient = new Mock<IDev2WebClient>();
+            mockWebClient.Setup(c => c.DownloadString(It.IsAny<string>())).Returns("0.0.0.1").Verifiable();
+
+            VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.No, CurrentVersion = new Version(0, 0, 0, 1) };
+            var newerVersion = versionChecker.GetNewerVersion();
+
+            Assert.IsFalse(newerVersion);
         }
 
         [TestMethod]
@@ -114,59 +148,59 @@ namespace Dev2.Core.Tests.Helpers
             mockWebClient.Setup(c => c.DownloadString(It.IsAny<string>())).Returns("0.0.0.1").Verifiable();
 
             Mock<IProgressDialog> mockPopUp = new Mock<IProgressDialog>();
-          //  mockPopUp.Setup(c => c.ShowDialog()).Verifiable();
+            //  mockPopUp.Setup(c => c.ShowDialog()).Verifiable();
 
             Mock<IProgressFileDownloader> mockDownloader = new Mock<IProgressFileDownloader>();
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             VersionCheckerTestClass versionChecker = new VersionCheckerTestClass(mockWebClient.Object) { ShowPopupResult = MessageBoxResult.Yes, CurrentVersion = new Version(0, 0, 0, 1) };
             versionChecker.IsLatest(mockDownloader.Object, mockPopUp.Object, asyncWorker.Object);
 
-          //  mockPopUp.Verify(c => c.ShowDialog(), Times.Never());
+            //  mockPopUp.Verify(c => c.ShowDialog(), Times.Never());
             mockWebClient.Verify(c => c.DownloadString(It.IsAny<string>()), Times.Exactly(2));
         }
 
         #endregion
 
 
-        [TestMethod,ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VersionChecker_Ctor")]
         public void VersionChecker_Ctor_NullFile_ExpectException()
         {
             //------------Setup for test--------------------------
-// ReSharper disable ObjectCreationAsStatement
+            // ReSharper disable ObjectCreationAsStatement
             new VersionChecker(null, new FileWrapper(), VersionInfo.FetchVersionInfoAsVersion, Dev2MessageBoxViewModel.ShowWithCustomButtons);
-// ReSharper restore ObjectCreationAsStatement
-            
+            // ReSharper restore ObjectCreationAsStatement
+
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
         }
 
-        [TestMethod,ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VersionChecker_Ctor")]
         public void VersionChecker_Currentr_WebClientNullFile_ExpectException()
         {
             //------------Setup for test--------------------------
-// ReSharper disable ObjectCreationAsStatement
+            // ReSharper disable ObjectCreationAsStatement
             new VersionChecker(new Dev2WebClient(new WebClient()), null, VersionInfo.FetchVersionInfoAsVersion, Dev2MessageBoxViewModel.ShowWithCustomButtons);
-// ReSharper restore ObjectCreationAsStatement
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
         }
 
-        [TestMethod,ExpectedException(typeof(ArgumentNullException))]
+        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("VersionChecker_Ctor")]
         public void VersionChecker_Currentr_NullVersionChecker_ExpectException()
         {
             //------------Setup for test--------------------------
-// ReSharper disable ObjectCreationAsStatement
+            // ReSharper disable ObjectCreationAsStatement
             new VersionChecker(new Dev2WebClient(new WebClient()), new FileWrapper(), null, Dev2MessageBoxViewModel.ShowWithCustomButtons);
-// ReSharper restore ObjectCreationAsStatement
+            // ReSharper restore ObjectCreationAsStatement
 
             //------------Execute Test---------------------------
 
@@ -184,12 +218,12 @@ namespace Dev2.Core.Tests.Helpers
             webClient.Setup(a => a.DownloadString(It.IsAny<string>())).Returns("0.0.0.2");
             fileWrapper.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             var progress = new Mock<IProgressFileDownloader>();
-            var versionChecker = new VersionChecker(webClient.Object, fileWrapper.Object, () => new Version(0, 0, 0, 1),(a, b, c, d, e,f)=>MessageBoxResult.Yes);
- 
+            var versionChecker = new VersionChecker(webClient.Object, fileWrapper.Object, () => new Version(0, 0, 0, 1), (a, b, c, d, e, f) => MessageBoxResult.Yes);
+
 
             versionChecker.PerformDownLoad(progress.Object);
             //------------Execute Test---------------------------
-            progress.Verify(a=>a.StartUpdate(It.IsAny<string>(),false));
+            progress.Verify(a => a.StartUpdate(It.IsAny<string>(), false));
             //------------Assert Results-------------------------
         }
 
@@ -210,7 +244,7 @@ namespace Dev2.Core.Tests.Helpers
 
             versionChecker.PerformDownLoad(progress.Object);
             //------------Execute Test---------------------------
- 
+
             Assert.IsTrue(called);
             //------------Assert Results-------------------------
         }
@@ -252,8 +286,8 @@ namespace Dev2.Core.Tests.Helpers
 
             var ax = versionChecker.LatestVersionCheckSum;
             //------------Execute Test---------------------------
-            
-            Assert.AreEqual("1.2.1.1",ax);
+
+            Assert.AreEqual("1.2.1.1", ax);
             //------------Assert Results-------------------------
         }
     }

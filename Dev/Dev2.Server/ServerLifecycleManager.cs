@@ -66,7 +66,6 @@ namespace Dev2
             try
             {
 
-     
             CommandLineParameters options = new CommandLineParameters();
             CommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
             if(!parser.ParseArguments(arguments, options))
@@ -75,7 +74,7 @@ namespace Dev2
             }
 
             bool commandLineParameterProcessed = false;
-            ServerLogger.EnableInfoOutput = true;
+                ServerLogger.EnableInfoOutput = true;
             if(options.Install)
             {
                 ServerLogger.LogMessage("Starting Install");
@@ -174,9 +173,9 @@ namespace Dev2
                 }
             }
             }
-            catch (Exception err)
+            catch(Exception err)
             {
-                ServerLogger.LogError("Error Starting Server",err);
+                ServerLogger.LogError("Error Starting Server", err);
                 ServerLogger.LogError("Error Starting Server. Stack trace", err.StackTrace);
                 throw;
             }

@@ -23,6 +23,8 @@ using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Threading;
 using Dev2.Util;
+using Dev2.Views.Dialogs;
+
 // ReSharper restore RedundantUsingDirective
 
 // ReSharper disable CheckNamespace
@@ -107,39 +109,44 @@ namespace Dev2.Studio
 
 #if ! (DEBUG)
             var versionChecker = new VersionChecker();
-            var dialog = new ProgressDialog(MainWindow);
-            var dialogViewModel = new ProgressDialogViewModel(() => { }, dialog.Show, dialog.Close);
-            dialog.DataContext = dialogViewModel;
-
-            ProgressFileDownloader progressFileDownloader = new ProgressFileDownloader(MainWindow);
-
-            if(_mainViewModel != null)
+            if(versionChecker.GetNewerVersion())
             {
-                _mainViewModel.IsBusyDownloadingInstaller = () =>
-                    {
-                        if(progressFileDownloader.IsBusyDownloading)
-                        {
-                            IPopupController popup = new PopupController("Still downloading", "Do you want to cancel download ?", MessageBoxImage.Question, MessageBoxButton.YesNo);
-                            var result = popup.Show();
-                            if(result == MessageBoxResult.Yes)
-                            {
-                                progressFileDownloader.Cancel();
-                            }
-                        }
-                        else
-                        {
-                            // silly people building crap code where I need to shit like this ;)
-                            if(ServerProxy.IsShuttingDown)
-                            {
-                                progressFileDownloader.Cancel();
-                            }
-                        }
-
-                        return progressFileDownloader.IsBusyDownloading;
-                    };
+                WebLatestVersionDialog dialog = new WebLatestVersionDialog();
+                dialog.ShowDialog();
             }
-
-            versionChecker.IsLatest(progressFileDownloader, dialogViewModel, new AsyncWorker());
+//            var dialog = new ProgressDialog(MainWindow);
+//            var dialogViewModel = new ProgressDialogViewModel(() => { }, dialog.Show, dialog.Close);
+//            dialog.DataContext = dialogViewModel;
+//
+//            ProgressFileDownloader progressFileDownloader = new ProgressFileDownloader(MainWindow);
+//
+//            if(_mainViewModel != null)
+//            {
+//                _mainViewModel.IsBusyDownloadingInstaller = () =>
+//                    {
+//                        if(progressFileDownloader.IsBusyDownloading)
+//                        {
+//                            IPopupController popup = new PopupController("Still downloading", "Do you want to cancel download ?", MessageBoxImage.Question, MessageBoxButton.YesNo);
+//                            var result = popup.Show();
+//                            if(result == MessageBoxResult.Yes)
+//                            {
+//                                progressFileDownloader.Cancel();
+//                            }
+//                        }
+//                        else
+//                        {
+//                            // silly people building crap code where I need to shit like this ;)
+//                            if(ServerProxy.IsShuttingDown)
+//                            {
+//                                progressFileDownloader.Cancel();
+//                            }
+//                        }
+//
+//                        return progressFileDownloader.IsBusyDownloading;
+//                    };
+//            }
+//
+//            versionChecker.IsLatest(progressFileDownloader, dialogViewModel, new AsyncWorker());
 #endif
         }
 
