@@ -288,7 +288,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Warewolf Server.exe.config">
+    <None Include="app.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Warewolf Server.exe.secureconfig">
@@ -327,7 +327,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>IF $(ConfigurationName)==Debug GOTO getDebugResources
+    <PostBuildEvent>ren "$(TargetDir)app.config" "$(TargetFileName).config"
+IF $(ConfigurationName)==Debug GOTO getDebugResources
 IF $(ConfigurationName)==Test GOTO getTestResources
 IF $(ConfigurationName)==Release GOTO getReleaseResources
 GOTO exit
