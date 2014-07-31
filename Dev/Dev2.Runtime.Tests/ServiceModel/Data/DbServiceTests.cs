@@ -15,11 +15,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [ExcludeFromCodeCoverage]
     public class DbServiceTests
     {
-
         static Service DeserializeService(string args)
         {
             var service = JsonConvert.DeserializeObject<Service>(args);
-            switch (service.ResourceType)
+            switch(service.ResourceType)
             {
                 case ResourceType.DbService:
                     return JsonConvert.DeserializeObject<DbService>(args);

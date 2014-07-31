@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common", "Dev2.Common\Dev2.Common.csproj", "{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Composition", "Dev2.Composition\Dev2.Composition.csproj", "{B91813C8-499C-4D65-A0D4-57C7FA5F5413}"
@@ -58,8 +60,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Designers", "Dev2.Activities.Designers\Dev2.Activities.Designers.csproj", "{B95B724A-B052-4E18-98A4-88072C8DF2C2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Sql", "Dev2.Services.Sql\Dev2.Services.Sql.csproj", "{FF3115B2-370E-4E40-99C5-7D239BC28679}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Execution", "Dev2.Services.Execution\Dev2.Services.Execution.csproj", "{019A92B9-9209-4930-BC96-381CB8B1C0EA}"
 EndProject
