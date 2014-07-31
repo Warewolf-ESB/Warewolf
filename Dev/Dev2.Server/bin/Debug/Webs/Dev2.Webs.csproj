@@ -144,6 +144,7 @@
     <Content Include="wwwroot\Views\Templates\InputMapping.htm" />
     <Content Include="wwwroot\Views\Templates\OutputMapping.htm" />
     <Content Include="web.config" />
+    <Content Include="Tests\chutzpah.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>

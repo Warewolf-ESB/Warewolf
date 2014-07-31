@@ -1,6 +1,14 @@
 ﻿/// <reference path="../../wwwroot/Scripts/Decisions/DecisionModel.js" />
-/// <reference path="../../wwwroot/Scripts/_references.js" />
 
+/// <reference path="../../wwwroot/Scripts/fx/jquery-1.9.1.min.js" />
+/// <reference path="../../wwwroot/Scripts/fx/jquery.Guid.js" />
+/// <reference path="../../wwwroot/Scripts/fx/jquery.mockjax.js" />
+/// <reference path="../../wwwroot/Scripts/fx/knockout-2.2.1.js" />
+/// <reference path="../../wwwroot/Scripts/fx/qunit-1.11.0.js" />
+/// <reference path="../../wwwroot/Scripts/fx/jquery.scrollTo-1.4.3.1.js" />
+
+/// <reference path="../../wwwroot/Scripts/warewolf-globals.js" />
+/// <reference path="../../wwwroot/Scripts/warewolf-utils.js" />
 
 /* 
     Travis.Frisinger - 06.02.2013
