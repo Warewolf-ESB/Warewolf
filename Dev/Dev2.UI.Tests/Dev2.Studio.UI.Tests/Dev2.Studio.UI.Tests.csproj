@@ -63,9 +63,6 @@
     <When Condition="'$(VisualStudioVersion)' == '10.0' Or '$(VisualStudioVersion)' == '11.0'" />
   </Choose>
   <ItemGroup>
-    <Reference Include="BuildEventLogging">
-      <HintPath>..\..\Binaries\BuildEventLogging.dll</HintPath>
-    </Reference>
     <Reference Include="Ionic.Zip.Reduced">
       <HintPath>..\..\Binaries\Ionic.Zip.Reduced.dll</HintPath>
     </Reference>
