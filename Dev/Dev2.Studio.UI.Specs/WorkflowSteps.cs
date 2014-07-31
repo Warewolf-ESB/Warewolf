@@ -13,6 +13,8 @@ namespace Dev2.Studio.UI.Specs
     [Binding]
     public class WorkflowSteps : UIMapBase
     {
+        
+
         [BeforeTestRun]
         public static void SetupForTest()
         {
