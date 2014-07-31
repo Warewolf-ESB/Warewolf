@@ -64,7 +64,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DebugType>pdbonly</DebugType>
+    <DebugType>none</DebugType>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -162,7 +162,7 @@
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
-      <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
+      <Project>{db2fbc8d-3271-4d1d-a6bc-f4dfc530918b}</Project>
       <Name>Dev2.Intellisense</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Core.Tests\Dev2.Studio.Core.Tests.csproj">

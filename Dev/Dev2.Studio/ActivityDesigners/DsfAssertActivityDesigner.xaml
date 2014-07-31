@@ -22,8 +22,5 @@
         <Label Content="Expression [Optional] ->" Grid.Column="0" Grid.Row="1" />
         <TextBox Grid.Column="1" Text="{Binding Path=ModelItem.DataExpression}" MinWidth="100" Grid.Row="1" 
                  attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"/>
-
-
-
     </Grid>
 </sap:ActivityDesigner>
