@@ -287,7 +287,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Warewolf Server.exe.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
