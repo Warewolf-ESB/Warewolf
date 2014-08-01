@@ -1,8 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Linq.Expressions;
-using System.Windows;
-using System.Windows.Threading;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
@@ -17,13 +13,16 @@ using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Models;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Windows;
+using System.Windows.Threading;
 namespace Dev2.Core.Tests.Repositories
 {
     [TestClass]
@@ -83,104 +82,6 @@ namespace Dev2.Core.Tests.Repositories
             repository.Load(Guid.Empty, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             //------------Assert Results-------------------------
             mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.Once());
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("StudioResourceRepository_EnvironmentEdited")]
-        public void StudioResourceRepository_WhenEnvironmentEdited_EnvironmentConnected_CallsLoadOnEnvironment()
-        {
-            //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
-            mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()))
-                                          .Returns(new ServerExplorerItem())
-                                          .Verifiable();
-
-            var c1 = EnviromentRepositoryTest.CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object, e1);
-            new EnvironmentRepository(repo);
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
-
-            var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
-                {
-                    GetExplorerProxy = id => mockExplorerResourceRepository.Object
-                };
-
-            mockEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
-            repository.Load(Guid.Empty, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            //------------Execute Test---------------------------
-            EnvironmentRepository.Instance.Save(e1);
-            //------------Assert Results-------------------------
-            mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.Exactly(1));
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("StudioResourceRepository_EnvironmentEdited")]
-        public void StudioResourceRepository_WhenEnvironmentEdited_ShouldFireEventOnce()
-        {
-            //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
-            mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()))
-                                          .Returns(new ServerExplorerItem())
-                                          .Verifiable();
-
-            var c1 = EnviromentRepositoryTest.CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object, e1);
-            new EnvironmentRepository(repo);
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
-
-            var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
-                {
-                    GetExplorerProxy = id => mockExplorerResourceRepository.Object
-                };
-
-            mockEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
-            repository.Load(Guid.Empty, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            repository.Load(Guid.Empty, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            //------------Execute Test---------------------------
-            EnvironmentRepository.Instance.Save(e1);
-            //------------Assert Results-------------------------
-            mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.Exactly(2));
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("StudioResourceRepository_EnvironmentEdited")]
-        public void StudioResourceRepository_WhenEnvironmentEdited_EnvironmentNotConnected_DoesNotCallsLoadOnEnvironment()
-        {
-            //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
-            mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()))
-                                          .Returns(new ServerExplorerItem())
-                                          .Verifiable();
-
-            var c1 = EnviromentRepositoryTest.CreateMockConnection();
-            var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
-            var source = new Mock<IEnvironmentModel>();
-            var repo = new TestEnvironmentRespository(source.Object, e1);
-            new EnvironmentRepository(repo);
-            var mockResourceRepository = new Mock<IResourceRepository>();
-            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
-
-            var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
-                {
-                    GetExplorerProxy = id => mockExplorerResourceRepository.Object
-                };
-
-            mockEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
-            repository.Load(Guid.Empty, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
-            c1.Setup(connection => connection.IsConnected).Returns(false);
-            //------------Execute Test---------------------------
-            EnvironmentRepository.Instance.Save(e1);
-            //------------Assert Results-------------------------
-            mockExplorerResourceRepository.Verify(m => m.Load(It.IsAny<Guid>()), Times.Exactly(1));
         }
 
         [TestMethod]

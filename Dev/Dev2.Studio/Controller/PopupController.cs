@@ -140,5 +140,18 @@ namespace Dev2.Studio.Controller
             ImageType = MessageBoxImage.Error;
             return Show();
         }
+
+        public MessageBoxResult ShowConnectionTimeoutConfirmation(string serverName)
+        {
+            Header = "Server is unreachable";
+            var description = " Unable to reach " + serverName + ": Connection timed out." + Environment.NewLine
+                              + " Make sure the remote computer is powered on." + Environment.NewLine
+                              + Environment.NewLine
+                              + " Would you like to re-try? " + Environment.NewLine;
+            Description = description;
+            Buttons = MessageBoxButton.YesNo;
+            ImageType = MessageBoxImage.Information;
+            return Show();
+        }
     }
 }

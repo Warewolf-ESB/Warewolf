@@ -649,6 +649,93 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             Assert.AreEqual(expectedConnectedState, actualConnectedState);
         }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ConnectControlSingleton_ResourcesLoadedHandler")]
+        public void ConnectControlSingleton_ResourcesLoadedHandler_ServerIdFoundAndIsConnected_RaisesConnectedEventWithConnectedState()
+        {
+             var studioResourceRepository = new Mock<IStudioResourceRepository>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var serverId = Guid.NewGuid();
+            List<IEnvironmentModel> environmentModels = new List<IEnvironmentModel>
+                {
+                    new TestEnvironmentModel(new Mock<IEventAggregator>().Object, serverId, CreateConnection(true).Object, new Mock<IResourceRepository>().Object, false)
+                };
+            serverProvider.Setup(s => s.Load()).Returns(environmentModels);
+            var connectControlSingleton = new ConnectControlSingleton(studioResourceRepository.Object, asyncWorker.Object, serverProvider.Object, environmentRepository.Object);
+
+            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Busy;
+         
+            connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
+            {
+                actualConnectedState = arg.ConnectedStatus;
+            };
+            //------------Execute Test---------------------------
+            connectControlSingleton.ResourcesLoadedHandler(serverId);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ConnectionEnumerations.ConnectedState.Connected, actualConnectedState);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ConnectControlSingleton_ResourcesLoadedHandler")]
+        public void ConnectControlSingleton_ResourcesLoadedHandler_ServerIdFoundAndIsNotConnected_RaisesConnectedEventWithDisconnectedState()
+        {
+            var studioResourceRepository = new Mock<IStudioResourceRepository>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var serverId = Guid.NewGuid();
+            List<IEnvironmentModel> environmentModels = new List<IEnvironmentModel>
+                {
+                    new TestEnvironmentModel(new Mock<IEventAggregator>().Object, serverId, CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                };
+            serverProvider.Setup(s => s.Load()).Returns(environmentModels);
+            var connectControlSingleton = new ConnectControlSingleton(studioResourceRepository.Object, asyncWorker.Object, serverProvider.Object, environmentRepository.Object);
+
+            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Busy;
+
+            connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
+            {
+                actualConnectedState = arg.ConnectedStatus;
+            };
+            //------------Execute Test---------------------------
+            connectControlSingleton.ResourcesLoadedHandler(serverId);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ConnectionEnumerations.ConnectedState.Disconnected, actualConnectedState);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ConnectControlSingleton_ResourcesLoadedHandler")]
+        public void ConnectControlSingleton_ResourcesLoadedHandler_ServerIdIsNotFound_RaisesConnectedEventWithDisconnectedState()
+        {
+            var studioResourceRepository = new Mock<IStudioResourceRepository>();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var serverId = Guid.NewGuid();
+            List<IEnvironmentModel> environmentModels = new List<IEnvironmentModel>
+                {
+                    new TestEnvironmentModel(new Mock<IEventAggregator>().Object, serverId, CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                };
+            serverProvider.Setup(s => s.Load()).Returns(environmentModels);
+            var connectControlSingleton = new ConnectControlSingleton(studioResourceRepository.Object, asyncWorker.Object, serverProvider.Object, environmentRepository.Object);
+
+            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Busy;
+
+            connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
+            {
+                actualConnectedState = arg.ConnectedStatus;
+            };
+            //------------Execute Test---------------------------
+            connectControlSingleton.ResourcesLoadedHandler(Guid.NewGuid());
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ConnectionEnumerations.ConnectedState.Disconnected, actualConnectedState);
+        }
+
         static Mock<IEnvironmentConnection> CreateConnection(bool isConnected)
         {
             var conn = new Mock<IEnvironmentConnection>();

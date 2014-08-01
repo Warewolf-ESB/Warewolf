@@ -23,6 +23,30 @@ namespace Dev2.Threading
         /// <summary>
         /// Starts the specified background action and continues with the UI action 
         /// on the thread this was invoked from (typically the UI thread).
+        /// calls an error handler should an exception occur
+        /// </summary>
+        /// <param name="backgroundAction">The background action.</param>
+        /// <param name="uiAction">The UI action.</param>
+        /// <param name="onError"></param>
+        public Task Start(Action backgroundAction, Action uiAction, Action<Exception> onError)
+        {
+            var scheduler = GetTaskScheduler();
+            return Task.Factory.StartNew(backgroundAction).ContinueWith(_ =>
+            {
+                if(_.Exception != null)
+                {
+                    onError(_.Exception.Flatten());
+                }
+                else
+                {
+                    uiAction();
+                }
+            }, scheduler);
+        }
+
+        /// <summary>
+        /// Starts the specified background action and continues with the UI action 
+        /// on the thread this was invoked from (typically the UI thread).
         /// </summary>
         /// <param name="backgroundAction">The background action.</param>
         /// <returns></returns>

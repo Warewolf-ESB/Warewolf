@@ -1,19 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Security;
-using System.Network;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
+﻿using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
-using Dev2.Explorer;
 using Dev2.Diagnostics.Debug;
+using Dev2.Explorer;
 using Dev2.ExtMethods;
 using Dev2.Interfaces;
 using Dev2.Messages;
@@ -25,7 +15,20 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Net.Security;
+using System.Network;
+using System.Security.Cryptography.X509Certificates;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
+using ServiceStack.Messaging.Rcon;
 using Timer = System.Timers.Timer;
+using Dev2.Studio.Core.Controller;
 
 namespace Dev2.Network
 {
@@ -34,6 +37,7 @@ namespace Dev2.Network
         Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
         readonly IAsyncWorker _asyncWorker;
+
         public ServerProxy(Uri serverUri)
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
         {
@@ -161,12 +165,14 @@ namespace Dev2.Network
                 if(HubConnection.State == ConnectionState.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
-                    HubConnection.Start().Wait();
+                    if(!HubConnection.Start().Wait(5000))
+                    {
+                        ConnectionRetry();
+                    }
                 }
             }
             catch(AggregateException aex)
             {
-
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
@@ -186,9 +192,41 @@ namespace Dev2.Network
                     return true; // This we know how to handle this
                 });
             }
+            catch(NotConnectedException)
+            {
+                throw;
+            }
             catch(Exception e)
             {
                 HandleConnectError(e);
+            }
+        }
+
+        private void ConnectionRetry()
+        {
+            HubConnection.Stop(new TimeSpan(0,0,0,1));
+            IPopupController popup = CustomContainer.Get<IPopupController>();
+
+            var application = Application.Current;
+            MessageBoxResult res = MessageBoxResult.No;
+            if(application != null && application.Dispatcher != null)
+            {
+                application.Dispatcher.Invoke(() =>
+                    {
+                        res = popup.ShowConnectionTimeoutConfirmation(DisplayName);
+                    });
+            }
+            
+            if(res == MessageBoxResult.Yes)
+            {
+                if(!HubConnection.Start().Wait(5000))
+                {
+                    ConnectionRetry();
+                }
+            }
+            else
+            {
+                throw new NotConnectedException();    
             }
         }
 

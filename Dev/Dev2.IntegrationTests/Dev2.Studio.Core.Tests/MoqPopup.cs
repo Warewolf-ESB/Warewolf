@@ -89,6 +89,11 @@ namespace Dev2.Core.Tests.ProperMoqs
             return _result;
         }
 
+        public MessageBoxResult ShowConnectionTimeoutConfirmation(string serverName)
+        {
+            return _result;
+        }
+
         public string DontShowAgainKey
         {
             get

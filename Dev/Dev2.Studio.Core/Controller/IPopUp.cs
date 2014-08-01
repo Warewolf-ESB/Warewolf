@@ -22,5 +22,6 @@ namespace Dev2.Studio.Core.Controller
         MessageBoxResult ShowSchedulerCloseConfirmation();
         MessageBoxResult ShowNoInputsSelectedWhenClickLink();
         MessageBoxResult ShowSaveErrorDialog(string errorMessage);
+        MessageBoxResult ShowConnectionTimeoutConfirmation(string serverName);
     }
 }

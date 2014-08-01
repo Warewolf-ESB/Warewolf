@@ -272,6 +272,7 @@
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
     <Compile Include="Controller\IPopUp.cs" />
+    <Compile Include="CustomContainer.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
     <Compile Include="ResolveExampleResourceNames.Designer.cs">

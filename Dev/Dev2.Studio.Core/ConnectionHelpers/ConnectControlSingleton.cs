@@ -22,7 +22,7 @@ namespace Dev2.ConnectionHelpers
         public const string NewServerText = "New Remote Server...";
         public ConnectEventHandlers.ConnectedStatusHandler ConnectedStatusChanged { get; set; }
         public ConnectEventHandlers.ConnectedServerChangedHandler ConnectedServerChanged { get; set; }
-       
+
         public static IConnectControlSingleton Instance
         {
             get
@@ -74,8 +74,8 @@ namespace Dev2.ConnectionHelpers
                     ConnectedServerChanged(this, new ConnectedServerChangedEvent(localhostId));
                 }
             }
-        }   
-        
+        }
+
         public void Refresh(Guid environmentId)
         {
             var selectedEnvironment = Servers.FirstOrDefault(s => s.EnvironmentModel.ID == environmentId);
@@ -108,7 +108,7 @@ namespace Dev2.ConnectionHelpers
                 }
             }
         }
-        
+
         public void ToggleConnection(Guid environmentId)
         {
             var connectControlEnvironment = Servers.FirstOrDefault(s => s.EnvironmentModel.ID == environmentId);
@@ -117,7 +117,7 @@ namespace Dev2.ConnectionHelpers
             if(index != -1)
             {
                 ToggleConnection(index);
-            }   
+            }
         }
 
         public void SetConnectionState(Guid environmentId, ConnectionEnumerations.ConnectedState connectedState)
@@ -156,12 +156,23 @@ namespace Dev2.ConnectionHelpers
                 }
             }
         }
-        
-        private void ResourcesLoadedHandler(Guid environmentId)
+
+        public void ResourcesLoadedHandler(Guid environmentId)
         {
-            if(ConnectedStatusChanged != null)
+            if(ConnectedStatusChanged == null)
+            {
+                return;
+            }
+
+            var server = _serverProvider.Load().FirstOrDefault(s => s.ID == environmentId);
+
+            if(server != null && server.IsConnected)
             {
                 ConnectedStatusChanged(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Connected, environmentId, true));
+            }
+            else
+            {
+                ConnectedStatusChanged(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Disconnected, environmentId, true));
             }
         }
 

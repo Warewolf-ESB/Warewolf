@@ -1,12 +1,65 @@
-﻿using System;
-using System.Threading.Tasks;
-using Dev2.Threading;
+﻿using Dev2.Threading;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Threading.Tasks;
 
 namespace Dev2.Core.Tests.Utils
 {
+    [TestClass]
+    // ReSharper disable InconsistentNaming
     public class AsyncWorkerTests
     {
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("AsyncWorker_Start")]
+        public async Task AsyncWorker_Start_BackgroundWorkerDoesNotThrowAnException_ForegroundWorkIsCalled()
+        {
+            //------------Setup for test--------------------------
+            var asyncWorker = new AsyncWorker();
+            //------------Execute Test---------------------------
+            var foregroundWorkWasCalled = false;
+            var onerrorWorkIsCalled = false;
+            await asyncWorker.Start(() =>
+                {
+                    //Do something interesting
+                }, () =>
+                {
+                    foregroundWorkWasCalled = true;
+                }, e =>
+                {
+                    onerrorWorkIsCalled = true;
+                });
+            //------------Assert Results-------------------------
+            Assert.IsTrue(foregroundWorkWasCalled);
+            Assert.IsFalse(onerrorWorkIsCalled);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("AsyncWorker_Start")]
+        public async Task AsyncWorker_Start_BackgroundWorkerThrowAnException_ErrorWorkIsCalled()
+        {
+            //------------Setup for test--------------------------
+            var asyncWorker = new AsyncWorker();
+            //------------Execute Test---------------------------
+            var foregroundWorkWasCalled = false;
+            var onerrorWorkIsCalled = false;
+            await asyncWorker.Start(() =>
+            {
+                throw new Exception("Something went extremely wrong");
+            }, () =>
+            {
+                foregroundWorkWasCalled = true;
+            }, e =>
+            {
+                onerrorWorkIsCalled = true;
+            });
+            //------------Assert Results-------------------------
+            Assert.IsFalse(foregroundWorkWasCalled);
+            Assert.IsTrue(onerrorWorkIsCalled);
+        }
+
         public static Mock<IAsyncWorker> CreateSynchronousAsyncWorker()
         {
             var mockWorker = new Mock<IAsyncWorker>();

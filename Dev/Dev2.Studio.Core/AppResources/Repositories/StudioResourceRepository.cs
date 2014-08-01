@@ -117,7 +117,9 @@ namespace Dev2.AppResources.Repositories
             {
                 if(!environmentModel.IsConnected)
                 {
-                    asyncWorker.Start(environmentModel.Connect, () => LoadEnvironmentTree(environmentId, onCompletion, environmentModel));
+// ReSharper disable ImplicitlyCapturedClosure
+                    asyncWorker.Start(environmentModel.Connect, () => LoadEnvironmentTree(environmentId, onCompletion, environmentModel), e => onCompletion(environmentId));
+// ReSharper restore ImplicitlyCapturedClosure
                 }
                 else
                 {
