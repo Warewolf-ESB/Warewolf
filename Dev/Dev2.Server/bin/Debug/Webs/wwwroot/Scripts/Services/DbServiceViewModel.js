@@ -384,7 +384,7 @@ function DbServiceViewModel(saveContainerID, resourceID, sourceName, environment
     };
     
     self.editSource = function () {
-        return self.showSource(self.data.source().ResourceName);
+        return self.showSource(self.data.source().ResourceID);
     };
 
     self.newSource = function () {

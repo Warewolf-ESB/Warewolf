@@ -18,12 +18,12 @@ namespace Dev2.Runtime.ServiceModel
         #region Get
 
         // POST: Service/dbSources/Get
-        public DbSource Get(string resourceID, Guid workspaceID, Guid dataListID)
+        public DbSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new DbSource { ResourceID = Guid.Empty, ResourceType = ResourceType.DbSource, AuthenticationType = AuthenticationType.Windows };
             try
             {
-                var xmlStr = Resources.ReadXml(workspaceID, ResourceType.DbSource, resourceID);
+                var xmlStr = ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Save
 
         // POST: Service/DbSources/Save
-        public string Save(string args, Guid workspaceID, Guid dataListID)
+        public string Save(string args, Guid workspaceId, Guid dataListId)
         {
             try
             {
@@ -58,8 +58,8 @@ namespace Dev2.Runtime.ServiceModel
                         }
                 }
 
-                ResourceCatalog.Instance.SaveResource(workspaceID, databaseSourceDetails);
-                if(workspaceID != GlobalConstants.ServerWorkspaceID)
+                ResourceCatalog.Instance.SaveResource(workspaceId, databaseSourceDetails);
+                if(workspaceId != GlobalConstants.ServerWorkspaceID)
                 {
                     //2012.03.12: Ashley Lewis - BUG 9208
                     ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, databaseSourceDetails);
@@ -79,7 +79,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Search
 
         // POST: Service/DbSources/Search
-        public string Search(string term, Guid workspaceID, Guid dataListID)
+        public string Search(string term, Guid workspaceId, Guid dataListId)
         {
             var results = GetComputerNames.ComputerNames.FindAll(s => s.Contains(term));
 
@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Test
 
         // POST: Service/DbSources/Test
-        public DatabaseValidationResult Test(string args, Guid workspaceID, Guid dataListID)
+        public DatabaseValidationResult Test(string args, Guid workspaceId, Guid dataListId)
         {
             var result = new DatabaseValidationResult
             {

@@ -230,10 +230,11 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             var source = SqlServerTests.CreateDev2TestingDbSource();
             var args = source.ToString();
             var workspaceID = Guid.NewGuid();
-
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResource<DbSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(source);
             EnvironmentVariables.GetWorkspacePath(workspaceID);
 
-            var services = new TestDbServices();
+            var services = new TestDbServices(resourceCatalog.Object);
 
             //------------Execute Test---------------------------
             var result = services.DbMethods(args, workspaceID, Guid.Empty);

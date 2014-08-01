@@ -124,7 +124,7 @@ namespace Dev2.Runtime.ServiceModel
                 {
                     // TODO : Extract IsForceUpdate flag
                     var source = JsonConvert.DeserializeObject<DbSource>(args);
-                    source = ResourceCatalog.Instance.GetResource<DbSource>(workspaceId, source.ResourceID);
+                    source = _resourceCatalog.GetResource<DbSource>(workspaceId, source.ResourceID);
                     var serviceMethods = FetchMethods(source);
                     result.AddRange(serviceMethods);
                 }
@@ -147,7 +147,7 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var service = JsonConvert.DeserializeObject<DbService>(args);
-
+                service.Source = ResourceCatalog.Instance.GetResource<DbSource>(workspaceId, service.Source.ResourceID);
                 if(string.IsNullOrEmpty(service.Recordset.Name))
                 {
                     service.Recordset.Name = service.Method.Name;
