@@ -1,5 +1,0 @@
-@echo off
-@echo Test Name eg: OnExecuteWhereConsoleOutputsExpectOutputForResult:
-set /P test=
-"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\MSTest.exe" /nologo /usestderr /searchpathroot:"..\TestBinaries" /testcontainer:"..\TestBinaries\Dev2.Activities.Designers.Tests.dll" /testcontainer:"..\TestBinaries\Dev2.Activities.Tests.dll" /testcontainer:"..\TestBinaries\Dev2.Common.Tests.dll" /testcontainer:"..\TestBinaries\Dev2.Core.Tests.dll" /testcontainer:"..\TestBinaries\Dev2.Data.Tests.dll" /testcontainer:"..\TestBinaries\Dev2.Infrastructure.Tests.dll" /testcontainer:"..\TestBinaries\Dev2.Runtime.Configuration.Tests.dll" /testcontainer:"..\TestBinaries\Dev2.Runtime.Tests.dll" /testcontainer:"..\TestBinaries\Dev2.Sql.Tests.dll" /testcontainer:"..\TestBinaries\Dev2.Studio.Core.Tests.dll" /testcontainer:"..\TestBinaries\Dev2.UndoFramework.Tests.dll" /test:%test%
-pause
