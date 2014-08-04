@@ -163,6 +163,11 @@ namespace Dev2.Network
         {
             try
             {
+                if(HubConnection.State == ConnectionState.Reconnecting)
+                {
+                    HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
+                }
+
                 if(HubConnection.State == ConnectionState.Disconnected)
                 {
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
