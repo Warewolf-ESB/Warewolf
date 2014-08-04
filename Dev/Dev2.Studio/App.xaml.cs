@@ -114,39 +114,6 @@ namespace Dev2.Studio
                 WebLatestVersionDialog dialog = new WebLatestVersionDialog();
                 dialog.ShowDialog();
             }
-//            var dialog = new ProgressDialog(MainWindow);
-//            var dialogViewModel = new ProgressDialogViewModel(() => { }, dialog.Show, dialog.Close);
-//            dialog.DataContext = dialogViewModel;
-//
-//            ProgressFileDownloader progressFileDownloader = new ProgressFileDownloader(MainWindow);
-//
-//            if(_mainViewModel != null)
-//            {
-//                _mainViewModel.IsBusyDownloadingInstaller = () =>
-//                    {
-//                        if(progressFileDownloader.IsBusyDownloading)
-//                        {
-//                            IPopupController popup = new PopupController("Still downloading", "Do you want to cancel download ?", MessageBoxImage.Question, MessageBoxButton.YesNo);
-//                            var result = popup.Show();
-//                            if(result == MessageBoxResult.Yes)
-//                            {
-//                                progressFileDownloader.Cancel();
-//                            }
-//                        }
-//                        else
-//                        {
-//                            // silly people building crap code where I need to shit like this ;)
-//                            if(ServerProxy.IsShuttingDown)
-//                            {
-//                                progressFileDownloader.Cancel();
-//                            }
-//                        }
-//
-//                        return progressFileDownloader.IsBusyDownloading;
-//                    };
-//            }
-//
-//            versionChecker.IsLatest(progressFileDownloader, dialogViewModel, new AsyncWorker());
 #endif
         }
 
