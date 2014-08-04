@@ -147,7 +147,7 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 var service = JsonConvert.DeserializeObject<DbService>(args);
-                service.Source = ResourceCatalog.Instance.GetResource<DbSource>(workspaceId, service.Source.ResourceID);
+                service.Source = _resourceCatalog.GetResource<DbSource>(workspaceId, service.Source.ResourceID);
                 if(string.IsNullOrEmpty(service.Recordset.Name))
                 {
                     service.Recordset.Name = service.Method.Name;
