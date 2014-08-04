@@ -79,8 +79,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{58434E
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.Core.Specs", "Dev2.Studio.Core.Specs\Dev2.Studio.Core.Specs.csproj", "{96E59B04-1506-4554-B46A-B2B494116B07}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Instrumentation", "Dev2.Instrumentation\Dev2.Instrumentation.csproj", "{52F26184-CB50-4D82-B8A2-83F73D2B5011}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.TaskScheduler.Wrappers", "Dev2.TaskScheduler.Wrappers\Dev2.TaskScheduler.Wrappers.csproj", "{1B229665-1631-4275-AFBD-CB5B7775E4CA}"
@@ -97,7 +95,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Crypto.HashGenerator",
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 41
+		SccNumberOfProjects = 40
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -197,30 +195,27 @@ Global
 		SccProjectUniqueName32 = Dev2.Data.Tests\\Dev2.Data.Tests.csproj
 		SccProjectName32 = Dev2.Data.Tests
 		SccLocalPath32 = Dev2.Data.Tests
-		SccProjectUniqueName33 = Dev2.Studio.Core.Specs\\Dev2.Studio.Core.Specs.csproj
-		SccProjectName33 = Dev2.Studio.Core.Specs
-		SccLocalPath33 = Dev2.Studio.Core.Specs
-		SccProjectUniqueName34 = Dev2.Instrumentation\\Dev2.Instrumentation.csproj
-		SccProjectName34 = Dev2.Instrumentation
-		SccLocalPath34 = Dev2.Instrumentation
-		SccProjectUniqueName35 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
-		SccProjectName35 = Dev2.TaskScheduler.Wrappers
-		SccLocalPath35 = Dev2.TaskScheduler.Wrappers
-		SccProjectUniqueName36 = Dev2.Scheduler\\Dev2.Scheduler.csproj
-		SccProjectName36 = Dev2.Scheduler
-		SccLocalPath36 = Dev2.Scheduler
-		SccProjectUniqueName37 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
-		SccProjectName37 = Dev2.TaskScheduler.Wrappers.Test
-		SccLocalPath37 = Dev2.TaskScheduler.Wrappers.Test
-		SccProjectUniqueName38 = Dev2.Scheduler.Test\\Dev2.Scheduler.Tests.csproj
-		SccProjectName38 = Dev2.Scheduler.Test
-		SccLocalPath38 = Dev2.Scheduler.Test
-		SccProjectUniqueName39 = Dev2.Crypto.HashGenerator\\Dev2.Crypto.HashGenerator.csproj
-		SccProjectName39 = Dev2.Crypto.HashGenerator
-		SccLocalPath39 = Dev2.Crypto.HashGenerator
-		SccProjectUniqueName40 = Dev2.CustomControls.Tests\\Dev2.CustomControls.Tests.csproj
-		SccProjectName40 = Dev2.CustomControls.Tests
-		SccLocalPath40 = Dev2.CustomControls.Tests
+		SccProjectUniqueName33 = Dev2.Instrumentation\\Dev2.Instrumentation.csproj
+		SccProjectName33 = Dev2.Instrumentation
+		SccLocalPath33 = Dev2.Instrumentation
+		SccProjectUniqueName34 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
+		SccProjectName34 = Dev2.TaskScheduler.Wrappers
+		SccLocalPath34 = Dev2.TaskScheduler.Wrappers
+		SccProjectUniqueName35 = Dev2.Scheduler\\Dev2.Scheduler.csproj
+		SccProjectName35 = Dev2.Scheduler
+		SccLocalPath35 = Dev2.Scheduler
+		SccProjectUniqueName36 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
+		SccProjectName36 = Dev2.TaskScheduler.Wrappers.Test
+		SccLocalPath36 = Dev2.TaskScheduler.Wrappers.Test
+		SccProjectUniqueName37 = Dev2.Scheduler.Test\\Dev2.Scheduler.Tests.csproj
+		SccProjectName37 = Dev2.Scheduler.Test
+		SccLocalPath37 = Dev2.Scheduler.Test
+		SccProjectUniqueName38 = Dev2.Crypto.HashGenerator\\Dev2.Crypto.HashGenerator.csproj
+		SccProjectName38 = Dev2.Crypto.HashGenerator
+		SccLocalPath38 = Dev2.Crypto.HashGenerator
+		SccProjectUniqueName39 = Dev2.CustomControls.Tests\\Dev2.CustomControls.Tests.csproj
+		SccProjectName39 = Dev2.CustomControls.Tests
+		SccLocalPath39 = Dev2.CustomControls.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -631,17 +626,6 @@ Global
 		{86E580CD-C480-435A-8978-A9C27377C900}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{86E580CD-C480-435A-8978-A9C27377C900}.Release|x64.ActiveCfg = Release|Any CPU
 		{86E580CD-C480-435A-8978-A9C27377C900}.Release|x86.ActiveCfg = Release|Any CPU
-		{96E59B04-1506-4554-B46A-B2B494116B07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{96E59B04-1506-4554-B46A-B2B494116B07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{96E59B04-1506-4554-B46A-B2B494116B07}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{96E59B04-1506-4554-B46A-B2B494116B07}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{96E59B04-1506-4554-B46A-B2B494116B07}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{96E59B04-1506-4554-B46A-B2B494116B07}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{96E59B04-1506-4554-B46A-B2B494116B07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{96E59B04-1506-4554-B46A-B2B494116B07}.Release|Any CPU.Build.0 = Release|Any CPU
-		{96E59B04-1506-4554-B46A-B2B494116B07}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{96E59B04-1506-4554-B46A-B2B494116B07}.Release|x64.ActiveCfg = Release|Any CPU
-		{96E59B04-1506-4554-B46A-B2B494116B07}.Release|x86.ActiveCfg = Release|Any CPU
 		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Mixed Platforms.ActiveCfg = Debug|x86

@@ -66,8 +66,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Execution", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Tests", "Dev2.Common.Test\Dev2.Common.Tests.csproj", "{B0564C7A-9DA8-4751-B5D4-D446138E0987}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Services.Specs", "Dev2.Runtime.Services.Specs\Dev2.Runtime.Services.Specs.csproj", "{DD7772F4-E445-48F6-B594-B4C31E962336}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Instrumentation", "Dev2.Instrumentation\Dev2.Instrumentation.csproj", "{52F26184-CB50-4D82-B8A2-83F73D2B5011}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.ScheduleExecutor", "Dev2.ScheduleExecutor\Dev2.ScheduleExecutor.csproj", "{6858EA8E-1F83-423C-8F03-260D836C6EDE}"
@@ -89,7 +87,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server.Tests", "Dev2.S
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 38
+		SccNumberOfProjects = 37
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -177,33 +175,30 @@ Global
 		SccProjectUniqueName28 = Dev2.Common.Test\\Dev2.Common.Tests.csproj
 		SccProjectName28 = Dev2.Common.Test
 		SccLocalPath28 = Dev2.Common.Test
-		SccProjectUniqueName29 = Dev2.Runtime.Services.Specs\\Dev2.Runtime.Services.Specs.csproj
-		SccProjectName29 = Dev2.Runtime.Services.Specs
-		SccLocalPath29 = Dev2.Runtime.Services.Specs
-		SccProjectUniqueName30 = Dev2.Instrumentation\\Dev2.Instrumentation.csproj
-		SccProjectName30 = Dev2.Instrumentation
-		SccLocalPath30 = Dev2.Instrumentation
-		SccProjectUniqueName31 = Dev2.ScheduleExecutor\\Dev2.ScheduleExecutor.csproj
-		SccProjectName31 = Dev2.ScheduleExecutor
-		SccLocalPath31 = Dev2.ScheduleExecutor
-		SccProjectUniqueName32 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
-		SccProjectName32 = Dev2.TaskScheduler.Wrappers
-		SccLocalPath32 = Dev2.TaskScheduler.Wrappers
-		SccProjectUniqueName33 = Dev2.Scheduler\\Dev2.Scheduler.csproj
-		SccProjectName33 = Dev2.Scheduler
-		SccLocalPath33 = Dev2.Scheduler
-		SccProjectUniqueName34 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
-		SccProjectName34 = Dev2.TaskScheduler.Wrappers.Test
-		SccLocalPath34 = Dev2.TaskScheduler.Wrappers.Test
-		SccProjectUniqueName35 = Dev2.Scheduler.Test\\Dev2.Scheduler.Tests.csproj
-		SccProjectName35 = Dev2.Scheduler.Test
-		SccLocalPath35 = Dev2.Scheduler.Test
-		SccProjectUniqueName36 = Dev2.UnitTestUtils\\Dev2.UnitTestUtils.csproj
-		SccProjectName36 = Dev2.UnitTestUtils
-		SccLocalPath36 = Dev2.UnitTestUtils
-		SccProjectUniqueName37 = Dev2.Server.Tests\\Dev2.Server.Tests.csproj
-		SccProjectName37 = Dev2.Server.Tests
-		SccLocalPath37 = Dev2.Server.Tests
+		SccProjectUniqueName29 = Dev2.Instrumentation\\Dev2.Instrumentation.csproj
+		SccProjectName29 = Dev2.Instrumentation
+		SccLocalPath29 = Dev2.Instrumentation
+		SccProjectUniqueName30 = Dev2.ScheduleExecutor\\Dev2.ScheduleExecutor.csproj
+		SccProjectName30 = Dev2.ScheduleExecutor
+		SccLocalPath30 = Dev2.ScheduleExecutor
+		SccProjectUniqueName31 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
+		SccProjectName31 = Dev2.TaskScheduler.Wrappers
+		SccLocalPath31 = Dev2.TaskScheduler.Wrappers
+		SccProjectUniqueName32 = Dev2.Scheduler\\Dev2.Scheduler.csproj
+		SccProjectName32 = Dev2.Scheduler
+		SccLocalPath32 = Dev2.Scheduler
+		SccProjectUniqueName33 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
+		SccProjectName33 = Dev2.TaskScheduler.Wrappers.Test
+		SccLocalPath33 = Dev2.TaskScheduler.Wrappers.Test
+		SccProjectUniqueName34 = Dev2.Scheduler.Test\\Dev2.Scheduler.Tests.csproj
+		SccProjectName34 = Dev2.Scheduler.Test
+		SccLocalPath34 = Dev2.Scheduler.Test
+		SccProjectUniqueName35 = Dev2.UnitTestUtils\\Dev2.UnitTestUtils.csproj
+		SccProjectName35 = Dev2.UnitTestUtils
+		SccLocalPath35 = Dev2.UnitTestUtils
+		SccProjectUniqueName36 = Dev2.Server.Tests\\Dev2.Server.Tests.csproj
+		SccProjectName36 = Dev2.Server.Tests
+		SccLocalPath36 = Dev2.Server.Tests
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Server.vsmdi
@@ -566,17 +561,6 @@ Global
 		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|x64.ActiveCfg = Release|Any CPU
 		{B0564C7A-9DA8-4751-B5D4-D446138E0987}.Release|x86.ActiveCfg = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|x64.ActiveCfg = Release|Any CPU
-		{DD7772F4-E445-48F6-B594-B4C31E962336}.Release|x86.ActiveCfg = Release|Any CPU
 		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52F26184-CB50-4D82-B8A2-83F73D2B5011}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
