@@ -344,7 +344,11 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             service.Recordset.Name = null;
             var args = service.ToString();
             var workspaceID = Guid.NewGuid();
-            var services = new TestDbServices();
+
+            Mock<IResourceCatalog> mockedResourceCatelog = new Mock<IResourceCatalog>();
+            mockedResourceCatelog.Setup(a => a.GetResource<DbSource>(workspaceID, service.Source.ResourceID)).Returns(service.Source as DbSource);
+
+            var services = new TestDbServices(mockedResourceCatelog.Object, new Mock<IAuthorizationService>().Object);
 
             //------------Execute Test---------------------------
             var result = services.DbTest(args, workspaceID, Guid.Empty);
@@ -363,7 +367,11 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             service.Recordset.Name = "MyCities";
             var args = service.ToString();
             var workspaceID = Guid.NewGuid();
-            var services = new TestDbServices();
+
+            Mock<IResourceCatalog> mockedResourceCatelog = new Mock<IResourceCatalog>();
+            mockedResourceCatelog.Setup(a => a.GetResource<DbSource>(workspaceID, service.Source.ResourceID)).Returns(service.Source as DbSource);
+
+            var services = new TestDbServices(mockedResourceCatelog.Object, new Mock<IAuthorizationService>().Object);
 
             //------------Execute Test---------------------------
             var result = services.DbTest(args, workspaceID, Guid.Empty);
@@ -478,7 +486,6 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             Assert.AreEqual(expected, res);
         }
 
-
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DbServices_TestService")]
@@ -492,21 +499,22 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
                 {
                     Name = "dbo.Pr_GeneralTestNestedTransaction",
                     ExecuteAction = "dbo.Pr_GeneralTestNestedTransaction"
-
-                    //Name = "dbo.Pr_TestTransactionsNested"
                 },
                 Source = SqlServerTests.CreateDev2TestingDbSource()
             };
             var args = JsonConvert.SerializeObject(dbService);
 
-            var dbServices = new TestDbServices(new Mock<IResourceCatalog>().Object, new Mock<IAuthorizationService>().Object);
+            Mock<IResourceCatalog> mockedResourceCatelog = new Mock<IResourceCatalog>();
+            mockedResourceCatelog.Setup(a => a.GetResource<DbSource>(Guid.Empty, dbService.Source.ResourceID)).Returns(dbService.Source as DbSource);
+
+            var dbServices = new TestDbServices(mockedResourceCatelog.Object, new Mock<IAuthorizationService>().Object);
 
             //------------Execute Test---------------------------
             var result = dbServices.DbTest(args, Guid.Empty, Guid.Empty);
 
             //------------Assert Results-------------------------
-            Assert.IsNotNull(result);
-            Assert.IsFalse(result.HasErrors);
+            Assert.IsNotNull(result, "DbTest returned null when it was expected to return an error free object.");
+            Assert.IsFalse(result.HasErrors, result.ErrorMessage);
         }
         #endregion
 
