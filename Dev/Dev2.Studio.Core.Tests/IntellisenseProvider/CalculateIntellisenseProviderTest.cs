@@ -1,4 +1,5 @@
-﻿using Dev2.Intellisense;
+﻿using Dev2.Calculate;
+using Dev2.Intellisense;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.InterfaceImplementors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

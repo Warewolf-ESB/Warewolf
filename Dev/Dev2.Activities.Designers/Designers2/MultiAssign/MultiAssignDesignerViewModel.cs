@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers2.MultiAssign
             {
                 yield return error;
             }
-            foreach(var error in dto.GetRuleSet("FieldValue", GetDatalistString()).ValidateRules("'New Value'", () => mi.SetProperty("IsFieldValueFocused", true)))
+            foreach (var error in dto.GetRuleSet("FieldValueAndCalculate", GetDatalistString()).ValidateRules("'New Value'", () => mi.SetProperty("IsFieldValueFocused", true)))
             {
                 yield return error;
             }

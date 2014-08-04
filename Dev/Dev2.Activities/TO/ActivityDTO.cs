@@ -247,6 +247,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "FieldValue":
                     ruleSet.Add(new IsValidExpressionRule(() => FieldValue, datalist, "1"));
                     break;
+                case "FieldValueAndCalculate":
+                    ruleSet.Add(new ComposeableRule<string>(new IsValidExpressionRule(() => FieldValue, datalist, "1")).Or(new IsValidCalculateRule(() => FieldValue)));
+                    break;
             }
             return ruleSet;
         }

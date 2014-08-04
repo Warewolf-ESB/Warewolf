@@ -138,6 +138,7 @@
     <Compile Include="Providers\Validation\IErrorsSource.cs" />
     <Compile Include="Providers\Validation\IValidator.cs" />
     <Compile Include="Providers\Validation\IPerformsValidation.cs" />
+    <Compile Include="Providers\Validation\Rules\ComposeableRule.cs" />
     <Compile Include="Providers\Validation\Rules\HasNoDuplicateEntriesRule.cs" />
     <Compile Include="Providers\Validation\Rules\HasNoIndexsInRecordsetsRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidXmlRule.cs" />

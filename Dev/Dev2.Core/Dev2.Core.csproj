@@ -134,6 +134,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activity\IWorkflowActivityMessage.cs" />
+    <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
     <Compile Include="Common\Dev2Random.cs" />
     <Compile Include="Common\Field.cs" />
     <Compile Include="Common\JTokenExtensionmethods.cs" />
