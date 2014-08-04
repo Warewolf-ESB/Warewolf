@@ -66,112 +66,112 @@ namespace Dev2
             try
             {
 
-            CommandLineParameters options = new CommandLineParameters();
-            CommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
-            if(!parser.ParseArguments(arguments, options))
-            {
-                return 80;
-            }
+                CommandLineParameters options = new CommandLineParameters();
+                CommandLineParser parser = new CommandLineParser(new CommandLineParserSettings(Console.Error));
+                if(!parser.ParseArguments(arguments, options))
+                {
+                    return 80;
+                }
 
-            bool commandLineParameterProcessed = false;
+                bool commandLineParameterProcessed = false;
                 ServerLogger.EnableInfoOutput = true;
-            if(options.Install)
-            {
-                ServerLogger.LogMessage("Starting Install");
-                commandLineParameterProcessed = true;
-
-                if(!EnsureRunningAsAdministrator(arguments))
+                if(options.Install)
                 {
-                    ServerLogger.LogMessage("Cannot install because the server is not running as an admin user");
+                    ServerLogger.LogMessage("Starting Install");
+                    commandLineParameterProcessed = true;
+
+                    if(!EnsureRunningAsAdministrator(arguments))
+                    {
+                        ServerLogger.LogMessage("Cannot install because the server is not running as an admin user");
+                        return result;
+                    }
+
+                    if(!WindowsServiceManager.Install())
+                    {
+                        result = 81;
+                        ServerLogger.LogMessage("Install Success Result is 81");
+                    }
+                }
+
+                if(options.StartService)
+                {
+                    ServerLogger.LogMessage("Starting Service");
+                    commandLineParameterProcessed = true;
+
+                    if(!EnsureRunningAsAdministrator(arguments))
+                    {
+                        ServerLogger.LogMessage("Cannot start because the server is not running as an admin user");
+                        return result;
+                    }
+
+                    if(!WindowsServiceManager.StartService(null))
+                    {
+                        ServerLogger.LogMessage("Starting Service success. result 83");
+                        result = 83;
+                    }
+                }
+
+                if(options.StopService)
+                {
+                    ServerLogger.LogMessage("Stopping Service");
+                    commandLineParameterProcessed = true;
+
+                    if(!EnsureRunningAsAdministrator(arguments))
+                    {
+                        ServerLogger.LogMessage("Cannot stop because the server is not running as an admin user");
+                        return result;
+                    }
+
+                    if(!WindowsServiceManager.StopService(null))
+                    {
+                        ServerLogger.LogMessage("Stopping Service success. result 84");
+                        result = 84;
+                    }
+                }
+
+                if(options.Uninstall)
+                {
+                    ServerLogger.LogMessage("Uninstall Service");
+                    commandLineParameterProcessed = true;
+
+                    if(!EnsureRunningAsAdministrator(arguments))
+                    {
+                        ServerLogger.LogMessage("Cannot uninstall because the server is not running as an admin user");
+                        return result;
+                    }
+
+                    if(!WindowsServiceManager.Uninstall())
+                    {
+                        ServerLogger.LogMessage("Uninstall Service success. result 92");
+                        result = 82;
+                    }
+                }
+
+                if(commandLineParameterProcessed)
+                {
+                    ServerLogger.LogMessage("Command line processed. Returning");
                     return result;
                 }
 
-                if(!WindowsServiceManager.Install())
+                if(Environment.UserInteractive || options.IntegrationTestMode)
                 {
-                    result = 81;
-                    ServerLogger.LogMessage("Install Success Result is 81");
+                    ServerLogger.LogMessage("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
+                    using(_singleton = new ServerLifecycleManager(arguments))
+                    {
+                        result = _singleton.Run(true);
+                    }
+
+                    _singleton = null;
                 }
-            }
-
-            if(options.StartService)
-            {
-                ServerLogger.LogMessage("Starting Service");
-                commandLineParameterProcessed = true;
-
-                if(!EnsureRunningAsAdministrator(arguments))
+                else
                 {
-                    ServerLogger.LogMessage("Cannot start because the server is not running as an admin user");
-                    return result;
+                    ServerLogger.LogMessage("** Starting In Service Mode **");
+                    // running as service
+                    using(var service = new ServerLifecycleManagerService())
+                    {
+                        ServiceBase.Run(service);
+                    }
                 }
-
-                if(!WindowsServiceManager.StartService(null))
-                {
-                    ServerLogger.LogMessage("Starting Service success. result 83");
-                    result = 83;
-                }
-            }
-
-            if(options.StopService)
-            {
-                ServerLogger.LogMessage("Stopping Service");
-                commandLineParameterProcessed = true;
-
-                if(!EnsureRunningAsAdministrator(arguments))
-                {
-                    ServerLogger.LogMessage("Cannot stop because the server is not running as an admin user");
-                    return result;
-                }
-
-                if(!WindowsServiceManager.StopService(null))
-                {
-                    ServerLogger.LogMessage("Stopping Service success. result 84");
-                    result = 84;
-                }
-            }
-
-            if(options.Uninstall)
-            {
-                ServerLogger.LogMessage("Uninstall Service");
-                commandLineParameterProcessed = true;
-
-                if(!EnsureRunningAsAdministrator(arguments))
-                {
-                    ServerLogger.LogMessage("Cannot uninstall because the server is not running as an admin user");
-                    return result;
-                }
-
-                if(!WindowsServiceManager.Uninstall())
-                {
-                    ServerLogger.LogMessage("Uninstall Service success. result 92");
-                    result = 82;
-                }
-            }
-
-            if(commandLineParameterProcessed)
-            {
-                ServerLogger.LogMessage("Command line processed. Returning");
-                return result;
-            }
-
-            if(Environment.UserInteractive || options.IntegrationTestMode)
-            {
-                ServerLogger.LogMessage("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
-                using(_singleton = new ServerLifecycleManager(arguments))
-                {
-                    result = _singleton.Run(true);
-                }
-
-                _singleton = null;
-            }
-            else
-            {
-                ServerLogger.LogMessage("** Starting In Service Mode **");
-                // running as service
-                using(var service = new ServerLifecycleManagerService())
-                {
-                    ServiceBase.Run(service);
-                }
-            }
             }
             catch(Exception err)
             {
@@ -287,8 +287,8 @@ namespace Dev2
 
             Tracker.StartServer();
 
-            // ** Perform Moq Installer Actions For Development ( DEBUG and TEST ) **
-#if !RELEASE
+            // ** Perform Moq Installer Actions For Development ( DEBUG config ) **
+#if DEBUG
 
             try
             {
@@ -298,7 +298,7 @@ namespace Dev2
             catch(Exception e)
             {
                 // Throw new exception to make it easy for developer to understand issue
-                throw new Exception("Failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]");
+                throw new Exception("Ensure no Warewolf service is running on this machine. Mocking installer actions for DEBUG config failed to create Warewolf Administrators group and/or to add current user to it [ " + e.Message + " ]");
             }
 #endif
 
