@@ -52,7 +52,7 @@ namespace Dev2.Models
         private bool _isRenaming;
         private string _displayName;
         private readonly IStudioResourceRepository _studioResourceRepository;
-
+        private  static  bool _serverRefreshing = false;
         ObservableCollection<ExplorerItemModel> _children;
         ICommand _refreshCommand;
         private Permissions _permissions;
@@ -101,7 +101,7 @@ namespace Dev2.Models
         {
             if (EnvironmentId  == e.EnvironmentId && ResourceType == ResourceType.Server)
             {
-                IsRefreshing = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Busy;
+                IsRefreshing = _serverRefreshing = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Busy;
             }
         }
 
@@ -585,7 +585,7 @@ namespace Dev2.Models
             get
             {
                 return _refreshCommand ?? (_refreshCommand =
-                    new RelayCommand(param => Refresh()));
+                    new RelayCommand(param => Refresh(), o => _serverRefreshing == false));
             }
             set
             {
@@ -813,6 +813,31 @@ namespace Dev2.Models
             return result;
         }
 
+        public ExplorerItemModel Clone(IConnectControlSingleton connectControlSingleton)
+        {
+            ExplorerItemModel result = new ExplorerItemModel(connectControlSingleton);
+            var fieldInfos = GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            foreach(FieldInfo field in fieldInfos)
+            {
+                if(field.FieldType.GetInterface("IList", false) == null)
+                {
+                    field.SetValue(result, field.GetValue(this));
+                }
+                else
+                {
+                    IList listObject = (IList)field.GetValue(result);
+                    if(listObject != null)
+                    {
+                        foreach(ExplorerItemModel item in ((IList)field.GetValue(this)))
+                        {
+                            listObject.Add(item.Clone(connectControlSingleton));
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
         #endregion
 
         #region Private methods
@@ -837,7 +862,8 @@ namespace Dev2.Models
         string GetUniqueName()
         {
             string name = "New Folder";
-            var nameConflicts = Children.Where(a => a.DisplayName.Contains(name)).ToList();
+            string name1 = name;
+            var nameConflicts = Children.Where(a => a.DisplayName.Contains(name1)).ToList();
 
             if(nameConflicts.Any())
             {

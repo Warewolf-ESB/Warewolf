@@ -265,7 +265,13 @@ namespace Dev2.AppResources.Repositories
             var exists = ExplorerItemModels.FirstOrDefault(i => i.EnvironmentId == explorerItem.EnvironmentId);
             if(exists == null)
             {
+                explorerItem.IsExplorerSelected = true;
                 ExplorerItemModels.Add(explorerItem);
+            }
+            else
+            {
+                exists.IsExplorerExpanded = true;
+                exists.IsExplorerSelected = true;
             }
         }
 
@@ -487,6 +493,15 @@ namespace Dev2.AppResources.Repositories
         {
             if(explorerItemModel != null)
             {
+                var otherServers = ExplorerItemModels.Where(i => i.ResourceType == ResourceType.Server).ToList();
+                otherServers.ForEach(i =>
+                {
+                    i.IsExplorerExpanded = false;
+                    i.IsExplorerSelected = false;
+                });
+
+                explorerItemModel.IsExplorerSelected = explorerItemModel.IsExplorerExpanded = explorerItemModel.ResourceType == ResourceType.Server;
+                
                 explorerItemModel.EnvironmentId = environmentId;
                 explorerItemModel.IsConnected = true;
                 if(explorerItemModel.Children != null)
@@ -562,7 +577,7 @@ namespace Dev2.AppResources.Repositories
             {
                 return null;
             }
-            bool isExpanded = item.ResourceType == ResourceType.Server;
+            //bool isExpanded = item.ResourceType == ResourceType.Server;
 
             string displayname = item.DisplayName;
             if((item.ResourceType == ResourceType.Server && environmentId != Guid.Empty) || (environmentId == Guid.Empty && displayname.ToLower() == Environment.MachineName.ToLower()))
@@ -583,7 +598,6 @@ namespace Dev2.AppResources.Repositories
                 ResourceId = item.ResourceId,
                 Permissions = item.Permissions,
                 ResourcePath = item.ResourcePath,
-                IsExplorerExpanded = isExpanded
             };
             // ReSharper restore ImplicitlyCapturedClosure
         }

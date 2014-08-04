@@ -10,8 +10,8 @@ namespace Dev2.ConnectionHelpers
         void Refresh(Guid environmentId);
         void SetConnectionState(Guid environmentId, ConnectionEnumerations.ConnectedState connectedState);
         void EditConnection(int selectedIndex, Action<int> openWizard);
-        ConnectEventHandlers.ConnectedStatusHandler ConnectedStatusChanged { get; set; }
-        ConnectEventHandlers.ConnectedServerChangedHandler ConnectedServerChanged { get; set; }
+        event EventHandler<ConnectionStatusChangedEventArg> ConnectedStatusChanged;
+        event EventHandler<ConnectedServerChangedEvent> ConnectedServerChanged;
         ObservableCollection<IConnectControlEnvironment> Servers { get; set; }
         void Remove(Guid environmentId);
     }

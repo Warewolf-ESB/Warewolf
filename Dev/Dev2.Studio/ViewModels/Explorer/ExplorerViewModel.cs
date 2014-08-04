@@ -11,7 +11,6 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.Linq;
 
@@ -25,8 +24,6 @@ namespace Dev2.Studio.ViewModels.Explorer
                                      IHandle<RemoveEnvironmentMessage>,
                                      IHandle<EnvironmentDeletedMessage>
     {
-        readonly IStudioResourceRepository _studioResourceRepository;
-
         #region Class Members
         private Guid? _context;
         System.Action _onLoadResourcesCompletedOnceOff;
@@ -36,10 +33,9 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         #region Constructor
 
-        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action onLoadResourcesCompletedOnceOff = null, IConnectControlViewModel connectControlViewModel = null)
+        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton,IMainViewModel mainViewModel, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action onLoadResourcesCompletedOnceOff = null, IConnectControlViewModel connectControlViewModel = null)
             : base(eventPublisher)
         {
-
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("connectControlSingleton", connectControlSingleton);
@@ -51,8 +47,7 @@ namespace Dev2.Studio.ViewModels.Explorer
                 NavigationViewModel.LoadResourcesCompleted += LoadResourcesCompletedOnceOff;
             }
 
-            _studioResourceRepository = studioResourceRepository;
-            ConnectControlViewModel = connectControlViewModel ?? new ConnectControlViewModel(AddEnvironment, "Connect:", true);
+            ConnectControlViewModel = connectControlViewModel ?? new ConnectControlViewModel(mainViewModel, AddEnvironment, "Connect:", true);
         }
 
         void LoadResourcesCompletedOnceOff(object sender, EventArgs e)
@@ -158,50 +153,7 @@ namespace Dev2.Studio.ViewModels.Explorer
                 NavigationViewModel.AddEnvironment(environment);
             }
         }
-
-        /// <summary>
-        ///     Loads the environments from the resource repository
-        /// </summary>
-        public void LoadEnvironments()
-        {
-            if(EnvironmentRepository == null) return;
-
-            //
-            // Load environments from repository
-            //
-            if(!EnvironmentRepository.IsLoaded)
-                EnvironmentRepository.Load();
-
-            // Load the default environment
-
-            var environmentModel = EnvironmentRepository.Source;
-            environmentModel.ResourcesLoaded += (sender, args) => _studioResourceRepository.Load(environmentModel.ID, new AsyncWorker(), OnLoadCompletion(environmentModel));
-
-        }
-
-        public Action<Guid> OnLoadCompletion(IEnvironmentModel environmentModel)
-        {
-            return id =>
-                {
-                    //NavigationViewModel.AddEnvironment(environmentModel);
-                    //
-                    // Add last session's environments to the navigation view model
-                    //
-                    var sessionGuids = EnvironmentRepository.ReadSession();
-                    if(sessionGuids != null && sessionGuids.Count > 0)
-                    {
-                        ICollection<IEnvironmentModel> environmentModels = EnvironmentRepository.All();
-                        if(environmentModels.Count > 0)
-                        {
-                            foreach(var environment in environmentModels.Where(e => sessionGuids.Contains(e.ID)))
-                            {
-                                NavigationViewModel.AddEnvironment(environment);
-                            }
-                        }
-                    }
-                };
-        }
-
+        
         #endregion Private Methods
 
         #region Dispose Handling

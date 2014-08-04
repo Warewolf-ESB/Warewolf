@@ -2,6 +2,7 @@
 using Dev2.AppResources.Repositories;
 using Dev2.Common.ExtMethods;
 using Dev2.ConnectionHelpers;
+using Dev2.CustomControls.Connections;
 using Dev2.Factory;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
@@ -409,7 +410,7 @@ namespace Dev2.Studio.ViewModels
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         public IVersionChecker Version { get; private set; }
-        public IConnectControlSingleton ConnectControlSingl{ get; set; }
+        public IConnectControlSingleton ConnectControlSingl { get; set; }
 
         public bool HasActiveConnection
         {
@@ -433,7 +434,7 @@ namespace Dev2.Studio.ViewModels
 
         public MainViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository,
             IVersionChecker versionChecker, bool createDesigners = true, IBrowserPopupController browserPopupController = null,
-            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IFeedbackInvoker feedbackInvoker = null, IStudioResourceRepository studioResourceRepository = null, IConnectControlSingleton connectControlSingleton = null)
+            IPopupController popupController = null, IWindowManager windowManager = null, IWebController webController = null, IFeedbackInvoker feedbackInvoker = null, IStudioResourceRepository studioResourceRepository = null, IConnectControlSingleton connectControlSingleton = null, IConnectControlViewModel connectControlViewModel = null)
             : base(eventPublisher)
         {
             if(environmentRepository == null)
@@ -464,8 +465,7 @@ namespace Dev2.Studio.ViewModels
 
             if(ExplorerViewModel == null)
             {
-                ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, StudioResourceRepository, ConnectControlSingl, false, enDsfActivityType.All, AddWorkspaceItems);
-                ExplorerViewModel.LoadEnvironments();
+                ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, StudioResourceRepository, ConnectControlSingl, this, false, enDsfActivityType.All, AddWorkspaceItems, connectControlViewModel);
             }
         }
 
@@ -788,11 +788,11 @@ namespace Dev2.Studio.ViewModels
         public virtual void ShowStartPage()
         {
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
-                WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
-                if(workSurfaceContextViewModel != null)
-                {
+            WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
+            if(workSurfaceContextViewModel != null)
+            {
                 ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(Version.CommunityPageUri);
-                }
+            }
         }
 
         public void ShowCommunityPage()
@@ -1164,7 +1164,7 @@ namespace Dev2.Studio.ViewModels
             GetWorkspaceItemRepository().Remove(viewModel.ResourceModel);
         }
 
-        protected virtual void AddWorkspaceItems()
+        public virtual void AddWorkspaceItems()
         {
             if(EnvironmentRepository == null) return;
 

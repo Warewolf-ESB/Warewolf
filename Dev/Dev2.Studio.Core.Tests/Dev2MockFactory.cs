@@ -11,6 +11,7 @@ using Dev2.AppResources.Repositories;
 using Dev2.Common.Common;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
+using Dev2.CustomControls.Connections;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Interfaces;
@@ -150,15 +151,15 @@ namespace Dev2.Core.Tests
                     var eventPublisher = new Mock<IEventAggregator>();
                     var environmentRepository = new Mock<IEnvironmentRepository>();
                     var environmentModel = new Mock<IEnvironmentModel>();
-                    var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
                     environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
                     environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
                     environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
                     environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
                     var versionChecker = new Mock<IVersionChecker>();
                     var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-                    _mockMainViewModel = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object,
-                        versionChecker.Object, false, null, null, null, null, null, mockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object);
+                    _mockMainViewModel = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, 
+                                                                 versionChecker.Object, false, null, null, null, null, null, new Mock<IStudioResourceRepository>().Object,
+                                                                 new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
                 }
                 return _mockMainViewModel;
             }

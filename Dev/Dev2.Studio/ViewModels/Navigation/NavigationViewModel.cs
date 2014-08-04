@@ -165,17 +165,16 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             VerifyArgument.IsNotNull("environment", environment);
             var environmentId = environment.ID;
-            if(!environment.IsLocalHost)
+
+            StudioResourceRepository.AddServerNode(new ExplorerItemModel(_connectControlSingleton)
             {
-                StudioResourceRepository.AddServerNode(new ExplorerItemModel(_connectControlSingleton)
-                {
-                    ResourcePath = "",
-                    DisplayName = environment.Name,
-                    ResourceType = ResourceType.Server,
-                    EnvironmentId = environment.ID,
-                    IsConnected = false,
-                });
-            }
+                ResourcePath = "",
+                DisplayName = environment.Name,
+                ResourceType = ResourceType.Server,
+                EnvironmentId = environment.ID,
+                IsConnected = false,
+            });
+
             if(Environments.All(e => e.ID != environmentId))
             {
                 Environments.Add(environment);
@@ -394,11 +393,6 @@ namespace Dev2.Studio.ViewModels.Navigation
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
-                }
-                foreach(ExplorerItemModel explorerItemModel in ExplorerItemModels)
-                {
-                    explorerItemModel.IsExplorerExpanded = true;
-                    explorerItemModel.IsResourcePickerExpanded = true;
                 }
             }
         }

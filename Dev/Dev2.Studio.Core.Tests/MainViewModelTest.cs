@@ -113,14 +113,14 @@ namespace Dev2.Core.Tests
             var eventPublisher = new Mock<IEventAggregator>();
             var environmentRepository = new Mock<IEnvironmentRepository>();
             var environmentModel = new Mock<IEnvironmentModel>();
-            var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
             environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
             environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
             environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
             var versionChecker = new Mock<IVersionChecker>();
             var asyncWorker = new Mock<IAsyncWorker>();
-            var mvm = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, null, null, null, null, null, mockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object);
+
+            var mvm = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, null, null, null, null, null, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object); 
             mvm.Setup(c => c.ShowStartPage()).Verifiable();
 
             //construct
@@ -130,41 +130,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(concreteMvm);
             mvm.Verify(c => c.ShowStartPage(), Times.Once());
         }
-
-        [TestMethod]
-        [TestCategory("MainViewModel_Constructor")]
-        [Description("MainViewModel Constructor must invoke AddWorkspaceItems once.")]
-        [Owner("Trevor Williams-Ros")]
-        public void MainViewModel_UnitTest_Constructor_AddWorkspaceItems()
-        {
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
-
-            var localhost = new Mock<IEnvironmentModel>();
-            localhost.Setup(e => e.ID).Returns(Guid.Empty);
-            localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
-
-            var environmentRepository = new Mock<IEnvironmentRepository>();
-            environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
-            environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });
-            environmentRepository.Setup(c => c.Source).Returns(localhost.Object);
-
-            var eventPublisher = new Mock<IEventAggregator>();
-            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            var versionChecker = new Mock<IVersionChecker>();
-            var browserPopupController = new Mock<IBrowserPopupController>();
-
-            // Create view model with connected localhost - should invoke AddWorkspaceItems
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object);
-
-            Assert.AreEqual(1, viewModel.AddWorkspaceItemsHitCount, "Constructor did not invoke AddWorkspaceItems.");
-
-            // Add new server - should not invoke AddWorkspaceItems
-            var newServer = new Mock<IEnvironmentModel>();
-            newServer.Setup(e => e.ID).Returns(Guid.NewGuid);
-            newServer.Setup(e => e.IsConnected).Returns(true); // so that we load resources
-            Assert.AreEqual(1, viewModel.AddWorkspaceItemsHitCount, "AddWorkspaceItems was invoked more than once.");
-        }
-
+        
         // PBI 9397 - 2013.06.09 - TWR: added
         [TestMethod]
         public void MainViewModelConstructorWithWorkspaceItemsInRepositoryExpectedLoadsWorkspaceItems()
@@ -340,25 +306,6 @@ namespace Dev2.Core.Tests
             Assert.IsNull(mvm);
         }
         
-        [TestMethod]
-        [TestCategory("MainViewModel_Constructor")]
-        [Description("Constructor must initialize navigation view model load complete event")]
-        [Owner("Ashley Lewis")]
-        public void MainViewModel_UnitTest_ConstructorWithNoNullParams_InitializesNavigationViewModelLoadCompleteEvent()
-        {
-            //main view model constructor should register event handler
-            var mvm = Dev2MockFactory.MainViewModel;
-            mvm.Protected().Setup("AddWorkspaceItems").Verifiable();
-
-            //trigger event handler twice
-            mvm.Object.ExplorerViewModel.NavigationViewModel.LoadEnvironmentResources(new Mock<IEnvironmentModel>().Object);
-            mvm.Object.ExplorerViewModel.NavigationViewModel.LoadEnvironmentResources(new Mock<IEnvironmentModel>().Object);
-
-            //assert handler was executed (this is actually two asserts because the handler does two things:
-            //1. calls AddWorkspaceItems
-            //and 2. Deregisters the LoadEnvironmentResources event (Time.Once asserts this happens))
-            mvm.Protected().Verify("AddWorkspaceItems", Times.Once());
-        }
 
         [TestMethod]
         [TestCategory("MainViewModel_Constructor")]
@@ -2095,7 +2042,9 @@ namespace Dev2.Core.Tests
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = null };
+            
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object, false, browserPopupController.Object){ IsBusyDownloadingInstaller = null };
+
             //------------Execute Test---------------------------
             var isDownloading = viewModel.IsDownloading();
             //------------Assert Results-------------------------
@@ -2119,7 +2068,7 @@ namespace Dev2.Core.Tests
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = null };
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = null };
             Mock<IPopupController> mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(controller => controller.Show("Some message", "Some heading", MessageBoxButton.OK, MessageBoxImage.Warning, "")).Verifiable();
             viewModel.PopupProvider = mockPopupController.Object;
@@ -2147,7 +2096,7 @@ namespace Dev2.Core.Tests
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
             //------------Execute Test---------------------------
             var isDownloading = viewModel.IsDownloading();
             //------------Assert Results-------------------------
@@ -2171,7 +2120,7 @@ namespace Dev2.Core.Tests
             var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var versionChecker = new Mock<IVersionChecker>();
             var browserPopupController = new Mock<IBrowserPopupController>();
-            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
+            var viewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false };
             //------------Execute Test---------------------------
             var isDownloading = viewModel.IsDownloading();
             //------------Assert Results-------------------------

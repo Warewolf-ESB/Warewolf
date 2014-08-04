@@ -499,7 +499,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var env2Id = Guid.NewGuid();
             activeEnvironment.Setup(a => a.ID).Returns(env1Id);
             mainViewModel.Setup(m => m.ActiveEnvironment).Returns(activeEnvironment.Object);
-            var env1 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, env1Id, CreateConnection(true, false).Object, new Mock<IResourceRepository>().Object, false);
+            var env1 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, env1Id, CreateConnection(true, true).Object, new Mock<IResourceRepository>().Object, false);
             var env2 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, env2Id, CreateConnection(true, false).Object, new Mock<IResourceRepository>().Object, false);
             var connectControlSingleton = new Mock<IConnectControlSingleton>();
             var connectControlEnvironments = new ObservableCollection<IConnectControlEnvironment>();
@@ -610,7 +610,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestCategory("ConnectControlViewModel_SelectedServerIndex")]
         public void ConnectControlViewModel_SelectedServerIndex_SetSelectedIndexToNegativeNumber_DidNotChange()
         {
-            TestSelectedIndex(-1, 1);
+            TestSelectedIndex(-1, 0);
         }
 
         [TestMethod]
@@ -652,9 +652,8 @@ namespace Dev2.Core.Tests.ViewModelTests
                         }
                 };
             environmentRepository.Setup(e => e.All()).Returns(environments);
-            var viewModel = new ConnectControlViewModel(mainViewModel.Object, environmentRepository.Object, e => { }, connectControlSingleton.Object, "TEST : ", true, (model, type, arg3, arg4, arg5, arg6, arg7) => { });
             //------------Execution-------------------------------
-            viewModel.SelectedServerIndex = 0;
+            var viewModel = new ConnectControlViewModel(mainViewModel.Object, environmentRepository.Object, e => { }, connectControlSingleton.Object, "TEST : ", true, (model, type, arg3, arg4, arg5, arg6, arg7) => { }) { SelectedServerIndex = 0 };
             //------------Assert------------------------------
             Assert.IsNotNull(viewModel);
             Assert.AreEqual(2, viewModel.SelectedServerIndex);
@@ -752,10 +751,41 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ConnectControlViewModel_Constructor")]
+        public void ConnectControlViewModel_Constructor_WhenServersCollectionHasLocalHost_SelectedIndexDefaultsToLocalHost()
+        {
+            //------------Setup for test--------------------------
+            var mainViewModel = new Mock<IMainViewModel>();
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            var env1 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(true, true).Object, new Mock<IResourceRepository>().Object, false);
+            var env2 = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(true, false).Object, new Mock<IResourceRepository>().Object, false);
+            var connectControlEnvironments = new ObservableCollection<IConnectControlEnvironment>();
+            var controEnv1 = new Mock<IConnectControlEnvironment>();
+            var controEnv2 = new Mock<IConnectControlEnvironment>();
+            controEnv1.Setup(c => c.EnvironmentModel).Returns(env1);
+            controEnv2.Setup(c => c.EnvironmentModel).Returns(env2);
+            controEnv1.Setup(c => c.IsConnected).Returns(true);
+            connectControlEnvironments.Add(controEnv2.Object);
+            connectControlEnvironments.Add(controEnv1.Object);
+            connectControlSingleton.Setup(c => c.Servers).Returns(connectControlEnvironments);
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            ICollection<IEnvironmentModel> environments = new Collection<IEnvironmentModel>
+                {
+                    env1
+                };
+            environmentRepository.Setup(e => e.All()).Returns(environments);
+            //------------Execution-------------------------------
+            var viewModel = new ConnectControlViewModel(mainViewModel.Object, environmentRepository.Object, e => { }, connectControlSingleton.Object, "TEST : ", false);
+            //------------Assert----------------------------------
+            Assert.AreEqual(1, viewModel.SelectedServerIndex);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ConnectControlViewModel_SelectedServerIndex")]
         public void ConnectControlViewModel_SelectedServerIndex_SetSelectedIndexToANumberLargerThanServersCollection_DidNotChange()
         {
-            TestSelectedIndex(2, 1);
+            TestSelectedIndex(2, 0);
         }
 
         [TestMethod]

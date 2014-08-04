@@ -1,7 +1,6 @@
 ﻿using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels;
@@ -40,10 +39,10 @@ namespace Dev2.CustomControls.Connections
         ObservableCollection<IConnectControlEnvironment> _servers;
         #endregion
 
-        public ConnectControlViewModel(Action<IEnvironmentModel> callbackHandler,
+        public ConnectControlViewModel(IMainViewModel mainViewModel, Action<IEnvironmentModel> callbackHandler,
                                        string labelText,
                                        bool bindToActiveEnvironment)
-            : this(Application.Current as IApp,
+            : this(mainViewModel,
               EnvironmentRepository.Instance,
               callbackHandler,
               ConnectControlSingleton.Instance,
@@ -52,21 +51,18 @@ namespace Dev2.CustomControls.Connections
         {
         }
 
-        private ConnectControlViewModel(IApp mainApp,
-                                        IEnvironmentRepository environmentRepository,
-                                        Action<IEnvironmentModel> callbackHandler,
-                                        IConnectControlSingleton connectControlSingleton,
-                                        string labelText,
-                                        bool bindToActiveEnvironment)
-            : this((mainApp != null && mainApp.MainWindow != null) ?
-              mainApp.MainWindow.DataContext as IMainViewModel : null,
-            environmentRepository,
-            callbackHandler,
-            connectControlSingleton,
-            labelText,
-            bindToActiveEnvironment)
+        public ConnectControlViewModel(Action<IEnvironmentModel> callbackHandler,
+                                     string labelText,
+                                     bool bindToActiveEnvironment)
+            : this(null, EnvironmentRepository.Instance,
+              callbackHandler,
+              ConnectControlSingleton.Instance,
+              labelText,
+              bindToActiveEnvironment)
         {
         }
+
+
 
         internal ConnectControlViewModel(IMainViewModel mainViewModel,
                                         IEnvironmentRepository environmentRepository,
@@ -105,7 +101,7 @@ namespace Dev2.CustomControls.Connections
                 _openWizard = openWizard;
             }
 
-            SetForActiveEnvironment();
+            SetSelectedEnvironment();
         }
 
         public void ConnectedServerChanged(object sender, ConnectedServerChangedEvent e)
@@ -164,26 +160,34 @@ namespace Dev2.CustomControls.Connections
             }
         }
 
-
-        void SetForActiveEnvironment()
+        void SetSelectedEnvironment()
         {
-            if(_bindToActiveEnvironment && _mainViewModel != null)
+            if(_bindToActiveEnvironment)
             {
-                var activeEnvironment = _mainViewModel.ActiveEnvironment;
-                var selectedServerIndex = Servers.ToList().FindIndex(c => c.EnvironmentModel.ID == activeEnvironment.ID);
-
-                if(selectedServerIndex >= 0)
+                if(_mainViewModel == null)
                 {
-                    SelectedServerIndex = selectedServerIndex;
+                    return;
                 }
-            }
 
-            if(SelectedServer == null && Servers.Any())
-            {
-                var selectedServerIndex = Servers.ToList().FindIndex(c => c.EnvironmentModel.IsLocalHost);
-                if(selectedServerIndex >= 0)
+                var server = Servers.FirstOrDefault(c => c.EnvironmentModel.IsLocalHost);
+                if(server == null)
                 {
-                    SelectedServerIndex = selectedServerIndex;
+                    return;
+                }
+                _selectedServerIndex = Servers.IndexOf(server);
+                SelectedServer = server;
+                _connectControlSingleton.Refresh(server.EnvironmentModel.ID);
+                _mainViewModel.ActiveEnvironment = server.EnvironmentModel;
+            }
+            else
+            {
+                if(SelectedServer == null && Servers.Any())
+                {
+                    var selectedServerIndex = Servers.ToList().FindIndex(c => c.EnvironmentModel.IsLocalHost);
+                    if(selectedServerIndex >= 0)
+                    {
+                        SelectedServerIndex = selectedServerIndex;
+                    }
                 }
             }
         }

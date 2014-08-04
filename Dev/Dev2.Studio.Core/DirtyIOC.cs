@@ -7,19 +7,6 @@ namespace Dev2
     {
         static readonly Dictionary<Type, object> RegisterdTypes = new Dictionary<Type, object>();
 
-        public static int EntiresCount
-        {
-            get
-            {
-                return RegisterdTypes.Count;
-            }
-        }
-
-        public static void Clear()
-        {
-            RegisterdTypes.Clear();
-        }
-
         public static void Register<T>(object concrete)
         {
             if(RegisterdTypes.ContainsKey(typeof(T)))

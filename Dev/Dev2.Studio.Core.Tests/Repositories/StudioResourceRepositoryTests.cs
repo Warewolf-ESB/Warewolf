@@ -28,6 +28,7 @@ namespace Dev2.Core.Tests.Repositories
     [TestClass]
     [ExcludeFromCodeCoverage]
     // ReSharper disable InconsistentNaming
+    // ReSharper disable ObjectCreationAsStatement
     public class StudioResourceRepositoryTests
     {
         readonly Action<System.Action, DispatcherPriority> _invoke = (a, b) => { };
@@ -1803,6 +1804,7 @@ namespace Dev2.Core.Tests.Repositories
             resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
             TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
             new EnvironmentRepository(testEnvironmentRespository);
+
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
             //------------Execute Test---------------------------
@@ -1841,7 +1843,7 @@ namespace Dev2.Core.Tests.Repositories
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, studioResourceRepository.ExplorerItemModels.Count);
-            Assert.IsFalse(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
+            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
         }
 
         [TestMethod]
@@ -1873,7 +1875,7 @@ namespace Dev2.Core.Tests.Repositories
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, studioResourceRepository.ExplorerItemModels.Count);
-            Assert.IsFalse(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
+            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
             Assert.IsFalse(studioResourceRepository.ExplorerItemModels[0].IsExplorerSelected);
             Assert.IsFalse(studioResourceRepository.ExplorerItemModels[0].IsExplorerExpanded);
         }
@@ -1881,7 +1883,7 @@ namespace Dev2.Core.Tests.Repositories
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioResourceRepository_AddServerNode")]
-        public void StudioResourceRepository_AddServerNode_Existing_ItemNotExpandedAndSelected()
+        public void StudioResourceRepository_AddServerNode_Existing_ItemExpandedAndSelected()
         {
             //------------Setup for test--------------------------
             Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
@@ -1908,8 +1910,8 @@ namespace Dev2.Core.Tests.Repositories
             studioResourceRepository.AddServerNode(serverExplorerItem);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, studioResourceRepository.ExplorerItemModels.Count);
-            Assert.IsFalse(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
-            Assert.IsFalse(studioResourceRepository.ExplorerItemModels[1].IsExplorerExpanded);
+            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerSelected);
+            Assert.IsTrue(studioResourceRepository.ExplorerItemModels[1].IsExplorerExpanded);
         }
 
 

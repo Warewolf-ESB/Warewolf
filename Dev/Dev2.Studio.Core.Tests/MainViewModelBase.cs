@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition.Primitives;
-using System.IO;
-using System.Reflection;
-using System.Text;
-using System.Windows;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
+using Dev2.CustomControls.Connections;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -29,6 +22,14 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel.Composition.Primitives;
+using System.IO;
+using System.Reflection;
+using System.Text;
+using System.Windows;
 
 namespace Dev2.Core.Tests
 {
@@ -88,7 +89,7 @@ namespace Dev2.Core.Tests
             // ReSharper restore ObjectCreationAsStatement
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, PopupController.Object,
-                WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object);
+                WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
         }
 
         protected void CreateFullExportsAndVm()
@@ -109,10 +110,11 @@ namespace Dev2.Core.Tests
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             // ReSharper restore ObjectCreationAsStatement
             FindCefSharpWpfDll();//Ashley: Load Xaml references manually...
+            Mock<IConnectControlViewModel> mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
                 new Mock<IVersionChecker>().Object, false, null, PopupController.Object
-                , WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object);
-
+                , WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, mockConnectControlViewModel.Object);
+            MainViewModel.AddWorkspaceItems();
             ActiveEnvironment = new Mock<IEnvironmentModel>();
             AuthorizationService = new Mock<IAuthorizationService>();
             ActiveEnvironment.Setup(e => e.AuthorizationService).Returns(AuthorizationService.Object);
@@ -279,7 +281,7 @@ namespace Dev2.Core.Tests
                 .Verifiable();
             SetupDefaultMef();
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, mock.Object, new Mock<IVersionChecker>().Object, false,connectControlSingleton:new Mock<IConnectControlSingleton>().Object);
+            MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, mock.Object, new Mock<IVersionChecker>().Object, false, connectControlSingleton: new Mock<IConnectControlSingleton>().Object);
             SetupForDelete();
             FirstResource.Setup(r => r.ResourceType).Returns(ResourceType.Source);
             FirstResource.Setup(r => r.ServerResourceType).Returns("Server");

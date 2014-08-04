@@ -13,15 +13,14 @@ namespace Dev2.ConnectionHelpers
 {
     public class ConnectControlSingleton : IConnectControlSingleton
     {
-
         readonly IStudioResourceRepository _studioResourceRepository;
         readonly IAsyncWorker _asyncWorker;
         readonly IEnvironmentModelProvider _serverProvider;
         static IConnectControlSingleton _instance;
         readonly IEnvironmentRepository _environmentRepository;
         public const string NewServerText = "New Remote Server...";
-        public ConnectEventHandlers.ConnectedStatusHandler ConnectedStatusChanged { get; set; }
-        public ConnectEventHandlers.ConnectedServerChangedHandler ConnectedServerChanged { get; set; }
+        public event EventHandler<ConnectionStatusChangedEventArg> ConnectedStatusChanged;
+        public event EventHandler<ConnectedServerChangedEvent> ConnectedServerChanged;
 
         public static IConnectControlSingleton Instance
         {

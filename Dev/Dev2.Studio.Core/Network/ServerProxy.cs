@@ -2,6 +2,7 @@
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Communication;
+using Dev2.ConnectionHelpers;
 using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
 using Dev2.ExtMethods;
@@ -167,7 +168,10 @@ namespace Dev2.Network
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
                     if(!HubConnection.Start().Wait(5000))
                     {
-                        ConnectionRetry();
+                        if (!IsLocalHost)
+                        {
+                            ConnectionRetry();
+                        }
                     }
                 }
             }
@@ -275,6 +279,7 @@ namespace Dev2.Network
             if(IsConnected)
             {
                 StopReconnectHeartbeat();
+                ConnectControlSingleton.Instance.Refresh(Guid.Empty);
             }
         }
 
@@ -285,7 +290,7 @@ namespace Dev2.Network
             try
             {
                 IsShuttingDown = true;
-                HubConnection.Stop(new TimeSpan(0, 0, 5));
+                HubConnection.Stop(new TimeSpan(0, 0, 1));
             }
             catch(Exception e)
             {

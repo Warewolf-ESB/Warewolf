@@ -1,6 +1,9 @@
 ﻿using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Core.Tests.Utils;
+using Dev2.CustomControls.Connections;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -79,7 +82,7 @@ namespace Dev2.Core.Tests.Dock
 
             var savePopup = new Mock<IPopupController>();
             savePopup.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(messageBoxResult);
-            var mainViewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false, PopupProvider = savePopup.Object };
+            var mainViewModel = new MainViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object,new Mock<IStudioResourceRepository>().Object, new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object, false, browserPopupController.Object) { IsBusyDownloadingInstaller = () => false, PopupProvider = savePopup.Object };
 
             workSurfaceContextViewModel = new WorkSurfaceContextViewModel(eventAggregator.Object, new WorkSurfaceKey
                 {
