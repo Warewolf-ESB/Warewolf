@@ -1074,6 +1074,52 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Calculate the number of weeks")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DateandTimeDifference")]
+        public virtual void CalculateTheNumberOfWeeks()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of weeks", ((string[])(null)));
+#line 348
+this.ScenarioSetup(scenarioInfo);
+#line 349
+ testRunner.Given("I have a first date \"06/01/2014 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 350
+ testRunner.And("I have a second date \"30/01/2014 08:00:01.06\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 351
+ testRunner.And("the date format as \"dd/mm/yyyy 12h:min:ss.sp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 352
+ testRunner.And("I selected output in \"Split Secs\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 353
+ testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 354
+ testRunner.Then("the difference should be \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 355
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input 1",
+                        "Input 2",
+                        "Input Format",
+                        "Output In"});
+            table45.AddRow(new string[] {
+                        "06/01/2014 08:00:01.00",
+                        "30/01/2014 08:00:01.06",
+                        "dd/mm/yyyy 12h:min:ss.sp",
+                        "Weeks"});
+#line 356
+ testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table46.AddRow(new string[] {
+                        "[[result]] = 3"});
+#line 359
+ testRunner.And("the debug output as", ((string)(null)), table46, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
