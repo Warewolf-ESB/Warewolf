@@ -18,14 +18,12 @@ namespace Dev2.Core.Tests
             : base(new Mock<IEventAggregator>().Object, new Mock<IAsyncWorker>().Object, environmentRepository, new VersionChecker(), createDesigners,
             studioResourceRepository: new Mock<IStudioResourceRepository>().Object, connectControlSingleton: new Mock<IConnectControlSingleton>().Object, connectControlViewModel: new Mock<IConnectControlViewModel>().Object)
         {
-            AddWorkspaceItems();
         }  
         
         public MainViewModelPersistenceMock(IEnvironmentRepository environmentRepository,IAsyncWorker asyncWorker, bool createDesigners = true)
             : base(new Mock<IEventAggregator>().Object, asyncWorker, environmentRepository, new VersionChecker(), createDesigners,
             studioResourceRepository: new Mock<IStudioResourceRepository>().Object, connectControlSingleton: new Mock<IConnectControlSingleton>().Object, connectControlViewModel: new Mock<IConnectControlViewModel>().Object)
         {
-            AddWorkspaceItems();
         }
 
         public void TestClose()

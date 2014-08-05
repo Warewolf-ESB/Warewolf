@@ -48,7 +48,7 @@ namespace Dev2.Dialogs
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("connectControlSingleton", connectControlSingleton);
 
-            _navigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, null, environmentRepository, studioResourceRepository,connectControlSingleton, isFromDrop, activityType);
+            _navigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, null, environmentRepository, studioResourceRepository,connectControlSingleton, () => {}, isFromDrop, activityType);
             _activityType = activityType;
         }
 

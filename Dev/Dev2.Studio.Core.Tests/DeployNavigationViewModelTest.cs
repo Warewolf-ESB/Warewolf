@@ -2,8 +2,6 @@
 using Dev2.AppResources.Repositories;
 using Dev2.Communication;
 using Dev2.Composition;
-using Dev2.ConnectionHelpers;
-using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Interfaces;
 using Dev2.Models;
@@ -13,7 +11,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Util;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -80,55 +77,6 @@ namespace Dev2.Core.Tests
 
 
         #region Updating Resources
-
-        [TestMethod]
-        [Owner("Massimo Guerrera")]
-        [TestCategory("NavigationViewModel_LoadEnvironments")]
-        public void NavigationViewModel_LoadEnvironments_WhenResourceRepositoryReturnsOnlyOneItem_ExplorerItemModelsOnlyHasOneItem()
-        {
-            //Arrange
-            const string displayName = "localhost";
-            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
-            mockEnvironment.Setup(model => model.CanStudioExecute).Returns(true);
-            var environmentRepository = GetEnvironmentRepository(mockEnvironment);
-            var mockStudioRepo = new Mock<IStudioResourceRepository>();
-
-            mockStudioRepo.SetupGet(p => p.ExplorerItemModels).Returns(
-                new ObservableCollection<ExplorerItemModel>
-                    {
-                        new ExplorerItemModel
-                        {
-                            ResourceType = Data.ServiceModel.ResourceType.Server,
-                            DisplayName = displayName,
-                            ResourceId = Guid.Empty,
-                            Permissions = Permissions.Administrator,
-                            EnvironmentId = Guid.Empty
-                        }
-                    });
-            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object,new Mock<IConnectControlSingleton>().Object);
-
-
-
-
-
-            //Act
-            viewmodel.LoadEnvironmentResources(mockEnvironment.Object);
-            //Assert
-            Assert.IsNotNull(viewmodel.ExplorerItemModels);
-            Assert.AreEqual(1, viewmodel.ExplorerItemModels.Count);
-            Assert.AreEqual(displayName, viewmodel.ExplorerItemModels[0].DisplayName);
-            Assert.AreEqual(Permissions.Administrator, viewmodel.ExplorerItemModels[0].Permissions);
-            Assert.AreEqual(Guid.Empty, viewmodel.ExplorerItemModels[0].EnvironmentId);
-            Assert.AreEqual(Guid.Empty, viewmodel.ExplorerItemModels[0].ResourceId);
-            Assert.AreEqual(Data.ServiceModel.ResourceType.Server, viewmodel.ExplorerItemModels[0].ResourceType);
-        }
-
-        private static IEnvironmentRepository GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
-        {
-            var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object) { IsLoaded = true };
-            return repo;
-        }
-
 
         [TestMethod]
         public void AddEnvironmentWithShouldLoadResourcesTrueExpectedRootAndChildrenCreated()

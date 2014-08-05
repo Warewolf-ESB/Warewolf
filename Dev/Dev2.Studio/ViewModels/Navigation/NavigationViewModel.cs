@@ -4,7 +4,6 @@ using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel;
 using Dev2.Models;
 using Dev2.Providers.Logs;
-using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -47,8 +46,8 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #region ctor + init
 
-        public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, NavigationViewModelType navigationViewModelType = NavigationViewModelType.Explorer)
-            : base(eventPublisher, asyncWorker, environmentRepository, studioResourceRepository)
+        public NavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, Guid? context, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton, System.Action updateWorkSpaceItems, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, NavigationViewModelType navigationViewModelType = NavigationViewModelType.Explorer)
+            : base(eventPublisher, asyncWorker, environmentRepository, studioResourceRepository, updateWorkSpaceItems)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -99,6 +98,7 @@ namespace Dev2.Studio.ViewModels.Navigation
                 }
             }
         }
+
         public IEnvironmentModel FilterEnvironment { get; set; }
 
         public ExplorerItemModel SelectedItem
@@ -180,10 +180,8 @@ namespace Dev2.Studio.ViewModels.Navigation
                 Environments.Add(environment);
             }
 
-            if(environment.IsConnected || environment.IsLocalHost)
-            {
-                LoadEnvironmentResources(environment);
-            }
+            UpdateNavigationView();
+        
             if(environment.Equals(EnvironmentRepository.Source) && environment.Connection != null)
             {
                 environment.Connection.StartAutoConnect();
@@ -202,28 +200,6 @@ namespace Dev2.Studio.ViewModels.Navigation
                 Environments.RemoveAt(idx);
                 StudioResourceRepository.RemoveEnvironment(environment.ID);
                 SelectLocalHost();
-            }
-        }
-
-        /// <summary>
-        ///     Removes all environemnts
-        /// </summary>
-        public void RemoveAllEnvironments()
-        {
-            foreach(var environment in Environments.ToList())
-            {
-                RemoveEnvironment(environment);
-            }
-        }
-
-        /// <summary>
-        ///     Reload all environments resources
-        /// </summary>
-        public void RefreshEnvironments()
-        {
-            foreach(var environment in Environments)
-            {
-                RefreshEnvironment(environment);
             }
         }
 
@@ -414,25 +390,6 @@ namespace Dev2.Studio.ViewModels.Navigation
                 SelectedItem.RenameCommand.Execute(param);
             }
         }
-
-        /// <summary>
-        /// Reloads an environment and all of it's resources if the environment 
-        /// is being represented by this navigation view model
-        /// </summary>
-        /// <param name="environment">The environment.</param>
-        void RefreshEnvironment(IEnvironmentModel environment)
-        {
-            if(!Environments.Contains(environment, EnvironmentModelEqualityComparer.Current))
-            {
-                return;
-            }
-
-            var environmentNavigationItemViewModel = StudioResourceRepository.FindItemById(environment.ID);
-            environmentNavigationItemViewModel.IsChecked = false;
-
-            LoadEnvironmentResources(environment);
-        }
-
         #endregion
 
         #region Dispose Handling

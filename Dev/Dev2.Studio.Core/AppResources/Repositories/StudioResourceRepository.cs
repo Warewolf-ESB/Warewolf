@@ -131,10 +131,7 @@ namespace Dev2.AppResources.Repositories
         void LoadEnvironmentTree(Guid environmentId, Action<Guid> onCompletion, IEnvironmentModel environmentModel)
         {
             var explorerItemModel = LoadEnvironment(environmentId);
-            if(!environmentModel.HasLoadedResources)
-            {
-                environmentModel.ForceLoadResources();
-            }
+            environmentModel.LoadResources();
             LoadItemsToTree(environmentId, explorerItemModel);
             onCompletion(environmentModel.ID);
         }
@@ -262,7 +259,7 @@ namespace Dev2.AppResources.Repositories
                 i.IsExplorerSelected = false;
             });
 
-            var exists = ExplorerItemModels.FirstOrDefault(i => i.EnvironmentId == explorerItem.EnvironmentId);
+            var exists = ExplorerItemModels.FirstOrDefault(i => i.EnvironmentId == explorerItem.EnvironmentId && i.ResourceType == ResourceType.Server);
             if(exists == null)
             {
                 explorerItem.IsExplorerSelected = true;

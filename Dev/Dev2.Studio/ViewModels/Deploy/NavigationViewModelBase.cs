@@ -20,25 +20,32 @@ namespace Dev2.ViewModels.Deploy
                             IHandle<UpdateResourceMessage>
     {
         protected internal IAsyncWorker AsyncWorker;
+        public readonly System.Action UpdateWorkSpaceItems;
         string _searchFilter = string.Empty;
         protected internal IEventAggregator EventAggregator;
         Visibility _circularProgressBarVisibility;
         Visibility _refreshButtonVisibility;
+
+        protected NavigationViewModelBase(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, System.Action updateWorkSpaceItems)
+            : this(eventPublisher, asyncWorker, environmentRepository, studioResourceRepository)
+        {
+            VerifyArgument.IsNotNull("updateWorkSpaceItems", updateWorkSpaceItems);
+            UpdateWorkSpaceItems = updateWorkSpaceItems;
+        }
 
         protected NavigationViewModelBase(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository)
         {
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
-
+           
             AsyncWorker = asyncWorker;
             EventAggregator = eventPublisher;
             EventAggregator.Subscribe(this);
             EnvironmentRepository = environmentRepository;
             StudioResourceRepository = studioResourceRepository;
         }
-
-        public event EventHandler LoadResourcesCompleted;
+        
         public IEnvironmentRepository EnvironmentRepository { get; set; }
 
         public Visibility RefreshButtonVisibility
@@ -80,13 +87,7 @@ namespace Dev2.ViewModels.Deploy
             get;
             private set;
         }
-
-        public void LoadEnvironmentResources(IEnvironmentModel environment)
-        {
-            this.Warning("Navigation Resources Load - Start");
-            LoadResourcesAsync(environment);            
-        }
-
+        
         /// <summary>
         /// Connects to a server considering the auxilliry connection field.
         /// </summary>
@@ -105,22 +106,22 @@ namespace Dev2.ViewModels.Deploy
             Task task = null;
             if(AsyncWorker != null)
             {
+// ReSharper disable ImplicitlyCapturedClosure
                 task = AsyncWorker.Start(() =>
-                {
-                    if(!environment.IsConnected)
+// ReSharper restore ImplicitlyCapturedClosure
                     {
-                        Connect(environment);
-                    }
-                    environment.LoadResources();
-
-                }, () =>
+                        if(!environment.IsConnected)
+                        {
+                            Connect(environment);
+                        }
+                        environment.LoadResources();
+                    }, () =>
                 {
                     try
                     {
                         if(environment.IsConnected && environment.CanStudioExecute)
                         {
-                            UpdateSearchFilter(_searchFilter);
-                            SetTreeStateBack(expandedList, selectedItem);
+                            UpdateNavigationView(expandedList, selectedItem);
                         }
                     }
                     catch(Exception ex)
@@ -129,13 +130,22 @@ namespace Dev2.ViewModels.Deploy
                     }
                     finally
                     {
-                        OnLoadResourcesCompleted();
+                        if(UpdateWorkSpaceItems != null)
+                        {
+                            UpdateWorkSpaceItems();
+                        }
                         environment.RaiseResourcesLoaded();
 
                     }
                 });
             }
             return task;
+        }
+
+        protected void UpdateNavigationView(IEnumerable<ExplorerItemModel> expandedList = null, ExplorerItemModel selectedItem = null)
+        {
+            UpdateSearchFilter(_searchFilter);
+            SetTreeStateBack(expandedList, selectedItem);
         }
 
         /// <summary>
@@ -203,15 +213,6 @@ namespace Dev2.ViewModels.Deploy
             }
         }
 
-        void OnLoadResourcesCompleted()
-        {
-            this.Warning("Navigation Resources Load - End");
-            if(LoadResourcesCompleted != null)
-            {
-                LoadResourcesCompleted(this, EventArgs.Empty);
-            }
-        }
-
         public void BringItemIntoView(Guid environmentId, Guid resourceId)
         {
             IStudioResourceRepository studioResourceRepository = StudioResourceRepository;
@@ -244,10 +245,6 @@ namespace Dev2.ViewModels.Deploy
             UpdateSearchFilter(_searchFilter);
         }
 
-
-
-
-
         /// <summary>
         /// Handles the specified UpdateResourcemessage by updating the resource
         /// </summary>
@@ -258,9 +255,6 @@ namespace Dev2.ViewModels.Deploy
         {
             UpdateResource(message.ResourceModel);
         }
-
-
-
 
         protected ExplorerItemModel TryGetResourceNode(IContextualResourceModel resourceModel)
         {

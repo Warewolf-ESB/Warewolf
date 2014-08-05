@@ -20,49 +20,33 @@ namespace Dev2.Studio.ViewModels.Explorer
     [Export]
     [PartCreationPolicy(CreationPolicy.Shared)]
     public class ExplorerViewModel : BaseViewModel,
-                                     IHandle<UpdateExplorerMessage>,
                                      IHandle<RemoveEnvironmentMessage>,
                                      IHandle<EnvironmentDeletedMessage>
     {
         #region Class Members
         private Guid? _context;
-        System.Action _onLoadResourcesCompletedOnceOff;
         IConnectControlViewModel _connectControlViewModel;
 
         #endregion Class Members
 
         #region Constructor
 
-        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton,IMainViewModel mainViewModel, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action onLoadResourcesCompletedOnceOff = null, IConnectControlViewModel connectControlViewModel = null)
+        public ExplorerViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, IConnectControlSingleton connectControlSingleton,IMainViewModel mainViewModel, bool isFromActivityDrop = false, enDsfActivityType activityType = enDsfActivityType.All, System.Action updateWorkSpaceItems = null, IConnectControlViewModel connectControlViewModel = null)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
             VerifyArgument.IsNotNull("connectControlSingleton", connectControlSingleton);
+            
             EnvironmentRepository = environmentRepository;
-            NavigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, Context, environmentRepository, studioResourceRepository, connectControlSingleton, isFromActivityDrop, activityType) { Parent = this };
-            if(onLoadResourcesCompletedOnceOff != null)
-            {
-                _onLoadResourcesCompletedOnceOff = onLoadResourcesCompletedOnceOff;
-                NavigationViewModel.LoadResourcesCompleted += LoadResourcesCompletedOnceOff;
-            }
+            
+            NavigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, Context, environmentRepository, studioResourceRepository, connectControlSingleton,updateWorkSpaceItems, isFromActivityDrop, activityType)
+                {
+                    Parent = this
+                };
 
-            ConnectControlViewModel = connectControlViewModel ?? new ConnectControlViewModel(mainViewModel, AddEnvironment, "Connect:", true);
-        }
-
-        void LoadResourcesCompletedOnceOff(object sender, EventArgs e)
-        {
-            NavigationViewModel.LoadResourcesCompleted -= LoadResourcesCompletedOnceOff;
-            try
-            {
-                _onLoadResourcesCompletedOnceOff();
-            }
-            finally
-            {
-                _onLoadResourcesCompletedOnceOff = null;
-            }
-        }
-
+            ConnectControlViewModel = connectControlViewModel ?? new ConnectControlViewModel(mainViewModel, AddEnvironment, "Connect:", true);}
+        
         #endregion Constructor
 
         #region Commands
@@ -135,25 +119,6 @@ namespace Dev2.Studio.ViewModels.Explorer
             NavigationViewModel.RemoveEnvironment(environment);
             SaveEnvironment(environment);
         }
-
-        /// <summary>
-        ///     Reloads all connected environemnts resources
-        /// </summary>
-        private void RefreshEnvironments(bool addMissingEnvironments)
-        {
-            NavigationViewModel.RefreshEnvironments();
-
-            //
-            // Ensure all environments are added to the navigation view model
-            //
-            if(!addMissingEnvironments) return;
-
-            foreach(IEnvironmentModel environment in EnvironmentRepository.All())
-            {
-                NavigationViewModel.AddEnvironment(environment);
-            }
-        }
-        
         #endregion Private Methods
 
         #region Dispose Handling
@@ -171,12 +136,6 @@ namespace Dev2.Studio.ViewModels.Explorer
         #endregion Dispose Handling
 
         #region IHandle
-
-        public void Handle(UpdateExplorerMessage message)
-        {
-            this.TraceInfo(message.GetType().Name);
-            RefreshEnvironments(message.Update);
-        }
 
         public void Handle(RemoveEnvironmentMessage message)
         {

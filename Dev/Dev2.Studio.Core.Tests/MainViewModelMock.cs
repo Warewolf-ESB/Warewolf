@@ -21,7 +21,6 @@ namespace Dev2.Core.Tests
         public override void AddWorkspaceItems()
         {
             AddWorkspaceItemsHitCount++;
-            base.AddWorkspaceItems();
         }
     }
 }

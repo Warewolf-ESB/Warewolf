@@ -459,14 +459,16 @@ namespace Dev2.Studio.ViewModels
             FeedbackInvoker = feedbackInvoker ?? new FeedbackInvoker();
             EnvironmentRepository = environmentRepository;
             FlowController = new FlowController(PopupProvider);
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            ShowStartPage();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
-
+           
             if(ExplorerViewModel == null)
             {
                 ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, StudioResourceRepository, ConnectControlSingl, this, false, enDsfActivityType.All, AddWorkspaceItems, connectControlViewModel);
             }
+
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            AddWorkspaceItems();
+            ShowStartPage();
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         public IStudioResourceRepository StudioResourceRepository { get; set; }
