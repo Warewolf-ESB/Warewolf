@@ -140,7 +140,7 @@
     <Compile Include="Providers\Validation\Rules\TestRuleBase.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidXmlRuleTests.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidXpathRuleTests.cs" />
-    <Compile Include="Providers\Validation\Rules\ComposeableRuleTest.cs" />
+    <Compile Include="Providers\Validation\Rules\ComposableRuleTest.cs" />
     <Compile Include="Services\Security\AuthorizationServiceBaseTests.cs" />
     <Compile Include="Services\Security\AuthorizationHelpersTests.cs" />
     <Compile Include="Services\Security\SecurityServiceBaseTests.cs" />

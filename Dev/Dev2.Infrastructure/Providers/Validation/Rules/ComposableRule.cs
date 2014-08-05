@@ -3,11 +3,11 @@ using Dev2.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {
-    public class ComposeableRule<T> : RuleBase
+    public class ComposableRule<T> : RuleBase
     {
         readonly Rule<T> _baseRule;
         Func<IActionableErrorInfo> _check;
-        public ComposeableRule(Rule<T> baseRule)
+        public ComposableRule(Rule<T> baseRule)
         {
             VerifyArgument.IsNotNull("baseRule", baseRule);
             _baseRule = baseRule;
@@ -15,14 +15,15 @@ namespace Dev2.Providers.Validation.Rules
            
         }
 
-        public ComposeableRule<T> And(Rule<T> andRule)
+        public ComposableRule<T> And(Rule<T> andRule)
         {
             
-            VerifyArgument.IsNotNull("baseRule", andRule);
+            VerifyArgument.IsNotNull("andRule", andRule);
             var b = _check;
             _check = ()=>
                 {
                     var a= b();
+
                     if (a != null)
                         return a;
                     return andRule.Check();
@@ -30,7 +31,7 @@ namespace Dev2.Providers.Validation.Rules
             return this;
         }
 
-        public ComposeableRule<T> Or(Rule<T> orRule)
+        public ComposableRule<T> Or(Rule<T> orRule)
         {
 
             VerifyArgument.IsNotNull("orRule", orRule);

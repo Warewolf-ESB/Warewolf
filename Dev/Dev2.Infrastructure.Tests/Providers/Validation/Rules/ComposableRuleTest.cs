@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
 {
     [TestClass]
-    public class ComposeableRuleTest
+    public class ComposableRuleTest
     {
 
 
@@ -20,7 +20,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
 
         {
             //------------Setup for test--------------------------
-            new ComposeableRule<string>(null);
+            new ComposableRule<string>(null);
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void ComposeAbleRule_Or_Null()
         {
             //------------Setup for test--------------------------
-            new ComposeableRule<string>(new Rule1(()=>"")).Or(null);
+            new ComposableRule<string>(new Rule1(()=>"")).Or(null);
         }
 
         [TestMethod]
@@ -40,7 +40,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void ComposeAbleRule_And_Null()
         {
             //------------Setup for test--------------------------
-            new ComposeableRule<string>(new Rule1(() => "")).And(null);
+            new ComposableRule<string>(new Rule1(() => "")).And(null);
         }
 
         [TestMethod]
@@ -49,7 +49,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void ComposeAbleRule_SingleCondition()
         {
             //------------Setup for test--------------------------
-            var cr = new ComposeableRule<string>(new Rule1(()=>""));
+            var cr = new ComposableRule<string>(new Rule1(()=>""));
             Assert.IsNotNull(cr.Check());
 
         }
@@ -60,7 +60,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void ComposeAbleRule_AndConditionNotSatisfied()
         {
             //------------Setup for test--------------------------
-            var cr = new ComposeableRule<string>(new Rule1(() => "")).And(new Rule1(()=>"1"));
+            var cr = new ComposableRule<string>(new Rule1(() => "")).And(new Rule1(()=>"1"));
             Assert.IsNotNull(cr.Check());
 
         }
@@ -72,7 +72,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void ComposeAbleRule_AndConditionSatisfied()
         {
             //------------Setup for test--------------------------
-            var cr = new ComposeableRule<string>(new Rule1(() => "1")).And(new Rule1(() => "1"));
+            var cr = new ComposableRule<string>(new Rule1(() => "1")).And(new Rule1(() => "1"));
             Assert.IsNull(cr.Check());
 
         }
@@ -83,7 +83,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void ComposeAbleRule_AndConditionSatisfied_Three()
         {
             //------------Setup for test--------------------------
-            var cr = new ComposeableRule<string>(new Rule1(() => "1")).And(new Rule1(() => "1")).And(new Rule2(() => "2"));
+            var cr = new ComposableRule<string>(new Rule1(() => "1")).And(new Rule1(() => "1")).And(new Rule2(() => "2"));
             Assert.IsNull(cr.Check());
 
         }
@@ -94,7 +94,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void ComposeAbleRule_AndConditionFailed_Three()
         {
             //------------Setup for test--------------------------
-            var cr = new ComposeableRule<string>(new Rule1(() => "1")).And(new Rule1(() => "1")).And(new Rule2(() => "v"));
+            var cr = new ComposableRule<string>(new Rule1(() => "1")).And(new Rule1(() => "1")).And(new Rule2(() => "v"));
             Assert.IsNotNull(cr.Check());
 
         }
@@ -105,7 +105,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void ComposeAbleRule_Or_ConditionSatisfied()
         {
             //------------Setup for test--------------------------
-            var cr = new ComposeableRule<string>(new Rule1(() => "")).Or(new Rule1(() => "1"));
+            var cr = new ComposableRule<string>(new Rule1(() => "")).Or(new Rule1(() => "1"));
             Assert.IsNull(cr.Check());
 
         }
@@ -117,7 +117,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void ComposeAbleRule_Or_NoConditionSatisfied_Three()
         {
             //------------Setup for test--------------------------
-            var cr = new ComposeableRule<string>(new Rule1(() => "")).Or(new Rule1(() => "d")).Or(new Rule2(()=>"d"));
+            var cr = new ComposableRule<string>(new Rule1(() => "")).Or(new Rule1(() => "d")).Or(new Rule2(()=>"d"));
             Assert.IsNotNull(cr.Check());
 
         }
@@ -129,7 +129,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public void ComposeAbleRule_Or_ConditionSatisfied_Three()
         {
             //------------Setup for test--------------------------
-            var cr = new ComposeableRule<string>(new Rule1(() => "")).Or(new Rule1(() => "d")).Or(new Rule2(() => "2"));
+            var cr = new ComposableRule<string>(new Rule1(() => "")).Or(new Rule1(() => "d")).Or(new Rule2(() => "2"));
             Assert.IsNull(cr.Check());
 
         }
