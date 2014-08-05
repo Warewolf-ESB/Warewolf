@@ -143,15 +143,21 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> testEnvironmentModel = CreateMockEnvironment();
             var resourceModel = new ResourceModel(testEnvironmentModel.Object);
             var timesFired = 0;
+            var dataListFired = 0;
             resourceModel.PropertyChanged += (sender, args) =>
             {
                 timesFired++;
             };
+            resourceModel.OnDataListChanged += () =>
+                {
+                    dataListFired++;
+                };
             //------------Execute Test---------------------------
             resourceModel.DataList = "TestDataList";
             resourceModel.DataList = "TestDataList";
             //------------Assert Results-------------------------
             Assert.AreEqual(1, timesFired);
+            Assert.AreEqual(2, dataListFired);
         }
 
         [TestMethod]
@@ -195,25 +201,53 @@ namespace Dev2.Core.Tests
     <GeoLocation />
   </City>
 </DataList>";
-            _resourceModel.DataList = newDataList;
 
-            string result = _resourceModel.DataList;
+            var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
 
-            var xe = _resourceModel.WorkflowXaml.ToXElement();
+
+            var resourceModel = new ResourceModel(environmentModel.Object)
+            {
+                ResourceName = "test",
+                ResourceType = ResourceType.Service,
+                WorkflowXaml = new StringBuilder(@"
+<Service Name=""abc"">
+    <Inputs/>
+    <Outputs/>
+    <DataList>
+        <Country/>
+        <State />
+        <City>
+            <Name/>
+            <GeoLocation />
+        </City>
+    </DataList>
+</Service>
+")
+            };
+
+            var eventWasFired = false;
+            resourceModel.OnDataListChanged += () =>
+                {
+                    eventWasFired = true;
+                };
+            resourceModel.DataList = newDataList;
+
+            string result = resourceModel.DataList;
+
+            var xe = resourceModel.WorkflowXaml.ToXElement();
             var dlElms = xe.Elements("DataList");
 
-            // new UnlimitedObject().GetStringXmlDataAsUnlimitedObject(_resourceModel.WorkflowXaml.ToString()).GetValue("DataList")
             var firstOrDefault = dlElms.FirstOrDefault();
             if(firstOrDefault != null)
             {
                 var wfResult = firstOrDefault.ToString(SaveOptions.None);
                 StringAssert.Contains(result, wfResult);
+                Assert.IsTrue(eventWasFired);
             }
             else
             {
                 Assert.Fail();
             }
-
         }
 
         [TestMethod]
