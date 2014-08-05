@@ -284,18 +284,67 @@ Scenario: Calculate the number of weeks between two given dates format has quote
 	|                   |
 	| [[result]] = 8088 |
 
-#Scenario: Calculate the number of years with incorrect inputs
-#	Given I have a DateAndTimeDifference variable "[[a]]" equal to 01.
-#	And I have a first date "2014/[[a]]/01" 
-#	And I have a second date "2030/01/01" 
-#	And the date format as "yyyy/mm/dd"
-#	And I selected output in "Years" 	
+Scenario: Calculate the number of years with incorrect inputs
+	Given I have a DateAndTimeDifference variable "[[a]]" equal to 01.
+	And I have a first date "2014/[[a]]/01" 
+	And I have a second date "2030/01/01" 
+	And the date format as "yyyy/mm/dd"
+	And I selected output in "Years" 	
+	When the datetime difference tool is executed
+	Then the difference should be ""
+	And the execution has "AN" error
+	And the debug inputs as  
+	| Input 1                  | Input 2    | Input Format | Output In |
+	| 2014/[[a]]/01 = 2014/01./01 | 2030/01/01 | yyyy/mm/dd   | Years     |
+	And the debug output as 
+	|              |
+	| [[result]] = |
+
+Scenario: Calculate the number of years with incorrect variable in input1
+	Given I have a DateAndTimeDifference variable "[[a]]" equal to 01.
+	And I have a first date "[[2014/01/01]]" 
+	And I have a second date "2030/01/01" 
+	And the date format as "yyyy/mm/dd"	
+	When the datetime difference tool is executed
+	Then the difference should be ""
+	And the execution has "AN" error
+	And the debug inputs as  
+	| Input 1          | Input 2    | Input Format | Output In |
+	| [[2014/01/01]] = | 2030/01/01 | yyyy/mm/dd   | Years     |
+	And the debug output as 
+	|              |
+
+Scenario: Calculate the number of split seconds
+	Given I have a first date "06/01/2014 08:00:01.00" 
+	And I have a second date "06/01/2014 08:00:01.68" 
+	And the date format as "dd/mm/yyyy 12h:min:ss.sp"
+	And I selected output in "Split Secs" 	
+	When the datetime difference tool is executed
+	Then the difference should be "68"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Input 1                | Input 2                | Input Format             | Output In  |
+	| 06/01/2014 08:00:01.00 | 06/01/2014 08:00:01.68 | dd/mm/yyyy 12h:min:ss.sp | Split Secs |
+	And the debug output as 
+	|                 |
+	| [[result]] = 68 |
+
+#Bug 12330
+##Scenario: Calculate the number of split seconds by using default date format
+#	Given I have a first date "06/01/2014 08:00:01.00" 
+#	And I have a second date "06/01/2014 08:00:01.68" 
+#	And the date format as ""
+#	And I selected output in "Split Secs" 	
 #	When the datetime difference tool is executed
-#	Then the difference should be ""
-#	And the execution has "AN" error
+#	Then the difference should be "68"
+#	And the execution has "NO" error
 #	And the debug inputs as  
-#	| Input 1                  | Input 2    | Input Format | Output In |
-#	| 2014/[[b]]/29 = 2030/01./01 | 2030-01-01 | yyyy/mm/dd   | Years     |
+#	| Input 1                | Input 2                | Input Format | Output In  |
+#	| 06/01/2014 08:00:01.00 | 06/01/2014 08:00:01.68 |              | Split Secs |
 #	And the debug output as 
-#	|              |
-#	| [[result]] = |
+#	|                 |
+#	| [[result]] = 68 |
+
+
+
+
