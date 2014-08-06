@@ -401,10 +401,7 @@ namespace Dev2.Activities.Designers2.Email
             var selectedSource = new EmailSource(message.ResourceModel.WorkflowXaml.ToXElement());
             if(selectedSource.ResourceID == EmailSource.ResourceID)
             {
-                var originalId = selectedSource.ResourceID;
-                selectedSource.ResourceID = Guid.NewGuid();
-                EmailSource = selectedSource;
-                selectedSource.ResourceID = originalId;
+                EmailSource = null;
                 EmailSource = selectedSource;
             }
         }
