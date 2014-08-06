@@ -141,10 +141,10 @@ namespace Gui
                     var studioPath = InstallVariables.InstallRoot;
                     studioPath = Path.Combine(studioPath, "Studio");
                     studioPath = Path.Combine(studioPath, "Warewolf Studio.exe");
-
+                    var startInfo = new ProcessStartInfo() { Verb = "runas", FileName = studioPath };
                     try
                     {
-                        ProcessHost.Invoke(string.Empty, studioPath, string.Empty, false);
+                        Process.Start(startInfo);
                     }
                     catch(Exception e1)
                     {
