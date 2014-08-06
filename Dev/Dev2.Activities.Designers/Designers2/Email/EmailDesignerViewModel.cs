@@ -399,8 +399,14 @@ namespace Dev2.Activities.Designers2.Email
         public void Handle(UpdateResourceMessage message)
         {
             var selectedSource = new EmailSource(message.ResourceModel.WorkflowXaml.ToXElement());
-            EmailSource = selectedSource;
+            if(selectedSource.ResourceID == EmailSource.ResourceID)
+            {
+                var originalId = selectedSource.ResourceID;
+                selectedSource.ResourceID = Guid.NewGuid();
+                EmailSource = selectedSource;
+                selectedSource.ResourceID = originalId;
+                EmailSource = selectedSource;
+            }
         }
-
     }
 }

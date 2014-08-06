@@ -1,12 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Windows;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -19,6 +11,14 @@ using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Windows;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Email
@@ -925,6 +925,52 @@ namespace Dev2.Activities.Designers.Tests.Email
         public void EmailDesignerViewModel_Handles_UpdateResourceMessage_EmailSourceIsUpdated()
         {
             //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+            var emailSource = new EmailSource
+            {
+                ResourceID = resourceID,
+                ResourceName = "Email1",
+                UserName = "user1@test.com",
+                Password = "pasword1"
+            };
+
+            // var emailSources = CreateEmailSources(2);
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfSendEmailActivity
+            {
+                SelectedEmailSource = emailSource
+            });
+
+            var viewModel = CreateViewModel(new List<EmailSource> { emailSource }, modelItem);
+
+            var updatedEmailSource = new EmailSource
+            {
+                ResourceID = resourceID,
+                ResourceName = "EmailTest",
+                UserName = "UpdateEmail@test.com",
+                Password = "UpdatedPassword"
+            };
+
+            //var xaml = new StringBuilder
+            var resourceModel = new Mock<IContextualResourceModel>();
+            resourceModel.Setup(r => r.WorkflowXaml).Returns(new StringBuilder(updatedEmailSource.ToXml().ToString()));
+
+            var message = new UpdateResourceMessage(resourceModel.Object);
+
+            //------------Execute Test---------------------------
+            viewModel.Handle(message);
+
+            //------------Assert Results-------------------------
+            var selectedSource = viewModel.SelectedEmailSourceModelItemValue;
+            Assert.AreEqual(updatedEmailSource.UserName, selectedSource.UserName);
+            Assert.AreEqual(updatedEmailSource.Password, selectedSource.Password);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("EmailDesignerViewModel_Handles")]
+        public void EmailDesignerViewModel_Handles_UpdateResourceMessageResourceIdAreNotTheSame_EmailSourceIsNotUpdated()
+        {
+            //------------Setup for test--------------------------
             var emailSource = new EmailSource
             {
                 ResourceID = Guid.NewGuid(),
@@ -943,6 +989,7 @@ namespace Dev2.Activities.Designers.Tests.Email
 
             var updatedEmailSource = new EmailSource(emailSources[0].ToXml())
             {
+                ResourceID = Guid.NewGuid(),
                 UserName = "UpdateEmail@test.com",
                 Password = "UpdatedPassword"
             };
@@ -958,8 +1005,8 @@ namespace Dev2.Activities.Designers.Tests.Email
 
             //------------Assert Results-------------------------
             var selectedSource = viewModel.SelectedEmailSourceModelItemValue;
-            Assert.AreEqual(updatedEmailSource.UserName, selectedSource.UserName);
-            Assert.AreEqual(updatedEmailSource.Password, selectedSource.Password);
+            Assert.AreNotEqual(updatedEmailSource.UserName, selectedSource.UserName);
+            Assert.AreNotEqual(updatedEmailSource.Password, selectedSource.Password);
         }
 
         static ModelItem CreateModelItem()
@@ -995,18 +1042,19 @@ namespace Dev2.Activities.Designers.Tests.Email
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(e => e.ResourceRepository.FindSourcesByType<EmailSource>(It.IsAny<IEnvironmentModel>(), enSourceType.EmailSource))
                 .Returns(sources);
-            environment.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(),false))
+            environment.Setup(e => e.ResourceRepository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false))
                 .Returns(resourceModel);
 
-            var testEmailDesignerViewModel = new TestEmailDesignerViewModel(modelItem, environment.Object, eventPublisher);
-
-            testEmailDesignerViewModel.GetDatalistString = () =>
-            {
-                const string trueString = "True";
-                const string noneString = "None";
-                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
-                return datalist;
-            };
+            var testEmailDesignerViewModel = new TestEmailDesignerViewModel(modelItem, environment.Object, eventPublisher)
+                {
+                    GetDatalistString = () =>
+                        {
+                            const string trueString = "True";
+                            const string noneString = "None";
+                            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                            return datalist;
+                        }
+                };
 
             return testEmailDesignerViewModel;
         }
