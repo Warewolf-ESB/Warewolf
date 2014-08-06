@@ -177,7 +177,7 @@ namespace Dev2.CustomControls.Connections
                 _selectedServerIndex = Servers.IndexOf(server);
                 SelectedServer = server;
                 _connectControlSingleton.Refresh(server.EnvironmentModel.ID);
-                _mainViewModel.ActiveEnvironment = server.EnvironmentModel;
+                _mainViewModel.SetActiveEnvironment(server.EnvironmentModel);
             }
             else
             {

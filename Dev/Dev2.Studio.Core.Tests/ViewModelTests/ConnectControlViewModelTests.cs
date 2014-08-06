@@ -257,6 +257,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             //------------Setup for test--------------------------
             var mainViewModel = new Mock<IMainViewModel>();
+            mainViewModel.Setup(m => m.SetActiveEnvironment(It.IsAny<IEnvironmentModel>())).Verifiable();
             var activeEnvironment = new Mock<IEnvironmentModel>();
             var env1Id = Guid.NewGuid();
             var env2Id = Guid.NewGuid();
@@ -289,6 +290,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             //------------Assert----------------------------------
             Assert.AreEqual(1, indexBefore);
             Assert.AreEqual(0, viewModel.SelectedServerIndex);
+            mainViewModel.Verify(m => m.SetActiveEnvironment(It.IsAny<IEnvironmentModel>()), Times.Exactly(1));
         }
 
         [TestMethod]

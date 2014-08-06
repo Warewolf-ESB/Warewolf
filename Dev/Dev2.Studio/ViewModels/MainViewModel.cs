@@ -541,9 +541,15 @@ namespace Dev2.Studio.ViewModels
         public void Handle(SetActiveEnvironmentMessage message)
         {
             this.TraceInfo(message.GetType().Name);
-            ActiveEnvironment = message.EnvironmentModel;
-            EnvironmentRepository.ActiveEnvironment = ActiveEnvironment;
+            var activeEnvironment = message.EnvironmentModel;
+            SetActiveEnvironment(activeEnvironment);
             ExplorerViewModel.UpdateActiveEnvironment(ActiveEnvironment, message.SetFromConnectControl);
+        }
+
+        public void SetActiveEnvironment(IEnvironmentModel activeEnvironment)
+        {
+            ActiveEnvironment = activeEnvironment;
+            EnvironmentRepository.ActiveEnvironment = ActiveEnvironment;
         }
 
         public void Handle(ShowDependenciesMessage message)
