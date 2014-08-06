@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.DirectoryServices;
+using System.Security.Principal;
 
 namespace Gui.Utility
 {
@@ -23,14 +24,14 @@ namespace Gui.Utility
 
         public void AddAdministratorsGroupToWarewolf()
         {
-            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
-                foreach(DirectoryEntry dChildEntry in ad.Children)
+                foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if(dChildEntry.Name == WarewolfGroup)
+                    if (dChildEntry.Name == "Warewolf Administrators")
                     {
-                        const string Entry = "WinNT://./" + AdministratorsGroup;
+                        string Entry = "WinNT://./" + FindGroup(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
                         dChildEntry.Invoke("Add", new object[] { Entry });
                     }
                 }
@@ -40,23 +41,24 @@ namespace Gui.Utility
         public bool IsAdminMemberOfWarewolf()
         {
 
-            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            var adGroup = FindGroup(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
-                foreach(DirectoryEntry dChildEntry in ad.Children)
+                foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
-                    if(dChildEntry.Name == WarewolfGroup)
+                    if (dChildEntry.Name == "Warewolf Administrators")
                     {
                         // Now check group membership ;)
                         var members = dChildEntry.Invoke("Members");
 
-                        if(members != null)
+                        if (members != null)
                         {
-                            foreach(var member in (IEnumerable)members)
+                            foreach (var member in (IEnumerable)members)
                             {
-                                using(DirectoryEntry memberEntry = new DirectoryEntry(member))
+                                using (DirectoryEntry memberEntry = new DirectoryEntry(member))
                                 {
-                                    if(memberEntry.Name == AdministratorsGroup)
+                                    if (memberEntry.Name == adGroup)
                                     {
                                         return true;
                                     }
@@ -160,6 +162,25 @@ namespace Gui.Utility
                     }
                 }
             }
+        }
+
+        public static string FindGroup(SecurityIdentifier searchSid)
+        {
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            {
+                ad.Children.SchemaFilter.Add("group");
+                foreach (DirectoryEntry dChildEntry in ad.Children)
+                {
+                    var bytes = (byte[])dChildEntry.Properties["objectSid"].Value;
+                    var sid = new SecurityIdentifier(bytes, 0).ToString();
+
+                    if (sid == searchSid.ToString())
+                    {
+                        return dChildEntry.Name;
+                    }
+                }
+            }
+            throw new Exception("Cannot fid group");
         }
 
         public string FormatUserForInsert(string currentUser, string machineName)
