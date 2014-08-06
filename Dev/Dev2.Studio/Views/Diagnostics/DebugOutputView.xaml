@@ -91,8 +91,6 @@
                         <MultiDataTrigger.Conditions>
                             <Condition Binding="{Binding DataContext.ShowType, ElementName=DebugOutput}"
                                        Value="True" />
-                            <Condition Binding="{Binding Content.ActivityType, Converter={StaticResource EnumToVisibilityConverterActivityTypeStep}}"
-                                       Value="Visible" />
                         </MultiDataTrigger.Conditions>
                         <MultiDataTrigger.Setters>
                             <Setter Property="FrameworkElement.Visibility"
