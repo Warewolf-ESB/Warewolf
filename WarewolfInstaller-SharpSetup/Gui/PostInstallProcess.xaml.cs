@@ -421,6 +421,7 @@ namespace Gui
                     try
                     {
                         AddTrustedSites();
+                        AddTrustedSitesIE11();
                     }
                     // ReSharper disable EmptyGeneralCatchClause
                     catch { }
@@ -519,6 +520,38 @@ namespace Gui
         private void AddTrustedSites()
         {
             const string DomainsKeyLocation = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
+            string domain = Environment.MachineName.ToLower();
+            //const int intratnet = 0x1; // 0x2
+            const int TrustedSiteZone = 0x1; // 0x2
+
+            RegistryKey currentUserKey = Registry.CurrentUser;
+
+            RegistryKey localKey = currentUserKey.GetOrCreateSubKey(DomainsKeyLocation, domain, true);
+
+            try
+            {
+                localKey.SetValue("https", TrustedSiteZone, RegistryValueKind.DWord);
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch { }
+            // ReSharper restore EmptyGeneralCatchClause
+
+            try
+            {
+                localKey.SetValue("http", TrustedSiteZone, RegistryValueKind.DWord);
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch { }
+            // ReSharper restore EmptyGeneralCatchClause
+
+        }
+        
+        /// <summary>
+        /// Adds the trusted sites.
+        /// </summary>
+        private void AddTrustedSitesIE11()
+        {
+            const string DomainsKeyLocation = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\EscDomains";
             string domain = Environment.MachineName.ToLower();
             //const int intratnet = 0x1; // 0x2
             const int TrustedSiteZone = 0x1; // 0x2
