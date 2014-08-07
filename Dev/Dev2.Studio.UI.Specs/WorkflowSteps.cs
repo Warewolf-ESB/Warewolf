@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Dev2.Studio.UI.Tests.Utils;
@@ -13,14 +15,17 @@ namespace Dev2.Studio.UI.Specs
     [Binding]
     public class WorkflowSteps : UIMapBase
     {
-        
+
+        const string Explorer = "Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,TheNavigationView";
+        const string Toolbox = "UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
+        const string ServiceDesigner = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
 
         [BeforeTestRun]
         public static void SetupForTest()
         {
             Bootstrap.ResolvePathsToTestAgainst(!ContextForTests.IsLocal ? Path.Combine(ContextForTests.DeploymentDirectory) : null);
             Playback.Initialize();
-            Init();
+
         }
 
         [When(@"I debug ""(.*)"" in ""(.*)""")]
@@ -161,6 +166,91 @@ namespace Dev2.Studio.UI.Specs
             Assert.IsNotNull(findStartNode);
         }
 
+        [When(@"I send ""(.*)"" to ""(.*)""")]
+        public void WhenISendTo(string textToSend, string automationIds)
+        {
+            var automationIDs = GetCorrect(automationIds).Split(',');
+            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, automationIDs);
+
+            Mouse.Click(controlToSendData, new Point(5, 5));
+            SendKeys.SendWait("{HOME}");
+            SendKeys.SendWait("+{END}");
+            SendKeys.SendWait("{DELETE}");
+
+            Playback.Wait(100);
+            SendKeys.SendWait(textToSend);
+        }
+
+        [Given(@"I click ""(.*)""")]
+        [When(@"I click ""(.*)""")]
+        [Then(@"I click ""(.*)""")]
+        public void GivenIClick(string automationIds)
+        {
+            var automationIDs = GetCorrect(automationIds).Split(',');
+            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, automationIDs);
+
+            Mouse.Click(controlToClick, new Point(5, 5));
+            Playback.Wait(2000);
+        }
+
+        [When(@"I drag ""(.*)"" onto ""(.*)""")]
+        public void WhenIDragOnto(string dragItemAutoIds, string dragDestinationAutoIds)
+        {
+            var correcteddDagItemAutoIds = GetCorrect(dragItemAutoIds).Split(',');
+            var correctedDragDestinationAutoIds = GetCorrect(dragDestinationAutoIds).Split(',');
+
+            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, correcteddDagItemAutoIds);
+
+            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, correctedDragDestinationAutoIds);
+
+            Mouse.Click(itemToDrag, new Point(15, 15));
+            var clickablePoint = itemToDrag.GetClickablePoint();
+            Mouse.StartDragging(itemToDrag, clickablePoint);
+
+            var boundingRectangle = dragDestinationItem.BoundingRectangle;
+            Mouse.StopDragging(boundingRectangle.X, boundingRectangle.Y - 400);
+            //Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            Playback.Wait(100);
+        }
+
+        [When(@"I double click ""(.*)""")]
+        public void WhenIDoubleClick(string itemToDoubleClickAutoIds)
+        {
+            var correcteddItemToDoubleClickAutoIds = GetCorrect(itemToDoubleClickAutoIds).Split(',');
+            var itemToDoubleClick = VisualTreeWalker.GetControlFromRoot(true, 0, correcteddItemToDoubleClickAutoIds);
+
+            Mouse.DoubleClick(itemToDoubleClick, new Point(5, 5));
+
+        }
+
+        [Then(@"""(.*)"" is visible")]
+        public void ThenIsVisible(string itemToFindAutoIds)
+        {
+            var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, correctedditemToFindAutoIds);
+
+            Assert.IsNotNull(itemFound);
+
+        }
+
+        [Then(@"""(.*)"" is not visible")]
+        public void ThenIsNotVisible(string itemToFindAutoIds)
+        {
+            var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, correctedditemToFindAutoIds);
+
+            Assert.IsNull(itemFound);
+        }
+
+        string GetCorrect(string automationIds)
+        {
+            var replace = automationIds
+                            .Replace("EXPLORER", Explorer)
+                            .Replace("TOOLBOX", Toolbox)
+                            .Replace("WORKSURFACE", ServiceDesigner)
+                            ;
+            return replace;
+        }
 
         [AfterScenario]
         public void TestCleanUp()

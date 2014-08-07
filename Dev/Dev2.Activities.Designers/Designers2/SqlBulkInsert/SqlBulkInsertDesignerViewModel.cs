@@ -447,7 +447,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
         void SetSelectedTable(string tableName)
         {
-            var selectedTable = Tables.FirstOrDefault(t => t.TableName == tableName);
+            var selectedTable = Tables.FirstOrDefault(t => t.FullName == tableName);
             if(selectedTable == null)
             {
                 if(Tables.FirstOrDefault(t => t.Equals(SelectDbTable)) == null)
