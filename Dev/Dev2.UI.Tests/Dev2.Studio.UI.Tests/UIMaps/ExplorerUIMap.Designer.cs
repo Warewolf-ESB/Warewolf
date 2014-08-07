@@ -218,7 +218,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
         /// </summary>
         /// <param name="textToSearchWith">The text automatic search with.</param>
         /// <param name="waitAmt"></param>
-        public void EnterExplorerSearchText(string textToSearchWith, int waitAmt = 0)
+        public void EnterExplorerSearchText(string textToSearchWith, int waitAmt = 200)
         {
             _explorerSearch.EnterText(textToSearchWith);
             Playback.Wait(waitAmt);

@@ -183,6 +183,43 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Correcting errors on sql bulk insert clicking Done shows small view (using ids)")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Workflow")]
+        public virtual void CorrectingErrorsOnSqlBulkInsertClickingDoneShowsSmallViewUsingIds()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Correcting errors on sql bulk insert clicking Done shows small view (using ids)", ((string[])(null)));
+#line 42
+this.ScenarioSetup(scenarioInfo);
+#line 43
+ testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 44
+ testRunner.And("I click \"UI_RibbonHomeTabWorkflowBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 45
+ testRunner.When("I send \"Sql Bulk Insert\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 47
+ testRunner.And("I drag \"TOOLBOX,PART_Tools,Recordset,Dev2.Activities.DsfSqlBulkInsertActivity\" on" +
+                    "to \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 48
+ testRunner.And("I double click \"WORKSURFACE,SQL Bulk Insert(SqlBulkInsertDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 49
+ testRunner.And("I click \"WORKSURFACE,SQL Bulk Insert(SqlBulkInsertDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 50
+ testRunner.Then("\"WORKSURFACE,A database must be selected.\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 51
+ testRunner.Then("I click \"WORKSURFACE,SQL Bulk Insert(SqlBulkInsertDesigner),LargeViewContent,UI__" +
+                    "Database_AutoID,GetCities\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 52
+ testRunner.And("I click \"WORKSURFACE,SQL Bulk Insert(SqlBulkInsertDesigner),LargeViewContent,UI__" +
+                    "TableName_AutoID,dbo.City\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
+ testRunner.And("I click \"WORKSURFACE,SQL Bulk Insert(SqlBulkInsertDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 54
+ testRunner.Then("\"WORKSURFACE,A database must be selected.\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

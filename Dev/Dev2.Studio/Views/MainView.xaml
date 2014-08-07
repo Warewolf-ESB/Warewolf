@@ -625,15 +625,16 @@
 
                     <igDock:SplitPane x:Name="DockLeft"
                                       igDock:XamDockManager.InitialLocation="DockedLeft"
-                                      Width="300">
-                        <igDock:TabGroupPane>
+                                      Width="300"
+                                      >
+                        <igDock:TabGroupPane AutomationProperties.AutomationId="UI_TabPane_Left_AutoID">
                             <igDock:ContentPane x:Name="Explorer"
                                                 Header="Explorer"
                                                 AllowClose="False"
                                                 AllowInDocumentHost="False"
                                                 IsPinned="False"
                                                 AutomationProperties.AutomationId="UI_ExplorerPane_AutoID">
-                                <explorer:ExplorerView DataContext="{Binding ExplorerViewModel}" />
+                                <explorer:ExplorerView DataContext="{Binding ExplorerViewModel}" AutomationProperties.AutomationId="UI_ExplorerControl_AutoID"/>
                             </igDock:ContentPane>
                             <igDock:ContentPane x:Name="Toolbox"
                                                 Header="Toolbox"
@@ -641,7 +642,7 @@
                                                 AllowInDocumentHost="False"
                                                 IsPinned="False"
                                                 AutomationProperties.AutomationId="UI_ToolboxPane_AutoID">
-                                <bdsviews:ToolboxUserControl IsEnabled="{Binding HasActiveConnection}" />
+                                <bdsviews:ToolboxUserControl IsEnabled="{Binding HasActiveConnection}"  AutomationProperties.AutomationId="UI_ToolboxControl_AutoID" />
                             </igDock:ContentPane>
                             <igDock:ContentPane x:Name="Variables"
                                                 Header="Variables"

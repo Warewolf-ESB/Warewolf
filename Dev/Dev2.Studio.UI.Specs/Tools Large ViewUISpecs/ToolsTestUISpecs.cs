@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Dev2.Studio.UI.Tests;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Studio.UI.Specs.Tools_Large_ViewUISpecs
 {
     [Binding]
-    public class ToolsTestUISpecs
+    public class ToolsTestUISpecs : UIMapBase
     {
         [Given(@"I have Warewolf running")]
         public void GivenIHaveWarewolfRunning()
         {
-            ScenarioContext.Current.Pending();
+            Init();
         }
 
         [Given(@"I drag an ""(.*)"" onto design surface")]
@@ -194,11 +194,7 @@ namespace Dev2.Studio.UI.Specs.Tools_Large_ViewUISpecs
             ScenarioContext.Current.Pending();
         }
 
-        [Then(@"""(.*)"" is visible")]
-        public void ThenIsVisible(string p0)
-        {
-            ScenarioContext.Current.Pending();
-        }
+
 
         [Then(@"I enter variable ""(.*)"" in variable list")]
         public void ThenIEnterVariableInVariableList(string p0)

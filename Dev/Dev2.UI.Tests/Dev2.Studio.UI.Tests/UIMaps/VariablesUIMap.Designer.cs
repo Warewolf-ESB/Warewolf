@@ -34,7 +34,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.VariablesUIMapClasses
 
         public VariablesUIMap()
         {
-            _variableExplorer = VisualTreeWalker.GetControlFromRoot(1, true, 1, "Uia.DataListView");
+            _variableExplorer = VisualTreeWalker.GetControlFromRoot(true, 1, "Uia.DataListView");
         }
 
         private UITestControl GetUpdateButton()

@@ -2,10 +2,11 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 
 namespace Dev2.Studio.UI.Tests.Utils
 {
-    class VisualTreeWalker
+    public class VisualTreeWalker
     {
         static UIMapBase.UIStudioWindow _studioWindow;
 
@@ -29,7 +30,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             }
 
             //Find some child
-            var firstChildFound = children.Where(child =>
+            var firstChildFound = children.FirstOrDefault(child =>
                 {
                     var childID = child.GetProperty("AutomationID");
                     if(childID != null)
@@ -41,7 +42,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                             || child.ClassName.Contains(automationIDs[bookmark]);
                     }
                     return false;
-                }).FirstOrDefault();
+                });
             if(firstChildFound == null)
             {
                 throw new UITestControlNotFoundException("Cannot find " + automationIDs[bookmark] +
@@ -84,7 +85,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// <param name="splitPaneIndex">Index of the split pane.</param>
         /// <param name="automationIDs">The automation attribute ds.</param>
         /// <returns></returns>
-        public static UITestControl GetControlFromRoot(int depth, bool singleSearch, int splitPaneIndex, params string[] automationIDs)
+        public static UITestControl GetControlFromRoot(bool singleSearch, int splitPaneIndex, params string[] automationIDs)
         {
             if(_studioWindow == null)
             {
@@ -95,17 +96,61 @@ namespace Dev2.Studio.UI.Tests.Utils
             if(automationIDs != null && automationIDs.Length > 0)
             {
                 UITestControl theControl = new UITestControl(_studioWindow);
-
                 // handle all other pinned panes ;)
                 if(singleSearch)
                 {
-                    theControl.SearchProperties[UITestControl.PropertyNames.ClassName] = automationIDs[0];
-                    theControl.Find();
-
-                    if(automationIDs.Length > 1)
+                    //                    theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationIDs[0];
+                    //                    theControl.Find();
+                    var automationCounter = 0;
+                    UITestControlCollection children = null;
+                    while(automationCounter <= automationIDs.Length - 1)
                     {
-                        return new VisualTreeWalker().GetChildByAutomationIDPathImpl(theControl, depth, automationIDs);
+                        if(theControl == null)
+                        {
+                            throw new UITestControlNotFoundException("Control not found for: " + automationIDs[automationCounter - 1]);
+                        }
+                        var automationId = automationIDs[automationCounter];
+                        theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
+                        try
+                        {
+                            theControl.Find();
+                        }
+                        catch(UITestControlNotFoundException)
+                        {
+                            if(automationCounter == 0)
+                            {
+                                children = _studioWindow.GetChildren();
+                            }
+                            if(children != null)
+                            {
+                                theControl = children.FirstOrDefault(control =>
+                                {
+                                    var childAutoId = control.GetProperty("AutomationID").ToString();
+
+                                    return childAutoId == automationId ||
+                                           childAutoId.Contains(automationId) ||
+                                           control.Name.Contains(automationId) ||
+                                           control.FriendlyName.Contains(automationId) ||
+                                           control.ControlType.Name.Contains(automationId) ||
+                                           control.ClassName.Contains(automationId);
+                                });
+                            }
+                        }
+                        automationCounter++;
+                        if(theControl != null)
+                        {
+                            if(automationCounter != automationIDs.Length)
+                            {
+                                children = theControl.GetChildren();
+                            }
+                        }
                     }
+                    //
+                    //                    if(automationIDs.Length > 1)
+                    //                    {
+                    //
+                    //                        return new VisualTreeWalker().GetChildByAutomationIDPathImpl(theControl, depth, automationIDs);
+                    //                    }
 
                     return theControl;
                 }
