@@ -266,9 +266,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 69
  testRunner.And("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
- testRunner.When("I send \"Assign\" to \"ToolBoxSearch\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I send \"Assign\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 71
- testRunner.And("I drag \"ToolMultiAssign\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I drag \"TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activ" +
+                    "ities.DsfMultiAssignActivity\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
  testRunner.And("I double click \"WORKSURFACE,Assign (1)(MultiAssignDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -283,6 +284,41 @@ this.ScenarioSetup(scenarioInfo);
                         "2"});
 #line 73
  testRunner.And("I enter into the \"Multi Assign\"", ((string)(null)), table4, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag on BaseCovert")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Workflow")]
+        public virtual void DragOnBaseCovert()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag on BaseCovert", ((string[])(null)));
+#line 79
+this.ScenarioSetup(scenarioInfo);
+#line 80
+ testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 81
+ testRunner.And("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 82
+ testRunner.When("I send \"Base\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 83
+ testRunner.And("I drag \"TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activ" +
+                    "ities.DsfBaseConvertActivity\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 84
+ testRunner.And("I double click \"WORKSURFACE,BaseConvert (1)(DsfBaseConvertActivity)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Variable",
+                        "Value"});
+            table5.AddRow(new string[] {
+                        "[[rec]]",
+                        "1"});
+            table5.AddRow(new string[] {
+                        "[[theVar2]]",
+                        "2"});
+#line 85
+ testRunner.And("I enter into the \"Multi Assign\"", ((string)(null)), table5, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

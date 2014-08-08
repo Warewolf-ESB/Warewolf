@@ -62,3 +62,27 @@ Scenario: Debug GatherSystemInformation same variables in two activites
 	Then "DEBUGOUTPUT,Gather System Info 1 (2),CPU Available" is visible
 	Then "DEBUGOUTPUT,Gather System Info 2 (2),Date & Time" is visible
 	Then "DEBUGOUTPUT,Gather System Info 2 (2),CPU Available" is visible
+
+
+Scenario: Drag on Multiassign
+	Given I have Warewolf running
+	And I click new "Workflow"
+	When I send "Assign" to "TOOLBOX,PART_SearchBox"
+	And I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity" onto "WORKSURFACE,StartSymbol"
+	And I double click "WORKSURFACE,Assign (1)(MultiAssignDesigner)"
+	And I enter into the "Multi Assign"
+	| Variable    | Value |
+	| [[rec]]     | 1     |
+	| [[theVar2]] | 2     |
+	
+
+Scenario: Drag on BaseCovert
+	Given I have Warewolf running
+	And I click new "Workflow"
+	When I send "Base" to "TOOLBOX,PART_SearchBox"
+	And I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfBaseConvertActivity" onto "WORKSURFACE,StartSymbol"
+	And I double click "WORKSURFACE,BaseConvert (1)(DsfBaseConvertActivity)"
+	And I enter into the "Multi Assign"
+	| Variable    | Value |
+	| [[rec]]     | 1     |
+	| [[theVar2]] | 2     |
