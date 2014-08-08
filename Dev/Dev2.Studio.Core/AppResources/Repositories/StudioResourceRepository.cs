@@ -364,6 +364,7 @@ namespace Dev2.AppResources.Repositories
         public void ItemAddedMessageHandler(IExplorerItem item)
         {
             var environmentId = GetCurrentEnvironment();
+         
             var explorerItem = MapData(item, GetEnvironmentRepository(), environmentId);
             var resourcePath = item.ResourcePath.Replace("\\\\", "\\");
 
@@ -373,7 +374,7 @@ namespace Dev2.AppResources.Repositories
             }
 
             var parent = FindItem(model => model.ResourcePath.Equals(resourcePath) && model.EnvironmentId == environmentId);
-            var alreadyAdded = FindItem(model => model.ResourceId == item.ResourceId && model.ResourcePath == item.ResourcePath) != null;
+            var alreadyAdded = FindItem(model => model.ResourceId == item.ResourceId && model.ResourcePath == item.ResourcePath && model.EnvironmentId == environmentId) != null;
             var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
             var resourceRepository = environmentModel.ResourceRepository;
             var resourceModel = resourceRepository.FindSingle(model => model.ID == item.ResourceId);

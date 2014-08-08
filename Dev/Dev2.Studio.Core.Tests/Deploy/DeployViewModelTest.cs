@@ -195,6 +195,89 @@ namespace Dev2.Core.Tests
             c2.Verify(c => c.Disconnect(), Times.Never());
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DeployViewModel_Deploy")]
+        public void DeployViewModel_Deploy_AssertSelectedEnvIsDestination()
+        {
+            //New Mocks
+            var mockedServerRepo = new Mock<IEnvironmentRepository>();
+            var server = new Mock<IEnvironmentModel>();
+
+            server.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            _authService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, It.IsAny<string>())).Returns(true);
+            _authService.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, It.IsAny<string>())).Returns(true);
+            var secondServer = new Mock<IEnvironmentModel>();
+            secondServer.Setup(x => x.AuthorizationService).Returns(_authService.Object);
+            var provider = new Mock<IEnvironmentModelProvider>();
+            var resourceNode = new Mock<IContextualResourceModel>();
+            var resRepo = new Mock<IResourceRepository>();
+            var resRepo2 = new Mock<IResourceRepository>();
+            var id = Guid.NewGuid();
+
+            const string expectedResourceName = "Test Resource";
+            resourceNode.Setup(res => res.ResourceName).Returns(expectedResourceName);
+            resourceNode.Setup(res => res.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            resourceNode.Setup(res => res.ID).Returns(id);
+
+            //Setup Servers
+            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Verifiable();
+            resRepo.Setup(c => c.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(resourceNode.Object);
+            resRepo.Setup(c => c.DeployResources(It.IsAny<IEnvironmentModel>(), It.IsAny<IEnvironmentModel>(),
+                                       It.IsAny<IDeployDto>(), It.IsAny<IEventAggregator>())).Verifiable();
+
+            resRepo.Setup(c => c.All()).Returns(new List<IResourceModel>());
+            resRepo2.Setup(c => c.All()).Returns(new List<IResourceModel>());
+
+            server.Setup(svr => svr.IsConnected).Returns(true);
+            server.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            server.Setup(svr => svr.ResourceRepository).Returns(resRepo.Object);
+
+            secondServer.Setup(svr => svr.IsConnected).Returns(true);
+            secondServer.Setup(svr => svr.Connection).Returns(DebugOutputViewModelTest.CreateMockConnection(new Random(), new string[0]).Object);
+            secondServer.Setup(svr => svr.ResourceRepository).Returns(resRepo2.Object);
+
+            mockedServerRepo.Setup(svr => svr.Fetch(It.IsAny<IEnvironmentModel>())).Returns(server.Object);
+
+            provider.Setup(prov => prov.Load()).Returns(new List<IEnvironmentModel> { server.Object, secondServer.Object });
+
+
+            var initialResource = new Mock<IContextualResourceModel>();
+            initialResource.Setup(res => res.Environment).Returns(server.Object);
+            initialResource.Setup(res => res.ResourceName).Returns(expectedResourceName);
+
+            //Setup Navigation Tree
+
+            var resourceTreeNode = new ExplorerItemModel();
+
+            //Setup Server Resources
+
+
+            var mockStudioResourceRepository = GetMockStudioResourceRepository();
+            mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(resourceTreeNode);
+            var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object, true) { Environment = server.Object, ExplorerItemModels = new ObservableCollection<ExplorerItemModel>() };
+
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, provider.Object, mockedServerRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object)
+            {
+                Source = sourceDeployNavigationViewModel,
+                SelectedSourceServer = server.Object
+            };
+            int active = 0;
+            int getActive = 0;
+            resourceTreeNode.IsChecked = true;
+            PrivateObject pvt = new PrivateObject(deployViewModel);
+            pvt.SetField("_setActive",new Action<IEnvironmentModel>( a=>active++));
+            pvt.SetField("_getActive", new Func<IEnvironmentModel> (()=> { getActive++; return  new Mock<IEnvironmentModel>().Object;}));
+            //------------Execute Test--------------------------- 
+            deployViewModel.DeployCommand.Execute(null);
+
+            Assert.AreEqual(active,2);
+            Assert.AreEqual(getActive, 1);
+
+        }
+
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DeployViewModelTest")]

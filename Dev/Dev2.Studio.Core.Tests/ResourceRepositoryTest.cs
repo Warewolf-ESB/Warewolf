@@ -16,6 +16,7 @@ using Dev2.Core.Tests.XML;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Interfaces;
+using Dev2.Models;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
@@ -907,6 +908,42 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceRepository_OnDeleteFromWorkspace")]
+        public void WorkFlowService_OnDeleteFromWorkspace_Expected_InRepository_UnsaveWF()
+        {
+            var retVal = new StringBuilder();
+            Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.IsConnected).Returns(true);
+            conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid dataListID, Guid workspaceID) =>
+            {
+                retVal = o;
+            });
+
+            mockEnvironmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            var ResourceRepository = new ResourceRepository(mockEnvironmentModel.Object);
+
+            mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(ResourceRepository);
+            mockEnvironmentModel.Setup(x => x.LoadResources());
+
+            var myItem = new ResourceModel(mockEnvironmentModel.Object) { ResourceName = "Unsaved" };
+            mockEnvironmentModel.Object.ResourceRepository.Add(myItem);
+            int exp = mockEnvironmentModel.Object.ResourceRepository.All().Count;
+            var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
+            mockStudioResourceRepository.Setup(repository => repository.DeleteItem(It.IsAny<Guid>(), It.IsAny<Guid>())).Verifiable();
+            ResourceRepository.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
+            ResourceRepository.DeleteResourceFromWorkspace(myItem);
+            Assert.AreEqual(exp, mockEnvironmentModel.Object.ResourceRepository.All().Count);
+            var retMsg = JsonConvert.DeserializeObject<ExecuteMessage>(retVal.ToString());
+            Assert.IsNotNull(retMsg);
+            mockStudioResourceRepository.Verify(repository => repository.DeleteItem(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Once());
+        }
+
+
+        [TestMethod]
         public void WorkFlowService_OnDeleteFromWorkspace_Expected_InRepository()
         {
             var retVal = new StringBuilder();
@@ -938,7 +975,6 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.IsNotNull(retMsg);
             mockStudioResourceRepository.Verify(repository => repository.DeleteItem(It.IsAny<Guid>(), It.IsAny<Guid>()), Times.Never());
         }
-
         [TestMethod]
         public void NonExistantWorkFlowService_OnDelete_Expected_Failure()
         {
@@ -2159,7 +2195,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.DeployResources(srcModel.Object, targetModel.Object, dto, mockEventAg.Object);
 
             //------------Assert Results-------------------------
-            targetRepo.Verify(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>()));
+            targetRepo.Verify(tr => tr.FindAffectedResources(It.IsAny<List<Guid>>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>()));
         }
 
         [TestMethod]
@@ -2246,7 +2282,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.DeployResources(srcEnvModel.Object, targetEnvModel.Object, dto, mockEventAg.Object);
 
             //------------Assert Results-------------------------
-            targetRepo.Verify(tr => tr.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>()));
+            targetRepo.Verify(tr => tr.FindAffectedResources(It.IsAny<List<Guid>>(), It.IsAny<ResourceType>(), ResourceModelEqualityComparer.Current, It.IsAny<bool>()));
 
         }
 
@@ -2593,6 +2629,172 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         #endregion
+   
+        
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceRepository_HasDependencies")]
+        public void FindResourcesByID_HasDependencies_ExpectFalse()
+        {
+            ResourceRepository resourceRepository = GetResourceRepository();
+            var result = resourceRepository.HasDependencies(new Mock<IContextualResourceModel>().Object);
+            Assert.IsFalse(result);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceRepository_HasDependencies")]
+        public void FindResourcesByID_HasDependencies_ExpectFalseIfSelf()
+        {
+            var mockConnection = new Mock<IEnvironmentConnection>();
+
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            msg.SetMessage(TestDependencyGraph.ToString());
+            var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
+
+            mockConnection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(payload).Verifiable();
+            mockConnection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            mockConnection.Setup(c => c.IsConnected).Returns(true);
+
+            var testEnvironmentModel2 = new Mock<IEnvironmentModel>();
+            testEnvironmentModel2.Setup(e => e.Connection).Returns(mockConnection.Object);
+
+            var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
+            var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
+            foreach (var resourceModel in testResources)
+            {
+                resRepo.Add(resourceModel);
+            }
+
+            testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
+
+
+           var res =  resRepo.HasDependencies(new ResourceModel(testEnvironmentModel2.Object) { ResourceName = "Button" });
+           Assert.IsFalse(res);
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceRepository_ReceivePermissionsModified")]
+        public void ResourceRepository_ReceivePermissionsModified_HasDependencies_ExpectFalseIfSelf()
+        {
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            var stud = new Mock<IStudioResourceRepository>();
+
+
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            msg.SetMessage(TestDependencyGraph.ToString());
+            var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
+
+            mockConnection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(payload).Verifiable();
+            mockConnection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            mockConnection.Setup(c => c.IsConnected).Returns(true);
+
+            var auth = new Mock<IAuthorizationService>();
+            auth.Setup(a => a.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
+            var testEnvironmentModel2 = new Mock<IEnvironmentModel>();
+            testEnvironmentModel2.Setup(e => e.Connection).Returns(mockConnection.Object);
+            testEnvironmentModel2.Setup(a=>a.AuthorizationService).Returns(auth.Object);
+            var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
+            var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
+            foreach (var resourceModel in testResources)
+            {
+                resRepo.Add(resourceModel);
+            }
+
+            testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
+           
+            WindowsGroupPermission perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
+            PrivateObject p = new PrivateObject(resRepo);
+            resRepo.GetStudioResourceRepository = () => stud.Object;
+            p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm } });
+
+            // expect that the resource repository gets an update
+            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<ExplorerItemModel>>(), It.IsAny<Guid>()),Times.Exactly(2));
+            stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false));
+
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceRepository_ReceivePermissionsModified")]
+        public void ResourceRepository_ReceivePermissionsModified_ExpectUpdateIfNonEmptyGuid()
+        {
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            var stud = new Mock<IStudioResourceRepository>();
+
+
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            msg.SetMessage(TestDependencyGraph.ToString());
+            var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
+
+            mockConnection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(payload).Verifiable();
+            mockConnection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            mockConnection.Setup(c => c.IsConnected).Returns(true);
+
+            var auth = new Mock<IAuthorizationService>();
+            auth.Setup(a => a.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
+            var testEnvironmentModel2 = new Mock<IEnvironmentModel>();
+            testEnvironmentModel2.Setup(e => e.Connection).Returns(mockConnection.Object);
+            testEnvironmentModel2.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
+            var res = new Mock<IResourceModel>();
+            res.Setup(a => a.ID).Returns(Guid.NewGuid());
+            var testResources = new List<IResourceModel>{res.Object};
+            foreach (var resourceModel in testResources)
+            {
+                resRepo.Add(resourceModel);
+            }
+
+            testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
+
+            WindowsGroupPermission perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
+            PrivateObject p = new PrivateObject(resRepo);
+            resRepo.GetStudioResourceRepository = () => stud.Object;
+            p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm } });
+
+            // expect that the resource repository gets an update
+            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<ExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(1));
+            stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false),Times.Never());
+
+        }
+
+        //Create resource repository without connected to any environment
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceRepository_SaveToServer")]
+        public void ResourceRepository_SaveToServer_ExpectThatModelAdded()
+        {
+            //Arrange
+            Setup();
+
+            ExecuteMessage msg = new ExecuteMessage();
+            var exePayload = JsonConvert.SerializeObject(msg);
+
+            _environmentConnection.Setup(envConn => envConn.IsConnected).Returns(false);
+            var rand = new Random();
+            var conn = new Mock<IEnvironmentConnection>();
+            conn.Setup(c => c.AppServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
+            conn.Setup(c => c.WebServerUri).Returns(new Uri(string.Format("http://127.0.0.{0}:{1}", rand.Next(1, 100), rand.Next(1, 100))));
+            conn.Setup(c => c.IsConnected).Returns(false);
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(exePayload));
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            try
+            {
+                _repo.SaveToServer(_resourceModel.Object);
+
+                Assert.Fail("Should always have thrown an exception");
+            }
+            //Assert
+            catch (Exception iex)
+            {
+                PrivateObject p = new PrivateObject(_repo);
+                Assert.AreEqual(1, ((List<IResourceModel>)p.GetField("ResourceModels")).Count);
+                Assert.AreEqual("No connected environment found to perform operation on.", iex.Message);
+            }
+
+        }
 
 
         /// <summary>

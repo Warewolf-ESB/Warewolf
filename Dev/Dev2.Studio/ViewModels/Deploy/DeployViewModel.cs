@@ -62,7 +62,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         private int _destinationDeployItemCount;
         private Guid? _destinationContext;
         private Guid? _sourceContext;
-
+        private Action<IEnvironmentModel> _setActive = SetActiveEnvironment;
+        private Func<IEnvironmentModel> _getActive = GetActiveEnvironment; 
         #endregion Class Members
 
         #region Constructor
@@ -673,13 +674,10 @@ namespace Dev2.Studio.ViewModels.Deploy
                 try
                 {
                     IsDeploying = true;
-
+                    var env = _getActive();
+                    _setActive(SelectedDestinationServer);
                     deployResourceRepo.DeployResources(SelectedSourceServer, SelectedDestinationServer, deployDto, EventPublisher);
-
-                    //
-                    // Reload the environments resources & update explorer
-                    //
-                    RefreshEnvironments();
+                    _setActive(env);
                     DeploySuccessfull = true;
                 }
                 catch(Exception)
@@ -692,6 +690,16 @@ namespace Dev2.Studio.ViewModels.Deploy
                     IsDeploying = false;
                 }
             }
+        }
+
+        static void SetActiveEnvironment(IEnvironmentModel env)
+        {
+            Core.EnvironmentRepository.Instance.ActiveEnvironment = env;
+        }
+
+        static IEnvironmentModel GetActiveEnvironment()
+        {
+            return Core.EnvironmentRepository.Instance.ActiveEnvironment;
         }
 
         public bool DestinationServerHasDropped

@@ -58,14 +58,16 @@ namespace Dev2.Studio.Core.Interfaces
         IResourceModel FindSingleWithPayLoad(Expression<Func<IResourceModel, bool>> expression);
         ExecuteMessage Save(IResourceModel instanceObj);
         ExecuteMessage Save(IResourceModel instanceObj, bool addToStudioRespotory);
-        void Save(ICollection<IResourceModel> instanceObjs);
+
         event EventHandler ItemAdded;
         void Load();
         void Remove(IResourceModel instanceObj);
-        void Remove(ICollection<IResourceModel> instanceObjs);
+
 
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);
 
         void LoadResourceFromWorkspace(Guid resourceId, Guid? workspaceId);
+        List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, AppResources.Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml);
+
     }
 }

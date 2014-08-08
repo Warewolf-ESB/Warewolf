@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Diagnostics.CodeAnalysis;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -96,9 +97,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var targetResourceRepo = targetEnviroment.ResourceRepository;
 
             // Inform the repo to reload the deployed resources against the targetEnviroment ;)
-            foreach(var resourceToReload in deployableResources)
+            var deployables = deployableResources.GroupBy(a => a.ResourceType);
+            foreach (var x in deployables)
             {
-                targetResourceRepo.ReloadResource(resourceToReload.ID, resourceToReload.ResourceType, ResourceModelEqualityComparer.Current, true);
+                targetResourceRepo.FindAffectedResources(x.Select(a=>a.ID).ToList() , x.First().ResourceType, ResourceModelEqualityComparer.Current, true);
+            
             }
         }
 
@@ -138,11 +141,21 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var con = _environmentModel.Connection;
             comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
 
-            comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
-            comsController.AddPayloadArgument("GuidCsv", resourceId.ToString());
+            var effectedResources = FindAffectedResources(new List<Guid>{resourceId}, resourceType, equalityComparer, fetchXaml);
+
+            return effectedResources;
+        }
+
+        public List<IResourceModel> FindAffectedResources(IList<Guid> resourceId, Enums.ResourceType resourceType, IEqualityComparer<IResourceModel> equalityComparer, bool fetchXaml)
+        {
+            CommunicationController comsController = new CommunicationController { ServiceName = "FindResourcesByID" };
+            var resourceIds = resourceId.Select(a => a.ToString() + ",").Aggregate((a, b) => a + b);
+            resourceIds = resourceIds.EndsWith(",") ? resourceIds.Substring(0, resourceIds.Length - 1) : resourceIds;
+
+            comsController.AddPayloadArgument("GuidCsv", resourceIds);
             comsController.AddPayloadArgument("ResourceType", Enum.GetName(typeof(Enums.ResourceType), resourceType));
 
-            var toReloadResources = comsController.ExecuteCommand<List<SerializableResource>>(con, GlobalConstants.ServerWorkspaceID);
+            var toReloadResources = comsController.ExecuteCommand<List<SerializableResource>>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
             var effectedResources = new List<IResourceModel>();
 
             foreach(var serializableResource in toReloadResources)
@@ -166,7 +179,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     }
                 }
             }
-
             return effectedResources;
         }
 
@@ -362,15 +374,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
         }
 
-        public void Save(ICollection<IResourceModel> instanceObjs)
-        {
-            throw new NotImplementedException();
-        }
 
-        public void Remove(ICollection<IResourceModel> instanceObjs)
-        {
-            throw new NotImplementedException();
-        }
+
+
 
         public void Remove(IResourceModel instanceObj)
         {
@@ -536,6 +542,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             }
         }
 
+        [ExcludeFromCodeCoverage]
         void HandleDeleteResourceError(ExecuteMessage data, IResourceModel model)
         {
             if(data.HasError)
