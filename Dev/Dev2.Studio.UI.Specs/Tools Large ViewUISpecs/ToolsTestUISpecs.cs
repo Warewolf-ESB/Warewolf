@@ -10,6 +10,7 @@ namespace Dev2.Studio.UI.Specs.Tools_Large_ViewUISpecs
         public void GivenIHaveWarewolfRunning()
         {
             Init();
+            TabManagerUIMap.CloseAllTabs();
         }
 
         [Given(@"I drag an ""(.*)"" onto design surface")]

@@ -196,6 +196,21 @@ namespace Dev2.ViewModels.Diagnostics
                 destinationList.Add(list);
             }
         }
+
+        #region Overrides of Object
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>
+        /// A string that represents the current object.
+        /// </returns>
+        public override string ToString()
+        {
+            return Content.DisplayName;
+        }
+
+        #endregion
     }
 
     public interface IDebugTreeViewItemViewModel : INotifyPropertyChanged

@@ -43,7 +43,6 @@ Scenario: Correcting errors on sql bulk insert clicking Done shows small view (u
 	Given I have Warewolf running	
 	And I click "UI_RibbonHomeTabWorkflowBtn_AutoID"
 	When I send "Sql Bulk Insert" to "TOOLBOX,PART_SearchBox"
-	#And I send "Bug_1096" to "EXPLORER,FilterTextBox,UI_DataListSearchtxt_AutoID"
 	And I drag "TOOLBOX,PART_Tools,Recordset,Dev2.Activities.DsfSqlBulkInsertActivity" onto "WORKSURFACE,StartSymbol"
 	And I double click "WORKSURFACE,SQL Bulk Insert(SqlBulkInsertDesigner)"
 	And I click "WORKSURFACE,SQL Bulk Insert(SqlBulkInsertDesigner),DoneButton"
@@ -52,11 +51,14 @@ Scenario: Correcting errors on sql bulk insert clicking Done shows small view (u
 	And I click "WORKSURFACE,SQL Bulk Insert(SqlBulkInsertDesigner),LargeViewContent,UI__TableName_AutoID,dbo.City"
 	And I click "WORKSURFACE,SQL Bulk Insert(SqlBulkInsertDesigner),DoneButton"
 	Then "WORKSURFACE,A database must be selected." is not visible
-	#When I drag on a "Sql Bulk Insert" tool as 'SqlBulkIns'
-	#And I open the large view of 'SqlBulkIns'
-	#When I click 'DoneButton' on 'SqlBulkIns'
-	#Then errors are shown for 'SqlBulkIns'
-	#Then I select 'GetCities' in 'UI__Database_AutoID' in 'SqlBulkIns'
-	#And I select 'City' in 'UI__TableName_AutoID' in 'SqlBulkIns'
-	#When I click 'DoneButton' on 'SqlBulkIns'
-	#Then Small View for 'SqlBulkIns' is shown
+
+Scenario: Debug GatherSystemInformation same variables in two activites
+	Given I have Warewolf running
+	And I send "11330_Integration tests" to "EXPLORER,FilterTextBox,UI_DataListSearchtxt_AutoID"
+	And I double click "EXPLORER,Navigation,UI_localhost,UI_SPINT 7_AutoID,UI_11330_Integration tests_AutoID"
+	And I send "{F6}" to ""
+	And I wait
+	Then "DEBUGOUTPUT,Gather System Info 1 (2),Date & Time" is visible
+	Then "DEBUGOUTPUT,Gather System Info 1 (2),CPU Available" is visible
+	Then "DEBUGOUTPUT,Gather System Info 2 (2),Date & Time" is visible
+	Then "DEBUGOUTPUT,Gather System Info 2 (2),CPU Available" is visible

@@ -93,7 +93,12 @@ namespace Dev2.Studio.UI.Tests.Utils
                 _studioWindow.Find();
             }
 
-            if(automationIDs != null && automationIDs.Length > 0)
+            if(automationIDs == null || automationIDs.Length == 0)
+            {
+                return _studioWindow;
+            }
+
+            if(automationIDs.Length > 0)
             {
                 UITestControl theControl = new UITestControl(_studioWindow);
                 // handle all other pinned panes ;)
@@ -129,7 +134,7 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                                     return childAutoId == automationId ||
                                            childAutoId.Contains(automationId) ||
-                                           control.Name.Contains(automationId) ||
+                                           (control.Name != null && control.Name.Contains(automationId)) ||
                                            control.FriendlyName.Contains(automationId) ||
                                            control.ControlType.Name.Contains(automationId) ||
                                            control.ClassName.Contains(automationId);

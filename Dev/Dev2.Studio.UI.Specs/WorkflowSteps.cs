@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Dev2.Studio.UI.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
@@ -19,6 +20,7 @@ namespace Dev2.Studio.UI.Specs
         const string Explorer = "Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,TheNavigationView";
         const string Toolbox = "UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
         const string ServiceDesigner = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
+        const string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput,DebugOutputTree";
 
         [BeforeTestRun]
         public static void SetupForTest()
@@ -167,6 +169,7 @@ namespace Dev2.Studio.UI.Specs
         }
 
         [When(@"I send ""(.*)"" to ""(.*)""")]
+        [Given(@"I send ""(.*)"" to ""(.*)""")]
         public void WhenISendTo(string textToSend, string automationIds)
         {
             var automationIDs = GetCorrect(automationIds).Split(',');
@@ -214,12 +217,13 @@ namespace Dev2.Studio.UI.Specs
         }
 
         [When(@"I double click ""(.*)""")]
+        [Given(@"I double click ""(.*)""")]
         public void WhenIDoubleClick(string itemToDoubleClickAutoIds)
         {
             var correcteddItemToDoubleClickAutoIds = GetCorrect(itemToDoubleClickAutoIds).Split(',');
             var itemToDoubleClick = VisualTreeWalker.GetControlFromRoot(true, 0, correcteddItemToDoubleClickAutoIds);
-
-            Mouse.DoubleClick(itemToDoubleClick, new Point(5, 5));
+            var clickablePoint = itemToDoubleClick.GetClickablePoint();
+            Mouse.DoubleClick(itemToDoubleClick, clickablePoint);
 
         }
 
@@ -242,12 +246,26 @@ namespace Dev2.Studio.UI.Specs
             Assert.IsNull(itemFound);
         }
 
+        [Given(@"I wait (.*)")]
+        public void GivenIWait(int waitTime)
+        {
+            Playback.Wait(waitTime);
+        }
+
+        [Given(@"I wait")]
+        public void GivenIWait()
+        {
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            Playback.Wait(200);
+        }
+
         string GetCorrect(string automationIds)
         {
             var replace = automationIds
                             .Replace("EXPLORER", Explorer)
                             .Replace("TOOLBOX", Toolbox)
                             .Replace("WORKSURFACE", ServiceDesigner)
+                            .Replace("DEBUGOUTPUT", DebugOutput)
                             ;
             return replace;
         }

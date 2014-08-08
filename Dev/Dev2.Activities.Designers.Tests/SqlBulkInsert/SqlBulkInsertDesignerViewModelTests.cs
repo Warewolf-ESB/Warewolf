@@ -142,7 +142,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", selectedDatabase);
-            modelItem.SetProperty("TableName", selectedTable.TableName);
+            modelItem.SetProperty("TableName", selectedTable.FullName);
 
             var propertyChanged = false;
             modelItem.PropertyChanged += (sender, args) =>
@@ -222,7 +222,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", initialDatabase);
-            modelItem.SetProperty("TableName", initialTable.TableName);
+            modelItem.SetProperty("TableName", initialTable.FullName);
             modelItem.SetProperty("InputMappings", initialTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList());
 
             var viewModel = CreateViewModel(modelItem, databases);
@@ -426,7 +426,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", selectedDatabase);
-            modelItem.SetProperty("TableName", selectedTable.TableName);
+            modelItem.SetProperty("TableName", selectedTable.FullName);
             modelItem.SetProperty("InputMappings", selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList());
 
             var viewModel = CreateViewModel(modelItem, databases);
@@ -765,7 +765,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var n = 0;
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", selectedDatabase);
-            modelItem.SetProperty("TableName", selectedTable.TableName);
+            modelItem.SetProperty("TableName", selectedTable.FullName);
             //we need to make columns null-able to make test pass ;)
             selectedTable.Columns.ForEach(c => c.IsNullable = true);
             modelItem.SetProperty("InputMappings", selectedTable.Columns
