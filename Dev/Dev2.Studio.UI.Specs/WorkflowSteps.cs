@@ -22,6 +22,10 @@ namespace Dev2.Studio.UI.Specs
         const string Toolbox = "UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
         const string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
         const string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput,DebugOutputTree";
+        const string ToolBoxSearch = ToolBox+",PART_SearchBox";
+
+        const string ToolMultiAssign = ToolBox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
+
 
         [BeforeTestRun]
         public static void SetupForTest()
