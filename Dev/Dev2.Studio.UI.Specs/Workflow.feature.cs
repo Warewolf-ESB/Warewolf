@@ -264,26 +264,19 @@ this.ScenarioSetup(scenarioInfo);
 #line 68
  testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 69
- testRunner.And("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click \"UI_RibbonHomeTabWorkflowBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 70
  testRunner.When("I send \"Assign\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 71
- testRunner.And("I drag \"TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activ" +
-                    "ities.DsfMultiAssignActivity\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
- testRunner.And("I double click \"WORKSURFACE,Assign (1)(MultiAssignDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Variable",
-                        "Value"});
-            table4.AddRow(new string[] {
-                        "[[rec]]",
-                        "1"});
-            table4.AddRow(new string[] {
-                        "[[theVar2]]",
-                        "2"});
+ testRunner.And("I drag \"TOOLMULTIASSIGN\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 73
- testRunner.And("I enter into the \"Multi Assign\"", ((string)(null)), table4, "And ");
+ testRunner.And("I send \"[[rec().a]]\" to \"WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewCon" +
+                    "tent,SmallDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.Activi" +
+                    "tyDTO,Column Display Index: 1,UI__Row1_FieldName_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 74
+ testRunner.And("I send \"a\" to \"WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,Small" +
+                    "DataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.ActivityDTO,Colu" +
+                    "mn Display Index: 1,UI__Row1_FieldValue_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -294,31 +287,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragOnBaseCovert()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag on BaseCovert", ((string[])(null)));
-#line 79
+#line 76
 this.ScenarioSetup(scenarioInfo);
-#line 80
+#line 77
  testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 81
+#line 78
  testRunner.And("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 82
+#line 79
  testRunner.When("I send \"Base\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 83
+#line 80
  testRunner.And("I drag \"TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activ" +
                     "ities.DsfBaseConvertActivity\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 84
+#line 81
  testRunner.And("I double click \"WORKSURFACE,BaseConvert (1)(DsfBaseConvertActivity)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         "Variable",
                         "Value"});
-            table5.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "[[rec]]",
                         "1"});
-            table5.AddRow(new string[] {
+            table4.AddRow(new string[] {
                         "[[theVar2]]",
                         "2"});
-#line 85
- testRunner.And("I enter into the \"Multi Assign\"", ((string)(null)), table5, "And ");
+#line 82
+ testRunner.And("I enter into the \"Multi Assign\"", ((string)(null)), table4, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

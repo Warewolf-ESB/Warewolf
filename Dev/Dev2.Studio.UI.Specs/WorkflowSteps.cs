@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -17,14 +18,15 @@ namespace Dev2.Studio.UI.Specs
     [Binding]
     public class WorkflowSteps : UIMapBase
     {
+        // ReSharper disable ConvertToConstant.Local
+        // ReSharper disable UnusedMember.Local
 
-        const string Explorer = "Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,TheNavigationView";
-        const string Toolbox = "UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
-        const string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
-        const string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput,DebugOutputTree";
-        // const string ToolBoxSearch = ToolBox+",PART_SearchBox";
-
-        // const string ToolMultiAssign = ToolBox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
+        static readonly string Explorer = "Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,TheNavigationView";
+        static readonly string Toolbox = "UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
+        static readonly string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
+        static readonly string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput,DebugOutputTree";
+        static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
+        static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
 
 
         [BeforeTestRun]
@@ -231,6 +233,7 @@ namespace Dev2.Studio.UI.Specs
             var correcteddItemToDoubleClickAutoIds = GetCorrect(itemToDoubleClickAutoIds).Split(',');
             var itemToDoubleClick = VisualTreeWalker.GetControlFromRoot(true, 0, correcteddItemToDoubleClickAutoIds);
             var clickablePoint = itemToDoubleClick.GetClickablePoint();
+            clickablePoint.Offset(5, 5);
             Mouse.DoubleClick(itemToDoubleClick, clickablePoint);
 
         }
@@ -271,11 +274,11 @@ namespace Dev2.Studio.UI.Specs
         string GetCorrect(string automationIds)
         {
             var fieldInfos = typeof(WorkflowSteps).GetFields(BindingFlags.NonPublic | BindingFlags.Static);
-            var consts = fieldInfos.Where(fi => fi.IsLiteral).ToList();
+            var consts = fieldInfos.Where(fi => fi.FieldType == typeof(String)).ToList();
             var replace = automationIds;
             foreach(var fieldInfo in consts)
             {
-                var rawConstantValue = fieldInfo.GetRawConstantValue() as string;
+                var rawConstantValue = fieldInfo.GetValue(this) as string;
                 if(rawConstantValue != null)
                 {
                     replace = replace.Replace(fieldInfo.Name.ToUpper(), rawConstantValue);

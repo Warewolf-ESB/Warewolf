@@ -66,15 +66,12 @@ Scenario: Debug GatherSystemInformation same variables in two activites
 
 Scenario: Drag on Multiassign
 	Given I have Warewolf running
-	And I click new "Workflow"
+	And I click "UI_RibbonHomeTabWorkflowBtn_AutoID"
 	When I send "Assign" to "TOOLBOX,PART_SearchBox"
-	And I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity" onto "WORKSURFACE,StartSymbol"
-	And I double click "WORKSURFACE,Assign (1)(MultiAssignDesigner)"
-	And I enter into the "Multi Assign"
-	| Variable    | Value |
-	| [[rec]]     | 1     |
-	| [[theVar2]] | 2     |
-	
+	And I drag "TOOLMULTIASSIGN" onto "WORKSURFACE,StartSymbol"
+	#And I double click "WORKSURFACE,Assign (1)(MultiAssignDesigner)"
+	And I send "[[rec().a]]" to "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.ActivityDTO,Column Display Index: 1,UI__Row1_FieldName_AutoID"
+	And I send "a" to "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.ActivityDTO,Column Display Index: 1,UI__Row1_FieldValue_AutoID"
 
 Scenario: Drag on BaseCovert
 	Given I have Warewolf running
