@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Input;
 using System.Xml;
 using Dev2.Common;
@@ -9,8 +10,8 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.StringTokenizer.Interfaces;
 using Dev2.Data.Util;
 using Dev2.Providers.Errors;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Models.QuickVariableInput;
-using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.ViewModels.QuickVariableInput
 {
@@ -28,13 +29,13 @@ namespace Dev2.ViewModels.QuickVariableInput
         private bool _showPreview;
         private bool _canAdd;
 
-        private RelayCommand _cancelCommand;
-        private RelayCommand _previewCommand;
-        private RelayCommand _addCommand;
+        private DelegateCommand _cancelCommand;
+        private DelegateCommand _previewCommand;
+        private DelegateCommand _addCommand;
         private List<string> _splitTypeList;
-        private List<KeyValuePair<ErrorType, string>> _errorColletion;
+        private readonly List<KeyValuePair<ErrorType, string>> _errorColletion;
 
-        private QuickVariableInputModel _model;
+        private readonly QuickVariableInputModel _model;
 
         #endregion
 
@@ -192,12 +193,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             Suffix = string.Empty;
             CanAdd = false;
 
-            SplitTypeList = new List<string>();
-            SplitTypeList.Add("Index");
-            SplitTypeList.Add("Chars");
-            SplitTypeList.Add("New Line");
-            SplitTypeList.Add("Space");
-            SplitTypeList.Add("Tab");
+            SplitTypeList = new List<string> { "Index", "Chars", "New Line", "Space", "Tab" };
             _errorColletion = new List<KeyValuePair<ErrorType, string>>();
         }
 
@@ -209,14 +205,7 @@ namespace Dev2.ViewModels.QuickVariableInput
         {
             get
             {
-                if (_addCommand == null)
-                {
-                    _addCommand = new RelayCommand(param =>
-                    {
-                        AddToActivity();
-                    }, param => true);
-                }
-                return _addCommand;
+                return _addCommand ?? (_addCommand = new DelegateCommand(param => AddToActivity()));
             }
         }
 
@@ -224,14 +213,7 @@ namespace Dev2.ViewModels.QuickVariableInput
         {
             get
             {
-                if (_cancelCommand == null)
-                {
-                    _cancelCommand = new RelayCommand(param =>
-                    {
-                        ClearData();
-                    }, param => true);
-                }
-                return _cancelCommand;
+                return _cancelCommand ?? (_cancelCommand = new DelegateCommand(param => ClearData()));
             }
         }
 
@@ -239,14 +221,7 @@ namespace Dev2.ViewModels.QuickVariableInput
         {
             get
             {
-                if (_previewCommand == null)
-                {
-                    _previewCommand = new RelayCommand(param =>
-                    {
-                        Preview();
-                    }, param => true);
-                }
-                return _previewCommand;
+                return _previewCommand ?? (_previewCommand = new DelegateCommand(param => Preview()));
             }
         }
 
@@ -394,20 +369,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         public List<string> MakeDataListReady(IList<string> listToMakeReady)
         {
-            List<string> results = new List<string>();
-
-            foreach (string s in listToMakeReady)
-            {
-                if (!string.IsNullOrEmpty(s))
-                {
-                    string tmp = string.Concat(Prefix, s, Suffix);
-                    tmp = DataListUtil.AddBracketsToValueIfNotExist(tmp);
-                    tmp = tmp.Replace(" ", "");
-                    results.Add(tmp);
-                }
-            }
-
-            return results;
+            return listToMakeReady.Where(s => !string.IsNullOrEmpty(s)).Select(s => string.Concat(Prefix, s, Suffix)).Select(DataListUtil.AddBracketsToValueIfNotExist).Select(tmp => tmp.Replace(" ", "")).ToList();
         }
 
         #endregion
@@ -416,8 +378,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         private IDev2Tokenizer CreateSplitPattern(string stringToSplit, string splitType, string at)
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder();
-            dtb.ToTokenize = stringToSplit;
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
 
             switch (splitType)
             {
@@ -482,14 +443,7 @@ namespace Dev2.ViewModels.QuickVariableInput
                 if (!int.TryParse(SplitToken, out indexToSplitOn))
                 {
                     double doubleToSplitOn;
-                    if (double.TryParse(SplitToken, out doubleToSplitOn))
-                    {
-                        _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a number less then 2,147,483,647 for an Index split"));
-                    }
-                    else
-                    {
-                        _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
-                    }
+                    _errorColletion.Add(double.TryParse(SplitToken, out doubleToSplitOn) ? new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a number less then 2,147,483,647 for an Index split") : new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
                     return false;
                 }
 

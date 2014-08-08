@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Core.AppResources;
+using Dev2.Studio.Core.Interfaces;
+using System;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels.Base;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Administration
 {
 
@@ -60,11 +60,7 @@ namespace Dev2.Studio.ViewModels.Administration
         {
             get
             {
-                if(_hyperLink == null)
-                {
-                    _hyperLink = new RelayCommand(p => Hyperlink_OnMouseDown());
-                }
-                return _hyperLink;
+                return _hyperLink ?? (_hyperLink = new RelayCommand(p => Hyperlink_OnMouseDown()));
             }
         }
 
@@ -72,11 +68,13 @@ namespace Dev2.Studio.ViewModels.Administration
         {
             get
             {
-                if(_okClicked == null)
-                {
-                    _okClicked = new RelayCommand(p => { if(OnOkClick != null) OnOkClick(this, null); }, p => true);
-                }
-                return _okClicked;
+                return _okClicked ?? (_okClicked = new RelayCommand(p =>
+                    {
+                        if(OnOkClick != null)
+                        {
+                            OnOkClick(this, null);
+                        }
+                    }, p => true));
             }
         }
 
@@ -107,26 +105,12 @@ namespace Dev2.Studio.ViewModels.Administration
 
         private void SetTitle(string title)
         {
-            if(string.IsNullOrEmpty(title))
-            {
-                _title = string.Empty;
-            }
-            else
-            {
-                _title = title;
-            }
+            _title = string.IsNullOrEmpty(title) ? string.Empty : title;
         }
 
         private void SetDescription(string description)
         {
-            if(string.IsNullOrEmpty(description))
-            {
-                _description = string.Empty;
-            }
-            else
-            {
-                _description = description;
-            }
+            _description = string.IsNullOrEmpty(description) ? string.Empty : description;
         }
 
         private void SetImage(string imageSource)
@@ -163,14 +147,7 @@ namespace Dev2.Studio.ViewModels.Administration
 
         private void SetDescriptionTitleText(string text)
         {
-            if(string.IsNullOrEmpty(text))
-            {
-                _descriptionTitleText = string.Empty;
-            }
-            else
-            {
-                _descriptionTitleText = text;
-            }
+            _descriptionTitleText = string.IsNullOrEmpty(text) ? string.Empty : text;
         }
 
         private void SetHyperlink(string link, string text)

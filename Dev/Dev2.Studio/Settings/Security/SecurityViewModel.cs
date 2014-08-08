@@ -9,10 +9,10 @@ using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Dialogs;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 
 namespace Dev2.Settings.Security
@@ -49,8 +49,8 @@ namespace Dev2.Settings.Security
             _directoryObjectPicker.TargetComputer = string.Empty;
             _directoryObjectPicker.ShowAdvancedView = false;
 
-            PickWindowsGroupCommand = new RelayCommand(PickWindowsGroup, o => true);
-            PickResourceCommand = new RelayCommand(PickResource, o => true);
+            PickWindowsGroupCommand = new DelegateCommand(PickWindowsGroup);
+            PickResourceCommand = new DelegateCommand(PickResource);
 
             InitializeHelp();
 
@@ -341,14 +341,7 @@ namespace Dev2.Settings.Security
 
         ActivityDesignerToggle CreateHelpToggle(DependencyProperty targetProperty)
         {
-            var toggle = ActivityDesignerToggle.Create(
-                collapseImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png",
-                collapseToolTip: "Close Help",
-                expandImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png",
-                expandToolTip: "Open Help",
-                automationID: "HelpToggle",
-                target: this,
-                dp: targetProperty
+            var toggle = ActivityDesignerToggle.Create("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png", "Close Help", "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png", "Open Help", "HelpToggle", this, targetProperty
                 );
 
             return toggle;

@@ -491,7 +491,6 @@
     <Compile Include="ViewModels\Base\ValidationController.cs" />
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\SimpleBaseViewModel.cs" />
-    <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="Models\DataList\DataListItemModel.cs" />
     <Compile Include="Interfaces\IAutoMappingOutputAction.cs" />
     <Compile Include="Diagnostics\DebugWriter.cs" />
@@ -571,6 +570,10 @@
     <ProjectReference Include="..\Dev2.Composition\Dev2.Composition.csproj">
       <Project>{B91813C8-499C-4D65-A0D4-57C7FA5F5413}</Project>
       <Name>Dev2.Composition</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}</Project>

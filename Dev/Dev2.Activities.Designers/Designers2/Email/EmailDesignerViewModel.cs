@@ -6,13 +6,13 @@ using Dev2.Data.Enums;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Validation;
@@ -62,7 +62,7 @@ namespace Dev2.Activities.Designers2.Email
 
             EditEmailSourceCommand = new RelayCommand(o => EditEmailSource(), o => IsEmailSourceSelected);
             TestEmailAccountCommand = new RelayCommand(o => TestEmailAccount(), o => CanTestEmailAccount);
-            ChooseAttachmentsCommand = new RelayCommand(o => ChooseAttachments(), o => true);
+            ChooseAttachmentsCommand = new DelegateCommand(o => ChooseAttachments());
 
             RefreshSources(true);
         }

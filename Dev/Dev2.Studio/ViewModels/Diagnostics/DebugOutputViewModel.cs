@@ -13,6 +13,7 @@ using Dev2.DynamicServices;
 using Dev2.Messages;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
@@ -548,19 +549,19 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public ICommand OpenItemCommand
         {
-            get { return _openItemCommand ?? (_openItemCommand = new RelayCommand(OpenItem, c => true)); }
+            get { return _openItemCommand ?? (_openItemCommand = new DelegateCommand(OpenItem)); }
         }
 
         public ICommand ExpandAllCommand
         {
-            get { return _expandAllCommand ?? (_expandAllCommand = new RelayCommand(ExpandAll, c => true)); }
+            get { return _expandAllCommand ?? (_expandAllCommand = new DelegateCommand(ExpandAll)); }
         }
 
         public ICommand ShowOptionsCommand
         {
             get
             {
-                return _showOptionsCommand ?? (_showOptionsCommand = new RelayCommand(o =>
+                return _showOptionsCommand ?? (_showOptionsCommand = new DelegateCommand(o =>
                 {
                     if(SkipOptionsCommandExecute)
                     {
@@ -570,7 +571,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     {
                         ShowOptions = !ShowOptions;
                     }
-                }, c => true));
+                }));
             }
         }
 
@@ -583,7 +584,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public ICommand SelectAllCommand
         {
-            get { return _selectAllCommand ?? (_selectAllCommand = new RelayCommand(SelectAll, c => true)); }
+            get { return _selectAllCommand ?? (_selectAllCommand = new DelegateCommand(SelectAll)); }
         }
 
         void SelectAll(object obj)

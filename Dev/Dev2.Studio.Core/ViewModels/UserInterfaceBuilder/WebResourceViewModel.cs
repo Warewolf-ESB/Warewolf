@@ -1,17 +1,18 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable  CheckNamespace
 namespace Dev2.Studio.Core
 {
     public class WebResourceViewModel : SimpleBaseViewModel, IWebResourceViewModel
     {
         #region Locals
         private readonly ObservableCollection<IWebResourceViewModel> _children;
-        RelayCommand _copyCommand;
+        DelegateCommand _copyCommand;
         #endregion
 
         #region Properties
@@ -73,7 +74,7 @@ namespace Dev2.Studio.Core
         {
             get
             {
-                return _copyCommand ?? (_copyCommand = new RelayCommand(c => Copy()));
+                return _copyCommand ?? (_copyCommand = new DelegateCommand(c => Copy()));
             }
         }
         #endregion

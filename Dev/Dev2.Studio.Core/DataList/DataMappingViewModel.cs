@@ -5,13 +5,14 @@ using System.Windows.Input;
 using Dev2.Data.Interfaces;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Unlimited.Applications.BusinessDesignStudio.Undo;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataMappingViewModel : SimpleBaseViewModel, IDataMappingViewModel
@@ -19,10 +20,11 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Locals
 
         private IWebActivity _activity;
-        // ReSharper disable once InconsistentNaming
+// ReSharper disable InconsistentNaming
         public bool _isInitialLoad = false;
-        RelayCommand _undo;
-        RelayCommand _redo;
+// ReSharper restore InconsistentNaming
+        DelegateCommand _undo;
+        DelegateCommand _redo;
         readonly ActionManager _actionManager;
         private string _activityName;
         private string _xmlOutput;
@@ -166,7 +168,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                return _undo ?? (_undo = new RelayCommand(c => Undo()));
+                return _undo ?? (_undo = new DelegateCommand(c => Undo()));
             }
         }
 
@@ -174,7 +176,7 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                return _redo ?? (_redo = new RelayCommand(c => Redo()));
+                return _redo ?? (_redo = new DelegateCommand(c => Redo()));
             }
         }
 

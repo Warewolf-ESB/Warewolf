@@ -9,8 +9,8 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.DataList;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Studio.Core;
@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
             AddTitleBarHelpToggle();
 
             WhereOptions = new ObservableCollection<string>(FindRecsetOptions.FindAll().Select(c => c.HandlesType()));
-            SearchTypeUpdatedCommand = new RelayCommand(OnSearchTypeChanged, o => true);
+            SearchTypeUpdatedCommand = new DelegateCommand(OnSearchTypeChanged);
 
             dynamic mi = ModelItem;
             InitializeItems(mi.ResultsCollection);

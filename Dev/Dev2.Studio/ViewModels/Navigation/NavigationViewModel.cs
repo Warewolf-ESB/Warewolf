@@ -4,9 +4,9 @@ using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel;
 using Dev2.Models;
 using Dev2.Providers.Logs;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
@@ -35,7 +35,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #region private fields
 
-        RelayCommand _refreshMenuCommand;
+        DelegateCommand _refreshMenuCommand;
         readonly NavigationViewModelType _navigationViewModelType;
         bool _fromActivityDrop;
         readonly IEventAggregator _eventPublisher;
@@ -126,7 +126,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         {
             get
             {
-                return new RelayCommand(Rename);
+                return new DelegateCommand(Rename);
             }
         }
 
@@ -143,7 +143,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             get
             {
                 return _refreshMenuCommand ??
-                       (_refreshMenuCommand = new RelayCommand(param => UpdateWorkspaces(_connectControlSingleton), param => true));
+                       (_refreshMenuCommand = new DelegateCommand(param => UpdateWorkspaces(_connectControlSingleton)));
             }
         }
         public NavigationViewModelType NavigationViewModelType

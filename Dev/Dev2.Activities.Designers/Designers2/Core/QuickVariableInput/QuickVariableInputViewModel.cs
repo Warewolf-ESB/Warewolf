@@ -5,9 +5,9 @@ using Dev2.Common.StringTokenizer.Interfaces;
 using Dev2.Data.Util;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -47,7 +47,7 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
             Prefix = string.Empty;
             Suffix = string.Empty;
 
-            ClearCommand = new RelayCommand(DoClear, o => true);
+            ClearCommand = new DelegateCommand(DoClear);
             AddCommand = new RelayCommand(DoAdd, o => CanAdd);
 
             _previewViewModel = new PreviewViewModel

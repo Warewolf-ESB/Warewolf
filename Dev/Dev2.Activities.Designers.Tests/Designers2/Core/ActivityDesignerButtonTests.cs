@@ -1,17 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Windows.Input;
-using Dev2.Activities.Designers2.Core;
+﻿using Dev2.Activities.Designers2.Core;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
-using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Input;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public class ActivityDesignerButtonTests
     {
         #region Tests
@@ -73,8 +74,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityDesignerButton_Execute_IsValidatedBeforeIsToTrueAndThereAreNoValidationErrors_CustomCommandIsExecuted()
         {
             var customCommandExecuted = false;
-            VerifyExecution(isValidatedBefore: true, isClosedAfter: false, isValid: true, validationErrorCount: 0,
-                customCommand: new RelayCommand(o => { customCommandExecuted = true; }));
+            VerifyExecution(true, false, true, 0, new RelayCommand(o => { customCommandExecuted = true; }));
 
             Assert.IsTrue(customCommandExecuted);
         }
@@ -85,8 +85,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityDesignerButton_Execute_IsValidatedBeforeIsToTrueAndThereAreValidationErrors_CustomCommandIsNotExecuted()
         {
             var customCommandExecuted = false;
-            VerifyExecution(isValidatedBefore: true, isClosedAfter: false, isValid: false, validationErrorCount: 1,
-                customCommand: new RelayCommand(o => { customCommandExecuted = true; }));
+            VerifyExecution(true, false, false, 1, new RelayCommand(o => { customCommandExecuted = true; }));
 
             Assert.IsFalse(customCommandExecuted);
         }
@@ -97,8 +96,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityDesignerButton_Execute_IsValidatedBeforeAndIsClosedAfterAreSetToFalse_CustomCommandIsExecuted()
         {
             var customCommandExecuted = false;
-            VerifyExecution(isValidatedBefore: false, isClosedAfter: false, isValid: true, validationErrorCount: 0,
-                customCommand: new RelayCommand(o => { customCommandExecuted = true; }));
+            VerifyExecution(false, false, true, 0, new RelayCommand(o => { customCommandExecuted = true; }));
 
             Assert.IsTrue(customCommandExecuted);
         }

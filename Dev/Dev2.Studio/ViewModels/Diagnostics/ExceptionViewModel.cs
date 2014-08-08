@@ -1,6 +1,7 @@
 ﻿using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Composition;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Feedback;
@@ -11,7 +12,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media.Imaging;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
     /// <summary>
@@ -108,11 +109,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                if(_cancelComand == null)
-                {
-                    _cancelComand = new RelayCommand(param => Cancel(), param => true);
-                }
-                return _cancelComand;
+                return _cancelComand ?? (_cancelComand = new RelayCommand(param => Cancel(), param => true));
             }
         }
 

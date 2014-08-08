@@ -12,6 +12,7 @@ using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Instrumentation;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
 using Dev2.Session;
 using Dev2.Studio.Core;
@@ -34,7 +35,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         //2012.10.11: massimo.guerrera - Added for PBI 5781
         private OptomizedObservableCollection<IDataListItem> _workflowInputs;
         private RelayCommand _executeCommmand;
-        private RelayCommand _cancelComand;
+        private DelegateCommand _cancelComand;
         private string _xmlData;
         private static IContextualResourceModel _resourceModel;
         private bool _rememberInputs;
@@ -236,7 +237,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return _cancelComand ?? (_cancelComand = new RelayCommand(param => Cancel(), param => true));
+                return _cancelComand ?? (_cancelComand = new DelegateCommand(param => Cancel()));
             }
         }
         #endregion Cammands

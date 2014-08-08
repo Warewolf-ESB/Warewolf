@@ -8,6 +8,7 @@ using Dev2.DataList.Contract;
 using Dev2.Diagnostics.Debug;
 using Dev2.Dialogs;
 using Dev2.Interfaces;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
 using Dev2.Services.Events;
@@ -16,7 +17,6 @@ using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.TaskScheduler.Wrappers;
@@ -648,7 +648,7 @@ namespace Dev2.Settings.Scheduler
             get
             {
                 return _saveCommand ??
-                       (_saveCommand = new RelayCommand(param => SaveTasks()));
+                       (_saveCommand = new DelegateCommand(param => SaveTasks()));
             }
         }
 
@@ -657,7 +657,7 @@ namespace Dev2.Settings.Scheduler
             get
             {
                 return _closeCommand ??
-                    (_closeCommand = new RelayCommand(o => CloseHelp(), o => true));
+                    (_closeCommand = new DelegateCommand(o => CloseHelp()));
             }
 
         }
@@ -667,7 +667,7 @@ namespace Dev2.Settings.Scheduler
             get
             {
                 return _newCommand ??
-                       (_newCommand = new RelayCommand(param => CreateNewTask()));
+                       (_newCommand = new DelegateCommand(param => CreateNewTask()));
             }
         }
 
@@ -676,7 +676,7 @@ namespace Dev2.Settings.Scheduler
             get
             {
                 return _deleteCommand ??
-                       (_deleteCommand = new RelayCommand(param => DeleteTask()));
+                       (_deleteCommand = new DelegateCommand(param => DeleteTask()));
             }
         }
 
@@ -685,7 +685,7 @@ namespace Dev2.Settings.Scheduler
             get
             {
                 return _editTriggerCommand ??
-                       (_editTriggerCommand = new RelayCommand(param => EditTrigger()));
+                       (_editTriggerCommand = new DelegateCommand(param => EditTrigger()));
             }
         }
 
@@ -694,7 +694,7 @@ namespace Dev2.Settings.Scheduler
             get
             {
                 return _addWorkflowCommand ??
-                       (_addWorkflowCommand = new RelayCommand(param => AddWorkflow()));
+                       (_addWorkflowCommand = new DelegateCommand(param => AddWorkflow()));
             }
         }
 

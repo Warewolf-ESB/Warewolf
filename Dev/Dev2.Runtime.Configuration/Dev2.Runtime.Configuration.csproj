@@ -151,6 +151,7 @@
     <Compile Include="Settings\SecuritySettings.cs" />
     <Compile Include="Settings\Configuration.cs" />
     <Compile Include="Settings\SettingsBase.cs" />
+    <Compile Include="ViewModels\Base\DelegateCommand.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
     <Compile Include="ComponentModel\ComputerDrive.cs" />
     <Compile Include="ViewModels\LoggingViewModel.cs" />

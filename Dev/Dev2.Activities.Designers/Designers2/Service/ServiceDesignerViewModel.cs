@@ -19,6 +19,7 @@ using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Simulation;
@@ -82,13 +83,13 @@ namespace Dev2.Activities.Designers2.Service
             ShowExampleWorkflowLink = Visibility.Collapsed;
             RootModel = rootModel;
             DesignValidationErrors = new ObservableCollection<IErrorInfo>();
-            FixErrorsCommand = new Studio.Core.ViewModels.Base.RelayCommand(o =>
+            FixErrorsCommand = new DelegateCommand(o =>
             {
                 FixErrors();
                 IsFixed = IsWorstErrorReadOnly;
             });
-            DoneCommand = new Studio.Core.ViewModels.Base.RelayCommand(o => Done());
-            DoneCompletedCommand = new Studio.Core.ViewModels.Base.RelayCommand(o => DoneCompleted());
+            DoneCommand = new DelegateCommand(o => Done());
+            DoneCompletedCommand = new DelegateCommand(o => DoneCompleted());
 
             InitializeDisplayName();
             InitializeProperties();

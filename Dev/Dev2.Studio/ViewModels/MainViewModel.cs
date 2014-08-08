@@ -7,6 +7,7 @@ using Dev2.Factory;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
 using Dev2.Providers.Logs;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -263,7 +264,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _notImplementedCommand ??
-                       (_notImplementedCommand = new RelayCommand(param => MessageBox.Show("Please implement me!")));
+                       (_notImplementedCommand = new DelegateCommand(param => MessageBox.Show("Please implement me!")));
             }
         }
 
@@ -273,7 +274,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _addStudioShortcutsPageCommand ??
-                       (_addStudioShortcutsPageCommand = new RelayCommand(param => AddShortcutKeysWorkSurface()));
+                       (_addStudioShortcutsPageCommand = new DelegateCommand(param => AddShortcutKeysWorkSurface()));
             }
         }
 
@@ -282,7 +283,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _addLanguageHelpPageCommand ??
-                       (_addLanguageHelpPageCommand = new RelayCommand(param => AddLanguageHelpWorkSurface()));
+                       (_addLanguageHelpPageCommand = new DelegateCommand(param => AddLanguageHelpWorkSurface()));
             }
         }
 
@@ -291,7 +292,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _displayAboutDialogueCommand ??
-                       (_displayAboutDialogueCommand = new RelayCommand(param => DisplayAboutDialogue()));
+                       (_displayAboutDialogueCommand = new DelegateCommand(param => DisplayAboutDialogue()));
             }
         }
 
@@ -299,18 +300,18 @@ namespace Dev2.Studio.ViewModels
         {
             get
             {
-                return _showStartPageCommand ?? (_showStartPageCommand = new RelayCommand(param => ShowStartPage()));
+                return _showStartPageCommand ?? (_showStartPageCommand = new DelegateCommand(param => ShowStartPage()));
             }
         }
 
         public ICommand ShowCommunityPageCommand
         {
-            get { return _showCommunityPageCommand ?? (_showCommunityPageCommand = new RelayCommand(param => ShowCommunityPage())); }
+            get { return _showCommunityPageCommand ?? (_showCommunityPageCommand = new DelegateCommand(param => ShowCommunityPage())); }
         }
 
         public ICommand StartFeedbackCommand
         {
-            get { return _startFeedbackCommand ?? (_startFeedbackCommand = new RelayCommand(param => StartFeedback())); }
+            get { return _startFeedbackCommand ?? (_startFeedbackCommand = new DelegateCommand(param => StartFeedback())); }
         }
 
         public ICommand StartStopRecordedFeedbackCommand
@@ -318,7 +319,7 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _startStopRecordedFeedbackCommand ??
-                       (_startStopRecordedFeedbackCommand = new RelayCommand(param => StartStopRecordedFeedback()));
+                       (_startStopRecordedFeedbackCommand = new DelegateCommand(param => StartStopRecordedFeedback()));
             }
         }
 
@@ -336,14 +337,13 @@ namespace Dev2.Studio.ViewModels
             get
             {
                 return _resetLayoutCommand ??
-                       (_resetLayoutCommand = new RelayCommand(param =>
+                       (_resetLayoutCommand = new DelegateCommand(param =>
                        {
                            Logger.KeepMyNamespaces();
                            this.TraceInfo("Publish message of type - " + typeof(ResetLayoutMessage));
                            EventPublisher.Publish(
                                new ResetLayoutMessage(param as FrameworkElement));
-                       },
-            param => true));
+                       }));
             }
         }
 

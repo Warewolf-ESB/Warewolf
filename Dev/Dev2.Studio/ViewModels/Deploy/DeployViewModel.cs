@@ -5,6 +5,7 @@ using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
 using Dev2.Models;
 using Dev2.Providers.Logs;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -553,12 +554,12 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             DeployCommand = new RelayCommand(o => Deploy(), o => CanDeploy);
             SelectAllDependanciesCommand = new RelayCommand(SelectAllDependancies, o => CanSelectAllDependencies);
-            SourceServerChangedCommand = new RelayCommand(s =>
+            SourceServerChangedCommand = new DelegateCommand(s =>
             {
                 SelectedSourceServer = s as IEnvironmentModel;
             });
 
-            TargetServerChangedCommand = new RelayCommand(s =>
+            TargetServerChangedCommand = new DelegateCommand(s =>
             {
                 SelectedDestinationServer = s as IEnvironmentModel;
             });

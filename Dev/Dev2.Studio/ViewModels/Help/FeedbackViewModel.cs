@@ -1,5 +1,6 @@
 ﻿using Dev2.Composition;
 using Dev2.Providers.Logs;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Services.Communication;
@@ -15,7 +16,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Input;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Help
 {
     /// <summary>
@@ -314,27 +315,27 @@ namespace Dev2.Studio.ViewModels.Help
 
         public ICommand SendCommand
         {
-            get { return _sendCommand ?? (_sendCommand = new RelayCommand(o => Send())); }
+            get { return _sendCommand ?? (_sendCommand = new DelegateCommand(o => Send())); }
         }
 
         public ICommand CancelCommand
         {
-            get { return _cancelCommand ?? (_cancelCommand = new RelayCommand(o => Cancel())); }
+            get { return _cancelCommand ?? (_cancelCommand = new DelegateCommand(o => Cancel())); }
         }
 
         public ICommand OpenRecordingAttachmentFolderCommand
         {
-            get { return _openRecordingAttachmentFolderCommand ?? (_openRecordingAttachmentFolderCommand = new RelayCommand(o => OpenAttachmentFolder(RecordingAttachmentPath))); }
+            get { return _openRecordingAttachmentFolderCommand ?? (_openRecordingAttachmentFolderCommand = new DelegateCommand(o => OpenAttachmentFolder(RecordingAttachmentPath))); }
         }
 
         public ICommand OpenServerLogAttachmentFolderCommand
         {
-            get { return _openServerLogAttachmentFolderCommand ?? (_openServerLogAttachmentFolderCommand = new RelayCommand(o => OpenAttachmentFolder(ServerLogAttachmentPath))); }
+            get { return _openServerLogAttachmentFolderCommand ?? (_openServerLogAttachmentFolderCommand = new DelegateCommand(o => OpenAttachmentFolder(ServerLogAttachmentPath))); }
         }
 
         public ICommand OpenStudioLogAttachmentFolderCommand
         {
-            get { return _openStudioLogAttachmentFolderCommand ?? (_openStudioLogAttachmentFolderCommand = new RelayCommand(o => OpenAttachmentFolder(StudioLogAttachmentPath))); }
+            get { return _openStudioLogAttachmentFolderCommand ?? (_openStudioLogAttachmentFolderCommand = new DelegateCommand(o => OpenAttachmentFolder(StudioLogAttachmentPath))); }
         }
 
         public string Attachments { get; private set; }
@@ -402,7 +403,9 @@ namespace Dev2.Studio.ViewModels.Help
                 Process.Start("explorer.exe", "/select, \"" + path + "\"");
             }
             // ReSharper disable once EmptyGeneralCatchClause
+// ReSharper disable EmptyGeneralCatchClause
             catch
+// ReSharper restore EmptyGeneralCatchClause
             {
                 //fail silently if the folder to the attachment couldn't be opened
             }

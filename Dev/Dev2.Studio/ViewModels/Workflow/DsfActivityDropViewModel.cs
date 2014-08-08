@@ -1,4 +1,5 @@
 ﻿using Dev2.Data.ServiceModel;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -16,7 +17,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         #region Fields
 
         private RelayCommand _executeCommmand;
-        private RelayCommand _cancelComand;
+        private DelegateCommand _cancelComand;
 
         private IContextualResourceModel _selectedResource;
 
@@ -88,11 +89,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                if(_executeCommmand == null)
-                {
-                    _executeCommmand = new RelayCommand(param => Okay(), param => CanOkay);
-                }
-                return _executeCommmand;
+                return _executeCommmand ?? (_executeCommmand = new RelayCommand(param => Okay(), param => CanOkay));
             }
         }
         public bool CanOkay { get { return CanSelect(); } }
@@ -139,11 +136,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                if(_cancelComand == null)
-                {
-                    _cancelComand = new RelayCommand(param => Cancel(), param => true);
-                }
-                return _cancelComand;
+                return _cancelComand ?? (_cancelComand = new DelegateCommand(param => Cancel()));
             }
         }
 

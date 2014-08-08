@@ -3,6 +3,7 @@ using Dev2.Common;
 using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
 using Dev2.Interfaces;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Logging;
@@ -10,7 +11,6 @@ using Dev2.Settings.Security;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using System;
@@ -60,7 +60,7 @@ namespace Dev2.Settings
 
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
             //SaveCommand.UpdateContext(CurrentEnvironment);
-            ServerChangedCommand = new RelayCommand(OnServerChanged, o => true);
+            ServerChangedCommand = new DelegateCommand(OnServerChanged);
 
             ConnectControlViewModel = connectControlViewModel ?? new ConnectControlViewModel(OnServerChanged, "Server:", false);
         }

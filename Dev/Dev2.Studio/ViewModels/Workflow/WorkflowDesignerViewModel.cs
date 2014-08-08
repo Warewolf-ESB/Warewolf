@@ -45,6 +45,7 @@ using Dev2.Messages;
 using Dev2.Models;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.ActivityDesigners;
@@ -63,7 +64,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Network;
 using Dev2.Studio.Core.Utils;
 using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.Utilities;
@@ -92,11 +92,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         protected readonly IDesignerManagementService DesignerManagementService;
         readonly IWorkflowHelper _workflowHelper;
-        RelayCommand _collapseAllCommand;
+        DelegateCommand _collapseAllCommand;
 
         protected dynamic DataObject { get; set; }
         List<ModelItem> _selectedDebugItems = new List<ModelItem>();
-        RelayCommand _expandAllCommand;
+        DelegateCommand _expandAllCommand;
         protected ModelService ModelService;
         UserControl _popupContent;
         IContextualResourceModel _resourceModel;
@@ -305,7 +305,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return _collapseAllCommand ?? (_collapseAllCommand = new RelayCommand(param =>
+                return _collapseAllCommand ?? (_collapseAllCommand = new DelegateCommand(param =>
                 {
                     bool val = Convert.ToBoolean(param);
                     if(val)
@@ -316,7 +316,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         DesignerManagementService.RequestRestoreAll();
                     }
-                }, param => true));
+                }));
             }
         }
 
@@ -324,7 +324,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return _expandAllCommand ?? (_expandAllCommand = new RelayCommand(param =>
+                return _expandAllCommand ?? (_expandAllCommand = new DelegateCommand(param =>
                 {
                     bool val = Convert.ToBoolean(param);
                     if(val)
@@ -335,7 +335,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         DesignerManagementService.RequestRestoreAll();
                     }
-                }, param => true));
+                }));
             }
         }
 
@@ -343,7 +343,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return _openWorkflowLinkCommand ?? (_openWorkflowLinkCommand = new RelayCommand(param =>
+                return _openWorkflowLinkCommand ?? (_openWorkflowLinkCommand = new DelegateCommand(param =>
                 {
                     if(!String.IsNullOrEmpty(_workflowLink))
                     {

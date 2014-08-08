@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.ViewModels.Deploy
@@ -8,8 +9,8 @@ namespace Dev2.ViewModels.Deploy
     public class DeployDialogViewModel : SimpleBaseViewModel
     {
         #region Fields
-        private RelayCommand _executeCommmand;
-        private RelayCommand _cancelComand;
+        private DelegateCommand _executeCommmand;
+        private DelegateCommand _cancelComand;
         ObservableCollection<DeployDialogTO> _conflictingItems;
 
         public ObservableCollection<DeployDialogTO> ConflictingItems
@@ -41,11 +42,7 @@ namespace Dev2.ViewModels.Deploy
         {
             get
             {
-                if(_executeCommmand == null)
-                {
-                    _executeCommmand = new RelayCommand(param => Okay(), param => true);
-                }
-                return _executeCommmand;
+                return _executeCommmand ?? (_executeCommmand = new DelegateCommand(param => Okay()));
             }
         }
 
@@ -53,11 +50,7 @@ namespace Dev2.ViewModels.Deploy
         {
             get
             {
-                if(_cancelComand == null)
-                {
-                    _cancelComand = new RelayCommand(param => Cancel(), param => true);
-                }
-                return _cancelComand;
+                return _cancelComand ?? (_cancelComand = new DelegateCommand(param => Cancel()));
             }
         }
         #endregion Cammands

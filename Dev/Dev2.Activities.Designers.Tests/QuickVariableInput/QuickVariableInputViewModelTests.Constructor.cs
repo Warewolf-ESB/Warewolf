@@ -1,15 +1,16 @@
-﻿using System;
+﻿using Dev2.Activities.Designers2.Core.QuickVariableInput;
+using Dev2.Activities.Preview;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Dev2.Activities.Designers2.Core.QuickVariableInput;
-using Dev2.Activities.Preview;
-using Dev2.Studio.Core.ViewModels.Base;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {
     [TestClass]
     [ExcludeFromCodeCoverage]
+    // ReSharper disable InconsistentNaming
     public partial class QuickVariableInputViewModelTests
     {
         [TestMethod]
@@ -50,7 +51,9 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
+#pragma warning disable 168
             var qviViewModel = new QuickVariableInputViewModel(null);
+#pragma warning restore 168
             //------------Assert Results-------------------------
         }
 
@@ -86,7 +89,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
             CollectionAssert.Contains(qviViewModel.SplitTypeList, QuickVariableInputViewModel.SplitTypeTab);
 
             Assert.IsNotNull(qviViewModel.ClearCommand);
-            Assert.IsInstanceOfType(qviViewModel.ClearCommand, typeof(RelayCommand));
+            Assert.IsInstanceOfType(qviViewModel.ClearCommand, typeof(DelegateCommand));
             Assert.IsTrue(qviViewModel.ClearCommand.CanExecute(null));
 
             Assert.IsNotNull(qviViewModel.AddCommand);

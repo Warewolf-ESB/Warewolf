@@ -3,6 +3,7 @@ using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Utils;
 using Dev2.Utils;
@@ -52,17 +53,17 @@ namespace Dev2.Activities.Designers2.Core
             ShowExampleWorkflowLink = Visibility.Visible;
             IsValid = true;
             IsClosed = true;
-            ShowItemHelpCommand = new Runtime.Configuration.ViewModels.Base.RelayCommand(o => showExampleWorkflow(modelItem.ItemType), o => true);
-            ShowHelpToggleCommand = new Runtime.Configuration.ViewModels.Base.RelayCommand(o => ShowHelp = !ShowHelp, o => true);
-            ShowErrorsToggleCommand = new Runtime.Configuration.ViewModels.Base.RelayCommand(o => ClearErrors(), o => true);
-            OpenErrorsLinkCommand = new Runtime.Configuration.ViewModels.Base.RelayCommand(o =>
+            ShowItemHelpCommand = new DelegateCommand(o => showExampleWorkflow(modelItem.ItemType));
+            ShowHelpToggleCommand = new DelegateCommand(o => ShowHelp = !ShowHelp);
+            ShowErrorsToggleCommand = new DelegateCommand(o => ClearErrors());
+            OpenErrorsLinkCommand = new DelegateCommand(o =>
             {
                 var actionableErrorInfo = o as IActionableErrorInfo;
                 if(actionableErrorInfo != null)
                 {
                     actionableErrorInfo.Do();
                 }
-            }, o => true);
+            });
 
             BindingOperations.SetBinding(this, IsClosedProperty, new Binding(ShowLargeProperty.Name)
             {
@@ -276,14 +277,7 @@ namespace Dev2.Activities.Designers2.Core
 
         protected void AddTitleBarHelpToggle()
         {
-            var toggle = ActivityDesignerToggle.Create(
-                collapseImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png",
-                collapseToolTip: "Close Help",
-                expandImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png",
-                expandToolTip: "Open Help",
-                automationID: "HelpToggle",
-                target: this,
-                dp: ShowHelpProperty
+            var toggle = ActivityDesignerToggle.Create("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png", "Close Help", "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceHelp-32.png", "Open Help", "HelpToggle", this, ShowHelpProperty
                 );
             TitleBarToggles.Add(toggle);
         }

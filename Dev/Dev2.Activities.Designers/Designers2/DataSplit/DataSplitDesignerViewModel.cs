@@ -36,7 +36,7 @@ namespace Dev2.Activities.Designers2.DataSplit
                 DataSplitDTO.SplitTypeTab,
                 DataSplitDTO.SplitTypeEnd
             };
-            SplitTypeUpdatedCommand = new RelayCommand(OnSplitTypeChanged, o => true);
+            SplitTypeUpdatedCommand = new DelegateCommand(OnSplitTypeChanged);
 
             dynamic mi = ModelItem;
             InitializeItems(mi.ResultsCollection);

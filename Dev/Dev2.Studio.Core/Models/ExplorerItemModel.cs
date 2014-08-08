@@ -4,13 +4,13 @@ using Dev2.AppResources.Repositories;
 using Dev2.ConnectionHelpers;
 using Dev2.Data.ServiceModel;
 using Dev2.Messages;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Threading;
 using Dev2.Utils;
 using System;
@@ -52,7 +52,7 @@ namespace Dev2.Models
         private bool _isRenaming;
         private string _displayName;
         private readonly IStudioResourceRepository _studioResourceRepository;
-        private  static  bool _serverRefreshing = false;
+        private  static  bool _serverRefreshing;
         ObservableCollection<ExplorerItemModel> _children;
         ICommand _refreshCommand;
         private Permissions _permissions;
@@ -657,7 +657,7 @@ namespace Dev2.Models
         {
             get
             {
-                RelayCommand deleteCommand = new RelayCommand(p => Delete());
+                DelegateCommand deleteCommand = new DelegateCommand(p => Delete());
                 return _deleteCommand ?? (_deleteCommand = deleteCommand);
             }
         }
@@ -673,7 +673,7 @@ namespace Dev2.Models
         {
             get
             {
-                RelayCommand renameCommand = new RelayCommand(obj =>
+                DelegateCommand renameCommand = new DelegateCommand(obj =>
                     {
                         IsRenaming = true;
                     }
@@ -697,7 +697,7 @@ namespace Dev2.Models
         {
             get
             {
-                RelayCommand deployCommand = new RelayCommand(param => Deploy());
+                DelegateCommand deployCommand = new DelegateCommand(param => Deploy());
                 return _deployCommand ?? (_deployCommand = deployCommand);
             }
         }
@@ -713,7 +713,7 @@ namespace Dev2.Models
         {
             get
             {
-                RelayCommand relayCommand = new RelayCommand(param => Edit());
+                DelegateCommand relayCommand = new DelegateCommand(param => Edit());
                 return _editCommand ?? (_editCommand = relayCommand);
             }
         }

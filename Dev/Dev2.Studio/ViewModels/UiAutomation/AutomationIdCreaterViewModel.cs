@@ -1,7 +1,8 @@
-﻿using Dev2.Studio.Core.ViewModels.Base;
+﻿using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Core.ViewModels.Base;
 using System.Windows.Input;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.UiAutomation
 {
     public class AutomationIdCreaterViewModel : SimpleBaseViewModel
@@ -27,11 +28,7 @@ namespace Dev2.Studio.ViewModels.UiAutomation
         {
             get
             {
-                if(_OkCommand == null)
-                {
-                    _OkCommand = new RelayCommand(param => { SaveID(); });
-                }
-                return _OkCommand;
+                return _OkCommand ?? (_OkCommand = new DelegateCommand(param => SaveID()));
             }
         }
 
@@ -39,11 +36,7 @@ namespace Dev2.Studio.ViewModels.UiAutomation
         {
             get
             {
-                if(_CancelCommand == null)
-                {
-                    _CancelCommand = new RelayCommand(param => { Cancel(); });
-                }
-                return _CancelCommand;
+                return _CancelCommand ?? (_CancelCommand = new DelegateCommand(param => Cancel()));
             }
         }
 

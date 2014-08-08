@@ -1,6 +1,6 @@
-﻿using System.Windows;
+﻿using Dev2.Runtime.Configuration.ViewModels.Base;
+using System.Windows;
 using System.Windows.Input;
-using Dev2.Studio.Core.ViewModels.Base;
 
 namespace Dev2.Settings
 {
@@ -8,7 +8,7 @@ namespace Dev2.Settings
     {
         protected SettingsItemViewModel()
         {
-            CloseHelpCommand = new RelayCommand(o => CloseHelp(), o => true);
+            CloseHelpCommand = new DelegateCommand(o => CloseHelp());
         }
 
         public ICommand CloseHelpCommand { get; private set; }

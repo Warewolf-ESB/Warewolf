@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using Dev2.Providers.Validation;
-using Dev2.Studio.Core.ViewModels.Base;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -11,7 +11,7 @@ namespace Dev2.Activities.Designers2.Core
         public ActivityDesignerButton()
         {
             IsValid = true;
-            Command = new RelayCommand(CommandAction);
+            Command = new DelegateCommand(CommandAction);
         }
 
         public bool IsValid { get; private set; }

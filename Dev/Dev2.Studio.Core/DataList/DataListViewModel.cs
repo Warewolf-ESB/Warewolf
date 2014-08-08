@@ -5,6 +5,7 @@ using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
@@ -28,7 +29,7 @@ namespace Dev2.Studio.ViewModels.DataList
     {
         #region Fields
 
-        private RelayCommand _addRecordsetCommand;
+        private DelegateCommand _addRecordsetCommand;
         private ObservableCollection<DataListHeaderItemModel> _baseCollection;
         private RelayCommand _findUnusedAndMissingDataListItems;
         private ObservableCollection<IDataListItemModel> _recsetCollection;
@@ -153,7 +154,7 @@ namespace Dev2.Studio.ViewModels.DataList
             get
             {
                 return _addRecordsetCommand ??
-                       (_addRecordsetCommand = new RelayCommand(method => AddRecordSet()));
+                       (_addRecordsetCommand = new DelegateCommand(method => AddRecordSet()));
             }
         }
 
