@@ -2025,19 +2025,19 @@ Scenario: Testing Count with two variables in Result field
 #Examples:
 #      | No    | Variable       |
 #      | 1     | [[length]][[a]] |
-##12180 
-# #     | 2  | [[a]]*]]               |
-# #     | 3  | [[var@]]               |
-# #     | 4  | [[var]]00]]            |
-# #     | 5  | [[(1var)]]             |
-# #     | 6  | [[var[[a]]]]           |
-# #     | 7  | [[var.a]]              |
-# #     | 8  | [[@var]]               |
-# #     | 9  | [[var 1]]              |
-# #     | 10 | [[rec(1).[[rec().1]]]] |
-# #     | 11 | [[rec(@).a]]           |
-# #     | 12 | [[rec"()".a]]          |
-# #     | 13 | [[rec([[[[b]]]]).a]]   |
+#12180 
+ #     | 2  | [[a]]*]]               |
+ #     | 3  | [[var@]]               |
+ #     | 4  | [[var]]00]]            |
+ #     | 5  | [[(1var)]]             |
+ #     | 6  | [[var[[a]]]]           |
+ #     | 7  | [[var.a]]              |
+ #     | 8  | [[@var]]               |
+ #     | 9  | [[var 1]]              |
+ #     | 10 | [[rec(1).[[rec().1]]]] |
+ #     | 11 | [[rec(@).a]]           |
+ #     | 12 | [[rec"()".a]]          |
+ #     | 13 | [[rec([[[[b]]]]).a]]   |
 
 
 ##12180  -- remove this when previous is passing
@@ -3365,8 +3365,41 @@ Scenario: Workflow with Calculation using Star notation
 #	  And the 'System info' in Workflow 'workfloforGatherSystemInformationtool' debug outputs as   
 #	  |                        |
 ##	  
-   
-
+ 
+#  Bug 12341 
+#Scenario: Workflow with Assign& Unique to check debug outputs
+#      Given I have a workflow "workflowithAssignUniquedebug"
+#      And "workflowithAssignUniquedebuge" contains an Assign "Recordset" as
+#	  | variable          | value |
+#	  | [[team(1).Names]] | test  |
+#	  | [[team(1).Id]]    | 23    |
+#	  | [[team(2).Names]] | test  |
+#	  | [[team(2).Id]]    | 23    |
+#	  And "workflowithAssignUniquedebuge" contains an Unique "Uni" as
+#	  | In Field(s)      | Return Fields    | Result           |
+#	  | [[team(*).Name]] | [[team().Names]] | [[List(*).Name]] |
+#	  When "workflowithAssignUniquedebug" is executed
+#	  Then the workflow execution has "No" error
+#	  And the 'Recordset' in WorkFlow 'workflowithAssignUniquedebug' debug inputs as
+#	  | # | Variable             | New Value |
+#	  | 1 | [[team(1).Names]]  = | test      |
+#	  | 2 | [[team(1).Id]]     = | 23        |
+#	  | 3 | [[team(2).Names]]  = | test      |
+#	  | 4 | [[team(2).Id]]     = | 23        |
+#	  And the 'Recordset' in Workflow 'workflowithAssignUniquedebug' debug outputs as  
+#	  | # |                            |
+#	  | 1 | [[team(1).Names]] =   test |
+#	  | 2 | [[team(1).Id]]    =  23    |
+#	  | 3 | [[team(2).Names]] =  test  |
+#	  | 4 | [[team(2).Id]]    =  23    |
+#	  And the 'Uni' in WorkFlow 'workflowithAssignUniquedebug' debug inputs as
+#       | #           |                          | Return Fields      |
+#       | In Field(s) | [[team(1).Names]] = test |                    |
+#       |             | [[team(1).Names]] = test | [[team().Names]] = |
+#      And the 'Uni' in Workflow 'workflowithAssignUniquedebug' debug outputs as  
+#       | # |                         |
+#       | 1 | [[List(1).Name]] = test |
+#       
 
 
 
