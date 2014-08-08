@@ -19,7 +19,7 @@ namespace Dev2.Studio.UI.Specs
 
         const string Explorer = "Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,TheNavigationView";
         const string Toolbox = "UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
-        const string ServiceDesigner = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
+        const string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
         const string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput,DebugOutputTree";
 
         [BeforeTestRun]
@@ -172,13 +172,16 @@ namespace Dev2.Studio.UI.Specs
         [Given(@"I send ""(.*)"" to ""(.*)""")]
         public void WhenISendTo(string textToSend, string automationIds)
         {
-            var automationIDs = GetCorrect(automationIds).Split(',');
-            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, automationIDs);
+            var correctedAutoIds = GetCorrect(automationIds).Split(',');
+            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, correctedAutoIds);
 
-            Mouse.Click(controlToSendData, new Point(5, 5));
-            SendKeys.SendWait("{HOME}");
-            SendKeys.SendWait("+{END}");
-            SendKeys.SendWait("{DELETE}");
+            if(!string.IsNullOrEmpty(automationIds))
+            {
+                Mouse.Click(controlToSendData, new Point(5, 5));
+                SendKeys.SendWait("{HOME}");
+                SendKeys.SendWait("+{END}");
+                SendKeys.SendWait("{DELETE}");
+            }
 
             Playback.Wait(100);
             SendKeys.SendWait(textToSend);
@@ -256,7 +259,8 @@ namespace Dev2.Studio.UI.Specs
         public void GivenIWait()
         {
             Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
-            Playback.Wait(200);
+            Playback.Wait(500);
+            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
         }
 
         string GetCorrect(string automationIds)
@@ -264,7 +268,7 @@ namespace Dev2.Studio.UI.Specs
             var replace = automationIds
                             .Replace("EXPLORER", Explorer)
                             .Replace("TOOLBOX", Toolbox)
-                            .Replace("WORKSURFACE", ServiceDesigner)
+                            .Replace("WORKSURFACE", Worksurface)
                             .Replace("DEBUGOUTPUT", DebugOutput)
                             ;
             return replace;
