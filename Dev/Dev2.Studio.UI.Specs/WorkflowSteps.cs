@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.Activities;
@@ -265,12 +266,17 @@ namespace Dev2.Studio.UI.Specs
 
         string GetCorrect(string automationIds)
         {
-            var replace = automationIds
-                            .Replace("EXPLORER", Explorer)
-                            .Replace("TOOLBOX", Toolbox)
-                            .Replace("WORKSURFACE", Worksurface)
-                            .Replace("DEBUGOUTPUT", DebugOutput)
-                            ;
+            var fieldInfos = typeof(WorkflowSteps).GetFields(BindingFlags.NonPublic | BindingFlags.Static);
+            var consts = fieldInfos.Where(fi => fi.IsLiteral).ToList();
+            var replace = automationIds;
+            foreach(var fieldInfo in consts)
+            {
+                var rawConstantValue = fieldInfo.GetRawConstantValue() as string;
+                if(rawConstantValue != null)
+                {
+                    replace = replace.Replace(fieldInfo.Name.ToUpper(), rawConstantValue);
+                }
+            }
             return replace;
         }
 
