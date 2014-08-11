@@ -161,10 +161,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 if(dataObject.IsDebugMode())
                 {
-                    if(hasErrors)
-                    {
-                       // AddDebugOutputItem(new DebugItemStaticDataParams("", ""));
-                    }
+
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
                 }

@@ -260,43 +260,7 @@ namespace Dev2.Common
         {
             // Not stream safe?!
 
-            //Task.Run(() =>
-            //{
-            //    if(!ShouldLog(idebugState))
-            //        return;
-
-            //    var debugState = (DebugState)idebugState;
-
-            //    string workflowName = GetWorkflowName(debugState);
-
-            //    if(String.IsNullOrWhiteSpace(workflowName))
-            //    {
-            //        throw new NoNullAllowedException("Only workflows with valid names can be logged");
-            //    }
-
-            //    switch(debugState.StateType)
-            //    {
-            //        case StateType.Start:
-            //            Initialize(debugState, workflowName);
-            //            break;
-
-            //        case StateType.Before:
-            //            Serialize(debugState, workflowName, StateType.Before);
-            //            break;
-
-            //        case StateType.End:
-            //            Finalize(debugState, workflowName);
-            //            break;
-
-            //        case StateType.After:
-            //            Serialize(debugState, workflowName, StateType.After);
-            //            break;
-
-            //        default:
-            //            Serialize(debugState, workflowName);
-            //            break;
-            //    }
-            //});
+          
 
         }
 

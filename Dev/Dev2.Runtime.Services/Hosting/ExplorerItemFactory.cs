@@ -59,7 +59,6 @@ namespace Dev2.Runtime.Hosting
             foreach(var resource in children)
             {
                 var childNode = CreateResourceItem(resource);
-                //   childNode.Parent = rootNode;
                 rootNode.Children.Add(childNode);
             }
         }
@@ -125,7 +124,6 @@ namespace Dev2.Runtime.Hosting
                 var resourcePath = resource.Replace(rootPath, "").Substring(1);
 
                 var node = new ServerExplorerItem(new DirectoryInfo(resource).Name, Guid.NewGuid(), ResourceType.Folder, null, _authService.GetResourcePermissions(Guid.Empty), resourcePath);
-                // node.Parent = root;
                 children.Add(node);
                 node.Children = BuildStructureFromFilePath(directory, resource, rootPath);
             }

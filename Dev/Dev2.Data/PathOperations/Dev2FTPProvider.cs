@@ -184,24 +184,7 @@ namespace Dev2.Data.PathOperations
             return sftp;
         }
 
-        /*
-                string ExtractHostNameFromPath(string path)
-                {
-                    Uri uriForSftp;
-                    if(Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out uriForSftp))
-                    {
-                        try
-                        {
-                            return  uriForSftp.Host;
-                        }
-                        catch(Exception)
-                        {
-                            throw new Exception("The path is in the incorrect format.");
-                        }
-                    }
-                    return "";
-                }
-        */
+
 
         string ExtractFileNameFromPath(string path)
         {

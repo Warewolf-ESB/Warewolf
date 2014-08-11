@@ -113,7 +113,6 @@ namespace Dev2.ScheduleExecutor
                     CreateDebugState("Warewolf Server Unavailable", workflowName, taskName);
                     Console.Write(e.Message);
                     Console.WriteLine(e.StackTrace);
-                    // Console.ReadLine();
                     Log("Error",
                         string.Format(
                             "Error executing request. Exception: {0}" + Environment.NewLine + "StackTrace: {1}",

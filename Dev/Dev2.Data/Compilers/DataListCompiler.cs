@@ -1035,7 +1035,7 @@ namespace Dev2.DataList.Contract
                             // scalar value, make it as such
                             result.Add(DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, ""));
                         }
-                  //  }
+
                 }
             }
 

@@ -89,7 +89,7 @@ namespace Dev2.CustomControls
 
         private void ResizeRows(double delta)
         {
-            //if no change just return;
+            //if no change just return
             if(delta.CompareTo(0D) == 0) return;
 
             //Only works when the grid has at least 3 rows

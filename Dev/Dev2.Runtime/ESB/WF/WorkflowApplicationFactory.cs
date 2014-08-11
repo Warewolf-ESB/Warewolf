@@ -501,8 +501,7 @@ namespace Dev2.Runtime.ESB.WF
                     _instance.Terminate("Force Terminate", new TimeSpan(0, 0, 1, 0));
                 }
 
-                // Not compatable with run.Dispose() ;)
-                //ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.CompletedCallback);
+                // Not compatable with run.Dispose() 
 
             }
 

@@ -103,14 +103,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                                     // Now that this is not happening we need to account for swapped shapes
                                     // This code resolves an issue for certain cases but causes others to fail.
                                     // Need to find a better solution for the case it is trying to solve.
-                                    //                                    BinaryDataListAlias keyAlias;
-                                    //                                    if(_keyToAliasMap.TryGetValue(col, out keyAlias))
-                                    //                                    {
-                                    //                                        var parentColumns = keyAlias.MasterEntry.Columns;
-                                    //                                        var parentColumn = keyAlias.MasterColumn;
-                                    //                                        internalIdx = InternalParentFetchColumnIndex(parentColumn, parentColumns);
-                                    //                                        colCnt = (short)parentColumns.Count;
-                                    //                                    }
+         
 
                                     // FOR : Bug_10247_Outter
                                     // if -1 skip and try next key ;) 
