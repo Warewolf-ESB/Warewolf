@@ -240,7 +240,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var currentEnviromentID = dataObject.EnvironmentID;
             var isRemote = dataObject.IsRemoteWorkflow();
             dataObject.EnvironmentID = context.GetValue(EnvironmentID);
-            //var proposedEnviromentID = dataObject.EnvironmentID;
             if((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
             {
                 dataObject.EnvironmentID = currentEnviromentID;
