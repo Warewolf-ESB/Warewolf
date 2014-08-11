@@ -6,13 +6,17 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Dev2.Studio.AppResources.ExtensionMethods;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.CustomControls
+// ReSharper restore CheckNamespace
 {
     [TemplatePart(Name = PART_Thumb, Type = typeof(Thumb))]
     public class SimpleGridSplitter : Control
     {
         #region fields
+// ReSharper disable InconsistentNaming
         private const string PART_Thumb = "Thumb";
+// ReSharper restore InconsistentNaming
         private Thumb _thumb;
         private Grid _containingGrid;
         #endregion

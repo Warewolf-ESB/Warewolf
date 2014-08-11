@@ -36,6 +36,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.Text;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Common.Reflection
 {
     #region Flags

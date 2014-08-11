@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
 
+// ReSharper disable CheckNamespace
 namespace System.Windows.Controls
 {
     /// <summary>
@@ -399,10 +400,14 @@ namespace System.Windows.Controls
                 return null;
             }
 
+// ReSharper disable ReplaceWithSingleCallToFirstOrDefault
+// ReSharper disable AssignNullToNotNullAttribute
             return VisualStateManager.GetVisualStateGroups(root)
+// ReSharper restore AssignNullToNotNullAttribute
                 .OfType<VisualStateGroup>()
                 .Where(group => string.CompareOrdinal(groupName, group.Name) == 0)
                 .FirstOrDefault();
+// ReSharper restore ReplaceWithSingleCallToFirstOrDefault
         }
     }
 }

@@ -26,6 +26,8 @@ namespace Dev2.CustomControls.ServiceProviders.UI
     /// <remarks>
     /// Documentation: http://www.codeproject.com/KB/WPF/ListViewDragDropManager.aspx
     /// </remarks>
+    /// 
+    // ReSharper disable InconsistentNaming
     public class ListViewDragDropManager<ItemType> where ItemType : class
     {
         #region Data
@@ -106,7 +108,11 @@ namespace Dev2.CustomControls.ServiceProviders.UI
                     throw new InvalidOperationException("Cannot set the DragAdornerOpacity property during a drag operation.");
 
                 if(value < 0.0 || value > 1.0)
+// ReSharper disable NotResolvedInText
+// ReSharper disable LocalizableElement
                     throw new ArgumentOutOfRangeException("DragAdornerOpacity", value, "Must be between 0 and 1.");
+// ReSharper restore LocalizableElement
+// ReSharper restore NotResolvedInText
 
                 dragAdornerOpacity = value;
             }
@@ -119,7 +125,9 @@ namespace Dev2.CustomControls.ServiceProviders.UI
         /// <summary>
         /// Returns true if there is currently a drag operation being managed.
         /// </summary>
+// ReSharper disable ConvertToAutoProperty
         public bool IsDragInProgress
+// ReSharper restore ConvertToAutoProperty
         {
             get { return isDragInProgress; }
             private set { isDragInProgress = value; }
@@ -251,7 +259,9 @@ namespace Dev2.CustomControls.ServiceProviders.UI
                 return;
 
             // Select the item the user clicked on.
+// ReSharper disable RedundantCheckBeforeAssignment
             if(listView.SelectedIndex != indexToSelect)
+// ReSharper restore RedundantCheckBeforeAssignment
                 listView.SelectedIndex = indexToSelect;
 
             // If the item at the selected index is null, there's nothing
@@ -294,7 +304,9 @@ namespace Dev2.CustomControls.ServiceProviders.UI
         {
             if(!IsMouseOver(listView))
             {
+// ReSharper disable RedundantCheckBeforeAssignment
                 if(ItemUnderDragCursor != null)
+// ReSharper restore RedundantCheckBeforeAssignment
                     ItemUnderDragCursor = null;
 
                 if(dragAdorner != null)
@@ -322,7 +334,9 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
         void listView_Drop(object sender, DragEventArgs e)
         {
+// ReSharper disable RedundantCheckBeforeAssignment
             if(ItemUnderDragCursor != null)
+// ReSharper restore RedundantCheckBeforeAssignment
                 ItemUnderDragCursor = null;
 
             e.Effects = DragDropEffects.None;
@@ -428,7 +442,9 @@ namespace Dev2.CustomControls.ServiceProviders.UI
 
             IsDragInProgress = false;
 
+// ReSharper disable RedundantCheckBeforeAssignment
             if(ItemUnderDragCursor != null)
+// ReSharper restore RedundantCheckBeforeAssignment
                 ItemUnderDragCursor = null;
 
             // Remove the drag adorner from the adorner layer.
@@ -529,7 +545,9 @@ namespace Dev2.CustomControls.ServiceProviders.UI
             VisualBrush brush = new VisualBrush(itemToDrag);
 
             // Create an element which displays the source item while it is dragged.
+// ReSharper disable UseObjectOrCollectionInitializer
             dragAdorner = new DragAdorner(listView, itemToDrag.RenderSize, brush);
+// ReSharper restore UseObjectOrCollectionInitializer
 
             // Set the drag adorner's opacity.		
             dragAdorner.Opacity = DragAdornerOpacity;
@@ -643,8 +661,10 @@ namespace Dev2.CustomControls.ServiceProviders.UI
         void PerformDragOperation()
         {
             ItemType selectedItem = listView.SelectedItem as ItemType;
-            DragDropEffects allowedEffects = DragDropEffects.Move | DragDropEffects.Move | DragDropEffects.Link;
+            const DragDropEffects allowedEffects = DragDropEffects.Move | DragDropEffects.Move | DragDropEffects.Link;
+// ReSharper disable AssignNullToNotNullAttribute
             if(DragDrop.DoDragDrop(listView, selectedItem, allowedEffects) != DragDropEffects.None)
+// ReSharper restore AssignNullToNotNullAttribute
             {
                 // The item was dropped into a new location,
                 // so make it the new selected item.
@@ -786,11 +806,11 @@ namespace Dev2.CustomControls.ServiceProviders.UI
     {
         #region Data
 
-        ObservableCollection<ItemType> itemsSource;
-        ItemType dataItem;
-        int oldIndex;
-        int newIndex;
-        DragDropEffects allowedEffects = DragDropEffects.None;
+        readonly ObservableCollection<ItemType> itemsSource;
+        readonly ItemType dataItem;
+        readonly int oldIndex;
+        readonly int newIndex;
+        readonly DragDropEffects allowedEffects = DragDropEffects.None;
         DragDropEffects effects = DragDropEffects.None;
 
         #endregion // Data

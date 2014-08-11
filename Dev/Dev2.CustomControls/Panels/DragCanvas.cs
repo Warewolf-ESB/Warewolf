@@ -1,6 +1,7 @@
 // Copyright (C) Josh Smith - August 2006 
 
 using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,19 +21,19 @@ namespace Dev2.CustomControls.Panels
         #region Data
 
         // Stores a reference to the UIElement currently being dragged by the user.
-        private UIElement elementBeingDragged;
+        private UIElement _elementBeingDragged;
 
         // Keeps track of where the mouse cursor was when a drag operation began.		
-        private Point origCursorLocation;
+        private Point _origCursorLocation;
 
         // The offsets from the DragCanvas' edges when the drag operation began.
-        private double origHorizOffset, origVertOffset;
+        private double _origHorizOffset, _origVertOffset;
 
         // Keeps track of which horizontal and vertical offset should be modified for the drag element.
-        private bool modifyLeftOffset, modifyTopOffset;
+        private bool _modifyLeftOffset, _modifyTopOffset;
 
         // True if a drag operation is underway, else false.
-        private bool isDragInProgress;
+        private bool _isDragInProgress;
 
         #endregion // Data
 
@@ -194,24 +195,24 @@ namespace Dev2.CustomControls.Panels
                 if (!AllowDragging)
                     return null;
 
-                return elementBeingDragged;
+                return _elementBeingDragged;
             }
             protected set
             {
-                if (elementBeingDragged != null)
-                    elementBeingDragged.ReleaseMouseCapture();
+                if (_elementBeingDragged != null)
+                    _elementBeingDragged.ReleaseMouseCapture();
 
                 if (!AllowDragging)
-                    elementBeingDragged = null;
+                    _elementBeingDragged = null;
                 else
                 {
                     if (GetCanBeDragged(value))
                     {
-                        elementBeingDragged = value;
-                        elementBeingDragged.CaptureMouse();
+                        _elementBeingDragged = value;
+                        _elementBeingDragged.CaptureMouse();
                     }
                     else
-                        elementBeingDragged = null;
+                        _elementBeingDragged = null;
                 }
             }
         }
@@ -266,7 +267,7 @@ namespace Dev2.CustomControls.Panels
         {
             base.OnPreviewMouseLeftButtonDown(e);
 
-            isDragInProgress = false;
+            _isDragInProgress = false;
 
             // Don't continue if there was a double or tripple click
             if(e.ClickCount > 1)
@@ -275,7 +276,7 @@ namespace Dev2.CustomControls.Panels
             }
 
             // Cache the mouse cursor location.
-            origCursorLocation = e.GetPosition(this);
+            _origCursorLocation = e.GetPosition(this);
 
             // Walk up the visual tree from the element that was clicked, 
             // looking for an element that is a direct child of the Canvas.
@@ -291,14 +292,14 @@ namespace Dev2.CustomControls.Panels
 
             // Calculate the offset deltas and determine for which sides
             // of the Canvas to adjust the offsets.
-            origHorizOffset = ResolveOffset(left, right, out modifyLeftOffset);
-            origVertOffset = ResolveOffset(top, bottom, out modifyTopOffset);
+            _origHorizOffset = ResolveOffset(left, right, out _modifyLeftOffset);
+            _origVertOffset = ResolveOffset(top, bottom, out _modifyTopOffset);
 
             // Set the Handled flag so that a control being dragged 
             // does not react to the mouse input.
             e.Handled = true;
 
-            isDragInProgress = true;
+            _isDragInProgress = true;
         }
 
         #endregion // OnPreviewMouseLeftButtonDown
@@ -327,7 +328,7 @@ namespace Dev2.CustomControls.Panels
             base.OnPreviewMouseMove(e);
             
             // If no element is being dragged, there is nothing to do.
-            if (ElementBeingDragged == null || !isDragInProgress)
+            if (ElementBeingDragged == null || !_isDragInProgress)
                 return;
 
             // Get the position of the mouse cursor, relative to the DragCanvas.
@@ -339,16 +340,16 @@ namespace Dev2.CustomControls.Panels
             #region Calculate Offsets
 
             // Determine the horizontal offset.
-            if (modifyLeftOffset)
-                newHorizontalOffset = origHorizOffset + (cursorLocation.X - origCursorLocation.X);
+            if (_modifyLeftOffset)
+                newHorizontalOffset = _origHorizOffset + (cursorLocation.X - _origCursorLocation.X);
             else
-                newHorizontalOffset = origHorizOffset - (cursorLocation.X - origCursorLocation.X);
+                newHorizontalOffset = _origHorizOffset - (cursorLocation.X - _origCursorLocation.X);
 
             // Determine the vertical offset.
-            if (modifyTopOffset)
-                newVerticalOffset = origVertOffset + (cursorLocation.Y - origCursorLocation.Y);
+            if (_modifyTopOffset)
+                newVerticalOffset = _origVertOffset + (cursorLocation.Y - _origCursorLocation.Y);
             else
-                newVerticalOffset = origVertOffset - (cursorLocation.Y - origCursorLocation.Y);
+                newVerticalOffset = _origVertOffset - (cursorLocation.Y - _origCursorLocation.Y);
 
             #endregion // Calculate Offsets
 
@@ -368,29 +369,29 @@ namespace Dev2.CustomControls.Panels
                 bool rightAlign = elemRect.Right > ActualWidth;
 
                 if (leftAlign)
-                    newHorizontalOffset = modifyLeftOffset ? 0 : ActualWidth - elemRect.Width;
+                    newHorizontalOffset = _modifyLeftOffset ? 0 : ActualWidth - elemRect.Width;
                 else if (rightAlign)
-                    newHorizontalOffset = modifyLeftOffset ? ActualWidth - elemRect.Width : 0;
+                    newHorizontalOffset = _modifyLeftOffset ? ActualWidth - elemRect.Width : 0;
 
                 bool topAlign = elemRect.Top < 0;
                 bool bottomAlign = elemRect.Bottom > ActualHeight;
 
                 if (topAlign)
-                    newVerticalOffset = modifyTopOffset ? 0 : ActualHeight - elemRect.Height;
+                    newVerticalOffset = _modifyTopOffset ? 0 : ActualHeight - elemRect.Height;
                 else if (bottomAlign)
-                    newVerticalOffset = modifyTopOffset ? ActualHeight - elemRect.Height : 0;
+                    newVerticalOffset = _modifyTopOffset ? ActualHeight - elemRect.Height : 0;
 
                 #endregion // Verify Drag Element Location
             }
 
             #region Move Drag Element
 
-            if (modifyLeftOffset)
+            if (_modifyLeftOffset)
                 SetLeft(ElementBeingDragged, newHorizontalOffset);
             else
                 SetRight(ElementBeingDragged, newHorizontalOffset);
 
-            if (modifyTopOffset)
+            if (_modifyTopOffset)
                 SetTop(ElementBeingDragged, newVerticalOffset);
             else
                 SetBottom(ElementBeingDragged, newVerticalOffset);
@@ -434,12 +435,12 @@ namespace Dev2.CustomControls.Panels
 
             double x, y;
 
-            if (modifyLeftOffset)
+            if (_modifyLeftOffset)
                 x = newHorizOffset;
             else
                 x = ActualWidth - newHorizOffset - elemSize.Width;
 
-            if (modifyTopOffset)
+            if (_modifyTopOffset)
                 y = newVertOffset;
             else
                 y = ActualHeight - newVertOffset - elemSize.Height;
@@ -532,9 +533,7 @@ namespace Dev2.CustomControls.Panels
             int elementNewZIndex = -1;
             if (bringToFront)
             {
-                foreach (UIElement elem in base.Children)
-                    if (elem.Visibility != Visibility.Collapsed)
-                        ++elementNewZIndex;
+                elementNewZIndex += Children.Cast<UIElement>().Count(elem => elem.Visibility != Visibility.Collapsed);
             }
             else
             {
@@ -554,7 +553,9 @@ namespace Dev2.CustomControls.Panels
             // Update the Z-Index of every UIElement in the Canvas.
             foreach (UIElement childElement in Children)
             {
+// ReSharper disable PossibleUnintendedReferenceComparison
                 if (childElement == element)
+// ReSharper restore PossibleUnintendedReferenceComparison
                     SetZIndex(element, elementNewZIndex);
                 else
                 {

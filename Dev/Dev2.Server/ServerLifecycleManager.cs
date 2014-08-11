@@ -176,7 +176,9 @@ namespace Dev2
             catch(Exception err)
             {
                 ServerLogger.LogError("Error Starting Server", err);
+// ReSharper disable InvokeAsExtensionMethod
                 ServerLogger.LogError("Error Starting Server. Stack trace", err.StackTrace);
+// ReSharper restore InvokeAsExtensionMethod
                 throw;
             }
             return result;

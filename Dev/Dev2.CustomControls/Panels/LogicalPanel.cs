@@ -58,7 +58,9 @@ namespace Dev2.CustomControls.Panels
         protected sealed override void OnChildRemoved(UIElement child)
         {
             // if this panel is the logical parent, remove that relationship
+// ReSharper disable PossibleUnintendedReferenceComparison
             if (LogicalTreeHelper.GetParent(child) == this)
+// ReSharper restore PossibleUnintendedReferenceComparison
             {
                 RemoveLogicalChild(child);
             }

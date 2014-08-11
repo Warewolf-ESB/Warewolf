@@ -135,9 +135,7 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem BuildRoot()
         {
-            ServerExplorerItem serverExplorerItem = new ServerExplorerItem(RootName, Guid.Empty, ResourceType.Server, new List<IExplorerItem>(), _authService.GetResourcePermissions(Guid.Empty), "");
-            serverExplorerItem.ServerId = HostSecurityProvider.Instance.ServerID;
-            serverExplorerItem.WebserverUri = EnvironmentVariables.WebServerUri;
+            ServerExplorerItem serverExplorerItem = new ServerExplorerItem(RootName, Guid.Empty, ResourceType.Server, new List<IExplorerItem>(), _authService.GetResourcePermissions(Guid.Empty), "") { ServerId = HostSecurityProvider.Instance.ServerID, WebserverUri = EnvironmentVariables.WebServerUri };
             return serverExplorerItem;
         }
 
