@@ -499,21 +499,20 @@ Scenario: Evaluating recursive invalid recordset variable in a group calculation
 	| 1 | [[rec(1).a]] = 1         |
 	| 2 | [[rec(1).b]] = rec(1).a* |
 
-#BuG12258
-#Scenario: Assign two recordset values to scalar
-#	Given I assign the value A to a variable "[[rec(1).a]]"	
-#	And I assign the value B to a variable "[[rec(2).a]]"
-#	And I assign the value [[rec(1).a]][[rec(2).a]] to a variable "[[Scalar]]"
-#	When the assign tool is executed
-#	Then the value of "[[Scalar]]" equals "AB"
-#	And the execution has "NO" error
-#	And the debug inputs as
-#	| # | Variable       | New Value                     |
-#	| 1 | [[rec(1).a]] = | A                             |
-#	| 2 | [[rec(2).a]] = | B                             |
-#	| 3 | [[Scalar]] =   | [[rec(1).a]][[rec(2).a]] = AB |
-#	And the debug output as
-#	| # |                  |
-#	| 1 | [[rec(1).a]] = A |
-#	| 2 | [[rec(2).a]] = B |
-#	| 3 | [[Scalar]] = AB  |
+Scenario: Assign two recordset values to scalar
+	Given I assign the value A to a variable "[[rec(1).a]]"	
+	And I assign the value B to a variable "[[rec(2).a]]"
+	And I assign the value [[rec(1).a]][[rec(2).a]] to a variable "[[Scalar]]"
+	When the assign tool is executed
+	Then the value of "[[Scalar]]" equals "AB"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable       | New Value                     |
+	| 1 | [[rec(1).a]] = | A                             |
+	| 2 | [[rec(2).a]] = | B                             |
+	| 3 | [[Scalar]] =   | [[rec(1).a]][[rec(2).a]] = AB |
+	And the debug output as
+	| # |                  |
+	| 1 | [[rec(1).a]] = A |
+	| 2 | [[rec(2).a]] = B |
+	| 3 | [[Scalar]] = AB  |

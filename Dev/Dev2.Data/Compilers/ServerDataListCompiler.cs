@@ -1805,6 +1805,43 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
+        private bool DoesRecordsetHaveErrors(EvaluateRuleSet rules, out List<string> indeces)
+        {
+            var hasErrors = false;
+            indeces = new List<string>();
+            var anyHasErrors = new List<bool>();
+
+            try
+            {
+                var variables = DataListCleaningUtils.SplitIntoRegions(rules.Expression);
+
+                if(variables != null)
+                {
+                    foreach(var variable in variables)
+                    {
+                        if(IsEvaluated(variable))
+                        {
+                            indeces.Add(DataListUtil.ExtractIndexRegionFromRecordset(variable));
+                            IList<IIntellisenseResult> expressionParts = _parser.ParseExpressionIntoParts(variable, rules.FetchIntellisenseParts());
+                            anyHasErrors.Add(expressionParts.Any(c => c.Type == enIntellisenseResultType.Error));
+                        }   
+                    }
+                }
+            }
+            catch
+            {
+                hasErrors = true;
+            }
+           
+            if (anyHasErrors.Any(e => e))
+            {
+                hasErrors = true;
+            }
+           
+            return hasErrors;
+        }
+
+
         private IBinaryDataListEntry InternalDataListEvaluateV2(EvaluateRuleSet rules)
         {
             if(IsEvaluated(rules.Expression))
@@ -2634,10 +2671,14 @@ namespace Dev2.Server.Datalist
             var rightEntry = debugTO.RightEntry;
             if(DataListUtil.IsValueRecordsetWithFields(rightSide))
             {
-
                 var idxType = DataListUtil.GetRecordsetIndexType(rightSide);
+                List<string> indeces;
 
-                if(idxType == enRecordsetIndexType.Error && isCalcExpression)
+                var hasErrors = DoesRecordsetHaveErrors(new EvaluateRuleSet { BinaryDataList = bdl, Expression = rightSide, EvaluateToRootOnly = true, IsDebug = true }, out indeces);
+
+                var allIntegers = AllIntegerIndeces(indeces);
+               
+                if((idxType == enRecordsetIndexType.Error && isCalcExpression) || (idxType == enRecordsetIndexType.Error && allIntegers && !hasErrors))
                 {
                     rightEntry.ComplexExpressionAuditor.AddAuditStep(rightSide, "", "", 1, boundValue, rightSide);
                     return;
@@ -2682,6 +2723,19 @@ namespace Dev2.Server.Datalist
             {
                 rightEntry.ComplexExpressionAuditor.AddAuditStep(rightSide, "", "", 1, boundValue, rightSide);
             }
+        }
+
+        static bool AllIntegerIndeces(IEnumerable<string> indeces)
+        {
+            foreach(var index in indeces)
+            {
+                int theInd;
+                if(!int.TryParse(index, out theInd))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         static void ProcessStarEntry(IBinaryDataListEntry rightEntry, string rightSide)
