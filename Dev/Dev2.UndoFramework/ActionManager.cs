@@ -1,48 +1,46 @@
-﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Runtime.CompilerServices;
-    using System.Threading;
+﻿using System;
+using System.Collections.Generic;
 
+namespace Dev2.UndoFramework
+{
     public class ActionManager
     {
-        private IActionHistory mHistory;
-        private Stack<ITransaction> mTransactionStack = new Stack<ITransaction>();
-        private object recordActionLock = new object();
+        private IActionHistory _mHistory;
+        private Stack<ITransaction> _mTransactionStack = new Stack<ITransaction>();
+        private readonly object _recordActionLock = new object();
 
         public event EventHandler CollectionChanged;
 
         public ActionManager()
         {
-            this.History = new SimpleHistory();
+            History = new SimpleHistory();
         }
 
         private void CheckNotRunningBeforeRecording(IAction existingAction)
         {
             string str = (existingAction != null) ? existingAction.ToString() : "";
-            if (this.CurrentAction != null)
+            if (CurrentAction != null)
             {
-                throw new InvalidOperationException(string.Format("ActionManager.RecordActionDirectly: the ActionManager is currently running or undoing an action ({0}), and this action (while being executed) attempted to recursively record another action ({1}), which is not allowed. You can examine the stack trace of this exception to see what the executing action did wrong and change this action not to influence the Undo stack during its execution. Checking if ActionManager.ActionIsExecuting == true before launching another transaction might help to avoid the problem. Thanks and sorry for the inconvenience.", this.CurrentAction.ToString(), str));
+                throw new InvalidOperationException(string.Format("ActionManager.RecordActionDirectly: the ActionManager is currently running or undoing an action ({0}), and this action (while being executed) attempted to recursively record another action ({1}), which is not allowed. You can examine the stack trace of this exception to see what the executing action did wrong and change this action not to influence the Undo stack during its execution. Checking if ActionManager.ActionIsExecuting == true before launching another transaction might help to avoid the problem. Thanks and sorry for the inconvenience.", CurrentAction, str));
             }
         }
 
         internal void Clear()
         {
-            this.History.Clear();
-            this.CurrentAction = null;
+            History.Clear();
+            CurrentAction = null;
         }
 
         internal void CommitTransaction()
         {
-            if (this.TransactionStack.Count == 0)
+            if (TransactionStack.Count == 0)
             {
                 throw new InvalidOperationException("ActionManager.CommitTransaction was called when there is no open transaction (TransactionStack is empty). Please examine the stack trace of this exception to find code which called CommitTransaction one time too many. Normally you don't call OpenTransaction and CommitTransaction directly, but use using(var t = Transaction.Create(Root)) instead.");
             }
-            ITransaction transaction = this.TransactionStack.Pop();
+            ITransaction transaction = TransactionStack.Pop();
             if (transaction.AccumulatingAction.Count > 0)
             {
-                this.RecordAction(transaction.AccumulatingAction);
+                RecordAction(transaction.AccumulatingAction);
             }
         }
 
@@ -58,19 +56,19 @@
 
         internal IEnumerable<IAction> EnumUndoableActions()
         {
-            return this.History.EnumUndoableActions();
+            return History.EnumUndoableActions();
         }
 
         internal void OpenTransaction(ITransaction t)
         {
-            this.TransactionStack.Push(t);
+            TransactionStack.Push(t);
         }
 
         protected void RaiseUndoBufferChanged(object sender, EventArgs e)
         {
-            if (this.CollectionChanged != null)
+            if (CollectionChanged != null)
             {
-                this.CollectionChanged(this, e);
+                CollectionChanged(this, e);
             }
         }
 
@@ -78,14 +76,14 @@
         {
             if (existingAction != null)
             {
-                this.CheckNotRunningBeforeRecording(existingAction);
-                if (this.ExecuteImmediatelyWithoutRecording && existingAction.CanExecute())
+                CheckNotRunningBeforeRecording(existingAction);
+                if (ExecuteImmediatelyWithoutRecording && existingAction.CanExecute())
                 {
                     existingAction.Execute();
                 }
                 else
                 {
-                    ITransaction recordingTransaction = this.RecordingTransaction;
+                    ITransaction recordingTransaction = RecordingTransaction;
                     if (recordingTransaction != null)
                     {
                         recordingTransaction.AccumulatingAction.Add(existingAction);
@@ -96,7 +94,7 @@
                     }
                     else
                     {
-                        this.RunActionDirectly(existingAction);
+                        RunActionDirectly(existingAction);
                     }
                 }
             }
@@ -104,17 +102,17 @@
 
         public void Redo()
         {
-            if (this.CanRedo)
+            if (CanRedo)
             {
                 //20.09.2012: massimo.guerrera - Changed not to throw an exception
 
-                if (!this.ActionIsExecuting)
+                if (!ActionIsExecuting)
                 {
-                    this.CurrentAction = this.History.CurrentState.NextAction;
-                    if (this.CurrentAction != null)
+                    CurrentAction = History.CurrentState.NextAction;
+                    if (CurrentAction != null)
                     {
-                        this.History.MoveForward();
-                        this.CurrentAction = null;
+                        History.MoveForward();
+                        CurrentAction = null;
                     }
                 }
             }
@@ -122,44 +120,44 @@
 
         internal void RollBackTransaction()
         {
-            if (this.TransactionStack.Count != 0)
+            if (TransactionStack.Count != 0)
             {
-                ITransaction transaction = this.TransactionStack.Peek();
+                ITransaction transaction = TransactionStack.Peek();
                 if ((transaction != null) && (transaction.AccumulatingAction != null))
                 {
                     transaction.AccumulatingAction.UnExecute();
                 }
-                this.TransactionStack.Clear();
+                TransactionStack.Clear();
             }
         }
 
         private void RunActionDirectly(IAction actionToRun)
         {
-            this.CheckNotRunningBeforeRecording(actionToRun);
-            lock (this.recordActionLock)
+            CheckNotRunningBeforeRecording(actionToRun);
+            lock (_recordActionLock)
             {
-                this.CurrentAction = actionToRun;
-                if (this.History.AppendAction(actionToRun))
+                CurrentAction = actionToRun;
+                if (History.AppendAction(actionToRun))
                 {
-                    this.History.MoveForward();
+                    History.MoveForward();
                 }
-                this.CurrentAction = null;
+                CurrentAction = null;
             }
         }
 
         public void Undo()
         {
-            if (this.CanUndo)
+            if (CanUndo)
             {
                 //20.09.2012: massimo.guerrera - Changed not to throw an exception
 
-                if (!this.ActionIsExecuting)
+                if (!ActionIsExecuting)
                 {
-                    this.CurrentAction = this.History.CurrentState.PreviousAction;
-                    if (this.CurrentAction != null)
+                    CurrentAction = History.CurrentState.PreviousAction;
+                    if (CurrentAction != null)
                     {
-                        this.History.MoveBack();
-                        this.CurrentAction = null;
+                        History.MoveBack();
+                        CurrentAction = null;
                     }
                 }
             }
@@ -169,7 +167,7 @@
         {
             get
             {
-                return (this.CurrentAction != null);
+                return (CurrentAction != null);
             }
         }
 
@@ -177,7 +175,7 @@
         {
             get
             {
-                return this.History.CanMoveForward;
+                return History.CanMoveForward;
             }
         }
 
@@ -185,7 +183,7 @@
         {
             get
             {
-                return this.History.CanMoveBack;
+                return History.CanMoveBack;
             }
         }
 
@@ -197,18 +195,18 @@
         {
             get
             {
-                return this.mHistory;
+                return _mHistory;
             }
             set
             {
-                if (this.mHistory != null)
+                if (_mHistory != null)
                 {
-                    this.mHistory.CollectionChanged -= new EventHandler(this.RaiseUndoBufferChanged);
+                    _mHistory.CollectionChanged -= RaiseUndoBufferChanged;
                 }
-                this.mHistory = value;
-                if (this.mHistory != null)
+                _mHistory = value;
+                if (_mHistory != null)
                 {
-                    this.mHistory.CollectionChanged += new EventHandler(this.RaiseUndoBufferChanged);
+                    _mHistory.CollectionChanged += RaiseUndoBufferChanged;
                 }
             }
         }
@@ -217,9 +215,9 @@
         {
             get
             {
-                if (this.TransactionStack.Count > 0)
+                if (TransactionStack.Count > 0)
                 {
-                    return this.TransactionStack.Peek();
+                    return TransactionStack.Peek();
                 }
                 return null;
             }
@@ -229,11 +227,11 @@
         {
             get
             {
-                return this.mTransactionStack;
+                return _mTransactionStack;
             }
             set
             {
-                this.mTransactionStack = value;
+                _mTransactionStack = value;
             }
         }
     }

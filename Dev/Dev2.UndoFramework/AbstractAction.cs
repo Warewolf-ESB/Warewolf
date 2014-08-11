@@ -1,4 +1,4 @@
-﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
+﻿namespace Dev2.UndoFramework
 {
 
     public abstract class AbstractAction : IAction

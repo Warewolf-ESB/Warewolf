@@ -1,9 +1,11 @@
-﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
+﻿namespace Dev2.UndoFramework
 {
 
     internal class TransactionBase : ITransaction
     {
-        protected IMultiAction accumulatingAction;
+// ReSharper disable InconsistentNaming
+        protected IMultiAction _accumulatingAction;
+// ReSharper restore InconsistentNaming
 
         public TransactionBase()
         {
@@ -57,7 +59,7 @@
         {
             get
             {
-                return accumulatingAction;
+                return _accumulatingAction;
             }
         }
 

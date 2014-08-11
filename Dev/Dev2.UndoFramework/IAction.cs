@@ -1,7 +1,5 @@
-﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
+﻿namespace Dev2.UndoFramework
 {
-    using System;
-
     public interface IAction
     {
         bool CanExecute();

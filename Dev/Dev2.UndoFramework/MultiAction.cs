@@ -1,9 +1,8 @@
 ﻿using System.Linq;
+using System.Collections.Generic;
 
-namespace Unlimited.Applications.BusinessDesignStudio.Undo
+namespace Dev2.UndoFramework
 {
-    using System.Collections.Generic;
-
     internal class MultiAction : List<IAction>, IMultiAction
     {
         public MultiAction()

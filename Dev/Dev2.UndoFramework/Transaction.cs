@@ -1,12 +1,10 @@
-﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
+﻿namespace Dev2.UndoFramework
 {
-    using System;
-
     internal class Transaction : TransactionBase
     {
         protected Transaction(ActionManager actionManager, bool delayed) : base(actionManager, delayed)
         {
-            base.accumulatingAction = new MultiAction();
+            base._accumulatingAction = new MultiAction();
         }
 
         public override void Commit()

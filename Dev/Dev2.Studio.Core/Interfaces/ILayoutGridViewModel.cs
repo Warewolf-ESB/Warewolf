@@ -1,11 +1,12 @@
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Interfaces;
-using Unlimited.Applications.BusinessDesignStudio.Undo;
-
+using Dev2.UndoFramework;
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
+// ReSharper restore CheckNamespace
 {
     public interface ILayoutGridViewModel
     {

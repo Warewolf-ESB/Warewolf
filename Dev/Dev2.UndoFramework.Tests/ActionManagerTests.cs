@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using Dev2.UndoFramework;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Applications.BusinessDesignStudio.Undo;
 
 // ReSharper disable CheckNamespace
 namespace UndoFramework.Tests
@@ -14,7 +14,7 @@ namespace UndoFramework.Tests
     [ExcludeFromCodeCoverage]
     public class ActionManagerTests
     {
-        Mock<AbstractAction> mockAction = new Mock<AbstractAction>();
+        readonly Mock<AbstractAction> _mockAction = new Mock<AbstractAction>();
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -38,10 +38,10 @@ namespace UndoFramework.Tests
         [TestInitialize]
         public void MyTestInitialize()
         {
-            mockAction.Setup(c => c.CanExecute()).Returns(true).Verifiable();
-            mockAction.Setup(c => c.CanUnExecute()).Returns(true).Verifiable();
-            mockAction.Setup(c => c.Execute()).Verifiable();
-            mockAction.Setup(c => c.UnExecute()).Verifiable();
+            _mockAction.Setup(c => c.CanExecute()).Returns(true).Verifiable();
+            _mockAction.Setup(c => c.CanUnExecute()).Returns(true).Verifiable();
+            _mockAction.Setup(c => c.Execute()).Verifiable();
+            _mockAction.Setup(c => c.UnExecute()).Verifiable();
 
 
         }
@@ -54,19 +54,23 @@ namespace UndoFramework.Tests
 
 
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void Undo_Expected_Positive()
+// ReSharper restore InconsistentNaming
         {
             ActionManager actManager = new ActionManager();
-            actManager.RecordAction(mockAction.Object);
+            actManager.RecordAction(_mockAction.Object);
             actManager.Undo();
             Assert.IsTrue(actManager.CanRedo);
         }
 
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void Redo_Expected_Positive()
+// ReSharper restore InconsistentNaming
         {
             ActionManager actManager = new ActionManager();
-            actManager.RecordAction(mockAction.Object);
+            actManager.RecordAction(_mockAction.Object);
             actManager.Undo();
             actManager.Redo();
             Assert.IsTrue(actManager.CanUndo);
@@ -76,8 +80,8 @@ namespace UndoFramework.Tests
         public void Two_Actions_One_Undo_Expected_CanUndo_true()
         {
             ActionManager actManager = new ActionManager();
-            actManager.RecordAction(mockAction.Object);
-            actManager.RecordAction(mockAction.Object);
+            actManager.RecordAction(_mockAction.Object);
+            actManager.RecordAction(_mockAction.Object);
             actManager.Undo();
 
             Assert.IsTrue(actManager.CanUndo && actManager.CanRedo);
@@ -87,8 +91,8 @@ namespace UndoFramework.Tests
         public void Two_Actions_Two_Undo_One_Redo_Expected_CanRedo_true()
         {
             ActionManager actManager = new ActionManager();
-            actManager.RecordAction(mockAction.Object);
-            actManager.RecordAction(mockAction.Object);
+            actManager.RecordAction(_mockAction.Object);
+            actManager.RecordAction(_mockAction.Object);
             actManager.Undo();
             actManager.Undo();
             actManager.Redo();
@@ -96,7 +100,9 @@ namespace UndoFramework.Tests
         }
 
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void RecordAction_Null_Action_Expected_No_Action()
+// ReSharper restore InconsistentNaming
         {
             ActionManager actManager = new ActionManager();
             actManager.RecordAction(null);
@@ -104,11 +110,12 @@ namespace UndoFramework.Tests
         }
 
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void RecordAction_ExecutingAction_Expected_No_Action()
+// ReSharper restore InconsistentNaming
         {
-            ActionManager actManager = new ActionManager();
-            actManager.ExecuteImmediatelyWithoutRecording = true;
-            actManager.RecordAction(mockAction.Object);
+            ActionManager actManager = new ActionManager { ExecuteImmediatelyWithoutRecording = true };
+            actManager.RecordAction(_mockAction.Object);
 
             Assert.IsTrue(!actManager.CanUndo && !actManager.CanRedo);
         }

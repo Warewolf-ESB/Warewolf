@@ -1,8 +1,8 @@
-﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
-{
-    using System;
-    using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
+namespace Dev2.UndoFramework
+{
     internal interface IActionHistory : IEnumerable<IAction>
     {
         event EventHandler CollectionChanged;

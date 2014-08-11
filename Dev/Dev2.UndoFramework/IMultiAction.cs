@@ -1,7 +1,7 @@
-﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
-{
-    using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
+namespace Dev2.UndoFramework
+{
     public interface IMultiAction : IAction, IList<IAction>
     {
         bool IsDelayed { get; set; }

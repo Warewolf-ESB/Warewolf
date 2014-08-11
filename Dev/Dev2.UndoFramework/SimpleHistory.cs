@@ -1,11 +1,11 @@
-﻿// ReSharper disable CheckNamespace
-namespace Unlimited.Applications.BusinessDesignStudio.Undo
-// ReSharper restore CheckNamespace
-{
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
+﻿
+using System;
+using System.Collections;
+using System.Collections.Generic;
 
+namespace Dev2.UndoFramework
+
+{
     internal class SimpleHistory : IActionHistory
     {
         private SimpleHistoryNode _mCurrentState = new SimpleHistoryNode();

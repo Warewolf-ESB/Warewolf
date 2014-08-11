@@ -1,8 +1,5 @@
-﻿namespace Unlimited.Applications.BusinessDesignStudio.Undo
+﻿namespace Dev2.UndoFramework
 {
-    using System;
-    using System.Runtime.CompilerServices;
-
     internal class SimpleHistoryNode
     {
         public SimpleHistoryNode()
@@ -11,8 +8,8 @@
 
         public SimpleHistoryNode(IAction lastExistingAction, SimpleHistoryNode lastExistingState)
         {
-            this.PreviousAction = lastExistingAction;
-            this.PreviousNode = lastExistingState;
+            PreviousAction = lastExistingAction;
+            PreviousNode = lastExistingState;
         }
 
         public IAction NextAction { get; set; }

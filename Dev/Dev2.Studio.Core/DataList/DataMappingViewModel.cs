@@ -10,7 +10,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
-using Unlimited.Applications.BusinessDesignStudio.Undo;
+using Dev2.UndoFramework;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
