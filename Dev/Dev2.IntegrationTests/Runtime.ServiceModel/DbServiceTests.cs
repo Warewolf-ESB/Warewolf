@@ -465,12 +465,16 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         public void ServiceInvoker_Invoke_WhenDbTest_ExpectValidDbRecordsetDataWithCommasReplacedForUIParsing()
         {
             //------------Setup for test--------------------------
-            var services = new TestDbServices();
+            
 
             const string args = @"{""resourceID"":""00000000-0000-0000-0000-000000000000"",""resourceType"":""DbService"",""resourceName"":null,""resourcePath"":null,""source"":{""ServerType"":""SqlDatabase"",""Server"":""RSAKLFSVRGENDEV"",""DatabaseName"":""Dev2TestingDB"",""Port"":1433,""AuthenticationType"":""User"",""UserID"":""testUser"",""Password"":""test123"",""ConnectionString"":""Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testUser;Password=test123;"",""ResourceID"":""eb2de0a3-4814-40b8-b825-f4601bfdb155"",""Version"":""1.0"",""ResourceType"":""DbSource"",""ResourceName"":""TU Greenpoint DB"",""ResourcePath"":""SQL SRC"",""IsValid"":false,""Errors"":null,""ReloadActions"":false},""method"":{""Name"":""dbo.pr_MapLocationsGetAll"",""ExecuteAction"":""dbo.pr_MapLocationsGetAll"",""SourceCode"":""-- =============================================\r<br />-- Author:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Author,,Name>\r<br />-- Create date: <Create Date,,>\r<br />-- Description:&nbsp;&nbsp;&nbsp;&nbsp;<Description,,>\r<br />-- =============================================\r<br />CREATE PROCEDURE dbo.proc_GetAllMapLocations \r<br />&nbsp;&nbsp;&nbsp;&nbsp;\r<br />AS\r<br />BEGIN\r<br />&nbsp;&nbsp;&nbsp;&nbsp;SET NOCOUNT ON;\r<br />\r<br />    SELECT MapLocationID, StreetAddress,Latitude,Longitude FROM dbo.MapLocation ORDER BY MapLocationID ASC\r<br />END\r<br />"",""Parameters"":[]},""recordset"":{""Name"":""dbo_proc_GetAllMapLocations"",""Fields"":[],""Records"":[],""HasErrors"":false,""ErrorMessage"":""""}}";
+            var service = JsonConvert.DeserializeObject<DbService>(args);
+
+            Mock<IResourceCatalog> mockedResourceCatelog = new Mock<IResourceCatalog>();
+            mockedResourceCatelog.Setup(a => a.GetResource<DbSource>(It.IsAny<Guid>(), service.Source.ResourceID)).Returns(service.Source as DbSource);
 
             //------------Execute Test---------------------------
-
+            var services = new TestDbServices(mockedResourceCatelog.Object);
             var result = services.DbTest(args, Guid.NewGuid(), Guid.Empty);
 
             // __COMMA__ is expected as this means sample has been delimited properly by the server.
