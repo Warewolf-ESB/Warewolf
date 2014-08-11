@@ -290,12 +290,12 @@ namespace Dev2.Studio.Core.Models
                 {
                     _dataList = value;
                     NotifyOfPropertyChange("DataList");
+                    if(OnDataListChanged != null)
+                    {
+                        OnDataListChanged();
+                    }
                 }
 
-                if(OnDataListChanged != null)
-                {
-                    OnDataListChanged();
-                }
             }
         }
 

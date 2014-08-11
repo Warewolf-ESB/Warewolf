@@ -1029,8 +1029,22 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
                 _wd.View.Measure(new Size(2000, 2000));
-                _wd.View.Focus();
 
+                _wd.View.LostFocus += (sender, args) =>
+                {
+                    var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
+
+                // If we are opening from server skip this check, it cannot have "real" changes!
+                    if(!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
+                    {
+                        // an additional case we need to account for - Designer has resized and is only visible once focus is lost?! ;)
+                        if(OpeningWorkflowsHelper.IsWaitingForFistFocusLoss(workSurfaceKey) || WatermarkSential.IsWatermarkBeingApplied)
+                        {
+                            ResourceModel.WorkflowXaml = ServiceDefinition;
+                            OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
+                        }
+                    }
+                };
                 _wd.Context.Services.Subscribe<DesignerView>(instance =>
                 {
                     // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
@@ -1044,6 +1058,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 //Jurie.Smit 2013/01/03 - Added to disable the deleting of the root flowchart
                 CommandManager.AddPreviewCanExecuteHandler(_wd.View, CanExecuteRoutedEventHandler);
                 _wd.ModelChanged += WdOnModelChanged;
+                _wd.View.Focus();
                 //2013.06.26: Ashley Lewis for bug 9728 - event avoids focus loss after a delete
                 CommandManager.AddPreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
 
@@ -1308,7 +1323,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     var checkServiceDefinition = CheckServiceDefinition();
                     var checkDataList = CheckDataList();
-                    GetWorkflowLink();
+
                     ResourceModel.IsWorkflowSaved = checkServiceDefinition && checkDataList;
                     _workspaceSave = false;
                     NotifyOfPropertyChange(() => DisplayName);
@@ -1864,6 +1879,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public void FireWdChanged()
         {
             WdOnModelChanged(new object(), new EventArgs());
+            GetWorkflowLink();
         }
 
         #region Implementation of IHandle<SaveUnsavedWorkflow>

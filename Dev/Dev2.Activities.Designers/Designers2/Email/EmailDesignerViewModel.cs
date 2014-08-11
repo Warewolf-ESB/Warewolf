@@ -73,10 +73,7 @@ namespace Dev2.Activities.Designers2.Email
         static void OnSelectedEmailSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var viewModel = (EmailDesignerViewModel)d;
-            if(viewModel.IsRefreshing)
-            {
-                return;
-            }
+
             viewModel.OnSelectedEmailSourceChanged();
         }
 
@@ -226,7 +223,10 @@ namespace Dev2.Activities.Designers2.Email
 
             IsRefreshing = true;
 
-            EmailSources.Remove(SelectEmailSource);
+            if(SelectedEmailSource != SelectEmailSource)
+            {
+                EmailSources.Remove(SelectEmailSource);
+            }
             EmailSource = SelectedEmailSource;
         }
 
@@ -399,10 +399,17 @@ namespace Dev2.Activities.Designers2.Email
         public void Handle(UpdateResourceMessage message)
         {
             var selectedSource = new EmailSource(message.ResourceModel.WorkflowXaml.ToXElement());
-            if(selectedSource.ResourceID == EmailSource.ResourceID)
+            if(EmailSource == null)
             {
-                EmailSource = null;
                 EmailSource = selectedSource;
+            }
+            else
+            {
+                if(selectedSource.ResourceID == EmailSource.ResourceID)
+                {
+                    EmailSource = null;
+                    EmailSource = selectedSource;
+                }
             }
         }
     }

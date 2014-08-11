@@ -157,7 +157,7 @@ namespace Dev2.Core.Tests
             resourceModel.DataList = "TestDataList";
             //------------Assert Results-------------------------
             Assert.AreEqual(1, timesFired);
-            Assert.AreEqual(2, dataListFired);
+            Assert.AreEqual(1, dataListFired);
         }
 
         [TestMethod]
