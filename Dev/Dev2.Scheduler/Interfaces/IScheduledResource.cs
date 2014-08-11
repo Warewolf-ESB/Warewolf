@@ -6,6 +6,7 @@ namespace Dev2.Scheduler.Interfaces
     public interface IScheduledResource
     {
 
+  
         /// <summary>
         /// Property to check if the scheduled resouce is saved
         /// </summary>
@@ -66,7 +67,7 @@ namespace Dev2.Scheduler.Interfaces
         string UserName { get; set; }
 
         //The task password
-        string Password { get; set; }
+        string Password{ get; set; }
 
         /// <summary>
         /// validation errors

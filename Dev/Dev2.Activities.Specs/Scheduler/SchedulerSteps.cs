@@ -3,13 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows.Controls;
+using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.CustomControls.Connections;
 using Dev2.Scheduler.Interfaces;
+using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Scheduler;
+using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
+using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
@@ -47,7 +52,7 @@ namespace Dev2.Activities.Specs.Scheduler
         public void GivenHasAScheduleOf(string scheduleName, Table table)
         {
             AppSettings.LocalHost = "http://localhost:3142";
-            SchedulerViewModel scheduler = new SchedulerViewModel();
+            SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker(), new Mock<IConnectControlViewModel>().Object);
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
 
             environmentModel.Connect();
@@ -55,6 +60,7 @@ namespace Dev2.Activities.Specs.Scheduler
             scheduler.CurrentEnvironment = environmentModel;
             scheduler.CreateNewTask();
             scheduler.SelectedTask.Name = ScenarioContext.Current["ScheduleName"].ToString();
+            scheduler.SelectedTask.OldName = "bob";
             scheduler.SelectedTask.UserName = ScenarioContext.Current["UserName"].ToString();
             scheduler.SelectedTask.Password = ScenarioContext.Current["Password"].ToString();
             scheduler.SelectedTask.WorkflowName = ScenarioContext.Current["WorkFlow"].ToString();
@@ -149,7 +155,7 @@ namespace Dev2.Activities.Specs.Scheduler
             if(scheduler != null)
             {
                 scheduler.ActiveItem = new TabItem {Header = "History"};
-                Thread.Sleep(8000);
+                Thread.Sleep(12000);
 // ReSharper disable RedundantAssignment
                 IList<IResourceHistory> x = scheduler.ScheduledResourceModel.CreateHistory(scheduler.SelectedTask).ToList();
 // ReSharper restore RedundantAssignment
