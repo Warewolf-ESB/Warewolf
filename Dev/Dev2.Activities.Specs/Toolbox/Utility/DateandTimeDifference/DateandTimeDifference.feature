@@ -349,7 +349,7 @@ Scenario: Calculate the number of weeks
 	Given I have a first date "06/01/2014 08:00:01.00" 
 	And I have a second date "30/01/2014 08:00:01.06" 
 	And the date format as "dd/mm/yyyy 12h:min:ss.sp"
-	And I selected output in "Split Secs" 	
+	And I selected output in "Weeks" 	
 	When the datetime difference tool is executed
 	Then the difference should be "3"
 	And the execution has "NO" error
