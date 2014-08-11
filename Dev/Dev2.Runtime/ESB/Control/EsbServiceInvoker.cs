@@ -104,12 +104,12 @@ namespace Dev2.Runtime.ESB
             errors.ClearErrors();
             try
             {
-                var serviceID = dataObject.ResourceID;
+                var serviceId = dataObject.ResourceID;
 
                 // we need to get better at getting this ;)
 
                 var serviceName = dataObject.ServiceName;
-                if(serviceID == Guid.Empty && string.IsNullOrEmpty(serviceName))
+                if(serviceId == Guid.Empty && string.IsNullOrEmpty(serviceName))
                 {
                     errors.AddError(Resources.DynamicServiceError_ServiceNotSpecified);
                 }
@@ -119,7 +119,7 @@ namespace Dev2.Runtime.ESB
                     try
                     {
                         var sl = new ServiceLocator();
-                        var theService = serviceID == Guid.Empty ? sl.FindService(serviceName, _workspace.ID) : sl.FindService(serviceID, _workspace.ID);
+                        var theService = serviceId == Guid.Empty ? sl.FindService(serviceName, _workspace.ID) : sl.FindService(serviceId, _workspace.ID);
 
                         if(theService == null)
                         {
@@ -151,7 +151,7 @@ namespace Dev2.Runtime.ESB
                         }
                         else
                         {
-                            errors.AddError("Malformed Service [ " + serviceID + " ] it contains multiple actions");
+                            errors.AddError("Malformed Service [ " + serviceId + " ] it contains multiple actions");
                         }
                     }
                     catch(Exception e)
@@ -183,16 +183,16 @@ namespace Dev2.Runtime.ESB
         /// Generates the invoke container.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="serviceID">The service unique identifier.</param>
+        /// <param name="serviceId">The service unique identifier.</param>
         /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
-        /// <param name="masterDataListID">The master data list unique identifier.</param>
+        /// <param name="masterDataListId">The master data list unique identifier.</param>
         /// <returns></returns>
-        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceID, bool isLocalInvoke, Guid masterDataListID = default(Guid))
+        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke, Guid masterDataListId = default(Guid))
         {
             if(isLocalInvoke)
             {
                 ServiceLocator sl = new ServiceLocator();
-                var theService = sl.FindService(serviceID, _workspace.ID);
+                var theService = sl.FindService(serviceId, _workspace.ID);
                 EsbExecutionContainer executionContainer = null;
 
 
@@ -216,15 +216,15 @@ namespace Dev2.Runtime.ESB
         /// <param name="dataObject">The data object.</param>
         /// <param name="serviceName">Name of the service.</param>
         /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
-        /// <param name="masterDataListID">The master data list unique identifier.</param>
+        /// <param name="masterDataListId">The master data list unique identifier.</param>
         /// <returns></returns>
-        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListID = default(Guid))
+        public EsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId = default(Guid))
         {
             if(isLocalInvoke)
             {
                 ServiceLocator sl = new ServiceLocator();
-                var resourceID = dataObject.ResourceID;
-                DynamicService theService = GetService(serviceName, resourceID, sl);
+                var resourceId = dataObject.ResourceID;
+                DynamicService theService = GetService(serviceName, resourceId, sl);
                 EsbExecutionContainer executionContainer = null;
 
 
@@ -242,15 +242,15 @@ namespace Dev2.Runtime.ESB
             return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
         }
 
-        DynamicService GetService(string serviceName, Guid resourceID, ServiceLocator sl)
+        DynamicService GetService(string serviceName, Guid resourceId, ServiceLocator sl)
         {
             try
             {
-                if(resourceID == Guid.Empty)
+                if(resourceId == Guid.Empty)
                 {
                     return sl.FindService(serviceName, _workspace.ID) ?? sl.FindService(serviceName, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version
                 }
-                return sl.FindService(resourceID, _workspace.ID) ?? sl.FindService(resourceID, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version
+                return sl.FindService(resourceId, _workspace.ID) ?? sl.FindService(resourceId, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version
             }catch(Exception)
             {
                 //Internal services
@@ -322,13 +322,13 @@ namespace Dev2.Runtime.ESB
         {
             if(errors.HasErrors() && (dataObject.IsDebugMode()))
             {
-                Guid parentInstanceID;
-                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
+                Guid parentInstanceId;
+                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
 
                 var debugState = new DebugState
                 {
                     ID = dataObject.DataListID,
-                    ParentID = parentInstanceID,
+                    ParentID = parentInstanceId,
                     WorkspaceID = dataObject.WorkspaceID,
                     StateType = stateType,
                     StartTime = DateTime.Now,

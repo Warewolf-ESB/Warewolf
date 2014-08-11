@@ -3,22 +3,25 @@ using System.Runtime.Serialization;
 using System.Xml.Linq;
 using Dev2.DynamicServices;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Workspaces
 {
     [Serializable]
+// ReSharper disable PartialTypeWithSinglePart
     public partial class WorkspaceItem : IWorkspaceItem
+// ReSharper restore PartialTypeWithSinglePart
     {
         public const string ServiceServiceType = "DynamicService";
         public const string SourceServiceType = "Source";
 
         #region Initialization
 
-        public WorkspaceItem(Guid workspaceID, Guid serverID,Guid environmentID,Guid resourceID)
+        public WorkspaceItem(Guid workspaceId, Guid serverId,Guid environmentId,Guid resourceId)
         {
-            ID = resourceID;
-            WorkspaceID = workspaceID;
-            ServerID = serverID;
-            EnvironmentID = environmentID;
+            ID = resourceId;
+            WorkspaceID = workspaceId;
+            ServerID = serverId;
+            EnvironmentID = environmentId;
         }
 
         public Guid EnvironmentID { get; private set; }
@@ -176,20 +179,20 @@ namespace Dev2.Workspaces
         public WorkspaceItem(XElement xml)
         {
             ID = Guid.Parse(GetAttributeValue(xml, "ID"));
-            Guid tryGetWorkspaceID;
-            if (Guid.TryParse(GetAttributeValue(xml, "WorkspaceID"), out tryGetWorkspaceID))
+            Guid tryGetWorkspaceId;
+            if (Guid.TryParse(GetAttributeValue(xml, "WorkspaceID"), out tryGetWorkspaceId))
             {
-                WorkspaceID = tryGetWorkspaceID;
+                WorkspaceID = tryGetWorkspaceId;
             }
-            Guid tryGetServerID;
-            if (Guid.TryParse(GetAttributeValue(xml, "ServerID"), out tryGetServerID))
+            Guid tryGetServerId;
+            if (Guid.TryParse(GetAttributeValue(xml, "ServerID"), out tryGetServerId))
             {
-                ServerID = tryGetServerID;
+                ServerID = tryGetServerId;
             }
-            Guid envID;
-            if (Guid.TryParse(GetAttributeValue(xml, "EnvironmentID"), out envID))
+            Guid envId;
+            if (Guid.TryParse(GetAttributeValue(xml, "EnvironmentID"), out envId))
             {
-                EnvironmentID = envID;
+                EnvironmentID = envId;
             } 
             ServiceName = GetAttributeValue(xml, "ServiceName");
             bool isWorkflowSaved;

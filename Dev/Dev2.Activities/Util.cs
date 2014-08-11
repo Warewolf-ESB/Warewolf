@@ -3,7 +3,8 @@
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    // ReSharper restore CheckNamespace
+// ReSharper restore CheckNamespace
+// ReSharper disable InconsistentNaming
     public enum enDev2HTMLType { FORM, PAGETITLE, META, IMAGE, TEXT, MENU }
 
     public class Util

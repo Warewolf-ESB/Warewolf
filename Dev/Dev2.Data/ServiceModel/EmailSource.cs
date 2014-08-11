@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
 {
     // PBI 953 - 2013.05.16 - TWR - Created

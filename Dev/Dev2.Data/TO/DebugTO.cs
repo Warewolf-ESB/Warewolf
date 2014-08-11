@@ -2,6 +2,7 @@
 
 namespace Dev2.Data.TO
 {
+// ReSharper disable InconsistentNaming
     public class DebugTO
     {
         #region Ctor

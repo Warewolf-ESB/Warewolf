@@ -17,30 +17,30 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FetchResourceDefintition : IEsbManagementEndpoint
     {
-        const string payloadStart = "<XamlDefinition>";
-        const string payloadEnd = "</XamlDefinition>";
-        const string altPayloadStart = "<Actions>";
-        const string altPayloadEnd = "</Actions>";
+        const string PayloadStart = "<XamlDefinition>";
+        const string PayloadEnd = "</XamlDefinition>";
+        const string AltPayloadStart = "<Actions>";
+        const string AltPayloadEnd = "</Actions>";
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
 
             var res = new ExecuteMessage { HasError = false };
 
-            string serviceID = null;
+            string serviceId = null;
             StringBuilder tmp;
             values.TryGetValue("ResourceID", out tmp);
 
             if(tmp != null)
             {
-                serviceID = tmp.ToString();
+                serviceId = tmp.ToString();
             }
 
-            Guid resourceID;
-            Guid.TryParse(serviceID, out resourceID);
+            Guid resourceId;
+            Guid.TryParse(serviceId, out resourceId);
 
-            var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceID);
-            var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceID);
+            var result = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, resourceId);
+            var resource = ResourceCatalog.Instance.GetResource(theWorkspace.ID, resourceId);
 
             if(resource != null && resource.ResourceType == ResourceType.DbSource)
             {
@@ -48,15 +48,15 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             else
             {
-                var startIdx = result.IndexOf(payloadStart, 0, false);
+                var startIdx = result.IndexOf(PayloadStart, 0, false);
 
                 if(startIdx >= 0)
                 {
                     // remove beginning junk
-                    startIdx += payloadStart.Length;
+                    startIdx += PayloadStart.Length;
                     result = result.Remove(0, startIdx);
 
-                    startIdx = result.IndexOf(payloadEnd, 0, false);
+                    startIdx = result.IndexOf(PayloadEnd, 0, false);
 
                     if(startIdx > 0)
                     {
@@ -69,14 +69,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 else
                 {
                     // handle services ;)
-                    startIdx = result.IndexOf(altPayloadStart, 0, false);
+                    startIdx = result.IndexOf(AltPayloadStart, 0, false);
                     if(startIdx >= 0)
                     {
                         // remove begging junk
-                        startIdx += altPayloadStart.Length;
+                        startIdx += AltPayloadStart.Length;
                         result = result.Remove(0, startIdx);
 
-                        startIdx = result.IndexOf(altPayloadEnd, 0, false);
+                        startIdx = result.IndexOf(AltPayloadEnd, 0, false);
 
                         if(startIdx > 0)
                         {

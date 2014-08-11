@@ -32,7 +32,7 @@ namespace Dev2.Converters.DateAndTime
 
         #region Methods
 
-        public bool TryCompare(IDateTimeDiffTO dateTimeDiffTO, out string result, out string error)
+        public bool TryCompare(IDateTimeDiffTO dateTimeDiffTo, out string result, out string error)
         {
             //local variable declarations
 
@@ -42,13 +42,13 @@ namespace Dev2.Converters.DateAndTime
             IDateTimeResultTO tmpRes;
 
             //try create the first DateTime object
-            bool noErrorOccured = dateTimeParser.TryParseDateTime(dateTimeDiffTO.Input1, dateTimeDiffTO.InputFormat, out tmpRes, out error);
+            bool noErrorOccured = dateTimeParser.TryParseDateTime(dateTimeDiffTo.Input1, dateTimeDiffTo.InputFormat, out tmpRes, out error);
             if(noErrorOccured)
             {
                 //Set the first DateTime object
                 _input1 = tmpRes.ToDateTime();
                 //try create the second DateTime object
-                noErrorOccured = dateTimeParser.TryParseDateTime(dateTimeDiffTO.Input2, dateTimeDiffTO.InputFormat, out tmpRes, out error);
+                noErrorOccured = dateTimeParser.TryParseDateTime(dateTimeDiffTo.Input2, dateTimeDiffTo.InputFormat, out tmpRes, out error);
 
             }
 
@@ -59,7 +59,7 @@ namespace Dev2.Converters.DateAndTime
 
                 //Try get the function according to what the OutputType is
                 Func<DateTime, DateTime, double> returnedFunc;
-                noErrorOccured = OutputFormats.TryGetValue(dateTimeDiffTO.OutputType, out returnedFunc);
+                noErrorOccured = OutputFormats.TryGetValue(dateTimeDiffTo.OutputType, out returnedFunc);
 
                 if(returnedFunc != null)
                 {
@@ -175,8 +175,8 @@ namespace Dev2.Converters.DateAndTime
         /// <returns></returns>
         private static double ReturnWeeks(DateTime input1, DateTime input2)
         {
-            TimeSpan _timeDiff = input2 - input1;
-            double result = (_timeDiff.TotalDays / 7);
+            TimeSpan timeDiff = input2 - input1;
+            double result = (timeDiff.TotalDays / 7);
             return result;
         }
 
@@ -188,8 +188,8 @@ namespace Dev2.Converters.DateAndTime
         /// <returns></returns>
         private static double ReturnHours(DateTime input1, DateTime input2)
         {
-            TimeSpan _timeDiff = input2 - input1;
-            double result = _timeDiff.TotalHours;
+            TimeSpan timeDiff = input2 - input1;
+            double result = timeDiff.TotalHours;
             return result;
         }
 
@@ -201,8 +201,8 @@ namespace Dev2.Converters.DateAndTime
         /// <returns></returns>
         private static double ReturnMinutes(DateTime input1, DateTime input2)
         {
-            TimeSpan _timeDiff = input2 - input1;
-            double result = _timeDiff.TotalMinutes;
+            TimeSpan timeDiff = input2 - input1;
+            double result = timeDiff.TotalMinutes;
             return result;
         }
 
@@ -214,8 +214,8 @@ namespace Dev2.Converters.DateAndTime
         /// <returns></returns>
         private static double ReturnSeconds(DateTime input1, DateTime input2)
         {
-            TimeSpan _timeDiff = input2 - input1;
-            double result = _timeDiff.TotalSeconds;
+            TimeSpan timeDiff = input2 - input1;
+            double result = timeDiff.TotalSeconds;
             return result;
         }
 
@@ -227,8 +227,8 @@ namespace Dev2.Converters.DateAndTime
         /// <returns></returns>
         private static double ReturnSplitSeconds(DateTime input1, DateTime input2)
         {
-            TimeSpan _timeDiff = input2 - input1;
-            double result = _timeDiff.TotalMilliseconds;
+            TimeSpan timeDiff = input2 - input1;
+            double result = timeDiff.TotalMilliseconds;
             return result;
         }
 

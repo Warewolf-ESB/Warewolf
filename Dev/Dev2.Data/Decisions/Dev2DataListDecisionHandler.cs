@@ -10,8 +10,8 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Value_Objects;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Data.Decision
-// ReSharper restore CheckNamespace
 {
     public class Dev2DataListDecisionHandler
     {
@@ -35,11 +35,11 @@ namespace Dev2.Data.Decision
         public string FetchSwitchData(string variableName, IList<string> oldAmbientData)
         {
             ErrorResultTO errors;
-            Guid dlID = FetchDataListID(oldAmbientData);
-            IBinaryDataListEntry tmp = EvaluateForSwitch(variableName, dlID, out errors);
+            Guid dlId = FetchDataListID(oldAmbientData);
+            IBinaryDataListEntry tmp = EvaluateForSwitch(variableName, dlId, out errors);
             if(errors.HasErrors())
             {
-                Compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
+                Compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
             }
 
             if(tmp != null)
@@ -70,18 +70,18 @@ namespace Dev2.Data.Decision
         {
 
             // Evaluate decisionDataPayload through the EvaluateFunction ;)
-            Guid dlID = FetchDataListID(oldAmbientData);
-            if(dlID == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
+            Guid dlId = FetchDataListID(oldAmbientData);
+            if(dlId == GlobalConstants.NullDataListID) throw new InvalidExpressionException("Could not evaluate decision data - no DataList ID sent!");
             // Swap out ! with a new internal token to avoid nasty issues with 
             string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
 
-            var dds = EvaluateRegion(newDecisionData, dlID);
+            var dds = EvaluateRegion(newDecisionData, dlId);
 
             ErrorResultTO errors = new ErrorResultTO();
 
             if(dds != null)
             {
-                if(dlID != GlobalConstants.NullDataListID)
+                if(dlId != GlobalConstants.NullDataListID)
                 {
                     try
                     {
@@ -97,7 +97,7 @@ namespace Dev2.Data.Decision
                                 // Treat Errors special
                                 if(typeOf == enDecisionType.IsError || typeOf == enDecisionType.IsNotError)
                                 {
-                                    dd.Col1 = Compiler.EvaluateSystemEntry(dlID, enSystemTag.Dev2Error, out errors);
+                                    dd.Col1 = Compiler.EvaluateSystemEntry(dlId, enSystemTag.Dev2Error, out errors);
                                 }
 
                                 IDecisionOperation op = Dev2DecisionFactory.Instance().FetchDecisionFunction(typeOf);
@@ -123,7 +123,7 @@ namespace Dev2.Data.Decision
                                         // An error, push into the DL
                                         ErrorResultTO errorErrors;
                                         errors.AddError(e.Message);
-                                        Compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errorErrors);
+                                        Compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errorErrors);
 
                                         return false;
                                     }
@@ -159,9 +159,9 @@ namespace Dev2.Data.Decision
             throw new InvalidExpressionException("Could not populate decision model - DataList Errors!");
         }
 
-        private IBinaryDataListEntry EvaluateForSwitch(string payload, Guid dlID, out ErrorResultTO errors)
+        private IBinaryDataListEntry EvaluateForSwitch(string payload, Guid dlId, out ErrorResultTO errors)
         {
-            IBinaryDataListEntry tmp = Compiler.Evaluate(dlID, enActionType.User, payload, false, out errors);
+            IBinaryDataListEntry tmp = Compiler.Evaluate(dlId, enActionType.User, payload, false, out errors);
 
             return tmp;
         }
@@ -170,9 +170,9 @@ namespace Dev2.Data.Decision
         /// Evaluates the region.
         /// </summary>
         /// <param name="payload">The payload.</param>
-        /// <param name="dlID">The dl ID.</param>
+        /// <param name="dlId">The dl ID.</param>
         /// <returns></returns>
-        private Dev2DecisionStack EvaluateRegion(string payload, Guid dlID)
+        private Dev2DecisionStack EvaluateRegion(string payload, Guid dlId)
         {
             if(payload.StartsWith("{\"TheStack\":[{") || payload.StartsWith("{'TheStack':[{"))
             {
@@ -195,7 +195,7 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            dd.Col1 = GetValueForDecisionVariable(dlID, dd.Col1);
+                            dd.Col1 = GetValueForDecisionVariable(dlId, dd.Col1);
                         }
 
                         if(dd.Col2 != null && DataListUtil.GetRecordsetIndexType(dd.Col2) == enRecordsetIndexType.Star)
@@ -208,7 +208,7 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            dd.Col2 = GetValueForDecisionVariable(dlID, dd.Col2);
+                            dd.Col2 = GetValueForDecisionVariable(dlId, dd.Col2);
                         }
 
                         if(dd.Col3 != null && DataListUtil.GetRecordsetIndexType(dd.Col3) == enRecordsetIndexType.Star)
@@ -221,14 +221,14 @@ namespace Dev2.Data.Decision
                         }
                         else
                         {
-                            dd.Col3 = GetValueForDecisionVariable(dlID, dd.Col3);
+                            dd.Col3 = GetValueForDecisionVariable(dlId, dd.Col3);
                         }
                     }
                     //Remove those record sets and replace them with a new decision for each resolved value
                     foreach(Dev2Decision decision in invalidDecisions)
                     {
                         ErrorResultTO errors;
-                        dds = ResolveAllRecords(dlID, dds, decision, effectedCols, out errors);
+                        dds = ResolveAllRecords(dlId, dds, decision, effectedCols, out errors);
                     }
                 }
 
@@ -237,13 +237,13 @@ namespace Dev2.Data.Decision
             return null;
         }
 
-        static string GetValueForDecisionVariable(Guid dlID, string decisionColumn)
+        static string GetValueForDecisionVariable(Guid dlId, string decisionColumn)
         {
             if(!String.IsNullOrEmpty(decisionColumn))
             {
                 IBinaryDataListItem binaryDataListItem = null;
                 ErrorResultTO errors;
-                IBinaryDataListEntry entry = Compiler.Evaluate(dlID, enActionType.User, decisionColumn, false, out errors);
+                IBinaryDataListEntry entry = Compiler.Evaluate(dlId, enActionType.User, decisionColumn, false, out errors);
                 if(entry != null && entry.IsRecordset)
                 {
                     string error;

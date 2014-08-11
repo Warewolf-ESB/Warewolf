@@ -12,6 +12,8 @@ using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.PathOperations.Interfaces;
 using Microsoft.Win32.SafeHandles;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.PathOperations
 {
 
@@ -46,8 +48,6 @@ namespace Dev2.PathOperations
     [Serializable]
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
-
-        // ReSharper disable once InconsistentNaming
         const int LOGON32_PROVIDER_DEFAULT = 0;
         //This parameter causes LogonUser to create a primary token. 
         // ReSharper disable once InconsistentNaming
@@ -258,14 +258,7 @@ namespace Dev2.PathOperations
 
             if(!RequiresAuth(dst))
             {
-                if(PathIs(dst) == enPathType.Directory)
-                {
-                    result = Directory.Exists(dst.Path);
-                }
-                else
-                {
-                    result = File.Exists(dst.Path);
-                }
+                result = PathIs(dst) == enPathType.Directory ? Directory.Exists(dst.Path) : File.Exists(dst.Path);
             }
             else
             {
@@ -287,14 +280,7 @@ namespace Dev2.PathOperations
                             {
                                 // Do the operation here
 
-                                if(PathIs(dst) == enPathType.Directory)
-                                {
-                                    result = Directory.Exists(dst.Path);
-                                }
-                                else
-                                {
-                                    result = File.Exists(dst.Path);
-                                }
+                                result = PathIs(dst) == enPathType.Directory ? Directory.Exists(dst.Path) : File.Exists(dst.Path);
 
                                 // remove impersonation now
                                 impersonatedUser.Undo();

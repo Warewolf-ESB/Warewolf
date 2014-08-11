@@ -2,6 +2,8 @@
 using System.Text;
 using System.Xml;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.DataList.Contract
 {
     public class DefinitionBuilder
@@ -37,14 +39,7 @@ namespace Dev2.DataList.Contract
                 XmlElement tmp = xDoc.CreateElement(ArgumentType.ToString());
                 tmp.SetAttribute(_nameAttribute, def.Name);
 
-                if(ArgumentType != enDev2ArgumentType.Input)
-                {
-                    tmp.SetAttribute(_mapsToAttribute, def.MapsTo);
-                }
-                else
-                {
-                    tmp.SetAttribute(_sourceAttribute, def.MapsTo);
-                }
+                tmp.SetAttribute(ArgumentType != enDev2ArgumentType.Input ? _mapsToAttribute : _sourceAttribute, def.MapsTo);
 
                 if(ArgumentType != enDev2ArgumentType.Input)
                 {

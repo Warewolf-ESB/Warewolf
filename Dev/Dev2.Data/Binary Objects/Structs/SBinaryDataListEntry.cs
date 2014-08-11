@@ -69,7 +69,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
             {
                 if(key >= 0)
                 {
-                    ScrubInternalTO();
+                    ScrubInternalTo();
 
                     // Generate entry 1 key, generate entry 2 key.
                     var fetchKeys = GenerateFederatedKey(key);
@@ -251,26 +251,26 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
         #region Public Methods
 
-        public void AddAlias(Guid dlID, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors)
+        public void AddAlias(Guid dlId, string parentColumn, string parentNamespace, string childColumn, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             // TODO : This needs to change so we can track at all levels what the root alias is ;)
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            Guid masterID = dlID;
+            Guid masterId = dlId;
             string masterRs = parentNamespace;
             string masterCol = parentColumn;
-            Guid searchID = dlID;
+            Guid searchId = dlId;
 
             IBinaryDataListEntry masterEntry = null;
 
             int aliasSearchRounds = 0;
             BinaryDataListAlias binaryDataListAlias = null;
 
-            while(searchID != Guid.Empty)
+            while(searchId != Guid.Empty)
             {
                 ErrorResultTO invokeErrors;
-                var bdl = compiler.FetchBinaryDataList(searchID, out invokeErrors);
+                var bdl = compiler.FetchBinaryDataList(searchId, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
 
 
@@ -287,8 +287,8 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         if(aliases.TryGetValue(masterCol, out binaryDataListAlias))
                         {
                             // we have a hit ;)
-                            masterID = binaryDataListAlias.MasterKeyID;
-                            searchID = masterID;
+                            masterId = binaryDataListAlias.MasterKeyID;
+                            searchId = masterId;
                             masterRs = binaryDataListAlias.MasterNamespace;
                             masterCol = binaryDataListAlias.MasterColumn;
                             aliasSearchRounds++;
@@ -305,7 +305,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                                 IsEmtpy = false;
                             }
 
-                            searchID = Guid.Empty; // signal end ;)
+                            searchId = Guid.Empty; // signal end ;)
                         }
                     }
                     else
@@ -319,7 +319,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         {
                             masterEntry = binaryDataListAlias.MasterEntry;
                         }
-                        searchID = Guid.Empty; // signal end ;)
+                        searchId = Guid.Empty; // signal end ;)
                     }
 
                 }
@@ -331,7 +331,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
 
             // Check MasterKeyID to see if it contains an alias, if so keep bubbling until we at end ;)
-            _keyToAliasMap[childColumn] = new BinaryDataListAlias { MasterKeyID = masterID, ChildKey = GenerateKeyPrefix(Namespace, DataListKey), MasterKey = GenerateKeyPrefix(masterRs, masterID), MasterColumn = masterCol, MasterNamespace = masterRs, MasterEntry = masterEntry };
+            _keyToAliasMap[childColumn] = new BinaryDataListAlias { MasterKeyID = masterId, ChildKey = GenerateKeyPrefix(Namespace, DataListKey), MasterKey = GenerateKeyPrefix(masterRs, masterId), MasterColumn = masterCol, MasterNamespace = masterRs, MasterEntry = masterEntry };
         }
 
         public void AddGap(int idx)
@@ -746,7 +746,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
         /// <summary>
         /// Scrubs the internal TO.
         /// </summary>
-        private void ScrubInternalTO()
+        private void ScrubInternalTo()
         {
             if(_internalReturnValue == null)
             {

@@ -13,52 +13,52 @@ namespace Dev2.Data.Binary_Objects
     /// </summary>
     public static class DataListRegistar
     {
-        private static readonly ConcurrentDictionary<int, IList<Guid>> _registrationRoster = new ConcurrentDictionary<int, IList<Guid>>();
+        private static readonly ConcurrentDictionary<int, IList<Guid>> RegistrationRoster = new ConcurrentDictionary<int, IList<Guid>>();
 
-        private static readonly ConcurrentDictionary<int, int> _activityThreadToParentThreadID = new ConcurrentDictionary<int, int>();
+        private static readonly ConcurrentDictionary<int, int> ActivityThreadToParentThreadId = new ConcurrentDictionary<int, int>();
 
-        private static readonly object _lock = new object();
+        private static readonly object Lock = new object();
 
         /// <summary>
         /// Registers the activity thread automatic parent unique identifier.
         /// </summary>
         /// <param name="parentId">The parent unique identifier.</param>
-        /// <param name="childID">The child unique identifier.</param>
-        public static void RegisterActivityThreadToParentId(int parentId, int childID)
+        /// <param name="childId">The child unique identifier.</param>
+        public static void RegisterActivityThreadToParentId(int parentId, int childId)
         {
             if(parentId <= 0)
             {
                 throw new Exception("ParentID is invalid [ " + parentId + " ]");
             }
 
-            _activityThreadToParentThreadID[childID] = parentId;
+            ActivityThreadToParentThreadId[childId] = parentId;
         }
 
         /// <summary>
         /// Registers the data list information scope.
         /// </summary>
-        /// <param name="transactionScopeID">The transaction scope unique identifier.</param>
-        /// <param name="dataListID">The data list unique identifier.</param>
-        public static void RegisterDataListInScope(int transactionScopeID, Guid dataListID)
+        /// <param name="transactionScopeId">The transaction scope unique identifier.</param>
+        /// <param name="dataListId">The data list unique identifier.</param>
+        public static void RegisterDataListInScope(int transactionScopeId, Guid dataListId)
         {
-            int keyID = transactionScopeID;
+            int keyId = transactionScopeId;
 
-            lock(_lock)
+            lock(Lock)
             {
                 // now we can correctly scope the data list creation ;)
                 IList<Guid> theList;
-                if(_registrationRoster.TryGetValue(keyID, out theList))
+                if(RegistrationRoster.TryGetValue(keyId, out theList))
                 {
-                    if(!theList.Contains(dataListID))
+                    if(!theList.Contains(dataListId))
                     {
-                        theList.Add(dataListID);
+                        theList.Add(dataListId);
                     }
                 }
                 else
                 {
-                    ServerLogger.LogTrace("REGESTIRATION - Transactional scope ID = " + transactionScopeID);
+                    ServerLogger.LogTrace("REGESTIRATION - Transactional scope ID = " + transactionScopeId);
                     // its new, add it ;)
-                    _registrationRoster[keyID] = new List<Guid> { dataListID };
+                    RegistrationRoster[keyId] = new List<Guid> { dataListId };
                 }
             }
         }
@@ -66,37 +66,37 @@ namespace Dev2.Data.Binary_Objects
         /// <summary>
         /// Disposes the scope.
         /// </summary>
-        /// <param name="transactionScopeID">The transaction scope unique identifier.</param>
-        /// <param name="rootRequestID">The root request unique identifier.</param>
+        /// <param name="transactionScopeId">The transaction scope unique identifier.</param>
+        /// <param name="rootRequestId">The root request unique identifier.</param>
         /// <param name="doCompact">if set to <c>true</c> [document compact].</param>
-        public static void DisposeScope(int transactionScopeID, Guid rootRequestID, bool doCompact = true)
+        public static void DisposeScope(int transactionScopeId, Guid rootRequestId, bool doCompact = true)
         {
             Task.Run(() =>
             {
 
-                ServerLogger.LogTrace("DISPOSING - Transactional scope ID = " + transactionScopeID);
+                ServerLogger.LogTrace("DISPOSING - Transactional scope ID = " + transactionScopeId);
                 try
                 {
-                    lock(_lock)
+                    lock(Lock)
                     {
                         IList<Guid> theList;
-                        if(_registrationRoster.TryGetValue(transactionScopeID, out theList))
+                        if(RegistrationRoster.TryGetValue(transactionScopeId, out theList))
                         {
-                            theList.Remove(rootRequestID);
+                            theList.Remove(rootRequestId);
                             BinaryDataListStorageLayer.RemoveAll(theList);
 
                             // finally reset
                             IList<Guid> dummy;
-                            _registrationRoster.TryRemove(transactionScopeID, out dummy);
+                            RegistrationRoster.TryRemove(transactionScopeId, out dummy);
 
                             // now remove children ;)
-                            var keyList = _activityThreadToParentThreadID.Keys.ToList();
+                            var keyList = ActivityThreadToParentThreadId.Keys.ToList();
                             foreach(var key in keyList)
                             {
-                                if(key == transactionScopeID)
+                                if(key == transactionScopeId)
                                 {
                                     int dummyInt;
-                                    _activityThreadToParentThreadID.TryRemove(transactionScopeID, out dummyInt);
+                                    ActivityThreadToParentThreadId.TryRemove(transactionScopeId, out dummyInt);
                                 }
                             }
                         }

@@ -9,12 +9,13 @@
 
 using Dev2.DynamicServices.Objects.Base;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.DynamicServices
 {
     #region Using Directives
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text.RegularExpressions;
+
     #endregion
 
     #region Service Action Input Class - Represents an for a service action
@@ -92,18 +93,18 @@ namespace Dev2.DynamicServices
         /// <returns>Boolean indicating whether the validation was successful</returns>
         public virtual bool Validate()
         {
-            bool IsValid = !Validators.Any();
+            bool isValid = !Validators.Any();
             foreach(Validator validator in Validators)
             {
                 switch(validator.ValidatorType)
                 {
                     case enValidationType.Required:
-                        IsValid = ValidateRequired();
+                        isValid = ValidateRequired();
                         break;
                 }
             }
 
-            return IsValid;
+            return isValid;
         }
         #endregion
 
@@ -116,25 +117,6 @@ namespace Dev2.DynamicServices
         private bool ValidateRequired()
         {
             bool isValid = !string.IsNullOrEmpty(Value.ToString());
-
-            return isValid;
-        }
-
-        /// <summary>
-        /// Validates a regular expression against and input value
-        /// </summary>
-        /// <param name="value">The value to validate</param>
-        /// <param name="regularExpression">The regular expression to use to validate the input</param>
-        /// <returns></returns>
-        private bool ValidateRegex(object value, string regularExpression)
-        {
-            bool isValid = false;
-
-            Regex regex = new Regex(regularExpression);
-            if(regex.IsMatch(Value.ToString()))
-            {
-                isValid = true;
-            }
 
             return isValid;
         }

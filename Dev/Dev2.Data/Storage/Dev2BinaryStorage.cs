@@ -9,6 +9,8 @@ using Dev2.Data.Storage.ProtocolBuffers;
 
 namespace Dev2.Data.Storage
 {
+    // ReSharper disable InconsistentNaming
+
     /// <summary>
     /// A key storage struct
     /// </summary>
@@ -90,7 +92,9 @@ namespace Dev2.Data.Storage
     /// </summary>
     static class CompactBuffer
     {
+// ReSharper disable InconsistentNaming
         public static InternalStorageBuffer scrubBuffer;
+// ReSharper restore InconsistentNaming
 
         public static void Init(int bufCap)
         {
@@ -140,11 +144,11 @@ namespace Dev2.Data.Storage
         // internal location data ;)
         // ReSharper disable StaticFieldInGenericType
         private static readonly string RootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        private const string _savePath = @"Warewolf\DataListTmp\";
-        private static readonly string DataListPersistPath = Path.Combine(RootPath, _savePath);
+        private const string SavePath = @"Warewolf\DataListTmp\";
+        private static readonly string DataListPersistPath = Path.Combine(RootPath, SavePath);
 
-        private static readonly object _dirLock = new object();
-        private static bool startupCleaned;
+        private static readonly object DirLock = new object();
+        private static bool _startupCleaned;
         // ReSharper restore StaticFieldInGenericType
 
         #region Fields
@@ -154,7 +158,7 @@ namespace Dev2.Data.Storage
         private ConcurrentDictionary<string, BinaryStorageKey> _bufferIndexes = new ConcurrentDictionary<string, BinaryStorageKey>();
         private readonly ConcurrentDictionary<string, BinaryStorageKey> _lstIndexes = new ConcurrentDictionary<string, BinaryStorageKey>();
         private readonly object _opsLock = new object();
-        const long _compactThresholdSize = 512 * 1024 * 1024; // 512 MB compact 
+        const long CompactThresholdSize = 512 * 1024 * 1024; // 512 MB compact 
         private long _lastCompactSize;
         private bool _hasBeenRemoveSinceLastCompact;
 
@@ -174,14 +178,14 @@ namespace Dev2.Data.Storage
         {
             if(!string.IsNullOrEmpty(filename))
             {
-                lock(_dirLock)
+                lock(DirLock)
                 {
                     if(!Directory.Exists(DataListPersistPath))
                     {
                         Directory.CreateDirectory(DataListPersistPath);
                     }
 
-                    if(!startupCleaned)
+                    if(!_startupCleaned)
                     {
                         foreach(FileInfo f in new DirectoryInfo(DataListPersistPath).GetFiles("*.data"))
                         {
@@ -198,7 +202,7 @@ namespace Dev2.Data.Storage
                             }
                         }
 
-                        startupCleaned = true;
+                        _startupCleaned = true;
                     }
                 }
 
@@ -542,7 +546,7 @@ namespace Dev2.Data.Storage
 
                         // once buffer is dumped, check for compaction operation ;)
                         // TODO : Background operation so we can continue to fill buffer ;)
-                        if(_file.Length - _lastCompactSize > _compactThresholdSize)
+                        if(_file.Length - _lastCompactSize > CompactThresholdSize)
                         {
                             Compact();
                         }
@@ -709,7 +713,7 @@ namespace Dev2.Data.Storage
                 return;
             }
 
-            ServerLogger.LogTrace("There where [ " + _itemCnt + " ] items in this cache [ " + _savePath + " ]");
+            ServerLogger.LogTrace("There where [ " + _itemCnt + " ] items in this cache [ " + SavePath + " ]");
 
             _file.Close();
             _file.Dispose();

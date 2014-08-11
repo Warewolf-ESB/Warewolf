@@ -43,7 +43,7 @@ namespace Dev2.DynamicServices
             return targetElement != null ? targetElement.Value : string.Empty;
         }
 
-        public DsfDataObject(string xmldata, Guid dataListID, string rawPayload = "")
+        public DsfDataObject(string xmldata, Guid dataListId, string rawPayload = "")
         {
             ThreadsToDispose = new Dictionary<int, List<Guid>>();
 
@@ -76,14 +76,14 @@ namespace Dev2.DynamicServices
                     }
                     IsDebug = isDebug;
 
-                    Guid debugSessionID;
-                    Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out debugSessionID);
-                    DebugSessionID = debugSessionID;
+                    Guid debugSessionId;
+                    Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out debugSessionId);
+                    DebugSessionID = debugSessionId;
 
-                    Guid environmentID;
-                    if(Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out environmentID))
+                    Guid environmentId;
+                    if(Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out environmentId))
                     {
-                        EnvironmentID = environmentID;
+                        EnvironmentID = environmentId;
                     }
 
                     var isOnDemandSimulation = false;
@@ -97,21 +97,21 @@ namespace Dev2.DynamicServices
                     _parentServiceName = ExtractValue(xe, "ParentServiceName");
                     _parentWorkflowInstanceId = ExtractValue(xe, "ParentWorkflowInstanceId");
 
-                    Guid executionCallbackID;
-                    Guid.TryParse(ExtractValue(xe, "ExecutionCallbackID"), out executionCallbackID);
-                    ExecutionCallbackID = executionCallbackID;
+                    Guid executionCallbackId;
+                    Guid.TryParse(ExtractValue(xe, "ExecutionCallbackID"), out executionCallbackId);
+                    ExecutionCallbackID = executionCallbackId;
 
-                    Guid bookmarkExecutionCallbackID;
-                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out bookmarkExecutionCallbackID);
-                    BookmarkExecutionCallbackID = bookmarkExecutionCallbackID;
+                    Guid bookmarkExecutionCallbackId;
+                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out bookmarkExecutionCallbackId);
+                    BookmarkExecutionCallbackID = bookmarkExecutionCallbackId;
 
                     if(BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
                     {
                         BookmarkExecutionCallbackID = ExecutionCallbackID;
                     }
 
-                    Guid parentInstanceID;
-                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out parentInstanceID);
+                    Guid parentInstanceId;
+                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out parentInstanceId);
 
                     ParentInstanceID = ExtractValue(xe, "ParentInstanceID");
 
@@ -121,11 +121,11 @@ namespace Dev2.DynamicServices
 
                     CurrentBookmarkName = ExtractValue(xe, "CurrentBookmarkName");
 
-                    Guid instID;
+                    Guid instId;
 
-                    if(Guid.TryParse(ExtractValue(xe, "WorkflowInstanceId"), out instID))
+                    if(Guid.TryParse(ExtractValue(xe, "WorkflowInstanceId"), out instId))
                     {
-                        WorkflowInstanceId = instID;
+                        WorkflowInstanceId = instId;
                     }
 
 
@@ -136,7 +136,7 @@ namespace Dev2.DynamicServices
                     ExtractOutMergeDataFromRequest(xe);
 
                     // set the ID ;)
-                    DataListID = dataListID;
+                    DataListID = dataListId;
 
                     // set the IsDataListScoped flag ;)
                     bool isScoped;
@@ -418,9 +418,9 @@ namespace Dev2.DynamicServices
 
         private void ExtractOutMergeDataFromRequest(XElement xe)
         {
-            Guid datalistOutMergeID;
-            Guid.TryParse(ExtractValue(xe, "DatalistOutMergeID"), out datalistOutMergeID);
-            DatalistOutMergeID = datalistOutMergeID;
+            Guid datalistOutMergeId;
+            Guid.TryParse(ExtractValue(xe, "DatalistOutMergeID"), out datalistOutMergeId);
+            DatalistOutMergeID = datalistOutMergeId;
 
             enDataListMergeTypes datalistOutMergeType;
             // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
@@ -443,9 +443,9 @@ namespace Dev2.DynamicServices
 
         private void ExtractInMergeDataFromRequest(XElement xe)
         {
-            Guid datalistInMergeID;
-            Guid.TryParse(ExtractValue(xe, "DatalistInMergeID"), out datalistInMergeID);
-            DatalistInMergeID = datalistInMergeID;
+            Guid datalistInMergeId;
+            Guid.TryParse(ExtractValue(xe, "DatalistInMergeID"), out datalistInMergeId);
+            DatalistInMergeID = datalistInMergeId;
 
             enDataListMergeTypes datalistInMergeType;
             DatalistInMergeType = Enum.TryParse(ExtractValue(xe, "DatalistInMergeType"), true, out datalistInMergeType) ? datalistInMergeType : enDataListMergeTypes.Intersection;

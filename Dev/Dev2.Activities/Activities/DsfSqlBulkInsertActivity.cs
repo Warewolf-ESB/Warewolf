@@ -95,9 +95,9 @@ namespace Dev2.Activities
             var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
             toUpsert.IsDebug = dataObject.IsDebugMode();
             toUpsert.ResourceID = dataObject.ResourceID;
-            var errorResultTO = new ErrorResultTO();
+            var errorResultTo = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
-            var executionID = DataListExecutionID.Get(context);
+            var executionId = DataListExecutionID.Get(context);
             DataTable dataTableToInsert = null;
             bool addExceptionToErrorList = true;
             InitializeDebug(dataObject);
@@ -105,7 +105,7 @@ namespace Dev2.Activities
             {
                 IDev2DataListEvaluateIterator batchItr;
                 IDev2DataListEvaluateIterator timeoutItr;
-                var parametersIteratorCollection = BuildParametersIteratorCollection(compiler, executionID, out batchItr, out timeoutItr);
+                var parametersIteratorCollection = BuildParametersIteratorCollection(compiler, executionId, out batchItr, out timeoutItr);
                 SqlBulkCopy sqlBulkCopy = null;
                 var currentOptions = BuildSqlBulkCopyOptions();
                 var runtimeDatabase = ResourceCatalog.Instance.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
@@ -129,8 +129,8 @@ namespace Dev2.Activities
                     if(InputMappings != null && InputMappings.Count > 0)
                     {
                         var iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
-                        var listOfIterators = GetIteratorsFromInputMappings(compiler, executionID, dataObject, iteratorCollection, out errorResultTO);
-                        allErrors.MergeErrors(errorResultTO);
+                        var listOfIterators = GetIteratorsFromInputMappings(compiler, executionId, dataObject, iteratorCollection, out errorResultTo);
+                        allErrors.MergeErrors(errorResultTo);
 
                         // oh no, we have an issue, bubble it out ;)
                         if(allErrors.HasErrors())
@@ -142,7 +142,7 @@ namespace Dev2.Activities
                         // emit options to debug as per acceptance test ;)
                         if(dataObject.IsDebugMode())
                         {
-                            AddBatchSizeAndTimeOutToDebug(compiler, executionID);
+                            AddBatchSizeAndTimeOutToDebug(compiler, executionId);
                             AddOptionsDebugItems();
                         }
 
@@ -162,13 +162,13 @@ namespace Dev2.Activities
                     SqlBulkInserter.Insert(wrapper, dataTableToInsert);
 
                     toUpsert.Add(Result, "Success");
-                    compiler.Upsert(executionID, toUpsert, out errorsTo);
-                    allErrors.MergeErrors(errorResultTO);
+                    compiler.Upsert(executionId, toUpsert, out errorsTo);
+                    allErrors.MergeErrors(errorResultTo);
                     if(toUpsert.IsDebug)
                     {
-                        foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
                         {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                         }
                     }
                 }
@@ -176,7 +176,7 @@ namespace Dev2.Activities
             catch(Exception e)
             {
                 toUpsert.Add(Result, string.Format("Failure"));
-                compiler.Upsert(executionID, toUpsert, out errorsTo);
+                compiler.Upsert(executionId, toUpsert, out errorsTo);
                 if(addExceptionToErrorList)
                 {
                     allErrors.AddError(e.Message);
@@ -192,9 +192,9 @@ namespace Dev2.Activities
                 {
                     if(toUpsert.IsDebug)
                     {
-                        foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
                         {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                         }
                     }
 
@@ -231,25 +231,25 @@ namespace Dev2.Activities
             _debugInputs.Add(debugItem);
         }
 
-        void AddBatchSizeAndTimeOutToDebug(IDataListCompiler compiler, Guid executionID)
+        void AddBatchSizeAndTimeOutToDebug(IDataListCompiler compiler, Guid executionId)
         {
             DebugItem debugItem = new DebugItem();
             if(!string.IsNullOrEmpty(BatchSize))
             {
-                AddDebugInputItemFromEntry(BatchSize, "Batch Size ", compiler, executionID, debugItem);
+                AddDebugInputItemFromEntry(BatchSize, "Batch Size ", compiler, executionId, debugItem);
             }
             if(!String.IsNullOrEmpty(Timeout))
             {
-                AddDebugInputItemFromEntry(Timeout, "Timeout  ", compiler, executionID, debugItem);
+                AddDebugInputItemFromEntry(Timeout, "Timeout  ", compiler, executionId, debugItem);
             }
             _debugInputs.Add(debugItem);
         }
 
-        void AddDebugInputItemFromEntry(string expression, string parameterName, IDataListCompiler compiler, Guid executionID, DebugItem debugItem)
+        void AddDebugInputItemFromEntry(string expression, string parameterName, IDataListCompiler compiler, Guid executionId, DebugItem debugItem)
         {
-            ErrorResultTO errorsResultTO;
-            var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, expression, false, out errorsResultTO);
-            AddDebugItem(new DebugItemVariableParams(expression, parameterName, expressionsEntry, executionID), debugItem);
+            ErrorResultTO errorsResultTo;
+            var expressionsEntry = compiler.Evaluate(executionId, enActionType.User, expression, false, out errorsResultTo);
+            AddDebugItem(new DebugItemVariableParams(expression, parameterName, expressionsEntry, executionId), debugItem);
         }
 
         public SqlBulkCopy SetupSqlBulkCopy(IDev2DataListEvaluateIterator batchItr, IDev2IteratorCollection parametersIteratorCollection, IDev2DataListEvaluateIterator timeoutItr, DbSource runtimeDatabase, SqlBulkCopyOptions copyOptions)
@@ -315,22 +315,22 @@ namespace Dev2.Activities
             }
         }
 
-        IDev2IteratorCollection BuildParametersIteratorCollection(IDataListCompiler compiler, Guid executionID, out IDev2DataListEvaluateIterator batchIterator, out IDev2DataListEvaluateIterator timeOutIterator)
+        IDev2IteratorCollection BuildParametersIteratorCollection(IDataListCompiler compiler, Guid executionId, out IDev2DataListEvaluateIterator batchIterator, out IDev2DataListEvaluateIterator timeOutIterator)
         {
-            ErrorResultTO errorResultTO;
+            ErrorResultTO errorResultTo;
             var parametersIteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
             batchIterator = null;
             timeOutIterator = null;
             if(!String.IsNullOrEmpty(BatchSize))
             {
-                var batchSizeEntry = compiler.Evaluate(executionID, enActionType.User, BatchSize, false, out errorResultTO);
+                var batchSizeEntry = compiler.Evaluate(executionId, enActionType.User, BatchSize, false, out errorResultTo);
                 var batchItr = Dev2ValueObjectFactory.CreateEvaluateIterator(batchSizeEntry);
                 parametersIteratorCollection.AddIterator(batchItr);
                 batchIterator = batchItr;
             }
             if(!String.IsNullOrEmpty(Timeout))
             {
-                var timeoutEntry = compiler.Evaluate(executionID, enActionType.User, Timeout, false, out errorResultTO);
+                var timeoutEntry = compiler.Evaluate(executionId, enActionType.User, Timeout, false, out errorResultTo);
                 var timeoutItr = Dev2ValueObjectFactory.CreateEvaluateIterator(timeoutEntry);
                 parametersIteratorCollection.AddIterator(timeoutItr);
                 timeOutIterator = timeoutItr;
@@ -368,20 +368,20 @@ namespace Dev2.Activities
             }
         }
 
-        List<IDev2DataListEvaluateIterator> GetIteratorsFromInputMappings(IDataListCompiler compiler, Guid executionID, IDSFDataObject dataObject, IDev2IteratorCollection iteratorCollection, out ErrorResultTO errorsResultTO)
+        List<IDev2DataListEvaluateIterator> GetIteratorsFromInputMappings(IDataListCompiler compiler, Guid executionId, IDSFDataObject dataObject, IDev2IteratorCollection iteratorCollection, out ErrorResultTO errorsResultTo)
         {
-            errorsResultTO = new ErrorResultTO();
+            errorsResultTo = new ErrorResultTO();
             var listOfIterators = new List<IDev2DataListEvaluateIterator>();
             var indexCounter = 1;
             foreach(var row in InputMappings)
             {
                 if(String.IsNullOrEmpty(row.InputColumn)) continue;
                 ErrorResultTO invokeErrors;
-                var expressionsEntry = compiler.Evaluate(executionID, enActionType.User, row.InputColumn, false, out invokeErrors);
-                errorsResultTO.MergeErrors(invokeErrors);
+                var expressionsEntry = compiler.Evaluate(executionId, enActionType.User, row.InputColumn, false, out invokeErrors);
+                errorsResultTo.MergeErrors(invokeErrors);
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataTypeName, executionID, indexCounter);
+                    AddDebugInputItem(row.InputColumn, row.OutputColumn.ColumnName, expressionsEntry, row.OutputColumn.DataTypeName, executionId, indexCounter);
                     indexCounter++;
                 }
                 var itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
@@ -391,11 +391,11 @@ namespace Dev2.Activities
             return listOfIterators;
         }
 
-        void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, string outputColumnDataType, Guid executionID, int indexCounter)
+        void AddDebugInputItem(string inputColumn, string outputColumnName, IBinaryDataListEntry expressionsEntry, string outputColumnDataType, Guid executionId, int indexCounter)
         {
             var itemToAdd = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-            AddDebugItem(new DebugItemVariableParams(inputColumn, "", expressionsEntry, executionID), itemToAdd);
+            AddDebugItem(new DebugItemVariableParams(inputColumn, "", expressionsEntry, executionId), itemToAdd);
             AddDebugItem(new DebugItemStaticDataParams(outputColumnName, "To Field"), itemToAdd);
             AddDebugItem(new DebugItemStaticDataParams(outputColumnDataType, "Type"), itemToAdd);
             _debugInputs.Add(itemToAdd);

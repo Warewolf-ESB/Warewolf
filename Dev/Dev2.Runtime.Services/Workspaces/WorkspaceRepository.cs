@@ -8,6 +8,8 @@ using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Runtime.Hosting;
 
+// ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.Workspaces
 {
     /// <summary>

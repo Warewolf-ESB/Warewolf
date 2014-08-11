@@ -4,6 +4,7 @@ using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]

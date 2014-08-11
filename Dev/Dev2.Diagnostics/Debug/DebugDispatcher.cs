@@ -68,15 +68,15 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         /// Adds the specified writer to the dispatcher.
         /// </summary>
-        /// <param name="workspaceID">The ID of the workspace to which the writer belongs.</param>
+        /// <param name="workspaceId">The ID of the workspace to which the writer belongs.</param>
         /// <param name="writer">The writer to be added.</param>
-        public void Add(Guid workspaceID, IDebugWriter writer)
+        public void Add(Guid workspaceId, IDebugWriter writer)
         {
             if(writer == null || _shutdownRequested)
             {
                 return;
             }
-            _writers.TryAdd(workspaceID, writer);
+            _writers.TryAdd(workspaceId, writer);
         }
 
         #endregion
@@ -86,11 +86,11 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         /// Removes the specified workspace from the dispatcher.
         /// </summary>
-        /// <param name="workspaceID">The ID of workspace to be removed.</param>
-        public void Remove(Guid workspaceID)
+        /// <param name="workspaceId">The ID of workspace to be removed.</param>
+        public void Remove(Guid workspaceId)
         {
             IDebugWriter writer;
-            _writers.TryRemove(workspaceID, out writer);
+            _writers.TryRemove(workspaceId, out writer);
         }
 
         #endregion
@@ -100,12 +100,12 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         /// Gets the writer for the given workspace ID.
         /// </summary>
-        /// <param name="workspaceID">The workspace ID to be queried.</param>
+        /// <param name="workspaceId">The workspace ID to be queried.</param>
         /// <returns>The <see cref="IDebugWriter"/> with the specified ID, or <code>null</code> if not found.</returns>
-        public IDebugWriter Get(Guid workspaceID)
+        public IDebugWriter Get(Guid workspaceId)
         {
             IDebugWriter writer;
-            _writers.TryGetValue(workspaceID, out writer);
+            _writers.TryGetValue(workspaceId, out writer);
             return writer;
         }
 
@@ -132,7 +132,7 @@ namespace Dev2.Diagnostics.Debug
         #region Write
 
         // BUG 9706 - 2013.06.22 - TWR : extracted from DsfNativeActivity.DispatchDebugState
-        public void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerID = null, string parentInstanceID = null, IList<IDebugState> remoteDebugItems = null)
+        public void Write(IDebugState debugState, bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
         {
             if(debugState == null)
             {
@@ -142,7 +142,7 @@ namespace Dev2.Diagnostics.Debug
             // Serialize debugState to a local repo so calling server can manage the data 
             if(isRemoteInvoke)
             {
-                RemoteDebugMessageRepo.Instance.AddDebugItem(remoteInvokerID, debugState);
+                RemoteDebugMessageRepo.Instance.AddDebugItem(remoteInvokerId, debugState);
                 return;
             }
 
@@ -150,16 +150,16 @@ namespace Dev2.Diagnostics.Debug
             // do we have any remote objects to dispatch locally? 
             if(remoteDebugItems != null)
             {
-                Guid parentID;
-                Guid.TryParse(parentInstanceID, out parentID);
+                Guid parentId;
+                Guid.TryParse(parentInstanceId, out parentId);
 
                 foreach(var item in remoteDebugItems)
                 {
                     // re-jigger it so it will dispatch and display
                     item.WorkspaceID = debugState.WorkspaceID;
                     item.OriginatingResourceID = debugState.OriginatingResourceID;
-                    item.Server = remoteInvokerID;
-                    item.ParentID = parentID;
+                    item.Server = remoteInvokerId;
+                    item.ParentID = parentId;
                     QueueWrite(item);
                 }
 

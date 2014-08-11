@@ -6,6 +6,7 @@ using Microsoft.AspNet.SignalR.Hubs;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
+    // ReSharper disable InconsistentNaming
     public class Server
     {
         public static Server Instance

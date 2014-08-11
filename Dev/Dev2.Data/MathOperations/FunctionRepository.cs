@@ -5,6 +5,7 @@ using Dev2.Common;
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.MathOperations
 {
     // PBI: 1214
@@ -12,8 +13,8 @@ namespace Dev2.MathOperations
     // to perform evaluations on
     public class FunctionRepository : IFrameworkRepository<IFunction>
     {
-        private List<IFunction> _functions;
-        private static IDev2CalculationManager _calcManager = new Dev2CalculationManager();
+        private readonly List<IFunction> _functions;
+        private static readonly IDev2CalculationManager CalcManager = new Dev2CalculationManager();
         private bool _isDisposed;
 
         internal FunctionRepository()
@@ -45,7 +46,9 @@ namespace Dev2.MathOperations
             {
                 return _functions.AsQueryable().Where(expression).ToList();
             }
+// ReSharper disable NotResolvedInText
             throw new ArgumentNullException(@"Expression cannot be null");
+// ReSharper restore NotResolvedInText
         }
 
         /// <summary>
@@ -78,7 +81,7 @@ namespace Dev2.MathOperations
         /// </summary>
         public void Load()
         {
-            IEnumerable<CalculationFunction> calcFunctions = _calcManager.GetAllFunctions();
+            IEnumerable<CalculationFunction> calcFunctions = CalcManager.GetAllFunctions();
 
             foreach(CalculationFunction calcFunction in calcFunctions)
             {
@@ -102,7 +105,9 @@ namespace Dev2.MathOperations
             }
             else
             {
+// ReSharper disable NotResolvedInText
                 throw new ArgumentNullException("Cannot remove null List of functions");
+// ReSharper restore NotResolvedInText
             }
         }
 
@@ -118,7 +123,9 @@ namespace Dev2.MathOperations
             }
             else
             {
+// ReSharper disable NotResolvedInText
                 throw new ArgumentNullException("Function cannot be null");
+// ReSharper restore NotResolvedInText
             }
         }
 
@@ -134,7 +141,9 @@ namespace Dev2.MathOperations
             }
             else
             {
+// ReSharper disable NotResolvedInText
                 throw new ArgumentNullException("Cannot Save a Null list of functions");
+// ReSharper restore NotResolvedInText
             }
         }
         /// <summary>
@@ -149,7 +158,9 @@ namespace Dev2.MathOperations
             }
             else
             {
+// ReSharper disable NotResolvedInText
                 throw new ArgumentNullException("Function cannot be null");
+// ReSharper restore NotResolvedInText
             }
             return "Saved";
         }

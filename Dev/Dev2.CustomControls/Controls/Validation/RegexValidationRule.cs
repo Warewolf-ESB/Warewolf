@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Controls;
 
+// ReSharper disable CheckNamespace
 namespace WPF.JoshSmith.Controls.Validation
 {
     /// <summary>
@@ -17,9 +18,7 @@ namespace WPF.JoshSmith.Controls.Validation
     {
         #region Data
 
-        private string errorMessage;
-        private RegexOptions regexOptions = RegexOptions.None;
-        private string regexText;
+        private RegexOptions _regexOptions = RegexOptions.None;
 
         #endregion // Data
 
@@ -47,10 +46,12 @@ namespace WPF.JoshSmith.Controls.Validation
         /// </summary>
         /// <param name="regexText">The regular expression used by the new instance.</param>
         /// <param name="errorMessage">The error message used when validation fails.</param>
+// ReSharper disable UnusedParameter.Local
         public RegexValidationRule(string regexText, string errorMessage)
+// ReSharper restore UnusedParameter.Local
             : this(regexText)
         {
-            RegexOptions = regexOptions;
+            RegexOptions = _regexOptions;
         }
 
         /// <summary>
@@ -60,7 +61,9 @@ namespace WPF.JoshSmith.Controls.Validation
         /// <param name="regexText">The regular expression used by the new instance.</param>
         /// <param name="errorMessage">The error message used when validation fails.</param>
         /// <param name="regexOptions">The RegexOptions used by the new instance.</param>
+// ReSharper disable UnusedParameter.Local
         public RegexValidationRule(string regexText, string errorMessage, RegexOptions regexOptions)
+// ReSharper restore UnusedParameter.Local
             : this(regexText)
         {
             RegexOptions = regexOptions;
@@ -73,11 +76,7 @@ namespace WPF.JoshSmith.Controls.Validation
         /// <summary>
         /// Gets/sets the error message to be used when validation fails.
         /// </summary>
-        public string ErrorMessage
-        {
-            get { return errorMessage; }
-            set { errorMessage = value; }
-        }
+        public string ErrorMessage { get; set; }
 
         /// <summary>
         /// Gets/sets the RegexOptions to be used during validation.
@@ -85,18 +84,14 @@ namespace WPF.JoshSmith.Controls.Validation
         /// </summary>
         public RegexOptions RegexOptions
         {
-            get { return regexOptions; }
-            set { regexOptions = value; }
+            get { return _regexOptions; }
+            set { _regexOptions = value; }
         }
 
         /// <summary>
         /// Gets/sets the regular expression used during validation.
         /// </summary>
-        public string RegexText
-        {
-            get { return regexText; }
-            set { regexText = value; }
-        }
+        public string RegexText { get; set; }
 
         #endregion // Properties
 

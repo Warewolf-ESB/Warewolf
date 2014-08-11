@@ -185,15 +185,15 @@ namespace Dev2.Runtime.ESB.Control
         /// </summary>
         /// <param name="dataObject">The data object.</param>
         /// <param name="request"></param>
-        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID, out ErrorResultTO errors)
+        public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
             ServerLogger.LogMessage("START MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
-            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var compiler = DataListFactory.CreateDataListCompiler();
 
             var principle = Thread.CurrentPrincipal;
@@ -206,7 +206,7 @@ namespace Dev2.Runtime.ESB.Control
 
                 try
                 {
-                    theShape = dataObject.ResourceID == Guid.Empty ? FindServiceShape(workspaceID, dataObject.ServiceName) : FindServiceShape(workspaceID, dataObject.ResourceID);
+                    theShape = dataObject.ResourceID == Guid.Empty ? FindServiceShape(workspaceId, dataObject.ServiceName) : FindServiceShape(workspaceId, dataObject.ResourceID);
                 }
                 catch(Exception ex)
                 {
@@ -275,10 +275,10 @@ namespace Dev2.Runtime.ESB.Control
             return resultID;
         }
 
-        public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceID, string uri, out ErrorResultTO errors)
+        public void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors)
         {
             errors = null;
-            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var executionContainer = new RemoteWorkflowExecutionContainer(null, dataObject, theWorkspace, this);
             executionContainer.PerformLogExecution(uri);
         }
@@ -287,14 +287,14 @@ namespace Dev2.Runtime.ESB.Control
         /// Executes the sub request.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <param name="inputDefs">The input defs.</param>
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs, out ErrorResultTO errors)
+        public Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors)
         {
-            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = CreateEsbServicesInvoker(theWorkspace);
             ErrorResultTO invokeErrors;
             var oldID = dataObject.DataListID;
@@ -328,7 +328,7 @@ namespace Dev2.Runtime.ESB.Control
                     errors.MergeErrors(invokeErrors);
 
                     // If Web-service or Plugin, skip the final shaping junk ;)
-                    if(SubExecutionRequiresShape(workspaceID, dataObject.ServiceName))
+                    if(SubExecutionRequiresShape(workspaceId, dataObject.ServiceName))
                     {
                         if(!dataObject.IsDataListScoped && remainingMappings != null)
                         {
@@ -481,10 +481,10 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors)
+        public T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors)
         {
             var serviceID = dataObject.ResourceID;
-            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceID);
+            var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var invoker = new EsbServiceInvoker(this, this, theWorkspace);
             var generateInvokeContainer = invoker.GenerateInvokeContainer(dataObject, serviceID, true);
             var curDlid = generateInvokeContainer.Execute(out errors);
@@ -499,13 +499,13 @@ namespace Dev2.Runtime.ESB.Control
         /// <summary>
         /// Finds the service shape.
         /// </summary>
-        /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="resourceID">Name of the service.</param>
+        /// <param name="workspaceId">The workspace ID.</param>
+        /// <param name="resourceId">Name of the service.</param>
         /// <returns></returns>
-        public string FindServiceShape(Guid workspaceID, Guid resourceID)
+        public string FindServiceShape(Guid workspaceId, Guid resourceId)
         {
             var result = "<DataList></DataList>";
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceID) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceID);
+            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
 
             if(resource == null)
             {
@@ -533,13 +533,13 @@ namespace Dev2.Runtime.ESB.Control
         /// <summary>
         /// Finds the service shape.
         /// </summary>
-        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="resourceName">Name of the service.</param>
         /// <returns></returns>
-        public string FindServiceShape(Guid workspaceID, string resourceName)
+        public string FindServiceShape(Guid workspaceId, string resourceName)
         {
             var result = "<DataList></DataList>";
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
+            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
 
             if(resource == null)
             {
@@ -597,11 +597,11 @@ namespace Dev2.Runtime.ESB.Control
         /// Gets the correct data list.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <param name="errors">The errors.</param>
         /// <param name="compiler">The compiler.</param>
         /// <returns></returns>
-        public Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors, IDataListCompiler compiler)
+        public Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors, IDataListCompiler compiler)
         {
             string theShape;
             ErrorResultTO invokeErrors;
@@ -610,14 +610,14 @@ namespace Dev2.Runtime.ESB.Control
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
-                theShape = FindServiceShape(workspaceID, dataObject.ResourceID);
+                theShape = FindServiceShape(workspaceId, dataObject.ResourceID);
                 dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 dataObject.RawPayload = string.Empty;
             }
 
             // force all items to exist in the DL ;)
-            theShape = FindServiceShape(workspaceID, dataObject.ResourceID);
+            theShape = FindServiceShape(workspaceId, dataObject.ResourceID);
             var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, theShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 

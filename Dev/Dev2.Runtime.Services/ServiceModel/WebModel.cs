@@ -18,14 +18,14 @@ namespace Dev2.Runtime.ServiceModel
         /// Saves the JSON model for decisions from the wizard ;)
         /// </summary>
         /// <param name="args">The args.</param>
-        /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="dataListID">The data list ID.</param>
+        /// <param name="workspaceId">The workspace ID.</param>
+        /// <param name="dataListId">The data list ID.</param>
         /// <returns></returns>
-        public string SaveModel(string args, Guid workspaceID, Guid dataListID)
+        public string SaveModel(string args, Guid workspaceId, Guid dataListId)
         {
             string result = "{ \"message\" : \"Error Saving Model\"} ";
 
-            if(dataListID != GlobalConstants.NullDataListID)
+            if(dataListId != GlobalConstants.NullDataListID)
             {
                 var compiler = DataListFactory.CreateDataListCompiler();
                 ErrorResultTO errors;
@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ServiceModel
                 // remove [[]], &, !
                 args = Dev2DecisionStack.RemoveNaughtyCharsFromModel(args);
                 
-                compiler.UpsertSystemTag(dataListID, enSystemTag.SystemModel, args, out errors);
+                compiler.UpsertSystemTag(dataListId, enSystemTag.SystemModel, args, out errors);
 
                 result = "{  \"message\" : \"Saved Model\"} ";
             }
@@ -51,23 +51,23 @@ namespace Dev2.Runtime.ServiceModel
         /// Fetches the decision model.
         /// </summary>
         /// <param name="args">The args.</param>
-        /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="dataListID">The data list ID.</param>
+        /// <param name="workspaceId">The workspace ID.</param>
+        /// <param name="dataListId">The data list ID.</param>
         /// <returns></returns>
-        public string FetchDecisionModel(string args, Guid workspaceID, Guid dataListID)
+        public string FetchDecisionModel(string args, Guid workspaceId, Guid dataListId)
         {
 
-            if(dataListID != GlobalConstants.NullDataListID)
+            if(dataListId != GlobalConstants.NullDataListID)
             {
                 var compiler = DataListFactory.CreateDataListCompiler();
 
                 ErrorResultTO errors;
 
-                var result = compiler.FetchSystemModelAsWebModel<Dev2DecisionStack>(dataListID, out errors);
+                var result = compiler.FetchSystemModelAsWebModel<Dev2DecisionStack>(dataListId, out errors);
 
                 if(errors.HasErrors())
                 {
-                    compiler.UpsertSystemTag(dataListID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dataListId, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
                 }
 
                 return result;
@@ -80,22 +80,22 @@ namespace Dev2.Runtime.ServiceModel
         /// Fetches the switch expression.
         /// </summary>
         /// <param name="args">The args.</param>
-        /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="dataListID">The data list ID.</param>
+        /// <param name="workspaceId">The workspace ID.</param>
+        /// <param name="dataListId">The data list ID.</param>
         /// <returns></returns>
-        public string FetchSwitchExpression(string args, Guid workspaceID, Guid dataListID)
+        public string FetchSwitchExpression(string args, Guid workspaceId, Guid dataListId)
         {
-            if(dataListID != GlobalConstants.NullDataListID)
+            if(dataListId != GlobalConstants.NullDataListID)
             {
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
                 ErrorResultTO errors;
 
-                var result = compiler.FetchSystemModelAsWebModel<Dev2Switch>(dataListID, out errors);
+                var result = compiler.FetchSystemModelAsWebModel<Dev2Switch>(dataListId, out errors);
 
                 if(errors.HasErrors())
                 {
-                    compiler.UpsertSystemTag(dataListID, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dataListId, enSystemTag.Dev2Error, errors.MakeDataListReady(), out errors);
                 }
 
                 return result;

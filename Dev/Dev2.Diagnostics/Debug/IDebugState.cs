@@ -6,11 +6,14 @@ namespace Dev2.Diagnostics.Debug
     /// <summary>
     /// Defines the requirements for a class whose state can be written to a <see cref="IDebugWriter"/>
     /// </summary>
+    
+    // ReSharper disable InconsistentNaming
     public interface IDebugState : IEquatable<IDebugState>
     {
         /// <summary>
         /// Gets or sets the workspace ID.
         /// </summary>
+
         Guid WorkspaceID { get; set; }
 
         /// <summary>

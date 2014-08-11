@@ -22,7 +22,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
     public class DsfForEachActivity : DsfActivityAbstract<bool>
     {
-        string _previousParentID;
+        string _previousParentId;
         // ReSharper disable FieldCanBeMadeReadOnly.Local
         Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
         // ReSharper restore FieldCanBeMadeReadOnly.Local
@@ -106,7 +106,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return 0;
             }
         }
+// ReSharper disable InconsistentNaming
         public Variable test { get; set; }
+// ReSharper restore InconsistentNaming
         public ActivityFunc<string, bool> DataFunc { get; set; }
 
         public bool FailOnFirstError { get; set; }
@@ -176,7 +178,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnBeforeExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            _previousParentID = dataObject.ParentInstanceID;
+            _previousParentId = dataObject.ParentInstanceID;
         }
 
         protected override void OnExecute(NativeActivityContext context)
@@ -191,12 +193,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             dataObject.ForEachNestingLevel++;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
-            Guid executionID = DataListExecutionID.Get(context);
+            Guid executionId = DataListExecutionID.Get(context);
 
             InitializeDebug(dataObject);
             try
             {
-                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, executionID, compiler, out errors);
+                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, executionId, compiler, out errors);
 
                 if(errors.HasErrors())
                 {
@@ -253,7 +255,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DisplayAndWriteError("DsfForEachActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
-                    dataObject.ParentInstanceID = _previousParentID;
+                    dataObject.ParentInstanceID = _previousParentId;
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -467,11 +469,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Fetches the type of the execution.
         /// </summary>        
         /// <param name="dataObject">The data object.</param>
-        /// <param name="dlID">The dl ID.</param>
+        /// <param name="dlId">The dl ID.</param>
         /// <param name="compiler">The compiler.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>                
-        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, Guid dlID, IDataListCompiler compiler, out ErrorResultTO errors)
+        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, Guid dlId, IDataListCompiler compiler, out ErrorResultTO errors)
         {
             if(dataObject.IsDebugMode())
             {
@@ -479,34 +481,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddDebugItem(new DebugItemStaticDataParams(ForEachType.GetDescription(), ""), debugItem);
                 if(ForEachType == enForEachType.NumOfExecution && !string.IsNullOrEmpty(NumOfExections))
                 {
-                    IBinaryDataListEntry numOfExectionsEntry = compiler.Evaluate(dlID, enActionType.User, NumOfExections, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(NumOfExections, "Number", numOfExectionsEntry, dlID), debugItem);
+                    IBinaryDataListEntry numOfExectionsEntry = compiler.Evaluate(dlId, enActionType.User, NumOfExections, false, out errors);
+                    AddDebugItem(new DebugItemVariableParams(NumOfExections, "Number", numOfExectionsEntry, dlId), debugItem);
                 }
                 if(ForEachType == enForEachType.InCSV && !string.IsNullOrEmpty(CsvIndexes))
                 {
-                    IBinaryDataListEntry csvIndexesEntry = compiler.Evaluate(dlID, enActionType.User, CsvIndexes, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(CsvIndexes, "Csv Indexes", csvIndexesEntry, dlID), debugItem);
+                    IBinaryDataListEntry csvIndexesEntry = compiler.Evaluate(dlId, enActionType.User, CsvIndexes, false, out errors);
+                    AddDebugItem(new DebugItemVariableParams(CsvIndexes, "Csv Indexes", csvIndexesEntry, dlId), debugItem);
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(From))
                 {
-                    IBinaryDataListEntry fromEntry = compiler.Evaluate(dlID, enActionType.User, From, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(From, "From", fromEntry, dlID), debugItem);
+                    IBinaryDataListEntry fromEntry = compiler.Evaluate(dlId, enActionType.User, From, false, out errors);
+                    AddDebugItem(new DebugItemVariableParams(From, "From", fromEntry, dlId), debugItem);
                 }
                 if(ForEachType == enForEachType.InRange && !string.IsNullOrEmpty(To))
                 {
-                    IBinaryDataListEntry toEntry = compiler.Evaluate(dlID, enActionType.User, To, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(To, "To", toEntry, dlID), debugItem);
+                    IBinaryDataListEntry toEntry = compiler.Evaluate(dlId, enActionType.User, To, false, out errors);
+                    AddDebugItem(new DebugItemVariableParams(To, "To", toEntry, dlId), debugItem);
                 }
                 if(ForEachType == enForEachType.InRecordset && !string.IsNullOrEmpty(Recordset))
                 {
                     var toEmit = Recordset.Replace("()", "(*)");
-                    IBinaryDataListEntry toEntry = compiler.Evaluate(dlID, enActionType.User, toEmit, false, out errors);
-                    AddDebugItem(new DebugItemVariableParams(toEmit, "Recordset", toEntry, dlID), debugItem);
+                    IBinaryDataListEntry toEntry = compiler.Evaluate(dlId, enActionType.User, toEmit, false, out errors);
+                    AddDebugItem(new DebugItemVariableParams(toEmit, "Recordset", toEntry, dlId), debugItem);
                 }
                 _debugInputs.Add(debugItem);
             }
 
-            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlID, compiler, out errors);
+            var result = new ForEachBootstrapTO(ForEachType, From, To, CsvIndexes, NumOfExections, Recordset, dlId, compiler, out errors);
 
             return result;
 
@@ -690,7 +692,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     RestoreHandlerFn(context);
                 }
 
-                dataObject.ParentInstanceID = _previousParentID;
+                dataObject.ParentInstanceID = _previousParentId;
                 dataObject.ForEachNestingLevel--;
                 dataObject.IsDebugNested = false;
             }

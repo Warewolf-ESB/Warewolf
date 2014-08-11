@@ -14,39 +14,39 @@ namespace Dev2
         /// </summary>
         /// <param name="dataObject">The data object.</param>
         /// <param name="request">The request.</param>
-        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceID, out ErrorResultTO errors);
+        Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors);
 
         /// <summary>
         /// Fetches the server model.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors);
+        T FetchServerModel<T>(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors);
 
         /// <summary>
         /// Executes the sub request.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <param name="inputDefs">The input defs.</param>
         /// <param name="outputDefs">The output defs.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs, out ErrorResultTO errors);
+        Guid ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceId, string inputDefs, string outputDefs, out ErrorResultTO errors);
 
         /// <summary>
         /// Finds the service shape.
         /// </summary>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
-        /// <param name="resourceID">Name of the service.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
+        /// <param name="resourceId">Name of the service.</param>
         /// <returns></returns>
-        string FindServiceShape(Guid workspaceID, Guid resourceID);
+        string FindServiceShape(Guid workspaceId, Guid resourceId);
 
         /// <summary>
         /// Shapes for sub request.
@@ -62,13 +62,13 @@ namespace Dev2
         /// Gets the correct data list.
         /// </summary>
         /// <param name="dataObject">The data object.</param>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <param name="errors">The errors.</param>
         /// <param name="compiler">The compiler.</param>
         /// <returns></returns>
-        Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceID, out ErrorResultTO errors, IDataListCompiler compiler);
+        Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors, IDataListCompiler compiler);
 
-        void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceID, string uri, out ErrorResultTO errors);
+        void ExecuteLogErrorRequest(IDSFDataObject dataObject, Guid workspaceId, string uri, out ErrorResultTO errors);
     }
 
     public interface IEsbWorkspaceChannel : IEsbChannel
@@ -85,6 +85,8 @@ namespace Dev2
     {
         string Instruction { get; }
         string Result { get; set; }
+// ReSharper disable InconsistentNaming
         Guid DataListID { get; set; }
+// ReSharper restore InconsistentNaming
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.PathOperations {
 
     /// <summary>
@@ -8,6 +9,7 @@ namespace Dev2.PathOperations {
     /// Purpose : To abstract IO endpoint types
     /// </summary>
     [Serializable]
+// ReSharper disable InconsistentNaming
     public enum enActivityIOPathType {
 
         FileSystem,

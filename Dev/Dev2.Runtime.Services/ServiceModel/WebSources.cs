@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
-using System.Xml.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
+using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel
 {
@@ -42,12 +42,12 @@ namespace Dev2.Runtime.ServiceModel
         #region Get
 
         // POST: Service/WebSources/Get
-        public WebSource Get(string resourceID, Guid workspaceID, Guid dataListID)
+        public WebSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new WebSource();
             try
             {
-                var xmlStr = Resources.ReadXml(workspaceID, ResourceType.WebSource, resourceID);
+                var xmlStr = Resources.ReadXml(workspaceId, ResourceType.WebSource, resourceId);
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
@@ -66,14 +66,14 @@ namespace Dev2.Runtime.ServiceModel
         #region Save
 
         // POST: Service/WebSources/Save
-        public string Save(string args, Guid workspaceID, Guid dataListID)
+        public string Save(string args, Guid workspaceId, Guid dataListId)
         {
             try
             {
                 var source = JsonConvert.DeserializeObject<WebSource>(args);
 
-                _resourceCatalog.SaveResource(workspaceID, source);
-                if(workspaceID != GlobalConstants.ServerWorkspaceID)
+                _resourceCatalog.SaveResource(workspaceId, source);
+                if(workspaceId != GlobalConstants.ServerWorkspaceID)
                 {
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, source);
                 }
@@ -92,7 +92,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Test
 
         // POST: Service/WebSources/Test
-        public ValidationResult Test(string args, Guid workspaceID, Guid dataListID)
+        public ValidationResult Test(string args, Guid workspaceId, Guid dataListId)
         {
             try
             {
@@ -163,7 +163,9 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Execute(client, address, method, data)
 
+        // ReSharper disable UnusedParameter.Local
         static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, bool throwError, out ErrorResultTO errors)
+        // ReSharper restore UnusedParameter.Local
         {
             EnsureContentType(client);
             errors = new ErrorResultTO();

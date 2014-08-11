@@ -12,8 +12,8 @@ using Dev2.Server.DataList;
 using Dev2.Server.DataList.Translators;
 
 // ReSharper disable CheckNamespace
+// ReSharper disable InconsistentNaming
 namespace Dev2.DataList.Contract
-// ReSharper restore CheckNamespace
 {
     public static class DataListFactory
     {
@@ -219,9 +219,9 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        public static IList<IDev2DataLanguageIntellisensePart> GenerateIntellisensePartsFromDataList(string dataList, IntellisenseFilterOpsTO fiterTO)
+        public static IList<IDev2DataLanguageIntellisensePart> GenerateIntellisensePartsFromDataList(string dataList, IntellisenseFilterOpsTO fiterTo)
         {
-            DataListIntellisenseBuilder dlib = new DataListIntellisenseBuilder { FilterTO = fiterTO, DataList = dataList };
+            DataListIntellisenseBuilder dlib = new DataListIntellisenseBuilder { FilterTO = fiterTo, DataList = dataList };
 
             IList<IDev2DataLanguageIntellisensePart> result = dlib.Generate();
 

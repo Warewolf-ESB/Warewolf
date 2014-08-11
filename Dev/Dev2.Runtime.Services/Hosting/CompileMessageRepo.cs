@@ -37,13 +37,7 @@ namespace Dev2.Runtime.Hosting
         {
             get
             {
-                if(_instance == null)
-                {
-                    _instance = new CompileMessageRepo();
-
-                }
-
-                return _instance;
+                return _instance ?? (_instance = new CompileMessageRepo());
             }
         }
 
@@ -87,11 +81,11 @@ namespace Dev2.Runtime.Hosting
             return true;
         }
 
-        public int MessageCount(Guid wID)
+        public int MessageCount(Guid wId)
         {
             IList<CompileMessageTO> messages;
 
-            if(_messageRepo.TryGetValue(wID, out messages))
+            if(_messageRepo.TryGetValue(wId, out messages))
             {
                 return messages.Count;
             }
@@ -168,10 +162,7 @@ namespace Dev2.Runtime.Hosting
         {
             PersistTimer.Interval = 1000 * 5; // every 5 seconds
             PersistTimer.Enabled = true;
-            PersistTimer.Elapsed += (sender, args) =>
-            {
-                Persist(path);
-            };
+            PersistTimer.Elapsed += (sender, args) => Persist(path);
         }
 
         #endregion
@@ -221,10 +212,10 @@ namespace Dev2.Runtime.Hosting
         /// <summary>
         /// Adds the message.
         /// </summary>
-        /// <param name="workspaceID">The workspace ID.</param>
+        /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="msgs">The MSGS.</param>
         /// <returns></returns>
-        public bool AddMessage(Guid workspaceID, IList<CompileMessageTO> msgs)
+        public bool AddMessage(Guid workspaceId, IList<CompileMessageTO> msgs)
         {
             if(msgs.Count == 0)
             {
@@ -233,7 +224,7 @@ namespace Dev2.Runtime.Hosting
             lock(Lock)
             {
                 IList<CompileMessageTO> messages;
-                if(!_messageRepo.TryGetValue(workspaceID, out messages))
+                if(!_messageRepo.TryGetValue(workspaceId, out messages))
                 {
                     messages = new List<CompileMessageTO>();
                 }
@@ -251,7 +242,7 @@ namespace Dev2.Runtime.Hosting
                     messages.Add(msg);
                 }
                 _allMessages.OnNext(messages);
-                _messageRepo[workspaceID] = messages;
+                _messageRepo[workspaceId] = messages;
 
                 _changes = true;
             }
@@ -262,17 +253,17 @@ namespace Dev2.Runtime.Hosting
         /// <summary>
         /// Removes the message.
         /// </summary>
-        /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="serviceID">The service ID.</param>
+        /// <param name="workspaceId">The workspace ID.</param>
+        /// <param name="serviceId">The service ID.</param>
         /// <returns></returns>
-        public bool RemoveMessages(Guid workspaceID, Guid serviceID)
+        public bool RemoveMessages(Guid workspaceId, Guid serviceId)
         {
             lock(Lock)
             {
                 IList<CompileMessageTO> messages;
-                if(_messageRepo.TryGetValue(workspaceID, out messages))
+                if(_messageRepo.TryGetValue(workspaceId, out messages))
                 {
-                    var candidateMessage = messages.Where(c => c.ServiceID == serviceID);
+                    var candidateMessage = messages.Where(c => c.ServiceID == serviceId);
 
                     var compileMessageTos = candidateMessage as IList<CompileMessageTO> ?? candidateMessage.ToList();
                     foreach(var msg in compileMessageTos)
@@ -290,19 +281,19 @@ namespace Dev2.Runtime.Hosting
         /// <summary>
         /// Fetches the messages.
         /// </summary>
-        /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="serviceID">The service ID.</param>
+        /// <param name="workspaceId">The workspace ID.</param>
+        /// <param name="serviceId">The service ID.</param>
         /// <param name="deps">The deps.</param>
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
-        public CompileMessageList FetchMessages(Guid workspaceID, Guid serviceID, List<ResourceForTree> deps, CompileMessageType[] filter = null)
+        public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, List<ResourceForTree> deps, CompileMessageType[] filter = null)
         {
-            IList<CompileMessageTO> messages;
             IList<CompileMessageTO> result = new List<CompileMessageTO>();
 
             lock(Lock)
             {
-                if(_messageRepo.TryGetValue(workspaceID, out messages))
+                IList<CompileMessageTO> messages;
+                if(_messageRepo.TryGetValue(workspaceId, out messages))
                 {
                     // Fetch dep list and process ;)
                     if(deps != null)
@@ -333,20 +324,20 @@ namespace Dev2.Runtime.Hosting
                 }
             }
 
-            return new CompileMessageList { MessageList = result, ServiceID = serviceID };
+            return new CompileMessageList { MessageList = result, ServiceID = serviceId };
         }
 
-        public CompileMessageList FetchMessages(Guid workspaceID, Guid serviceID, IList<string> dependants, CompileMessageType[] filter = null)
+        public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, IList<string> dependants, CompileMessageType[] filter = null)
         {
-            IList<CompileMessageTO> messages;
             IList<CompileMessageTO> result = new List<CompileMessageTO>();
 
             lock(Lock)
             {
-                if(_messageRepo.TryGetValue(workspaceID, out messages))
+                IList<CompileMessageTO> messages;
+                if(_messageRepo.TryGetValue(workspaceId, out messages))
                 {
 
-                    var candidateMessage = messages.Where(c => c.ServiceID == serviceID);
+                    var candidateMessage = messages.Where(c => c.ServiceID == serviceId);
                     var compileMessageTos = candidateMessage as IList<CompileMessageTO> ??
                                             candidateMessage.ToList();
 
@@ -363,8 +354,8 @@ namespace Dev2.Runtime.Hosting
                     }
                 }
             }
-            var compileMessageList = new CompileMessageList { MessageList = result, ServiceID = serviceID, Dependants = dependants };
-            RemoveMessages(workspaceID, serviceID);
+            var compileMessageList = new CompileMessageList { MessageList = result, ServiceID = serviceId, Dependants = dependants };
+            RemoveMessages(workspaceId, serviceId);
             return compileMessageList;
         }
 

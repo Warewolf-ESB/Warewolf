@@ -2,18 +2,22 @@
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.TO {
+// ReSharper restore CheckNamespace
+// ReSharper disable InconsistentNaming
     public class DataListMergeOpsTO 
+// ReSharper restore InconsistentNaming
     {
         public DataListMergeOpsTO()
         {
 
         }
 
-        public DataListMergeOpsTO(Guid datalistMergeID)
+        public DataListMergeOpsTO(Guid datalistMergeId)
         {
-            DatalistOutMergeID = datalistMergeID;
-            DatalistInMergeID = datalistMergeID;
+            DatalistOutMergeID = datalistMergeId;
+            DatalistInMergeID = datalistMergeId;
 
             DataListOutMergeDepth = enTranslationDepth.Data_With_Blank_OverWrite;
             DatalistOutMergeFrequency = DataListMergeFrequency.OnCompletion;
@@ -26,7 +30,9 @@ namespace Dev2.TO {
         /// <summary>
         /// Gets or sets the datalist merge ID.
         /// </summary>
+// ReSharper disable InconsistentNaming
         public Guid DatalistOutMergeID { get; set; }
+// ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Gets or sets the type of the datalist merge.
@@ -46,7 +52,9 @@ namespace Dev2.TO {
         /// <summary>
         /// Gets or sets the datalist merge ID.
         /// </summary>
+// ReSharper disable InconsistentNaming
         public Guid DatalistInMergeID { get; set; }
+// ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Gets or sets the type of the datalist merge.

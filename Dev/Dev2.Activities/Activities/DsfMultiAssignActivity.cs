@@ -100,7 +100,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             ErrorResultTO errors = new ErrorResultTO();
             ErrorResultTO allErrors = new ErrorResultTO();
-            Guid executionID = DataListExecutionID.Get(context);
+            Guid executionId = DataListExecutionID.Get(context);
 
             try
             {
@@ -140,12 +140,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         }
                     }
 
-                    compiler.Upsert(executionID, toUpsert, out errors);
+                    compiler.Upsert(executionId, toUpsert, out errors);
                     allErrors.MergeErrors(errors);
 
                     if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
-                        AddDebugTos(toUpsert, executionID);
+                        AddDebugTos(toUpsert, executionId);
                     }
                     allErrors.MergeErrors(errors);
                 }
@@ -169,7 +169,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(hasErrors)
                     {
-                        AddDebugTos(toUpsert, executionID);
+                        AddDebugTos(toUpsert, executionId);
                     }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -178,21 +178,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         // ReSharper disable UnusedParameter.Local
-        void AddDebugTos(IDev2DataListUpsertPayloadBuilder<string> toUpsert, Guid executionID)
+        void AddDebugTos(IDev2DataListUpsertPayloadBuilder<string> toUpsert, Guid executionId)
         // ReSharper restore UnusedParameter.Local
         {
             int innerCount = 1;
             const string VariableLabelText = "Variable";
             const string NewFieldLabelText = "New Value";
-            foreach(DebugTO debugOutputTO in toUpsert.DebugOutputs)
+            foreach(DebugTO debugOutputTo in toUpsert.DebugOutputs)
             {
-                if(debugOutputTO != null &&
-                  debugOutputTO.TargetEntry != null &&
-                  debugOutputTO.TargetEntry.ComplexExpressionAuditor != null)
+                if(debugOutputTo != null &&
+                  debugOutputTo.TargetEntry != null &&
+                  debugOutputTo.TargetEntry.ComplexExpressionAuditor != null)
                 {
                     var debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
-                    AddDebugItem(new DebugTOParams(debugOutputTO, true, VariableLabelText, NewFieldLabelText), debugItem);
+                    AddDebugItem(new DebugTOParams(debugOutputTo, true, VariableLabelText, NewFieldLabelText), debugItem);
                     innerCount++;
                     _debugInputs.Add(debugItem);
                 }
@@ -200,15 +200,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             innerCount = 1;
 
-            foreach(DebugTO debugOutputTO in toUpsert.DebugOutputs)
+            foreach(DebugTO debugOutputTo in toUpsert.DebugOutputs)
             {
-                if(debugOutputTO != null &&
-                   debugOutputTO.TargetEntry != null &&
-                   debugOutputTO.TargetEntry.ComplexExpressionAuditor != null)
+                if(debugOutputTo != null &&
+                   debugOutputTo.TargetEntry != null &&
+                   debugOutputTo.TargetEntry.ComplexExpressionAuditor != null)
                 {
                     var debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), debugItem);
-                    AddDebugItem(new DebugItemVariableParams(debugOutputTO), debugItem);
+                    AddDebugItem(new DebugItemVariableParams(debugOutputTo), debugItem);
                     _debugOutputs.Add(debugItem);
                     innerCount++;
                 }
