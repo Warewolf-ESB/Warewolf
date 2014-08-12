@@ -516,3 +516,123 @@ Scenario: Assign two recordset values to scalar
 	| 1 | [[rec(1).a]] = A |
 	| 2 | [[rec(2).a]] = B |
 	| 3 | [[Scalar]] = AB  |
+
+Scenario: Assign two recordsets and data 
+	Given I assign the value 1 to a variable "[[rec(1).a]]"	
+	And I assign the value 2 to a variable "[[rec(2).a]]"
+	And I assign the value Test[[rec(1).a]].Warewolf[[rec(2).a]] to a variable "[[Lr(1).a]]"
+	When the assign tool is executed
+	Then the value of "[[Lr(1).a]]" equals "Test1.Warewolf2"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable       | New Value                                               |
+	| 1 | [[rec(1).a]] = | 1                                                       |
+	| 2 | [[rec(2).a]] = | 2                                                       |
+	| 3 | [[Lr(1).a]] =  | Test[[rec(1).a]].Warewolf[[rec(2).a]] = Test1.Warewolf2 |
+	And the debug output as
+	| # |                                |
+	| 1 | [[rec(1).a]] = 1               |
+	| 2 | [[rec(2).a]] = 2               |
+	| 3 | [[Lr(1).a]]  = Test1.Warewolf2 |
+
+Scenario: Assign two recordset with index as variable to scalr
+	Given I assign the value Test to a variable "[[rec(1).test]]"	
+	And I assign the value Warewolf to a variable "[[rec(2).test]]"
+	And I assign the value 1 to a variable "[[a]]"
+	And I assign the value 2 to a variable "[[b]]"
+	And I assign the value [[rec([[a]]).test]][[rec([[b]]).test]] to a variable "[[c]]"
+	When the assign tool is executed
+	Then the value of "[[c]]" equals "TestWarewolf"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable          | New Value                                             |
+	| 1 | [[rec(1).test]] = | Test                                                  |
+	| 2 | [[rec(2).test]] = | Warewolf                                              |
+	| 3 | [[a]]           = | 1                                                     |
+	| 4 | [[b]]           = | 2                                                     |
+	| 5 | [[c]]           = | [[rec([[a]]).test]][[rec([[b]]).test]] = TestWarewolf |
+	And the debug output as
+	| # |                            |
+	| 1 | [[rec(1).test]] = Test     |
+	| 2 | [[rec(2).test]] = Warewolf |
+	| 3 | [[a]]  = 1                 |
+	| 4 | [[b]]  = 2                 |
+	| 5 | [[c]]  = TestWarewolf      |
+
+Scenario: Assign two recordset with index as recordset variable to scalr
+	Given I assign the value Test to a variable "[[rec(1).test]]"	
+	And I assign the value Warewolf to a variable "[[rec(2).test]]"
+	And I assign the value 1 to a variable "[[Index(1).a]]"
+	And I assign the value 2 to a variable "[[Index(2).a]]"
+	And I assign the value [[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] to a variable "[[Result]]"
+	When the assign tool is executed
+	Then the value of "[[Result]]" equals "TestWarewolf"
+	And the execution has "NO" error
+	And the debug inputs as
+	| # | Variable          | New Value                                                               |
+	| 1 | [[rec(1).test]] = | Test                                                                    |
+	| 2 | [[rec(2).test]] = | Warewolf                                                                |
+	| 3 | [[Index(1).a]]  = | 1                                                                       |
+	| 4 | [[Index(2).a]]  = | 2                                                                       |
+	| 5 | [[Result]]      = | [[rec([[Index(1).a]]).test]][[rec([[Index(2).a]]).test]] = TestWarewolf |
+	And the debug output as
+	| # |                            |
+	| 1 | [[rec(1).test]] = Test     |
+	| 2 | [[rec(2).test]] = Warewolf |
+	| 3 | [[Index(1).a]]  = 1        |
+	| 4 | [[Index(2).a]]  = 2        |
+	| 5 | [[Result]]  = TestWarewolf |
+
+Scenario: Assign addition of all variables to scalar2
+	Given I assign the value 1 to a variable "[[rec(1).test]]"	
+	And I assign the value 2 to a variable "[[rec(2).test]]"
+	And I assign the value 3 to a variable "[[rec(3).test]]"
+	And I assign the value 4 to a variable "[[rec(4).test]]"
+	And I assign the value 5 to a variable "[[rec(5).test]]"
+	And I assign the value 6 to a variable "[[rec(6).test]]"
+	And I assign the value 7 to a variable "[[rec(7).test]]"
+	And I assign the value 8 to a variable "[[rec(8).test]]"
+	And I assign the value 9 to a variable "[[rec(9).test]]"
+	And I assign the value 10 to a variable "[[rec(10).test]]"
+	And I assign the value Warewolf to a variable "[[Lr(1).a]]"
+	And I assign the value [[rec(1).test]][[rec(2).test]][[rec(3).test]][[rec(4).test]][[rec(5).test]][[rec(6).test]][[rec(7).test]][[rec(8).test]][[rec(9).test]][[rec(10).test]][[Lr(1).a]] to a variable "[[new(1).a]]"
+	When the assign tool is executed
+	Then the execution has "NO" error
+	And the debug inputs as
+	| #  | Variable            | New Value                                                                                                                                                                                |
+	| 1  | [[rec(1).test]]   = | 1                                                                                                                                                                                        |
+	| 2  | [[rec(2).test]]   = | 2                                                                                                                                                                                        |
+	| 3  | [[rec(3).test]]   = | 3                                                                                                                                                                                        |
+	| 4  | [[rec(4).test]]   = | 4                                                                                                                                                                                        |
+	| 5  | [[rec(5).test]]   = | 5                                                                                                                                                                                        |
+	| 6  | [[rec(6).test]]   = | 6                                                                                                                                                                                        |
+	| 7  | [[rec(7).test]]   = | 7                                                                                                                                                                                        |
+	| 8  | [[rec(8).test]]   = | 8                                                                                                                                                                                        |
+	| 9  | [[rec(9).test]]   = | 9                                                                                                                                                                                        |
+	| 10 | [[rec(10).test]]  = | 10                                                                                                                                                                                       |
+	| 11 | [[Lr(1).a]]    =    | Warewolf                                                                                                                                                                                 |
+	| 12 | [[new(1).a]]      = | [[rec(1).test]][[rec(2).test]][[rec(3).test]][[rec(4).test]][[rec(5).test]][[rec(6).test]][[rec(7).test]][[rec(8).test]][[rec(9).test]][[rec(10).test]][[Lr(1).a]] = 12345678910Warewolf |
+	And the debug output as
+	| #  |                                         |
+	| 1  | [[rec(1).test]]   =  1                  |
+	| 2  | [[rec(2).test]]   =  2                  |
+	| 3  | [[rec(3).test]]   =  3                  |
+	| 4  | [[rec(4).test]]   =  4                  |
+	| 5  | [[rec(5).test]]   =  5                  |
+	| 6  | [[rec(6).test]]   =  6                  |
+	| 7  | [[rec(7).test]]   =  7                  |
+	| 8  | [[rec(8).test]]   =  8                  |
+	| 9  | [[rec(9).test]]   =  9                  |
+	| 10 | [[rec(10).test]]  =  10                 |
+	| 11 | [[Lr(1).a]]       =  Warewolf           |
+	| 12 | [[new(1).a]]      = 12345678910Warewolf |
+
+
+
+
+
+
+
+
+
+
