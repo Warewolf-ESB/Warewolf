@@ -4,57 +4,61 @@ using System.IO;
 using System.Linq;
 using System.Xml.Linq;
 using Ionic.Zip;
+using SharpSetup.Base;
+
 namespace Gui.Utility
 {
     public class UpdateExampleResources
     {
-        public void SetupSamples(string sourceZip,string outDir,string destinationDir)
+        public void SetupSamples(string sourceZip, string outDir, string destinationDir)
         {
-           using(var zip = ZipFile.Read(sourceZip))
-           {
-               zip.ExtractAll(outDir,ExtractExistingFileAction.OverwriteSilently);
-// ReSharper disable ReturnValueOfPureMethodIsNotUsed
-               UpdateExamples(outDir, destinationDir).ToList();
-// ReSharper restore ReturnValueOfPureMethodIsNotUsed
-           }
+            using(var zip = ZipFile.Read(sourceZip))
+            {
+                zip.ExtractAll(outDir, ExtractExistingFileAction.OverwriteSilently);
+                // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+                UpdateExamples(outDir, destinationDir).ToList();
+                // ReSharper restore ReturnValueOfPureMethodIsNotUsed
+            }
         }
 
-        public IEnumerable<Resource> UpdateExamples(string sourceDir, string destinationDir,bool flatStructure= false)
+        public IEnumerable<Resource> UpdateExamples(string sourceDir, string destinationDir, bool flatStructure = false)
         {
             var destFiles = FetchFiles(destinationDir);
             var sourceFiles = FetchFiles(sourceDir);
-            return  sourceFiles.OrderBy(a=>a.Path).Select(a => MoveFile(a, destFiles,destinationDir,flatStructure));
+            return sourceFiles.OrderBy(a => a.Path).Select(a => MoveFile(a, destFiles, destinationDir, flatStructure));
         }
 
-        Resource MoveFile(Resource resource, IEnumerable<Resource> destFiles,string destinationDir,bool flatStructure=false)
+        Resource MoveFile(Resource resource, IEnumerable<Resource> destFiles, string destinationDir, bool flatStructure = false)
         {
             try
             {
 
 
-                if (!Directory.Exists(destinationDir))
+                if(!Directory.Exists(destinationDir))
                     Directory.CreateDirectory(destinationDir);
                 var fileToDelete = destFiles.FirstOrDefault(a => a == resource);
                 var destFileName = Path.Combine(destinationDir, resource.Path + ".xml");
-                if( flatStructure  &&  resource.Path.LastIndexOf("\\", StringComparison.Ordinal)>=0)
-                  destFileName = Path.Combine(destinationDir, resource.Path.Substring(1+resource.Path.LastIndexOf("\\", StringComparison.Ordinal)) + ".xml");
-                   
-                if (File.Exists(destFileName))
+                if(flatStructure && resource.Path.LastIndexOf("\\", StringComparison.Ordinal) >= 0)
+                    destFileName = Path.Combine(destinationDir, resource.Path.Substring(1 + resource.Path.LastIndexOf("\\", StringComparison.Ordinal)) + ".xml");
+
+                if(File.Exists(destFileName))
                     File.Delete(destFileName);
-                if (fileToDelete != null)
+                if(fileToDelete != null)
                 {
                     File.Delete(fileToDelete.FileName);
                 }
                 FileInfo f = new FileInfo(destFileName);
                 var dir = f.Directory;
-                if (dir != null && !dir.Exists)
+                if(dir != null && !dir.Exists)
                     dir.Create();
-                File.Copy(resource.FileName, destFileName,true);
+                File.Copy(resource.FileName, destFileName, true);
+                File.AppendAllText(MsiConnection.Instance.LogFile, string.Format(@"Copied: {0} to {1}", resource.FileName, destFileName));
+
                 return new Resource(destFileName, resource.ID, resource.Path);
             }
-// ReSharper disable EmptyGeneralCatchClause
-            catch 
-// ReSharper restore EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
             {
 
             }
@@ -65,13 +69,13 @@ namespace Gui.Utility
         {
             if(Directory.Exists(dir))
             {
-                var root =  Directory.GetFiles(dir,"*.xml").Select(CreateResource).ToList();
-                root.AddRange((Directory.GetDirectories(dir).Where(a=>Directory.GetFileSystemEntries(a).Length>0).SelectMany(FetchFiles)));
+                var root = Directory.GetFiles(dir, "*.xml").Select(CreateResource).ToList();
+                root.AddRange((Directory.GetDirectories(dir).Where(a => Directory.GetFileSystemEntries(a).Length > 0).SelectMany(FetchFiles)));
                 return root;
             }
-// ReSharper disable RedundantIfElseBlock
+            // ReSharper disable RedundantIfElseBlock
             else
-// ReSharper restore RedundantIfElseBlock
+            // ReSharper restore RedundantIfElseBlock
             {
                 return new List<Resource>();
             }
@@ -80,19 +84,19 @@ namespace Gui.Utility
         Resource CreateResource(string arg)
         {
             var element = XElement.Load(File.OpenText(arg));
-            var id = Guid.Parse( element.Attribute("ID").Value);
+            var id = Guid.Parse(element.Attribute("ID").Value);
             var cat = element.Descendants("Category").First().Value;
-            return   new Resource(arg,id,cat);
+            return new Resource(arg, id, cat);
         }
 
         public void SetupSamplesFlat(string sourceZip, string outDir, string destinationDir)
         {
-            using (var zip = ZipFile.Read(sourceZip))
+            using(var zip = ZipFile.Read(sourceZip))
             {
                 zip.ExtractAll(outDir, ExtractExistingFileAction.OverwriteSilently);
-// ReSharper disable ReturnValueOfPureMethodIsNotUsed
-                UpdateExamples(outDir, destinationDir,true).ToList();
-// ReSharper restore ReturnValueOfPureMethodIsNotUsed
+                // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+                UpdateExamples(outDir, destinationDir, true).ToList();
+                // ReSharper restore ReturnValueOfPureMethodIsNotUsed
             }
         }
     }
@@ -144,7 +148,7 @@ namespace Gui.Utility
 
         #endregion
 
-        public  Resource(string fileName,Guid id,string path)
+        public Resource(string fileName, Guid id, string path)
         {
             FileName = fileName;
             ID = id;

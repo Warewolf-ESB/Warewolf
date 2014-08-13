@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
@@ -520,7 +521,7 @@ namespace Gui
         private void AddTrustedSites()
         {
             const string DomainsKeyLocation = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
-            string domain = Environment.MachineName.ToLower();
+            string domain = Environment.MachineName.ToLower(CultureInfo.CurrentUICulture);
             //const int intratnet = 0x1; // 0x2
             const int TrustedSiteZone = 0x1; // 0x2
 
@@ -545,14 +546,14 @@ namespace Gui
             // ReSharper restore EmptyGeneralCatchClause
 
         }
-        
+
         /// <summary>
         /// Adds the trusted sites.
         /// </summary>
         private void AddTrustedSitesIE11()
         {
             const string DomainsKeyLocation = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\EscDomains";
-            string domain = Environment.MachineName.ToLower();
+            string domain = Environment.MachineName.ToLower(CultureInfo.CurrentUICulture);
             //const int intratnet = 0x1; // 0x2
             const int TrustedSiteZone = 0x1; // 0x2
 

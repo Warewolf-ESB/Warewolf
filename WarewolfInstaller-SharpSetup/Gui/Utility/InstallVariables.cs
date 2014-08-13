@@ -75,7 +75,7 @@
         public static bool ViewReadMe { get; set; }
 
         // Do we keep the log file?
-        public static bool RemoveLogFile = true;
+        public static bool RemoveLogFile = false;
 
         /// <summary>
         /// The release notes URL
