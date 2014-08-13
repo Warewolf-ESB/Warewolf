@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -9,6 +10,7 @@ namespace Dev2.Studio.UI.Tests.Utils
     public class VisualTreeWalker
     {
         static UIMapBase.UIStudioWindow _studioWindow;
+        static Dictionary<string, UITestControl> _controlCache = new Dictionary<string, UITestControl>();
 
         private UITestControl GetChildByAutomationIDPathImpl(UITestControl parent, int bookmark, params string[] automationIDs)
         {
@@ -32,11 +34,11 @@ namespace Dev2.Studio.UI.Tests.Utils
             //Find some child
             var firstChildFound = children.FirstOrDefault(child =>
                 {
-                    var childID = child.GetProperty("AutomationID");
-                    if(childID != null)
+                    var childId = child.GetProperty("AutomationID");
+                    if(childId != null)
                     {
-                        var childAutoID = childID.ToString();
-                        return childAutoID.Contains(automationIDs[bookmark])
+                        var childAutoId = childId.ToString();
+                        return childAutoId.Contains(automationIDs[bookmark])
                             || child.FriendlyName.Contains(automationIDs[bookmark])
                             || child.ControlType.Name.Contains(automationIDs[bookmark])
                             || child.ClassName.Contains(automationIDs[bookmark]);
@@ -57,7 +59,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             return bookmark == automationIDs.Count() - 1 ? firstChildFound : GetChildByAutomationIDPathImpl(firstChildFound, ++bookmark, automationIDs);
         }
 
-        public static UITestControl GetChildByAutomationIDPath(UITestControl parent, params string[] automationIDs)
+        public static UITestControl GetChildByAutomationIdPath(UITestControl parent, params string[] automationIDs)
         {
             return new VisualTreeWalker().GetChildByAutomationIDPathImpl(parent, 0, automationIDs);
         }
@@ -68,7 +70,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             {
                 _studioWindow = new UIMapBase.UIStudioWindow();
             }
-            var control = GetChildByAutomationIDPath(_studioWindow, automationIDs);
+            var control = GetChildByAutomationIdPath(_studioWindow, automationIDs);
             if(control == null)
             {
                 throw new UITestControlNotFoundException();
@@ -80,12 +82,12 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// Gets the control from the Window.
         /// Used to search pinned panes
         /// </summary>
-        /// <param name="depth">The depth.</param>
         /// <param name="singleSearch">if set to <c>true</c> [single search].</param>
         /// <param name="splitPaneIndex">Index of the split pane.</param>
+        /// <param name="startControl"></param>
         /// <param name="automationIDs">The automation attribute ds.</param>
         /// <returns></returns>
-        public static UITestControl GetControlFromRoot(bool singleSearch, int splitPaneIndex, params string[] automationIDs)
+        public static UITestControl GetControlFromRoot(bool singleSearch, int splitPaneIndex, UITestControl startControl, params string[] automationIDs)
         {
             if(_studioWindow == null)
             {
@@ -100,63 +102,84 @@ namespace Dev2.Studio.UI.Tests.Utils
 
             if(automationIDs.Length > 0)
             {
-                UITestControl theControl = new UITestControl(_studioWindow);
+                if(startControl != null)
+                {
+                    var list = automationIDs.ToList();
+                    list.RemoveRange(0, automationIDs.Length - 1);
+                    automationIDs = list.ToArray();
+                }
+                UITestControl theControl = new UITestControl(startControl ?? _studioWindow);
                 // handle all other pinned panes ;)
                 if(singleSearch)
                 {
-                    //                    theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationIDs[0];
-                    //                    theControl.Find();
                     var automationCounter = 0;
                     UITestControlCollection children = null;
                     while(automationCounter <= automationIDs.Length - 1)
                     {
-                        if(theControl == null)
-                        {
-                            throw new UITestControlNotFoundException("Control not found for: " + automationIDs[automationCounter - 1]);
-                        }
                         var automationId = automationIDs[automationCounter];
-                        theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
                         try
                         {
-                            theControl.Find();
+                            UITestControl foundControl;
+                            if(_controlCache.TryGetValue(automationId, out foundControl))
+                            {
+                                theControl = foundControl;
+                                try
+                                {
+                                    //children = theControl.GetChildren();
+                                }
+                                catch(UITestControlNotFoundException)
+                                {
+                                    theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
+                                    theControl.Find();
+                                }
+                            }
+                            else
+                            {
+                                theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
+                                theControl.Find();
+                            }
                         }
                         catch(UITestControlNotFoundException)
                         {
-                            if(automationCounter == 0)
-                            {
-                                children = _studioWindow.GetChildren();
-                            }
-                            if(children != null)
-                            {
-                                theControl = children.FirstOrDefault(control =>
-                                {
-                                    var childAutoId = control.GetProperty("AutomationID").ToString();
-
-                                    return childAutoId == automationId ||
-                                           childAutoId.Contains(automationId) ||
-                                           (control.Name != null && control.Name.Contains(automationId)) ||
-                                           control.FriendlyName.Contains(automationId) ||
-                                           control.ControlType.Name.Contains(automationId) ||
-                                           control.ClassName.Contains(automationId);
-                                });
-                            }
+                            throw;
+                            //                            if(automationCounter == 0)
+                            //                            {
+                            //                                children = _studioWindow.GetChildren();
+                            //                            }
+                            //                            if(children != null)
+                            //                            {
+                            //                                theControl = children.FirstOrDefault(control =>
+                            //                                {
+                            //                                    var childAutoId = control.GetProperty("AutomationID").ToString();
+                            //
+                            //                                    return childAutoId == automationId ||
+                            //                                           childAutoId.Contains(automationId) ||
+                            //                                           (control.Name != null && control.Name.Contains(automationId)) ||
+                            //                                           control.FriendlyName.Contains(automationId) ||
+                            //                                           control.ControlType.Name.Contains(automationId) ||
+                            //                                           control.ClassName.Contains(automationId);
+                            //                                });
+                            //                            }
+                            //                            if(theControl == null)
+                            //                            {
+                            //                                throw;
+                            //                            }
                         }
                         automationCounter++;
-                        if(theControl != null)
+                        if(automationCounter != automationIDs.Length)
                         {
-                            if(automationCounter != automationIDs.Length)
-                            {
-                                children = theControl.GetChildren();
-                            }
+                            //children = theControl.GetChildren();
+                        }
+                        if(!_controlCache.ContainsKey(automationId))
+                        {
+
+                            //_controlCache.Add(automationId, theControl);
+                        }
+                        else
+                        {
+                            // _controlCache[automationId] = theControl;
                         }
                     }
-                    //
-                    //                    if(automationIDs.Length > 1)
-                    //                    {
-                    //
-                    //                        return new VisualTreeWalker().GetChildByAutomationIDPathImpl(theControl, depth, automationIDs);
-                    //                    }
-
                     return theControl;
                 }
 
@@ -185,10 +208,10 @@ namespace Dev2.Studio.UI.Tests.Utils
                             UITestControl canidate = null;
                             foreach(var child in children)
                             {
-                                var childAutoID = child.GetProperty("AutomationID").ToString();
+                                var childAutoId = child.GetProperty("AutomationID").ToString();
 
-                                if(childAutoID == automationIDs[i] ||
-                                   childAutoID.Contains(automationIDs[i]) ||
+                                if(childAutoId == automationIDs[i] ||
+                                   childAutoId.Contains(automationIDs[i]) ||
                                    child.FriendlyName.Contains(automationIDs[i]) ||
                                    child.ControlType.Name.Contains(automationIDs[i]) ||
                                    child.ClassName.Contains(automationIDs[i]))
@@ -209,6 +232,11 @@ namespace Dev2.Studio.UI.Tests.Utils
                 }
             }
             return null;
+        }
+
+        public static void ClearControlCache()
+        {
+            _controlCache = new Dictionary<string, UITestControl>();
         }
     }
 }
