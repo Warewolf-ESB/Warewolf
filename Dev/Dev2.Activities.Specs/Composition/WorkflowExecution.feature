@@ -3401,19 +3401,180 @@ Scenario: Workflow with Calculation using Star notation
 #       | 1 | [[List(1).Name]] = test |
 #       
 
+#12326
+#Scenario: Workflow Saving with Different Versions 
+#	 Given I have a workflow "WorkflowWithVersionAssign"
+#	 And "WorkflowWithVersionAssign" contains an Assign "VarsAssign" as
+#	  | variable    | value |
+#	  | [[rec().a]] | New   |
+#	  | [[rec().a]] | Test  |	 
+#	  When workflow "WorkflowWithVersionAssign" is saved "1" time
+#	  Then workflow "WorkflowWithVersionAssign" has "0" Versions in explorer
+#	  And explorer as 
+#	  | Explorer           |
+#	  | WorkflowWithAssign |
+#	  When workflow "WorkflowWithVersionAssign" is saved "2" time
+#	  Then workflow "WorkflowWithVersionAssign" has "2" Versions in explorer
+#	  And explorer as 
+#	  | Explorer           |
+#	  | WorkflowWithAssign |
+#	  | V1 DateTime        |
+#	  | V1 DateTime        |
+#	  When workflow "WorkflowWithVersionAssign" is saved "3" time
+#	   Then workflow "WorkflowWithVersionAssign" has "3" Versions in explorer
+#	   And explorer as 
+#	  | Explorer           |
+#	  | WorkflowWithAssign |
+#	  | V1 DateTime        |
+#	  | V1 DateTime        |
+#	  | V3 DateTime        |
+#
+#
+#Scenario: Saving a database service with different versions
+#	 Given I have a workflow "WFWithversionsDBService"
+#	 And "WFWithversionsDBService" contains a "database" service "Fetch" with mappings
+#	  | Input to Service | From Variable | Output from Service          | To Variable     |
+#	  |                  |               | dbo_proc_SmallFetch(*).Value | [[dbo_proc_SmallFetch().Value]] |
+#	  When workflow "WFWithversionsDBService" is saved "1" time
+#	  Then workflow "WFWithversionsDBService" has "0" Versions in explorer
+#	  And explorer as 
+#	  | Explorer           |
+#	  | WFWithversionsDBService |
+#	  When workflow "WFWithversionsDBService" is saved "2" time
+#	  Then workflow "WFWithversionsDBService" has "2" Versions in explorer
+#	  And explorer as 
+#	  | Explorer           |
+#	  | WorkflowWithAssign |
+#	  | V1 DateTime        |
+#	  | V1 DateTime        |
+#	  When workflow "WFWithversionsDBService" is saved "3" time
+#	  Then workflow "WFWithversionsDBService" has "3" Versions in explorer
+#	  And explorer as 
+#	  | Explorer           |
+#	  | WorkflowWithAssign |
+#	  | V1 DateTime        |
+#	  | V1 DateTime        |
+#	  | V3 DateTime        |
+#
+#
+#
+#Scenario: Saving a Web service with different versions
+#	 Given I have a workflow "WFWithWebServiceversions"
+#     And "WFWithWebServiceversions" contains a "webservice" service "InternalCountriesServiceTest" with mappings
+#	  | Input to Service | From Variable | Output from Service      | To Variable                 |
+#	  | extension        | [[ext]]       | Countries(*).CountryID   | [[Countries().CountryID]]   |
+#	  | prefix           | [[prefix]]    | Countries(*).Description | [[Countries().Description]] |
+#	  When workflow "WFWithWebServiceversions" is saved "1" time
+#	  Then workflow "WFWithWebServiceversions" has "0" Versions in explorer
+#	  And explorer as 
+#	  | Explorer           |
+#	  | WFWithversionsDBService |
+#	  When workflow "WFWithWebServiceversions" is saved "2" time
+#	  Then workflow "WFWithWebServiceversions" has "2" Versions in explorer
+#	  And explorer as 
+#	  | Explorer           |
+#	  | WorkflowWithAssign |
+#	  | V1 DateTime        |
+#	  | V1 DateTime        |
+#	  When workflow "WFWithWebServiceversions" is saved "3" time
+#	  Then workflow "WFWithWebServiceversions" has "3" Versions in explorer
+#	  And explorer as 
+#	  | Explorer           |
+#	  | WorkflowWithAssign |
+#	  | V1 DateTime        |
+#	  | V1 DateTime        |
+#	  | V3 DateTime        |
 
 
 
-
-
-
-
-
-
-
-
-
-
+#Scenario: Executing workflow of different versions
+#	 Given I have a workflow "WorkflowWithVersionAssign"
+#	 And "WorkflowWithVersionAssign" contains an Assign "VarsAssign" as
+#	  | variable    | value |
+#	  | [[rec().a]] | New   |
+#	  | [[rec().a]] | Test  |	 
+#	  When workflow "WorkflowWithVersionAssign" is saved "1" time
+#	  Then workflow "WorkflowWithVersionAssign" has "0" Versions in explorer
+#	  And explorer as 
+#	  | Explorer           |
+#	  | WorkflowWithAssign |
+#	  When "WorkflowWithVersionAssign" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'VarsAssign' in WorkFlow 'WorkflowWithVersionAssign' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | New       |
+#	  | 2 | [[rec().a]] = | Test      |
+#	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssign' debug outputs as    
+#	  | # |                     |
+#	  | 1 | [[rec(1).a]] = New  |
+#	  | 2 | [[rec(2).a]] = Test |
+#	  Given I have open workflow "WorkflowWithVersionAssign"
+#	  And "WorkflowWithVersionAssign" contains an Assign "VarsAssign" as
+#	  | variable    | value |
+#	  | [[rec().a]] | New   |
+#	  | [[rec().a]] | Test  |
+#	  | [[rec().a]] | V1    |
+#	  When workflow "WorkflowWithVersionAssign" is saved "2" time
+#	  Then workflow "WorkflowWithVersionAssign" has "2" Versions in explorer
+#	  And explorer as 
+#	  | Explorer           |
+#	  | WorkflowWithAssign |
+#	  | V1 DateTime        |
+#	  | V2 DateTime        |
+#	  When "WorkflowWithVersionAssign" of Version "1" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'VarsAssign' in WorkFlow 'WorkflowWithVersionAssign' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | New       |
+#	  | 2 | [[rec().a]] = | Test      |
+#	  | 3 | [[rec().a]] = | V1        |
+#	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssign' debug outputs as    
+#	  | # |                     |
+#	  | 1 | [[rec(1).a]] = New  |
+#	  | 2 | [[rec(2).a]] = Test |
+#	  | 3 | [[rec(3).a]] =  V1  |
+#	  Given I have open a workflow "WorkflowWithVersionAssign" of Version "1"
+#	  And "WorkflowWithVersionAssign" contains an Assign "VarsAssign" as
+#	  | variable    | value |
+#	  | [[rec().a]] | New   |
+#	  | [[rec().a]] | Test  |
+#	  | [[rec().a]] | V1    |
+#	  | [[rec().a]] | V2    |
+#	 When workflow "WorkflowWithVersionAssign" is saved "3" time
+#	  Then workflow "WorkflowWithVersionAssign" has "3" Versions in explorer
+#	  And explorer as 
+#	  | Explorer           |
+#	  | WorkflowWithAssign |
+#	  | V1 DateTime        |
+#	  | V2 DateTime        |
+#	  | V3 DateTime        |
+#	  When "WorkflowWithVersionAssign" of Version "1" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'VarsAssign' in WorkFlow 'WorkflowWithVersionAssign' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | New       |
+#	  | 2 | [[rec().a]] = | Test      |
+#	  | 3 | [[rec().a]] = | V1        |
+#	  | 4 | [[rec().a]]=  | v2        |
+#	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssign' debug outputs as    
+#	  | # |                     |
+#	  | 1 | [[rec(1).a]] = New  |
+#	  | 2 | [[rec(2).a]] = Test |
+#	  | 3 | [[rec(3).a]] = V1   |
+#	  | 4 | [[rec(4).a]] = V2   |	
+#	  When i rollback version "3"
+#	  Then I have open a workflow "WorkflowWithVersionAssign" of Version "1"
+#	  And I execute "WorkflowWithVersionAssign" of version "1"
+#	  And "WorkflowWithVersionAssign" of Version "1" is executed
+#	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssign' debug outputs as    
+#	  | # |                     |
+#	  | 1 | [[rec(1).a]] = New  |
+#	  | 2 | [[rec(2).a]] = Test |
+#	  And "WorkflowWithVersionAssign" contains an Assign "VarsAssign" as
+#	  | variable    | value |
+#	  | [[rec().a]] | New   |
+#	  | [[rec().a]] | Test  |
+#	  | [[rec().a]] | V1    |
 
 
 
