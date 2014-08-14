@@ -269,11 +269,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = null;
             if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, folderName, projectName);
             }
             else
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, projectName);
             }
             if(theControl != null)
             {
@@ -323,11 +323,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = null;
             if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, folderName, projectName);
             }
             else
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, projectName);
             }
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
@@ -373,7 +373,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             Mouse.Click(ddlBase, new Point(10, 10));
             Playback.Wait(500);
 
-            var item = VisualTreeWalker.GetChildByAutomationIDPath(ddlBase, "U_UI_ExplorerServerCbx_AutoID_" + serverName);
+            var item = VisualTreeWalker.GetChildByAutomationIdPath(ddlBase, "U_UI_ExplorerServerCbx_AutoID_" + serverName);
 
             Mouse.Click(item, new Point(5, 5));
 
@@ -445,11 +445,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = null;
             if(categoryName != "Unassigned" && categoryName != string.Empty)
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, categoryName, resourceName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, categoryName, resourceName);
             }
             else
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, resourceName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, resourceName);
             }
             Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
@@ -501,11 +501,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = null;
             if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, folderName, projectName);
             }
             else
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, projectName);
             }
             return theControl != null && theControl.Exists;
         }
@@ -522,11 +522,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = null;
             if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, folderName, projectName);
             }
             else
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, projectName);
             }
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
@@ -669,11 +669,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = null;
             if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, folderName, projectName);
             }
             else
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, projectName);
             }
             theControl.WaitForControlEnabled();
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
@@ -695,11 +695,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = null;
             if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, folderName, projectName);
             }
             else
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, projectName);
             }
             Point p = new Point(theControl.BoundingRectangle.X + 50, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
@@ -772,11 +772,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = null;
             if(categoryName != "Unassigned" && categoryName != string.Empty)
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, categoryName, resourceName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, categoryName, resourceName);
             }
             else
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, resourceName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, resourceName);
             }
             Mouse.StartDragging(theControl);
             Playback.Wait(20);
@@ -809,11 +809,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = null;
             if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, folderName, projectName);
             }
             else
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, projectName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, projectName);
             }
             Mouse.StartDragging(theControl);
             Playback.Wait(20);
@@ -835,11 +835,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             UITestControl theControl = null;
             if(categoryName != "Unassigned" && categoryName != string.Empty)
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, categoryName, resourceName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, categoryName, resourceName);
             }
             else
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, resourceName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, resourceName);
             }
             Point p = new Point(theControl.BoundingRectangle.X + 100, theControl.BoundingRectangle.Y + 5);
             Mouse.Move(p);
@@ -877,11 +877,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                 UITestControl theControl = null;
                 if(folderName != "Unassigned" && folderName != "UNASSIGNED" && folderName != string.Empty)
                 {
-                    theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, folderName, resourceName);
+                    theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, folderName, resourceName);
                 }
                 else
                 {
-                    theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, resourceName);
+                    theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, resourceName);
                 }
                 if(theControl == null)
                 {
@@ -928,11 +928,11 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
             GetExplorerTree();
             if(categoryName != "Unassigned" && categoryName != string.Empty)
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, categoryName, resourceName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, categoryName, resourceName);
             }
             else
             {
-                theControl = VisualTreeWalker.GetChildByAutomationIDPath(_explorerTree, serverName, resourceName);
+                theControl = VisualTreeWalker.GetChildByAutomationIdPath(_explorerTree, serverName, resourceName);
             }
             Playback.Wait(100);
             Mouse.DoubleClick(theControl, new Point(theControl.BoundingRectangle.X, theControl.BoundingRectangle.Y + 200));

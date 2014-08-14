@@ -175,10 +175,10 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                             //_controlCache.Add(automationId, theControl);
                         }
-                        else
-                        {
-                            // _controlCache[automationId] = theControl;
-                        }
+//                        else
+//                        {
+//                            // _controlCache[automationId] = theControl;
+//                        }
                     }
                     return theControl;
                 }

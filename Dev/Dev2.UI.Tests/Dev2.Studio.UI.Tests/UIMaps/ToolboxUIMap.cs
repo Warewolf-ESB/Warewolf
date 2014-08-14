@@ -14,8 +14,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 
         public ToolboxUIMap()
         {
-            _toolTree = VisualTreeWalker.GetControlFromRoot( true, 0, "UI_ToolboxPane_AutoID", "UI_ToolboxControl_AutoID", "PART_Tools");
-            _toolSearch = VisualTreeWalker.GetControlFromRoot( true, 0, "UI_ToolboxPane_AutoID", "UI_ToolboxControl_AutoID", "PART_SearchBox");
+            _toolTree = VisualTreeWalker.GetControlFromRoot(true, 0, null, "UI_ToolboxPane_AutoID", "UI_ToolboxControl_AutoID", "PART_Tools");
+            _toolSearch = VisualTreeWalker.GetControlFromRoot(true, 0, null, "UI_ToolboxPane_AutoID", "UI_ToolboxControl_AutoID", "PART_SearchBox");
         }
 
         public void ClickToolboxItem(ToolType tool)

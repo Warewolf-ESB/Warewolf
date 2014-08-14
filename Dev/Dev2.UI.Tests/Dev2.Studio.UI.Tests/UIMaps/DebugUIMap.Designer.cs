@@ -25,12 +25,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-    
-    
+
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public partial class DebugUIMap : UIMapBase
     {
-        
+
         /// <summary>
         /// DebugWindowExists
         /// </summary>
@@ -38,11 +38,11 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
 
         public WpfRow GetRow(int row)
         {
-            
+
 
             var debugWindow = GetDebugWindow();
             debugWindow.WaitForControlEnabled();
-            var inputGrid = VisualTreeWalker.GetChildByAutomationIDPath(debugWindow, "TabItems", "UI_InputDataTab_AutoID", "DataListInputs");
+            var inputGrid = VisualTreeWalker.GetChildByAutomationIdPath(debugWindow, "TabItems", "UI_InputDataTab_AutoID", "DataListInputs");
             return inputGrid.GetChildren()[row] as WpfRow;
         }
 
@@ -50,13 +50,13 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
         {
             return StudioWindow.GetChildren()[0] as WpfWindow;
         }
-        
+
         #region Properties
         public UIDebugWindow UIDebugWindow
         {
             get
             {
-                if ((this.mUIDebugWindow == null))
+                if((this.mUIDebugWindow == null))
                 {
                     this.mUIDebugWindow = new UIDebugWindow();
                 }
@@ -64,16 +64,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses
             }
         }
         #endregion
-        
+
         #region Fields
         private UIDebugWindow mUIDebugWindow;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UIDebugWindow : WpfWindow
     {
-        
+
         public UIDebugWindow()
         {
             #region Search Criteria

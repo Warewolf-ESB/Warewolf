@@ -12,7 +12,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
     {
         public static UITestControl GetChildByAutomationIDPath(this UITestControl parent, params string[] automationIDs)
         {
-            return VisualTreeWalker.GetChildByAutomationIDPath(parent, automationIDs);
+            return VisualTreeWalker.GetChildByAutomationIdPath(parent, automationIDs);
         }
 
         public static List<UITestControl> FindControlsControlByAutomationID(this UITestControl container, string automationId)

@@ -988,7 +988,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// </returns>
         public UITestControl GetFlowchartDesigner(UITestControl theTab)
         {
-            var flowchartDesigner = VisualTreeWalker.GetChildByAutomationIDPath(theTab,
+            var flowchartDesigner = VisualTreeWalker.GetChildByAutomationIdPath(theTab,
                 "WorkSurfaceContextViewModel",
                 "Uia.WorkflowDesignerView",
                 "UserControl_1",
@@ -1341,7 +1341,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         /// <returns></returns>
         public UITestControl GetSqlBulkInsertLargeViewFirstInputTextbox(UITestControl sqlBulkInsertToolOnWorkflow)
         {
-            return VisualTreeWalker.GetChildByAutomationIDPath(sqlBulkInsertToolOnWorkflow, "LargeViewContent", "LargeDataGrid", "Uia.DataGridRow", "Item: Dev2.TO.DataColumnMapping, Column Display In...", "UI__Row0_InputColumn_AutoID");
+            return VisualTreeWalker.GetChildByAutomationIdPath(sqlBulkInsertToolOnWorkflow, "LargeViewContent", "LargeDataGrid", "Uia.DataGridRow", "Item: Dev2.TO.DataColumnMapping, Column Display In...", "UI__Row0_InputColumn_AutoID");
         }
 
         public void ScrollControlIntoView(UITestControl theTab, UITestControl theControl)

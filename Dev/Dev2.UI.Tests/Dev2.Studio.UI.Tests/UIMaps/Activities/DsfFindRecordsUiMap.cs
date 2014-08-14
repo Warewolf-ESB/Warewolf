@@ -58,7 +58,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         private List<UITestControl> GetDataGridRowChildList(int rowNumber, ViewType viewType)
         {
-            UITestControl childByAutomationIDPath = VisualTreeWalker.GetChildByAutomationIDPath(GetView(viewType), "Table");
+            UITestControl childByAutomationIDPath = VisualTreeWalker.GetChildByAutomationIdPath(GetView(viewType), "Table");
             List<UITestControl> uiTestControlCollection = childByAutomationIDPath.GetChildren().Where(c => c.ControlType == ControlType.Row).ToList();
             return uiTestControlCollection[rowNumber].GetChildren().ToList();
         }

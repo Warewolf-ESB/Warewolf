@@ -72,7 +72,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
 
         public UITestControl GetServerDDL()
         {
-            return VisualTreeWalker.GetChildByAutomationIDPath(_explorerNewConnectionControl, "UI_ExplorerServerCbx_AutoID");
+            return VisualTreeWalker.GetChildByAutomationIdPath(_explorerNewConnectionControl, "UI_ExplorerServerCbx_AutoID");
         }
 
         public UITestControl GetExplorerEditBtn()

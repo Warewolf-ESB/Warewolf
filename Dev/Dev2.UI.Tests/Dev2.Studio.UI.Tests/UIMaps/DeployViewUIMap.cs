@@ -65,7 +65,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             Mouse.Click(destinationServerList, new Point(10, 10));
             Playback.Wait(500);
 
-            var item = VisualTreeWalker.GetChildByAutomationIDPath(destinationServerList, "UI_DestinationServercbx_AutoID_" + serverName);
+            var item = VisualTreeWalker.GetChildByAutomationIdPath(destinationServerList, "UI_DestinationServercbx_AutoID_" + serverName);
 
             Mouse.Click(item, new Point(5, 5));
 
@@ -167,7 +167,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.DeployViewUIMapClasses
             var deployUserControl = GetDeployUserControl(activeTab);
 
 
-            return VisualTreeWalker.GetChildByAutomationIDPath(deployUserControl, "SourceNavigationView", "Navigation") as WpfTree;
+            return VisualTreeWalker.GetChildByAutomationIdPath(deployUserControl, "SourceNavigationView", "Navigation") as WpfTree;
         }
 
         public UITestControl GetSourceConnectButton(UITestControl theTab)

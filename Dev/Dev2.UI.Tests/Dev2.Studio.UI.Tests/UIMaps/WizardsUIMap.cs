@@ -40,8 +40,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         {
             UITestControlCollection uiTestControlCollection = StudioWindow.GetChildren();
             var tryGetDialog = uiTestControlCollection[0];
-            
-            UITestControl childByAutomationIDPath = VisualTreeWalker.GetChildByAutomationIDPath(tryGetDialog, autoId);
+
+            UITestControl childByAutomationIDPath = VisualTreeWalker.GetChildByAutomationIdPath(tryGetDialog, autoId);
             WpfText wpfText = childByAutomationIDPath as WpfText;
             if(wpfText != null)
             {

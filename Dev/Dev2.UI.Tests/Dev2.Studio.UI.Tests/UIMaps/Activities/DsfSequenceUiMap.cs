@@ -21,16 +21,16 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public void DragActivityOnDropPoint(ToolType toolType)
         {
-            
-            UITestControl dropPoint = VisualTreeWalker.GetChildByAutomationIDPath(Activity, "SmallViewContent", "DropPoint");
+
+            UITestControl dropPoint = VisualTreeWalker.GetChildByAutomationIdPath(Activity, "SmallViewContent", "DropPoint");
             var boundingRectangle = dropPoint.BoundingRectangle;
             ToolboxUIMap.DragControlToWorkflowDesigner(toolType, new Point(boundingRectangle.X + 10, boundingRectangle.Y + 10));
         }
 
         public void DragActivityOnLargeViewDropPoint(ToolType toolType)
         {
-            
-            UITestControl dropPoint = VisualTreeWalker.GetChildByAutomationIDPath(Activity, "LargeViewContent", "ActivitiesPresenter");
+
+            UITestControl dropPoint = VisualTreeWalker.GetChildByAutomationIdPath(Activity, "LargeViewContent", "ActivitiesPresenter");
             var boundingRectangle = dropPoint.BoundingRectangle;
             ToolboxUIMap.DragControlToWorkflowDesigner(toolType, new Point(boundingRectangle.X + 10, boundingRectangle.Y + 10));
         }
@@ -38,8 +38,8 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
         public List<string> GetActivityList()
         {
             List<string> activityNames = new List<string>();
-            
-            WpfTable table = VisualTreeWalker.GetChildByAutomationIDPath(Activity, "SmallViewContent", "InitialFocusElement") as WpfTable;
+
+            WpfTable table = VisualTreeWalker.GetChildByAutomationIdPath(Activity, "SmallViewContent", "InitialFocusElement") as WpfTable;
             if(table != null)
             {
                 var uiTestControlCollection = table.Rows;

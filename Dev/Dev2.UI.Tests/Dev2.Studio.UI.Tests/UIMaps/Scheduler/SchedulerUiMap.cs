@@ -39,19 +39,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Scheduler
 
         public void ClickNewTaskButton()
         {
-            UITestControl newButton = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _newButtonAutoIds);
+            UITestControl newButton = VisualTreeWalker.GetChildByAutomationIdPath(_activeTab, _newButtonAutoIds);
             newButton.Click();
         }
 
         public string GetNameText()
         {
-            UITestControl nameTextbox = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _nameTextboxAutoIds);
+            UITestControl nameTextbox = VisualTreeWalker.GetChildByAutomationIdPath(_activeTab, _nameTextboxAutoIds);
             return nameTextbox.GetText();
         }
 
         public string GetStatus()
         {
-            UITestControl statusRadioButton = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _enabledRadioButtonAutoIds);
+            UITestControl statusRadioButton = VisualTreeWalker.GetChildByAutomationIdPath(_activeTab, _enabledRadioButtonAutoIds);
             if(statusRadioButton.IsSelected())
             {
                 return "Enabled";
@@ -61,19 +61,19 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Scheduler
 
         public string GetWorkflowName()
         {
-            UITestControl workflowNameTextbox = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _workflowNameTextBoxAutoIds);
+            UITestControl workflowNameTextbox = VisualTreeWalker.GetChildByAutomationIdPath(_activeTab, _workflowNameTextBoxAutoIds);
             return workflowNameTextbox.GetText();
         }
 
         public bool GetRunAsap()
         {
-            UITestControl runAsapCheckbox = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _runAsapCheckboxAutoIds);
+            UITestControl runAsapCheckbox = VisualTreeWalker.GetChildByAutomationIdPath(_activeTab, _runAsapCheckboxAutoIds);
             return runAsapCheckbox.IsChecked();
         }
 
         public string GetUsername()
         {
-            UITestControl usernameTextbox = VisualTreeWalker.GetChildByAutomationIDPath(_activeTab, _usernameTextboxAutoIds);
+            UITestControl usernameTextbox = VisualTreeWalker.GetChildByAutomationIdPath(_activeTab, _usernameTextboxAutoIds);
             return usernameTextbox.GetText();
         }
 
