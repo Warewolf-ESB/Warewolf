@@ -1378,8 +1378,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 asyncWorker.Start(() =>
                 {
                     BindToModel();
-                    //WorkspaceItemRepository.Instance.UpdateWorkspaceItem(ResourceModel, true);
-
                     ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
                     _workspaceSave = true;
 

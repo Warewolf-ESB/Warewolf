@@ -29,7 +29,6 @@
             <customControls2:FilterTextBox x:Name="FilterTextBox"
                 Grid.Column="0"
                 Margin="0,0,-2,0">
-                <!--cal:Message.Attach="[Event GotFocus] = [Action SetSelectedItemNull]">-->
                 <i:Interaction.Triggers>
                     <trigger2:DelayTextChangedEventTrigger DelayInMilliSeconds="300">
                         <cal:ActionMessage MethodName="UpdateSearchFilter">
@@ -52,13 +51,15 @@
                 <Image Source="{StaticResource Refresh-32}" Width="14" Height="14" HorizontalAlignment="Left" />
             </Button>
         </Grid>
-        <!--Style="{StaticResource TreeViewStyle}"
         
-        ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"-->
-        <TreeView x:Name="Navigation" ItemsSource="{Binding Path=ExplorerItemModels}" Grid.Row="1" Grid.ColumnSpan="2"
-            BorderThickness="0"
-            ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}"
-            ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}">
+        <TreeView x:Name="Navigation"
+                  ItemsSource="{Binding Path=ExplorerItemModels}"
+                  Grid.Row="1"
+                  Grid.ColumnSpan="2"
+                  BorderThickness="0"
+                  ItemTemplate="{Binding ItemTemplate, ElementName=NavigationViewUserControl}"
+                  ItemContainerStyle="{Binding ItemContainerStyle, ElementName=NavigationViewUserControl}"
+                  AutomationProperties.AutomationId="UI_ExplorerTree_AutoID">
             <i:Interaction.Behaviors>
                 <behaviors:TreeViewFocusOnAddBehavior />
                 <behavior:BindableSelectedItemBehavior

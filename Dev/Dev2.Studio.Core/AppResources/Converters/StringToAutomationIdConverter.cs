@@ -14,8 +14,11 @@ namespace Dev2.Studio.Core.AppResources.Converters
         {
             string s = value as string;
 
+
             if(!string.IsNullOrEmpty(s))
             {
+                //Ashley: Remove server address part of localhost strings
+                s = s.Contains(@"localhost (http://") ? "localhost" : s;
                 return string.Concat(AutoIdPrefix, s, AutoIdSufix);
             }
             return s;

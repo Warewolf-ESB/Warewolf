@@ -44,7 +44,8 @@
         <navigationViews:NavigationView x:Name="TheNavigationView"
                                         DataContext="{Binding DataContext.NavigationViewModel, ElementName=Explorer}"
                                         Grid.Row="1"
-                                        Grid.ColumnSpan="2">
+                                        Grid.ColumnSpan="2"
+                                        AutomationProperties.AutomationId="UI_NavigationViewUserControl_AutoID">
             
             <navigationViews:NavigationView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}"

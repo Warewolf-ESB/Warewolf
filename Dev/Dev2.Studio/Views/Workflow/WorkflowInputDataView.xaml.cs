@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using System.Windows.Automation;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Workflow
@@ -34,6 +35,7 @@ namespace Dev2.Studio.Views.Workflow
         private void SetUpTextEditor()
         {
             _editor = new TextEditor { SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML"), ShowLineNumbers = true, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto };
+            _editor.SetValue(AutomationProperties.AutomationIdProperty, "UI_XMLEditor_AutoID");
 
             _foldingStrategy = new XmlFoldingStrategy();
             _foldingManager = FoldingManager.Install(_editor.TextArea);
@@ -241,6 +243,11 @@ namespace Dev2.Studio.Views.Workflow
         void CancelClicked(object sender, RoutedEventArgs e)
         {
             DestroyTimer();
+        }
+
+        void DataListInputs_OnLoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Tag = e.Row.GetIndex();
         }
     }
 }

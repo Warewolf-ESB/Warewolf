@@ -17,7 +17,8 @@
         ResizeMode="NoResize"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance workflow:DsfActivityDropViewModel}">    
+        d:DataContext="{d:DesignInstance workflow:DsfActivityDropViewModel}"
+        AutomationProperties.AutomationId="UI_SelectServiceWindow_AutoID">    
     
     <Window.InputBindings>
         <KeyBinding Command="{Binding CancelCommand}" Key="Escape" />
@@ -33,7 +34,8 @@
         </Grid.RowDefinitions>
         <navigationViews:NavigationView x:Name="TheNavigationView"
                                         DataContext="{Binding Path=NavigationViewModel}"
-                                        Grid.Row="0">
+                                        Grid.Row="0"
+                                        AutomationProperties.AutomationId="UI_NavigationViewUserControl_AutoID">
             <navigationViews:NavigationView.ItemContainerStyle>
                 <Style TargetType="{x:Type TreeViewItem}"
                        BasedOn="{StaticResource {x:Type TreeViewItem}}">
@@ -118,7 +120,8 @@
                     Command="{Binding OkCommand}"
                     Width="110"
                     Margin="5"
-                    MaxHeight="30"></Button>
+                    MaxHeight="30"
+                  AutomationProperties.AutomationId="UI_SelectServiceOKButton_AutoID"/>
         </StackPanel>
     </Grid>
 </Window>

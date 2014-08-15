@@ -101,7 +101,8 @@
                               Style="{StaticResource SettingsToggleButtonStyle}" />-->
                 <ToggleButton Content="{Binding SecurityHeader}"
                               IsChecked="{Binding ShowSecurity, Mode=TwoWay}"
-                              Style="{StaticResource SettingsToggleButtonStyle}" />
+                              Style="{StaticResource SettingsToggleButtonStyle}"
+                              AutomationProperties.AutomationId="UI_SecuritySettings_AutoID"/>
 
             </StackPanel>
 

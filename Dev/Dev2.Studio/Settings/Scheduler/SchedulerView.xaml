@@ -269,8 +269,8 @@
             </DataGrid>
             <Rectangle Grid.Column="0"
                        Grid.Row="2"
-                Fill="Gray"
-                Opacity="0.2"
+                       Fill="Gray"
+                       Opacity="0.2"
                        Visibility="{Binding SelectedTask.IsDirty,Converter={StaticResource BoolToVisibilityConverterPositive}}"/>
             <customControls:CircularProgressBar Grid.Row="2"
                                                 Grid.Column="0"
@@ -294,16 +294,19 @@
                                            ToolTip="{Binding HelpToggle.ToolTip}"
                                            IsChecked="{Binding HelpToggle.IsChecked, Mode=TwoWay}"
                                            Content="{Binding HelpToggle.Image, Mode=TwoWay}"
-                                           Style="{StaticResource ActivityToggleButtonStyle}">
+                                           Style="{StaticResource ActivityToggleButtonStyle}"
+                                           AutomationProperties.AutomationId="UI_SchedulerHelpButton_AutoID">
         </core:ActivityDesignerToggleButton>
 
         <TabControl Grid.Column="1"
                     Grid.Row="1"
                     Background="White"
-                    SelectedItem="{Binding ActiveItem, Mode=OneWayToSource}">
+                    SelectedItem="{Binding ActiveItem, Mode=OneWayToSource}"
+                    AutomationProperties.AutomationId="UI_SchedulerTabControl_AutoID">
 
             <TabItem Header="Settings"                     
-                     x:Name="InitialFocusElement">                
+                     x:Name="InitialFocusElement"
+                     AutomationProperties.AutomationId="UI_SchedulerSettingsTab_AutoID">                
                 <Grid Visibility="{Binding SelectedTask,Converter={StaticResource NullToVisibilityConverterNullIsCollapsed}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -352,7 +355,8 @@
                                 </TextBlock>
                                 <Button Content="Edit Trigger"
                                         ToolTip="When should the workflow run?"
-                                        Command="{Binding EditTriggerCommand}">
+                                        Command="{Binding EditTriggerCommand}"
+                                        AutomationProperties.AutomationId="UI_EditTriggerButton_AutoID">
                                     <i:Interaction.Behaviors>
                                         <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextTrigger}"
                                                          DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
@@ -430,7 +434,7 @@
                                      ToolTip="{x:Static help:HelpTextResources.SchedulerSettingsToolTipWorkFlow}"
                                      HorizontalAlignment="Left"
                                      x:Name="WorkflowNameTextBox"
-                                     AutomationProperties.AutomationId="UI_WorkflowNameTextBox"
+                                     AutomationProperties.AutomationId="UI_WorkflowNameTextBox_AutoID"
                                      Width="220"
                                      IsReadOnly="True">
                                 <i:Interaction.Behaviors>
@@ -440,7 +444,8 @@
                             </TextBox>
                             <Button Content="..."
                                     ToolTip="Select a workflow to be triggered"
-                                    Command="{Binding AddWorkflowCommand}">
+                                    Command="{Binding AddWorkflowCommand}"
+                                    AutomationProperties.AutomationId="UI_WorkflowSelectorButton_AutoID">
                                 <i:Interaction.Behaviors>
                                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextWorkFlow}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
@@ -575,7 +580,8 @@
                 </Grid>
             </TabItem>
 
-            <TabItem Header="History">
+            <TabItem Header="History"
+                     AutomationProperties.AutomationId="UI_SchedulerHistoryTab_AutoID">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.SchedulerSettingsHelpTextHistoryView}"
                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=UserControl}}" />
