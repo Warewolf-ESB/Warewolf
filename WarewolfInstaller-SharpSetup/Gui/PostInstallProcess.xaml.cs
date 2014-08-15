@@ -521,7 +521,7 @@ namespace Gui
         private void AddTrustedSites()
         {
             const string DomainsKeyLocation = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\Domains";
-            string domain = Environment.MachineName.ToLower(CultureInfo.CurrentUICulture);
+            string domain = Environment.MachineName.ToLower(CultureInfo.InvariantCulture);
             //const int intratnet = 0x1; // 0x2
             const int TrustedSiteZone = 0x1; // 0x2
 
@@ -553,7 +553,7 @@ namespace Gui
         private void AddTrustedSitesIE11()
         {
             const string DomainsKeyLocation = @"Software\Microsoft\Windows\CurrentVersion\Internet Settings\ZoneMap\EscDomains";
-            string domain = Environment.MachineName.ToLower(CultureInfo.CurrentUICulture);
+            string domain = Environment.MachineName.ToLower(CultureInfo.InvariantCulture);
             //const int intratnet = 0x1; // 0x2
             const int TrustedSiteZone = 0x1; // 0x2
 
