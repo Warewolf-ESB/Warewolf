@@ -113,12 +113,9 @@ namespace Dev2.Studio.UI.Tests.Utils
                 if(singleSearch)
                 {
                     var automationCounter = 0;
-                    UITestControlCollection children = null;
                     while(automationCounter <= automationIDs.Length - 1)
                     {
                         var automationId = automationIDs[automationCounter];
-                        try
-                        {
                             UITestControl foundControl;
                             if(_controlCache.TryGetValue(automationId, out foundControl))
                             {
@@ -138,33 +135,6 @@ namespace Dev2.Studio.UI.Tests.Utils
                                 theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
                                 theControl.Find();
                             }
-                        }
-                        catch(UITestControlNotFoundException)
-                        {
-                            throw;
-                            //                            if(automationCounter == 0)
-                            //                            {
-                            //                                children = _studioWindow.GetChildren();
-                            //                            }
-                            //                            if(children != null)
-                            //                            {
-                            //                                theControl = children.FirstOrDefault(control =>
-                            //                                {
-                            //                                    var childAutoId = control.GetProperty("AutomationID").ToString();
-                            //
-                            //                                    return childAutoId == automationId ||
-                            //                                           childAutoId.Contains(automationId) ||
-                            //                                           (control.Name != null && control.Name.Contains(automationId)) ||
-                            //                                           control.FriendlyName.Contains(automationId) ||
-                            //                                           control.ControlType.Name.Contains(automationId) ||
-                            //                                           control.ClassName.Contains(automationId);
-                            //                                });
-                            //                            }
-                            //                            if(theControl == null)
-                            //                            {
-                            //                                throw;
-                            //                            }
-                        }
                         automationCounter++;
                         if(automationCounter != automationIDs.Length)
                         {
@@ -175,10 +145,6 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                             //_controlCache.Add(automationId, theControl);
                         }
-//                        else
-//                        {
-//                            // _controlCache[automationId] = theControl;
-//                        }
                     }
                     return theControl;
                 }
