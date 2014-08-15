@@ -1,5 +1,7 @@
 using System;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using SharpSetup.Base;
 
@@ -15,9 +17,9 @@ namespace Gui
             InitializeComponent();
         }
 
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         private void InitializationStep_Entered(object sender, RoutedEventArgs e)
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             var mainMsiFile = Properties.Resources.MainMsiFile;
             if(File.Exists(mainMsiFile))
@@ -48,9 +50,20 @@ namespace Gui
             //}
 
             Wizard.LifecycleAction(LifecycleActionType.ConnectionOpened);
-            Wizard.NextStep();
-            DataContext = new InfoStepDataContext();
-
+            try
+            {
+                ContainsUnicodeCharacter(Environment.MachineName.ToLower(CultureInfo.InvariantCulture));
+                Wizard.NextStep();
+                DataContext = new InfoStepDataContext();
+            }
+            catch(Exception exception)
+            {
+                CanGoNext = false;
+                MessageBox.Show("Installation cannot continue due to the following:" +
+                    Environment.NewLine +
+                    exception.Message);
+                Wizard.Finish();
+            }
             // Seems to be  install issues following the route below ;)
             //var mainMsiFile = Properties.Resources.MainMsiFile;
             //if(File.Exists(PublicResources.SerializedStateFile))
@@ -63,6 +76,19 @@ namespace Gui
             //Wizard.LifecycleAction(LifecycleActionType.ConnectionOpened);
             //Wizard.NextStep();
             //DataContext = new InfoStepDataContext();
+        }
+
+        public void ContainsUnicodeCharacter(string input)
+        {
+            const int MaxAnsiCode = 128;
+
+            var containsUnicodeCharacter = input.Any(c => c > MaxAnsiCode);
+            if(containsUnicodeCharacter)
+            {
+                throw new InvalidDataException(string.Format("The Machine Name: {0} " +
+                                                             "contains invalid characters. " +
+                                                             "Warewolf only supports latin based character set.", input));
+            }
         }
     }
 }

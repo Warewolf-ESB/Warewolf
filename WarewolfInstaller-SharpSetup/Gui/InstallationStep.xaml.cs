@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using SharpSetup.Base;
 using SharpSetup.Prerequisites.Base;
@@ -25,9 +27,9 @@ namespace Gui
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs"/> instance containing the event data.</param>
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         private void InstallationStep_Entered(object sender, SharpSetup.UI.Wpf.Base.ChangeStepRoutedEventArgs e)
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
 
             try
@@ -71,6 +73,7 @@ namespace Gui
                 }
                 else if(_mode == InstallationMode.Install)
                 {
+                    ContainsUnicodeCharacter(Environment.MachineName.ToLower(CultureInfo.InvariantCulture));
                     PrerequisiteManager.Instance.Install();
 
                     try
@@ -109,6 +112,18 @@ namespace Gui
             Wizard.NextStep();
         }
 
+        public void ContainsUnicodeCharacter(string input)
+        {
+            const int MaxAnsiCode = 128;
+
+            var containsUnicodeCharacter = input.Any(c => c > MaxAnsiCode);
+            if(containsUnicodeCharacter)
+            {
+                throw new InvalidDataException(string.Format("The Machine Name: {0} " +
+                                                             "contains invalid characters. " +
+                                                             "Warewolf only supports latin based character set.", input));
+            }
+        }
 
         /// <summary>
         /// Terminates the files as per the uninstaller ;)
