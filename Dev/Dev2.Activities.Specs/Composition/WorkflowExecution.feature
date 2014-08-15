@@ -1509,6 +1509,44 @@ Scenario: Workflow with Assign Calculate multiple recursion
 	  |                |
 	  | [[result]] = 2 |
 
+
+
+Scenario: Workflow with Assign and Calculate
+      Given I have a workflow "WFAssign&Calculate"
+	  And "WFAssign&Calculate" contains an Assign "values1" as
+      | variable       | value |
+      | [[Honda().a1]] | 1     |
+      | [[Honda().a2]] | 2     |
+      | [[Honda().a3]] | 3     |
+      | [[Benz().a1]]  | 10    |
+      | [[Benz().a2]]  | 20    |
+      | [[Benz().a3]]  | 30    |
+	  And "WFAssign&Calculate" contains Calculate "Calculate1" with formula "sum([[Benz(*)]])+sum([[Honda(*)]])" into "[[result]]"
+	  When "WFAssign&Calculate" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'values1' in WorkFlow 'WFAssign&Calculate' debug inputs as 
+	  | # | Variable         | New Value |
+	  | 1 | [[Honda().a1]] = | 1         |
+	  | 2 | [[Honda().a2]] = | 2         |
+	  | 3 | [[Honda().a3]] = | 3         |
+	  | 4 | [[Benz().a1]]  = | 10        |
+	  | 5 | [[Benz().a2]]  = | 20        |
+	  | 6 | [[Benz().a3]]  = | 30        |
+	 And the 'values1' in Workflow 'WFAssign&Calculate' debug outputs as   
+	  | # |                      |
+	  | 1 | [[Honda(1).a1]] =  1  |
+	  | 2 | [[Honda(1).a2]] =  2  |
+	  | 3 | [[Honda(1).a3]] =  3  |
+	  | 4 | [[Benz(1).a1]]  =  10 |
+	  | 5 | [[Benz(1).a2]]  =  20 |
+	  | 6 | [[Benz(1).a3]]  =  30 |
+	  And the 'Calculate1' in WorkFlow 'WFAssign&Calculate' debug inputs as 
+      | fx =                                                          |
+      | sum([[Benz(*)]])+sum([[Honda(*)]]) = sum(10,20,30)+sum(1,2,3) |       
+      And the 'Calculate1' in Workflow 'WFAssign&Calculate' debug outputs as  
+	  |                 |
+	  | [[result]] = 66 |
+
 #This Scenario should be passed after the bug 11714 is fixed
 Scenario: Workflow with Assign and ForEach
      Given I have a workflow "WFWithForEach"

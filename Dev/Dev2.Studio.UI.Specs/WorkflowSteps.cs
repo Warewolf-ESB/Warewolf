@@ -180,7 +180,7 @@ namespace Dev2.Studio.UI.Specs
         public void WhenISendTo(string textToSend, string automationIds)
         {
             var correctedAutoIds = GetCorrect(automationIds).Split(',');
-            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, correctedAutoIds);
+            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, null,correctedAutoIds);
 
             if(!string.IsNullOrEmpty(automationIds))
             {
@@ -200,7 +200,7 @@ namespace Dev2.Studio.UI.Specs
         public void GivenIClick(string automationIds)
         {
             var automationIDs = GetCorrect(automationIds).Split(',');
-            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, automationIDs);
+            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, null, automationIDs);
 
             Mouse.Click(controlToClick, new Point(5, 5));
             Playback.Wait(2000);
@@ -212,9 +212,9 @@ namespace Dev2.Studio.UI.Specs
             var correcteddDagItemAutoIds = GetCorrect(dragItemAutoIds).Split(',');
             var correctedDragDestinationAutoIds = GetCorrect(dragDestinationAutoIds).Split(',');
 
-            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, correcteddDagItemAutoIds);
+            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, null, correcteddDagItemAutoIds);
 
-            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, correctedDragDestinationAutoIds);
+            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedDragDestinationAutoIds);
 
             Mouse.Click(itemToDrag, new Point(15, 15));
             var clickablePoint = itemToDrag.GetClickablePoint();
@@ -231,7 +231,7 @@ namespace Dev2.Studio.UI.Specs
         public void WhenIDoubleClick(string itemToDoubleClickAutoIds)
         {
             var correcteddItemToDoubleClickAutoIds = GetCorrect(itemToDoubleClickAutoIds).Split(',');
-            var itemToDoubleClick = VisualTreeWalker.GetControlFromRoot(true, 0, correcteddItemToDoubleClickAutoIds);
+            var itemToDoubleClick = VisualTreeWalker.GetControlFromRoot(true, 0, null, correcteddItemToDoubleClickAutoIds);
             var clickablePoint = itemToDoubleClick.GetClickablePoint();
             clickablePoint.Offset(5, 5);
             Mouse.DoubleClick(itemToDoubleClick, clickablePoint);
@@ -242,7 +242,7 @@ namespace Dev2.Studio.UI.Specs
         public void ThenIsVisible(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
 
             Assert.IsNotNull(itemFound);
 
@@ -252,7 +252,7 @@ namespace Dev2.Studio.UI.Specs
         public void ThenIsNotVisible(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
 
             Assert.IsNull(itemFound);
         }
