@@ -118,7 +118,7 @@ namespace Dev2.Core.Tests.Settings
             Assert.AreEqual(@"To schedule a workflow execution, setup the trigger you want to use  and the workflow you want to execute.
 Warewolf leverages Windows Task Scheduler and the schedules can be viewed there as well.", schdulerViewModel.HelpText);
         }
-        
+
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SchedulerViewModel_ShowError")]
@@ -1049,7 +1049,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             //------------Execute Test---------------------------
             schedulerViewModel.Name = "";
             //------------Assert Results-------------------------
-            Assert.IsTrue(schedulerViewModel.HasErrors);
+            Assert.IsTrue(schedulerViewModel.HasErrors, "Scheduler view model does not have errors after name is made empty.");
             Assert.AreEqual("The name can not be blank", schedulerViewModel.Error);
             Assert.AreEqual(string.Empty, schedulerViewModel.SelectedTask.Name);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
