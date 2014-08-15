@@ -1069,7 +1069,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             schedulerViewModel.Name = "";
 
             //------------------Assert Preconditions---------------------------
-            Assert.IsTrue(schedulerViewModel.HasErrors);
+            Assert.IsTrue(schedulerViewModel.HasErrors, "Scheduler view model does not have errors when its name is empty.");
             Assert.AreEqual("The name can not be blank", schedulerViewModel.Error);
             //------------Execute Test---------------------------
             schedulerViewModel.Name = "This is a test";
