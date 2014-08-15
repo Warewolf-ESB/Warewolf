@@ -23,16 +23,20 @@ namespace Dev2.Studio.UI.Specs
 
         //static readonly string Explorer = "Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,TheNavigationView";
         static readonly string Toolbox = "UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
-        //static readonly string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
-        //static readonly string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput,DebugOutputTree";
+        static readonly string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
+        static readonly string Unsaved1 = Worksurface + ",Unsaved 1(FlowchartDesigner)";
+        static readonly string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput";
+
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
-
+        int _retryCount;
 
         [BeforeTestRun]
         public static void SetupForTest()
         {
+            // ReSharper disable PossiblyMistakenUseOfParamsMethod
             Bootstrap.ResolvePathsToTestAgainst(!ContextForTests.IsLocal ? Path.Combine(ContextForTests.DeploymentDirectory) : null);
+            // ReSharper restore PossiblyMistakenUseOfParamsMethod
             Playback.Initialize();
 
         }
@@ -180,8 +184,8 @@ namespace Dev2.Studio.UI.Specs
         public void WhenISendTo(string textToSend, string automationIds)
         {
             var correctedAutoIds = GetCorrect(automationIds).Split(',');
-            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, null,correctedAutoIds);
-
+            var startControl = GetStartUiTestControl(ref correctedAutoIds);
+            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, correctedAutoIds);
             if(!string.IsNullOrEmpty(automationIds))
             {
                 Mouse.Click(controlToSendData, new Point(5, 5));
@@ -194,6 +198,23 @@ namespace Dev2.Studio.UI.Specs
             SendKeys.SendWait(textToSend);
         }
 
+        UITestControl GetStartUiTestControl(ref string[] correctedAutoIds)
+        {
+            UITestControl startControl = null;
+            if(correctedAutoIds.Any())
+            {
+                if(correctedAutoIds[0] == "ACTIVETAB")
+                {
+                    startControl = TabManagerUIMap.GetActiveTab();
+                    var listOfIds = correctedAutoIds.ToList();
+                    listOfIds.RemoveAt(0);
+                    correctedAutoIds = listOfIds.ToArray();
+                }
+            }
+            return startControl;
+        }
+
+
         [Given(@"I click ""(.*)""")]
         [When(@"I click ""(.*)""")]
         [Then(@"I click ""(.*)""")]
@@ -203,18 +224,19 @@ namespace Dev2.Studio.UI.Specs
             var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, null, automationIDs);
 
             Mouse.Click(controlToClick, new Point(5, 5));
-            Playback.Wait(2000);
+            Playback.Wait(100);
         }
 
         [When(@"I drag ""(.*)"" onto ""(.*)""")]
         public void WhenIDragOnto(string dragItemAutoIds, string dragDestinationAutoIds)
         {
-            var correcteddDagItemAutoIds = GetCorrect(dragItemAutoIds).Split(',');
+            var correcteddDragItemAutoIds = GetCorrect(dragItemAutoIds).Split(',');
+            var startControlDragItem = GetStartUiTestControl(ref correcteddDragItemAutoIds);
             var correctedDragDestinationAutoIds = GetCorrect(dragDestinationAutoIds).Split(',');
+            var startControlDragDestination = GetStartUiTestControl(ref correctedDragDestinationAutoIds);
 
-            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, null, correcteddDagItemAutoIds);
-
-            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedDragDestinationAutoIds);
+            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination, correctedDragDestinationAutoIds);
+            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem, correcteddDragItemAutoIds);
 
             Mouse.Click(itemToDrag, new Point(15, 15));
             var clickablePoint = itemToDrag.GetClickablePoint();
@@ -222,7 +244,6 @@ namespace Dev2.Studio.UI.Specs
 
             var boundingRectangle = dragDestinationItem.BoundingRectangle;
             Mouse.StopDragging(boundingRectangle.X, boundingRectangle.Y - 400);
-            //Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Playback.Wait(100);
         }
 
@@ -243,7 +264,6 @@ namespace Dev2.Studio.UI.Specs
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
-
             Assert.IsNotNull(itemFound);
 
         }
@@ -253,22 +273,50 @@ namespace Dev2.Studio.UI.Specs
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
-
             Assert.IsNull(itemFound);
         }
 
-        [Given(@"I wait (.*)")]
-        public void GivenIWait(int waitTime)
+        [Given(@"I wait till ""(.*)"" is not visible")]
+        public void GivenIWaitTillIsNotVisible(string itemAutoIds)
         {
-            Playback.Wait(waitTime);
+            var correctedditemToFindAutoIds = GetCorrect(itemAutoIds).Split(',');
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
+            while(itemFound != null && itemFound.Exists)
+            {
+                Playback.Wait(100);
+            }
+        }
+
+        [Given(@"I wait till ""(.*)"" is visible")]
+        public void GivenIWaitTillIsVisible(string itemAutoIds)
+        {
+            var correctedditemToFindAutoIds = GetCorrect(itemAutoIds).Split(',');
+            _retryCount = 0;
+            Playback.PlaybackError += PlaybackOnPlaybackError;
+
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
+            if(itemFound.State != ControlStates.Invisible)
+            {
+                Playback.PlaybackError -= PlaybackOnPlaybackError;
+                _retryCount = 0;
+            }
+        }
+
+        void PlaybackOnPlaybackError(object sender, PlaybackErrorEventArgs playbackErrorEventArgs)
+        {
+            if(_retryCount >= 100)
+            {
+                throw playbackErrorEventArgs.Error;
+            }
+            Playback.Wait(100);
+            playbackErrorEventArgs.Result = PlaybackErrorOptions.Retry;
+            _retryCount++;
         }
 
         [Given(@"I wait")]
         public void GivenIWait()
         {
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Playback.Wait(500);
-            Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
         }
 
         string GetCorrect(string automationIds)
@@ -290,6 +338,7 @@ namespace Dev2.Studio.UI.Specs
         [AfterScenario]
         public void TestCleanUp()
         {
+            VisualTreeWalker.ClearControlCache();
             TabManagerUIMap.CloseAllTabs();
             Bootstrap.Teardown();
             Playback.Cleanup();

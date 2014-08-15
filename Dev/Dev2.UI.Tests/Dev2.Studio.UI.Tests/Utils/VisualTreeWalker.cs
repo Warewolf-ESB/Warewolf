@@ -102,12 +102,6 @@ namespace Dev2.Studio.UI.Tests.Utils
 
             if(automationIDs.Length > 0)
             {
-                if(startControl != null)
-                {
-                    var list = automationIDs.ToList();
-                    list.RemoveRange(0, automationIDs.Length - 1);
-                    automationIDs = list.ToArray();
-                }
                 UITestControl theControl = new UITestControl(startControl ?? _studioWindow);
                 // handle all other pinned panes ;)
                 if(singleSearch)
@@ -116,25 +110,25 @@ namespace Dev2.Studio.UI.Tests.Utils
                     while(automationCounter <= automationIDs.Length - 1)
                     {
                         var automationId = automationIDs[automationCounter];
-                            UITestControl foundControl;
-                            if(_controlCache.TryGetValue(automationId, out foundControl))
+                        UITestControl foundControl;
+                        if(_controlCache.TryGetValue(automationId, out foundControl))
+                        {
+                            theControl = foundControl;
+                            try
                             {
-                                theControl = foundControl;
-                                try
-                                {
-                                    //children = theControl.GetChildren();
-                                }
-                                catch(UITestControlNotFoundException)
-                                {
-                                    theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
-                                    theControl.Find();
-                                }
+                                //children = theControl.GetChildren();
                             }
-                            else
+                            catch(UITestControlNotFoundException)
                             {
                                 theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
                                 theControl.Find();
                             }
+                        }
+                        else
+                        {
+                            theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
+                            theControl.Find();
+                        }
                         automationCounter++;
                         if(automationCounter != automationIDs.Length)
                         {
