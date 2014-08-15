@@ -15,6 +15,7 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.TaskScheduler.Wrappers;
 using Dev2.Threading;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
@@ -1042,6 +1043,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
 
+            AppSettings.LocalHost = "http://localhost:3142/";
             var schedulerViewModel = new SchedulerViewModel();
             var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
@@ -1063,6 +1065,7 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
 
+            AppSettings.LocalHost = "http://localhost:3142/";
             var schedulerViewModel = new SchedulerViewModel();
             var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
