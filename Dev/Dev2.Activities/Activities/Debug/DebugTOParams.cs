@@ -4,19 +4,21 @@ using Dev2.Diagnostics;
 
 namespace Dev2.Activities.Debug
 {
+    // ReSharper disable InconsistentNaming
     public class DebugTOParams : DebugOutputBase
+    // ReSharper restore InconsistentNaming
     {
 
         readonly string _labelText;
-        readonly DebugTO _debugTO;
+        readonly DebugTO _debugTo;
         readonly bool _isInput;
         readonly string _leftLabel;
         readonly string _rightLabel;
         readonly List<string> _regions;
 
-        public DebugTOParams(DebugTO debugTO, bool isInput, string leftLabel = "", string rightLabel = "", List<string> regions = null)
+        public DebugTOParams(DebugTO debugTo, bool isInput, string leftLabel = "", string rightLabel = "", List<string> regions = null)
         {
-            _debugTO = debugTO;
+            _debugTo = debugTo;
             _isInput = isInput;
             _leftLabel = leftLabel;
             _rightLabel = rightLabel;
@@ -33,26 +35,20 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        public DebugTO DebugTO
+        public DebugTO DebugTo
         {
             get
             {
-                return _debugTO;
+                return _debugTo;
             }
         }
 
         public override List<DebugItemResult> GetDebugItemResult()
         {
-            List<DebugItemResult> debugItemsResults;
-            if(_isInput)
-            {
-                debugItemsResults = CreateDebugItemForInput(DebugTO, LabelText, _leftLabel, _rightLabel, _regions);
-            }
-            else
-            {
-                debugItemsResults = CreateDebugItemForOutput(DebugTO, LabelText, _regions);
-            }
-
+            List<DebugItemResult> debugItemsResults =
+                _isInput
+                ? CreateDebugItemForInput(DebugTo, LabelText, _leftLabel, _rightLabel, _regions)
+                : CreateDebugItemForOutput(DebugTo, LabelText, _regions);
             return debugItemsResults;
         }
     }

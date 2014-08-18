@@ -4,6 +4,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Management;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
@@ -724,6 +725,42 @@ namespace Dev2.Activities.Specs.Composition
         void TryGetValue<T>(string keyName, out T value)
         {
             ScenarioContext.Current.TryGetValue(keyName, out value);
+        }
+
+
+        public string GetServerMemory()
+        {
+            var stringBuilder = new StringBuilder();
+            var winQuery = new ObjectQuery("SELECT * FROM Win32_Process Where Name LIKE '%Warewolf Server.exe%'");
+            var searcher = new ManagementObjectSearcher(winQuery);
+            foreach(var o in searcher.Get())
+            {
+                var item = (ManagementObject)o;
+                var memory = Convert.ToString(item["WorkingSetSize"]);
+                stringBuilder.Append(memory);
+            }
+            return stringBuilder.ToString();
+        }
+
+        [Given(@"I get the server memory")]
+        public void GivenIGetTheServerMemory()
+        {
+            var serverMemory = GetServerMemory();
+            Add("BeforeServerMemory", serverMemory);
+        }
+
+        [Then(@"the server memory difference is less than (.*) mb")]
+        public void ThenTheServerMemoryDifferenceIsLessThanMb(int maxDiff)
+        {
+            var serverMemoryBefore = Get<string>("BeforeServerMemory");
+            var serverMemoryAfter = GetServerMemory();
+
+            var serverMemAfter = Convert.ToDecimal(serverMemoryAfter) / 1024 / 1024;
+            var serverMemBefore = Convert.ToDecimal(serverMemoryBefore) / 1024 / 1024;
+
+            var diffInMem = serverMemAfter - serverMemBefore;
+
+            Assert.IsTrue(diffInMem < maxDiff);
         }
 
         [Then(@"the '(.*)' in Workflow '(.*)' debug outputs as")]

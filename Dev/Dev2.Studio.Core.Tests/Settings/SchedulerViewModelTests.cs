@@ -35,6 +35,11 @@ namespace Dev2.Core.Tests.Settings
     public class SchedulerViewModelTests
     {
 
+        [TestInitialize]
+        public void SetupForTest()
+        {
+            AppSettings.LocalHost = "http://localhost:3142";
+        }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

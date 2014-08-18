@@ -222,7 +222,9 @@ namespace Dev2.Activities.Debug
             if(debugTo.TargetEntry != null)
             {
                 GetValue(debugTo.TargetEntry, debugTo, labelText, regions, results);
+                debugTo.TargetEntry.DisposeCache();
             }
+
             return results;
         }
 
@@ -322,6 +324,7 @@ namespace Dev2.Activities.Debug
             if(debugTo.LeftEntry != null)
             {
                 GetValue(debugTo.LeftEntry, debugTo, leftLabel, regions, results);
+                debugTo.LeftEntry.DisposeCache();
             }
 
             if(debugTo.RightEntry != null)

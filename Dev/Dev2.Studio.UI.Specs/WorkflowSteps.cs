@@ -29,6 +29,7 @@ namespace Dev2.Studio.UI.Specs
 
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
+        int _retryCount;
 #pragma warning restore 414
 
         [BeforeTestRun]
@@ -305,7 +306,7 @@ namespace Dev2.Studio.UI.Specs
         void PlaybackOnPlaybackError(object sender, PlaybackErrorEventArgs playbackErrorEventArgs)
         {
             if(_retryCount >= 100)
-        {
+            {
                 throw playbackErrorEventArgs.Error;
             }
             Playback.Wait(100);
