@@ -20,8 +20,8 @@ namespace Dev2.Studio.UI.Specs
     {
         // ReSharper disable ConvertToConstant.Local
         // ReSharper disable UnusedMember.Local
-
-        //static readonly string Explorer = "Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,TheNavigationView";
+#pragma warning disable 414
+        static readonly string Explorer = "Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,TheNavigationView";
         static readonly string Toolbox = "UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
         static readonly string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
         static readonly string Unsaved1 = Worksurface + ",Unsaved 1(FlowchartDesigner)";
@@ -29,7 +29,7 @@ namespace Dev2.Studio.UI.Specs
 
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
-        int _retryCount;
+#pragma warning restore 414
 
         [BeforeTestRun]
         public static void SetupForTest()
@@ -305,7 +305,7 @@ namespace Dev2.Studio.UI.Specs
         void PlaybackOnPlaybackError(object sender, PlaybackErrorEventArgs playbackErrorEventArgs)
         {
             if(_retryCount >= 100)
-            {
+        {
                 throw playbackErrorEventArgs.Error;
             }
             Playback.Wait(100);
