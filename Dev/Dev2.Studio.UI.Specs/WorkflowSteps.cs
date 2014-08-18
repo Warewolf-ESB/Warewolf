@@ -23,10 +23,8 @@ namespace Dev2.Studio.UI.Specs
 #pragma warning disable 414
         static readonly string Explorer = "Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,TheNavigationView";
         static readonly string Toolbox = "UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
-        static readonly string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
-        static readonly string Unsaved1 = Worksurface + ",Unsaved 1(FlowchartDesigner)";
-        static readonly string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput";
-
+        //static readonly string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
+        //static readonly string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
         int _retryCount;
@@ -228,6 +226,7 @@ namespace Dev2.Studio.UI.Specs
             Playback.Wait(100);
         }
 
+
         [When(@"I drag ""(.*)"" onto ""(.*)""")]
         public void WhenIDragOnto(string dragItemAutoIds, string dragDestinationAutoIds)
         {
@@ -236,15 +235,20 @@ namespace Dev2.Studio.UI.Specs
             var correctedDragDestinationAutoIds = GetCorrect(dragDestinationAutoIds).Split(',');
             var startControlDragDestination = GetStartUiTestControl(ref correctedDragDestinationAutoIds);
 
-            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination, correctedDragDestinationAutoIds);
+            
             var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem, correcteddDragItemAutoIds);
+            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination, correctedDragDestinationAutoIds);
 
             Mouse.Click(itemToDrag, new Point(15, 15));
             var clickablePoint = itemToDrag.GetClickablePoint();
             Mouse.StartDragging(itemToDrag, clickablePoint);
 
-            var boundingRectangle = dragDestinationItem.BoundingRectangle;
-            Mouse.StopDragging(boundingRectangle.X, boundingRectangle.Y - 400);
+            
+            var boundingRect = dragDestinationItem.BoundingRectangle;
+            var pointToDrag = new Point(boundingRect.X+boundingRect.Width/2,boundingRect.Bottom+10);
+
+            Mouse.StopDragging(pointToDrag);
+            //Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Playback.Wait(100);
         }
 
@@ -300,13 +304,13 @@ namespace Dev2.Studio.UI.Specs
             {
                 Playback.PlaybackError -= PlaybackOnPlaybackError;
                 _retryCount = 0;
-            }
+        }
         }
 
         void PlaybackOnPlaybackError(object sender, PlaybackErrorEventArgs playbackErrorEventArgs)
         {
             if(_retryCount >= 100)
-            {
+        {
                 throw playbackErrorEventArgs.Error;
             }
             Playback.Wait(100);
@@ -335,14 +339,26 @@ namespace Dev2.Studio.UI.Specs
             }
             return replace;
         }
-
-        [AfterScenario]
-        public void TestCleanUp()
+        [When(@"close the Studio and Server")]
+        public void WhenCloseTheStudioAndServer()
         {
             VisualTreeWalker.ClearControlCache();
             TabManagerUIMap.CloseAllTabs();
             Bootstrap.Teardown();
             Playback.Cleanup();
         }
+
+        [Given(@"""(.*)"" is Highlighted")]
+        public void WhenIsHighlighted(string p0)
+        {
+            var correctedAutoIds = GetCorrect(p0).Split(',');
+            var controlToHighlight = VisualTreeWalker.GetControl(correctedAutoIds);
+
+            if (!string.IsNullOrEmpty(p0))
+            {
+                controlToHighlight.DrawHighlight();
+            }
+        }
+
     }
 }

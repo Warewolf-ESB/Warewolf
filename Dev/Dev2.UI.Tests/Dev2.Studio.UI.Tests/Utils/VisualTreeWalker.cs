@@ -102,33 +102,42 @@ namespace Dev2.Studio.UI.Tests.Utils
 
             if(automationIDs.Length > 0)
             {
-                UITestControl theControl = new UITestControl(startControl ?? _studioWindow);
+                if (startControl != null)
+                {
+                    var list = automationIDs.ToList();
+                    list.RemoveRange(0, automationIDs.Length - 1);
+                    automationIDs = list.ToArray();
+                }
+
+                UITestControl theControl = null;
                 // handle all other pinned panes ;)
                 if(singleSearch)
                 {
                     var automationCounter = 0;
                     while(automationCounter <= automationIDs.Length - 1)
                     {
+                        theControl = new UITestControl(startControl ?? _studioWindow);
                         var automationId = automationIDs[automationCounter];
-                        UITestControl foundControl;
-                        if(_controlCache.TryGetValue(automationId, out foundControl))
-                        {
-                            theControl = foundControl;
-                            try
+                            UITestControl foundControl;
+                            if(_controlCache.TryGetValue(automationId, out foundControl))
                             {
-                                //children = theControl.GetChildren();
+                                theControl = foundControl;
+                                try
+                                {
+                                    //children = theControl.GetChildren();
+                                }
+                                catch(UITestControlNotFoundException)
+                                {
+                                    theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
+                                    theControl.Find();
+                                }
                             }
-                            catch(UITestControlNotFoundException)
+                            else
                             {
                                 theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
                                 theControl.Find();
+                                startControl = theControl;
                             }
-                        }
-                        else
-                        {
-                            theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
-                            theControl.Find();
-                        }
                         automationCounter++;
                         if(automationCounter != automationIDs.Length)
                         {
