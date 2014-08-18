@@ -4,7 +4,8 @@
              xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"                     
              xmlns:local="clr-namespace:Dev2.Studio.AppResources.Behaviors"  
              xmlns:cal="clr-namespace:Caliburn.Micro;assembly=Caliburn.Micro"
-             xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls">    
+             xmlns:customControls="clr-namespace:Dev2.Studio.CustomControls"
+             AutomationProperties.AutomationId="UI_WorkflowDesigner_AutoID">    
     
     <Grid cal:Bind.Model="{Binding .}">
         <customControls:SplitterPanel Background="{StaticResource BrushBackground}" Margin="3,3,0,0" Header="{Binding Path=OutlineViewTitle}">
