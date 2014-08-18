@@ -10,6 +10,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
@@ -89,7 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var destDir = Path.Combine(TestContext.DeploymentDirectory, Guid.NewGuid() + " Temp");
 
             var sourceFile = Path.Combine(TestContext.DeploymentDirectory, ExeName);
-            if (!File.Exists(sourceFile))
+            if(!File.Exists(sourceFile))
             {
                 sourceFile = Path.Combine(Environment.CurrentDirectory, ExeName);
             }
@@ -98,10 +99,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             Directory.CreateDirectory(destDir);
             File.Copy(sourceFile, destFile, true);
 
-            var activity = new DsfExecuteCommandLineActivity();
+            var activity = new DsfExecuteCommandLineActivity { CommandFileName = destFile, CommandResult = "[[OutVar1]]" };
 
-            activity.CommandFileName = destFile;
-            activity.CommandResult = "[[OutVar1]]";
             TestStartNode = new FlowStep
             {
                 Action = activity
@@ -123,7 +122,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if (!File.Exists(toolPath))
+            if(!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             }
@@ -153,6 +152,50 @@ namespace Dev2.Tests.Activities.ActivityTests
             StringAssert.Contains(actual, "");
         }
 
+        [TestMethod]
+        public void OnExecute_WhereConsolePathStartsWithExplorer_ShouldError()
+        {
+            //------------Setup for test--------------------------
+            var activity = new DsfExecuteCommandLineActivity { CommandFileName = "explorer C:\\", CommandResult = "[[OutVar1]]" };
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+            TestData = "<root><OutVar1 /></root>";
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            if(fetchErrors == string.Empty)
+            {
+                Assert.Fail("no error");
+            }
+
+            StringAssert.Contains(fetchErrors, "Cannot execute explorer from tool.");
+        }
+
+        [TestMethod]
+        public void OnExecute_WhereConsolePathStartsWithCmd_ShouldError()
+        {
+            //------------Setup for test--------------------------
+            var activity = new DsfExecuteCommandLineActivity { CommandFileName = "cmd  C:\\", CommandResult = "[[OutVar1]]" };
+            TestStartNode = new FlowStep
+            {
+                Action = activity
+            };
+            TestData = "<root><OutVar1 /></root>";
+            //------------Execute Test---------------------------
+            var result = ExecuteProcess();
+            //------------Assert Results-------------------------
+            var fetchErrors = Compiler.FetchErrors(result.DataListID);
+            if(fetchErrors == string.Empty)
+            {
+                Assert.Fail("no error");
+            }
+
+            StringAssert.Contains(fetchErrors, "Cannot execute CMD from tool.");
+        }
+
 
         [TestMethod]
         public void OnExecuteWhereConsoleOutputsWithArgsWrappedInQuotesExpectSuccess()
@@ -160,7 +203,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if (!File.Exists(toolPath))
+            if(!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             }
@@ -197,7 +240,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if (!File.Exists(toolPath))
+            if(!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             }
@@ -317,11 +360,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if (!File.Exists(toolPath))
+            if(!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             }
-            var randomString = "\"" +toolPath+"\" output";
+            var randomString = "\"" + toolPath + "\" output";
             activity.CommandFileName = randomString;
             activity.CommandResult = "[[recset1().field1]]";
             TestStartNode = new FlowStep
@@ -355,7 +398,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if (!File.Exists(toolPath))
+            if(!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             }
@@ -393,7 +436,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if (!File.Exists(toolPath))
+            if(!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             }
@@ -427,7 +470,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if (!File.Exists(toolPath))
+            if(!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             }
@@ -457,7 +500,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if (!File.Exists(toolPath))
+            if(!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             }
@@ -486,7 +529,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var activity = new DsfExecuteCommandLineActivity();
             var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if (!File.Exists(toolPath))
+            if(!File.Exists(toolPath))
             {
                 toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
             }
@@ -562,7 +605,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             //Assert.AreEqual(DebugItemResultType.Value, debugOutputResults[2].Type);
         }
 
-        // ReSharper disable InconsistentNaming
 
         [TestMethod]
         [Owner("Hagashen Naidu")]

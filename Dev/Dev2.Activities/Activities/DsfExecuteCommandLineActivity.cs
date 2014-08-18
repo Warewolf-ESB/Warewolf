@@ -2,6 +2,7 @@
 using System.Activities;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management;
@@ -311,8 +312,19 @@ namespace Dev2.Activities
 
         ProcessStartInfo CreateProcessStartInfo(string val)
         {
-            if(val.Contains("cmd")) throw new ArgumentException("Cannot execute CMD from tool.");
-            if(val.Contains("explorer")) throw new ArgumentException("Cannot execute explorer from tool.");
+            if(val.StartsWith("cmd")) throw new ArgumentException("Cannot execute CMD from tool.");
+            if(val.StartsWith("explorer")) throw new ArgumentException("Cannot execute explorer from tool.");
+            if(val.Contains("explorer"))
+            {
+                var directoryName = Path.GetFullPath(val);
+                {
+                    var lowerDirectoryName = directoryName.ToLower(CultureInfo.InvariantCulture);
+                    if(lowerDirectoryName.EndsWith("explorer.exe"))
+                    {
+                        throw new ArgumentException("Cannot execute explorer from tool.");
+                    }
+                }
+            }
 
             ProcessStartInfo psi;
 
