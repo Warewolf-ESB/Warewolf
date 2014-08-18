@@ -13,18 +13,18 @@ namespace Dev2.Studio.AppResources.Converters
     {
 
 
-        private static Bitmap emptyBitmap;
-        private static IntPtr hicon;
+        private static Bitmap _emptyBitmap;
+        private static IntPtr _hicon;
 
         static MessageBoxImageToSystemIconConverter()
         {
-            emptyBitmap = new Bitmap(1, 1);
-            hicon = emptyBitmap.GetHicon();
+            _emptyBitmap = new Bitmap(1, 1);
+            _hicon = _emptyBitmap.GetHicon();
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Icon icon = Icon.FromHandle(hicon);
+            Icon icon = Icon.FromHandle(_hicon);
 
             if(value == null)
             {
