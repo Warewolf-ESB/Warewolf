@@ -8,6 +8,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -24,7 +25,6 @@ using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Core.Tests.ViewModelTests;
-using Dev2.CustomControls.Utils;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Diagnostics.Debug;
@@ -3691,6 +3691,14 @@ namespace Dev2.Core.Tests.Workflows
         public void WorkflowDesignerViewModel_LinkName_HasDataListHasInputs_ShouldReturnUrlWithDataListPortion()
         {
             //------------Setup for test--------------------------
+            var appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData).Replace("Roaming", "");
+            var settingPath = Path.Combine(appData, @"Local\Warewolf\DebugData\PersistSettings.dat");
+
+            if(File.Exists(settingPath))
+            {
+                File.Delete(settingPath);
+            }
+
             var workflow = new ActivityBuilder
             {
                 Implementation = new Flowchart

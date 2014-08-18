@@ -541,7 +541,6 @@
       <DependentUpon>PreviewView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Preview\PreviewViewModel.cs" />
-    <Compile Include="Properties\Annotations1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
