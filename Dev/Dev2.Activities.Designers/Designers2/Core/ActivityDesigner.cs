@@ -1,4 +1,5 @@
-﻿using System.Windows.Media.Imaging;
+﻿using System.Windows.Automation;
+using System.Windows.Media.Imaging;
 using Dev2.Activities.Designers2.Core.Adorners;
 using Dev2.Activities.Designers2.Core.Errors;
 using Dev2.Activities.Designers2.Core.Help;
@@ -314,6 +315,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _showCollapseLargeView = new MenuItem { Header = "Show Large View" };
                 _showCollapseLargeView.Click += ShowCollapseFromContextMenu;
+                _showCollapseLargeView.SetValue(AutomationProperties.AutomationIdProperty, "UI_ShowLargeViewMenuItem_AutoID");
                 ContextMenu.Items.Add(_showCollapseLargeView);
             }
 
