@@ -1068,6 +1068,7 @@ namespace Dev2.Runtime.Hosting
                 var count = Directory.GetFiles(versionDirectory, String.Format("{0}*.xml", resource.ResourceName)).Count();
 
                 File.Copy(resource.FilePath, String.Format("{0}\\{1}.V{2}.xml", versionDirectory, resource.ResourceName, (count + 1).ToString(CultureInfo.InvariantCulture)), true);
+
             }
         }
 
@@ -1575,6 +1576,13 @@ namespace Dev2.Runtime.Hosting
         ResourceCatalogResult UpdateResourceName(Guid workspaceID, IResource resource, string newName)
         {
             //rename where used
+            var oldCategory = resource.ResourcePath;
+            string newCategory = "";
+            var indexOfCategory = resource.ResourcePath.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
+            if (indexOfCategory > 0)
+            {
+                newCategory = oldCategory.Substring(0, indexOfCategory) + newName;
+            }
             RenameWhereUsed(GetDependentsAsResourceForTrees(workspaceID, resource.ResourceID), workspaceID, resource.ResourcePath, newName);
 
             //rename resource
@@ -1603,7 +1611,9 @@ namespace Dev2.Runtime.Hosting
                     xaml.SetValue(xaml.Value
                         .Replace("x:Class=\"" + oldName, "x:Class=\"" + newName)
                         .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + newName)
-                        .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName));
+                        .Replace("DisplayName=\"" + oldName, "DisplayName=\"" + newName)
+                        .Replace("Category=\"" + oldCategory, "Category=\"" + newCategory))
+                        ;
                 }
             }
             //xml display name element
@@ -1612,7 +1622,11 @@ namespace Dev2.Runtime.Hosting
             {
                 displayNameElement.SetValue(newName);
             }
-
+            var categoryElement = resourceElement.Element("Category");
+            if (categoryElement != null)
+            {
+                categoryElement.SetValue(newCategory);
+            }
             var resPath = CalcResPath(resource);
             resource.ResourcePath = resPath + newName;
             resource.ResourceName = newName;

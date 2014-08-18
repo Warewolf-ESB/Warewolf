@@ -1038,6 +1038,12 @@ namespace Dev2.Models
             {
                 _studioResourceRepository.RenameItem(this, newName);
             }
+           if(resource != null)
+           {            
+                var oldName = resource.DisplayName;
+                 resource.DisplayName = newName;
+                resource.Category = resource.Category.Replace(oldName, newName);
+            }
             if(resource != null && ResourceType <= ResourceType.ServerSource)
             {
                 var xaml = resource.WorkflowXaml;
@@ -1047,7 +1053,7 @@ namespace Dev2.Models
                         .Replace("x:Class=\"" + resource.ResourceName, "x:Class=\"" + newName)
                         .Replace("Name=\"" + resource.ResourceName, "Name=\"" + newName)
                         .Replace("ToolboxFriendlyName=\"" + resource.ResourceName, "ToolboxFriendlyName=\"" + newName)
-                        .Replace("DisplayName=\"" + resource.ResourceName, "DisplayName=\"" + newName);
+                        .Replace("DisplayName=\"" + resource.ResourceName, "DisplayName=\"" + newName);                 
                 }
                 EventPublishers.Aggregator.Publish(new UpdateWorksurfaceFlowNodeDisplayName(ResourceId, DisplayName, newName));
                 EventPublishers.Aggregator.Publish(new UpdateWorksurfaceDisplayName(ResourceId, DisplayName, newName));
@@ -1065,7 +1071,7 @@ namespace Dev2.Models
 
         public void CancelRename()
         {
-            IsRenaming = false;
+             IsRenaming = false;
         }
 
         /// <summary>

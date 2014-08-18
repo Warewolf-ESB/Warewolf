@@ -1773,6 +1773,8 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
+            mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
             mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
@@ -1832,6 +1834,8 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
+            mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
             mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
@@ -1923,6 +1927,8 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
+            mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
             mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
@@ -1979,6 +1985,8 @@ namespace Dev2.Core.Tests.ModelTests
 
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
+            mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
             mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(envID);
