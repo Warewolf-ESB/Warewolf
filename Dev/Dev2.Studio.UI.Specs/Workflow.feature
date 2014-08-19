@@ -65,7 +65,7 @@ Scenario: Drag
 
 Scenario: Drag Assign
     #Given I have Warewolf running
-	Given I click new "Workflow"
+	Given I click "UI_RibbonHomeTabWorkflowBtn_AutoID"
 	And I send "Assign" to "TOOLBOX,PART_SearchBox"
 	When I drag "TOOLMULTIASSIGN" onto "ACTIVETAB,StartSymbol"
 	#And I double click "TABACTIVE,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner)"
@@ -84,7 +84,7 @@ Scenario: Drag Assign
 	# And I send "Data Merge" to "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Assign (1)(MultiAssignDesigner),DisplayNameBox"
 	 #And I click "UI_DebugInputWindow_AutoID,UI_Executebtn_AutoID"
 	 #Given I click "UI_RibbonDebugBtn_AutoID"
-	Given I click "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner),DoneButton"
+	#Given I click "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner),DoneButton"
 	
 
 

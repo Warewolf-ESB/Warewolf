@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
@@ -10,7 +9,6 @@ namespace Dev2.Studio.UI.Tests.Utils
     public class VisualTreeWalker
     {
         static UIMapBase.UIStudioWindow _studioWindow;
-        static Dictionary<string, UITestControl> _controlCache = new Dictionary<string, UITestControl>();
 
         private UITestControl GetChildByAutomationIDPathImpl(UITestControl parent, int bookmark, params string[] automationIDs)
         {
@@ -87,7 +85,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// <param name="startControl"></param>
         /// <param name="automationIDs">The automation attribute ds.</param>
         /// <returns></returns>
-        public static UITestControl GetControlFromRoot(bool singleSearch, int splitPaneIndex, UITestControl startControl, params string[] automationIDs)
+        public static UITestControl GetControlFromRoot(bool singleSearch, int splitPaneIndex, WpfControl startControl, params string[] automationIDs)
         {
             if(_studioWindow == null)
             {
@@ -109,47 +107,43 @@ namespace Dev2.Studio.UI.Tests.Utils
                 //    automationIDs = list.ToArray();
                 //}
 
-                UITestControl theControl = null;
+                WpfControl theControl = null;
+                //var theControl = new WpfControl(startControl ?? _studioWindow);
                 // handle all other pinned panes ;)
                 if(singleSearch)
                 {
                     var automationCounter = 0;
                     while(automationCounter <= automationIDs.Length - 1)
                     {
-                        theControl = new UITestControl(startControl ?? _studioWindow);
+                        theControl = new WpfControl(startControl ?? _studioWindow);
+                        theControl.Container = startControl;
                         var automationId = automationIDs[automationCounter];
-                            UITestControl foundControl;
-                            if(_controlCache.TryGetValue(automationId, out foundControl))
-                            {
-                                theControl = foundControl;
-                                try
-                                {
-                                    //children = theControl.GetChildren();
-                                }
-                                catch(UITestControlNotFoundException)
-                                {
-                                    theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
-                                    theControl.Find();
-                                }
-                            }
-                            else
-                            {
-                                
-                                    theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
-                                    theControl.Find();
-                                
-                                startControl = theControl;
-                            }
+                        //                        try
+                        //                        {
+                        theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
+                        var tryFind = theControl.TryFind();
+                        if(tryFind)
+                        {
+                            theControl.Find();
+                        }
+                        else
+                        {
+                            var children = startControl == null ? _studioWindow.GetChildren().Cast<WpfControl>() : startControl.GetChildren().Cast<WpfControl>();
+                            theControl = children.FirstOrDefault(control => control.AutomationId == automationId);
+                        }
+                        //}
+                        //                        catch(UITestControlNotFoundException)
+                        //                        {
+                        //                            var children = startControl == null ? _studioWindow.GetChildren().Cast<WpfControl>() : startControl.GetChildren().Cast<WpfControl>();
+                        //                            theControl = children.FirstOrDefault(control => control.AutomationId == automationId);
+                        //                        }
+                        if(theControl != null)
+                        {
+                            theControl.DrawHighlight();
+                            // theControl.SetFocus();
+                            startControl = theControl;
+                        }
                         automationCounter++;
-                        if(automationCounter != automationIDs.Length)
-                        {
-                            //children = theControl.GetChildren();
-                        }
-                        if(!_controlCache.ContainsKey(automationId))
-                        {
-
-                            //_controlCache.Add(automationId, theControl);
-                        }
                     }
                     return theControl;
                 }
@@ -203,11 +197,6 @@ namespace Dev2.Studio.UI.Tests.Utils
                 }
             }
             return null;
-        }
-
-        public static void ClearControlCache()
-        {
-            _controlCache = new Dictionary<string, UITestControl>();
         }
     }
 }

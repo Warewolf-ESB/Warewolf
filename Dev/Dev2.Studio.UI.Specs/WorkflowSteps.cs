@@ -10,6 +10,7 @@ using Dev2.Studio.UI.Tests.UIMaps.Activities;
 using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
@@ -29,7 +30,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string TabActive = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
         static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
         static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
-       
+
         int _retryCount;
 #pragma warning restore 414
 
@@ -200,14 +201,14 @@ namespace Dev2.Studio.UI.Specs
             SendKeys.SendWait(textToSend);
         }
 
-        UITestControl GetStartUiTestControl(ref string[] correctedAutoIds)
+        WpfControl GetStartUiTestControl(ref string[] correctedAutoIds)
         {
-            UITestControl startControl = null;
+            WpfControl startControl = null;
             if(correctedAutoIds.Any())
             {
                 if(correctedAutoIds[0] == "ACTIVETAB")
                 {
-                    startControl = TabManagerUIMap.GetActiveTab();
+                    startControl = TabManagerUIMap.GetActiveTab() as WpfControl;
                     var listOfIds = correctedAutoIds.ToList();
                     listOfIds.RemoveAt(0);
                     correctedAutoIds = listOfIds.ToArray();
@@ -239,7 +240,7 @@ namespace Dev2.Studio.UI.Specs
             var correctedDragDestinationAutoIds = GetCorrect(dragDestinationAutoIds).Split(',');
             var startControlDragDestination = GetStartUiTestControl(ref correctedDragDestinationAutoIds);
 
-            
+
             var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem, correcteddDragItemAutoIds);
             var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination, correctedDragDestinationAutoIds);
 
@@ -247,9 +248,9 @@ namespace Dev2.Studio.UI.Specs
             var clickablePoint = itemToDrag.GetClickablePoint();
             Mouse.StartDragging(itemToDrag, clickablePoint);
 
-            
+
             var boundingRect = dragDestinationItem.BoundingRectangle;
-            var pointToDrag = new Point(boundingRect.X+boundingRect.Width/2,boundingRect.Bottom+10);
+            var pointToDrag = new Point(boundingRect.X + boundingRect.Width / 2, boundingRect.Bottom + 10);
 
             Mouse.StopDragging(pointToDrag);
             //Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
@@ -309,13 +310,13 @@ namespace Dev2.Studio.UI.Specs
             {
                 Playback.PlaybackError -= PlaybackOnPlaybackError;
                 _retryCount = 0;
-        }
+            }
         }
 
         void PlaybackOnPlaybackError(object sender, PlaybackErrorEventArgs playbackErrorEventArgs)
         {
             if(_retryCount >= 100)
-        {
+            {
                 throw playbackErrorEventArgs.Error;
             }
             Playback.Wait(100);
@@ -337,10 +338,10 @@ namespace Dev2.Studio.UI.Specs
             foreach(var fieldInfo in consts)
             {
                 string retVal = replace.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(p => p.Equals(fieldInfo.Name.ToUpper()));
-                if (retVal != null)
+                if(retVal != null)
                 {
                     var rawConstantValue = fieldInfo.GetValue(this) as string;
-                    if (rawConstantValue != null)
+                    if(rawConstantValue != null)
                     {
                         replace = replace.Replace(fieldInfo.Name.ToUpper(), rawConstantValue);
                     }
@@ -351,7 +352,6 @@ namespace Dev2.Studio.UI.Specs
         [When(@"close the Studio and Server")]
         public void WhenCloseTheStudioAndServer()
         {
-            VisualTreeWalker.ClearControlCache();
             TabManagerUIMap.CloseAllTabs();
             Bootstrap.Teardown();
             Playback.Cleanup();
@@ -363,7 +363,7 @@ namespace Dev2.Studio.UI.Specs
             var correctedAutoIds = GetCorrect(p0).Split(',');
             var controlToHighlight = VisualTreeWalker.GetControl(correctedAutoIds);
 
-            if (!string.IsNullOrEmpty(p0))
+            if(!string.IsNullOrEmpty(p0))
             {
                 controlToHighlight.DrawHighlight();
             }
