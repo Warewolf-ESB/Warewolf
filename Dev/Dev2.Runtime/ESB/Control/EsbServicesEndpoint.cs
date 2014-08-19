@@ -256,12 +256,6 @@ namespace Dev2.Runtime.ESB.Control
                     DataListRegistar.ClearDataList();
                 }
 
-                //                foreach(KeyValuePair<int, List<Guid>> thread in dataObject.ThreadsToDispose)
-                //                {
-                //                    DataListRegistar.DisposeScope(thread.Key, resultID);
-                //                }
-                //
-                //                DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
 
             }
 
