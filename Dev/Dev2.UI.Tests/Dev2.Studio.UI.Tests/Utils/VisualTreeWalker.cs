@@ -102,12 +102,12 @@ namespace Dev2.Studio.UI.Tests.Utils
 
             if(automationIDs.Length > 0)
             {
-                if (startControl != null)
-                {
-                    var list = automationIDs.ToList();
-                    list.RemoveRange(0, automationIDs.Length - 1);
-                    automationIDs = list.ToArray();
-                }
+                //if (startControl != null)
+                //{
+                //    var list = automationIDs.ToList();
+                //    list.RemoveRange(0, automationIDs.Length - 1);
+                //    automationIDs = list.ToArray();
+                //}
 
                 UITestControl theControl = null;
                 // handle all other pinned panes ;)
@@ -134,8 +134,10 @@ namespace Dev2.Studio.UI.Tests.Utils
                             }
                             else
                             {
-                                theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
-                                theControl.Find();
+                                
+                                    theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
+                                    theControl.Find();
+                                
                                 startControl = theControl;
                             }
                         automationCounter++;

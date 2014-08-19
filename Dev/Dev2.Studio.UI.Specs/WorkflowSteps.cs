@@ -22,11 +22,14 @@ namespace Dev2.Studio.UI.Specs
         // ReSharper disable UnusedMember.Local
 #pragma warning disable 414
         static readonly string Explorer = "Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,TheNavigationView";
-        static readonly string Toolbox = "UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
+        static readonly string Toolbox = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
         //static readonly string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
         //static readonly string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
+        static readonly string TabActive = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
         static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
+        static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+       
         int _retryCount;
 #pragma warning restore 414
 
@@ -220,7 +223,8 @@ namespace Dev2.Studio.UI.Specs
         public void GivenIClick(string automationIds)
         {
             var automationIDs = GetCorrect(automationIds).Split(',');
-            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, null, automationIDs);
+            var startControl = GetStartUiTestControl(ref automationIDs);
+            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, automationIDs);
 
             Mouse.Click(controlToClick, new Point(5, 5));
             Playback.Wait(100);
@@ -257,7 +261,8 @@ namespace Dev2.Studio.UI.Specs
         public void WhenIDoubleClick(string itemToDoubleClickAutoIds)
         {
             var correcteddItemToDoubleClickAutoIds = GetCorrect(itemToDoubleClickAutoIds).Split(',');
-            var itemToDoubleClick = VisualTreeWalker.GetControlFromRoot(true, 0, null, correcteddItemToDoubleClickAutoIds);
+            var startControl = GetStartUiTestControl(ref correcteddItemToDoubleClickAutoIds);
+            var itemToDoubleClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, correcteddItemToDoubleClickAutoIds);
             var clickablePoint = itemToDoubleClick.GetClickablePoint();
             clickablePoint.Offset(5, 5);
             Mouse.DoubleClick(itemToDoubleClick, clickablePoint);
@@ -331,10 +336,14 @@ namespace Dev2.Studio.UI.Specs
             var replace = automationIds;
             foreach(var fieldInfo in consts)
             {
-                var rawConstantValue = fieldInfo.GetValue(this) as string;
-                if(rawConstantValue != null)
+                string retVal = replace.Split(",".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).FirstOrDefault(p => p.Equals(fieldInfo.Name.ToUpper()));
+                if (retVal != null)
                 {
-                    replace = replace.Replace(fieldInfo.Name.ToUpper(), rawConstantValue);
+                    var rawConstantValue = fieldInfo.GetValue(this) as string;
+                    if (rawConstantValue != null)
+                    {
+                        replace = replace.Replace(fieldInfo.Name.ToUpper(), rawConstantValue);
+                    }
                 }
             }
             return replace;
