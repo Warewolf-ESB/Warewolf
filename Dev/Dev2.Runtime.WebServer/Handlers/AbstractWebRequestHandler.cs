@@ -9,6 +9,7 @@ using System.Security.Principal;
 using System.Web;
 using Dev2.Common;
 using Dev2.Communication;
+using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -210,6 +211,10 @@ namespace Dev2.Runtime.WebServer.Handlers
             if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
             {
                 compiler.ForceDeleteDataListByID(executionDlid);
+                if(!dataObject.IsDebugMode())
+                {
+                    DataListRegistar.ClearDataList();
+                }
             }
 
             // old HTML throw back ;)

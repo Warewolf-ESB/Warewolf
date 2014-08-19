@@ -251,8 +251,10 @@ namespace Dev2.Runtime.ESB.Control
             finally
             {
                 // clean up after the request has executed ;)
-
-                DataListRegistar.ClearDataList();
+                if(dataObject.IsDebugMode())
+                {
+                    DataListRegistar.ClearDataList();
+                }
 
                 //                foreach(KeyValuePair<int, List<Guid>> thread in dataObject.ThreadsToDispose)
                 //                {
