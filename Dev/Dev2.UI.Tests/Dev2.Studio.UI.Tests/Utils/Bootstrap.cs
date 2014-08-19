@@ -21,7 +21,6 @@ namespace Dev2.Studio.UI.Tests.Utils
         private const string ServerProcName = "Warewolf Server";
         private const string StudioProcName = "Warewolf Studio";
         private const string ServerExeName = ServerProcName + ".exe";
-        private const string StudioExeName = StudioProcName + ".exe";
         private const int ServerTimeOut = 3000;
         private const int StudioTimeOut = 12000;
 
@@ -50,55 +49,34 @@ namespace Dev2.Studio.UI.Tests.Utils
         public static void AssemblyInit(TestContext testCtx)
         {
             IsLocal = testCtx.Properties["ControllerName"] == null || testCtx.Properties["ControllerName"].ToString() == "localhost:6901";
-            ResolvePathsToTestAgainst(!IsLocal ? Path.Combine(testCtx.DeploymentDirectory) : null);
+            ResolvePathsToTestAgainst();
         }
 
-        public static void ResolvePathsToTestAgainst(string deployDirectory = null)
+        public static void ResolvePathsToTestAgainst()
         {
-            string serverDeployDirectory = null;
-            string studioDeployDirectory = null;
-            if(deployDirectory != null)
+            var serverProcess = TryGetProcess(ServerProcName);
+            if(serverProcess == null)
             {
-                serverDeployDirectory = Path.Combine(deployDirectory, "ServerbinDebug");
-                studioDeployDirectory = Path.Combine(deployDirectory, "StudiobinDebug");
+                LogTestRunMessage("No server running.", true);
+                throw new Exception("No server running.");
             }
-            ServerLocation = GetProcessPath(TryGetProcess(ServerProcName));
-            StudioLocation = GetProcessPath(TryGetProcess(StudioProcName));
-            if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
+            var studioProcess = TryGetProcess(StudioProcName);
+            if(studioProcess == null)
             {
-                //Try build workspace directory
-                ServerLocation = Path.Combine(BuildDirectory, "bin", "ServerbinDebug", ServerExeName);
-                StudioLocation = Path.Combine(BuildDirectory, "bin", "StudiobinDebug", StudioExeName);
+                LogTestRunMessage("No studio running.", true);
+                throw new Exception("No studio running.");
             }
-            if(!File.Exists(ServerLocation) || !File.Exists(StudioLocation))
-            {
-                //Try debug bin or deployed resources
-                ServerLocation = Path.Combine(serverDeployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Server\bin\Debug"), ServerExeName).Replace(Environment.ExpandEnvironmentVariables("%localappdata%") + @"\Temp", @"C:\Development\Dev");
-                StudioLocation = Path.Combine(studioDeployDirectory ?? Path.Combine(Environment.CurrentDirectory, @"..\..\..\Dev2.Studio\bin\Debug"), StudioExeName).Replace(Environment.ExpandEnvironmentVariables("%localappdata%") + @"\Temp", @"C:\Development\Dev");
-            }
+            ServerLocation = GetProcessPath(serverProcess);
             if(!File.Exists(ServerLocation))
             {
                 LogTestRunMessage("Could not locate server to test against.", true);
-                if((ServerLocation.IndexOf("TestResults\\") >= 0) && (ServerLocation.IndexOf("Dev2.") >= 0))
-                {
-                    throw new FileNotFoundException("Server not found at " + (deployDirectory ?? ServerLocation.Substring(0, ServerLocation.IndexOf("TestResults\\")) + ServerLocation.Substring(ServerLocation.IndexOf("Dev2."))));
-                }
-                else
-                {
-                    throw new FileNotFoundException("Server not found at " + ServerLocation);
-                }
+                throw new FileNotFoundException("Server not found at " + ServerLocation);
             }
+            StudioLocation = GetProcessPath(studioProcess);
             if(!File.Exists(StudioLocation))
             {
                 LogTestRunMessage("Could not locate studio to test against.", true);
-                if((StudioLocation.IndexOf("TestResults\\") >= 0) && (StudioLocation.IndexOf("Dev2.") >= 0))
-                {
-                    throw new FileNotFoundException("Studio not found at " + (deployDirectory ?? StudioLocation.Substring(0, StudioLocation.IndexOf("TestResults\\")) + StudioLocation.Substring(StudioLocation.IndexOf("Dev2."))));
-                }
-                else
-                {
-                    throw new FileNotFoundException("Studio not found at " + StudioLocation);
-                }
+                throw new FileNotFoundException("Studio not found at " + StudioLocation);
             }
             //Set resource location
             _resourceLocation = StudioLocation.Replace(ServerExeName, @"Resources\");
