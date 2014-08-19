@@ -49,7 +49,9 @@
                                Grid.Row="0"                                                                                            
                                ItemsSource="{Binding ModelItem.FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                              
                                Style="{StaticResource ActivityMapppingDataGridStyle}"
-                               CanUserResizeRows="True">
+                               CanUserResizeRows="True"
+                               RowStyle="{StaticResource ActivityGridRowStyle}"
+                               LoadingRow="DataGrid_LoadingRow">
 
             <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
@@ -88,7 +90,8 @@
 
                 <DataGridTemplateColumn Width="*"
                                         Header="Variable"
-                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}"
+                                        CellStyle="{StaticResource ActivityGridCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox VerticalAlignment="Center"
@@ -131,7 +134,8 @@
 
                 <DataGridTemplateColumn Width="*"
                                         Header="New Value"
-                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
+                                        d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}"
+                                        CellStyle="{StaticResource ActivityGridCellStyle}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"
