@@ -1047,20 +1047,18 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Name_EmptyString_AddsErrorMessage()
         {
             //------------Setup for test--------------------------
-
-            AppSettings.LocalHost = "http://localhost:3142/";
             var schedulerViewModel = new SchedulerViewModel();
             var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
 
             //------------Execute Test---------------------------
             schedulerViewModel.Name = "";
+
             //------------Assert Results-------------------------
             Assert.IsTrue(schedulerViewModel.HasErrors, "Scheduler view model does not have errors after name is made empty.");
             Assert.AreEqual("The name can not be blank", schedulerViewModel.Error);
             Assert.AreEqual(string.Empty, schedulerViewModel.SelectedTask.Name);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
-
         }
 
         [TestMethod]
@@ -1069,8 +1067,6 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Name_WasEmptyStringValidString_ClearsErrorMessage()
         {
             //------------Setup for test--------------------------
-
-            AppSettings.LocalHost = "http://localhost:3142/";
             var schedulerViewModel = new SchedulerViewModel();
             var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
@@ -1079,14 +1075,15 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             //------------------Assert Preconditions---------------------------
             Assert.IsTrue(schedulerViewModel.HasErrors, "Scheduler view model does not have errors when its name is empty.");
             Assert.AreEqual("The name can not be blank", schedulerViewModel.Error);
+
             //------------Execute Test---------------------------
             schedulerViewModel.Name = "This is a test";
+
             //------------Assert Results-------------------------
             Assert.IsFalse(schedulerViewModel.HasErrors);
             Assert.AreEqual(string.Empty, schedulerViewModel.Error);
             Assert.AreEqual("This is a test", schedulerViewModel.SelectedTask.Name);
             Assert.IsTrue(schedulerViewModel.SelectedTask.IsDirty);
-
         }
 
         [TestMethod]
