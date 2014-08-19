@@ -85,9 +85,10 @@ namespace Gui
             var containsUnicodeCharacter = input.Any(c => c > MaxAnsiCode);
             if(containsUnicodeCharacter)
             {
-                throw new InvalidDataException(string.Format("The Machine Name: {0} " +
-                                                             "contains invalid characters. " +
-                                                             "Warewolf only supports latin based character set.", input));
+                throw new InvalidDataException(string.Format("The computer name \"{0}\" contains one or more non-Standard characters. " + Environment.NewLine +
+                                                             "Standard characters include letters (A-Z, a-z) digits (0-9), and hyphens (-). " +
+                                                             "Using a non-standard name will prevent Warewolf Server to communicate. " + Environment.NewLine +
+                                                             "Unfortunately installation cannot continue.", input));
             }
         }
     }
