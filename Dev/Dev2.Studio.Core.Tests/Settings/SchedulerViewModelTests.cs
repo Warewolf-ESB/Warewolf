@@ -1051,6 +1051,9 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
 
+            //------------------Assert Preconditions---------------------------
+            Assert.AreNotEqual(null, schedulerViewModel.SelectedTask, "Scheduler view model selected task cannot be set.");
+
             //------------Execute Test---------------------------
             schedulerViewModel.Name = "";
 
@@ -1073,6 +1076,8 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
             schedulerViewModel.Name = "";
 
             //------------------Assert Preconditions---------------------------
+            Assert.AreNotEqual(null, schedulerViewModel.SelectedTask, "Scheduler view model selected task cannot be set.");
+            Assert.AreEqual(string.Empty, schedulerViewModel.Name, "Scheduler view model name cannot be set.");
             Assert.IsTrue(schedulerViewModel.HasErrors, "Scheduler view model does not have errors when its name is empty.");
             Assert.AreEqual("The name can not be blank", schedulerViewModel.Error);
 
