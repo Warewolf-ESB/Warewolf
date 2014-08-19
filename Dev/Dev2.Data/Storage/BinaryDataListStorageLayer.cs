@@ -219,5 +219,9 @@ namespace Dev2.Data.Storage
 
         #endregion
 
+        public static void Clear()
+        {
+            _levelZeroCache.Clear();
+        }
     }
 }

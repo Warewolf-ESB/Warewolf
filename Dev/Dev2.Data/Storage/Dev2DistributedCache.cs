@@ -133,5 +133,13 @@ namespace Dev2.Data.Storage
         }
 
         #endregion
+
+        public void Clear()
+        {
+            foreach(Dev2BinaryStorage<T> dev2BinaryStorage in _scalableCache.Values)
+            {
+                dev2BinaryStorage.Clear();
+            }
+        }
     }
 }

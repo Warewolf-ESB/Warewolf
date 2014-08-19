@@ -252,12 +252,14 @@ namespace Dev2.Runtime.ESB.Control
             {
                 // clean up after the request has executed ;)
 
-                foreach(KeyValuePair<int, List<Guid>> thread in dataObject.ThreadsToDispose)
-                {
-                    DataListRegistar.DisposeScope(thread.Key, resultID);
-                }
+                DataListRegistar.ClearDataList();
 
-                DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
+                //                foreach(KeyValuePair<int, List<Guid>> thread in dataObject.ThreadsToDispose)
+                //                {
+                //                    DataListRegistar.DisposeScope(thread.Key, resultID);
+                //                }
+                //
+                //                DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
 
             }
 

@@ -3,6 +3,8 @@ using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Management;
 using System.Text;
@@ -742,6 +744,26 @@ namespace Dev2.Activities.Specs.Composition
             return stringBuilder.ToString();
         }
 
+        // ReSharper disable InconsistentNaming
+        public double GetServerCPUUsage()
+        {
+            PerformanceCounter processorTimeCounter = new PerformanceCounter(
+                    "Process",
+                    "% Processor Time",
+                    "Warewolf Server", true);
+            processorTimeCounter.NextValue();
+            Thread.Sleep(1000);
+            return processorTimeCounter.NextValue() / Environment.ProcessorCount;
+        }
+
+        [Then(@"the server CPU usage is less than (.*)%")]
+        public void ThenTheServerCPUUsageIsLessThan(int maxCpu)
+        {
+            var serverCpuUsage = GetServerCPUUsage();
+
+            Assert.IsTrue(serverCpuUsage < maxCpu, "Warewolf Server CPU usage: " + serverCpuUsage.ToString(CultureInfo.InvariantCulture));
+        }
+
         [Given(@"I get the server memory")]
         public void GivenIGetTheServerMemory()
         {
@@ -760,7 +782,7 @@ namespace Dev2.Activities.Specs.Composition
 
             var diffInMem = serverMemAfter - serverMemBefore;
 
-            Assert.IsTrue(diffInMem < maxDiff);
+            Assert.IsTrue(diffInMem < maxDiff, "Warewolf Server memory usage: " + diffInMem.ToString(CultureInfo.InvariantCulture));
         }
 
         [Then(@"the '(.*)' in Workflow '(.*)' debug outputs as")]

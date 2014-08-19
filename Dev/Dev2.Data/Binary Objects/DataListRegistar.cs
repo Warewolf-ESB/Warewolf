@@ -117,5 +117,10 @@ namespace Dev2.Data.Binary_Objects
                 }
             });
         }
+
+        public static void ClearDataList()
+        {
+            BinaryDataListStorageLayer.Clear();
+        }
     }
 }

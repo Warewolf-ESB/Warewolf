@@ -92,9 +92,9 @@ namespace Dev2.Data.Storage
     /// </summary>
     static class CompactBuffer
     {
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public static InternalStorageBuffer scrubBuffer;
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
 
         public static void Init(int bufCap)
         {
@@ -156,7 +156,7 @@ namespace Dev2.Data.Storage
         private readonly string _completeFilename = @"C:\persist.dic";
         private FileStream _file;
         private ConcurrentDictionary<string, BinaryStorageKey> _bufferIndexes = new ConcurrentDictionary<string, BinaryStorageKey>();
-        private readonly ConcurrentDictionary<string, BinaryStorageKey> _lstIndexes = new ConcurrentDictionary<string, BinaryStorageKey>();
+        private ConcurrentDictionary<string, BinaryStorageKey> _lstIndexes = new ConcurrentDictionary<string, BinaryStorageKey>();
         private readonly object _opsLock = new object();
         const long CompactThresholdSize = 512 * 1024 * 1024; // 512 MB compact 
         private long _lastCompactSize;
@@ -731,5 +731,24 @@ namespace Dev2.Data.Storage
 
 
         #endregion
+
+        public void Clear()
+        {
+            lock(_opsLock)
+            {
+                _bufferIndexes = new ConcurrentDictionary<string, BinaryStorageKey>();
+                _lstIndexes = new ConcurrentDictionary<string, BinaryStorageKey>();
+                _file.Close();
+                _file.Dispose();
+                try
+                {
+                    File.Delete(_completeFilename);
+                }
+                catch(Exception ex)
+                {
+                    this.LogError(ex);
+                }
+            }
+        }
     }
 }
