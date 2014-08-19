@@ -50,27 +50,6 @@
         <Setter Property="VerticalContentAlignment" Value="Top"/>
         <Setter Property="MinHeight" Value="24"></Setter>
     </Style>
-
-    <Style x:Key="ActivityGridRowStyle"
-            TargetType="{x:Type DataGridRow}">
-        <Setter Property="AutomationProperties.AutomationId">
-            <Setter.Value>
-            <MultiBinding StringFormat="UI_ActivityGrid_Row_{0}_AutoID">
-                <Binding Path="Tag" RelativeSource="{RelativeSource Mode=Self}" />
-            </MultiBinding>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    
-    <Style x:Key="ActivityGridCellStyle" TargetType="{x:Type DataGridCell}">
-        <Setter Property="AutomationProperties.AutomationId">
-            <Setter.Value>
-                <MultiBinding StringFormat="UI_ActivityGridCell_{0}_AutoID">
-                    <Binding Path="(DataGridRow.Tag)" RelativeSource="{RelativeSource AncestorType=DataGridRow}" />
-                </MultiBinding>
-            </Setter.Value>
-        </Setter>
-    </Style>
     
     <Style x:Key="ActivityLabelStyle" TargetType="{x:Type Label}" >
         <Setter Property="VerticalContentAlignment" Value="Center"/>
