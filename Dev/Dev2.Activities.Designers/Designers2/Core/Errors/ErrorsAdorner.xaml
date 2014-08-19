@@ -47,15 +47,13 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Text="Errors"
-                       FontWeight="Bold"
-                       AutomationProperties.AutomationId="UI_ErrorsTextBlock_AutoID"></TextBlock>
+                       FontWeight="Bold"></TextBlock>
             <Button Grid.Row="0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Command="{Binding ShowErrorsToggleCommand}"
                     ToolTip="Close Errors"
-                    Style="{StaticResource CloseButtonStyle}"
-                    AutomationProperties.AutomationId="UI_CloseHelp_AutoID">
+                    Style="{StaticResource CloseButtonStyle}">
             </Button>
             <ItemsControl Grid.Row="1"
                           Margin="0,5,0,0"

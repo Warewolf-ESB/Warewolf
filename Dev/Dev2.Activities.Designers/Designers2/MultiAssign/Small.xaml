@@ -110,8 +110,7 @@
             </DataGridTemplateColumn>
 
             <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}"
-                                    CellStyle="{StaticResource ActivityGridCellStyle}">
+                                    d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
                         <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"
