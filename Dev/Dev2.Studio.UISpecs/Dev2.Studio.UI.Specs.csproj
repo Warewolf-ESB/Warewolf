@@ -109,6 +109,12 @@
       <LastGenOutput>Workflow.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.UI.Tests\Dev2.Studio.UI.Tests\Dev2.Studio.UI.Tests.csproj">
+      <Project>{9c452452-634e-4a21-ab9e-681d3f05df52}</Project>
+      <Name>Dev2.Studio.UI.Tests</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
