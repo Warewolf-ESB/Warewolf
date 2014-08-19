@@ -19,20 +19,24 @@ REM * set TestDeploymentDir=C:\Users\INTEGR~1\AppData\Local\VSEQT\QTAgent\54371B
 REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
-REM ** Kill The Studio **
+REM ** Kill The Warewolf ;) **
+sc stop "Warewolf Server"
+taskkill /im "Warewolf Server.exe"
 taskkill /im "Warewolf Studio.exe"
 
 REM  Wait 10 seconds ;)
 ping -n 10 127.0.0.1 > nul
 
-REM ** Kill The Server **
-sc stop "Warewolf Server"
-taskkill /im "Warewolf Server.exe"
+REM ** Start Warewolf server from deployed binaries built in debug config**
+START "%DeploymentDirectory%\ServerbinDebug\Warewolf Server.exe" /D %DeploymentDirectory%\ServerbinDebug "Warewolf Server.exe"
 
-REM  Wait 7 seconds ;)
-ping -n 7 127.0.0.1 > nul
+REM  Wait 10 seconds ;)
+ping -n 10 127.0.0.1 > nul
 
-REM ** Delete Old Binaries **
-RD /S /Q "C:\Builds\UITestRunWorkspace\Binaries"
+REM ** Start Warewolf studio from deployed binaries built in debug config**
+START "%DeploymentDirectory%\StudiobinDebug\Warewolf Studio.exe" /D %DeploymentDirectory%\StudiobinDebug "Warewolf Studio.exe"
+
+REM  Wait 20 seconds ;)
+ping -n 20 127.0.0.1 > nul
 
 exit 0

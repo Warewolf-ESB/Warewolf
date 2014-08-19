@@ -20,6 +20,7 @@ REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
 taskkill /im "Warewolf Studio.exe"
-%DeploymentDirectory%\Dev2.Server.exe -x
+sc STOP "Warewolf Server"
+%DeploymentDirectory%\ServerbinDebug\Dev2.Server.exe -x
 taskkill /im "Warewolf Server.exe"
 exit 0
