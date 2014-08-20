@@ -262,6 +262,7 @@
         <ComboBox Grid.Column="1"
                   Grid.Row="8"
                   Style="{StaticResource ActivityComboBoxStyle}"
+                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                   ItemsSource="{Binding CompressionRatioList}"
                   SelectedValue="{Binding SelectedCompressionRatioDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SelectedCompressionType_AutoID}">

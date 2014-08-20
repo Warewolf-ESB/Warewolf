@@ -52,6 +52,7 @@
         <Label Grid.Column="0" Grid.Row="1" x:Name="lblWhere" Content="Where"/>
 
         <ComboBox Style ="{StaticResource ActivityComboBoxStyle}"
+                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                   x:Name="cbxWhere" 
                   Grid.Row="1" Grid.Column="1" Margin="0,2,1,2"
                   SelectedValue="{Binding ModelItem.SearchType,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 

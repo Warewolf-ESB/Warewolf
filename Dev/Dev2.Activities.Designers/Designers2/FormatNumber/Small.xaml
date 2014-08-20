@@ -69,6 +69,7 @@
         <ComboBox  Grid.Column="1"
                    Grid.Row="1"
                    Style="{StaticResource ActivityComboBoxStyle}"
+                   ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                    ItemsSource="{Binding RoundingTypes}"
                    Width="Auto"
                    attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"

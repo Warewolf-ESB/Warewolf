@@ -49,7 +49,8 @@
                   SelectedItem="{Binding SelectedCategory, Mode=TwoWay}" 
                   Grid.Row="3" 
                   Width="150"
-                  AutomationProperties.AutomationId="FeebackView_Category"/>
+                  AutomationProperties.AutomationId="FeebackView_Category"
+                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"/>
         
         <Button Content="This feedback has a recordings file. Browse..." Grid.Row="4" HorizontalAlignment="Left" 
                 Margin="15,5,0,2"

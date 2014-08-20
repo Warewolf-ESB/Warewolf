@@ -135,7 +135,7 @@
             <DataGridTemplateColumn Width="*"  IsReadOnly="True" >
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ComboBox Style="{StaticResource ActivityComboBoxStyle}"  Width="Auto" SelectedValue="{Binding Path=FromType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
+                        <ComboBox Style="{StaticResource ActivityComboBoxStyle}" ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"  Width="Auto" SelectedValue="{Binding Path=FromType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_FromTypecbx_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=controls:Dev2DataGrid}" />
@@ -152,7 +152,7 @@
             <DataGridTemplateColumn Width="65"  IsReadOnly="True" >
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ComboBox Width="Auto" Style ="{StaticResource ActivityComboBoxStyle}" SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
+                        <ComboBox Width="Auto" Style ="{StaticResource ActivityComboBoxStyle}" ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" SelectedValue="{Binding Path=ToType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Loaded="CbxLoad">
                             <AutomationProperties.AutomationId>
                                 <MultiBinding StringFormat="UI_{0}_Row{1}_ToTypecbx_AutoID">
                                     <Binding Path="DataContext.ModelItem.AutomationID" RelativeSource="{RelativeSource AncestorType=controls:Dev2DataGrid}" />

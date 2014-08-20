@@ -52,7 +52,7 @@
                         <ColumnDefinition></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <ComboBox Style="{StaticResource ActivityComboBoxStyle}" Margin="1,1,3,1" x:Name="SplitTypeCbx" SelectionChanged="Selector_OnSelectionChanged" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SplitTypeList}" SelectedValue="{Binding SplitType}" ToolTip="What separates the items in your variable list?"></ComboBox>
+                    <ComboBox Style="{StaticResource ActivityComboBoxStyle}" ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" Margin="1,1,3,1" x:Name="SplitTypeCbx" SelectionChanged="Selector_OnSelectionChanged" Grid.Column="0" Grid.Row="0" ItemsSource="{Binding SplitTypeList}" SelectedValue="{Binding SplitType}" ToolTip="What separates the items in your variable list?"></ComboBox>
                     <TextBox Style="{StaticResource Dev2TextboxStyle}" TextChanged="TextBoxBase_OnTextChanged" x:Name="SplitTokenTxt" Grid.Column="1" Grid.Row="1" Text="{Binding SplitToken}" ToolTip="What separates the items in your variable list?"></TextBox>
                 </Grid>
 

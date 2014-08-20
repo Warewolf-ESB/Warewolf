@@ -38,6 +38,7 @@
                   Grid.Column="0" 
                   Width="125"
                   Style="{StaticResource ActivityComboBoxStyle}"
+                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                   IsEditable="False"
                   SelectedValue="{Binding SelectedForeachType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding ForeachTypes}"

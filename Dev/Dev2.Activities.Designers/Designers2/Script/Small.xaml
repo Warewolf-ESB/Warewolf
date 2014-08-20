@@ -40,9 +40,10 @@
                    Grid.Column="1"
                    Grid.Row="0"
                    Style="{StaticResource ActivityComboBoxStyle}"
+                   ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                    SelectedValue="{Binding SelectedScriptType, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                    ItemsSource="{Binding ScriptTypes}"
-                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AddTimeTypecbx_AutoID}">
+                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ScriptTypecbx_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.ScriptingHelpLanguageType}"
                                  DataContext="{Binding}" />
@@ -51,7 +52,6 @@
                                      SourcePropertyValue="{Binding SelectedTimeModifierType, UpdateSourceTrigger=PropertyChanged}"
                                      Target="{Binding}" />
             </i:Interaction.Behaviors>
-
         </ComboBox>
 
         <ui:IntellisenseTextBox  Grid.ColumnSpan="2"

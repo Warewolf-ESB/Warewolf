@@ -27,8 +27,7 @@ Scenario: Debug GatherSystemInformation same variables in two activites
 	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 1 (2),CPU Available" is visible
 	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),Date & Time" is visible
 	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),CPU Available" is visible
-
-
+	
 Scenario: Drag on Multiassign
 	Given I have Warewolf running
 	And I click "UI_RibbonHomeTabWorkflowBtn_AutoID"

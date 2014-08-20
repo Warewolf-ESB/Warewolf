@@ -121,6 +121,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
+                                      ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" 
                                       Margin="0"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding Path=MergeType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">
@@ -227,6 +228,7 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ComboBox Style="{StaticResource ActivityComboBoxStyle}"
+                                      ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" 
                                       Margin="0"
                                       ItemsSource="{Binding DataContext.AlignmentTypes, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       SelectedValue="{Binding Path=Alignment,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, NotifyOnSourceUpdated=True}">

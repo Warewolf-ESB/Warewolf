@@ -48,6 +48,7 @@
 
             <ComboBox x:Name="InitialFocusElement"
                       Style="{StaticResource ActivityComboBoxStyle}"
+                      ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                       SelectedItem="{Binding SelectedEmailSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding EmailSources}"
                       ToolTip="{x:Static help:HelpTextResources.EmailToolTipMailSource}"

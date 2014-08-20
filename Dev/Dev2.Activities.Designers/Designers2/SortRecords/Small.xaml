@@ -64,6 +64,7 @@
         <ComboBox Grid.Column="1"
             Grid.Row="1"
             Style="{StaticResource ActivityComboBoxStyle}"
+            ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
             SelectedValue="{Binding SelectedSelectedSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ItemsSource="{Binding SortOrderTypes}"
             AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SortOrdercbx_AutoID}">

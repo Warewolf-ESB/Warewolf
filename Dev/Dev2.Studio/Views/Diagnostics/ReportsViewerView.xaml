@@ -47,6 +47,7 @@
                     Margin="0,0,10,0"
                     ItemsSource="{Binding ReportType, Mode=TwoWay, 
                         Converter={StaticResource EnumDisplayNameToItemSourceConverter}}"
+                    ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                     SelectedItem="{Binding ReportType, Mode=TwoWay, 
                         Converter={StaticResource EnumDisplayNameToItemSourceConverter}}"/>
 

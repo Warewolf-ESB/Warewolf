@@ -66,6 +66,7 @@
         <ComboBox Grid.Column="1"
                   Grid.Row="1"
                   Style="{StaticResource ActivityComboBoxStyle}"
+                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                   ItemsSource="{Binding Path=IndexList}"
                   SelectedValue="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Indextcbx_AutoID}">
@@ -113,6 +114,7 @@
         <ComboBox Grid.Column="1"
                   Grid.Row="3"
                   Style="{StaticResource ActivityComboBoxStyle}"
+                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                   ItemsSource="{Binding Path=DirectionList}"
                   SelectedValue="{Binding Path=SelectedDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directioncbx_AutoID}">

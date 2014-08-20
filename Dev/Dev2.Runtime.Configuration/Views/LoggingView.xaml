@@ -196,21 +196,6 @@
 						<ColumnDefinition Width="*" MinWidth="200"/>
 						<ColumnDefinition Width="2*" />
                     </Grid.ColumnDefinitions>
-                    
-                    <!--<TextBlock Text="Remote drive :" Grid.Row="0"
-						HorizontalAlignment="Left" VerticalAlignment="Center" />
-                    <ComboBox Grid.Column="1" ItemsSource="{Binding ComputerDrives}" 
-                              SelectedItem="{Binding SelectedDrive, Mode=TwoWay}"
-                              HorizontalAlignment="Right"
-                              Width="50" Margin="3">
-                        <ComboBox.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <TextBlock Text="{Binding Title}"></TextBlock>
-                                </Grid>
-                            </DataTemplate>
-                        </ComboBox.ItemTemplate>
-                        </ComboBox>-->
                                      
                     <TextBlock Text="Log File Ouput Directory :" Grid.Row="1"
 						HorizontalAlignment="Left" VerticalAlignment="Center" />
@@ -219,15 +204,6 @@
                              Text="{Binding Object.LogFileDirectory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 						AutomationProperties.AutomationId="UI_SettingsLogging_PostWorkflow_Text">
                         </TextBox>
-                    <!--<customControls:DirectoryCompletionBox Grid.Column="1"  Margin="3"
-                                              MaxDropDownHeight="250" Grid.Row="1"
-                                              IsEnabled="{Binding SelectedDrive, Converter={StaticResource NullToBoolConvert}}"
-						FilterMode="StartsWith"
-						SelectedItem="{Binding SelectedInputOption, Mode=TwoWay, NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-						ItemsSource="{Binding FileInputOptions}"
-                        cal:Message.Attach="[Event TextChanged] = [Action FileSelectionTextChanged]"
-						AutomationProperties.AutomationId="UI_SettingsLogging_PostWorkflow_Text">
-                        </customControls:DirectoryCompletionBox>-->
 
                 </Grid>
 			</GroupBox>

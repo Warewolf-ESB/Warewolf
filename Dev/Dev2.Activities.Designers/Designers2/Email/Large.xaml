@@ -68,6 +68,7 @@
 
             <ComboBox x:Name="InitialFocusElement"
                       Style="{StaticResource ActivityComboBoxStyle}"
+                      ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" 
                       SelectedItem="{Binding SelectedEmailSource, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                       ItemsSource="{Binding EmailSources}"
                       ToolTip="{x:Static help:HelpTextResources.EmailToolTipMailSource}"
@@ -220,7 +221,8 @@
                   Grid.Row="6"
                   SelectedValue="{Binding ModelItem.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding Priorities}"
-                  Style="{StaticResource ActivityComboBoxStyle}">
+                  Style="{StaticResource ActivityComboBoxStyle}"
+                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" >
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpPriorityType}"
                                  DataContext="{Binding}" />

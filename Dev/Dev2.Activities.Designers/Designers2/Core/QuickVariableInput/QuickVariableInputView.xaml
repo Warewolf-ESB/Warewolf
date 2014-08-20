@@ -104,6 +104,7 @@
                           IsTabStop="False"
                           Margin="2"
                           Style="{StaticResource ActivityComboBoxStyle}"
+                          ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" 
                           ItemsSource="{Binding SplitTypeList}"
                           SelectedValue="{Binding SplitType}"
                           AutomationProperties.AutomationId="QviSplitOnCombobox"

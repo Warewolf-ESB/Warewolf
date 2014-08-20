@@ -97,7 +97,8 @@
                Content="Priority" />
         <ComboBox Grid.Column="1"
                   Grid.Row="1" 
-                  Style="{StaticResource ActivityMapppingComboBoxStyle}"   
+                  Style="{StaticResource ActivityMapppingComboBoxStyle}"
+                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" 
                   ItemsSource="{Binding CommandPriorities}" 
                   DisplayMemberPath="Value"
                   SelectedValuePath="Key"
