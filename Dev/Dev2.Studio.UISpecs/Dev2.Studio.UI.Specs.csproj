@@ -89,7 +89,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolsTestUISpecs.feature</DependentUpon>
     </Compile>
-    <Compile Include="Workflow1.feature.cs">
+    <Compile Include="Workflow.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Workflow.feature</DependentUpon>
