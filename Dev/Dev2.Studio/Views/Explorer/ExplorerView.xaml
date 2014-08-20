@@ -13,8 +13,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:explorer="clr-namespace:Dev2.Studio.ViewModels.Explorer"
              xmlns:explorer2="clr-namespace:Dev2.Models;assembly=Dev2.Studio.Core"
-    xmlns:connections="clr-namespace:Dev2.CustomControls.Connections"
-    AllowDrop="False"
+             xmlns:connections="clr-namespace:Dev2.CustomControls.Connections"
+             AllowDrop="False"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance explorer:ExplorerViewModel}"
              Name="Explorer">
@@ -116,18 +116,17 @@
                             <!--Visibility="{Binding HasExecutableCommands, Converter={StaticResource BoolToVisConverter}}"-->
                             <ContextMenu>
                                 <ContextMenu.Resources>
-                                    <Style TargetType="{x:Type MenuItem}">
+                                    <Style TargetType="{x:Type MenuItem}" >
                                         <Setter Property="HorizontalContentAlignment"
                                                 Value="Left" />
                                         <Setter Property="VerticalContentAlignment"
                                                 Value="Center" />
-                                        <Setter Property="AutomationProperties.AutomationId"
-                                                Value="UI_ExplorerContextMenu_AutoID" />
                                     </Style>
                                 </ContextMenu.Resources>
 
                                 <MenuItem Header="Connect"
-                                          Command="{Binding ConnectCommand}">
+                                          Command="{Binding ConnectCommand}"
+                                          AutomationProperties.AutomationId ="UI_ConnectContextMenuItem_AutoID">
                                     <MenuItem.Visibility>
                                         <MultiBinding Converter="{StaticResource MultipleBoolToVisibilityValueConverter}">
                                             <Binding Path="IsLocalHost"
@@ -138,7 +137,7 @@
                                 </MenuItem>
                                 <MenuItem Header="Disconnect"
                                           Command="{Binding DisconnectCommand}"
-                                          AutomationProperties.AutomationId="UI_ExplorerContextMenuDisconnectItem_AutoID">
+                                          AutomationProperties.AutomationId="UI_DisconnectContextMenuItem_AutoID">
                                     <MenuItem.Visibility>
                                         <MultiBinding Converter="{StaticResource MultipleBoolToVisibilityValueConverter}">
                                             <Binding Path="IsLocalHost"
@@ -148,7 +147,8 @@
                                     </MenuItem.Visibility>
                                 </MenuItem>
                                 <MenuItem Header="Remove"
-                                          Command="{Binding RemoveCommand}">
+                                          Command="{Binding RemoveCommand}"
+                                          AutomationProperties.AutomationId="UI_RemoveContextMenuItem_AutoID">
                                     <MenuItem.Visibility>
                                         <MultiBinding Converter="{StaticResource MultipleBoolToVisibilityValueConverter}">
                                             <Binding Path="IsLocalHost"
@@ -163,59 +163,72 @@
                                           AutomationProperties.AutomationId="UI_ExplorerContextMenuRefreshItem_AutoID" />-->
                                 <MenuItem Header="Open"
                                           Command="{Binding EditCommand}"
-                                          Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}" />
+                                          Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId ="UI_OpenContextMenuItem_AutoID" />
                                 <Separator Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="New Folder"
                                           Visibility="{Binding CanCreateNewFolder, Converter={StaticResource BoolToVisConverter}}"
-                                          Command="{Binding NewFolderCommand}"/>
+                                          Command="{Binding NewFolderCommand}"
+                                          AutomationProperties.AutomationId ="UI_NewFolderContextMenuItem_AutoID"/>
                                 <MenuItem Header="New Workflow Service   (Ctrl+W)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
-                                          CommandParameter="Workflow" />
+                                          CommandParameter="Workflow"
+                                          AutomationProperties.AutomationId ="UI_NewWorkflowContextMenuItem_AutoID"/>
                                 <MenuItem Header="New Database Procedure Service   (Ctrl+Shift+D)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
-                                          CommandParameter="DatabaseService" />
+                                          CommandParameter="DatabaseService"
+                                          AutomationProperties.AutomationId ="UI_NewDatabaseServiceContextMenuItem_AutoID" />
                                 <MenuItem Header="New Plugin Service   (Ctrl+Shift+P)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
-                                          CommandParameter="ResourceService" />
+                                          CommandParameter="ResourceService"
+                                          AutomationProperties.AutomationId ="UI_NewPluginServiceContextMenuItem_AutoID" />
                                 <MenuItem Header="New Web Service   (Ctrl+Shift+W)"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
-                                          CommandParameter="WebService" />
+                                          CommandParameter="WebService"
+                                          AutomationProperties.AutomationId ="UI_NewWebServiceContextMenuItem_AutoID" />
                                 <Separator Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}" />
                                 <MenuItem Header="New Remote Warewolf Source"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
-                                          CommandParameter="Server" />
+                                          CommandParameter="Server"
+                                          AutomationProperties.AutomationId ="UI_NewServerServiceContextMenuItem_AutoID" />
                                 <MenuItem Header="New Database Source"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
-                                          CommandParameter="DbSource" />
+                                          CommandParameter="DbSource"
+                                          AutomationProperties.AutomationId ="UI_NewDbSourceContextMenuItem_AutoID" />
                                 <MenuItem Header="New Plugin Source"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
-                                          CommandParameter="ResourceSource" />
+                                          CommandParameter="ResourceSource"
+                                          AutomationProperties.AutomationId ="UI_NewPluginSourceContextMenuItem_AutoID" />
                                 <MenuItem Header="New Web Source"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
-                                          CommandParameter="WebSource" />
+                                          CommandParameter="WebSource"
+                                          AutomationProperties.AutomationId ="UI_NewWebSourceContextMenuItem_AutoID" />
                                 <MenuItem Header="New Email Source"
                                           Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}"
                                           Command="{Binding NewResourceCommand}"
-                                          CommandParameter="EmailSource" />
+                                          CommandParameter="EmailSource"
+                                          AutomationProperties.AutomationId ="UI_NewEmailSourceContextMenuItem_AutoID" />
                                 <Separator Visibility="{Binding CanAddResoure, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Build"
                                           Command="{Binding BuildCommand}"
                                           Visibility="{Binding CanBuild, Converter={StaticResource BoolToVisConverter}}" />-->
                                 <MenuItem Header="{Binding DeployTitle}"
                                           Command="{Binding DeployCommand}"
-                                          Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisConverter}}" />
+                                          Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId ="UI_NewDeployContextMenuItem_AutoID" />
                                 <!--<MenuItem Header="Duplicate" Command="{Binding DuplicateCommand}" Visibility="{Binding CanDuplicate, Converter={StaticResource BoolToVisConverter}}" />-->
                                 <MenuItem Header="Rename   (F2)"
                                           Command="{Binding RenameCommand}"
-                                          Visibility="{Binding CanRename, Converter={StaticResource BoolToVisConverter}}" />
+                                          Visibility="{Binding CanRename, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId ="UI_RenameContextMenuItem_AutoID" />
                                 <!--<MenuItem Header="Move/Rename" Command="{Binding MoveRenameCommand}" Visibility="{Binding CanMoveRename, Converter={StaticResource BoolToVisConverter}}" />-->
                                 <MenuItem Header="Delete"
                                           Command="{Binding DeleteCommand}"
@@ -239,8 +252,8 @@
                                                                                     OpenOnDoubleClick="True"
                                                                                     SelectOnRightClick="True"
                                                                                     DontAllowDoubleClick="{Binding RelativeSource={RelativeSource FindAncestor,
-                                                                                AncestorType=navigationViews:NavigationView},
-                                                                                Path=DataContext.IsFromActivityDrop}" />
+                                                                                    AncestorType=navigationViews:NavigationView},
+                                                                                    Path=DataContext.IsFromActivityDrop}" />
                                     <local:NavigationItemViewModelDragDropBehavior DontAllowDraging="{Binding RelativeSource={RelativeSource FindAncestor,AncestorType=navigationViews:NavigationView},Path=DataContext.IsFromActivityDrop}" />
                                 </i:Interaction.Behaviors>
 
@@ -269,7 +282,8 @@
                                     </Image>
                                     <Button Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}"
                                             ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipView}"
-                                            Style="{StaticResource AuthButtonStyle}">
+                                            Style="{StaticResource AuthButtonStyle}"
+                                            AutomationProperties.AutomationId="UI_CanEdit_AutoID">
                                         <Button.InputBindings>
                                             <MouseBinding Gesture="LeftClick"
                                                           Command="{Binding EditCommand}" />
@@ -278,7 +292,8 @@
                                     </Button>
                                     <Button Visibility="{Binding CanExecute, Converter={StaticResource BoolToVisConverter}}"
                                             ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipExecute}"
-                                            Style="{StaticResource AuthButtonStyle}">
+                                            Style="{StaticResource AuthButtonStyle}"
+                                            AutomationProperties.AutomationId="UI_CanExecute_AutoID">
                                         <Image Style="{StaticResource AuthExecuteIconStyle}" />
                                         <Button.InputBindings>
                                             <MouseBinding Gesture="LeftClick"
