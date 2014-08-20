@@ -27,7 +27,7 @@ Scenario: Debug GatherSystemInformation same variables in two activites
 	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 1 (2),CPU Available" is visible
 	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),Date & Time" is visible
 	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),CPU Available" is visible
-	
+
 Scenario: Drag on Multiassign
 	Given I have Warewolf running
 	And I click "UI_RibbonHomeTabWorkflowBtn_AutoID"
@@ -115,13 +115,21 @@ Scenario: Drag Find Record Index
 	 #And I double click "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner)"
 	# Given "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Find Record Index (1)(FindRecordsMultipleCriteriaDesigner)" is Highlighted
 	 
+Scenario: New Remote Connection
+	Given I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
 
 
+Scenario: Set server permission
+	Given I click "UI_RibbonHomeManageSecuritySettingsBtn_AutoID"
+	#And I send "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}" to "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerAdministratorPermissions_Row_1_Cell_AutoID,UI_Public_AdministratorPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'UI_SaveSettingsbtn_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
 
- Scenario: Settings
-    #Given I have Warewolf running
-	Given I send "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} " to "ACTIVETAB"
-    And I click "SECURITYSAVE"
+
+Scenario: Open folder in explorer
+	Given I click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_A1_AutoID,Expander"
 
 #
 #	Given I click "UI_RibbonHomeTabWorkflowBtn_AutoID"
@@ -131,7 +139,7 @@ Scenario: Drag Find Record Index
 #	And I send "{TAB} {TAB} {TAB} {TAB} {TAB} [[rec(&).a]]" to "ACTIVETAB,Assign (1)(MultiAssignDesigner)"
 #	And I click "ACTIVETAB,Assign (1)(MultiAssignDesigner),DoneButton"
 #	Then close the Studio and Server
-	
+
 
 
 

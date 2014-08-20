@@ -116,26 +116,20 @@ namespace Dev2.Studio.UI.Tests.Utils
                     while(automationCounter <= automationIDs.Length - 1)
                     {
                         var wpfControl = startControl ?? _studioWindow;
-                        theControl = new WpfControl(wpfControl)
-                        {
-                            Container = wpfControl
-                        };
+                        theControl = new WpfControl(wpfControl);
                         var automationId = automationIDs[automationCounter];
                         theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
-                        var tryFind = theControl.TryFind();
-                        if(tryFind)
+                        try
                         {
                             theControl.Find();
                         }
-                        else
+                        catch(UITestControlNotFoundException)
                         {
                             var children = wpfControl.GetChildren().Cast<WpfControl>();
-                            theControl = children.FirstOrDefault(control => control.AutomationId == automationId);
+                            theControl = children.FirstOrDefault(control => control.AutomationId == automationId || control.Name == automationId);
                         }
-                        if(theControl != null)
-                        {
-                            startControl = theControl;
-                        }
+
+                        startControl = theControl;
                         automationCounter++;
                     }
                     return theControl;

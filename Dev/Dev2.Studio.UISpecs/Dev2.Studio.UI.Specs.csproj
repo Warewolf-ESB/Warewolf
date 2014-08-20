@@ -44,7 +44,13 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.CodedUITestFramework, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension.CrossBrowserProxy">
+      <HintPath>..\..\..\Program Files (x86)\Common Files\microsoft shared\VSTT\Cross Browser Selenium Components\Microsoft.VisualStudio.TestTools.UITest.Extension.CrossBrowserProxy.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Selenium.WebDriverBackedSelenium">
+      <HintPath>..\..\..\Program Files (x86)\Common Files\microsoft shared\VSTT\Cross Browser Selenium Components\Selenium.WebDriverBackedSelenium.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -52,7 +58,16 @@
     <Reference Include="TechTalk.SpecFlow">
       <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
+    <Reference Include="ThoughtWorks.Selenium.Core">
+      <HintPath>..\..\..\Program Files (x86)\Common Files\microsoft shared\VSTT\Cross Browser Selenium Components\ThoughtWorks.Selenium.Core.dll</HintPath>
+    </Reference>
     <Reference Include="UIAutomationTypes" />
+    <Reference Include="WebDriver">
+      <HintPath>..\..\..\Program Files (x86)\Common Files\microsoft shared\VSTT\Cross Browser Selenium Components\WebDriver.dll</HintPath>
+    </Reference>
+    <Reference Include="WebDriver.Support">
+      <HintPath>..\..\..\Program Files (x86)\Common Files\microsoft shared\VSTT\Cross Browser Selenium Components\WebDriver.Support.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -83,13 +98,19 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolsTestUISpecs.feature</DependentUpon>
     </Compile>
-    <Compile Include="Workflow1.feature.cs">
+    <Compile Include="Workflow.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Workflow.feature</DependentUpon>
     </Compile>
+    <Compile Include="WorkflowSteps.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Dev2.Studio.UISpecs\Workflow.feature">
+      <Link>Workflow.feature</Link>
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Workflow.feature.cs</LastGenOutput>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -108,7 +129,7 @@
     </None>
     <None Include="Workflow.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Workflow1.feature.cs</LastGenOutput>
+      <LastGenOutput>Workflow.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

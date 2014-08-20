@@ -25,12 +25,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses
     using Keyboard = Microsoft.VisualStudio.TestTools.UITesting.Keyboard;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;
     using MouseButtons = System.Windows.Forms.MouseButtons;
-    
-    
+
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public partial class NewServerUIMap
     {
-        
+
         /// <summary>
         /// AssertMethod1
         /// </summary>
@@ -46,7 +46,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses
         {
             get
             {
-                if ((this.mUINewServerWindow == null))
+                if((this.mUINewServerWindow == null))
                 {
                     this.mUINewServerWindow = new UINewServerWindow();
                 }
@@ -58,7 +58,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses
         {
             get
             {
-                if ((this.mUIBusinessDesignStudioWindow == null))
+                if((this.mUIBusinessDesignStudioWindow == null))
                 {
                     this.mUIBusinessDesignStudioWindow = new UIBusinessDesignStudioWindow();
                 }
@@ -67,21 +67,22 @@ namespace Dev2.Studio.UI.Tests.UIMaps.NewServerUIMapClasses
         }
 
         #endregion
-        
+
         #region Fields
         private UIBusinessDesignStudioWindow mUIBusinessDesignStudioWindow;
         private UINewServerWindow mUINewServerWindow;
         #endregion
     }
-    
+
     [GeneratedCode("Coded UITest Builder", "11.0.51106.1")]
     public class UINewServerWindow : WpfWindow
     {
-        
+
         public UINewServerWindow()
         {
             #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "New Server";
+            //this.SearchProperties[WpfWindow.PropertyNames.Name] = "New Server";
+            this.SearchProperties[WpfWindow.PropertyNames.AutomationId] = "WebBrowserWindow";
             this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("New Server");
             #endregion

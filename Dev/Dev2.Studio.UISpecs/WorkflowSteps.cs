@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -251,6 +251,53 @@ namespace Dev2.Studio.UI.Specs
             Playback.Wait(100);
         }
 
+        [Given(@"I click on '(.*)' in ""(.*)""")]
+        [When(@"I click on '(.*)' in ""(.*)""")]
+        [Then(@"I click on '(.*)' in ""(.*)""")]
+        public void GivenIClickOn(string itemToClickAutomationId, string parentItem)
+        {
+            var automationIDs = GetCorrect(parentItem).Split(',');
+            var startControl = GetStartUiTestControl(ref automationIDs);
+            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, automationIDs);
+
+            Mouse.Click(controlToClick, new Point(5, 5));
+            Playback.Wait(200);
+            automationIDs = GetCorrect(itemToClickAutomationId).Split(',');
+            foreach(var automationId in automationIDs)
+            {
+                controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, automationId);
+                startControl = controlToClick as WpfControl;
+            }
+            //controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, automationIDs);
+            Mouse.Click(controlToClick, new Point(5, 5));
+            Playback.Wait(100);
+        }
+
+
+        [Given(@"I create a new remote connection ""(.*)"" as")]
+        public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
+        {
+            GivenIClickOn("U_UI_ExplorerServerCbx_AutoID_New Remote Server...", "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID");
+            Playback.Wait(1500);
+            var serverDetailsRow = table.Rows[0];
+            NewServerUIMap.ClearServerAddress();
+            NewServerUIMap.EnterServerAddress(serverDetailsRow["Address"]);
+            var authType = serverDetailsRow["AuthType"];
+            NewServerUIMap.SelectAuthenticationType(authType);
+            if(authType == "User")
+            {
+                NewServerUIMap.EnterPassword(serverDetailsRow["Password"]);
+                NewServerUIMap.EnterUserName(serverDetailsRow["UserName"]);
+            }
+            NewServerUIMap.ClickTestConnection();
+            Playback.Wait(1500);
+            NewServerUIMap.ClickSave();
+            Playback.Wait(1500);
+            NewServerUIMap.SaveNameInDialog(serverName);
+            Playback.Wait(1500);
+            NewServerUIMap.ClickSave();
+            Playback.Wait(1500);
+        }
 
         [When(@"I drag ""(.*)"" onto ""(.*)""")]
         public void WhenIDragOnto(string dragItemAutoIds, string dragDestinationAutoIds)
