@@ -349,7 +349,8 @@
                                     </Button>
 
                                     <Button Command="{Binding DeployCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}">
+                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                            AutomationProperties.AutomationId="UI_RibbonHomeTabDeployBtn_AutoID">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto" />
