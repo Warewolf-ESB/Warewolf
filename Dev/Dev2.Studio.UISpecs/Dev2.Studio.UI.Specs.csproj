@@ -89,6 +89,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolsTestUISpecs.feature</DependentUpon>
     </Compile>
+    <Compile Include="Workflow.feature.cs" />
+    <Compile Include="WorkflowSteps.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Dev2.Studio.UISpecs\Workflow.feature">
