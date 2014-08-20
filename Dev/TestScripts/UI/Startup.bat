@@ -36,7 +36,7 @@ ping -n 10 127.0.0.1 > nul
 REM ** Start Warewolf studio from deployed binaries built in debug config**
 START "%DeploymentDirectory%\StudiobinDebug\Warewolf Studio.exe" /D %DeploymentDirectory%\StudiobinDebug "Warewolf Studio.exe"
 
-REM  Wait 20 seconds ;)
-ping -n 20 127.0.0.1 > nul
+REM  Wait 30 seconds ;)
+ping -n 30 127.0.0.1 > nul
 
 exit 0
