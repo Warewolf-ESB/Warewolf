@@ -30,6 +30,16 @@
         <Setter Property="Padding" Value="2,5,0,0"/>
         <Setter Property="VerticalContentAlignment" Value="Top"/>
     </Style>
+    
+    <Style x:Key="ActivityComboBoxItemStyle" TargetType="{x:Type ComboBoxItem}">
+        <Setter Property="AutomationProperties.AutomationId">
+            <Setter.Value>
+                <MultiBinding StringFormat="UI_ComboBoxItem_{0}_AutoID">
+                    <Binding Path="Content" RelativeSource="{RelativeSource Mode=Self}" />
+                </MultiBinding>
+            </Setter.Value>
+        </Setter>
+    </Style>
 
     <Style x:Key="ActivityTextBoxStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyle}">
         <Setter Property="Margin" Value="3,2,0,2"/>
