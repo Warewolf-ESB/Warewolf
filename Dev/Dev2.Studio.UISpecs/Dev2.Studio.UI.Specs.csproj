@@ -89,7 +89,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolsTestUISpecs.feature</DependentUpon>
     </Compile>
-    <Compile Include="Workflow.feature.cs" />
+    <Compile Include="Workflow1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Workflow.feature</DependentUpon>
+    </Compile>
     <Compile Include="WorkflowSteps.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +117,10 @@
     <None Include="Tools Large ViewUISpecs\ToolsTestUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ToolsTestUISpecs.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Workflow.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Workflow1.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
