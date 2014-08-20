@@ -702,13 +702,24 @@ namespace Dev2.Core.Tests
         public void NavigationViewModel_RefreshMenuCommand_CallsSetConnectionTwiceForBusyStatusAndConnectedStatus()
         {
             //------------Setup for test--------------------------
+            var hitSetConnectionStateCount = 0;
             var connectControlSingleton = new Mock<IConnectControlSingleton>();
-            connectControlSingleton.Setup(c => c.SetConnectionState(It.IsAny<Guid>(), It.IsAny<ConnectionEnumerations.ConnectedState>())).Verifiable();
+            var expectedStates = new List<ConnectionEnumerations.ConnectedState>
+                {
+                    ConnectionEnumerations.ConnectedState.Busy,
+                    ConnectionEnumerations.ConnectedState.Connected
+                };
+            connectControlSingleton.Setup(c => c.SetConnectionState(It.IsAny<Guid>(), It.IsAny<ConnectionEnumerations.ConnectedState>()))
+                .Callback<Guid, ConnectionEnumerations.ConnectedState>((env, state) => Assert.AreEqual(expectedStates[hitSetConnectionStateCount++], state, "Unexpected connection state change."))
+                .Verifiable();
             var vm = Init(connectControlSingleton);
+
             //------------Execute Test---------------------------
             vm.RefreshMenuCommand.Execute(null);
+
             //------------Assert Results-------------------------
-            connectControlSingleton.Verify(c => c.SetConnectionState(It.IsAny<Guid>(), It.IsAny<ConnectionEnumerations.ConnectedState>()), Times.Exactly(2));
+            Thread.Sleep(100);
+            Assert.AreEqual(2, hitSetConnectionStateCount, "Not all expected connection state changes where executed.");
         }
 
         [TestMethod]
