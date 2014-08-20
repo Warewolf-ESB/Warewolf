@@ -88,7 +88,7 @@ namespace Dev2.Network
             {
                 EsbProxy = HubConnection.CreateHubProxy("esb");
                 EsbProxy.On<string>("SendMemo", OnMemoReceived);
-                EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
+                //EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
                 EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
                 EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIdReceived);
                 EsbProxy.On<Guid>("SendServerID", OnServerIdReceived);
@@ -163,9 +163,12 @@ namespace Dev2.Network
         {
             try
             {
-                if(HubConnection.State == ConnectionState.Reconnecting)
+                if(!IsLocalHost)
                 {
-                    HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
+                    if(HubConnection.State == ConnectionState.Reconnecting)
+                    {
+                        HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
+                    }
                 }
 
                 if(HubConnection.State == ConnectionState.Disconnected)
@@ -173,7 +176,7 @@ namespace Dev2.Network
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
                     if(!HubConnection.Start().Wait(5000))
                     {
-                        if (!IsLocalHost)
+                        if(!IsLocalHost)
                         {
                             ConnectionRetry();
                         }
@@ -213,7 +216,7 @@ namespace Dev2.Network
 
         private void ConnectionRetry()
         {
-            HubConnection.Stop(new TimeSpan(0,0,0,1));
+            HubConnection.Stop(new TimeSpan(0, 0, 0, 1));
             IPopupController popup = CustomContainer.Get<IPopupController>();
 
             var application = Application.Current;
@@ -225,7 +228,7 @@ namespace Dev2.Network
                         res = popup.ShowConnectionTimeoutConfirmation(DisplayName);
                     });
             }
-            
+
             if(res == MessageBoxResult.Yes)
             {
                 if(!HubConnection.Start().Wait(5000))
@@ -235,7 +238,7 @@ namespace Dev2.Network
             }
             else
             {
-                throw new NotConnectedException();    
+                throw new NotConnectedException();
             }
         }
 

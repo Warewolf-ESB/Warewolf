@@ -32,7 +32,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         public EsbHub()
         {
 
-            }
+        }
 
         void ResourceSaved(IResource resource)
         {
@@ -96,11 +96,11 @@ namespace Dev2.Runtime.WebServer.Hubs
         public override Task OnDisconnected()
         {
             ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
-            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
-            if(authorizationServiceBase != null)
-        {
-                authorizationServiceBase.Dispose();
-            }
+            //            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
+            //            if(authorizationServiceBase != null)
+            //        {
+            //                authorizationServiceBase.Dispose();
+            //            }
             CompileMessageRepo.Instance.ClearObservable();
             if(ResourceCatalog.Instance.ResourceSaved == null)
             {
