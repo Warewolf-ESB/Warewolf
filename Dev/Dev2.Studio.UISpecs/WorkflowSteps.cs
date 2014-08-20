@@ -277,7 +277,7 @@ namespace Dev2.Studio.UI.Specs
         public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
         {
             GivenIClickOn("U_UI_ExplorerServerCbx_AutoID_New Remote Server...", "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID");
-            Playback.Wait(1500);
+            Playback.Wait(5000);
             var serverDetailsRow = table.Rows[0];
             NewServerUIMap.ClearServerAddress();
             NewServerUIMap.EnterServerAddress(serverDetailsRow["Address"]);
