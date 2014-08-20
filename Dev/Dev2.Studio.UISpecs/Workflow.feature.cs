@@ -11,7 +11,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace Dev2.Studio.UI.Specs
+namespace Dev2.Studio.UI.Specs.Dev2_Studio_UISpecs
 {
     using TechTalk.SpecFlow;
     
@@ -49,7 +49,7 @@ namespace Dev2.Studio.UI.Specs
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
                         && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "Workflow")))
             {
-                Dev2.Studio.UI.Specs.WorkflowFeature.FeatureSetup(null);
+                Dev2.Studio.UI.Specs.Dev2_Studio_UISpecs.WorkflowFeature.FeatureSetup(null);
             }
         }
         
@@ -260,9 +260,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 70
  testRunner.When("I drag \"TOOLMULTIASSIGN\" onto \"ACTIVETAB,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 72
- testRunner.And("I send \"Test\" to \"ACTIVETAB,Assign (1)(MultiAssignDesigner),SmallViewContent,Smal" +
-                    "lDataGrid,UI_ActivityGrid_Row_0_AutoID,UI_ActivityGridCell_0_AutoID,UI__Row1_Fie" +
-                    "ldName_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I send \"{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} Test\" to \"ACTIVETAB,Assign (1)(MultiA" +
+                    "ssignDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

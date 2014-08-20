@@ -61,6 +61,15 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Dev2.Studio.UISpecs\Workflow.feature.cs">
+      <Link>Workflow.feature.cs</Link>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Workflow.feature</DependentUpon>
+    </Compile>
+    <Compile Include="..\Dev2.Studio.UISpecs\WorkflowSteps.cs">
+      <Link>WorkflowSteps.cs</Link>
+    </Compile>
     <Compile Include="Connect Control\Connect Control1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -80,14 +89,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolsTestUISpecs.feature</DependentUpon>
     </Compile>
-    <Compile Include="Workflow.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Workflow.feature</DependentUpon>
-    </Compile>
-    <Compile Include="WorkflowSteps.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Dev2.Studio.UISpecs\Workflow.feature">
+      <Link>Workflow.feature</Link>
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Workflow.feature.cs</LastGenOutput>
+    </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -103,10 +111,6 @@
     <None Include="Tools Large ViewUISpecs\ToolsTestUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ToolsTestUISpecs.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Workflow.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Workflow.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

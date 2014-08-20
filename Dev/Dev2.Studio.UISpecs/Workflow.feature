@@ -69,7 +69,7 @@ Scenario: Drag Assign
 	And I send "Assign" to "TOOLBOX,PART_SearchBox"
 	When I drag "TOOLMULTIASSIGN" onto "ACTIVETAB,StartSymbol"
 	#And I double click "TABACTIVE,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner)"
-	And I send "Test" to "ACTIVETAB,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI_ActivityGridCell_0_AutoID,UI__Row1_FieldName_AutoID"
+	And I send "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} Test" to "ACTIVETAB,Assign (1)(MultiAssignDesigner)"
 	
 	
 	#When I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity" onto "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Assign (1)(MultiAssignDesigner)"

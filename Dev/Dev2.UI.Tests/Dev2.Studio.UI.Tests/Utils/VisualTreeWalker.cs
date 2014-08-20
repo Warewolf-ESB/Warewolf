@@ -121,8 +121,6 @@ namespace Dev2.Studio.UI.Tests.Utils
                             Container = wpfControl
                         };
                         var automationId = automationIDs[automationCounter];
-                        //                        try
-                        //                        {
                         theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
                         var tryFind = theControl.TryFind();
                         if(tryFind)
@@ -134,16 +132,8 @@ namespace Dev2.Studio.UI.Tests.Utils
                             var children = wpfControl.GetChildren().Cast<WpfControl>();
                             theControl = children.FirstOrDefault(control => control.AutomationId == automationId);
                         }
-                        //}
-                        //                        catch(UITestControlNotFoundException)
-                        //                        {
-                        //                            var children = startControl == null ? _studioWindow.GetChildren().Cast<WpfControl>() : startControl.GetChildren().Cast<WpfControl>();
-                        //                            theControl = children.FirstOrDefault(control => control.AutomationId == automationId);
-                        //                        }
                         if(theControl != null)
                         {
-                            theControl.DrawHighlight();
-                            // theControl.SetFocus();
                             startControl = theControl;
                         }
                         automationCounter++;
