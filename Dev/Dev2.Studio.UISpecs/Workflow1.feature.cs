@@ -146,23 +146,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragOnMultiassign()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag on Multiassign", ((string[])(null)));
-#line 32
+#line 31
 this.ScenarioSetup(scenarioInfo);
-#line 33
+#line 32
  testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 34
+#line 33
  testRunner.And("I click \"UI_RibbonHomeTabWorkflowBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
+#line 34
  testRunner.When("I send \"Assign\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 36
+#line 35
  testRunner.And("I drag \"TOOLMULTIASSIGN\" onto \"ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkS" +
                     "urfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityT" +
                     "ypeDesigner,WorkflowItemPresenter,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 37
  testRunner.And("I send \"[[rec().a]]\" to \"ACTIVETAB,Assign (1)(MultiAssignDesigner),SmallViewConte" +
                     "nt,SmallDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.Activity" +
                     "DTO,Column Display Index: 1,UI__Row1_FieldName_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
+#line 38
  testRunner.And("I send \"test\" to \"UNSAVED1,Assign (1)(MultiAssignDesigner),SmallViewContent,Small" +
                     "DataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.ActivityDTO,Colu" +
                     "mn Display Index: 1,UI__Row1_FieldValue_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -176,23 +176,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragOnBaseCovert()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag on BaseCovert", ((string[])(null)));
-#line 41
+#line 40
 this.ScenarioSetup(scenarioInfo);
-#line 42
+#line 41
  testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 43
+#line 42
  testRunner.And("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 43
  testRunner.When("I send \"Base\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 45
+#line 44
  testRunner.And("I drag \"TOOLBASECONVERT\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
+#line 45
  testRunner.And("I double click \"WORKSURFACE,BaseConvert (1)(DsfBaseConvertActivity)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
+#line 46
  testRunner.And("I send \"[[rec().a]]\" to \"WORKSURFACE,BaseConvert (1)(BaseConvertDesigner),SmallVi" +
                     "ewContent,SmallDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.A" +
                     "ctivityDTO,Column Display Index: 1,UI__Row1_FieldName_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
+#line 47
  testRunner.And("close the Studio and Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -204,40 +204,40 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Drag()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag", ((string[])(null)));
-#line 51
+#line 50
 this.ScenarioSetup(scenarioInfo);
-#line 52
+#line 51
     testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 53
+#line 52
     testRunner.Given("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 54
+#line 53
  testRunner.And("I send \"Data Merge\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 55
+#line 54
  testRunner.When("I drag \"UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb8" +
                     "9f15f346eccb7b1,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID,PART_Tools,Data,D" +
                     "sfDataMergeActivity\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 56
+#line 55
     testRunner.And("I double click \"WORKSURFACE,Data Merge (1)(DataMergeDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
+#line 56
     testRunner.And("I send \"Test\" to \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),LargeViewContent," +
                     "LargeDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.DataMergeDT" +
                     "O,Column Display Index: 1,UI__Row1_InputVariable_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 57
  testRunner.And("I send \"%\" to \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),LargeViewContent,Lar" +
                     "geDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.DataMergeDTO,C" +
                     "olumn Display Index: 3,UI__At_Row1_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 58
  testRunner.And("I click \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 59
  testRunner.And("I click \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),\'Using\' must be a real num" +
                     "ber\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 60
  testRunner.And("I send \"1\" to \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),LargeViewContent,Lar" +
                     "geDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.DataMergeDTO,C" +
                     "olumn Display Index: 3,UI__At_Row1_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 61
  testRunner.And("I click \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 63
+#line 62
  testRunner.Given("I send \"%\" to \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),LargeViewContent,Lar" +
                     "geDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.DataMergeDTO,d" +
                     "ataitem,Column Display Index: 3,UI__At_Row1_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -251,25 +251,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignLargeViewTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign Large View Test", ((string[])(null)));
-#line 66
+#line 65
 this.ScenarioSetup(scenarioInfo);
-#line 67
+#line 66
     testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 68
+#line 67
  testRunner.Given("I click \"UI_RibbonHomeTabWorkflowBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 69
+#line 68
  testRunner.And("I send \"Assign\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+#line 69
  testRunner.When("I drag \"TOOLMULTIASSIGN\" onto \"ACTIVETAB,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 71
+#line 70
  testRunner.And("I double click \"TABACTIVE,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesi" +
                     "gner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
+#line 71
  testRunner.And("I send \"{TAB} {TAB} {TAB} {TAB} {TAB} [[rec(&).a]]\" to \"ACTIVETAB,Assign (1)(Mult" +
                     "iAssignDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
+#line 72
  testRunner.And("I click \"ACTIVETAB,Assign (1)(MultiAssignDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 74
+#line 73
  testRunner.Then("close the Studio and Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -281,17 +281,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragDataMerge()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag Data Merge", ((string[])(null)));
-#line 91
+#line 90
 this.ScenarioSetup(scenarioInfo);
-#line 93
+#line 92
  testRunner.Given("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 94
+#line 93
  testRunner.And("I send \"Data Merge\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 95
+#line 94
  testRunner.When(@"I drag ""TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity"" onto ""ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 96
+#line 95
  testRunner.And("I send \"Assign\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 97
+#line 96
  testRunner.When(@"I drag ""TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity"" onto ""ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Data Merge (1)(DataMergeDesigner)""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -303,13 +303,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragDataDataSplit()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag Data DataSplit", ((string[])(null)));
-#line 100
+#line 99
 this.ScenarioSetup(scenarioInfo);
-#line 102
+#line 101
  testRunner.Given("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 103
+#line 102
  testRunner.And("I send \"Data Split\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 104
+#line 103
  testRunner.When(@"I drag ""TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataSplitActivity"" onto ""ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -321,13 +321,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragFindRecordIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag Find Record Index", ((string[])(null)));
-#line 107
+#line 106
 this.ScenarioSetup(scenarioInfo);
-#line 111
+#line 110
  testRunner.Given("I click \"UI_RibbonHomeTabWorkflowBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 112
+#line 111
  testRunner.And("I send \"Data Merge\" to \"TOOLBOXSEARCH\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 114
+#line 113
  testRunner.When("I drag \"TOOLDATAMERGE\" onto \"ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSur" +
                     "faceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,Activ" +
                     "ityTypeDesigner,WorkflowItemPresenter,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -341,12 +341,12 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Settings()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Settings", ((string[])(null)));
-#line 122
+#line 121
  this.ScenarioSetup(scenarioInfo);
+#line 123
+ testRunner.Given("I send \"{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB}\" to \"ACTIVETAB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 124
- testRunner.Given("I send \"{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} \" to \"ACTIVETAB\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 125
-    testRunner.And("I click \"SECURITYSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I double click \"SECURITYSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }

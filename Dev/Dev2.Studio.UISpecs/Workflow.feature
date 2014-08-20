@@ -132,7 +132,7 @@ Scenario: Set server permission
 
 
 Scenario: Open folder in explorer
-	Given I click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_A1_AutoID,Expander"
+	Given I click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_BARNEY_AutoID,Expander"
 	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_A1_AutoID,UI_A1W1_AutoID,UI_CanEdit_AutoID" is visible
 #
 #	Given I click "UI_RibbonHomeTabWorkflowBtn_AutoID"
@@ -145,9 +145,41 @@ Scenario: Open folder in explorer
 
 
 
+Scenario: Set server permission View
+	Given I click "UI_RibbonHomeManageSecuritySettingsBtn_AutoID"
+	And I send "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}" to "ACTIVETAB,UI_SettingsView_AutoID"
+	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'UI_SaveSettingsbtn_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	When I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
+	And I click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+
+Scenario: Set server permission execute
+	Given I click "UI_RibbonHomeManageSecuritySettingsBtn_AutoID"
+	And I send "SECURITYPUBLICEXECUTE" to "ACTIVETAB,UI_SettingsView_AutoID"
+	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'UI_SaveSettingsbtn_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
+	Given I click "EXPLORER,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
 
 
-
+Scenario: Set server permission Contribute
+	Given I click "UI_RibbonHomeManageSecuritySettingsBtn_AutoID"
+	And I send "SECURITYPUBLICCONTRIBUTE" to "ACTIVETAB,UI_SettingsView_AutoID"
+	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'UI_SaveSettingsbtn_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
+	Given I click "EXPLORER,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
 
 
 

@@ -30,24 +30,52 @@ namespace Dev2.Studio.UI.Specs
         static readonly string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string TabActive = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
+        //Tools
         static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
         static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
-        static readonly string SecuritySave = "ACTIVETAB,UI_SaveSettingsbtn_AutoID";
-        static readonly string SecurityDelete = "ACTIVETAB,UI_AddRemovebtn_AutoID";
-        static readonly string SecurityResourcePicker = "ACTIVETAB,UI_AddResourceToSecuritySettingsbtn_AutoID";
-        static readonly string SecurityWindowsGrouppicker = "ACTIVETAB,UI__AddWindowsGroupButton_AutoID";
-        static readonly string SecurityWindowsGroupInput = "ACTIVETAB,UI_AddWindowsGroupsTextBox_AutoID";
-        static readonly string ResourceGroupPicker = "ACTIVETAB,UI__AddWindowsGroupsButton_AutoID";
-        static readonly string SecurityView = "ACTIVETAB,UI_SecuritySettingResourceViewchk_AutoID";
-        static readonly string SecurityExecute = "ACTIVETAB,UI_SecuritySettingResourceExecutechk_AutoID";
-        static readonly string SecurityContribute = "ACTIVETAB,UI_SecuritySettingResourceContributechk_AutoID";
-        static readonly string SecurityAdministrator = "ACTIVETAB,UI_SecuritySettingServerAdministratorchk_AutoID";
-        static readonly string SecurityDeployTo = "ACTIVETAB,UI_SecuritySettingServerDeployTochk_AutoID";
-        static readonly string SecurityDeployFrom = "ACTIVETAB,UI_SecuritySettingServerDeployFromchk_AutoID";
-        static readonly string SecurityConnectDropdown = "ACTIVETAB,UI_SettingsServerComboBox_AutoID";
-        static readonly string SecurityConnectEdit = "ACTIVETAB,UI_SettingsServerEditButton_AutoID";
-        static readonly string SecurityConnectButton = "ACTIVETAB,UI_SettingsServerConnectButton_AutoID";
-        static readonly string SecurityHelp = "ACTIVETAB,ServerHelpToggleButton";
+        static readonly string ToolBaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolCaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolFindIndex = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolReplace = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolCalculate = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolFormatnumber = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolRandom = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolDateandtime = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolDateandTimeDifference = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolEmail = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolSystemInfo = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolXpath = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolComment = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolWebRequest = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolCount = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        //Settings Tab
+        static readonly string Settings_Tab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SettingsView_AutoID";
+        static readonly string SettingsServerPermissions = "SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID";
+        //SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID
+        static readonly string SecurityPublicView = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
+        static readonly string SecurityPublicExecute = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
+        static readonly string SecurityPublicContribute = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
+        static readonly string SecurityPublicAdministrator = SettingsServerPermissions + ",UI_Public_AdministratorPermissionCheckBox_AutoID";
+        static readonly string SecurityPublicDeployTo = SettingsServerPermissions + ",UI_Public_DeployToPermissionCheckBox_AutoID";
+        static readonly string SecurityPublicDeployFrom = SettingsServerPermissions + ",UI_Public_DeployFromPermissionCheckBox_AutoID";
+
+        static readonly string SecuritySave = Settings_Tab + ",UI_SaveSettingsbtn_AutoID";
+        static readonly string SecurityDelete = Settings_Tab + ",UI_AddRemovebtn_AutoID";
+        static readonly string SecurityResourcePicker = Settings_Tab + ",UI_AddResourceToSecuritySettingsbtn_AutoID";
+        static readonly string SecurityWindowsGrouppicker = Settings_Tab + "UI__AddWindowsGroupButton_AutoID";
+        static readonly string SecurityWindowsGroupInput = Settings_Tab + ",UI_AddWindowsGroupsTextBox_AutoID";
+        static readonly string ResourceGroupPicker = Settings_Tab + ",UI__AddWindowsGroupsButton_AutoID";
+        static readonly string SecurityView = Settings_Tab + ",UI_SecuritySettingResourceViewchk_AutoID";
+        static readonly string SecurityExecute = Settings_Tab + ",UI_SecuritySettingResourceExecutechk_AutoID";
+        static readonly string SecurityContribute = Settings_Tab + ",UI_SecuritySettingResourceContributechk_AutoID";
+        static readonly string SecurityAdministrator = Settings_Tab + ",UI_SecuritySettingServerAdministratorchk_AutoID";
+        static readonly string SecurityDeployTo = Settings_Tab + ",UI_SecuritySettingServerDeployTochk_AutoID";
+        static readonly string SecurityDeployFrom = Settings_Tab + ",UI_SecuritySettingServerDeployFromchk_AutoID";
+        static readonly string SecurityConnectDropdown = Settings_Tab + ",UI_SettingsServerComboBox_AutoID";
+        static readonly string SecurityConnectEdit = Settings_Tab + ",UI_SettingsServerEditButton_AutoID";
+        static readonly string SecurityConnectButton = Settings_Tab + ",UI_SettingsServerConnectButton_AutoID";
+        static readonly string SecurityHelp = Settings_Tab + ",ServerHelpToggleButton";
+    
         int _retryCount;
 #pragma warning restore 414
 
@@ -215,7 +243,7 @@ namespace Dev2.Studio.UI.Specs
             }
 
             Playback.Wait(100);
-            var dataToSend = textToSend.Split(' ');
+            var dataToSend = GetCorrect(textToSend).Split(' ');
             foreach(var text in dataToSend)
             {
                 Keyboard.SendKeys(text);
@@ -265,7 +293,7 @@ namespace Dev2.Studio.UI.Specs
             Mouse.Click(controlToClick, new Point(5, 5));
             Playback.Wait(200);
             automationIDs = GetCorrect(itemToClickAutomationId).Split(',');
-            foreach(var automationId in automationIDs)
+            foreach (var automationId in automationIDs)
             {
                 controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, automationId);
                 startControl = controlToClick as WpfControl;
@@ -275,8 +303,8 @@ namespace Dev2.Studio.UI.Specs
             Playback.Wait(100);
         }
 
-
         [Given(@"I create a new remote connection ""(.*)"" as")]
+        [When(@"I create a new remote connection ""(.*)"" as")]
         public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
         {
             GivenIClickOn("U_UI_ExplorerServerCbx_AutoID_New Remote Server...", "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID");

@@ -343,10 +343,19 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("New Remote Connection", ((string[])(null)));
 #line 118
 this.ScenarioSetup(scenarioInfo);
-#line 122
- testRunner.Given("I close Studio", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 124
- testRunner.And("I start Studio as \"TestUser\" with password \"T35tu53r\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Address",
+                        "AuthType",
+                        "UserName",
+                        "Password"});
+            table1.AddRow(new string[] {
+                        "http://localhost:3142",
+                        "Public",
+                        "",
+                        ""});
+#line 119
+ testRunner.Given("I create a new remote connection \"Server1\" as", ((string)(null)), table1, "Given ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -357,15 +366,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SetServerPermission()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set server permission", ((string[])(null)));
-#line 127
+#line 124
 this.ScenarioSetup(scenarioInfo);
-#line 128
+#line 125
  testRunner.Given("I click \"UI_RibbonHomeManageSecuritySettingsBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 130
+#line 127
  testRunner.And("I click on \'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGri" +
                     "d_Row_1_AutoID,UI_ServerAdministratorPermissions_Row_1_Cell_AutoID,UI_Public_Adm" +
                     "inistratorPermissionCheckBox_AutoID\' in \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 131
+#line 128
  testRunner.And("I click on \'UI_SaveSettingsbtn_AutoID\' in \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -377,12 +386,126 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OpenFolderInExplorer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open folder in explorer", ((string[])(null)));
-#line 134
+#line 131
 this.ScenarioSetup(scenarioInfo);
-#line 135
- testRunner.Given(@"I click ""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_A1_AutoID,Expander""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 136
+#line 132
+ testRunner.Given(@"I click ""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_BARNEY_AutoID,Expander""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 133
  testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_A1_AutoID,UI_A1W1_AutoID,UI_CanEdit_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set server permission View")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Workflow")]
+        public virtual void SetServerPermissionView()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set server permission View", ((string[])(null)));
+#line 145
+this.ScenarioSetup(scenarioInfo);
+#line 146
+ testRunner.Given("I click \"UI_RibbonHomeManageSecuritySettingsBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 147
+ testRunner.And("I send \"{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {" +
+                    "TAB} {TAB} {SPACE}\" to \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 149
+ testRunner.And("I click on \'UI_SaveSettingsbtn_AutoID\' in \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Address",
+                        "AuthType",
+                        "UserName",
+                        "Password"});
+            table2.AddRow(new string[] {
+                        "http://localhost:3142",
+                        "Public",
+                        "",
+                        ""});
+#line 150
+ testRunner.When("I create a new remote connection \"Server1\" as", ((string)(null)), table2, "When ");
+#line 153
+ testRunner.And(@"I click ""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 154
+ testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set server permission execute")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Workflow")]
+        public virtual void SetServerPermissionExecute()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set server permission execute", ((string[])(null)));
+#line 156
+this.ScenarioSetup(scenarioInfo);
+#line 157
+ testRunner.Given("I click \"UI_RibbonHomeManageSecuritySettingsBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 158
+ testRunner.And("I send \"SECURITYPUBLICEXECUTE\" to \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 160
+ testRunner.And("I click on \'UI_SaveSettingsbtn_AutoID\' in \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Address",
+                        "AuthType",
+                        "UserName",
+                        "Password"});
+            table3.AddRow(new string[] {
+                        "http://localhost:3142",
+                        "Public",
+                        "",
+                        ""});
+#line 161
+ testRunner.And("I create a new remote connection \"Server1\" as", ((string)(null)), table3, "And ");
+#line 164
+ testRunner.Given("I click \"EXPLORER,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_S" +
+                    "erver1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_Auto" +
+                    "ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 165
+ testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 166
+ testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set server permission Contribute")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Workflow")]
+        public virtual void SetServerPermissionContribute()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set server permission Contribute", ((string[])(null)));
+#line 169
+this.ScenarioSetup(scenarioInfo);
+#line 170
+ testRunner.Given("I click \"UI_RibbonHomeManageSecuritySettingsBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 171
+ testRunner.And("I send \"SECURITYPUBLICCONTRIBUTE\" to \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 173
+ testRunner.And("I click on \'UI_SaveSettingsbtn_AutoID\' in \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Address",
+                        "AuthType",
+                        "UserName",
+                        "Password"});
+            table4.AddRow(new string[] {
+                        "http://localhost:3142",
+                        "Public",
+                        "",
+                        ""});
+#line 174
+ testRunner.And("I create a new remote connection \"Server1\" as", ((string)(null)), table4, "And ");
+#line 177
+ testRunner.Given("I click \"EXPLORER,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_S" +
+                    "erver1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_Auto" +
+                    "ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 178
+ testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 179
+ testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
