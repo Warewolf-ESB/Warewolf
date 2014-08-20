@@ -106,7 +106,12 @@ namespace Dev2.Studio.UI.Tests.Utils
             var serverProc = TryGetProcess(ServerProcName);
 
             //Don't touch the server or studio for local runs on a developers desk he might be debugging!
-            if(serverProc != null && studioProc != null && !EnableLocalRestart && (Environment.CurrentDirectory.Contains(BuildDirectory) && IsLocal))
+            if(serverProc != null && studioProc != null)
+            {
+                return;
+            }
+
+            if(!EnableLocalRestart && (Environment.CurrentDirectory.Contains(BuildDirectory) && IsLocal))
             {
                 return;
             }
@@ -130,6 +135,13 @@ namespace Dev2.Studio.UI.Tests.Utils
         public static void Teardown()
         {
             //Don't touch the server or studio for local runs on a developers desk he might be debugging!
+            var studioProc = TryGetProcess(StudioProcName);
+            var serverProc = TryGetProcess(ServerProcName);
+            if(serverProc != null && studioProc != null)
+            {
+                return;
+            }
+
             if(!EnableLocalRestart && (Environment.CurrentDirectory.Contains(BuildDirectory) && IsLocal))
             {
                 return;
@@ -138,10 +150,10 @@ namespace Dev2.Studio.UI.Tests.Utils
             if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
             {
                 //Server was deployed and started, stop it now.
-                KillProcess(TryGetProcess(ServerProcName));
+                KillServer();
 
                 //Studio was deployed and started, stop it now.
-                KillProcess(TryGetProcess(StudioProcName));
+                KillStudio();
             }
             else
             {
@@ -153,6 +165,16 @@ namespace Dev2.Studio.UI.Tests.Utils
                 // Now clean up next test run ;)
                 CloseAllInstancesOfIE();
             }
+        }
+
+        public static void KillServer()
+        {
+            KillProcess(TryGetProcess(ServerProcName));
+        }
+
+        public static void KillStudio()
+        {
+            KillProcess(TryGetProcess(StudioProcName));
         }
 
         /// <summary>
@@ -374,16 +396,6 @@ namespace Dev2.Studio.UI.Tests.Utils
 
                 File.AppendAllText(LogLocation, Environment.NewLine);
             }
-        }
-
-        public static void KillStudio()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static void KillServer()
-        {
-            throw new NotImplementedException();
         }
     }
 }

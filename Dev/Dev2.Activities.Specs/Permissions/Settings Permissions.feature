@@ -193,33 +193,33 @@ Examples:
         | 85 | Users | Deploy To, Deploy From, Contribute, View, Execute, Administrator | BARNEY\DECISION TESTING | None                      | Users      | All       | Deploy To, Deploy From, Contribute, View, Execute, Administrator | BARNEY\DECISION TESTING | None                      |
 
 
-#Scenario Outline: Setting Selected
-#        Given I have a server "localhost"
-#        And it has '<Group>' with '<Given rights>' 
-#        And Resource '<Resource Name>' has rights '<Resource Rights>' for '<User Group>'
-#        When connected as user part of '<User Group>'
-#        Then '<Resource>' should have '<Permissions>'
-#		And resources should not have '<Rights>' 
-#Examples: 
-#        | No | Group                   | Given rights                                                     | Resource Name           | Resource Rights           | User Group | Resources | Rights | Resource                | Permissions               |
-#        | 1  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View                      | Users      | All       | None   | BARNEY\DECISION TESTING | View                      |
-#        | 2  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View                      | Users      | All       | None   | BARNEY\DECISION TESTING | View                      |
-#        | 3  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View                      | Users      | All       | None   | BARNEY\DECISION TESTING | View                      |
-#        | 4  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View                      | Users      | All       | None   | BARNEY\DECISION TESTING | View                      |
-#        | 5  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Execute                   | Users      | All       | None   | BARNEY\DECISION TESTING | Execute                   |
-#        | 6  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Execute                   | Users      | All       | None   | BARNEY\DECISION TESTING | Execute                   |
-#        | 7  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Execute                   | Users      | All       | None   | BARNEY\DECISION TESTING | Execute                   |
-#        | 7  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Execute                   | Users      | All       | None   | BARNEY\DECISION TESTING | Execute                   |
-#        | 8  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | BARNEY\DECISION TESTING | Contribute, View, Execute |
-#        | 9  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | BARNEY\DECISION TESTING | Contribute, View, Execute |
-#        | 10 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | BARNEY\DECISION TESTING | Contribute, View, Execute |
-#        | 11 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | BARNEY\DECISION TESTING | Contribute, View, Execute |
-#        | 12 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View, Execute             | Users      | All       | None   | BARNEY\DECISION TESTING | View, Execute             |
-#        | 13 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View, Execute             | Users      | All       | None   | BARNEY\DECISION TESTING | View, Execute             |
-#        | 14 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View, Execute             | Users      | All       | None   | BARNEY\DECISION TESTING | View, Execute             |
-#        | 15 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View, Execute             | Users      | All       | None   | BARNEY\DECISION TESTING | View, Execute             |
-#        | 16 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
-#        | 17 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
-#        | 18 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
-#        | 19 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
+Scenario Outline: Setting Selected
+        Given I have a server "localhost"
+        And it has '<Group>' with '<Given rights>' 
+        And Resource '<Resource Name>' has rights '<Resource Rights>' for '<User Group>'
+        When connected as user part of '<User Group>'
+        Then '<Resource>' should have '<Permissions>'
+		And resources should not have '<Rights>' 
+Examples: 
+        | No | Group                   | Given rights                                                     | Resource Name           | Resource Rights           | User Group | Resources | Rights | Resource                | Permissions               |
+        | 1  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View                      | Users      | All       | None   | BARNEY\DECISION TESTING | View                      |
+        | 2  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View                      | Users      | All       | None   | BARNEY\DECISION TESTING | View                      |
+        | 3  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View                      | Users      | All       | None   | BARNEY\DECISION TESTING | View                      |
+        | 4  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View                      | Users      | All       | None   | BARNEY\DECISION TESTING | View                      |
+        | 5  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Execute                   | Users      | All       | None   | BARNEY\DECISION TESTING | Execute                   |
+        | 6  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Execute                   | Users      | All       | None   | BARNEY\DECISION TESTING | Execute                   |
+        | 7  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Execute                   | Users      | All       | None   | BARNEY\DECISION TESTING | Execute                   |
+        | 7  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Execute                   | Users      | All       | None   | BARNEY\DECISION TESTING | Execute                   |
+        | 8  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | BARNEY\DECISION TESTING | Contribute, View, Execute |
+        | 9  | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | BARNEY\DECISION TESTING | Contribute, View, Execute |
+        | 10 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | BARNEY\DECISION TESTING | Contribute, View, Execute |
+        | 11 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | Contribute, View, Execute | Users      | All       | None   | BARNEY\DECISION TESTING | Contribute, View, Execute |
+        | 12 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View, Execute             | Users      | All       | None   | BARNEY\DECISION TESTING | View, Execute             |
+        | 13 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View, Execute             | Users      | All       | None   | BARNEY\DECISION TESTING | View, Execute             |
+        | 14 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View, Execute             | Users      | All       | None   | BARNEY\DECISION TESTING | View, Execute             |
+        | 15 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | View, Execute             | Users      | All       | None   | BARNEY\DECISION TESTING | View, Execute             |
+        | 16 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
+        | 17 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
+        | 18 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
+        | 19 | Warewolf Administrators | View, Execute, Contribute, Deploy To, Deploy From, Administrator | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
 

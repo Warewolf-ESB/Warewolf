@@ -759,11 +759,12 @@ namespace Dev2.Studio.UI.Tests
 
                 Playback.PlaybackSettings.ContinueOnError = false;
                 Playback.PlaybackSettings.ShouldSearchFailFast = true;
+                Playback.PlaybackSettings.SearchTimeout = 1000;
                 Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
                 Playback.PlaybackSettings.MatchExactHierarchy = true;
-                Playback.PlaybackSettings.DelayBetweenActions = 5;
+                Playback.PlaybackSettings.DelayBetweenActions = 500;
+                Playback.PlaybackSettings.MaximumRetryCount = 10;
                 Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
-
                 // make the mouse quick ;)
                 Mouse.MouseMoveSpeed = 10000;
                 Mouse.MouseDragSpeed = 10000;
