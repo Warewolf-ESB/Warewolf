@@ -375,6 +375,16 @@ namespace Dev2.Studio.UI.Tests.Utils
                 File.AppendAllText(LogLocation, Environment.NewLine);
             }
         }
+
+        public static void KillStudio()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void KillServer()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
 
