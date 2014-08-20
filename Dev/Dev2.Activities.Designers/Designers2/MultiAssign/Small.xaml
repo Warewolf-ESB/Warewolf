@@ -30,7 +30,9 @@
     <controls:Dev2DataGrid x:Name="SmallDataGrid"
                            ItemsSource="{Binding ModelItem.FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                           
                            Style="{StaticResource SpacedActivityDataGridStyle}"                           
-                           MinHeight="56">
+                           MinHeight="56"
+                           RowStyle="{StaticResource ActivityGridRowStyle}"
+                           LoadingRow="DataGrid_LoadingRow">
         
         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
         
