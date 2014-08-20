@@ -34,5 +34,10 @@ namespace Dev2.Settings.Security
             //apply the sort
             lcv.CustomSort = new WindowsGroupPermissionComparer(direction, column.SortMemberPath);
         }
+
+        private void DataGrid_LoadingRow(System.Object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Tag = e.Row.GetIndex();
+        }
     }
 }
