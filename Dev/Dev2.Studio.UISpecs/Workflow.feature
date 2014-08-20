@@ -62,16 +62,16 @@ Scenario: Drag
 	Given I send "%" to "WORKSURFACE,Data Merge (1)(DataMergeDesigner),LargeViewContent,LargeDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.DataMergeDTO,dataitem,Column Display Index: 3,UI__At_Row1_AutoID"
 
 
-Scenario: Drag Assign
-    #Given I have Warewolf running
+Scenario: Assign Large View Test
+    Given I have Warewolf running
 	Given I click "UI_RibbonHomeTabWorkflowBtn_AutoID"
 	And I send "Assign" to "TOOLBOX,PART_SearchBox"
 	When I drag "TOOLMULTIASSIGN" onto "ACTIVETAB,StartSymbol"
-	#And I double click "TABACTIVE,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner)"
-	And I send "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} Test" to "ACTIVETAB,Assign (1)(MultiAssignDesigner)"
+	And I double click "TABACTIVE,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner)"
+	And I send "{TAB} {TAB} {TAB} {TAB} {TAB} [[rec(&).a]]" to "ACTIVETAB,Assign (1)(MultiAssignDesigner)"
+	And I click "ACTIVETAB,Assign (1)(MultiAssignDesigner),DoneButton"
+	Then close the Studio and Server
 	
-	
-	#When I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity" onto "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Assign (1)(MultiAssignDesigner)"
 	
 	
 	
@@ -118,18 +118,20 @@ Scenario: Drag Find Record Index
 
 
 
+ Scenario: Settings
+    #Given I have Warewolf running
+	Given I send "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} " to "ACTIVETAB"
+    And I click "SECURITYSAVE"
 
-
-
-#	 Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel
-#	 UI_WorkflowDesigner_AutoID
-#	 UserControl_1
-#	 ScrollViewer
-#	 ActivityTypeDesigner
-#	 WorkflowItemPresenter
-#	 Unsaved 1(FlowchartDesigner)
 #
-
+#	Given I click "UI_RibbonHomeTabWorkflowBtn_AutoID"
+#	And I send "Assign" to "TOOLBOX,PART_SearchBox"
+#	When I drag "TOOLMULTIASSIGN" onto "ACTIVETAB,StartSymbol"
+#	And I double click "TABACTIVE,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner)"
+#	And I send "{TAB} {TAB} {TAB} {TAB} {TAB} [[rec(&).a]]" to "ACTIVETAB,Assign (1)(MultiAssignDesigner)"
+#	And I click "ACTIVETAB,Assign (1)(MultiAssignDesigner),DoneButton"
+#	Then close the Studio and Server
+	
 
 
 

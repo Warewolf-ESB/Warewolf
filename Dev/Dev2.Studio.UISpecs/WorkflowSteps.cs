@@ -30,7 +30,22 @@ namespace Dev2.Studio.UI.Specs
         static readonly string TabActive = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
         static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
         static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
-
+        static readonly string SecuritySave = "ACTIVETAB,UI_SaveSettingsbtn_AutoID";
+        static readonly string SecurityDelete = "ACTIVETAB,UI_AddRemovebtn_AutoID";
+        static readonly string SecurityResourcePicker = "ACTIVETAB,UI_AddResourceToSecuritySettingsbtn_AutoID";
+        static readonly string SecurityWindowsGrouppicker = "ACTIVETAB,UI__AddWindowsGroupButton_AutoID";
+        static readonly string SecurityWindowsGroupInput = "ACTIVETAB,UI_AddWindowsGroupsTextBox_AutoID";
+        static readonly string ResourceGroupPicker = "ACTIVETAB,UI__AddWindowsGroupsButton_AutoID";
+        static readonly string SecurityView = "ACTIVETAB,UI_SecuritySettingResourceViewchk_AutoID";
+        static readonly string SecurityExecute = "ACTIVETAB,UI_SecuritySettingResourceExecutechk_AutoID";
+        static readonly string SecurityContribute = "ACTIVETAB,UI_SecuritySettingResourceContributechk_AutoID";
+        static readonly string SecurityAdministrator = "ACTIVETAB,UI_SecuritySettingServerAdministratorchk_AutoID";
+        static readonly string SecurityDeployTo = "ACTIVETAB,UI_SecuritySettingServerDeployTochk_AutoID";
+        static readonly string SecurityDeployFrom = "ACTIVETAB,UI_SecuritySettingServerDeployFromchk_AutoID";
+        static readonly string SecurityConnectDropdown = "ACTIVETAB,UI_SettingsServerComboBox_AutoID";
+        static readonly string SecurityConnectEdit = "ACTIVETAB,UI_SettingsServerEditButton_AutoID";
+        static readonly string SecurityConnectButton = "ACTIVETAB,UI_SettingsServerConnectButton_AutoID";
+        static readonly string SecurityHelp = "ACTIVETAB,ServerHelpToggleButton";
         int _retryCount;
 #pragma warning restore 414
 
@@ -222,10 +237,10 @@ namespace Dev2.Studio.UI.Specs
             return startControl;
         }
 
-
         [Given(@"I click ""(.*)""")]
         [When(@"I click ""(.*)""")]
         [Then(@"I click ""(.*)""")]
+        [Given(@"I click")]
         public void GivenIClick(string automationIds)
         {
             var automationIDs = GetCorrect(automationIds).Split(',');
@@ -264,6 +279,7 @@ namespace Dev2.Studio.UI.Specs
 
         [When(@"I double click ""(.*)""")]
         [Given(@"I double click ""(.*)""")]
+        [Given(@"I double click")]
         public void WhenIDoubleClick(string itemToDoubleClickAutoIds)
         {
             var correcteddItemToDoubleClickAutoIds = GetCorrect(itemToDoubleClickAutoIds).Split(',');
@@ -355,6 +371,7 @@ namespace Dev2.Studio.UI.Specs
             return replace;
         }
         [When(@"close the Studio and Server")]
+        [Then(@"close the Studio and Server")]
         public void WhenCloseTheStudioAndServer()
         {
             TabManagerUIMap.CloseAllTabs();

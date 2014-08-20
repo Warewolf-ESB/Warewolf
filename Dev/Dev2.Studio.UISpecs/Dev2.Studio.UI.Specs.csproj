@@ -61,6 +61,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Dev2.Studio.UISpecs\WorkflowSteps.cs">
+      <Link>WorkflowSteps.cs</Link>
+    </Compile>
     <Compile Include="Connect Control\Connect Control1.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
