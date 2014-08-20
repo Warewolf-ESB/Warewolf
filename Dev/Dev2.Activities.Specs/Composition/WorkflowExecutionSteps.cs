@@ -994,7 +994,7 @@ namespace Dev2.Activities.Specs.Composition
                 _resetEvt.WaitOne();
             }
         }
-        [AfterScenario("WorkflowExecution")]
+        [AfterScenario]
         public void AfterScenario()
         {
             if(_debugWriterSubscriptionService != null)

@@ -115,8 +115,11 @@ namespace Dev2.Studio.UI.Tests.Utils
                     var automationCounter = 0;
                     while(automationCounter <= automationIDs.Length - 1)
                     {
-                        theControl = new WpfControl(startControl ?? _studioWindow);
-                        theControl.Container = startControl;
+                        var wpfControl = startControl ?? _studioWindow;
+                        theControl = new WpfControl(wpfControl)
+                        {
+                            Container = wpfControl
+                        };
                         var automationId = automationIDs[automationCounter];
                         //                        try
                         //                        {
@@ -128,7 +131,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                         }
                         else
                         {
-                            var children = startControl == null ? _studioWindow.GetChildren().Cast<WpfControl>() : startControl.GetChildren().Cast<WpfControl>();
+                            var children = wpfControl.GetChildren().Cast<WpfControl>();
                             theControl = children.FirstOrDefault(control => control.AutomationId == automationId);
                         }
                         //}
