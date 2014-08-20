@@ -116,10 +116,13 @@ Scenario: Drag Find Record Index
 	# Given "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Find Record Index (1)(FindRecordsMultipleCriteriaDesigner)" is Highlighted
 	 
 Scenario: New Remote Connection
-	Given I create a new remote connection "Server1" as
-	| Address               | AuthType | UserName | Password |
-	| http://localhost:3142 | Public   |          |          |
-
+	#Given I create a new remote connection "Server1" as
+	#| Address               | AuthType | UserName | Password |
+	#| http://localhost:3142 | Public   |          |          |
+	Given I close Studio
+	#And I close Server
+	And I start Studio as "TestUser" with password "T35tu53r"
+	#And I start Studio as "UserName" with password "Password"
 
 Scenario: Set server permission
 	Given I click "UI_RibbonHomeManageSecuritySettingsBtn_AutoID"

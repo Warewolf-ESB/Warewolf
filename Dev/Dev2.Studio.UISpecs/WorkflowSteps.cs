@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security;
 using System.Windows.Forms;
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.Activities;
@@ -297,6 +300,69 @@ namespace Dev2.Studio.UI.Specs
             NewServerUIMap.ClickSave();
             Playback.Wait(1500);
         }
+
+        [Given(@"I close Studio")]
+        public void GivenICloseStudio()
+        {
+            Bootstrap.KillStudio();
+        }
+
+        [Given(@"I close Server")]
+        public void GivenICloseServer()
+        {
+            Bootstrap.KillServer();
+        }
+
+        [Given(@"I start Server as ""(.*)"" with password ""(.*)""")]
+        public void GivenIStartServerAsWithPassword(string userName, string password)
+        {
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.ServerLocation);
+        }
+
+        static void RunSpecifiedFileWithUserNameAndPassword(string userName, string password, string fileLocation)
+        {
+            var sspw = new SecureString();
+
+            foreach(var c in password)
+            {
+                sspw.AppendChar(c);
+            }
+
+            var proc = new Process
+            {
+                StartInfo =
+                            {
+                                UseShellExecute = false,
+                                UserName = userName,
+                                Password = sspw,
+                                Domain = Environment.MachineName,
+                                LoadUserProfile = false
+                            }
+            };
+
+            var workingDirectory = Path.GetDirectoryName(fileLocation);
+            if(workingDirectory != null)
+            {
+                proc.StartInfo.WorkingDirectory = workingDirectory;
+            }
+            var fileName = Path.GetFileName(fileLocation);
+            if(fileName != null)
+            {
+                proc.StartInfo.FileName = fileLocation;
+            }
+
+            //proc.StartInfo.Domain = Environment.MachineName;
+            //proc.StartInfo.Arguments = "";
+
+            proc.Start();
+        }
+
+        [Given(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        public void GivenIStartStudioAsWithPassword(string userName, string password)
+        {
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation);
+        }
+
 
         [When(@"I drag ""(.*)"" onto ""(.*)""")]
         public void WhenIDragOnto(string dragItemAutoIds, string dragDestinationAutoIds)
