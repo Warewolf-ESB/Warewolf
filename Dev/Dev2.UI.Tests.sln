@@ -62,6 +62,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CI Environments", "CI Envir
 		TestSettings\CI Environments\UI Test Agent 1 (TST7X64-CIUI1).testsettings = TestSettings\CI Environments\UI Test Agent 1 (TST7X64-CIUI1).testsettings
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{380CF0B0-6BA2-41E1-B275-62B61CEDFD73}"
+	ProjectSection(SolutionItems) = preProject
+		TestScripts\UI\Cleanup.bat = TestScripts\UI\Cleanup.bat
+		TestScripts\UI\Startup.bat = TestScripts\UI\Startup.bat
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 5
@@ -177,6 +183,7 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F6BA6701-359E-4521-9978-4298A7302A5A} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
+		{380CF0B0-6BA2-41E1-B275-62B61CEDFD73} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
 		{A0453DEE-B2BF-47CB-9D93-79C13308D08D} = {F6BA6701-359E-4521-9978-4298A7302A5A}
 		{83F0E604-D0AC-4D3D-8460-352BF2DAD644} = {F6BA6701-359E-4521-9978-4298A7302A5A}
 		{03CF629F-5860-42E2-8ABD-F46714B4E9D6} = {F6BA6701-359E-4521-9978-4298A7302A5A}
