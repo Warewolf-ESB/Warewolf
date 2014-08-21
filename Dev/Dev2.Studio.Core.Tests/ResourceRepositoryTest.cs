@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Xml.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Controller;
@@ -15,7 +11,6 @@ using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.XML;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Dev2.Interfaces;
 using Dev2.Models;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
@@ -31,6 +26,13 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Xml.Linq;
 using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
 // ReSharper disable InconsistentNaming
@@ -107,7 +109,7 @@ namespace BusinessDesignStudio.Unit.Tests
             const string outputData = "outputs";
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.DbService);
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.DbService);
             resourceData.Inputs = inputData;
             resourceData.Outputs = outputData;
 
@@ -126,7 +128,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.DbService);
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.DbService);
 
             //------------Execute Test---------------------------
             var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
@@ -143,7 +145,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.DbSource);
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.DbSource);
 
             //------------Execute Test---------------------------
             var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
@@ -160,7 +162,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.EmailSource);
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.EmailSource);
 
             //------------Execute Test---------------------------
             var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
@@ -177,7 +179,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.PluginSource);
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.PluginSource);
 
             //------------Execute Test---------------------------
             var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
@@ -194,7 +196,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.WebService);
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.WebService);
 
             //------------Execute Test---------------------------
             var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
@@ -210,7 +212,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.WebSource);
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.WebSource);
 
             //------------Execute Test---------------------------
             var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
@@ -226,7 +228,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.WorkflowService);
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.WorkflowService);
 
             //------------Execute Test---------------------------
             var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
@@ -242,7 +244,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.Server);
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.Server);
 
             //------------Execute Test---------------------------
             var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
@@ -258,7 +260,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //------------Setup for test--------------------------
             var resourceRepository = GetResourceRepository();
-            var resourceData = BuildSerializableResourceFromName("Unsaved 1", Dev2.Data.ServiceModel.ResourceType.WorkflowService, true);
+            var resourceData = BuildSerializableResourceFromName("Unsaved 1", Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, true);
 
             //------------Execute Test---------------------------
             var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
@@ -277,7 +279,7 @@ namespace BusinessDesignStudio.Unit.Tests
             const Permissions TestPermissions = Permissions.Contribute | Permissions.Execute;
 
             var resourceRepository = GetResourceRepository(TestPermissions);
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Data.ServiceModel.ResourceType.Server);
+            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.Server);
 
             //------------Execute Test---------------------------
             var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
@@ -301,7 +303,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Setup();
             var conn = SetupConnection();
 
-            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Data.ServiceModel.ResourceType.Server);
+            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Common.Interfaces.Data.ResourceType.Server);
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -495,7 +497,7 @@ namespace BusinessDesignStudio.Unit.Tests
             const string Reserved1 = "TestName1";
             const string Reserved2 = "TestName2";
 
-            var resourceData = BuildResourceObjectFromNames(new[] { Reserved1, Reserved2 }, Dev2.Data.ServiceModel.ResourceType.ReservedService);
+            var resourceData = BuildResourceObjectFromNames(new[] { Reserved1, Reserved2 }, Dev2.Common.Interfaces.Data.ResourceType.ReservedService);
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -542,7 +544,7 @@ namespace BusinessDesignStudio.Unit.Tests
             //model.SetupGet(p => p.Category).Returns("Root");
             var conn = SetupConnection();
 
-            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Data.ServiceModel.ResourceType.Server);
+            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Common.Interfaces.Data.ResourceType.Server);
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
             int callCnt = 0;
@@ -593,7 +595,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var conn = SetupConnection();
 
-            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Data.ServiceModel.ResourceType.Server);
+            var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Common.Interfaces.Data.ResourceType.Server);
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
             int callCnt = 0;
@@ -1572,7 +1574,7 @@ namespace BusinessDesignStudio.Unit.Tests
                         }
                 };
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Data.ServiceModel.ResourceType.WorkflowService, errors);
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, errors);
 
             var msg = new ExecuteMessage { HasError = false };
 
@@ -1637,7 +1639,7 @@ namespace BusinessDesignStudio.Unit.Tests
                         }
                 };
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Data.ServiceModel.ResourceType.WorkflowService, errors);
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid }, Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, errors);
 
 
 
@@ -1936,7 +1938,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var newGuid = Guid.NewGuid();
 
 
-            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid }, Dev2.Data.ServiceModel.ResourceType.Server);
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid }, Dev2.Common.Interfaces.Data.ResourceType.Server);
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -1997,7 +1999,7 @@ namespace BusinessDesignStudio.Unit.Tests
                     }
             };
 
-            var resourceData = BuildResourceObjectFromGuids(new[] { id }, Dev2.Data.ServiceModel.ResourceType.WorkflowService, errors, false);
+            var resourceData = BuildResourceObjectFromGuids(new[] { id }, Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, errors, false);
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
@@ -2533,7 +2535,7 @@ namespace BusinessDesignStudio.Unit.Tests
         #endregion
 
 
-        private SerializableResource BuildSerializableResourceFromName(string name, Dev2.Data.ServiceModel.ResourceType typeOf, bool isNewResource = false)
+        private SerializableResource BuildSerializableResourceFromName(string name, Dev2.Common.Interfaces.Data.ResourceType typeOf, bool isNewResource = false)
         {
 
             SerializableResource sr = new SerializableResource
@@ -2558,7 +2560,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// <param name="names">The names.</param>
         /// <param name="typeOf">The type of.</param>
         /// <returns></returns>
-        private string BuildResourceObjectFromNames(string[] names, Dev2.Data.ServiceModel.ResourceType typeOf)
+        private string BuildResourceObjectFromNames(string[] names, Dev2.Common.Interfaces.Data.ResourceType typeOf)
         {
             List<SerializableResource> theResources = new List<SerializableResource>();
 
@@ -2592,7 +2594,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// <param name="errors"></param>
         /// <param name="isValid"></param>
         /// <returns></returns>
-        private StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, Dev2.Data.ServiceModel.ResourceType theType = Dev2.Data.ServiceModel.ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true)
+        private StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, Dev2.Common.Interfaces.Data.ResourceType theType = Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true)
         {
             if(errors == null)
             {
@@ -2629,8 +2631,8 @@ namespace BusinessDesignStudio.Unit.Tests
         }
 
         #endregion
-   
-        
+
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceRepository_HasDependencies")]
@@ -2662,7 +2664,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
             var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
-            foreach (var resourceModel in testResources)
+            foreach(var resourceModel in testResources)
             {
                 resRepo.Add(resourceModel);
             }
@@ -2670,8 +2672,8 @@ namespace BusinessDesignStudio.Unit.Tests
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
 
 
-           var res =  resRepo.HasDependencies(new ResourceModel(testEnvironmentModel2.Object) { ResourceName = "Button" });
-           Assert.IsFalse(res);
+            var res = resRepo.HasDependencies(new ResourceModel(testEnvironmentModel2.Object) { ResourceName = "Button" });
+            Assert.IsFalse(res);
 
         }
         [TestMethod]
@@ -2695,23 +2697,23 @@ namespace BusinessDesignStudio.Unit.Tests
             auth.Setup(a => a.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
             var testEnvironmentModel2 = new Mock<IEnvironmentModel>();
             testEnvironmentModel2.Setup(e => e.Connection).Returns(mockConnection.Object);
-            testEnvironmentModel2.Setup(a=>a.AuthorizationService).Returns(auth.Object);
+            testEnvironmentModel2.Setup(a => a.AuthorizationService).Returns(auth.Object);
             var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
             var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
-            foreach (var resourceModel in testResources)
+            foreach(var resourceModel in testResources)
             {
                 resRepo.Add(resourceModel);
             }
 
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
-           
+
             WindowsGroupPermission perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
             PrivateObject p = new PrivateObject(resRepo);
             resRepo.GetStudioResourceRepository = () => stud.Object;
             p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm } });
 
             // expect that the resource repository gets an update
-            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<ExplorerItemModel>>(), It.IsAny<Guid>()),Times.Exactly(2));
+            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(2));
             stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false));
 
         }
@@ -2740,8 +2742,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
             var res = new Mock<IResourceModel>();
             res.Setup(a => a.ID).Returns(Guid.NewGuid());
-            var testResources = new List<IResourceModel>{res.Object};
-            foreach (var resourceModel in testResources)
+            var testResources = new List<IResourceModel> { res.Object };
+            foreach(var resourceModel in testResources)
             {
                 resRepo.Add(resourceModel);
             }
@@ -2754,8 +2756,8 @@ namespace BusinessDesignStudio.Unit.Tests
             p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm } });
 
             // expect that the resource repository gets an update
-            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<ExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(1));
-            stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false),Times.Never());
+            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(1));
+            stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false), Times.Never());
 
         }
 
@@ -2787,7 +2789,7 @@ namespace BusinessDesignStudio.Unit.Tests
                 Assert.Fail("Should always have thrown an exception");
             }
             //Assert
-            catch (Exception iex)
+            catch(Exception iex)
             {
                 PrivateObject p = new PrivateObject(_repo);
                 Assert.AreEqual(1, ((List<IResourceModel>)p.GetField("ResourceModels")).Count);

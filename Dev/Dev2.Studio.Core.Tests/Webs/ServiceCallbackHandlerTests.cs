@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using Caliburn.Micro;
 using Dev2.Collections;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Composition;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Providers.Errors;

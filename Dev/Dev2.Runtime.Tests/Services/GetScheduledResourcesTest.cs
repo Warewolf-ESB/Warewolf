@@ -6,7 +6,6 @@ using System.Text;
 using Dev2.Common;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
-using Dev2.Runtime.Security;
 using Dev2.Scheduler;
 using Dev2.Scheduler.Interfaces;
 using Dev2.TaskScheduler.Wrappers;
@@ -29,7 +28,9 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Get")]
         [TestMethod]
+// ReSharper disable InconsistentNaming
         public void GetScheduledResources_Execute_ReturnsScheduledResources()
+
         {
             var output = RunOutput();
 
@@ -113,4 +114,5 @@ namespace Dev2.Tests.Runtime.Services
             return output;
         }
     }
+    // ReSharper restore InconsistentNaming
 }

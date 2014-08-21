@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Dev2.Data.ServiceModel;
+﻿using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Explorer;
-using Dev2.Interfaces;
-using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Infrastructure.Tests.SharedModels
@@ -19,10 +19,10 @@ namespace Dev2.Infrastructure.Tests.SharedModels
         {
             //------------Setup for test--------------------------
             var guid = Guid.NewGuid();
-            var name = "a";
-            var explorerItemType = ResourceType.Folder;
+            const string name = "a";
+            const ResourceType explorerItemType = ResourceType.Folder;
             var children = new List<IExplorerItem>();
-            var permissions = Permissions.DeployFrom;
+            const Permissions permissions = Permissions.DeployFrom;
 
 
             //------------Execute Test---------------------------
@@ -43,10 +43,10 @@ namespace Dev2.Infrastructure.Tests.SharedModels
         {
             //------------Setup for test--------------------------
             var guid = Guid.NewGuid();
-            var name = "a";
-            var explorerItemType = ResourceType.PluginService;
+            const string name = "a";
+            const ResourceType explorerItemType = ResourceType.PluginService;
             var children = new List<IExplorerItem>();
-            var permissions = Permissions.DeployFrom;
+            const Permissions permissions = Permissions.DeployFrom;
 
 
             //------------Execute Test---------------------------
@@ -64,10 +64,10 @@ namespace Dev2.Infrastructure.Tests.SharedModels
         {
             //------------Setup for test--------------------------
             var guid = Guid.NewGuid();
-            var name = "a";
-            var explorerItemType = ResourceType.PluginService;
+            const string name = "a";
+            const ResourceType explorerItemType = ResourceType.PluginService;
             var children = new List<IExplorerItem>();
-            var permissions = Permissions.DeployFrom;
+            const Permissions permissions = Permissions.DeployFrom;
 
 
             //------------Execute Test---------------------------

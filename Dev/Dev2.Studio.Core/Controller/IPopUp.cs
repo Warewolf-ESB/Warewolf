@@ -23,5 +23,7 @@ namespace Dev2.Studio.Core.Controller
         MessageBoxResult ShowNoInputsSelectedWhenClickLink();
         MessageBoxResult ShowSaveErrorDialog(string errorMessage);
         MessageBoxResult ShowConnectionTimeoutConfirmation(string serverName);
+        MessageBoxResult ShowDeleteVersionMessage(string displayName);
+        MessageBoxResult ShowRollbackVersionMessage(string displayName);
     }
 }

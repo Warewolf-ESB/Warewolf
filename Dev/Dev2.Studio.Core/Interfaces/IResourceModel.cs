@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Dev2.Collections;
-using Dev2.Providers.Errors;
+﻿using Dev2.Collections;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Interfaces
@@ -28,6 +30,7 @@ namespace Dev2.Studio.Core.Interfaces
         string HelpLink { get; set; }
         string IconPath { get; set; }
         bool IsDebugMode { get; set; }
+        bool IsVersionResource { get; set; }
         bool RequiresSignOff { get; set; }
         string ResourceName { get; set; }
         ResourceType ResourceType { get; set; }
@@ -35,7 +38,7 @@ namespace Dev2.Studio.Core.Interfaces
         List<string> TagList { get; }
         string Tags { get; set; }
         string this[string columnName] { get; }
-        StringBuilder ToServiceDefinition();
+        StringBuilder ToServiceDefinition();    
         string UnitTestTargetWorkflowService { get; set; }
         string DataList { get; set; }
         bool IsDatabaseService { get; set; }
@@ -44,7 +47,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsWorkflowSaved { get; set; }
         Version Version { get; set; }
         string ServerResourceType { get; set; }
-
+        IVersionInfo VersionInfo { get; set; }
         void Update(IResourceModel resourceModel);
         string ConnectionString { get; set; }
         bool IsValid { get; set; }

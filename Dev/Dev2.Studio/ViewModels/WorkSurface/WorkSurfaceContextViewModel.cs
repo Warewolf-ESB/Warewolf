@@ -1,17 +1,11 @@
-﻿using System;
-using System.Activities.Presentation.View;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
-using System.Windows;
-using System.Windows.Input;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
+using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.Diagnostics;
 using Dev2.Factory;
 using Dev2.Messages;
-using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
 using Dev2.Security;
@@ -31,10 +25,18 @@ using Dev2.Studio.Core.ViewModels;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.ViewModels.Diagnostics;
+using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utils;
 using Dev2.Webs;
 using Dev2.Workspaces;
+using System;
+using System.Activities.Presentation.View;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Input;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface
@@ -283,14 +285,18 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             this.TraceInfo(message.GetType().Name);
             if(ContextualResourceModel != null)
             {
-                if(ContextualResourceModel.ResourceName == message.Resource.ResourceName)
+                if(ContextualResourceModel.ID == message.Resource.ID)
                 {
                     Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
                 }
             }
             else
             {
-                Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
+                if(!(WorkSurfaceViewModel is HelpViewModel))
+                {
+                    Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
+                }
+                
             }
         }
 
@@ -586,6 +592,17 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
+        public Func<IStudioResourceRepository> GetStudioResourceRepository = () => Dev2.AppResources.Repositories.StudioResourceRepository.Instance;
+
+        private IStudioResourceRepository StudioResourceRepository
+        {
+            get
+            {
+                return GetStudioResourceRepository();
+            }
+        }
+
+
         public void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager)
         {
             RootWebSite.ShowNewWorkflowSaveDialog(resourceModel, null, addToTabManager);
@@ -667,6 +684,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 DispatchServerDebugMessage(saveResult, resource);
                 resource.IsWorkflowSaved = true;
             }
+            StudioResourceRepository.RefreshVersionHistory(resource.Environment.ID, resource.ID);
             this.TraceInfo("Publish message of type - " + typeof(UpdateDeployMessage));
             EventPublisher.Publish(new UpdateDeployMessage());
             return true;

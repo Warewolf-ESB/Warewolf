@@ -8,6 +8,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -106,23 +107,25 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #region Private Methods
 
-        private List<string> FetchRecursiveDependancies(Guid resourceID, Guid workspaceID)
+        private IEnumerable<string> FetchRecursiveDependancies(Guid resourceId, Guid workspaceId)
         {
             List<string> results = new List<string>();
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceID);
+            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId);
             if(resource != null)
             {
                 var dependencies = resource.Dependencies;
                 if(dependencies != null)
                 {
+// ReSharper disable ImplicitlyCapturedClosure
                     dependencies.ForEach(c =>
+// ReSharper restore ImplicitlyCapturedClosure
                     {
                         if(c.ResourceID != Guid.Empty)
                         {
                             results.Add(c.ResourceID.ToString());
                         }
                     });
-                    dependencies.ToList().ForEach(c => results.AddRange(FetchRecursiveDependancies(c.ResourceID, workspaceID)));
+                    dependencies.ToList().ForEach(c => results.AddRange(FetchRecursiveDependancies(c.ResourceID, workspaceId)));
                 }
             }
             return results;

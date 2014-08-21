@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Services.Security;
 
 namespace Dev2.Studio.AppResources.Converters

@@ -2,6 +2,8 @@
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Composition;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
@@ -280,9 +282,9 @@ namespace Dev2.Core.Tests.Dialogs
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
-            ExplorerItemModel server2Item = new ExplorerItemModel { EnvironmentId = environment2Id, DisplayName = "Server 2", ResourceType = Data.ServiceModel.ResourceType.Server };
+            ExplorerItemModel server2Item = new ExplorerItemModel { EnvironmentId = environment2Id, DisplayName = "Server 2", ResourceType = Common.Interfaces.Data.ResourceType.Server };
 
-            ExplorerItemModel resourceItemServer2 = new ExplorerItemModel { EnvironmentId = environment2Id, DisplayName = "Resource Server 2", ResourceType = Data.ServiceModel.ResourceType.WorkflowService };
+            ExplorerItemModel resourceItemServer2 = new ExplorerItemModel { EnvironmentId = environment2Id, DisplayName = "Resource Server 2", ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService };
             server2Item.Children.Add(resourceItemServer2);
             repository.ExplorerItemModels.Add(server2Item);
 
@@ -305,24 +307,24 @@ namespace Dev2.Core.Tests.Dialogs
         {
             var workflow1 = new ServerExplorerItem
             {
-                ResourceType = Data.ServiceModel.ResourceType.WorkflowService,
+                ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService,
                 DisplayName = "workflow1",
                 ResourceId = string.IsNullOrEmpty(workFlowId) ? Guid.NewGuid() : Guid.Parse(workFlowId),
                 Permissions = Permissions.Administrator
             };
 
-            var dbService1 = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.DbService, DisplayName = "dbService1", ResourceId = string.IsNullOrEmpty(dbServiceId) ? Guid.NewGuid() : Guid.Parse(dbServiceId), Permissions = Permissions.Contribute };
-            var webService1 = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.WebService, DisplayName = "webService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
-            var pluginService1 = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.PluginService, DisplayName = "pluginService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
-            var dbSource1 = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.DbSource, DisplayName = "dbSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var webSource1 = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.WebSource, DisplayName = "webSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var pluginSource1 = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.PluginSource, DisplayName = "pluginSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var emailSource1 = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.EmailSource, DisplayName = "emailSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var serverSource1 = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.ServerSource, DisplayName = "serverSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var folder1 = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.Folder, DisplayName = "folder1", ResourceId = folderID ?? Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var folder2 = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.Folder, DisplayName = "folder2", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var subfolder1 = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.Folder, DisplayName = "subfolder1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
-            var localhost = new ServerExplorerItem { ResourceType = Data.ServiceModel.ResourceType.Server, DisplayName = "localhost", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var dbService1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.DbService, DisplayName = "dbService1", ResourceId = string.IsNullOrEmpty(dbServiceId) ? Guid.NewGuid() : Guid.Parse(dbServiceId), Permissions = Permissions.Contribute };
+            var webService1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.WebService, DisplayName = "webService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
+            var pluginService1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.PluginService, DisplayName = "pluginService1", ResourceId = Guid.NewGuid(), Permissions = Permissions.View };
+            var dbSource1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.DbSource, DisplayName = "dbSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var webSource1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.WebSource, DisplayName = "webSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var pluginSource1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.PluginSource, DisplayName = "pluginSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var emailSource1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.EmailSource, DisplayName = "emailSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var serverSource1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.ServerSource, DisplayName = "serverSource1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var folder1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.Folder, DisplayName = "folder1", ResourceId = folderID ?? Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var folder2 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.Folder, DisplayName = "folder2", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var subfolder1 = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.Folder, DisplayName = "subfolder1", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
+            var localhost = new ServerExplorerItem { ResourceType = Common.Interfaces.Data.ResourceType.Server, DisplayName = "localhost", ResourceId = Guid.NewGuid(), Permissions = Permissions.Administrator };
 
             dbService1.Parent = webService1.Parent = pluginService1.Parent = subfolder1.Parent = folder1;
             dbSource1.Parent = webSource1.Parent = pluginSource1.Parent = emailSource1.Parent = serverSource1.Parent = folder2;

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Errors;
-using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -38,6 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Outputs = resource.Outputs,
                 ResourceCategory = resource.ResourcePath,
                 ResourceID = resource.ResourceID,
+                VersionInfo = resource.VersionInfo,
                 ResourceName = resource.ResourceName,
                 ResourceType = resource.ResourceType,
                 IsValid = resource.IsValid,

@@ -1,6 +1,5 @@
-﻿using System;
-using Dev2.Common;
-using Dev2.Data.ServiceModel;
+﻿using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Integration.Tests.Services.Sql;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -8,10 +7,12 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using System;
 
 namespace Dev2.Integration.Tests.Runtime.ServiceModel
 {
     [TestClass]
+    // ReSharper disable InconsistentNaming
     public class DbSourceTests
     {
         #region Save
@@ -22,7 +23,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         public void DbSource_Save_ExistingSource_ServerWorkspaceUpdated()
         {
             //Initialize test resource, save then change path
-            string uniquePathText = Guid.NewGuid().ToString()+"\\test db source";
+            string uniquePathText = Guid.NewGuid().ToString() + "\\test db source";
             var testResource = new Resource { ResourceName = "test db source", ResourcePath = "initialpath\test db source", ResourceType = ResourceType.DbSource, ResourceID = Guid.NewGuid() };
             new DbSources().Save(testResource.ToString(), GlobalConstants.ServerWorkspaceID, Guid.Empty);
             testResource.ResourcePath = uniquePathText;

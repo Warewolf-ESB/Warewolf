@@ -1,11 +1,9 @@
 ﻿#region
 
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.Windows;
 using Caliburn.Micro;
 using Dev2.Composition;
 using Dev2.Core.Tests.ProperMoqs;
+using Dev2.Interfaces;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Configuration;
 using Dev2.Studio.Core.Controller;
@@ -14,10 +12,11 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Feedback;
-using Dev2.Studio.ViewModels;
-using Dev2.Studio.Webs;
 using Dev2.Webs;
 using Moq;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Primitives;
+using System.Windows;
 
 #endregion
 
@@ -32,7 +31,7 @@ namespace Dev2.Core.Tests
 
             ImportService.Initialize(new List<ComposablePartCatalog>
             {
-               // new FullTestAggregateCatalog()
+                // new FullTestAggregateCatalog()
             });
 
 

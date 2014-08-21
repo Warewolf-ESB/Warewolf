@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 // ReSharper disable RedundantUsingDirective
-using Dev2.Studio.Utils;
+
 // ReSharper restore RedundantUsingDirective
 using Trackerbird.Tracker;
 
@@ -43,7 +43,7 @@ namespace Dev2.Instrumentation
         }
 
 // ReSharper disable UnusedMember.Local
-        static void Start(string productID, string callHomeUrl)
+        static void Start(string productId, string callHomeUrl)
 // ReSharper restore UnusedMember.Local
         {
             Perform(() =>
@@ -59,7 +59,7 @@ namespace Dev2.Instrumentation
                 // ReSharper restore ConvertToConstant.Local
 #endif
                 TBConfig.SetFilePath(filePath);
-                TBConfig.CreateConfig(callHomeUrl, productID, productVersion, productVersion, false);
+                TBConfig.CreateConfig(callHomeUrl, productId, productVersion, productVersion, false);
                 return TBApp.Start();
             });
         }

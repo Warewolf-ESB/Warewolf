@@ -5,7 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Test
 
-        public WebService Test(string args, Guid workspaceID, Guid dataListID)
+        public WebService Test(string args, Guid workspaceId, Guid dataListId)
         {
             var service = new WebService();
             try
@@ -71,7 +71,7 @@ namespace Dev2.Runtime.ServiceModel
                     ((WebSource)service.Source).DisposeClient();
                 }
 
-                var preTestRSData = service.Recordsets;
+                var preTestRsData = service.Recordsets;
                 service.RequestMessage = string.Empty;
                 service.JsonPathResult = string.Empty;
 
@@ -96,7 +96,7 @@ namespace Dev2.Runtime.ServiceModel
                             jsonMapTaskThread.Abort();
                         }
 
-                        service.Recordsets = preTestRSData;
+                        service.Recordsets = preTestRsData;
                         service.RequestMessage = GlobalConstants.WebServiceTimeoutMessage;
                     }
 
@@ -122,7 +122,7 @@ namespace Dev2.Runtime.ServiceModel
             return service;
         }
 
-        public WebService ApplyPath(string args, Guid workspaceID, Guid dataListID)
+        public WebService ApplyPath(string args, Guid workspaceId, Guid dataListId)
         {
             var service = new WebService();
             try

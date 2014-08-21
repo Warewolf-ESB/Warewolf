@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using Dev2.Infrastructure.Tests.Logs;
+using Dev2.Interfaces;
+using Dev2.Studio;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Diagnostics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Moq.Protected;
+using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Threading;
-using Caliburn.Micro;
-using Dev2.Infrastructure.Tests.Logs;
-using Dev2.Studio;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Diagnostics;
-using Dev2.Studio.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using Moq.Protected;
 
 namespace Dev2.Core.Tests.Diagnostics
 {

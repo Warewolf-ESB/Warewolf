@@ -1,4 +1,5 @@
-﻿using Dev2.Data.ServiceModel;
+﻿using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 
 namespace Dev2.Interfaces
 {

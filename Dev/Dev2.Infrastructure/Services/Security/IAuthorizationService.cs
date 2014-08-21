@@ -1,5 +1,6 @@
 using System;
 using System.Security.Principal;
+using Dev2.Common.Interfaces.Security;
 
 namespace Dev2.Services.Security
 {

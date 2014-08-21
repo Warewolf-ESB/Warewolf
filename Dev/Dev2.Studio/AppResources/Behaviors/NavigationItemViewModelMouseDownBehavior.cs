@@ -1,15 +1,15 @@
-﻿using System.Windows;
-using System.Windows.Input;
-using System.Windows.Interactivity;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.Enums;
-using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Models;
 using Dev2.Services.Events;
-using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Interactivity;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.AppResources.Behaviors

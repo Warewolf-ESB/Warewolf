@@ -2,9 +2,9 @@
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.CustomControls.Connections;
+using Dev2.Interfaces;
 using Dev2.Providers.Events;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -845,6 +845,6 @@ namespace Dev2.Core.Tests.ViewModelTests
             conn.Setup(connection => connection.DisplayName).Returns(name);
             return conn;
         }
-       
+
     }
 }

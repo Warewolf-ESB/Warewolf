@@ -1,14 +1,16 @@
-﻿using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Dev2.Activities.Designers2.CommandLine;
+﻿using Dev2.Activities.Designers2.CommandLine;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Dev2.Activities.Designers.Tests.ExecuteCommandLine
 {
     [TestClass]
+    // ReSharper disable InconsistentNaming
     public class CommandLineDesignerViewModelTests
     {
         [TestMethod]

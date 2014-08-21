@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dev2.Providers.Errors
+namespace Dev2.Common.Interfaces.Infrastructure
 {
     public interface IErrorInfo
     {
@@ -9,6 +9,6 @@ namespace Dev2.Providers.Errors
         string StackTrace { get; set; }
         ErrorType ErrorType { get; set; }
         FixType FixType { get; set; }
-        string FixData { get; set; }
+        string FixData { get; set; } 
     }
 }

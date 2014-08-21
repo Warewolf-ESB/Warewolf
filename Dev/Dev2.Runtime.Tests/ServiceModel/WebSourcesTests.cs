@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
@@ -206,13 +207,13 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var expected = CreateWebSource();
 
             var catalog = new Mock<IResourceCatalog>();
-            catalog.Setup(c => c.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>())).Verifiable();
+            catalog.Setup(c => c.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Verifiable();
 
             var handler = new WebSources(catalog.Object);
             var jsonResult = handler.Save(expected.ToString(), Guid.Empty, Guid.Empty);
             var actual = JsonConvert.DeserializeObject<WebSource>(jsonResult);
 
-            catalog.Verify(c => c.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>()));
+            catalog.Verify(c => c.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             VerifySource(expected, actual);
         }

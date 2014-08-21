@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Dev2.Common.Interfaces.Data;
+using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
-using Dev2.Data.ServiceModel;
 
 namespace Dev2.AppResources.Converters
 {
@@ -20,7 +20,7 @@ namespace Dev2.AppResources.Converters
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             ResourceType resourceType = values[0] is ResourceType ? (ResourceType)values[0] : ResourceType.Unknown;
-            bool isExpanded = values[1] is bool ? (bool)values[1] : false;
+            bool isExpanded = values[1] is bool && (bool)values[1];
             Uri uri;
             switch(resourceType)
             {
@@ -54,15 +54,12 @@ namespace Dev2.AppResources.Converters
                 case ResourceType.Server:
                     uri = new Uri("pack://application:,,,/Warewolf Studio;component/Images/ExplorerWarewolfConnection-32.png");
                     return new BitmapImage(uri);
+                case ResourceType.Version:
+                case ResourceType.Message:
+                    return null;
                 case ResourceType.Folder:
-                    if(isExpanded)
-                    {
-                        uri = new Uri("pack://application:,,,/Warewolf Studio;component/Images/ExplorerFolderOpen-32.png");
-                    }
-                    else
-                    {
-                        uri = new Uri("pack://application:,,,/Warewolf Studio;component/Images/ExplorerFolder-32.png");
-                    }
+                    uri = isExpanded ? new Uri("pack://application:,,,/Warewolf Studio;component/Images/ExplorerFolderOpen-32.png") :
+                                       new Uri("pack://application:,,,/Warewolf Studio;component/Images/ExplorerFolder-32.png");
 
                     return new BitmapImage(uri);
                 default:

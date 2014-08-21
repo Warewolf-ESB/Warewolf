@@ -4,6 +4,8 @@ using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data.ServiceModel;
@@ -292,7 +294,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 AddResourceToStudioResourceRepository(instanceObj, executeMessage);
             }
-
+            
             return executeMessage;
         }
 
@@ -516,7 +518,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         void AddResourceToStudioResourceRepository(IResourceModel instanceObj, ExecuteMessage executeMessage)
         {
-            if(!executeMessage.HasError)
+            if(executeMessage != null && !executeMessage.HasError)
             {
                 if(!String.IsNullOrEmpty(instanceObj.ResourceName) && !instanceObj.ResourceName.Contains("Unsaved"))
                 {
@@ -698,6 +700,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 }
                 resource.ResourceName = data.ResourceName;
                 resource.DisplayName = data.ResourceName;
+                resource.VersionInfo = data.VersionInfo;
                 resource.IconPath = GetIconPath(data.ResourceType);
                 resource.Category = data.ResourceCategory;
                 resource.Tags = string.Empty;
@@ -1165,7 +1168,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                         }
                         else if(x.Descendants().Where(z => z.ResourceType != ResourceType.Server).All(a => a.Permissions == Permissions.None) && serverPermissions == Permissions.None)
                         {
-                            StudioResourceRepository.PerformUpdateOnDispatcher(() => x.Children = new ObservableCollection<ExplorerItemModel>());
+                            StudioResourceRepository.PerformUpdateOnDispatcher(() => x.Children = new ObservableCollection<IExplorerItemModel>());
                         }
                         x.Permissions = serverPermissions;
 

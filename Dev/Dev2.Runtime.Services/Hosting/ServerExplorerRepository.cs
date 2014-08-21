@@ -1,11 +1,11 @@
 ﻿using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Wrappers;
 using Dev2.Common.Wrappers.Interfaces;
-using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
-using Dev2.Runtime.ServiceModel.Data;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -105,14 +105,17 @@ namespace Dev2.Runtime.Hosting
                     return new ExplorerRepositoryResult(ExecStatus.NoMatch, "Requested folder does not exist on server. Folder: " + path);
                 }
                 var resourceCatalogResult = ResourceCatalogue.RenameCategory(workSpaceId, path, newPath);
+
                 if(resourceCatalogResult.Status == ExecStatus.Success)
                 {
+                    MoveVersionFolder(path, newPath);
                     Directory.Delete(DirectoryStructureFromPath(path), true);
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }
                 if(resourceCatalogResult.Status == ExecStatus.NoMatch)
                 {
                     Directory.Move(DirectoryStructureFromPath(path), DirectoryStructureFromPath(newPath));
+                    MoveVersionFolder(path, newPath);
                     return new ExplorerRepositoryResult(ExecStatus.Success, "");
                 }
                 return new ExplorerRepositoryResult(ExecStatus.Fail, resourceCatalogResult.Message);
@@ -120,6 +123,19 @@ namespace Dev2.Runtime.Hosting
             catch(Exception err)
             {
                 return new ExplorerRepositoryResult(ExecStatus.AccessViolation, err.Message);
+            }
+        }
+
+        void MoveVersionFolder(string path, string newPath)
+        {
+            if(Directory.Exists(DirectoryStructureFromPath(path)) && Directory.Exists(DirectoryStructureFromPath(newPath)))
+            {
+                string s = DirectoryStructureFromPath(path) + "\\" + GlobalConstants.VersionFolder;
+                string t = DirectoryStructureFromPath(newPath) + "\\" + GlobalConstants.VersionFolder;
+                if(Directory.Exists(DirectoryStructureFromPath(path) + "\\" + GlobalConstants.VersionFolder))
+                {
+                    Directory.Move(s, t);
+                }
             }
         }
 

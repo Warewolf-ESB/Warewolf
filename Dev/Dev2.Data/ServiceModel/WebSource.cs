@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Net;
 using System.Xml.Linq;
 using Dev2.Common.Common;
-using Dev2.Data.ServiceModel;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
+// ReSharper restore CheckNamespace
 {
     // PBI 5656 - 2013.05.20 - TWR - Created
     public class WebSource : Resource, IDisposable
@@ -42,14 +43,14 @@ namespace Dev2.Runtime.ServiceModel.Data
         public WebSource()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.WebSource;
+            ResourceType = Common.Interfaces.Data.ResourceType.WebSource;
             AuthenticationType = AuthenticationType.Anonymous;
         }
 
         public WebSource(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.WebSource;
+            ResourceType = Common.Interfaces.Data.ResourceType.WebSource;
             AuthenticationType = AuthenticationType.Anonymous;
 
             var properties = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)

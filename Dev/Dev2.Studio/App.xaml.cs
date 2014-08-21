@@ -9,11 +9,13 @@ using System.Windows;
 using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
 // ReSharper disable RedundantUsingDirective
+using Dev2.Interfaces;
 using Dev2.Network;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Browsers;
@@ -104,6 +106,7 @@ namespace Dev2.Studio
 
             _mainViewModel = MainWindow.DataContext as MainViewModel;
             CustomContainer.Register<IPopupController>(new PopupController());
+            CustomContainer.Register<IMainViewModel>(_mainViewModel);
             //2013.07.01: Ashley Lewis for bug 9817 - setup exception handler on 'this', with main window data context as the popup dialog controller
             _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
 

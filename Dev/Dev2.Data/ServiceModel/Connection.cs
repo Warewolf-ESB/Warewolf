@@ -36,13 +36,14 @@ namespace Dev2.Data.ServiceModel
 
         public Connection()
         {
-            ResourceType = ResourceType.Server;
+            ResourceType = Common.Interfaces.Data.ResourceType.Server;
+            VersionInfo = new VersionInfo();
         }
 
         public Connection(XElement xml)
             : base(xml)
-        {
-            ResourceType = ResourceType.Server;
+         {
+            ResourceType = Common.Interfaces.Data.ResourceType.Server;
 
             var connectionString = xml.AttributeSafe("ConnectionString");
             var props = connectionString.Split(';');

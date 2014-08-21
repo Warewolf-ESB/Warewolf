@@ -6,6 +6,7 @@ using Dev2.CustomControls.Connections;
 using Dev2.Factory;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
+using Dev2.Interfaces;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Security;
@@ -459,16 +460,17 @@ namespace Dev2.Studio.ViewModels
             FeedbackInvoker = feedbackInvoker ?? new FeedbackInvoker();
             EnvironmentRepository = environmentRepository;
             FlowController = new FlowController(PopupProvider);
-           
+
             if(ExplorerViewModel == null)
             {
                 ExplorerViewModel = new ExplorerViewModel(eventPublisher, asyncWorker, environmentRepository, StudioResourceRepository, ConnectControlSingl, this, false, enDsfActivityType.All, AddWorkspaceItems, connectControlViewModel);
             }
 
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             AddWorkspaceItems();
             ShowStartPage();
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
         }
 
         public IStudioResourceRepository StudioResourceRepository { get; set; }
@@ -592,7 +594,15 @@ namespace Dev2.Studio.ViewModels
             }
 
             var wfscvm = FindWorkSurfaceContextViewModel(message.ResourceToRemove);
-            base.DeactivateItem(wfscvm, true);
+            if(message.RemoveFromWorkspace)
+            {
+                DeactivateItem(wfscvm, true);
+            }
+            else
+            {
+                base.DeactivateItem(wfscvm, true);
+            }
+
             _previousActive = null;
 
         }
@@ -948,6 +958,11 @@ namespace Dev2.Studio.ViewModels
 
         public override void DeactivateItem(WorkSurfaceContextViewModel item, bool close)
         {
+            if(item == null)
+            {
+                return;
+            }
+
             bool success = true;
             if(close)
             {
@@ -1347,6 +1362,11 @@ namespace Dev2.Studio.ViewModels
                 return true;
             }
             return false;
+        }
+
+        public bool IsWorkFlowOpened(IContextualResourceModel resource)
+        {
+            return FindWorkSurfaceContextViewModel(resource) != null;
         }
 
         public WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key)

@@ -46,10 +46,7 @@ namespace Dev2.Workspaces
                     break;
 
                 case WorkspaceItemAction.Commit:    // overwrite server item with workspace item
-                    if (!isLocalSave)
-                    {
-                        Copy(this, WorkspaceRepository.Instance.ServerWorkspace, workspaceItem, roles);
-                    }
+
                     break;
             }
         }

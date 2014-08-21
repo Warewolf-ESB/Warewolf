@@ -1,8 +1,9 @@
-﻿using System;
+﻿using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Security;
+using System;
 using System.Collections.Generic;
-using Dev2.Data.ServiceModel;
-using Dev2.Interfaces;
-using Dev2.Services.Security;
+using Dev2.Common.Interfaces.Versioning;
 
 namespace Dev2.Explorer
 {
@@ -30,6 +31,7 @@ namespace Dev2.Explorer
 
         public IList<IExplorerItem> Children { get; set; }
         public Permissions Permissions { get; set; }
+        public IVersionInfo VersionInfo { get; set; }
         public string ResourcePath { get; set; }
         public IExplorerItem Parent { get; set; }
 

@@ -1,6 +1,8 @@
-﻿using Dev2.Communication;
+﻿using System.Linq;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Data.ServiceModel;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using System;
@@ -43,6 +45,11 @@ namespace Dev2.Models
         public IExplorerRepositoryResult RenameItem(IExplorerItem itemToRename, string newName, Guid workSpaceId)
         {
             var controller = CommunicationControllerFactory.CreateController("RenameItemService");
+            if(itemToRename.Children != null)
+            {
+                var any = itemToRename.Children.Where(a => a.ResourceType == ResourceType.Version);
+                itemToRename.Children = itemToRename.Children.Except(any).ToList();
+            }
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("itemToRename", serializer.SerializeToBuilder(itemToRename).ToString());
             controller.AddPayloadArgument("newName", newName);

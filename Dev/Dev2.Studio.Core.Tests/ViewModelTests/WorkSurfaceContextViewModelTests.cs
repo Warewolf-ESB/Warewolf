@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics;

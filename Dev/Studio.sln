@@ -93,9 +93,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CustomControls.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Crypto.HashGenerator", "Dev2.Crypto.HashGenerator\Dev2.Crypto.HashGenerator.csproj", "{E872FFC0-96F9-4FB8-A8D9-B498E158742B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 40
+		SccNumberOfProjects = 41
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -216,6 +218,9 @@ Global
 		SccProjectUniqueName39 = Dev2.CustomControls.Tests\\Dev2.CustomControls.Tests.csproj
 		SccProjectName39 = Dev2.CustomControls.Tests
 		SccLocalPath39 = Dev2.CustomControls.Tests
+		SccProjectUniqueName40 = Dev2.Common.Interfaces\\Dev2.Common.Interfaces.csproj
+		SccProjectName40 = Dev2.Common.Interfaces
+		SccLocalPath40 = Dev2.Common.Interfaces
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi
@@ -707,6 +712,18 @@ Global
 		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Release|Mixed Platforms.Build.0 = Release|x86
 		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Release|x64.ActiveCfg = Release|Any CPU
 		{E872FFC0-96F9-4FB8-A8D9-B498E158742B}.Release|x86.ActiveCfg = Release|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|x64.ActiveCfg = Release|Any CPU
+		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

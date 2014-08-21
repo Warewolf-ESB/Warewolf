@@ -8,14 +8,16 @@ namespace Dev2.Studio.Core.Messages
         #region Properties
 
         public IContextualResourceModel ResourceToRemove { get; set; }
+        public bool RemoveFromWorkspace { get; set; }
 
         #endregion
 
         #region Ctor
 
-        public RemoveResourceAndCloseTabMessage(IContextualResourceModel resourceToRemove)
+        public RemoveResourceAndCloseTabMessage(IContextualResourceModel resourceToRemove, bool removeFromWorkspace)
         {
             ResourceToRemove = resourceToRemove;
+            RemoveFromWorkspace = removeFromWorkspace;
         }
 
         #endregion

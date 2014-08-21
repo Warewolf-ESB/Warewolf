@@ -4,6 +4,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
@@ -219,7 +221,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             Assert.IsNotNull(resource);
             Assert.IsNotNull(resource.Dependencies);
             Assert.AreEqual(4, resource.Dependencies.Count);
-            ResourceForTree serverDependency = resource.Dependencies.Find(tree => tree.ResourceID == Guid.Parse("889d3f22-40c5-4466-84bc-d49a5874ae53"));
+            IResourceForTree serverDependency = resource.Dependencies.First(tree => tree.ResourceID == Guid.Parse("889d3f22-40c5-4466-84bc-d49a5874ae53"));
             Assert.IsNotNull(serverDependency);
             Assert.AreEqual("server - tfs bld", serverDependency.ResourceName);
             Assert.AreEqual(ResourceType.Server, serverDependency.ResourceType);

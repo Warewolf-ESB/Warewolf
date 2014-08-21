@@ -14,7 +14,6 @@ namespace Dev2.Studio.Core.Interfaces
         event Action<IContextualResourceModel> OnResourceSaved;
         event Action OnDataListChanged;
         event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
-
         void ClearErrors();
     }
 }

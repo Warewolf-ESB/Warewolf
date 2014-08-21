@@ -1,15 +1,17 @@
-﻿using System;
+﻿using Dev2.Collections;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Versioning;
+using Dev2.Communication;
+using Dev2.Services.Security;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Interfaces;
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
-using Dev2.Collections;
-using Dev2.Communication;
-using Dev2.Providers.Errors;
-using Dev2.Services.Security;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Core.Tests.ProperMoqs
 {
@@ -50,6 +52,8 @@ namespace Dev2.Core.Tests.ProperMoqs
         public string IconPath { get; set; }
 
         public bool IsDebugMode { get; set; }
+
+        public bool IsVersionResource { get; set; }
 
         public bool RequiresSignOff { get; set; }
 
@@ -102,6 +106,7 @@ namespace Dev2.Core.Tests.ProperMoqs
 
         public bool IsNewWorkflow { get; set; }
         public string ServerResourceType { get; set; }
+        public IVersionInfo VersionInfo { get; set; }
         public event Action<IContextualResourceModel> OnResourceSaved;
         public event Action OnDataListChanged;
         public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;

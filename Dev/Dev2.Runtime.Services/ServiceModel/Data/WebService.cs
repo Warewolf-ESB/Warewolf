@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public WebService()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.WebService;
+            ResourceType = Common.Interfaces.Data.ResourceType.WebService;
             Source = new WebSource();
             Recordsets = new RecordsetList();
             Method = new ServiceMethod();
@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public WebService(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.WebService;
+            ResourceType = Common.Interfaces.Data.ResourceType.WebService;
             var action = xml.Descendants("Action").FirstOrDefault();
             if(action == null)
             {

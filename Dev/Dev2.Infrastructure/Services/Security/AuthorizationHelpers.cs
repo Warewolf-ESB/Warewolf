@@ -1,4 +1,5 @@
 using System;
+using Dev2.Common.Interfaces.Security;
 
 namespace Dev2.Services.Security
 {

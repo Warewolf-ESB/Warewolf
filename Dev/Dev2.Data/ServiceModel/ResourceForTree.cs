@@ -1,9 +1,10 @@
 ﻿using System;
-using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Data;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public class ResourceForTree : IComparable<ResourceForTree>
+    public class ResourceForTree : IComparable<ResourceForTree>, IResourceForTree
     {
         public Guid UniqueID { get; set; }
         public Guid ResourceID { get; set; }

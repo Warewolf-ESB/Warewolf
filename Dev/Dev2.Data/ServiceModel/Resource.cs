@@ -6,14 +6,18 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.Data.Enums;
-using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
+
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Exception = System.Exception;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
@@ -34,6 +38,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             { ResourceType.WebService, "Service" },
             { ResourceType.WorkflowService, "Service" },
         };
+        IVersionInfo _versionInfo;
 
         #endregion
 
@@ -41,19 +46,19 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public Resource()
         {
-            EnsureVersion();
+
         }
 
         public Resource(IResource copy)
         {
             ResourceID = copy.ResourceID;
-            Version = copy.Version;
+      //      VersionInfo = copy.VersionInfo;
             ResourceName = copy.ResourceName;
             ResourceType = copy.ResourceType;
             ResourcePath = copy.ResourcePath;
             AuthorRoles = copy.AuthorRoles;
             FilePath = copy.FilePath;
-            EnsureVersion();
+
         }
 
         public Resource(XElement xml)
@@ -63,19 +68,19 @@ namespace Dev2.Runtime.ServiceModel.Data
                 throw new ArgumentNullException("xml");
             }
 
-            Guid resourceID;
-            if(!Guid.TryParse(xml.AttributeSafe("ID"), out resourceID))
+            Guid resourceId;
+            if(!Guid.TryParse(xml.AttributeSafe("ID"), out resourceId))
             {
                 // This is here for legacy XML!
-                resourceID = Guid.NewGuid();
+                resourceId = Guid.NewGuid();
                 IsUpgraded = true;
             }
-            ResourceID = resourceID;
+            ResourceID = resourceId;
             ResourceType = ParseResourceType(xml.AttributeSafe("ResourceType"));
             ResourceName = xml.AttributeSafe("Name");
             ResourcePath = xml.ElementSafe("Category");
             ResourcePath = ResourcePath.Replace("\\\\", "\\");
-            EnsureVersion(xml.AttributeSafe("Version"));
+            VersionInfo = String.IsNullOrEmpty( xml.ElementStringSafe("VersionInfo"))?null: new VersionInfo(xml.ElementStringSafe("VersionInfo"), ResourceID);
             AuthorRoles = xml.ElementSafe("AuthorRoles");
 
             // This is here for legacy XML!
@@ -182,13 +187,13 @@ namespace Dev2.Runtime.ServiceModel.Data
                     ErrorType errorType;
                     var errorTypeString = errorMessageElement.AttributeSafe("ErrorType");
                     Enum.TryParse(errorTypeString, true, out errorType);
-                    Guid instanceID;
-                    Guid.TryParse(errorMessageElement.AttributeSafe("InstanceID"), out instanceID);
+                    Guid instanceId;
+                    Guid.TryParse(errorMessageElement.AttributeSafe("InstanceID"), out instanceId);
                     CompileMessageType messageType;
                     Enum.TryParse(errorMessageElement.AttributeSafe("MessageType"), true, out messageType);
                     Errors.Add(new ErrorInfo
                     {
-                        InstanceID = instanceID,
+                        InstanceID = instanceId,
                         Message = errorMessageElement.AttributeSafe("Message"),
                         StackTrace = errorMessageElement.AttributeSafe("StackTrace"),
                         FixType = fixType,
@@ -211,11 +216,6 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// </summary>   
         public Guid ResourceID { get; set; }
 
-        /// <summary>
-        /// The version that uniquely identifies the resource.
-        /// </summary>
-        [JsonConverter(typeof(VersionConverter))]
-        public Version Version { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the resource.
@@ -249,7 +249,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string AuthorRoles { get; set; }
 
         [JsonIgnore]
-        public List<ResourceForTree> Dependencies { get; set; }
+        public IList<IResourceForTree> Dependencies { get; set; }
 
         public bool IsValid { get; set; }
 
@@ -331,10 +331,9 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public virtual XElement ToXml()
         {
-            EnsureVersion();
+
             return new XElement(_rootElements[ResourceType],
                 new XAttribute("ID", ResourceID),
-                new XAttribute("Version", Version.ToString()),
                 new XAttribute("Name", ResourceName ?? string.Empty),
                 new XAttribute("ResourceType", ResourceType),
                 new XAttribute("IsValid", IsValid),
@@ -411,7 +410,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             {
                 return true;
             }
-            return ResourceID.Equals(other.ResourceID) && Version.Equals(other.Version);
+            return ResourceID.Equals(other.ResourceID); //&& Version.Equals(other.Version);
         }
 
         /// <summary>
@@ -448,7 +447,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             unchecked
             {
-                return (ResourceID.GetHashCode() * 397) ^ (Version != null ? Version.GetHashCode() : 0);
+                return (ResourceID.GetHashCode() * 397);
             }
         }
 
@@ -464,18 +463,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #endregion
 
-        #region EnsureVersion
-
-        void EnsureVersion(string versionStr = null)
-        {
-            if(Version == null)
-            {
-                Version version;
-                Version = Version.TryParse(versionStr, out version) ? version : new Version(1, 0);
-            }
-        }
-
-        #endregion
 
         #region UpgradeXml
 
@@ -483,16 +470,39 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// If this instance <see cref="IsUpgraded"/> then sets the ID, Version, Name and ResourceType attributes on the given XML.
         /// </summary>
         /// <param name="xml">The XML to be upgraded.</param>
+        /// <param name="resource"></param>
         /// <returns>The XML with the additional attributes set.</returns>
-        public XElement UpgradeXml(XElement xml)
+        public XElement UpgradeXml(XElement xml, IResource resource)
         {
             if(IsUpgraded)
             {
                 xml.SetAttributeValue("ID", ResourceID);
-                xml.SetAttributeValue("Version", Version.ToString());
                 xml.SetAttributeValue("Name", ResourceName ?? string.Empty);
                 xml.SetAttributeValue("ResourceType", ResourceType);
                 xml.SetAttributeValue("Category", ResourcePath);
+            }
+            if(!xml.Descendants("VersionInfo").Any() && resource.VersionInfo != null)
+            {
+                var versionInfo = new XElement("VersionInfo");
+                versionInfo.SetAttributeValue("DateTimeStamp",DateTime.Now);
+                versionInfo.SetAttributeValue("Reason",resource.VersionInfo.Reason);
+                versionInfo.SetAttributeValue("User",resource.VersionInfo.User);
+                versionInfo.SetAttributeValue("VersionNumber",resource.VersionInfo.VersionNumber);
+                versionInfo.SetAttributeValue("ResourceId",ResourceID);
+                versionInfo.SetAttributeValue("VersionId", resource.VersionInfo.VersionId);
+                xml.Add(versionInfo);
+            }
+
+            if (!xml.Descendants("VersionInfo").Any() && resource.VersionInfo == null)
+            {
+                var versionInfo = new XElement("VersionInfo");
+                versionInfo.SetAttributeValue("DateTimeStamp", DateTime.Now);
+                versionInfo.SetAttributeValue("Reason", "Save");
+                versionInfo.SetAttributeValue("User", "Unknown");
+                versionInfo.SetAttributeValue("VersionNumber", "1");
+                versionInfo.SetAttributeValue("ResourceId", ResourceID);
+                versionInfo.SetAttributeValue("VersionId", Guid.NewGuid());
+                xml.Add(versionInfo);
             }
 
             return xml;
@@ -544,19 +554,19 @@ namespace Dev2.Runtime.ServiceModel.Data
                     var count = xElements.Count();
                     if(count > 0)
                     {
-                        Dependencies = new List<ResourceForTree>();
+                        Dependencies = new List<IResourceForTree>();
                         xElements.ForEach(element =>
                             {
-                                var uniqueIDAsString = element.AttributeSafe("UniqueID");
-                                var resourceIDAsString = element.AttributeSafe("ResourceID");
+                                var uniqueIdAsString = element.AttributeSafe("UniqueID");
+                                var resourceIdAsString = element.AttributeSafe("ResourceID");
                                 var resourceName = element.AttributeSafe("ServiceName");
                                 var actionTypeStr = element.AttributeSafe("Type");
                                 var resourceType = GetResourceTypeFromString(actionTypeStr);
-                                Guid uniqueID;
-                                Guid.TryParse(uniqueIDAsString, out uniqueID);
-                                Guid resID;
-                                Guid.TryParse(resourceIDAsString, out resID);
-                                Dependencies.Add(CreateResourceForTree(resID, uniqueID, resourceName, resourceType));
+                                Guid uniqueId;
+                                Guid.TryParse(uniqueIdAsString, out uniqueId);
+                                Guid resId;
+                                Guid.TryParse(resourceIdAsString, out resId);
+                                Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, resourceType));
                                 AddRemoteServerDependencies(element);
                             });
                     }
@@ -579,7 +589,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             if(Dependencies == null)
             {
-                Dependencies = new List<ResourceForTree>();
+                Dependencies = new List<IResourceForTree>();
             }
             var dependenciesFromXml = from desc in elementToUse.Descendants()
                                       where desc.Name.LocalName.Contains("DbSource") && desc.HasAttributes
@@ -589,13 +599,13 @@ namespace Dev2.Runtime.ServiceModel.Data
             if(count == 1)
             {
                 var element = xElements[0];
-                var resourceIDAsString = element.AttributeSafe("ResourceID");
+                var resourceIdAsString = element.AttributeSafe("ResourceID");
                 var resourceName = element.AttributeSafe("ResourceName");
                 var actionTypeStr = element.AttributeSafe("Type");
                 var resourceType = GetResourceTypeFromString(actionTypeStr);
-                Guid resID;
-                Guid.TryParse(resourceIDAsString, out resID);
-                Dependencies.Add(CreateResourceForTree(resID, Guid.Empty, resourceName, resourceType));
+                Guid resId;
+                Guid.TryParse(resourceIdAsString, out resId);
+                Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
             }
         }
 
@@ -607,7 +617,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             if(Dependencies == null)
             {
-                Dependencies = new List<ResourceForTree>();
+                Dependencies = new List<IResourceForTree>();
             }
             var dependenciesFromXml = from desc in elementToUse.Descendants()
                                       where desc.Name.LocalName.Contains("EmailSource") && desc.HasAttributes
@@ -617,25 +627,25 @@ namespace Dev2.Runtime.ServiceModel.Data
             if(count == 1)
             {
                 var element = xElements[0];
-                var resourceIDAsString = element.AttributeSafe("ResourceID");
+                var resourceIdAsString = element.AttributeSafe("ResourceID");
                 var resourceName = element.AttributeSafe("ResourceName");
                 var actionTypeStr = element.AttributeSafe("Type");
                 var resourceType = GetResourceTypeFromString(actionTypeStr);
-                Guid resID;
-                Guid.TryParse(resourceIDAsString, out resID);
-                Dependencies.Add(CreateResourceForTree(resID, Guid.Empty, resourceName, resourceType));
+                Guid resId;
+                Guid.TryParse(resourceIdAsString, out resId);
+                Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
             }
         }
 
         void AddRemoteServerDependencies(XElement element)
         {
-            var environmentIDString = element.AttributeSafe("EnvironmentID");
-            Guid environmentID;
-            if(Guid.TryParse(environmentIDString, out environmentID) && environmentID != Guid.Empty)
+            var environmentIdString = element.AttributeSafe("EnvironmentID");
+            Guid environmentId;
+            if(Guid.TryParse(environmentIdString, out environmentId) && environmentId != Guid.Empty)
             {
-                if(environmentID == Guid.Empty) return;
+                if(environmentId == Guid.Empty) return;
                 var resourceName = element.AttributeSafe("FriendlySourceName");
-                Dependencies.Add(CreateResourceForTree(environmentID, Guid.Empty, resourceName, ResourceType.Server));
+                Dependencies.Add(CreateResourceForTree(environmentId, Guid.Empty, resourceName, ResourceType.Server));
             }
         }
 
@@ -663,23 +673,23 @@ namespace Dev2.Runtime.ServiceModel.Data
                     var count = xElements.Count();
                     if(count > 0)
                     {
-                        Dependencies = new List<ResourceForTree>();
+                        Dependencies = new List<IResourceForTree>();
                         xElements.ForEach(element =>
                             {
-                                var uniqueIDAsString = element.AttributeSafe("SourceID");
-                                var resourceIDAsString = element.AttributeSafe("ResourceID");
+                                var uniqueIdAsString = element.AttributeSafe("SourceID");
+                                var resourceIdAsString = element.AttributeSafe("ResourceID");
                                 var resourceName = element.AttributeSafe("SourceName");
                                 var actionTypeStr = element.AttributeSafe("Type");
                                 var resourceType = GetResourceTypeFromString(actionTypeStr);
-                                Guid uniqueID;
-                                Guid.TryParse(uniqueIDAsString, out uniqueID);
-                                Guid resID;
-                                Guid.TryParse(resourceIDAsString, out resID);
+                                Guid uniqueId;
+                                Guid.TryParse(uniqueIdAsString, out uniqueId);
+                                Guid resId;
+                                Guid.TryParse(resourceIdAsString, out resId);
                                 if(resourceType == ResourceType.WebService)
                                 {
-                                    resID = uniqueID;
+                                    resId = uniqueId;
                                 }
-                                Dependencies.Add(CreateResourceForTree(resID, uniqueID, resourceName, resourceType));
+                                Dependencies.Add(CreateResourceForTree(resId, uniqueId, resourceName, resourceType));
                             });
                     }
                 }
@@ -695,12 +705,12 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region CreateResourceForTree
 
-        static ResourceForTree CreateResourceForTree(Guid resourceID, Guid uniqueID, string resourceName, ResourceType resourceType)
+        static ResourceForTree CreateResourceForTree(Guid resourceId, Guid uniqueId, string resourceName, ResourceType resourceType)
         {
             return new ResourceForTree
             {
-                UniqueID = uniqueID,
-                ResourceID = resourceID,
+                UniqueID = uniqueId,
+                ResourceID = resourceId,
                 ResourceName = resourceName,
                 ResourceType = resourceType
             };
@@ -733,6 +743,74 @@ namespace Dev2.Runtime.ServiceModel.Data
                 properties[key] = string.Join("=", p.Skip(1));
             }
         }
+
+        #endregion
+
+
+
+
+
+        public IVersionInfo VersionInfo
+        {
+            get
+            {
+                return _versionInfo;
+            }
+            set
+            {
+                if(value!= null)
+                _versionInfo = value;
+            }
+        }
+    }
+
+    public class VersionInfo : IVersionInfo
+    {
+        public  VersionInfo(DateTime dateTimeStamp, string  reason, string user, string versionNumber, Guid resourceId ,Guid versionId)
+        {
+            DateTimeStamp = dateTimeStamp;
+            Reason = reason;
+            User = user;
+            VersionNumber = versionNumber;
+            ResourceId = resourceId;
+            VersionId = versionId;
+
+        }
+        public VersionInfo()
+        {
+
+        }
+        public VersionInfo(string xml, Guid resourceId)
+        {
+            if(string.IsNullOrEmpty(xml))
+            {
+                DateTimeStamp = DateTime.Now;
+                Reason = "Save";
+                User = "Unknown";
+                VersionNumber = "1";
+                ResourceId = resourceId;
+                VersionId = Guid.NewGuid();
+            }
+            else
+            {
+                XElement versionXml = XElement.Parse(xml);
+                DateTimeStamp = DateTime.Parse(versionXml.AttributeSafe("DateTimeStamp"));
+                Reason = versionXml.AttributeSafe("Reason");
+                User = versionXml.AttributeSafe("User");
+                VersionNumber = versionXml.AttributeSafe("VersionNumber");
+                ResourceId = Guid.Parse(versionXml.AttributeSafe("ResourceId"));
+                VersionId = Guid.Parse(versionXml.AttributeSafe("VersionId"));
+            }
+        }
+
+        #region Implementation of IVersionInfo
+
+        public DateTime DateTimeStamp { get; set; }
+        public string Reason { get; set; }
+        public string User { get; set; }
+        public string VersionNumber { get; set; }
+        public Guid ResourceId { get; set; }
+        public Guid VersionId { get; set; }
 
         #endregion
     }

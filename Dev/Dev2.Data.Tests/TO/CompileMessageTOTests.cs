@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
-using Dev2.Providers.Errors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 // ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.TO
@@ -23,7 +23,7 @@ namespace Dev2.Data.Tests.TO
             var expectedID = Guid.NewGuid();
             message.UniqueID = expectedID;
             message.ErrorType = ErrorType.Critical;
-            var expectedFixType = FixType.ReloadMapping;
+            const FixType expectedFixType = FixType.ReloadMapping;
             message.MessageType = CompileMessageType.MappingChange;
             message.MessagePayload = "Test Fix Data";
 

@@ -50,8 +50,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         private ObservableCollection<DeployStatsTO> _sourceStats;
         private ObservableCollection<DeployStatsTO> _targetStats;
 
-        private Dictionary<string, Func<ExplorerItemModel, bool>> _sourceStatPredicates;
-        private Dictionary<string, Func<ExplorerItemModel, bool>> _targetStatPredicates;
+        private Dictionary<string, Func<IExplorerItemModel, bool>> _sourceStatPredicates;
+        private Dictionary<string, Func<IExplorerItemModel, bool>> _targetStatPredicates;
 
         private Guid _initialItemResourceID;
         private Guid _initialItemEnvironmentID;
@@ -498,7 +498,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             if(Source != null && Source.ExplorerItemModels != null && Source.ExplorerItemModels.Count > 0)
             {
                 Source.ClearConflictingNodesNodes();
-                ExplorerItemModel explorerItemModel = Source.ExplorerItemModels[0];
+                IExplorerItemModel explorerItemModel = Source.ExplorerItemModels[0];
                 if(explorerItemModel != null)
                 {
                     var items = explorerItemModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false)).ToList();
@@ -522,21 +522,21 @@ namespace Dev2.Studio.ViewModels.Deploy
             var exclusionCategories = new List<string> { "Website", "Human Interface Workflow", "Webpage" };
             var blankCategories = new List<string>();
 
-            _sourceStatPredicates = new Dictionary<string, Func<ExplorerItemModel, bool>>();
-            _targetStatPredicates = new Dictionary<string, Func<ExplorerItemModel, bool>>();
+            _sourceStatPredicates = new Dictionary<string, Func<IExplorerItemModel, bool>>();
+            _targetStatPredicates = new Dictionary<string, Func<IExplorerItemModel, bool>>();
 
             _sourceStatPredicates.Add("Services",
                                             n => _deployStatsCalculator
                                           .SelectForDeployPredicateWithTypeAndCategories
-                                          (n, Data.ServiceModel.ResourceType.DbService | Data.ServiceModel.ResourceType.PluginService | Data.ServiceModel.ResourceType.WebService, blankCategories, exclusionCategories));
+                                          (n, Common.Interfaces.Data.ResourceType.DbService | Common.Interfaces.Data.ResourceType.PluginService | Common.Interfaces.Data.ResourceType.WebService, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Workflows",
                                       n => _deployStatsCalculator.
                                                SelectForDeployPredicateWithTypeAndCategories
-                                               (n, Data.ServiceModel.ResourceType.WorkflowService, blankCategories, exclusionCategories));
+                                               (n, Common.Interfaces.Data.ResourceType.WorkflowService, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Sources",
                                       n => _deployStatsCalculator
                                                .SelectForDeployPredicateWithTypeAndCategories
-                                               (n, Data.ServiceModel.ResourceType.DbSource | Data.ServiceModel.ResourceType.PluginSource | Data.ServiceModel.ResourceType.WebSource | Data.ServiceModel.ResourceType.ServerSource | Data.ServiceModel.ResourceType.EmailSource, blankCategories, exclusionCategories));
+                                               (n, Common.Interfaces.Data.ResourceType.DbSource | Common.Interfaces.Data.ResourceType.PluginSource | Common.Interfaces.Data.ResourceType.WebSource | Common.Interfaces.Data.ResourceType.ServerSource | Common.Interfaces.Data.ResourceType.EmailSource, blankCategories, exclusionCategories));
             _sourceStatPredicates.Add("Unknown",
                                       n => _deployStatsCalculator.SelectForDeployPredicate(n));
             _targetStatPredicates.Add("New Resources",
@@ -576,13 +576,13 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 if(Source.ExplorerItemModels != null)
                 {
-                    List<ExplorerItemModel> resourceTreeViewModels = Source.ExplorerItemModels.ToList();
-                    List<ExplorerItemModel> selectedResourcesTreeViewModels = new List<ExplorerItemModel>();
+                    List<IExplorerItemModel> resourceTreeViewModels = Source.ExplorerItemModels.ToList();
+                    List<IExplorerItemModel> selectedResourcesTreeViewModels = new List<IExplorerItemModel>();
                     foreach(var resourceTreeViewModel in resourceTreeViewModels)
                     {
                         if(resourceTreeViewModel != null)
                         {
-                            IEnumerable<ExplorerItemModel> checkedITems = resourceTreeViewModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false));
+                            IEnumerable<IExplorerItemModel> checkedITems = resourceTreeViewModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false));
                             selectedResourcesTreeViewModels.AddRange(checkedITems);
                         }
                     }
@@ -820,7 +820,7 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// </summary>
         private void SelectAndExpandFromInitialValue()
         {
-            ExplorerItemModel navigationItemViewModel = null;
+            IExplorerItemModel navigationItemViewModel = null;
 
             if(_initialItemResourceID != Guid.Empty)
             {
@@ -897,7 +897,7 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         #region Public Methods
 
-        public void SelectDependencies(List<ExplorerItemModel> explorerItemModels)
+        public void SelectDependencies(List<IExplorerItemModel> explorerItemModels)
         {
             if(explorerItemModels != null)
             {

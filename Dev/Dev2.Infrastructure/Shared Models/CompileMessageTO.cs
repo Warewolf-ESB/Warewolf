@@ -1,9 +1,10 @@
-﻿using System;
-using Dev2.Common.ExtMethods;
+﻿using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Data.Enums;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
 
 namespace Dev2.Data.ServiceModel.Messages
 {
@@ -11,18 +12,14 @@ namespace Dev2.Data.ServiceModel.Messages
     /// Send compile time messages to the studio ;)
     /// </summary>
     [Serializable]
+    // ReSharper disable InconsistentNaming
     public class CompileMessageTO
     {
         public Guid UniqueID { get; set; }
-
         public Guid ServiceID { get; set; }
-
         public Guid MessageID { get; set; }
-
         public Guid WorkspaceID { get; set; }
-
         public string ServiceName { get; set; }
-
         [JsonConverter(typeof(StringEnumConverter))]
         public CompileMessageType MessageType { get; set; }
 
@@ -65,7 +62,7 @@ namespace Dev2.Data.ServiceModel.Messages
             {
                 case CompileMessageType.MappingChange:
                     return FixType.ReloadMapping;
-                
+
                 case CompileMessageType.MappingIsRequiredChanged:
                     return FixType.IsRequiredChanged;
 

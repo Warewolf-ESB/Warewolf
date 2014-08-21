@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
-using System.Xml.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
+using System;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -22,7 +21,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public PluginService()
         {
             ResourceID = Guid.Empty;
-            ResourceType = ResourceType.PluginService;
+            ResourceType = Common.Interfaces.Data.ResourceType.PluginService;
             Source = new PluginSource();
             Recordsets = new RecordsetList();
             Method = new ServiceMethod();
@@ -31,7 +30,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public PluginService(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.PluginService;
+            ResourceType = Common.Interfaces.Data.ResourceType.PluginService;
             var action = xml.Descendants("Action").FirstOrDefault();
             if(action == null)
             {
@@ -43,7 +42,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             // Handle old service this is not set
             // We also need to redo wizards to correctly return defaults and mappings ;)
-            if (string.IsNullOrEmpty(Namespace))
+            if(string.IsNullOrEmpty(Namespace))
             {
                 var mySource = action.AttributeSafe("SourceName");
 
@@ -52,7 +51,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                 var tmp = services.FirstOrDefault();
 
-                if (tmp != null)
+                if(tmp != null)
                 {
                     Namespace = tmp.AssemblyName;
                 }

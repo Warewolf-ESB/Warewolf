@@ -1,10 +1,10 @@
-﻿using System;
-using Dev2.Services.Security;
+﻿using Dev2.Common.Interfaces.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests

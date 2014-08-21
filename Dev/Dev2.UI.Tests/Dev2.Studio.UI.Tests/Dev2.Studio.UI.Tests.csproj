@@ -99,9 +99,6 @@
     <Compile Include="..\..\Dev2.Infrastructure\ObservableObject.cs">
       <Link>Resources\ObservableObject.cs</Link>
     </Compile>
-    <Compile Include="..\..\Dev2.Infrastructure\Services\Security\Permissions.cs">
-      <Link>Resources\Permissions.cs</Link>
-    </Compile>
     <Compile Include="..\..\Dev2.Infrastructure\Services\Security\SecuritySettingsTO.cs">
       <Link>Resources\SecuritySettingsTO.cs</Link>
     </Compile>
@@ -358,6 +355,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Binaries\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

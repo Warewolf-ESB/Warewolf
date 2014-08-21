@@ -63,7 +63,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
             collection.CollectionChanged += ItemsSourceCollectionChanged;
 
-            var nodes = collection as ObservableCollection<ExplorerItemModel>;
+            var nodes = collection as ObservableCollection<IExplorerItemModel>;
             if(nodes != null)
             {
                 nodes.ToList().ForEach(c => AttachSourceCollectionChangedHandler(c.Children));
@@ -76,7 +76,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 return;
             }
 
-            nodes = collectionView.SourceCollection as ObservableCollection<ExplorerItemModel>;
+            nodes = collectionView.SourceCollection as ObservableCollection<IExplorerItemModel>;
             if(nodes != null)
             {
                 nodes.ToList().ForEach(c => AttachSourceCollectionChangedHandler(c.Children));
@@ -108,12 +108,12 @@ namespace Dev2.Studio.AppResources.Behaviors
                     {
                         return;
                     }
-                    ExpandToTop(n, new List<ExplorerItemModel>());
+                    ExpandToTop(n, new List<IExplorerItemModel>());
                     n.IsExplorerSelected = true;
                 });
         }
 
-        private void ExpandToTop(ExplorerItemModel treeNode, IList<ExplorerItemModel> childrenToExpandTo)
+        private void ExpandToTop(IExplorerItemModel treeNode, IList<IExplorerItemModel> childrenToExpandTo)
         {
             if(treeNode == null || treeNode.IsExplorerExpanded)
             {

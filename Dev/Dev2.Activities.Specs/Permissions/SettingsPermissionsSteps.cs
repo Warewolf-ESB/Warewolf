@@ -12,7 +12,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Threading;
 using TechTalk.SpecFlow;
-
+using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
 namespace Dev2.Activities.Specs.Permissions
 {
     [Binding]
@@ -55,7 +55,7 @@ namespace Dev2.Activities.Specs.Permissions
             var permissionsStrings = groupRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var permissionsString in permissionsStrings)
             {
-                Services.Security.Permissions permission;
+                SecPermissions permission;
                 if(Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
                 {
                     groupPermssions.Permissions |= permission;
@@ -198,11 +198,11 @@ namespace Dev2.Activities.Specs.Permissions
         public void ThenResourcesShouldHave(string resourcePerms)
         {
             var environmentModel = LoadResources();
-            Services.Security.Permissions resourcePermissions = Services.Security.Permissions.None;
+            SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var permissionsString in permissionsStrings)
             {
-                Services.Security.Permissions permission;
+                SecPermissions permission;
                 if(Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
                 {
                     resourcePermissions |= permission;
@@ -238,11 +238,11 @@ namespace Dev2.Activities.Specs.Permissions
         public void ThenResourcesShouldNotHave(string resourcePerms)
         {
             var environmentModel = LoadResources();
-            Services.Security.Permissions resourcePermissions = Services.Security.Permissions.None;
+            SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var permissionsString in permissionsStrings)
             {
-                Services.Security.Permissions permission;
+                SecPermissions permission;
                 if(Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
                 {
                     resourcePermissions |= permission;
@@ -268,11 +268,11 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.ForceLoadResources();
 
             var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
-            Services.Security.Permissions resourcePermissions = Services.Security.Permissions.None;
+            SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourceRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var permissionsString in permissionsStrings)
             {
-                Services.Security.Permissions permission;
+                SecPermissions permission;
                 if(Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
                 {
                     resourcePermissions |= permission;
@@ -292,11 +292,11 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.ForceLoadResources();
 
             var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
-            Services.Security.Permissions resourcePermissions = Services.Security.Permissions.None;
+            SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var permissionsString in permissionsStrings)
             {
-                Services.Security.Permissions permission;
+                SecPermissions permission;
                 if(Enum.TryParse(permissionsString.Replace(" ", ""), true, out permission))
                 {
                     resourcePermissions |= permission;

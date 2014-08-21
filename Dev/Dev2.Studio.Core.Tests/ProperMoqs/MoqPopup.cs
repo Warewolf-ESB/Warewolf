@@ -96,6 +96,16 @@ namespace Dev2.Core.Tests.ProperMoqs
             return _result;
         }
 
+        public MessageBoxResult ShowDeleteVersionMessage(string displayName)
+        {
+            return MessageBoxResult.None;
+        }
+
+        public MessageBoxResult ShowRollbackVersionMessage(string displayName)
+        {
+            return MessageBoxResult.None;
+        }
+
         public string DontShowAgainKey { get; set; }
     }
 }

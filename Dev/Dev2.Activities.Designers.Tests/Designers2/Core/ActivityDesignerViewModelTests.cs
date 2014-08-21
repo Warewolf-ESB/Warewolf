@@ -9,6 +9,7 @@ using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Core.Tests;
 using Dev2.Core.Tests.Utils;
 using Dev2.Providers.Errors;

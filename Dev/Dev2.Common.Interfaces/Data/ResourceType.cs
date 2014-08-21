@@ -1,8 +1,6 @@
 ﻿using System;
 
-// ReSharper disable CheckNamespace
-namespace Dev2.Data.ServiceModel
-// ReSharper restore CheckNamespace
+namespace Dev2.Common.Interfaces.Data
 {
     [Flags]
     public enum ResourceType
@@ -10,6 +8,7 @@ namespace Dev2.Data.ServiceModel
         Unknown = 0,
         WorkflowService = 1,
         DbService = 2,
+        Version = 3,
         PluginService = 4,
         WebService = 8,
         DbSource = 16,
@@ -20,5 +19,6 @@ namespace Dev2.Data.ServiceModel
         Folder = 512,
         Server = 1024,
         ReservedService = 2048,
+        Message = 3069,
     }
 }

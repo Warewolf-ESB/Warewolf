@@ -2,13 +2,14 @@
 using System.Windows;
 using Dev2.Studio.Core.Controller;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Core.Tests.ProperMoqs
+// ReSharper restore CheckNamespace
 {
     [Export(typeof(IPopupController))]
     public class MoqPopup : IPopupController
     {
         readonly MessageBoxResult _result;
-        string _dontShowAgainKey;
 
         public MoqPopup(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons)
         {
@@ -94,16 +95,16 @@ namespace Dev2.Core.Tests.ProperMoqs
             return _result;
         }
 
-        public string DontShowAgainKey
+        public MessageBoxResult ShowDeleteVersionMessage(string displayName)
         {
-            get
-            {
-                return _dontShowAgainKey;
-            }
-            set
-            {
-                _dontShowAgainKey = value;
-            }
+            return MessageBoxResult.None;
         }
+
+        public MessageBoxResult ShowRollbackVersionMessage(string displayName)
+        {
+            return MessageBoxResult.None;
+        }
+
+        public string DontShowAgainKey { get; set; }
     }
 }

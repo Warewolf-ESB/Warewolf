@@ -31,5 +31,15 @@ namespace Dev2.Common.Wrappers
          {
              File.Delete(tmpFileName);
          }
+
+         public void WriteAllText(string path, string contents)
+         {
+             File.WriteAllText(path,contents);
+         }
+
+         public void Copy(string source, string destination)
+         {
+             File.Copy(source,destination);
+         }
     }
 }

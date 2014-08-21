@@ -19,6 +19,7 @@ using Dev2.Activities;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.AppResources.Repositories;
 using Dev2.Collections;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.ConnectionHelpers;

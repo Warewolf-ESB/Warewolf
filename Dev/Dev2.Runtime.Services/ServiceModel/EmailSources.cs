@@ -4,7 +4,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -38,12 +38,12 @@ namespace Dev2.Runtime.ServiceModel
         #region Get
 
         // POST: Service/EmailSources/Get
-        public EmailSource Get(string resourceID, Guid workspaceID, Guid dataListID)
+        public EmailSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new EmailSource();
             try
             {
-                var xmlStr = Resources.ReadXml(workspaceID, ResourceType.EmailSource, resourceID);
+                var xmlStr = Resources.ReadXml(workspaceId, ResourceType.EmailSource, resourceId);
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
@@ -62,14 +62,14 @@ namespace Dev2.Runtime.ServiceModel
         #region Save
 
         // POST: Service/EmailSources/Save
-        public string Save(string args, Guid workspaceID, Guid dataListID)
+        public string Save(string args, Guid workspaceId, Guid dataListId)
         {
             try
             {
                 var source = JsonConvert.DeserializeObject<EmailSource>(args);
 
-                _resourceCatalog.SaveResource(workspaceID, source);
-                if(workspaceID != GlobalConstants.ServerWorkspaceID)
+                _resourceCatalog.SaveResource(workspaceId, source);
+                if(workspaceId != GlobalConstants.ServerWorkspaceID)
                 {
                     _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, source);
                 }
@@ -88,7 +88,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Test
 
         // POST: Service/EmailSources/Test
-        public ValidationResult Test(string args, Guid workspaceID, Guid dataListID)
+        public ValidationResult Test(string args, Guid workspaceId, Guid dataListId)
         {
             try
             {

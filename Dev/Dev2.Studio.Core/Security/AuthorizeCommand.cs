@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Dev2.Services.Security;
+using Dev2.Studio.Core.Interfaces;
+using System;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.Services.Security;
-using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Security
 {
@@ -46,7 +46,8 @@ namespace Dev2.Security
 
         public AuthorizationContext AuthorizationContext { get; private set; }
 
-        string ResourceID { get; set; }
+        string ResourceId { get; set; }
+        bool IsVersionResource { get; set; }
 
         public IAuthorizationService AuthorizationService
         {
@@ -73,7 +74,11 @@ namespace Dev2.Security
         public void UpdateContext(IEnvironmentModel environment, IContextualResourceModel resourceModel = null)
         {
             // MUST set ResourceID first as setting AuthorizationService triggers IsAuthorized() query
-            ResourceID = resourceModel == null ? null : resourceModel.ID.ToString();
+            if(resourceModel != null)
+            {
+                ResourceId = resourceModel.ID.ToString();
+                IsVersionResource = resourceModel.IsVersionResource;
+            }
             AuthorizationService = environment == null ? null : environment.AuthorizationService;
         }
 
@@ -98,7 +103,7 @@ namespace Dev2.Security
 
         bool IsAuthorized()
         {
-            return AuthorizationService != null && AuthorizationService.IsAuthorized(AuthorizationContext, ResourceID);
+            return !IsVersionResource && AuthorizationService != null && AuthorizationService.IsAuthorized(AuthorizationContext, ResourceId);
         }
 
         static void OnPermissionsChanged(object sender, EventArgs eventArgs)

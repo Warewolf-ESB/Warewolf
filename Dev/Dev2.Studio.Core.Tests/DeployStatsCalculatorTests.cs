@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Windows.Threading;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
-using Dev2.Data.ServiceModel;
 using Dev2.Models;
 using Dev2.Providers.Events;
 using Dev2.Services.Security;
@@ -20,6 +15,11 @@ using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Threading;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests
@@ -49,7 +49,7 @@ namespace Dev2.Core.Tests
 
         }
 
-        protected StudioResourceRepository CreateModels(bool isChecked, Mock<IContextualResourceModel> mockResourceModel, out IEnvironmentModel environmentModel, out ExplorerItemModel resourceVm, out ExplorerItemModel rootItem)
+        protected StudioResourceRepository CreateModels(bool isChecked, Mock<IContextualResourceModel> mockResourceModel, out IEnvironmentModel environmentModel, out IExplorerItemModel resourceVm, out IExplorerItemModel rootItem)
         {
             Mock<IContextualResourceModel> resourceModel = mockResourceModel;
 
@@ -75,7 +75,7 @@ namespace Dev2.Core.Tests
             workflowsFolder.ResourceId = Guid.NewGuid();
             serverItemModel.Children.Add(workflowsFolder);
 
-            var studioResourceRepository = new StudioResourceRepository(serverItemModel,_Invoke);
+            var studioResourceRepository = new StudioResourceRepository(serverItemModel, _Invoke);
             resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
             TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
             new EnvironmentRepository(testEnvironmentRespository);
@@ -134,7 +134,7 @@ namespace Dev2.Core.Tests
             items.Add(vm3);
             items.Add(vm4);
 
-            Dictionary<string, Func<ExplorerItemModel, bool>> predicates = new Dictionary<string, Func<ExplorerItemModel, bool>>();
+            Dictionary<string, Func<IExplorerItemModel, bool>> predicates = new Dictionary<string, Func<IExplorerItemModel, bool>>();
             predicates.Add("Services", n => DeployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(n, ResourceType.DbService | ResourceType.PluginService | ResourceType.WebService, blankCategories, exclusionCategories));
             predicates.Add("Workflows", n => DeployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(n, ResourceType.WorkflowService, blankCategories, exclusionCategories));
             predicates.Add("Sources", n => DeployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(n, ResourceType.DbSource | ResourceType.PluginSource | ResourceType.WebSource | ResourceType.ServerSource | ResourceType.EmailSource, blankCategories, exclusionCategories));
@@ -219,8 +219,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
             resourceVm.Parent.IsChecked = false;
@@ -256,8 +256,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
             resourceVm.IsChecked = true;
@@ -272,8 +272,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
             resourceVm.IsChecked = true;
@@ -289,8 +289,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
             resourceVm.IsChecked = true;
@@ -305,8 +305,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
             resourceVm.IsChecked = true;
@@ -322,8 +322,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
             resourceVm.IsChecked = true;
@@ -351,8 +351,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
             resourceVm.IsChecked = true;
 
@@ -366,8 +366,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             StudioResourceRepository studioResourceRepository = CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
             resourceVm.IsChecked = false;
@@ -385,7 +385,7 @@ namespace Dev2.Core.Tests
 
         static DeployNavigationViewModel CreateDeployNavigationViewModel(IEnvironmentModel environmentModel, IEventAggregator eventAggregator, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, StudioResourceRepository studioResourceRepository)
         {
-            DeployNavigationViewModel navigationViewModel = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, studioResourceRepository,true)
+            DeployNavigationViewModel navigationViewModel = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, studioResourceRepository, true)
             {
                 Environment = environmentModel
             };
@@ -397,8 +397,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             StudioResourceRepository studioResourceRepository = CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
             ExplorerItemModel navigationItemViewModel = new ExplorerItemModel();
@@ -415,8 +415,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             StudioResourceRepository studioResourceRepository = CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
 
@@ -435,8 +435,8 @@ namespace Dev2.Core.Tests
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel(resourceGuid, "OtherResource");
             IEnvironmentModel environmentModel;
 
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             StudioResourceRepository studioResourceRepository = CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
 
@@ -464,8 +464,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             StudioResourceRepository studioResourceRepository = CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(Studio.Core.AppResources.Enums.ResourceType.WorkflowService, Guid.NewGuid());
@@ -499,8 +499,8 @@ namespace Dev2.Core.Tests
         {
             Mock<IContextualResourceModel> mockResourceModel = CreateMockResourceModel();
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
-            ExplorerItemModel rootItem;
+            IExplorerItemModel resourceVm;
+            IExplorerItemModel rootItem;
             CreateModels(false, mockResourceModel, out environmentModel, out resourceVm, out rootItem);
 
             var envModel = new Mock<IEnvironmentModel>();

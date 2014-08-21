@@ -240,7 +240,16 @@
                                           Command="{Binding DebugCommand}"
                                           Visibility="{Binding CanDebug, Converter={StaticResource BoolToVisConverter}}" />
                                 <!--<MenuItem Header="Manual Edit" Command="{Binding ManualEditCommand}" Visibility="{Binding CanManualEdit, Converter={StaticResource BoolToVisConverter}}" />-->
-
+                                <Separator Visibility="{Binding CanShowHistory, Converter={StaticResource BoolToVisConverter}}"/>
+                                <MenuItem Header="{Binding ToggleVersionHistoryHeader}"
+                                          Command="{Binding ToggleVersionHistoryCommand}"
+                                          Visibility="{Binding CanShowHistory, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Make current version"
+                                          Command="{Binding RollbackCommand}"
+                                          Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisConverter}}" />
+                                <MenuItem Header="Delete version"
+                                          Command="{Binding DeleteVersionCommand}"
+                                          Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisConverter}}" />
                             </ContextMenu>
                         </Border.ContextMenu>
 
@@ -280,6 +289,9 @@
                                             </i:EventTrigger>
                                         </i:Interaction.Triggers>
                                     </Image>
+                                    <Button Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisConverter}}"
+                                            Style="{StaticResource AuthButtonStyle}">
+                                    </Button>
                                     <Button Visibility="{Binding CanEdit, Converter={StaticResource BoolToVisConverter}}"
                                             ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipView}"
                                             Style="{StaticResource AuthButtonStyle}"

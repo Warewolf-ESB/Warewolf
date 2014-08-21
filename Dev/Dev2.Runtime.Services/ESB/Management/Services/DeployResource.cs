@@ -25,10 +25,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException("Roles or ResourceDefinition missing");
             }
 
-            var msg = ResourceCatalog.Instance.SaveResource(WorkspaceRepository.ServerWorkspaceID, resourceDefinition);
+            var msg = ResourceCatalog.Instance.SaveResource(WorkspaceRepository.ServerWorkspaceID, resourceDefinition,null,"Deploy","unknown");
             WorkspaceRepository.Instance.RefreshWorkspaces();
 
-            var result = new ExecuteMessage() { HasError = false };
+            var result = new ExecuteMessage { HasError = false };
             result.SetMessage(msg.Message);
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(result);
@@ -36,14 +36,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService deployResourceDynamicService = new DynamicService();
-            deployResourceDynamicService.Name = HandlesType();
-            deployResourceDynamicService.DataListSpecification = "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            DynamicService deployResourceDynamicService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
-            ServiceAction deployResourceServiceAction = new ServiceAction();
-            deployResourceServiceAction.Name = HandlesType();
-            deployResourceServiceAction.ActionType = enActionType.InvokeManagementDynamicService;
-            deployResourceServiceAction.SourceMethod = HandlesType();
+            ServiceAction deployResourceServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
             deployResourceDynamicService.Actions.Add(deployResourceServiceAction);
 

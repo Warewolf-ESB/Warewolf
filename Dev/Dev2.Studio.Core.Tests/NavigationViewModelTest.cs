@@ -154,12 +154,12 @@ namespace Dev2.Core.Tests
             var environmentRepository = GetEnvironmentRepository(mockEnvironment);
             const string displayName = "localhost (https://localhost:3242/)";
 
-            ObservableCollection<ExplorerItemModel> explorerItemModels = new ObservableCollection<ExplorerItemModel>();
-            ExplorerItemModel server = new ExplorerItemModel { ResourceType = Data.ServiceModel.ResourceType.Server, DisplayName = displayName, IsExplorerExpanded = true, EnvironmentId = Guid.Empty };
-            ExplorerItemModel folder1 = new ExplorerItemModel { ResourceType = Data.ServiceModel.ResourceType.Folder, DisplayName = "Folder1", ResourcePath = "Folder1", IsExplorerExpanded = true, EnvironmentId = Guid.Empty };
-            ExplorerItemModel resource1 = new ExplorerItemModel { ResourceType = Data.ServiceModel.ResourceType.WorkflowService, DisplayName = "Resource1", ResourcePath = "Resource1", IsExplorerExpanded = false, EnvironmentId = Guid.Empty };
-            ExplorerItemModel resource2 = new ExplorerItemModel { ResourceType = Data.ServiceModel.ResourceType.WorkflowService, DisplayName = "Resource2", ResourcePath = "Resource2", IsExplorerExpanded = false, IsExplorerSelected = true, EnvironmentId = Guid.Empty };
-            ExplorerItemModel folder2 = new ExplorerItemModel { ResourceType = Data.ServiceModel.ResourceType.Folder, DisplayName = "Folder2", ResourcePath = "Folder2", IsExplorerExpanded = false, EnvironmentId = Guid.Empty };
+            ObservableCollection<IExplorerItemModel> explorerItemModels = new ObservableCollection<IExplorerItemModel>();
+            ExplorerItemModel server = new ExplorerItemModel { ResourceType = Common.Interfaces.Data.ResourceType.Server, DisplayName = displayName, IsExplorerExpanded = true, EnvironmentId = Guid.Empty };
+            ExplorerItemModel folder1 = new ExplorerItemModel { ResourceType = Common.Interfaces.Data.ResourceType.Folder, DisplayName = "Folder1", ResourcePath = "Folder1", IsExplorerExpanded = true, EnvironmentId = Guid.Empty };
+            ExplorerItemModel resource1 = new ExplorerItemModel { ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService, DisplayName = "Resource1", ResourcePath = "Resource1", IsExplorerExpanded = false, EnvironmentId = Guid.Empty };
+            ExplorerItemModel resource2 = new ExplorerItemModel { ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService, DisplayName = "Resource2", ResourcePath = "Resource2", IsExplorerExpanded = false, IsExplorerSelected = true, EnvironmentId = Guid.Empty };
+            ExplorerItemModel folder2 = new ExplorerItemModel { ResourceType = Common.Interfaces.Data.ResourceType.Folder, DisplayName = "Folder2", ResourcePath = "Folder2", IsExplorerExpanded = false, EnvironmentId = Guid.Empty };
 
             folder1.Children.Add(resource1);
             folder1.Children.Add(resource2);
@@ -244,7 +244,7 @@ namespace Dev2.Core.Tests
             //------------Preconditions---------------------------
             Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
             //------------Execute Test---------------------------
-            viewModel.Filter(model => model.ResourceType == Data.ServiceModel.ResourceType.WorkflowService);
+            viewModel.Filter(model => model.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService);
             //------------Assert Results-------------------------
             Assert.AreEqual(2, viewModel.ExplorerItemModels[0].ChildrenCount);
             Assert.IsTrue(HasFolder(viewModel.ExplorerItemModels[0].Children));
@@ -261,14 +261,14 @@ namespace Dev2.Core.Tests
             //------------Preconditions---------------------------
             Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
             //------------Execute Test---------------------------
-            viewModel.Filter(model => model.ResourceType == Data.ServiceModel.ResourceType.WorkflowService);
+            viewModel.Filter(model => model.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService);
             //------------Assert Results-------------------------
             Assert.IsTrue(HasFolder(viewModel.ExplorerItemModels[0].Children));
         }
 
-        private bool HasFolder(IEnumerable<ExplorerItemModel> children)
+        private bool HasFolder(IEnumerable<IExplorerItemModel> children)
         {
-            if(children.Any(explorerItemModel => explorerItemModel.ResourceType == Data.ServiceModel.ResourceType.Folder))
+            if(children.Any(explorerItemModel => explorerItemModel.ResourceType == Common.Interfaces.Data.ResourceType.Folder))
             {
                 return true;
             }
@@ -285,7 +285,7 @@ namespace Dev2.Core.Tests
             var viewModel = Init(false, true);
             //------------Preconditions---------------------------
             Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
-            viewModel.Filter(model => model.ResourceType == Data.ServiceModel.ResourceType.WorkflowService);
+            viewModel.Filter(model => model.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService);
             Assert.AreEqual(2, viewModel.ExplorerItemModels[0].ChildrenCount);
             //------------Execute Test---------------------------
             viewModel.Filter(null);
@@ -296,7 +296,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void FilteredNavigationViewModel_WhereFilterReset_Expects_OriginalExpandState()
         {
-            ExplorerItemModel resourceVM = null;
+            IExplorerItemModel resourceVM = null;
 
             var reset = new AutoResetEvent(false);
             ThreadExecuter.RunCodeAsSTA(reset,
@@ -304,8 +304,8 @@ namespace Dev2.Core.Tests
                 {
                     var viewModel = Init(false, true);
                     resourceVM = viewModel.FindChild(_mockResourceModel.Object);
-                    ExplorerItemModel resourceVM2_1 = viewModel.FindChild(_mockResourceModel1.Object);
-                    ExplorerItemModel resourceVM2_2 = viewModel.FindChild(_mockResourceModel2.Object);
+                    IExplorerItemModel resourceVM2_1 = viewModel.FindChild(_mockResourceModel1.Object);
+                    IExplorerItemModel resourceVM2_2 = viewModel.FindChild(_mockResourceModel2.Object);
 
                     Assert.IsTrue(resourceVM.Parent.IsExplorerExpanded == false);
                     Assert.IsTrue(resourceVM2_1.Parent.IsExplorerExpanded == false);
@@ -483,7 +483,7 @@ namespace Dev2.Core.Tests
             viewModel.AddEnvironment(_mockEnvironmentModel.Object);
             Assert.AreEqual(1, viewModel.ExplorerItemModels[0].Children[0].Children.Count);
             Assert.AreEqual("Mock", viewModel.ExplorerItemModels[0].Children[0].Children[0].DisplayName);
-            Assert.AreEqual(Data.ServiceModel.ResourceType.WorkflowService, viewModel.ExplorerItemModels[0].Children[0].Children[0].ResourceType);
+            Assert.AreEqual(Common.Interfaces.Data.ResourceType.WorkflowService, viewModel.ExplorerItemModels[0].Children[0].Children[0].ResourceType);
         }
 
         [TestMethod]
@@ -496,7 +496,7 @@ namespace Dev2.Core.Tests
             viewModel.AddEnvironment(_mockEnvironmentModel.Object);
             Assert.AreEqual(1, viewModel.ExplorerItemModels[0].Children[0].Children.Count);
             Assert.AreEqual("Mock2", viewModel.ExplorerItemModels[0].Children[0].Children[0].DisplayName);
-            Assert.AreEqual(Data.ServiceModel.ResourceType.DbService, viewModel.ExplorerItemModels[0].Children[0].Children[0].ResourceType);
+            Assert.AreEqual(Common.Interfaces.Data.ResourceType.DbService, viewModel.ExplorerItemModels[0].Children[0].Children[0].ResourceType);
         }
 
         void SetupWithOutViewModel(bool addWizardChildToResource, bool shouldLoadResources, out Mock<IResourceRepository> mockResourceRepository)
@@ -515,7 +515,7 @@ namespace Dev2.Core.Tests
             viewModel.AddEnvironment(_mockEnvironmentModel.Object);
             Assert.AreEqual(1, viewModel.ExplorerItemModels[0].Children[0].Children.Count);
             Assert.AreEqual("MockSource", viewModel.ExplorerItemModels[0].Children[0].Children[0].DisplayName);
-            Assert.AreEqual(Data.ServiceModel.ResourceType.WebSource, viewModel.ExplorerItemModels[0].Children[0].Children[0].ResourceType);
+            Assert.AreEqual(Common.Interfaces.Data.ResourceType.WebSource, viewModel.ExplorerItemModels[0].Children[0].Children[0].ResourceType);
         }
 
         [TestMethod]
@@ -811,24 +811,24 @@ namespace Dev2.Core.Tests
         IStudioResourceRepository BuildExplorerItems(IResourceRepository resourceRepository)
         {
             var resourceModels = resourceRepository.All();
-            var localhostItemModel = new ExplorerItemModel { DisplayName = "localhost", EnvironmentId = Guid.Empty, ResourceType = Data.ServiceModel.ResourceType.Server };
+            var localhostItemModel = new ExplorerItemModel { DisplayName = "localhost", EnvironmentId = Guid.Empty, ResourceType = Common.Interfaces.Data.ResourceType.Server };
 
             if(resourceModels != null)
             {
                 foreach(var resourceModel in resourceModels)
                 {
                     var resourceItemModel = new ExplorerItemModel { ResourceId = resourceModel.ID, ResourcePath = resourceModel.Category, EnvironmentId = Guid.Empty, DisplayName = resourceModel.ResourceName };
-                    Data.ServiceModel.ResourceType correctTyping = Data.ServiceModel.ResourceType.WorkflowService;
+                    Common.Interfaces.Data.ResourceType correctTyping = Common.Interfaces.Data.ResourceType.WorkflowService;
                     switch(resourceModel.ResourceType)
                     {
                         case ResourceType.WorkflowService:
-                            correctTyping = Data.ServiceModel.ResourceType.WorkflowService;
+                            correctTyping = Common.Interfaces.Data.ResourceType.WorkflowService;
                             break;
                         case ResourceType.Service:
-                            correctTyping = Data.ServiceModel.ResourceType.DbService;
+                            correctTyping = Common.Interfaces.Data.ResourceType.DbService;
                             break;
                         case ResourceType.Source:
-                            correctTyping = Data.ServiceModel.ResourceType.WebSource;
+                            correctTyping = Common.Interfaces.Data.ResourceType.WebSource;
                             break;
                     }
                     resourceItemModel.ResourceType = correctTyping;
@@ -836,7 +836,7 @@ namespace Dev2.Core.Tests
                     var categoryItem = localhostItemModel.Children.FirstOrDefault(model => model.DisplayName == resourceModel.Category);
                     if(categoryItem == null)
                     {
-                        categoryItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object) { Parent = localhostItemModel, DisplayName = resourceModel.Category, EnvironmentId = Guid.Empty, ResourceType = Data.ServiceModel.ResourceType.Folder, ResourcePath = "" };
+                        categoryItem = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { Parent = localhostItemModel, DisplayName = resourceModel.Category, EnvironmentId = Guid.Empty, ResourceType = Common.Interfaces.Data.ResourceType.Folder, ResourcePath = "" };
                         localhostItemModel.Children.Add(categoryItem);
                     }
                     resourceItemModel.Parent = categoryItem;

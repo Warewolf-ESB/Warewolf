@@ -1,35 +1,12 @@
-﻿using System;
-using System.Activities;
-using System.Activities.Core.Presentation;
-using System.Activities.Debugger;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Metadata;
-using System.Activities.Presentation.Model;
-using System.Activities.Presentation.Services;
-using System.Activities.Presentation.View;
-using System.Activities.Statements;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Xaml;
-using System.Xml.Linq;
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.Activities.Designers2.Core;
 using Dev2.AppResources.Converters;
 using Dev2.Collections;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Composition;
 using Dev2.CustomControls.Utils;
 using Dev2.Data.Interfaces;
@@ -43,7 +20,6 @@ using Dev2.Factory;
 using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Models;
-using Dev2.Providers.Errors;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
@@ -71,6 +47,31 @@ using Dev2.Utilities;
 using Dev2.Utils;
 using Dev2.ViewModels.Workflow;
 using Dev2.Workspaces;
+using System;
+using System.Activities;
+using System.Activities.Core.Presentation;
+using System.Activities.Debugger;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Metadata;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.Services;
+using System.Activities.Presentation.View;
+using System.Activities.Statements;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Xaml;
+using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -190,7 +191,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                return ResourceHelper.GetDisplayName(ResourceModel);
+                var displayName = ResourceModel.UserPermissions == Permissions.View ?
+                    string.Format("{0} [READONLY]", ResourceHelper.GetDisplayName(ResourceModel)) :
+                    ResourceHelper.GetDisplayName(ResourceModel);
+                return displayName;
             }
         }
 
@@ -230,6 +234,14 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                 }
                 return workflowLink;
+            }
+        }
+
+        public Visibility WorkflowLinkVisible
+        {
+            get
+            {
+                return _resourceModel.IsVersionResource ? Visibility.Hidden : Visibility.Visible;
             }
         }
 
@@ -1034,7 +1046,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
 
-                // If we are opening from server skip this check, it cannot have "real" changes!
+                    // If we are opening from server skip this check, it cannot have "real" changes!
                     if(!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
                     {
                         // an additional case we need to account for - Designer has resized and is only visible once focus is lost?! ;)
@@ -1889,7 +1901,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return;
             }
             this.TraceInfo("Publish message of type - " + typeof(RemoveResourceAndCloseTabMessage));
-            EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(message.ResourceModel));
+            EventPublisher.Publish(new RemoveResourceAndCloseTabMessage(message.ResourceModel, false));
             var resourceModel = message.ResourceModel;
             WorkspaceItemRepository.Instance.Remove(resourceModel);
             resourceModel.Environment.ResourceRepository.DeleteResource(resourceModel);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
-using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
@@ -134,8 +134,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var dbService = new DbService();
             var dbSource = new DbSource { ResourceName = "Source" };
-            var resourceID = Guid.NewGuid();
-            dbSource.ResourceID = resourceID;
+            var resourceId = Guid.NewGuid();
+            dbSource.ResourceID = resourceId;
             dbService.Source = dbSource;
             var serviceMethod = new ServiceMethod { Name = "Method" };
             dbService.Method = serviceMethod;
@@ -145,7 +145,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             dbService.Recordset = recordset;
 
             // ReSharper disable InconsistentNaming
-            const string expected = @"<Service ID=""00000000-0000-0000-0000-000000000000"" Version=""1.0"" Name="""" ResourceType=""DbService"" IsValid=""false"">
+            const string expected = @"<Service ID=""00000000-0000-0000-0000-000000000000"" Name="""" ResourceType=""DbService"" IsValid=""false"">
   <Actions>
     <Action Name=""SomeRecSet"" Type=""InvokeStoredProc"" SourceID=""{0}"" SourceName=""Source"" ExecuteAction="""" SourceMethod=""Method"">
       <Inputs />
@@ -173,7 +173,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Execute Test---------------------------
             var xElement = dbService.ToXml();
             //------------Assert Results-------------------------
-            Assert.AreEqual(string.Format(expected, resourceID), xElement.ToString());
+            Assert.AreEqual(string.Format(expected, resourceId), xElement.ToString());
         }
 
         [TestMethod]
@@ -182,7 +182,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         // ReSharper restore InconsistentNaming
         {
             // ReSharper disable InconsistentNaming
-            const string xmlDataString = @"<Service ID=""af8d2d38-22b5-4599-8357-adce196beb83"" Version=""1.0"" Name=""TravsTestService"" ResourceType=""DbService"" IsValid=""true"">
+            const string xmlDataString = @"<Service ID=""af8d2d38-22b5-4599-8357-adce196beb83"" Name=""TravsTestService"" ResourceType=""DbService"" IsValid=""true"">
   <Actions>
     <Action Name=""dbo.InsertDummyUser"" Type=""InvokeStoredProc"" SourceID=""ebba47dc-e5d4-4303-a203-09e2e9761d16"" SourceName=""testingDBSrc"" ExecuteAction=""dbo.InsertDummyUser"" SourceMethod=""dbo.InsertDummyUser"">
       <Inputs>

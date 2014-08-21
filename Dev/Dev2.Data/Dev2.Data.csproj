@@ -155,7 +155,6 @@
     <Compile Include="ServiceModel\WebRequestMethod.cs" />
     <Compile Include="ServiceModel\WebSource.cs" />
     <Compile Include="ServiceModel\EmailSource.cs" />
-    <Compile Include="ServiceModel\IResource.cs" />
     <Compile Include="ServiceModel\Resource.cs" />
     <Compile Include="ServiceModel\ResourceForTree.cs" />
     <Compile Include="Settings\Settings.cs" />
@@ -414,6 +413,10 @@
     <Compile Include="Value Objects\Dev2ValueObjectFactory.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
       <Name>Dev2.Diagnostics</Name>

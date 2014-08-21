@@ -110,7 +110,6 @@
     <Compile Include="Communication\PermissionsModifiedMemo.cs" />
     <Compile Include="Communication\Receipt.cs" />
     <Compile Include="Hosting\ExecStatus.cs" />
-    <Compile Include="Interfaces\IExplorerItem.cs" />
     <Compile Include="Interfaces\IExplorerRepositorySync.cs" />
     <Compile Include="Interfaces\IExplorerResourceRepository.cs" />
     <Compile Include="Interfaces\IExplorerServerResourceRepository.cs" />
@@ -127,10 +126,7 @@
     <Compile Include="Collections\ObservableReadOnlyList.cs" />
     <Compile Include="Providers\Errors\ActionableErrorInfo.cs" />
     <Compile Include="Providers\Errors\ErrorInfo.cs" />
-    <Compile Include="Providers\Errors\ErrorType.cs" />
-    <Compile Include="Providers\Errors\FixType.cs" />
     <Compile Include="Providers\Errors\IActionableErrorInfo.cs" />
-    <Compile Include="Providers\Errors\IErrorInfo.cs" />
     <Compile Include="Providers\Events\EventPublisher.cs" />
     <Compile Include="Hosting\IHostContext.cs" />
     <Compile Include="Providers\Logs\CustomTraceListener.cs" />
@@ -184,7 +180,6 @@
     <Compile Include="Services\Security\IAuthorizationService.cs" />
     <Compile Include="Services\Security\IPermissionsModifiedService.cs" />
     <Compile Include="Services\Security\ISecurityService.cs" />
-    <Compile Include="Services\Security\Permissions.cs" />
     <Compile Include="Services\Security\ReasonAttribute.cs" />
     <Compile Include="Services\Security\SecurityServiceBase.cs" />
     <Compile Include="Services\Security\SecuritySettingsTO.cs" />
@@ -200,8 +195,8 @@
     <Compile Include="Shared Models\DbColumnList.cs" />
     <Compile Include="Shared Models\DbTable.cs" />
     <Compile Include="Shared Models\DbTableList.cs" />
+    <Compile Include="Shared Models\Explorer\RollbackResult.cs" />
     <Compile Include="Shared Models\Explorer\ServerExplorerItem.cs" />
-    <Compile Include="Shared Models\ResourceType.cs" />
     <Compile Include="Shared Models\ResultList.cs" />
     <Compile Include="Shared Models\SerializableResource.cs" />
     <Compile Include="Threading\AsyncWorker.cs" />
@@ -211,6 +206,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>

@@ -1,9 +1,9 @@
-﻿using System;
-using System.ComponentModel.Composition;
-using System.Windows;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Studio.Core.Controller;
 using Dev2.Studio.ViewModels.Dialogs;
+using System;
+using System.ComponentModel.Composition;
+using System.Windows;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Controller
@@ -148,6 +148,26 @@ namespace Dev2.Studio.Controller
                               + " Make sure the remote computer is powered on." + Environment.NewLine
                               + Environment.NewLine
                               + " Would you like to re-try? " + Environment.NewLine;
+            Description = description;
+            Buttons = MessageBoxButton.YesNo;
+            ImageType = MessageBoxImage.Information;
+            return Show();
+        }
+
+        public MessageBoxResult ShowDeleteVersionMessage(string displayName)
+        {
+            Header = "Delete version";
+            var description = string.Format("Are you sure to delete {0}?", displayName);
+            Description = description;
+            Buttons = MessageBoxButton.YesNo;
+            ImageType = MessageBoxImage.Information;
+            return Show();
+        }
+
+        public MessageBoxResult ShowRollbackVersionMessage(string displayName)
+        {
+            Header = "Make current version";
+            var description = string.Format("{0} will become the current version.{1}Do you want to proceed ?", displayName, Environment.NewLine);
             Description = description;
             Buttons = MessageBoxButton.YesNo;
             ImageType = MessageBoxImage.Information;

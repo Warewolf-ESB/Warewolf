@@ -16,7 +16,7 @@ namespace Dev2.ViewModels.Deploy
         IEnvironmentModel _environment;
         private readonly bool _target;
         public IAuthorizationService AuthorizationService { get; private set; }
-        ObservableCollection<ExplorerItemModel> _explorerItemModels;
+        ObservableCollection<IExplorerItemModel> _explorerItemModels;
         public DeployNavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, bool target)
             : base(eventPublisher, asyncWorker, environmentRepository, studioResourceRepository)
         {
@@ -45,13 +45,13 @@ namespace Dev2.ViewModels.Deploy
         }
 
 
-        public ExplorerItemModel FindChild(IContextualResourceModel resource)
+        public IExplorerItemModel FindChild(IContextualResourceModel resource)
         {
             var explorerItemModels = ExplorerItemModels.SelectMany(explorerItemModel => explorerItemModel.Descendants()).ToList();
             return resource != null ? explorerItemModels.FirstOrDefault(model => model.ResourceId == resource.ID && model.EnvironmentId == resource.Environment.ID) : null;
         }
 
-        public void Filter(Func<ExplorerItemModel, bool> filter, bool fromFilter = false)
+        public void Filter(Func<IExplorerItemModel, bool> filter, bool fromFilter = false)
         {
             if(filter == null)
             {
@@ -74,7 +74,7 @@ namespace Dev2.ViewModels.Deploy
         /// perform some kind of action on all children of a node
         /// </summary>
         /// <param name="action"></param>
-        protected void Iterate(Action<ExplorerItemModel> action)
+        protected void Iterate(Action<IExplorerItemModel> action)
         {
             if(ExplorerItemModels != null && action != null)
             {
@@ -94,7 +94,7 @@ namespace Dev2.ViewModels.Deploy
         /// </summary>
         /// <param name="action"></param>
         /// <param name="node"></param>
-        void Iterate(Action<ExplorerItemModel> action, ExplorerItemModel node)
+        void Iterate(Action<IExplorerItemModel> action, IExplorerItemModel node)
         {
             if(node != null)
             {
@@ -108,11 +108,11 @@ namespace Dev2.ViewModels.Deploy
                 }
             }
         }
-        public virtual ObservableCollection<ExplorerItemModel> ExplorerItemModels
+        public virtual ObservableCollection<IExplorerItemModel> ExplorerItemModels
         {
             get
             {
-                return _explorerItemModels ?? new ObservableCollection<ExplorerItemModel>();
+                return _explorerItemModels ?? new ObservableCollection<IExplorerItemModel>();
             }
             set
             {
@@ -132,7 +132,7 @@ namespace Dev2.ViewModels.Deploy
                 var isAuthorizedDeployTo = AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, Guid.Empty.ToString());
                 if(isAuthorizedDeployTo && _target)
                 {
-                    ObservableCollection<ExplorerItemModel> explorerItemModels = new ObservableCollection<ExplorerItemModel>
+                    ObservableCollection<IExplorerItemModel> explorerItemModels = new ObservableCollection<IExplorerItemModel>
                         {
                             StudioResourceRepository.FindItem(env => env.EnvironmentId == connection.ID)
                         };
@@ -150,7 +150,7 @@ namespace Dev2.ViewModels.Deploy
                     var isAuthorizedDeployFrom = AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, Guid.Empty.ToString());
                     if(isAuthorizedDeployFrom && !_target)
                     {
-                        var explorerItemModels = new ObservableCollection<ExplorerItemModel>
+                        var explorerItemModels = new ObservableCollection<IExplorerItemModel>
                             {
                                 StudioResourceRepository.FindItem(env => env.EnvironmentId == connection.ID)
                             };
@@ -171,7 +171,7 @@ namespace Dev2.ViewModels.Deploy
                         {
                             if(model.Count == 1)
                             {
-                                StudioResourceRepository.PerformUpdateOnDispatcher(() => model[0].Children = new ObservableCollection<ExplorerItemModel>());
+                                StudioResourceRepository.PerformUpdateOnDispatcher(() => model[0].Children = new ObservableCollection<IExplorerItemModel>());
                                 var resourcePermissions = AuthorizationService.GetResourcePermissions(Guid.Empty);
                                 model[0].Permissions = resourcePermissions;
                             }

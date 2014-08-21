@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Integration.Tests.Dev2.Application.Server.Tests.Workspace.XML;
 using Dev2.Integration.Tests.Helpers;
 using Dev2.Integration.Tests.Services.Sql;
@@ -16,6 +12,10 @@ using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Xml.Linq;
 using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.Ouput;
 
@@ -166,8 +166,8 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
                 var getArgs = string.Format("{{\"resourceID\":\"{0}\",\"resourceType\":\"{1}\"}}", svc.ResourceID, ResourceType.DbService);
 
                 var resourceCatalog = new Mock<IResourceCatalog>();
-                resourceCatalog.Setup(c => c.GetResourceContents(workspaceID, svc.ResourceID, It.IsAny<Version>()))
-                    .Returns((Guid wsID, Guid resourceID, Version version) => svc.ToXml().ToStringBuilder())
+                resourceCatalog.Setup(c => c.GetResourceContents(workspaceID, svc.ResourceID))
+                    .Returns((Guid wsID, Guid resourceID) => svc.ToXml().ToStringBuilder())
                     .Verifiable();
 
                 var services = new TestDbServices(resourceCatalog.Object);
@@ -176,7 +176,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
                 var getResult = services.Get(getArgs, workspaceID, Guid.Empty);
 
                 //------------Assert Results-------------------------
-                resourceCatalog.Verify(c => c.GetResourceContents(workspaceID, svc.ResourceID, It.IsAny<Version>()));
+                resourceCatalog.Verify(c => c.GetResourceContents(workspaceID, svc.ResourceID));
 
                 Assert.AreEqual(svc.ResourceID, getResult.ResourceID);
                 Assert.AreEqual(svc.ResourceName, getResult.ResourceName);
@@ -465,7 +465,7 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         public void ServiceInvoker_Invoke_WhenDbTest_ExpectValidDbRecordsetDataWithCommasReplacedForUIParsing()
         {
             //------------Setup for test--------------------------
-            
+
 
             const string args = @"{""resourceID"":""00000000-0000-0000-0000-000000000000"",""resourceType"":""DbService"",""resourceName"":null,""resourcePath"":null,""source"":{""ServerType"":""SqlDatabase"",""Server"":""RSAKLFSVRGENDEV"",""DatabaseName"":""Dev2TestingDB"",""Port"":1433,""AuthenticationType"":""User"",""UserID"":""testUser"",""Password"":""test123"",""ConnectionString"":""Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testUser;Password=test123;"",""ResourceID"":""eb2de0a3-4814-40b8-b825-f4601bfdb155"",""Version"":""1.0"",""ResourceType"":""DbSource"",""ResourceName"":""TU Greenpoint DB"",""ResourcePath"":""SQL SRC"",""IsValid"":false,""Errors"":null,""ReloadActions"":false},""method"":{""Name"":""dbo.pr_MapLocationsGetAll"",""ExecuteAction"":""dbo.pr_MapLocationsGetAll"",""SourceCode"":""-- =============================================\r<br />-- Author:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<Author,,Name>\r<br />-- Create date: <Create Date,,>\r<br />-- Description:&nbsp;&nbsp;&nbsp;&nbsp;<Description,,>\r<br />-- =============================================\r<br />CREATE PROCEDURE dbo.proc_GetAllMapLocations \r<br />&nbsp;&nbsp;&nbsp;&nbsp;\r<br />AS\r<br />BEGIN\r<br />&nbsp;&nbsp;&nbsp;&nbsp;SET NOCOUNT ON;\r<br />\r<br />    SELECT MapLocationID, StreetAddress,Latitude,Longitude FROM dbo.MapLocation ORDER BY MapLocationID ASC\r<br />END\r<br />"",""Parameters"":[]},""recordset"":{""Name"":""dbo_proc_GetAllMapLocations"",""Fields"":[],""Records"":[],""HasErrors"":false,""ErrorMessage"":""""}}";
             var service = JsonConvert.DeserializeObject<DbService>(args);

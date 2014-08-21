@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Core.Tests.Environments;
 using Dev2.Data.ServiceModel;
 using Dev2.Services.Events;

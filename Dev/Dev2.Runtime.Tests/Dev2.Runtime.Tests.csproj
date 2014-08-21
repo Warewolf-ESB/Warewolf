@@ -144,12 +144,16 @@
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
     <Compile Include="Hosting\ExplorerItemFactoryTests.cs" />
     <Compile Include="Hosting\ServerExplorerRepositoryTests.cs" />
+    <Compile Include="Hosting\ServerVersionRepositoryTests.cs" />
+    <Compile Include="Hosting\VersionStrategyTests.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\DeleteItemsTest.cs" />
     <Compile Include="Security\SecurityConfigFetcher.cs" />
     <Compile Include="Services\DeleteScheduledResourceTest.cs" />
+    <Compile Include="Services\DeleteVersionTest.cs" />
     <Compile Include="Services\FetchExplorerItemsTest.cs" />
+    <Compile Include="Services\GetVersionTest.cs" />
     <Compile Include="Services\GetDirectoriesRelativeToServerTests.cs" />
     <Compile Include="Services\GetScheduledResourceHistoryTest.cs" />
     <Compile Include="Services\GetScheduledResourcesTest.cs" />
@@ -210,6 +214,7 @@
     <Compile Include="Services\FindLogDirectoryTests.cs" />
     <Compile Include="Services\GetDatabaseColumnsForTableTests.cs" />
     <Compile Include="Services\GetDatabaseTablesTests.cs" />
+    <Compile Include="Services\GetVersionsTest.cs" />
     <Compile Include="Services\HostSecureConfigMock.cs" />
     <Compile Include="ServiceModel\WebModelTests.cs" />
     <Compile Include="ServiceModel\ResourcesTests.cs" />
@@ -223,6 +228,7 @@
     <Compile Include="Services\MockServiceExecutionAbstract.cs" />
     <Compile Include="Services\RenameCategoryResourceTests.cs" />
     <Compile Include="Services\RenameItemsTest.cs" />
+    <Compile Include="Services\RollBackToTest.cs" />
     <Compile Include="Services\SaveScheduledResourceTest.cs" />
     <Compile Include="Services\SchedulerTestBase.cs" />
     <Compile Include="Services\SecurityReadTests.cs" />
@@ -282,6 +288,10 @@
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
       <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj">
       <Project>{4bd0c970-ecd6-470b-b9ee-17ecfe53e5fb}</Project>

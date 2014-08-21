@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Data;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Providers.Errors;
 
 // ReSharper disable once CheckNamespace

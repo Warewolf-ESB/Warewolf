@@ -1,10 +1,4 @@
-﻿using System;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Windows;
-using Dev2.Activities.Designers2.Core;
+﻿using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common;
 using Dev2.Core.Tests.Environments;
@@ -16,6 +10,12 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Windows;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming
@@ -375,7 +375,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
             SetupEnvironmentRepo(Guid.Empty);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new ExplorerItemModel { DisplayName = "MyDBService", ResourceType = Data.ServiceModel.ResourceType.DbService, EnvironmentId = Guid.Empty });
+            var dataObject = new DataObject(GlobalConstants.ExplorerItemModelFormat, new ExplorerItemModel { DisplayName = "MyDBService", ResourceType = Common.Interfaces.Data.ResourceType.DbService, EnvironmentId = Guid.Empty });
             //------------Execute Test---------------------------
             bool added = sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
@@ -429,11 +429,13 @@ namespace Dev2.Activities.Designers.Tests.Sequence
                 var mockEnvironmentModel = new Mock<IEnvironmentModel>();
                 mockEnvironmentModel.Setup(model => model.ID).Returns(Guid.NewGuid());
                 mockEnvironmentModel.Setup(model => model.Name).Returns("testEnv");
-                var resourceModel = new ResourceModel(mockEnvironmentModel.Object);
-                resourceModel.ResourceType = ResourceType.Service;
-                resourceModel.ServerResourceType = "DbService";
-                resourceModel.ResourceName = "MyDBService";
-                resourceModel.IconPath = "IconPath";
+                var resourceModel = new ResourceModel(mockEnvironmentModel.Object)
+                    {
+                        ResourceType = ResourceType.Service,
+                        ServerResourceType = "DbService",
+                        ResourceName = "MyDBService",
+                        IconPath = "IconPath"
+                    };
                 return resourceModel;
             }
         }

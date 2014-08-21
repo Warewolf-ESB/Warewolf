@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
@@ -114,11 +115,11 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             // Create tmpDL
-            var tmpID = dataListCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), result, DataObject.RemoteInvokeResultShape, out invokeErrors);
+            var tmpId = dataListCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), result, DataObject.RemoteInvokeResultShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             // Merge Result into Local DL ;)
-            Guid mergeOp = dataListCompiler.Merge(DataObject.DataListID, tmpID, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out invokeErrors);
+            Guid mergeOp = dataListCompiler.Merge(DataObject.DataListID, tmpId, enDataListMergeTypes.Union, enTranslationDepth.Data, false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             if(mergeOp == DataObject.DataListID)
@@ -216,12 +217,12 @@ namespace Dev2.Runtime.ESB.Execution
                 req.Method = "GET";
 
                 // set header for server to know this is a remote invoke ;)
-                var remoteInvokerID = DataObject.RemoteInvokerID;
-                if(remoteInvokerID == Guid.Empty.ToString())
+                var remoteInvokerId = DataObject.RemoteInvokerID;
+                if(remoteInvokerId == Guid.Empty.ToString())
                 {
                     throw new Exception("Remote Server ID Empty");
                 }
-                req.Headers.Add(HttpRequestHeader.From, remoteInvokerID); // Set to remote invoke ID ;)
+                req.Headers.Add(HttpRequestHeader.From, remoteInvokerId); // Set to remote invoke ID ;)
                 req.Headers.Add(HttpRequestHeader.Cookie, GlobalConstants.RemoteServerInvoke);
                 return req;
             }
@@ -231,16 +232,18 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        Connection GetConnection(Guid environmentID)
+        Connection GetConnection(Guid environmentId)
         {
-            if(environmentID == Guid.Empty)
+            if(environmentId == Guid.Empty)
             {
-                var localhostConnection = new Connection();
-                localhostConnection.Address = EnvironmentVariables.WebServerUri;
-                localhostConnection.AuthenticationType = AuthenticationType.Windows;
+                var localhostConnection = new Connection
+                    {
+                        Address = EnvironmentVariables.WebServerUri,
+                        AuthenticationType = AuthenticationType.Windows
+                    };
                 return localhostConnection;
             }
-            var xml = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, environmentID);
+            var xml = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, environmentId);
 
             if(xml == null || xml.Length == 0)
             {

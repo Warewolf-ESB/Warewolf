@@ -273,8 +273,10 @@
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
     <Compile Include="Controller\IPopUp.cs" />
     <Compile Include="CustomContainer.cs" />
+    <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\DisplayMessageBoxMessage.cs" />
+    <Compile Include="Models\ServerExplorerVersionProxy.cs" />
     <Compile Include="ResolveExampleResourceNames.Designer.cs">
       <DependentUpon>ResolveExampleResourceNames.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -542,6 +544,10 @@
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
       <Name>Dev2.Activities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>

@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
+﻿using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
-using Dev2.Providers.Errors;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -81,7 +81,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(compiledResources != null)
             {
-                var saveResult = ResourceCatalog.Instance.SaveResource(workspaceID, resourceDefinition);
+                var saveResult = ResourceCatalog.Instance.SaveResource(workspaceID, resourceDefinition,null,"Save","");
                 res.SetMessage(saveResult.Message + " " + DateTime.Now);
             }
 

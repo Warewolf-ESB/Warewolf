@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Preview;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 
@@ -248,13 +249,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest
                                   ? new string[0]
                                   : Headers.Split(new[] {'\n', '\r', ';'}, StringSplitOptions.RemoveEmptyEntries);
 
-                var headersEntries = new List<Tuple<string, string>>();
-
-                foreach (var header in headers)
-                {
-                    var headerSegments = header.Split(':');
-                    headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
-                }
+                var headersEntries = headers.Select(header => header.Split(':')).Select(headerSegments => new Tuple<string, string>(headerSegments[0], headerSegments[1])).ToList();
 
                 url = PreviewViewModel.Inputs.Aggregate(url,
                                                         (current, previewInput) =>

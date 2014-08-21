@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects.Base;
@@ -19,18 +20,17 @@ namespace Dev2.Runtime.Hosting
 
         IResource GetResource(Guid workspaceID, string resourceName, ResourceType resourceType = ResourceType.Unknown, string version = null);
 
-        IResource GetResource(Guid workspaceID, Guid resourceID, Version version = null);
+        IResource GetResource(Guid workspaceID, Guid resourceID);
 
         /// <summary>
         /// Gets the contents of the resource with the given name.
         /// </summary>
         /// <param name="workspaceID">The workspace ID to be queried.</param>
         /// <param name="resourceID">The resource ID to be queried.</param>
-        /// <param name="version">The version to be queried.</param>
         /// <returns>
         /// The resource's contents or <code>string.Empty</code> if not found.
         /// </returns>
-        StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID, Version version = null);
+        StringBuilder GetResourceContents(Guid workspaceID, Guid resourceID);
 
         /// <summary>
         /// Gets the resource's contents.
@@ -90,13 +90,13 @@ namespace Dev2.Runtime.Hosting
 
         bool CopyResource(IResource resource, Guid targetWorkspaceID, string userRoles = null);
 
-        ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string userRoles = null);
+        ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string userRoles = null,string reason ="",string user ="");
 
-        ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string userRoles = null);
+        ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string userRoles = null, string reason ="",string user ="");
 
-        ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, string userRoles = null);
+        ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, string userRoles = null, bool deleteVersions = true);
 
-        bool RollbackResource(Guid workspaceID, Guid resourceID, Version fromVersion, Version toVersion);
+       // bool RollbackResource(Guid workspaceID, Guid resourceID, Version fromVersion, Version toVersion);
 
         void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite = true, bool delete = true, IList<string> filesToIgnore = null);
 

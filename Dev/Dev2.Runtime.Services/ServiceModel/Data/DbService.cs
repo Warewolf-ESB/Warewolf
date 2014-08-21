@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Common;
-using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -15,7 +14,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public DbService()
         {
-            ResourceType = ResourceType.DbService;
+            ResourceType = Common.Interfaces.Data.ResourceType.DbService;
             Source = new DbSource();
             Recordset = new Recordset();
         }
@@ -23,7 +22,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public DbService(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.DbService;
+            ResourceType = Common.Interfaces.Data.ResourceType.DbService;
             var action = xml.Descendants("Action").FirstOrDefault();
             if(action == null)
             {

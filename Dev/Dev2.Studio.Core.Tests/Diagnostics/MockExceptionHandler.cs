@@ -1,7 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using Dev2.Interfaces;
 using Dev2.Studio;
 using Dev2.Studio.Diagnostics;
-using Dev2.Studio.ViewModels;
 
 namespace Dev2.Core.Tests.Diagnostics
 {

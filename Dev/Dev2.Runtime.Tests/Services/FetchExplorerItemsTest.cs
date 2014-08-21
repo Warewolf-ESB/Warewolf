@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
-using Dev2.Data.ServiceModel;
 using Dev2.Explorer;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
-using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
@@ -86,4 +87,5 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);
         }
     }
+  
 }

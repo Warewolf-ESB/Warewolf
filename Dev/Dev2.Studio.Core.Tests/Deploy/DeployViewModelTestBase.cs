@@ -38,7 +38,7 @@ namespace Dev2.Core.Tests.Deploy
             var repo = new TestEnvironmentRespository(source.Object, destination.Object);
 
             var deployStatsCalculator = new DeployStatsCalculator();
-            ExplorerItemModel resourceVm;
+            IExplorerItemModel resourceVm;
             var studioResourceRepository = CreateModels(false, source.Object, out resourceVm);
 
             deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo, new Mock<IEventAggregator>().Object, studioResourceRepository, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, deployStatsCalculator)
@@ -54,7 +54,7 @@ namespace Dev2.Core.Tests.Deploy
         protected static void SetupResources(DeployStatsCalculator deployStatsCalculator, bool isChecked)
         {
             IEnvironmentModel environmentModel;
-            ExplorerItemModel resourceVm;
+            IExplorerItemModel resourceVm;
             var studioResourceRepository = CreateModels(isChecked, out environmentModel, out resourceVm);
 
             var navVm = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IEnvironmentRepository>().Object, studioResourceRepository, true) { Environment = environmentModel };
@@ -62,7 +62,7 @@ namespace Dev2.Core.Tests.Deploy
             deployStatsCalculator.DeploySummaryPredicateExisting(resourceVm, navVm);
         }
 
-        protected static StudioResourceRepository CreateModels(bool isChecked, out IEnvironmentModel environmentModel, out ExplorerItemModel resourceVm)
+        protected static StudioResourceRepository CreateModels(bool isChecked, out IEnvironmentModel environmentModel, out IExplorerItemModel resourceVm)
         {
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, Guid.NewGuid());
 
@@ -73,9 +73,9 @@ namespace Dev2.Core.Tests.Deploy
             var env = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>());
             env.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             environmentModel = env.Object;
-            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = Data.ServiceModel.ResourceType.Server, EnvironmentId = environmentModel.ID, ResourceId = Guid.NewGuid(), ResourcePath = "" };
+            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = Common.Interfaces.Data.ResourceType.Server, EnvironmentId = environmentModel.ID, ResourceId = Guid.NewGuid(), ResourcePath = "" };
 
-            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = Data.ServiceModel.ResourceType.Folder, ResourcePath = "WORKFLOWS", ResourceId = Guid.NewGuid(), EnvironmentId = mockEnvironmentModel.Object.ID };
+            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = Common.Interfaces.Data.ResourceType.Folder, ResourcePath = "WORKFLOWS", ResourceId = Guid.NewGuid(), EnvironmentId = mockEnvironmentModel.Object.ID };
 
             serverItemModel.Children.Add(workflowsFolder);
 
@@ -93,12 +93,12 @@ namespace Dev2.Core.Tests.Deploy
             return studioResourceRepository;
         }
 
-        protected static StudioResourceRepository CreateModels(bool isChecked, IEnvironmentModel environmentModel, out ExplorerItemModel resourceVm)
+        protected static StudioResourceRepository CreateModels(bool isChecked, IEnvironmentModel environmentModel, out IExplorerItemModel resourceVm)
         {
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(ResourceType.WorkflowService, Guid.NewGuid());
-            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = Data.ServiceModel.ResourceType.Server, EnvironmentId = environmentModel.ID, ResourceId = Guid.NewGuid(), ResourcePath = "" };
+            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = Common.Interfaces.Data.ResourceType.Server, EnvironmentId = environmentModel.ID, ResourceId = Guid.NewGuid(), ResourcePath = "" };
 
-            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = Data.ServiceModel.ResourceType.Folder, ResourcePath = "WORKFLOWS", ResourceId = Guid.NewGuid(), EnvironmentId = environmentModel.ID };
+            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = Common.Interfaces.Data.ResourceType.Folder, ResourcePath = "WORKFLOWS", ResourceId = Guid.NewGuid(), EnvironmentId = environmentModel.ID };
 
             serverItemModel.Children.Add(workflowsFolder);
 
@@ -139,10 +139,10 @@ namespace Dev2.Core.Tests.Deploy
             // ReSharper disable RedundantAssignment
             int deployItemCount;
             var statsCalc = new Mock<IDeployStatsCalculator>();
-            statsCalc.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ExplorerItemModel>>(), It.IsAny<Dictionary<string, Func<ExplorerItemModel, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out deployItemCount));
+            statsCalc.Setup(c => c.CalculateStats(It.IsAny<IEnumerable<ExplorerItemModel>>(), It.IsAny<Dictionary<string, Func<IExplorerItemModel, bool>>>(), It.IsAny<ObservableCollection<DeployStatsTO>>(), out deployItemCount));
             var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
-            mockStudioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ObservableCollection<ExplorerItemModel>());
-            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, envRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, statsCalc.Object) { Source = { ExplorerItemModels = new ObservableCollection<ExplorerItemModel>() }, Target = { ExplorerItemModels = new ObservableCollection<ExplorerItemModel>() } };
+            mockStudioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
+            var deployViewModel = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, envRepo.Object, new Mock<IEventAggregator>().Object, mockStudioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object, statsCalc.Object) { Source = { ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() }, Target = { ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() } };
 
             return deployViewModel;
         }
@@ -164,7 +164,7 @@ namespace Dev2.Core.Tests.Deploy
                 mockEventAggregator = new Mock<IEventAggregator>();
             }
             var studioResourceRepository = new Mock<IStudioResourceRepository>();
-            studioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<ExplorerItemModel, bool>>())).Returns(new ObservableCollection<ExplorerItemModel>());
+            studioResourceRepository.Setup(repository => repository.Filter(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ObservableCollection<IExplorerItemModel>());
             vm = new DeployViewModel(AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, serverProvider.Object, repo.Object, mockEventAggregator.Object, studioResourceRepository.Object, new Mock<IConnectControlViewModel>().Object, new Mock<IConnectControlViewModel>().Object);
             return envId;
         }

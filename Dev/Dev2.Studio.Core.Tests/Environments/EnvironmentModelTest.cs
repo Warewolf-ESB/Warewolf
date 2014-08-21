@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Network;
 using Dev2.Providers.Events;

@@ -91,7 +91,7 @@
 
                     <nv:NavigationView.ItemTemplate>
                         <HierarchicalDataTemplate  DataType="{x:Type models:ExplorerItemModel}"
-                                                   ItemsSource="{Binding Path=Children}">
+                                                   ItemsSource="{Binding Path=DeployChildren}">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal"
                                             AllowDrop="True"
@@ -201,7 +201,7 @@
 
                     <nv:NavigationView.ItemTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type models:ExplorerItemModel}"
-                                                  ItemsSource="{Binding Path=Children}">
+                                                  ItemsSource="{Binding Path=DeployChildren}">
                             <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal"
                                             AllowDrop="True"

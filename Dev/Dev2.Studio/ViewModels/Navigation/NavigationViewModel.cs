@@ -1,7 +1,7 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Data;
 using Dev2.ConnectionHelpers;
-using Dev2.Data.ServiceModel;
 using Dev2.Models;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -40,8 +40,8 @@ namespace Dev2.Studio.ViewModels.Navigation
         bool _fromActivityDrop;
         readonly IEventAggregator _eventPublisher;
         readonly IConnectControlSingleton _connectControlSingleton;
-        ExplorerItemModel _selectedItem;
-        ObservableCollection<ExplorerItemModel> _explorerItemModels;
+        IExplorerItemModel _selectedItem;
+        ObservableCollection<IExplorerItemModel> _explorerItemModels;
         #endregion private fields
 
         #region ctor + init
@@ -64,7 +64,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             _fromActivityDrop = isFromActivityDrop;
             _navigationViewModelType = navigationViewModelType;
             Environments = new List<IEnvironmentModel>();
-            ExplorerItemModels = new ObservableCollection<ExplorerItemModel>();
+            ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
             CircularProgressBarVisibility = Visibility.Hidden;
             RefreshButtonVisibility = Visibility.Visible;
         }
@@ -101,7 +101,7 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         public IEnvironmentModel FilterEnvironment { get; set; }
 
-        public ExplorerItemModel SelectedItem
+        public IExplorerItemModel SelectedItem
         {
             get
             {
@@ -166,7 +166,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             VerifyArgument.IsNotNull("environment", environment);
             var environmentId = environment.ID;
 
-            StudioResourceRepository.AddServerNode(new ExplorerItemModel(_connectControlSingleton)
+            StudioResourceRepository.AddServerNode(new ExplorerItemModel(_connectControlSingleton, StudioResourceRepository)
             {
                 ResourcePath = "",
                 DisplayName = environment.Name,
@@ -181,7 +181,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
 
             UpdateNavigationView();
-        
+
             if(environment.Equals(EnvironmentRepository.Source) && environment.Connection != null)
             {
                 environment.Connection.StartAutoConnect();
@@ -217,7 +217,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             RefreshButtonVisibility = Visibility.Hidden;
 
             var tmpSelected = SelectedItem;
-            List<ExplorerItemModel> expandedList = new List<ExplorerItemModel>();
+            List<IExplorerItemModel> expandedList = new List<IExplorerItemModel>();
             List<Task> loadTasks = new List<Task>();
             List<Guid> environments = new List<Guid>();
 
@@ -267,7 +267,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// perform some kind of action on all children of a node
         /// </summary>
         /// <param name="action"></param>
-        protected void Iterate(Action<ExplorerItemModel> action)
+        protected void Iterate(Action<IExplorerItemModel> action)
         {
             if(ExplorerItemModels != null && action != null)
             {
@@ -287,7 +287,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         /// </summary>
         /// <param name="action"></param>
         /// <param name="node"></param>
-        void Iterate(Action<ExplorerItemModel> action, ExplorerItemModel node)
+        void Iterate(Action<IExplorerItemModel> action, IExplorerItemModel node)
         {
             if(node != null)
             {
@@ -302,13 +302,13 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        public void Filter(Func<ExplorerItemModel, bool> filter, bool fromFilter = false)
+        public void Filter(Func<IExplorerItemModel, bool> filter, bool fromFilter = false)
         {
-            Func<ExplorerItemModel, bool> workflowFilter = model => (model.ResourceType == ResourceType.WorkflowService || model.ResourceType == ResourceType.Folder);
-            Func<ExplorerItemModel, bool> serviceFilter = model => ((model.ResourceType >= ResourceType.DbService && model.ResourceType <= ResourceType.WebService));
-            Func<ExplorerItemModel, bool> sourceFilter = model => ((model.ResourceType >= ResourceType.DbSource && model.ResourceType <= ResourceType.ServerSource));
+            Func<IExplorerItemModel, bool> workflowFilter = model => (model.ResourceType == ResourceType.WorkflowService || model.ResourceType == ResourceType.Folder);
+            Func<IExplorerItemModel, bool> serviceFilter = model => ((model.ResourceType >= ResourceType.DbService && model.ResourceType <= ResourceType.WebService));
+            Func<IExplorerItemModel, bool> sourceFilter = model => ((model.ResourceType >= ResourceType.DbSource && model.ResourceType <= ResourceType.ServerSource));
 
-            Func<ExplorerItemModel, bool> environmentFilter = model => true;
+            Func<IExplorerItemModel, bool> environmentFilter = model => true;
 
             if(FilterEnvironment != null)
             {
@@ -373,7 +373,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        public ExplorerItemModel FindChild(IContextualResourceModel resource)
+        public IExplorerItemModel FindChild(IContextualResourceModel resource)
         {
             var explorerItemModels = ExplorerItemModels.SelectMany(explorerItemModel => explorerItemModel.Descendants()).ToList();
             return resource != null ? explorerItemModels.FirstOrDefault(model => model.ResourceId == resource.ID && model.EnvironmentId == resource.Environment.ID) : null;
@@ -412,11 +412,11 @@ namespace Dev2.Studio.ViewModels.Navigation
 
         #endregion Dispose Handling
 
-        public ObservableCollection<ExplorerItemModel> ExplorerItemModels
+        public ObservableCollection<IExplorerItemModel> ExplorerItemModels
         {
             get
             {
-                return _explorerItemModels ?? new ObservableCollection<ExplorerItemModel>();
+                return _explorerItemModels ?? new ObservableCollection<IExplorerItemModel>();
             }
             set
             {

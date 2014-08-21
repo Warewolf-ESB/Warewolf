@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;
@@ -16,7 +17,9 @@ namespace Dev2.Tests.Runtime.Util
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("FindResourceHelper_SerializeResourceForStudio")]
+// ReSharper disable InconsistentNaming
         public void FindResourceHelper_SerializeResourceForStudio_WhenNewResource_ExpectValidResource()
+
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
@@ -82,7 +85,8 @@ namespace Dev2.Tests.Runtime.Util
                 ResourcePath = "Category",
                 ResourceName = "Workflow",
                 ResourceType = ResourceType.WorkflowService,
-                Errors = theErrors
+                Errors = theErrors,
+                VersionInfo = new VersionInfo(DateTime.Now,"","u","1",id,Guid.NewGuid())
             };
 
             //------------Execute Test---------------------------
@@ -105,7 +109,9 @@ namespace Dev2.Tests.Runtime.Util
             Assert.AreEqual(errorString, resultErrorString);
             Assert.AreEqual("inputs", result.Inputs);
             Assert.AreEqual("outputs", result.Outputs);
+            Assert.AreEqual(res.VersionInfo, result.VersionInfo);
         }
 
     }
+    // ReSharper restore InconsistentNaming
 }

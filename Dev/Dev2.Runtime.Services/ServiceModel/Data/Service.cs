@@ -4,6 +4,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
@@ -88,11 +89,11 @@ namespace Dev2.Runtime.ServiceModel.Data
             where T : IResource, new()
         {
 
-            Guid sourceID;
-            Guid.TryParse(action.AttributeSafe("SourceID"), out sourceID);
+            Guid sourceId;
+            Guid.TryParse(action.AttributeSafe("SourceID"), out sourceId);
             var result = new T
             {
-                ResourceID = sourceID,
+                ResourceID = sourceId,
                 ResourceName = action.AttributeSafe("SourceName")
             };
             return result;

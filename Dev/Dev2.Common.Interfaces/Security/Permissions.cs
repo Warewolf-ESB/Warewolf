@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dev2.Services.Security
+namespace Dev2.Common.Interfaces.Security
 {
     [Flags]
     public enum Permissions

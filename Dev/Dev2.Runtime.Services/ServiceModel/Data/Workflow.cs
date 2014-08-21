@@ -2,7 +2,6 @@
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Common;
-using Dev2.Data.ServiceModel;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
@@ -12,14 +11,14 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public Workflow()
         {
-            ResourceType = ResourceType.WorkflowService;
+            ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService;
             DataList = new XElement("DataList");
         }
 
         public Workflow(XElement xml)
             : base(xml)
         {
-            ResourceType = ResourceType.WorkflowService;
+            ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService;
             DataList = xml.Element("DataList") ?? new XElement("DataList");
             Comment = xml.ElementSafe("Comment");
             IconPath = xml.ElementSafe("IconPath");

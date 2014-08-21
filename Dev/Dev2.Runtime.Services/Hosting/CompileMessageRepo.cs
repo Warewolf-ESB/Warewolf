@@ -6,6 +6,7 @@ using System.Reactive.Subjects;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Timers;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Runtime.ServiceModel.Data;
@@ -286,7 +287,7 @@ namespace Dev2.Runtime.Hosting
         /// <param name="deps">The deps.</param>
         /// <param name="filter">The filter.</param>
         /// <returns></returns>
-        public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, List<ResourceForTree> deps, CompileMessageType[] filter = null)
+        public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, IList<IResourceForTree> deps, CompileMessageType[] filter = null)
         {
             IList<CompileMessageTO> result = new List<CompileMessageTO>();
 
@@ -300,7 +301,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         foreach(var d in deps)
                         {
-                            ResourceForTree d1 = d;
+                            IResourceForTree d1 = d;
                             var candidateMessage = messages.Where(c => c.ServiceID == d1.ResourceID);
                             var compileMessageTos = candidateMessage as IList<CompileMessageTO> ??
                                                     candidateMessage.ToList();

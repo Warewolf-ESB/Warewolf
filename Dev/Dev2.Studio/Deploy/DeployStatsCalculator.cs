@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using Dev2.Data.ServiceModel;
+﻿using Dev2.Common.Interfaces.Data;
 using Dev2.Models;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.TO;
 using Dev2.ViewModels.Deploy;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Linq;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Deploy
@@ -25,8 +25,8 @@ namespace Dev2.Studio.Deploy
         /// <summary>
         ///     Calculates the stastics from navigation item view models
         /// </summary>
-        public void CalculateStats(IEnumerable<ExplorerItemModel> items,
-                                   Dictionary<string, Func<ExplorerItemModel, bool>> predicates,
+        public void CalculateStats(IEnumerable<IExplorerItemModel> items,
+                                   Dictionary<string, Func<IExplorerItemModel, bool>> predicates,
                                    ObservableCollection<DeployStatsTO> stats, out int deployItemCount)
         {
             deployItemCount = 0;
@@ -34,12 +34,12 @@ namespace Dev2.Studio.Deploy
 
             foreach(var predicate in predicates)
             {
-                var deployStatsTO = stats.FirstOrDefault(s => s.Name == predicate.Key);
+                var deployStatsTo = stats.FirstOrDefault(s => s.Name == predicate.Key);
 
-                if(deployStatsTO == null)
+                if(deployStatsTo == null)
                 {
-                    deployStatsTO = new DeployStatsTO(predicate.Key, "");
-                    stats.Add(deployStatsTO);
+                    deployStatsTo = new DeployStatsTO(predicate.Key, "");
+                    stats.Add(deployStatsTo);
                 }
 
                 predicateCounts.Add(predicate.Key, 0);
@@ -59,10 +59,10 @@ namespace Dev2.Studio.Deploy
 
             foreach(var predicateCount in predicateCounts)
             {
-                var deployStatsTO = stats.FirstOrDefault(s => s.Name == predicateCount.Key);
-                if(deployStatsTO != null)
+                var deployStatsTo = stats.FirstOrDefault(s => s.Name == predicateCount.Key);
+                if(deployStatsTo != null)
                 {
-                    deployStatsTO.Description = predicateCount.Value.ToString(CultureInfo.InvariantCulture);
+                    deployStatsTo.Description = predicateCount.Value.ToString(CultureInfo.InvariantCulture);
                     deployItemCount += predicateCount.Value;
                 }
             }
@@ -71,7 +71,7 @@ namespace Dev2.Studio.Deploy
         /// <summary>
         ///     The predicate used to detemine if an item should be deployed
         /// </summary>
-        public bool SelectForDeployPredicateWithTypeAndCategories(ExplorerItemModel node,
+        public bool SelectForDeployPredicateWithTypeAndCategories(IExplorerItemModel node,
                                                                   ResourceType type, List<string> inclusionCategories,
                                                                   List<string> exclusionCategories)
         {
@@ -92,7 +92,7 @@ namespace Dev2.Studio.Deploy
         /// <summary>
         ///     The predicate used to detemine if an item should be deployed
         /// </summary>
-        public bool SelectForDeployPredicate(ExplorerItemModel node)
+        public bool SelectForDeployPredicate(IExplorerItemModel node)
         {
             var vm = node;
             return vm != null && vm.IsChecked.GetValueOrDefault(false) && vm.ResourceType != ResourceType.Folder && vm.ResourceType != ResourceType.Server;
@@ -101,7 +101,7 @@ namespace Dev2.Studio.Deploy
         /// <summary>
         ///     The predicate used to detemine which resources are going to be overridden
         /// </summary>
-        public bool DeploySummaryPredicateExisting(ExplorerItemModel node,
+        public bool DeploySummaryPredicateExisting(IExplorerItemModel node,
                                                    DeployNavigationViewModel targetNavViewModel)
         {
             var vm = node;
@@ -115,7 +115,7 @@ namespace Dev2.Studio.Deploy
 
                 var conflictingItems = targetEnvironment.ResourceRepository.All()
                                         .Where(r => r.ID == vm.ResourceId)
-                                        .Select(r => new Tuple<IResourceModel, IContextualResourceModel, ExplorerItemModel, DeployNavigationViewModel>(r, r as IContextualResourceModel, node, targetNavViewModel))
+                                        .Select(r => new Tuple<IResourceModel, IContextualResourceModel, IExplorerItemModel, DeployNavigationViewModel>(r, r as IContextualResourceModel, node, targetNavViewModel))
                                         .ToList();
 
                 conflictingItems.ForEach(AddConflictingResources);
@@ -130,7 +130,7 @@ namespace Dev2.Studio.Deploy
         ///     Add items that are found to be in conflicts
         /// </summary>
         /// <param name="resourceInConflict"></param>
-        void AddConflictingResources(Tuple<IResourceModel, IContextualResourceModel, ExplorerItemModel, DeployNavigationViewModel> resourceInConflict)
+        void AddConflictingResources(Tuple<IResourceModel, IContextualResourceModel, IExplorerItemModel, DeployNavigationViewModel> resourceInConflict)
         {
             if(ConflictingResources.Any(c => c.SourceName == resourceInConflict.Item1.ResourceName)) return;
             ConflictingResources.Add(new DeployDialogTO(ConflictingResources.Count + 1, resourceInConflict.Item2.ResourceName, resourceInConflict.Item1.ResourceName, resourceInConflict.Item1));
@@ -142,7 +142,7 @@ namespace Dev2.Studio.Deploy
         /// <summary>
         ///     The predicate used to detemine which resources are going to be overridden
         /// </summary>
-        public bool DeploySummaryPredicateNew(ExplorerItemModel node, IEnvironmentModel targetEnvironment)
+        public bool DeploySummaryPredicateNew(IExplorerItemModel node, IEnvironmentModel targetEnvironment)
         {
             var vm = node;
             if(vm == null || !vm.IsChecked.GetValueOrDefault(false)) return false;

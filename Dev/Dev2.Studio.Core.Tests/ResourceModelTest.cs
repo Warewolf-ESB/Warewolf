@@ -6,6 +6,8 @@ using System.Text;
 using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;

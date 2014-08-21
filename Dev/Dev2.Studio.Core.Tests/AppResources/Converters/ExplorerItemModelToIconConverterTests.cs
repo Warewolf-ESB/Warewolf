@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Media.Imaging;
-using Dev2.AppResources.Converters;
-using Dev2.Data.ServiceModel;
+﻿using Dev2.AppResources.Converters;
+using Dev2.Common.Interfaces.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Windows.Media.Imaging;
 
 namespace Dev2.Core.Tests.AppResources.Converters
 {
@@ -366,6 +366,38 @@ namespace Dev2.Core.Tests.AppResources.Converters
             {
                 Assert.Fail("No BitmapImage was returned.");
             }
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ExplorerItemModelToIconConverter_Convert")]
+        // ReSharper disable InconsistentNaming
+        public void ExplorerItemModelToIconConverter_Convert_WithResourceTypeOfVersion_NoImageReturned()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            var explorerItemModelToIconConverter = new ExplorerItemModelToIconConverter();
+            //------------Execute Test---------------------------
+            object convert = explorerItemModelToIconConverter.Convert(new object[] { ResourceType.Version, true }, null, null, null);
+            BitmapImage bitmapImage = convert as BitmapImage;
+            //------------Assert Results-------------------------
+            Assert.IsNull(bitmapImage);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("ExplorerItemModelToIconConverter_Convert")]
+        // ReSharper disable InconsistentNaming
+        public void ExplorerItemModelToIconConverter_Convert_WithResourceTypeOfMessageNoImageReturned()
+        // ReSharper restore InconsistentNaming
+        {
+            //------------Setup for test--------------------------
+            var explorerItemModelToIconConverter = new ExplorerItemModelToIconConverter();
+            //------------Execute Test---------------------------
+            object convert = explorerItemModelToIconConverter.Convert(new object[] { ResourceType.Message, true }, null, null, null);
+            BitmapImage bitmapImage = convert as BitmapImage;
+            //------------Assert Results-------------------------
+            Assert.IsNull(bitmapImage);
         }
     }
 }

@@ -1,9 +1,11 @@
 ﻿using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.ConnectionHelpers;
+using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
 using Dev2.Factory;
@@ -481,6 +483,20 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("MainViewModel_DeactivateItem")]
+        public void MainViewModel_DeactivateItem_WorkSurfaceContextViewModelIsNull_RemoveIsNotCalledOnTheRepo()
+        {
+            CreateFullExportsAndVm();
+            Assert.AreEqual(2, MainViewModel.Items.Count);
+            FirstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+            FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>())).Returns(MessageBoxResult.Yes);
+            MainViewModel.DeactivateItem(null, true);
+            MockWorkspaceRepo.Verify(c => c.Remove(FirstResource.Object), Times.Never());
+        }
+
+        [TestMethod]
         public void MainViewModel_CloseWorkSurfaceContext_CloseTrueAndResourceNotSavedPopupNotOk_WorkspaceItemNotRemoved()
         {
             CreateFullExportsAndVm();
@@ -514,6 +530,38 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             mockDataListViewModel.Verify(model => model.ClearCollections(), Times.Once());
             mockDataListViewModel.Verify(model => model.CreateListsOfIDataListItemModelToBindTo(out errorString), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("MainViewModel_IsWorkFlowOpened")]
+        public void MainViewModel_IsWorkFlowOpened_ResourceIsOpened_True()
+        {   
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+            FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            //------------Execute Test---------------------------
+            var isWorkflowOpened = MainViewModel.IsWorkFlowOpened(FirstResource.Object);
+            //------------Execute Test---------------------------
+            Assert.IsTrue(isWorkflowOpened);
+        }
+        
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("MainViewModel_IsWorkFlowOpened")]
+        public void MainViewModel_IsWorkFlowOpened_ResourceIsNotOpened_False()
+        {
+            //------------Setup for test--------------------------
+            CreateFullExportsAndVm();
+            //------------Execute Test---------------------------
+            var resource = new Mock<IContextualResourceModel>();
+            var environmentModel = new Mock<IEnvironmentModel>();
+            environmentModel.Setup(e => e.ID).Returns(Guid.NewGuid);
+            resource.Setup(r => r.Environment).Returns(environmentModel.Object);
+            resource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            var isWorkflowOpened = MainViewModel.IsWorkFlowOpened(resource.Object);
+            //------------Execute Test---------------------------
+            Assert.IsFalse(isWorkflowOpened);
         }
 
         [TestMethod]

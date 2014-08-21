@@ -1,9 +1,13 @@
+using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Versioning;
+using Dev2.ConnectionHelpers;
+using Dev2.Threading;
 using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
-using Dev2.Data.ServiceModel;
-using Dev2.Services.Security;
 
 namespace Dev2.Models
 {
@@ -17,11 +21,11 @@ namespace Dev2.Models
         int ChildrenCount { get; }
         string ActivityName { get; }
         Guid EnvironmentId { get; set; }
-        ExplorerItemModel Parent { get; set; }
+        IExplorerItemModel Parent { get; set; }
         string DisplayName { get; set; }
         Guid ResourceId { get; set; }
         ResourceType ResourceType { get; set; }
-        ObservableCollection<ExplorerItemModel> Children { get; set; }
+        ObservableCollection<IExplorerItemModel> Children { get; set; }
         Permissions Permissions { get; set; }
         bool IsExplorerExpanded { get; set; }
         bool IsResourcePickerExpanded { get; set; }
@@ -34,6 +38,7 @@ namespace Dev2.Models
         bool IsConnected { get; set; }
         bool IsRenaming { get; set; }
         bool IsRefreshing { get; set; }
+        IVersionInfo VersionInfo { get; set; }
         string DisplayNameValidationRegex { get; }
         bool CanAddResoure { get; }
         bool CanDebug { get; }
@@ -45,13 +50,17 @@ namespace Dev2.Models
         bool CanConnect { get; }
         bool CanDeploy { get; }
         bool CanShowDependencies { get; }
+        bool CanShowHistory { get; }
+        string ToggleVersionHistoryHeader { get; set; }
         bool CanDisconnect { get; }
         string DeployTitle { get; }
         string ResourcePath { get; set; }
-        bool IsAuthorized { get; }
-        ICommand NewFolderCommand { get; }
-        ICommand RefreshCommand { get; }
+        bool IsAuthorized { get; set; }
+        ICommand NewFolderCommand { get; set; }
+        ICommand RollbackCommand { get;}
+        ICommand RefreshCommand { get; set; }
         ICommand NewResourceCommand { get; }
+        ICommand DeleteVersionCommand { get; }
         /// <summary>
         /// Gets the debug command.
         /// </summary>
@@ -86,15 +95,23 @@ namespace Dev2.Models
         /// <author>Massimo Guerrera</author>
         ICommand DeleteCommand { get; }
         /// <summary>
-        /// Gets the delete command.
+        /// Gets the toggle version history command.
         /// </summary>
         /// <value>
+        /// The the toggle version history command.
+        /// </value>
+        /// <author>Tshepo Ntlhokoa</author>
+        ICommand ToggleVersionHistoryCommand { get; }
+        /// <summary>
+        /// Gets the rename command.
+        /// </summary>
+        /// <value> 
         /// The delete command.
         /// </value>
         /// <author>Massimo Guerrera</author>
-        ICommand RenameCommand { get; }
+        ICommand RenameCommand { get; set; }
         /// <summary>
-        /// Gets the delete command.
+        /// Gets the deploy command.
         /// </summary>
         /// <value>
         /// The delete command.
@@ -128,11 +145,19 @@ namespace Dev2.Models
         bool? IsChecked { get; set; }
         bool IsOverwrite { get; set; }
         bool IsAuthorizedDeployTo { get; }
+        IAsyncWorker AsyncWorker { get; }
+
+        void SetDisplay(string display);
 
         void OnChildrenChanged();
 
         ExplorerItemModel Clone();
 
+        ExplorerItemModel Clone(IConnectControlSingleton connectControlSingleton, IStudioResourceRepository studioResourceRepository);
+
+        void AddNewFolder();
+
+        [ExcludeFromCodeCoverage]
         void CancelRename(KeyEventArgs eventArgs);
 
         void CancelRename();
@@ -157,7 +182,6 @@ namespace Dev2.Models
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
         void VerifyCheckState();
-
-        event PropertyChangedEventHandler PropertyChanged;
+        void RefreshName(string newName);
     }
 }

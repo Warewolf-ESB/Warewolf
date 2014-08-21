@@ -2,16 +2,12 @@
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Factory;
-using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
-namespace Dev2.Core.Tests {
+namespace Dev2.Core.Tests
+{
 
     // Sashen - 16:10:2012 : This class under test requires clarification on certain behaviours.
 
@@ -20,7 +16,8 @@ namespace Dev2.Core.Tests {
     ///to contain all InputOutputViewModelTest Unit Tests
     ///</summary>
     [TestClass()]
-    public class InputOutputViewModelTest {
+    public class InputOutputViewModelTest
+    {
 
         #region Local Test variables
 
@@ -34,11 +31,14 @@ namespace Dev2.Core.Tests {
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.
         ///</summary>
-        public TestContext TestContext {
-            get { 
+        public TestContext TestContext
+        {
+            get
+            {
                 return testContextInstance;
             }
-            set {
+            set
+            {
                 testContextInstance = value;
             }
         }
@@ -61,7 +61,7 @@ namespace Dev2.Core.Tests {
         //
         //Use TestInitialize to run code before running each result
         [TestInitialize()]
-        public void MyTestInitialize() 
+        public void MyTestInitialize()
         {
             ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
             InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
@@ -73,28 +73,6 @@ namespace Dev2.Core.Tests {
 
         #region Mock Creation
 
-        private void MockCreation() {
-            Mock<IContextualResourceModel> resource = Dev2MockFactory.SetupResourceModelMock();
-            resource.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
-            OptomizedObservableCollection<IDataListItemModel> Items = new OptomizedObservableCollection<IDataListItemModel>();
-
-            Mock<IDataListViewModel> dataListViewModel = Dev2MockFactory.SetupDataListViewModel();
-            Mock<IMainViewModel> mockMainViewModel = Dev2MockFactory.SetupMainViewModel();
-            dataListViewModel.Setup(dataList => dataList.DataList).Returns(Items);
-
-            //Juries 8810 TODO
-            //mockMainViewModel.Setup(mainVM => mainVM.ActiveDataList.DataList).Returns(dataListViewModel.Object.DataList);
-            dataListViewModel.Setup(c => c.Resource).Returns(resource.Object);
-
-
-
-            Mock<IDataListItemModel> item = Dev2MockFactory.SetupDataListItemViewModel();
-            Items.Add(item.Object);
-
-            string xmlDataList = StringResources.xmlDataList;
-            DataListSingleton.SetDataList(dataListViewModel.Object);
-            //inputOutputViewModel = new InputOutputViewModel(name, value, mapsTo, defaultValue, required, recordSetName);
-        }
         //
         //Use TestCleanup to run code after each result has run
         //[TestCleanup()]
@@ -114,7 +92,7 @@ namespace Dev2.Core.Tests {
         {
 
             //Assert.AreEqual(inputOutputViewModel.Value, inputOutputViewModel.SelectedDataListItem.Name);
-        }        
+        }
 
 
         // Travis  : PBI 5779
@@ -194,7 +172,7 @@ namespace Dev2.Core.Tests {
             InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
             testObject.RecordSetName = string.Empty;
             SetInputOutputMappingViewModelFromTestMappingObject(testObject);
-            
+
             Assert.IsFalse(DataListUtil.IsValueRecordset(_inputOutputViewModel.DisplayName));
         }
 
@@ -288,7 +266,7 @@ namespace Dev2.Core.Tests {
         ///</summary>
         [TestMethod]
         public void InputOutputMappingViewModel_InputOutputMappingViewModel_SelectedDataListItem()
-        {            
+        {
             string actual = _inputOutputViewModel.Value;
             Assert.AreEqual(_inputOutputViewModel.Value, actual);
         }
@@ -338,7 +316,7 @@ namespace Dev2.Core.Tests {
 
             Assert.IsFalse(viewModel.Required);
             Assert.IsFalse(viewModel.RequiredMissing);
-            
+
             //------------Execute Test---------------------------
             viewModel.MapsTo = "newValue";
 
@@ -406,13 +384,15 @@ namespace Dev2.Core.Tests {
 
         #region Test Methods
 
-        
 
-        private void SetInputOutputMappingViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName) {
+
+        private void SetInputOutputMappingViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName)
+        {
             _inputOutputViewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(name, value, mapsTo, defaultValue, required, recordSetName);
         }
 
-        private void SetInputOutputMappingViewModelFromTestMappingObject(InputOutputViewModelTestObject mappingObject) {
+        private void SetInputOutputMappingViewModelFromTestMappingObject(InputOutputViewModelTestObject mappingObject)
+        {
             _inputOutputViewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(mappingObject.Name, mappingObject.Value, mappingObject.MapsTo, mappingObject.DefaultValue, mappingObject.Required, mappingObject.RecordSetName);
         }
 

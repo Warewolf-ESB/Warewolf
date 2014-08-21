@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
-using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Test
 
         // POST: Service/PluginServices/Test
-        public RecordsetList Test(string args, Guid workspaceID, Guid dataListID)
+        public RecordsetList Test(string args, Guid workspaceId, Guid dataListId)
         {
             try
             {
@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Namespaces
 
         // POST: Service/PluginServices/Namespaces
-        public virtual NamespaceList Namespaces(string args, Guid workspaceID, Guid dataListID)
+        public virtual NamespaceList Namespaces(string args, Guid workspaceId, Guid dataListId)
         {
             var result = new NamespaceList();
             try
@@ -85,7 +85,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Methods
 
         // POST: Service/PluginServices/Methods
-        public ServiceMethodList Methods(string args, Guid workspaceID, Guid dataListID)
+        public ServiceMethodList Methods(string args, Guid workspaceId, Guid dataListId)
         {
             var result = new ServiceMethodList();
             try

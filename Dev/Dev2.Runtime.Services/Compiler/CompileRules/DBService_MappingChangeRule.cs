@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Text;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DataList.Contract;
-using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Dev2.Common;
 
@@ -13,6 +13,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// <summary>
     /// Detect IO mapping changes for WFs
     /// </summary>
+// ReSharper disable InconsistentNaming
     internal class DBService_MappingChangeRule : IServiceCompileRule
     {
         public ServerCompileMessageType HandlesType()

@@ -130,10 +130,14 @@
     <Compile Include="Compiler\CompileRules\WebService_IsRequiredChangeRule.cs" />
     <Compile Include="ESB\Management\Services\AddFolderService.cs" />
     <Compile Include="ESB\Management\Services\DeleteItemService.cs" />
+    <Compile Include="ESB\Management\Services\DeleteVersion.cs" />
     <Compile Include="ESB\Management\Services\GetDirectoriesRelativeToServer.cs" />
     <Compile Include="ESB\Management\Services\FetchExplorerItems.cs" />
+    <Compile Include="ESB\Management\Services\GetVersion.cs" />
+    <Compile Include="ESB\Management\Services\GetVersions.cs" />
     <Compile Include="ESB\Management\Services\RenameFolderService.cs" />
     <Compile Include="ESB\Management\Services\RenameItemService.cs" />
+    <Compile Include="ESB\Management\Services\RollbackTo.cs" />
     <Compile Include="ESB\Management\Services\SaveScheduledResource.cs" />
     <Compile Include="ESB\Management\Services\ClearLog.cs" />
     <Compile Include="ESB\Management\Services\DeleteResource.cs" />
@@ -172,6 +176,8 @@
     <Compile Include="Hosting\CompileMessageRepo.cs" />
     <Compile Include="Hosting\ExplorerItemFactory.cs" />
     <Compile Include="Hosting\ExplorerRepositoryResult.cs" />
+    <Compile Include="Hosting\ServerVersionRepository.cs" />
+    <Compile Include="Hosting\VersionStrategy.cs" />
     <Compile Include="Interfaces\IExplorerItemFactory.cs" />
     <Compile Include="Hosting\ServerExplorerRepository.cs" />
     <Compile Include="Network\IContextManager.cs" />
@@ -285,6 +291,10 @@
     <Compile Include="Workspaces\Workspace_Server.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>

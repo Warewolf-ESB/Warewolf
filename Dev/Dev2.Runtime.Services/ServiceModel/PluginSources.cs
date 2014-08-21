@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Xml.Linq;
 using Dev2.Common;
-using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
@@ -16,12 +16,12 @@ namespace Dev2.Runtime.ServiceModel
         #region Get
 
         // POST: Service/PluginSources/Get
-        public PluginSource Get(string resourceID, Guid workspaceID, Guid dataListID)
+        public PluginSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new PluginSource { ResourceID = Guid.Empty, ResourceType = ResourceType.PluginSource };
             try
             {
-                var xmlStr = Resources.ReadXml(workspaceID, ResourceType.PluginSource, resourceID);
+                var xmlStr = Resources.ReadXml(workspaceId, ResourceType.PluginSource, resourceId);
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);
@@ -40,7 +40,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Save
 
         // POST: Service/PluginSources/Save
-        public string Save(string args, Guid workspaceID, Guid dataListID)
+        public string Save(string args, Guid workspaceId, Guid dataListId)
         {
             var pluginSourceDetails = JsonConvert.DeserializeObject<PluginSource>(args);
 
@@ -78,8 +78,8 @@ namespace Dev2.Runtime.ServiceModel
                 }
             }
 
-            ResourceCatalog.Instance.SaveResource(workspaceID, pluginSourceDetails);
-            if(workspaceID != GlobalConstants.ServerWorkspaceID)
+            ResourceCatalog.Instance.SaveResource(workspaceId, pluginSourceDetails);
+            if(workspaceId != GlobalConstants.ServerWorkspaceID)
             {
                 ResourceCatalog.Instance.SaveResource(GlobalConstants.ServerWorkspaceID, pluginSourceDetails);
             }
@@ -92,7 +92,7 @@ namespace Dev2.Runtime.ServiceModel
         #region ValidateAssemblyImageFormat
 
         // POST: Service/PluginSources/ValidateAssemblyImageFormat
-        public string ValidateAssemblyImageFormat(string args, Guid workspaceID, Guid dataListID)
+        public string ValidateAssemblyImageFormat(string args, Guid workspaceId, Guid dataListId)
         {
             // ReSharper disable RedundantAssignment
             var toJson = @"{""validationresult"":""failure""}";

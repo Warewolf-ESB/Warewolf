@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
@@ -85,28 +86,7 @@ namespace Dev2.DynamicServices.Test
             }
         }
 
-        [TestMethod]
-        public void UpdateWorkItemWithCommitAction()
-        {
-            //Lock because of access to resourcatalog
-            lock(SyncRoot)
-            {
-                var workspaceItem = new Mock<IWorkspaceItem>();
-                workspaceItem.Setup(m => m.Action).Returns(WorkspaceItemAction.Commit);
-                workspaceItem.Setup(m => m.ServiceName).Returns(ServiceName);
-                workspaceItem.Setup(m => m.ID).Returns(ServiceID);
-                workspaceItem.Setup(m => m.ServiceType).Returns(ServiceType.ToString);
 
-                Guid workspaceID;
-                var repositoryInstance = SetupRepo(out workspaceID);
-                var workspace = repositoryInstance.Get(workspaceID);
-
-                var previous = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceID);
-                workspace.Update(workspaceItem.Object, false, previous.AuthorRoles);
-                var next = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceID);
-                Assert.AreNotSame(previous, next);
-            }
-        }
 
         [TestMethod]
         public void CanUpdateWorkItemWithCommitActionLocalSaveOnly()
@@ -137,34 +117,6 @@ namespace Dev2.DynamicServices.Test
             }
         }
 
-        [TestMethod]
-        public void CanUpdateWorkItemWithCommitActionAllNotSave()
-        {
-            //Lock because of access to resourcatalog
-            lock(SyncRoot)
-            {
-                XElement testWorkspaceItemXml = XmlResource.Fetch("WorkspaceItem");
-
-                Guid workspaceID;
-                var repositoryInstance = SetupRepo(out workspaceID);
-
-                var workspace = repositoryInstance.Get(workspaceID);
-
-                IEsbManagementEndpoint endpoint = new UpdateWorkspaceItem();
-                Dictionary<string, StringBuilder> data = new Dictionary<string, StringBuilder>();
-                data["ItemXml"] = new StringBuilder(testWorkspaceItemXml.ToString().Replace("WorkspaceItem ID=\"3B876ED9-E4B4-42AF-9EF9-98127AE432C3\"", "WorkspaceItem ID=\"" + ServiceID + "\"").Replace("WorkspaceID=\"B1890C86-95D8-4612-A7C3-953250ED237A\"", "WorkspaceID=\"" + workspaceID + "\"").Replace("Action=\"None\"", "Action=\"Commit\""));
-                data["IsLocalSave"] = new StringBuilder("false");
-
-                // Now remove the 
-                ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, ServiceID, "WorkflowService", "Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Folder Redirection Accounts,All Users,Windows SBS SharePoint_MembersGroup,Windows SBS Link Users,Company Users,Business Design Studio Developers,Test Engineers,DEV2 Limited Internet Access");
-
-                endpoint.Execute(data, workspace);
-
-                var res = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, ServiceID);
-
-                Assert.IsNotNull(res);
-            }
-        }
 
         [TestMethod]
         public void CanUpdateWorkspaceItemAndRespectIsLocalOption()

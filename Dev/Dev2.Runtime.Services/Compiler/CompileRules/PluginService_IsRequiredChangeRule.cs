@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Helper;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DataList.Contract;
-using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 
 namespace Dev2.Runtime.Compiler.CompileRules

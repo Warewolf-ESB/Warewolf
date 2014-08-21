@@ -21,6 +21,7 @@
                     <TextBlock Grid.Row="0"
                                TextWrapping="Wrap"
                                VerticalAlignment="Top"
+                               Visibility="{Binding WorkflowLinkVisible}"
                                HorizontalAlignment="Center">
                                 <Hyperlink Command="{Binding Path=OpenWorkflowLinkCommand}"
                                            CommandParameter="{Binding}">

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
+using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -146,7 +147,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if(dependencies != null)
                 {
                     sb.Append(string.Format("<node id=\"{0}\" x=\"\" y=\"\" broken=\"false\">", resource.ResourceName));
+// ReSharper disable ImplicitlyCapturedClosure
                     dependencies.ForEach(c => sb.Append(string.Format("<dependency id=\"{0}\" />", c.ResourceName)));
+// ReSharper restore ImplicitlyCapturedClosure
                     sb.Append("</node>");
                     dependencies.ToList().ForEach(c => sb.Append(FindDependenciesRecursive(c.ResourceID, workspaceId)));
                 }

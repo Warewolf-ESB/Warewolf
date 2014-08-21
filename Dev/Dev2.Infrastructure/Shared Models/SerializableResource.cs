@@ -1,8 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
 
 namespace Dev2.Data.ServiceModel
 {
@@ -15,7 +17,9 @@ namespace Dev2.Data.ServiceModel
         /// <summary>
         /// The resource ID that uniquely identifies the resource.
         /// </summary>
+// ReSharper disable InconsistentNaming
         public Guid ResourceID { get; set; }
+// ReSharper restore InconsistentNaming
 
         /// <summary>
         /// The display name of the resource.
@@ -81,5 +85,7 @@ namespace Dev2.Data.ServiceModel
         /// </value>
         public string Outputs { get; set; }
 
+
+        public IVersionInfo VersionInfo { get; set; }
     }
 }

@@ -1,28 +1,27 @@
-﻿using System;
+﻿using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Versioning;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
-using Dev2.Data.ServiceModel;
-using Dev2.Providers.Errors;
-using Newtonsoft.Json;
 
-namespace Dev2.Runtime.ServiceModel.Data
+namespace Dev2.Common.Interfaces.Data
 {
-    /// <summary>
-    /// Describes a resource.
-    /// </summary>
     public interface IResource : IEquatable<IResource>
     {
         /// <summary>
         /// The resource ID that uniquely identifies the resource.
         /// </summary>
+        // ReSharper disable InconsistentNaming
         Guid ResourceID { get; set; }
+        // ReSharper restore InconsistentNaming
 
         /// <summary>
         /// The version that uniquely identifies the resource.
         /// </summary>
-        Version Version { get; set; }
-
+        // Version Version { get; set; }
+        IVersionInfo VersionInfo { get; set; }
         /// <summary>
         /// The display name of the resource.
         /// </summary>
@@ -89,10 +88,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// If this instance <see cref="IsUpgraded"/> then sets the ID, Version, Name and ResourceType attributes on the given XML.
         /// </summary>
         /// <param name="xml">The XML to be upgraded.</param>
+        /// <param name="resource"></param>
         /// <returns>The XML with the additional attributes set.</returns>
-        XElement UpgradeXml(XElement xml);
+        XElement UpgradeXml(XElement xml, IResource resource);
 
-        List<ResourceForTree> Dependencies { get; set; }
+        IList<IResourceForTree> Dependencies { get; set; }
         bool IsValid { get; set; }
         List<IErrorInfo> Errors { get; set; }
 
@@ -107,6 +107,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         void ReadDataList(XElement xml);
         void GetInputsOutputs(XElement xml);
         void SetIsNew(XElement xml);
+        // ReSharper disable InconsistentNaming
         void UpdateErrorsBasedOnXML(XElement xml);
+        // ReSharper restore InconsistentNaming
     }
 }

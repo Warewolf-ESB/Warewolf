@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Dev2.Common.Interfaces.Data;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using Dev2.Data.ServiceModel;
 
 namespace Dev2.Converters
 {

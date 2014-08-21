@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Data.ServiceModel;
 using Dev2.Services.Security;
 

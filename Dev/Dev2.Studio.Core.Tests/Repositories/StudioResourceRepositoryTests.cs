@@ -1,13 +1,17 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
-using Dev2.Data.ServiceModel;
 using Dev2.Explorer;
 using Dev2.Interfaces;
 using Dev2.Models;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
@@ -32,8 +36,6 @@ namespace Dev2.Core.Tests.Repositories
     public class StudioResourceRepositoryTests
     {
         readonly Action<System.Action, DispatcherPriority> _invoke = (a, b) => { };
-
-
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -67,10 +69,13 @@ namespace Dev2.Core.Tests.Repositories
                                           .Returns(new ServerExplorerItem { DisplayName = "some name" })
                                           .Verifiable();
 
+            var mockVersionRepository = new Mock<IVersionRepository>();
+
             SetupEnvironmentRepo(Guid.Empty);
 
             var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
 
@@ -94,11 +99,12 @@ namespace Dev2.Core.Tests.Repositories
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()))
                                           .Returns(GetTestData());
-
+            var mockVersionRepository = new Mock<IVersionRepository>();
             SetupEnvironmentRepo(Guid.Empty);
 
             var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             var countBeforeConnecting = repository.ExplorerItemModels.Count;
@@ -126,11 +132,12 @@ namespace Dev2.Core.Tests.Repositories
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()));
-
+            var mockVersionRepository = new Mock<IVersionRepository>();
             SetupEnvironmentRepo(Guid.Empty);
 
             var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             var countBeforeConnecting = repository.ExplorerItemModels.Count;
@@ -149,9 +156,11 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
             SetupEnvironmentRepo(Guid.Empty);
             var repository = new StudioResourceRepository(GetTestData(), Guid.Empty, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             //------------Execute Test---------------------------
@@ -167,8 +176,10 @@ namespace Dev2.Core.Tests.Repositories
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
             SetupEnvironmentRepo(Guid.Empty);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
 
@@ -194,11 +205,12 @@ namespace Dev2.Core.Tests.Repositories
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.AddItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                 .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"));
-
+            var mockVersionRepository = new Mock<IVersionRepository>();
             SetupEnvironmentRepo(Guid.Empty);
 
             var repository = new StudioResourceRepository(GetTestData(), Guid.Empty, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             var parent = repository.ExplorerItemModels[0].Children[0];
@@ -229,7 +241,12 @@ namespace Dev2.Core.Tests.Repositories
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
             var explorerItem = GetTestData();
             SetupEnvironmentRepo(Guid.Empty);
-            var repository = new StudioResourceRepository(explorerItem, Guid.Empty, _invoke) { GetExplorerProxy = id => mockExplorerResourceRepository.Object };
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var repository = new StudioResourceRepository(explorerItem, Guid.Empty, _invoke)
+                {
+                    GetVersionProxy = id => mockVersionRepository.Object,
+                    GetExplorerProxy = id => mockExplorerResourceRepository.Object
+                };
             //------------Execute Test---------------------------
             var explorerItemModels = repository.Filter(null);
             //------------Assert Results-------------------------
@@ -247,7 +264,12 @@ namespace Dev2.Core.Tests.Repositories
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
             var explorerItem = GetTestData();
             SetupEnvironmentRepo(Guid.Empty);
-            var repository = new StudioResourceRepository(explorerItem, Guid.Empty, _invoke) { GetExplorerProxy = id => mockExplorerResourceRepository.Object };
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var repository = new StudioResourceRepository(explorerItem, Guid.Empty, _invoke)
+                {
+                    GetVersionProxy = id => mockVersionRepository.Object,
+                    GetExplorerProxy = id => mockExplorerResourceRepository.Object
+                };
             //------------Execute Test---------------------------
             var explorerItemModels = repository.Filter(model => model.DisplayName.Contains("dbService"));
             //------------Assert Results-------------------------
@@ -268,7 +290,12 @@ namespace Dev2.Core.Tests.Repositories
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
             var explorerItem = GetTestData();
             SetupEnvironmentRepo(Guid.Empty);
-            var repository = new StudioResourceRepository(explorerItem, Guid.Empty, _invoke) { GetExplorerProxy = id => mockExplorerResourceRepository.Object };
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var repository = new StudioResourceRepository(explorerItem, Guid.Empty, _invoke)
+                {
+                    GetVersionProxy = id => mockVersionRepository.Object,
+                    GetExplorerProxy = id => mockExplorerResourceRepository.Object
+                };
             //------------Preconditions--------------------------
             Assert.AreEqual(4, repository.ExplorerItemModels[0].ChildrenCount);
             var explorerItemModels = repository.Filter(model => model.DisplayName.Contains("r1"));
@@ -289,7 +316,12 @@ namespace Dev2.Core.Tests.Repositories
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
             var explorerItem = GetTestData();
             SetupEnvironmentRepo(Guid.Empty);
-            var repository = new StudioResourceRepository(explorerItem, Guid.Empty, _invoke) { GetExplorerProxy = id => mockExplorerResourceRepository.Object };
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var repository = new StudioResourceRepository(explorerItem, Guid.Empty, _invoke)
+                {
+                    GetVersionProxy = id => mockVersionRepository.Object,
+                    GetExplorerProxy = id => mockExplorerResourceRepository.Object
+                };
             //------------Execute Test---------------------------
             var explorerItemModels = repository.Filter(model => model.DisplayName.Contains("r1"));
             //------------Assert Results-------------------------
@@ -313,8 +345,10 @@ namespace Dev2.Core.Tests.Repositories
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
             SetupEnvironmentRepo(Guid.Empty);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             //------------Execute Test---------------------------
@@ -334,8 +368,10 @@ namespace Dev2.Core.Tests.Repositories
             mockExplorerResourceRepository.Setup(m => m.AddItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Fail, "Just Failed"));
             SetupEnvironmentRepo(Guid.Empty);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -353,8 +389,10 @@ namespace Dev2.Core.Tests.Repositories
             mockExplorerResourceRepository.Setup(m => m.AddItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Throws(new Exception("Something really bad happened, reboot your PC or risk a Harddrive crash"));
             SetupEnvironmentRepo(Guid.Empty);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -401,13 +439,18 @@ namespace Dev2.Core.Tests.Repositories
             var workflowId = Guid.NewGuid();
             var folderID = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString(), folderID: folderID), environmentId, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             //------------Execute Test---------------------------
             var folderItem = repository.FindItemById(folderID);
-            folderItem.Parent.PropertyChanged += (sender, args) =>
+            ExplorerItemModel explorerItemModel = folderItem.Parent as ExplorerItemModel;      
+// ReSharper disable PossibleNullReferenceException
+            explorerItemModel.PropertyChanged += (sender, args) =>
+// ReSharper restore PossibleNullReferenceException
             {
                 if(args.PropertyName == "ChildrenCount")
                 {
@@ -431,8 +474,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             //------------Execute Test---------------------------
@@ -452,8 +497,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             //------------Execute Test---------------------------
@@ -472,8 +519,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             //------------Execute Test---------------------------
@@ -496,8 +545,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             //------------Execute Test---------------------------
@@ -522,8 +573,10 @@ namespace Dev2.Core.Tests.Repositories
             var workflowId = Guid.NewGuid();
             var folderID = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString(), folderID: folderID), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -544,8 +597,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -564,8 +619,7 @@ namespace Dev2.Core.Tests.Repositories
             //------------Execute Test---------------------------
             repository.DeleteItem(null);
         }
-
-
+        
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("StudioResourceRepository_DeleteItem")]
@@ -582,13 +636,18 @@ namespace Dev2.Core.Tests.Repositories
             var workflowId = Guid.NewGuid();
             var folderID = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString(), folderID: folderID), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
             var folderItem = repository.FindItemById(folderID);
-            folderItem.Parent.PropertyChanged += (sender, args) =>
+            ExplorerItemModel explorerItemModel = folderItem.Parent as ExplorerItemModel;
+            // ReSharper disable PossibleNullReferenceException
+            explorerItemModel.PropertyChanged += (sender, args) =>
+            // ReSharper restore PossibleNullReferenceException
             {
                 if(args.PropertyName == "ChildrenCount")
                 {
@@ -620,13 +679,18 @@ namespace Dev2.Core.Tests.Repositories
             var workflowId = Guid.NewGuid();
             var folderID = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString(), folderID: folderID), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
             var folderItem = repository.FindItemById(folderID);
-            folderItem.Parent.PropertyChanged += (sender, args) =>
+            ExplorerItemModel explorerItemModel = folderItem.Parent as ExplorerItemModel;
+            // ReSharper disable PossibleNullReferenceException
+            explorerItemModel.PropertyChanged += (sender, args) =>
+            // ReSharper restore PossibleNullReferenceException
             {
                 if(args.PropertyName == "ChildrenCount")
                 {
@@ -659,13 +723,18 @@ namespace Dev2.Core.Tests.Repositories
             var workflowId = Guid.NewGuid();
             var folderID = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString(), folderID: folderID), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
             var folderItem = repository.FindItemById(folderID);
-            folderItem.Parent.PropertyChanged += (sender, args) =>
+            ExplorerItemModel explorerItemModel = folderItem.Parent as ExplorerItemModel;
+            // ReSharper disable PossibleNullReferenceException
+            explorerItemModel.PropertyChanged += (sender, args) =>
+            // ReSharper restore PossibleNullReferenceException
             {
                 if(args.PropertyName == "ChildrenCount")
                 {
@@ -698,13 +767,18 @@ namespace Dev2.Core.Tests.Repositories
             var workflowId = Guid.NewGuid();
             var folderID = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString(), folderID: folderID), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
             var folderItem = repository.FindItemById(folderID);
-            folderItem.Parent.PropertyChanged += (sender, args) =>
+            ExplorerItemModel explorerItemModel = folderItem.Parent as ExplorerItemModel;
+            // ReSharper disable PossibleNullReferenceException
+            explorerItemModel.PropertyChanged += (sender, args) =>
+            // ReSharper restore PossibleNullReferenceException
             {
                 if(args.PropertyName == "ChildrenCount")
                 {
@@ -736,20 +810,25 @@ namespace Dev2.Core.Tests.Repositories
             var workflowId = Guid.NewGuid();
             var folderID = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString(), folderID: folderID), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
             var folderItem = repository.FindItemById(folderID);
-            folderItem.Parent.PropertyChanged += (sender, args) =>
+
+            ExplorerItemModel item = folderItem.Parent as ExplorerItemModel;
+            // ReSharper disable PossibleNullReferenceException
+            item.PropertyChanged += (sender, args) =>
+            // ReSharper restore PossibleNullReferenceException
             {
                 if(args.PropertyName == "ChildrenCount")
                 {
                     _propertyChangedCalled = true;
                 }
             };
-
             //------------Execute Test---------------------------
             ExplorerItemModel explorerItemModel = new ExplorerItemModel();
             repository.DeleteItem(explorerItemModel);
@@ -847,8 +926,10 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             //------------Execute Test---------------------------
@@ -871,7 +952,7 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
 
             SetupEnvironmentRepo(environmentId);
-
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(
                                  new ServerExplorerItem
                                  {
@@ -880,6 +961,7 @@ namespace Dev2.Core.Tests.Repositories
                                      ResourceType = ResourceType.Server
                                  }, environmentId, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             //------------Execute Test---------------------------
@@ -911,7 +993,7 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
 
             SetupEnvironmentRepo(environmentId);
-
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(
                                  new ServerExplorerItem
                                  {
@@ -920,6 +1002,7 @@ namespace Dev2.Core.Tests.Repositories
                                      ResourceType = ResourceType.Server
                                  }, environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -943,6 +1026,7 @@ namespace Dev2.Core.Tests.Repositories
 
             var environmentId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(
                                  new ServerExplorerItem
                                  {
@@ -951,6 +1035,7 @@ namespace Dev2.Core.Tests.Repositories
                                      ResourceType = ResourceType.Server
                                  }, environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             var countBeforeConnecting = repository.ExplorerItemModels.Count;
@@ -984,8 +1069,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             //------------Execute Test---------------------------
@@ -1009,8 +1096,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -1034,8 +1123,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -1057,8 +1148,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -1083,8 +1176,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object
                 };
             //------------Execute Test---------------------------
@@ -1129,8 +1224,10 @@ namespace Dev2.Core.Tests.Repositories
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(environmentId);
             GetEnvironmentRepository(mockEnvironment);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -1170,8 +1267,10 @@ namespace Dev2.Core.Tests.Repositories
             Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.ID).Returns(environmentId);
             GetEnvironmentRepository(mockEnvironment);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -1199,8 +1298,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -1224,8 +1325,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -1247,8 +1350,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -1273,8 +1378,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
             //------------Execute Test---------------------------
@@ -1308,8 +1415,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
@@ -1330,8 +1439,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
@@ -1352,8 +1463,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
@@ -1375,8 +1488,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
@@ -1397,8 +1512,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
@@ -1421,8 +1538,10 @@ namespace Dev2.Core.Tests.Repositories
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
             SetupEnvironmentRepo(environmentId);
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
             {
+                GetVersionProxy = id => mockVersionRepository.Object,
                 GetExplorerProxy = id => mockExplorerResourceRepository.Object
             };
 
@@ -1480,7 +1599,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
-
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
                 {
                     ResourceType = ResourceType.Folder,
@@ -1495,6 +1614,7 @@ namespace Dev2.Core.Tests.Repositories
             new StudioResourceRepository(parent, Guid.Empty, _invoke)
                 // ReSharper restore ObjectCreationAsStatement
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object,
                     GetCurrentEnvironment = () => Guid.Empty
                 };
@@ -1519,7 +1639,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
-
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
                 {
                     ResourceType = ResourceType.Folder,
@@ -1534,6 +1654,7 @@ namespace Dev2.Core.Tests.Repositories
             new StudioResourceRepository(parent, Guid.Empty, _invoke)
                 // ReSharper restore ObjectCreationAsStatement
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object,
                     GetCurrentEnvironment = () => Guid.Empty
                 };
@@ -1561,7 +1682,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
-
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
                 {
                     ResourceType = ResourceType.Folder,
@@ -1576,6 +1697,7 @@ namespace Dev2.Core.Tests.Repositories
             new StudioResourceRepository(parent, Guid.Empty, _invoke)
                 // ReSharper restore ObjectCreationAsStatement
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object,
                     GetCurrentEnvironment = () => Guid.Empty
                 };
@@ -1600,7 +1722,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
-
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
                 {
                     ResourceType = ResourceType.Folder,
@@ -1615,6 +1737,7 @@ namespace Dev2.Core.Tests.Repositories
             new StudioResourceRepository(parent, Guid.Empty, _invoke)
                 // ReSharper restore ObjectCreationAsStatement
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object,
                     GetCurrentEnvironment = () => Guid.Empty
                 };
@@ -1639,7 +1762,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
-
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
                 {
                     ResourceType = ResourceType.Folder,
@@ -1655,6 +1778,7 @@ namespace Dev2.Core.Tests.Repositories
             new StudioResourceRepository(parent, Guid.Empty, _invoke)
                 // ReSharper restore ObjectCreationAsStatement
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object,
                     GetCurrentEnvironment = () => Guid.Empty
                 };
@@ -1677,11 +1801,55 @@ namespace Dev2.Core.Tests.Repositories
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("StudioResourceRepository_ItemAddedMessageHandler")]
+        public void StudioResourceRepository_ItemAddedMessageHandler_ItemNotServerNode_AddedSuccessfully()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.Folder,
+                DisplayName = "SUB FOLDER",
+                ResourceId = Guid.NewGuid(),
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\SUB FOLDER"
+            };
+            var mockResourceRepo = SetupEnvironmentRepo(Guid.Empty);
+            mockResourceRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(new Mock<IResourceModel>().Object);
+            mockResourceRepo.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()));
+            // ReSharper disable ObjectCreationAsStatement
+            new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            // ReSharper restore ObjectCreationAsStatement
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+
+            var studioResourceRepository = StudioResourceRepository.Instance;
+            var before = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            //------------Execute Test---------------------------
+            studioResourceRepository.ItemAddedMessageHandler(new ServerExplorerItem
+            {
+                DisplayName = "TEST FOLDER",
+                ResourcePath = "MANFOLDER\\SUB FOLDER\\TEST FOLDER",
+                ResourceId = Guid.NewGuid()
+            });
+            var after = studioResourceRepository.ExplorerItemModels[0].Children.Count();
+            //------------Assert Results-------------------------
+            mockResourceRepo.Verify(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>()), Times.Never());
+            Assert.AreEqual(0, before);
+            Assert.AreEqual(1, after);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_ItemAddedMessageHandler")]
         public void StudioResourceRepository_ItemAddedMessageHandler_ParentDoesNotExistsOnTree_NotAdded()
         {
             //------------Setup for test--------------------------
             var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
-
+            var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
                 ResourceType = ResourceType.Folder,
@@ -1693,6 +1861,7 @@ namespace Dev2.Core.Tests.Repositories
             SetupEnvironmentRepo(Guid.Empty);
             var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
                 {
+                    GetVersionProxy = id => mockVersionRepository.Object,
                     GetExplorerProxy = id => mockExplorerResourceRepository.Object,
                     GetCurrentEnvironment = () => Guid.Empty
                 };
@@ -1714,6 +1883,37 @@ namespace Dev2.Core.Tests.Repositories
             Assert.AreEqual(0, after);
         }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_UpdateRootAndFoldersPermissions")]
+        public void StudioResourceRepository_UpdateRootAndFoldersPermissions_SetPermissionsToView_ExplorerItemsAreUpdatedToView()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.Server,
+                DisplayName = "Azure server",
+                ResourceId = Guid.NewGuid(),
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
+            };
+            SetupEnvironmentRepo(Guid.Empty);
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+
+            repo.GetCurrentEnvironment = () => Guid.Empty;
+            //------------Execute Test---------------------------
+            repo.UpdateRootAndFoldersPermissions(Permissions.View, Guid.Empty);
+            //------------Assert Results-------------------------
+            var permissions  = repo.ExplorerItemModels.First().Descendants().Select(s => s.Permissions);
+            Assert.IsTrue(permissions.All(p => p == Permissions.View));
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -1722,9 +1922,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(new Mock<IEnvironmentModel>().Object, null, Guid.NewGuid()));
         }
-
-
-
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("StudioResourceRepository_GetEnvironmentModel")]
@@ -1928,6 +2126,397 @@ namespace Dev2.Core.Tests.Repositories
             Assert.IsFalse(StudioResourceRepository.GetEnvironmentModel(environmentModel.Object, new ServerExplorerItem { WebserverUri = "bob" }, Guid.NewGuid()));
         }
 
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_ShowVersionHistory")]
+        public void StudioResourceRepository_ShowVersionHistory_CallsGetVersionFromProxy()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            mockVersionRepository.Setup(m => m.GetVersions(It.IsAny<Guid>())).Verifiable();
+            SetupEnvironmentRepo(Guid.Empty);
+            var repo = new StudioResourceRepository(null, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+            //------------Execute Test---------------------------
+            repo.ShowVersionHistory(Guid.NewGuid(), Guid.NewGuid());
+            //------------Assert Results-------------------------
+            mockVersionRepository.Verify(m => m.GetVersions(It.IsAny<Guid>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_ShowVersionHistory")]
+        public void StudioResourceRepository_ShowVersionHistory_TwoItemsReturned_ItemsAttachedToParent()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var v1 = new Mock<IVersionInfo>();
+            v1.Setup(v => v.VersionNumber).Returns("1");
+            var v2 = new Mock<IVersionInfo>();
+            v2.Setup(v => v.VersionNumber).Returns("2");
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            mockVersionRepository.Setup(m => m.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem>
+                {
+                    new ServerExplorerItem { ResourceType = ResourceType.WebService, DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View , VersionInfo = v1.Object},
+                    new ServerExplorerItem { ResourceType = ResourceType.WebService, DisplayName = "v1 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v2.Object }
+                });
+
+            var superWFId = Guid.NewGuid();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.WorkflowService,
+                DisplayName = "SuperWF",
+                ResourceId = superWFId,
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
+            };
+
+            SetupEnvironmentRepo(Guid.Empty);
+
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+            //------------Execute Test---------------------------
+            repo.ShowVersionHistory(Guid.Empty, superWFId);
+            //------------Assert Results-------------------------
+            var actual = repo.FindItemById(superWFId);
+            Assert.AreEqual(2, actual.Children.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_ShowVersionHistory")]
+        public void StudioResourceRepository_ShowVersionHistory_NoItemsReturned_InfoItemAttachedToParent()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            mockVersionRepository.Setup(m => m.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem>());
+
+            var superWFId = Guid.NewGuid();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.WorkflowService,
+                DisplayName = "SuperWF",
+                ResourceId = superWFId,
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
+            };
+
+            SetupEnvironmentRepo(Guid.Empty);
+
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+            //------------Execute Test---------------------------
+            repo.ShowVersionHistory(Guid.Empty, superWFId);
+            //------------Assert Results-------------------------
+            var actual = repo.FindItemById(superWFId);
+            Assert.AreEqual(1, actual.Children.Count);
+            Assert.AreEqual("There is no version history to display", actual.Children[0].DisplayName);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_HideVersionHistory")]
+        public void StudioResourceRepository_HideHistory_ClearsChildren()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+           
+            var superWFId = Guid.NewGuid();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.WorkflowService,
+                DisplayName = "SuperWF",
+                ResourceId = superWFId,
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER",
+                Children = new List<IExplorerItem>
+                    {
+                        new ServerExplorerItem{ ResourceType = ResourceType.WebService, DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View },
+                        new ServerExplorerItem{ ResourceType = ResourceType.WebService, DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View }
+                    }
+            };
+
+            SetupEnvironmentRepo(Guid.Empty);
+
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+            //------------Execute Test---------------------------
+            repo.HideVersionHistory(Guid.Empty, superWFId);
+            //------------Assert Results-------------------------
+            var actual = repo.FindItemById(superWFId);
+            Assert.AreEqual(0, actual.Children.Count);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_RollbackTo")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void StudioResourceRepository_RollbackTo_VersionIsNull_ThrowsException()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.WorkflowService,
+                DisplayName = "SuperWF",
+                ResourceId = Guid.NewGuid(),
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
+            };
+
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {   
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+            //------------Execute Test---------------------------
+           repo.RollbackTo(null, Guid.Empty);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_RollbackTo")]
+        public void StudioResourceRepository_RollbackTo_TwoItemsReturned_ItemsAttachedToParent()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var v1 = new Mock<IVersionInfo>();
+            v1.Setup(v => v.VersionNumber).Returns("1");
+            var v2 = new Mock<IVersionInfo>();
+            v2.Setup(v => v.VersionNumber).Returns("2");
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            mockVersionRepository.Setup(m => m.RollbackTo(It.IsAny<Guid>(), It.IsAny<string>()))
+                .Returns(new RollbackResult {
+                    DisplayName = "SuperWF",
+                        VersionHistory = new List<IExplorerItem> {
+                            new ServerExplorerItem
+                                {
+                                    ResourceType = ResourceType.WebService, DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v1.Object
+                                },
+                            new ServerExplorerItem
+                                {
+                                    ResourceType = ResourceType.WebService, DisplayName = "v1 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v2.Object
+                                }
+                        }})
+                .Verifiable();
+
+            var superWFId = Guid.NewGuid();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.WorkflowService,
+                DisplayName = "Super Workflow",
+                ResourceId = superWFId,
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
+            };
+
+            SetupEnvironmentRepo(Guid.Empty);
+
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+
+            var versionInfo = new VersionInfo
+            {
+                DateTimeStamp = DateTime.Now,
+                Reason = "Rollback",
+                ResourceId = superWFId,
+                User = "",
+                VersionId = Guid.NewGuid(),
+                VersionNumber = "3"
+            };
+
+            //------------Execute Test---------------------------
+            repo.RollbackTo(versionInfo, Guid.Empty);
+            //------------Assert Results-------------------------
+            var actual = repo.FindItemById(superWFId);
+            Assert.AreEqual(2, actual.Children.Count);
+            mockVersionRepository.Verify(m => m.RollbackTo(It.IsAny<Guid>(), It.IsAny<string>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_DeleteVersion")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void StudioResourceRepository_DeleteVersion_VersionIsNull_ThrowsException()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.WorkflowService,
+                DisplayName = "SuperWF",
+                ResourceId = Guid.NewGuid(),
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
+            };
+
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+            //------------Execute Test---------------------------
+            repo.DeleteVersion(null, Guid.Empty);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_DeleteVersion")]
+        public void StudioResourceRepository_DeleteVersion_TwoItemsReturned_ItemsAttachedToParent()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var v1 = new Mock<IVersionInfo>();
+            v1.Setup(v => v.VersionNumber).Returns("1");
+            var v2 = new Mock<IVersionInfo>();
+            v2.Setup(v => v.VersionNumber).Returns("2");
+            mockVersionRepository.Setup(m => m.DeleteVersion(It.IsAny<Guid>(), It.IsAny<string>()))
+                .Returns(new List<IExplorerItem>
+                {
+                    new ServerExplorerItem { ResourceType = ResourceType.WebService, DisplayName = "v2 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View, VersionInfo = v1.Object },
+                    new ServerExplorerItem { ResourceType = ResourceType.WebService, DisplayName = "v1 2012-10-10 Save", ResourceId = Guid.NewGuid(), Permissions = Permissions.View , VersionInfo = v2.Object }
+                })
+                .Verifiable();
+
+            var superWFId = Guid.NewGuid();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.WorkflowService,
+                DisplayName = "SuperWF",
+                ResourceId = superWFId,
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
+            };
+
+            SetupEnvironmentRepo(Guid.Empty);
+
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+
+            var versionInfo = new VersionInfo
+            {
+                DateTimeStamp = DateTime.Now,
+                Reason = "Rollback",
+                ResourceId = superWFId,
+                User = "",
+                VersionId = Guid.NewGuid(),
+                VersionNumber = "3"
+            };
+
+            //------------Execute Test---------------------------
+            repo.DeleteVersion(versionInfo, Guid.Empty);
+            //------------Assert Results-------------------------
+            var actual = repo.FindItemById(superWFId);
+            Assert.AreEqual(2, actual.Children.Count);
+            mockVersionRepository.Verify(m => m.DeleteVersion(It.IsAny<Guid>(), It.IsAny<string>()), Times.Once());
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_GetVersion")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void StudioResourceRepository_GetVersion_VersionIsNull_ThrowsException()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.WorkflowService,
+                DisplayName = "SuperWF",
+                ResourceId = Guid.NewGuid(),
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
+            };
+
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+            //------------Execute Test---------------------------
+            repo.GetVersion(null, Guid.Empty);
+        }
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("StudioResourceRepository_GetVersion")]
+        public void StudioResourceRepository_GetVersion_CallsVersionOnTheProxy()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            mockVersionRepository.Setup(m => m.GetVersion(It.IsAny<IVersionInfo>())).Verifiable();
+            var superWFId = Guid.NewGuid();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.WorkflowService,
+                DisplayName = "SuperWF",
+                ResourceId = superWFId,
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
+            };
+
+            SetupEnvironmentRepo(Guid.Empty);
+
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+
+            var versionInfo = new VersionInfo
+            {
+                DateTimeStamp = DateTime.Now,
+                Reason = "Rollback",
+                ResourceId = superWFId,
+                User = "",
+                VersionId = Guid.NewGuid(),
+                VersionNumber = "3"
+            };
+
+            //------------Execute Test---------------------------
+            repo.GetVersion(versionInfo, superWFId);
+            //------------Assert Results-------------------------
+            mockVersionRepository.Verify(m => m.GetVersion(It.IsAny<IVersionInfo>()), Times.Once());
+        }
+
+
+        
         private IExplorerItem GetTestData(string workFlowId = "DF279411-F678-4FCC-BE88-A1B613EE51E3",
                                           string dbServiceId = "DF279411-F678-4FCC-BE88-A1B613EE51E3", Guid? folderID = null)
         {

@@ -214,6 +214,10 @@
       <Project>{0a369a8b-0906-47eb-8eee-ca20e9d4f151}</Project>
       <Name>Dev2.Activities</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>
       <Name>Dev2.Core</Name>
@@ -309,7 +313,7 @@ IF $(ConfigurationName)==Test GOTO getTestResources
 IF $(ConfigurationName)==Release GOTO getReleaseResources
 GOTO exit
 :getDebugResources
-xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
+REM xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
 GOTO exit
 :getTestResources
 xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Resources" "$(TargetDir)Resources\"

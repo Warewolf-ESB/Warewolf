@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
+﻿using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Wrappers.Interfaces;
-using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Hosting
@@ -157,7 +157,7 @@ namespace Dev2.Tests.Runtime.Hosting
             for(int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns("1\\"+i);
+                resource.Setup(a => a.ResourcePath).Returns("1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
 
@@ -189,7 +189,7 @@ namespace Dev2.Tests.Runtime.Hosting
             for(int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns(i % 2 == 0 ? i.ToString(CultureInfo.InvariantCulture) : "1\\"+i);
+                resource.Setup(a => a.ResourcePath).Returns(i % 2 == 0 ? i.ToString(CultureInfo.InvariantCulture) : "1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
 
@@ -222,7 +222,7 @@ namespace Dev2.Tests.Runtime.Hosting
             for(int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns(""+i);
+                resource.Setup(a => a.ResourcePath).Returns("" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
 
@@ -254,7 +254,7 @@ namespace Dev2.Tests.Runtime.Hosting
             for(int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns("1\\"+i);
+                resource.Setup(a => a.ResourcePath).Returns("1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
                 resource.Setup(a => a.ResourceType).Returns(ResourceType.EmailSource);
@@ -285,7 +285,7 @@ namespace Dev2.Tests.Runtime.Hosting
             for(int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns("1\\"+i);
+                resource.Setup(a => a.ResourcePath).Returns("1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
                 resource.Setup(a => a.ResourceType).Returns(ResourceType.EmailSource);
@@ -324,7 +324,7 @@ namespace Dev2.Tests.Runtime.Hosting
             for(int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns(i % 2 == 0 ? ""+i : "1\\"+i);
+                resource.Setup(a => a.ResourcePath).Returns(i % 2 == 0 ? "" + i : "1\\" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(Guid.NewGuid);
                 resource.Setup(a => a.ResourceType).Returns(i % 2 == 0 ? ResourceType.EmailSource : ResourceType.DbSource);
@@ -394,7 +394,7 @@ namespace Dev2.Tests.Runtime.Hosting
             for(int i = 0; i < resources.Count; i++)
             {
                 var resource = resources[i];
-                resource.Setup(a => a.ResourcePath).Returns(""+i);
+                resource.Setup(a => a.ResourcePath).Returns("" + i);
                 resource.Setup(a => a.ResourceName).Returns(i.ToString);
                 resource.Setup(a => a.ResourceID).Returns(guid[i]);
 

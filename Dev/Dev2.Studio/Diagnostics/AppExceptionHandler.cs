@@ -1,8 +1,10 @@
-﻿using Dev2.Studio.ViewModels;
+﻿using Dev2.Interfaces;
 using System;
 
 // ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Diagnostics
+// ReSharper restore CheckNamespace
 {
     public class AppExceptionHandler : AppExceptionHandlerAbstract
     {

@@ -1,13 +1,14 @@
-﻿using System;
+﻿using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Controller;
-using Dev2.Data.ServiceModel;
 using Dev2.Explorer;
 using Dev2.Interfaces;
 using Dev2.Models;
-using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests

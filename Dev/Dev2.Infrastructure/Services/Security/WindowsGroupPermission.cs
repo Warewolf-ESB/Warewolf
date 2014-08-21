@@ -1,5 +1,6 @@
 using System;
 using System.Windows.Input;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Newtonsoft.Json;
 
@@ -17,7 +18,7 @@ namespace Dev2.Services.Security
         public const string BuiltInGuestsText = "Public";
 
         bool _isServer;
-        Guid _resourceID;
+        Guid _resourceId;
         string _resourceName;
         string _windowsGroup;
         bool _view;
@@ -33,7 +34,9 @@ namespace Dev2.Services.Security
 
         public bool IsServer { get { return _isServer; } set { OnPropertyChanged(ref _isServer, value); } }
 
-        public Guid ResourceID { get { return _resourceID; } set { OnPropertyChanged(ref _resourceID, value); } }
+// ReSharper disable InconsistentNaming
+        public Guid ResourceID { get { return _resourceId; } set { OnPropertyChanged(ref _resourceId, value); } }
+// ReSharper restore InconsistentNaming
 
         public string ResourceName { get { return _resourceName; } set { OnPropertyChanged(ref _resourceName, value); } }
 

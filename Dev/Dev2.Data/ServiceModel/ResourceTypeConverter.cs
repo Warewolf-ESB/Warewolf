@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices;
 
 namespace Dev2.Data.ServiceModel
@@ -33,7 +34,7 @@ namespace Dev2.Data.ServiceModel
                     break;
 
                 case TypeSource:
-                    resourceTypes = new[] { ResourceType.Server, ResourceType.DbSource, ResourceType.PluginSource, ResourceType.WebSource, ResourceType.EmailSource, ResourceType.ServerSource, };
+                    resourceTypes = new[] { ResourceType.Server, ResourceType.DbSource, ResourceType.PluginSource, ResourceType.WebSource, ResourceType.EmailSource, ResourceType.ServerSource };
                     break;
 
                 case TypeReservedService:

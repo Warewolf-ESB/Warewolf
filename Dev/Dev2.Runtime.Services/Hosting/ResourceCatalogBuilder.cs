@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 
@@ -16,7 +17,9 @@ namespace Dev2.Runtime.Hosting
     /// <summary>
     /// Transfer FileStream and FilePath together
     /// </summary>
+// ReSharper disable InconsistentNaming
     internal class ResourceBuilderTO
+// ReSharper restore InconsistentNaming
     {
         internal string FilePath;
         internal FileStream FileStream;
@@ -121,11 +124,15 @@ namespace Dev2.Runtime.Hosting
                             // otherwise the file will be remain locked
                             currentItem.FileStream.Close();
 
-                            xml = resource.UpgradeXml(xml);
+                            xml = resource.UpgradeXml(xml, resource);
 
                             StringBuilder updateXml = xml.ToStringBuilder();
                             var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
                             signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8);
+                        }
+                        if(resource.VersionInfo == null)
+                        {
+                            
                         }
 
                         lock(_addLock)

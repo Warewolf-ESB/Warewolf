@@ -101,7 +101,7 @@ namespace Dev2.ViewModels.Deploy
             environment.Connect();
         }
 
-        internal Task LoadResourcesAsync(IEnvironmentModel environment, List<ExplorerItemModel> expandedList = null, ExplorerItemModel selectedItem = null)
+        internal Task LoadResourcesAsync(IEnvironmentModel environment, List<IExplorerItemModel> expandedList = null, IExplorerItemModel selectedItem = null)
         {
             Task task = null;
             if(AsyncWorker != null)
@@ -142,7 +142,7 @@ namespace Dev2.ViewModels.Deploy
             return task;
         }
 
-        protected void UpdateNavigationView(IEnumerable<ExplorerItemModel> expandedList = null, ExplorerItemModel selectedItem = null)
+        protected void UpdateNavigationView(IEnumerable<IExplorerItemModel> expandedList = null, IExplorerItemModel selectedItem = null)
         {
             UpdateSearchFilter(_searchFilter);
             SetTreeStateBack(expandedList, selectedItem);
@@ -177,7 +177,7 @@ namespace Dev2.ViewModels.Deploy
 
         protected abstract void DoFiltering(string searhFilter);
 
-        void SetTreeStateBack(IEnumerable<ExplorerItemModel> expandedList, ExplorerItemModel selectedItem)
+        void SetTreeStateBack(IEnumerable<IExplorerItemModel> expandedList, IExplorerItemModel selectedItem)
         {
             if(expandedList != null)
             {
@@ -187,7 +187,7 @@ namespace Dev2.ViewModels.Deploy
                     var environment = studioResourceRepository.FindItemById(item.EnvironmentId);
                     if(environment != null)
                     {
-                        ExplorerItemModel explorerItem = environment;
+                        IExplorerItemModel explorerItem = environment;
                         if(!string.IsNullOrEmpty(item.ResourcePath))
                         {
                             var strings = item.ResourcePath.Split('\\');
@@ -216,7 +216,7 @@ namespace Dev2.ViewModels.Deploy
         public void BringItemIntoView(Guid environmentId, Guid resourceId)
         {
             IStudioResourceRepository studioResourceRepository = StudioResourceRepository;
-            ExplorerItemModel item = studioResourceRepository.FindItemByIdAndEnvironment(resourceId, environmentId);
+            IExplorerItemModel item = studioResourceRepository.FindItemByIdAndEnvironment(resourceId, environmentId);
             if(item != null)
             {
                 item.IsExplorerSelected = true;
@@ -224,7 +224,7 @@ namespace Dev2.ViewModels.Deploy
             }
         }
 
-        public void RecusiveExplorerExpandParent(ExplorerItemModel parent)
+        public void RecusiveExplorerExpandParent(IExplorerItemModel parent)
         {
             if(parent != null)
             {
@@ -256,7 +256,7 @@ namespace Dev2.ViewModels.Deploy
             UpdateResource(message.ResourceModel);
         }
 
-        protected ExplorerItemModel TryGetResourceNode(IContextualResourceModel resourceModel)
+        protected IExplorerItemModel TryGetResourceNode(IContextualResourceModel resourceModel)
         {
             return StudioResourceRepository.FindItemByIdAndEnvironment(resourceModel.ID, resourceModel.Environment.ID);
         }

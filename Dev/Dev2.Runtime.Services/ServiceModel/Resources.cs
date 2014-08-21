@@ -1,6 +1,6 @@
-﻿using Dev2.Data.Binary_Objects;
-using Dev2.Data.ServiceModel;
-using Dev2.Interfaces;
+﻿using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Data.Binary_Objects;
 using Dev2.Runtime.Collections;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
@@ -39,14 +39,14 @@ namespace Dev2.Runtime.ServiceModel
         #region Sources
 
         // POST: Service/Resources/Sources
-        public ResourceList Sources(string args, Guid workspaceID, Guid dataListID)
+        public ResourceList Sources(string args, Guid workspaceId, Guid dataListId)
         {
             var result = new ResourceList();
             try
             {
                 dynamic argsObj = JObject.Parse(args);
                 string resourceTypeStr = argsObj.resourceType.Value;
-                result = Read(workspaceID, ParseResourceType(resourceTypeStr));
+                result = Read(workspaceId, ParseResourceType(resourceTypeStr));
             }
             catch(Exception ex)
             {
@@ -55,7 +55,7 @@ namespace Dev2.Runtime.ServiceModel
             return result;
         }
         // POST: Service/Resources/Services
-        public ResourceList Services(string args, Guid workspaceID, Guid dataListID)
+        public ResourceList Services(string args, Guid workspaceId, Guid dataListId)
         {
             var result = new ResourceList();
             try
@@ -63,7 +63,7 @@ namespace Dev2.Runtime.ServiceModel
                 var resourceType = ParseResourceType(args);
                 if(resourceType == ResourceType.WorkflowService)
                 {
-                    result = Read(workspaceID, resourceType);
+                    result = Read(workspaceId, resourceType);
                 }
                 else
                 {
@@ -82,11 +82,11 @@ namespace Dev2.Runtime.ServiceModel
         #region PathsAndNames
 
         // POST: Service/Resources/PathsAndNames
-        public string PathsAndNames(string args, Guid workspaceID, Guid dataListID)
+        public string PathsAndNames(string args, Guid workspaceId, Guid dataListId)
         {
             args = args.Replace("\\\\", "\\");
             args = args.Replace("root", "");
-            var explorerItem = ServerExplorerRepository.Instance.Load(workspaceID);
+            var explorerItem = ServerExplorerRepository.Instance.Load(workspaceId);
             var folders = explorerItem.Descendants().Where(item => item.ResourceType == ResourceType.Folder
                                         && (args == "" ? item.ResourcePath == item.DisplayName : GetResourceParent(item.ResourcePath) == args))
                                             .Select(item => item.DisplayName);
@@ -113,11 +113,11 @@ namespace Dev2.Runtime.ServiceModel
         #region Paths
 
         // POST: Service/Resources/Paths
-        public string Paths(string args, Guid workspaceID, Guid dataListID)
+        public string Paths(string args, Guid workspaceId, Guid dataListId)
         {
             var result = new SortedSet<string>(new CaseInsensitiveStringComparer());
 
-            ResourceIterator.Instance.IterateAll(workspaceID, iteratorResult =>
+            ResourceIterator.Instance.IterateAll(workspaceId, iteratorResult =>
             {
                 string value;
                 if(iteratorResult.Values.TryGetValue(1, out value))
@@ -143,10 +143,10 @@ namespace Dev2.Runtime.ServiceModel
 
         #region Read
 
-        public static ResourceList Read(Guid workspaceID, ResourceType resourceType)
+        public static ResourceList Read(Guid workspaceId, ResourceType resourceType)
         {
             var resources = new ResourceList();
-            var explorerItem = ServerExplorerRepository.Instance.Load(resourceType, workspaceID);
+            var explorerItem = ServerExplorerRepository.Instance.Load(resourceType, workspaceId);
             explorerItem.Descendants().ForEach(item =>
             {
                 if(item.ResourceType == resourceType)
@@ -161,21 +161,21 @@ namespace Dev2.Runtime.ServiceModel
 
         #region ReadXml
 
-        public static string ReadXml(Guid workspaceID, ResourceType resourceType, string resourceID)
+        public static string ReadXml(Guid workspaceId, ResourceType resourceType, string resourceId)
         {
-            return ReadXml(workspaceID, "Resources", resourceID);
+            return ReadXml(workspaceId, "Resources", resourceId);
         }
 
-        public static string ReadXml(Guid workspaceID, string directoryName, string resourceID)
+        public static string ReadXml(Guid workspaceId, string directoryName, string resourceId)
         {
             var result = String.Empty;
             Guid id;
-            var delimiterStart = Guid.TryParse(resourceID, out id) ? " ID=\"" : " Name=\"";
+            var delimiterStart = Guid.TryParse(resourceId, out id) ? " ID=\"" : " Name=\"";
 
-            ResourceIterator.Instance.Iterate(directoryName, workspaceID, iteratorResult =>
+            ResourceIterator.Instance.Iterate(directoryName, workspaceId, iteratorResult =>
             {
                 string value;
-                if(iteratorResult.Values.TryGetValue(1, out value) && resourceID.Equals(value, StringComparison.InvariantCultureIgnoreCase))
+                if(iteratorResult.Values.TryGetValue(1, out value) && resourceId.Equals(value, StringComparison.InvariantCultureIgnoreCase))
                 {
                     result = iteratorResult.Content;
                     return false;
@@ -205,15 +205,15 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        public string DataListInputVariables(string resourceID, Guid workspaceID, Guid dataListID)
+        public string DataListInputVariables(string resourceId, Guid workspaceId, Guid dataListId)
         {
-            Guid rsID;
-            if(!Guid.TryParse(resourceID, out rsID))
+            Guid rsId;
+            if(!Guid.TryParse(resourceId, out rsId))
             {
                 RaiseError(new ArgumentException("Invalid ResouceID."));
                 return "";
             }
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, rsID);
+            var resource = ResourceCatalog.Instance.GetResource(workspaceId, rsId);
             if(resource == null)
             {
                 RaiseError(new ArgumentException("Workflow not found."));
@@ -273,7 +273,9 @@ namespace Dev2.Runtime.ServiceModel
         }
     }
 
+// ReSharper disable InconsistentNaming
     public class PathsAndNamesTO
+// ReSharper restore InconsistentNaming
     {
         public SortedSet<string> Names { get; set; }
         public SortedSet<string> Paths { get; set; }

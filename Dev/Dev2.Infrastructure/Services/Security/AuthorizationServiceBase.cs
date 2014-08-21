@@ -7,6 +7,7 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Security;
 
 namespace Dev2.Services.Security
 {

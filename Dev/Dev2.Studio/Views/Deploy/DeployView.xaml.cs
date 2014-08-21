@@ -27,7 +27,7 @@ namespace Dev2.Studio.Views.Deploy
                     DeployViewModel viewModel = DataContext as DeployViewModel;
                     if(viewModel != null)
                     {
-                        viewModel.SelectDependencies(new List<ExplorerItemModel> { rtvm });
+                        viewModel.SelectDependencies(new List<IExplorerItemModel> { rtvm });
                     }
                 }
             }

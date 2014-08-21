@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using Dev2.AppResources.Repositories;
-using Dev2.Data.ServiceModel;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Models;
 using Dev2.Network;
 using Dev2.Studio.Core.Interfaces;
@@ -13,7 +13,7 @@ using System.Management;
 using System.Linq;
 using System.Linq.Expressions;
 using TechTalk.SpecFlow;
-
+using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
 namespace Dev2.Activities.Specs.Explorer
 {
     [Binding]
@@ -111,7 +111,7 @@ namespace Dev2.Activities.Specs.Explorer
                             DisplayName = folderName,
                             EnvironmentId = localhost,
                             ResourcePath = resourcePath + "\\" + folderName,
-                            Permissions = Services.Security.Permissions.Contribute,
+                            Permissions = SecPermissions.Contribute,
                             ResourceType = ResourceType.Folder,
                             Parent = parent
                         });
@@ -217,7 +217,7 @@ namespace Dev2.Activities.Specs.Explorer
                         Parent = parent,
                         DisplayName = oldResourceName,
                         ResourcePath = resourcePath + "\\" + displayName,
-                        Permissions = Services.Security.Permissions.Contribute
+                        Permissions = SecPermissions.Contribute
                     };
                     parent.Children.Add(child);
                 }
@@ -260,7 +260,7 @@ namespace Dev2.Activities.Specs.Explorer
                             Parent = parent,
                             DisplayName = resourceToDelete,
                             ResourcePath = resourcePath + "\\" + resourceToDelete,
-                            Permissions = Services.Security.Permissions.Contribute
+                            Permissions = SecPermissions.Contribute
                         };
                     parent.Children.Add(child);
                 }
@@ -323,7 +323,7 @@ namespace Dev2.Activities.Specs.Explorer
         public void ThenTheFilteredResultsWillBe(string result)
         {
             var splitResult = result.Split(',');
-            var filterResult = ScenarioContext.Current.Get<ObservableCollection<ExplorerItemModel>>("filterResult");
+            var filterResult = ScenarioContext.Current.Get<ObservableCollection<IExplorerItemModel>>("filterResult");
 
             foreach(var s in splitResult)
             {
@@ -332,7 +332,7 @@ namespace Dev2.Activities.Specs.Explorer
             }
         }
 
-        public ExplorerItemModel FindItem(ObservableCollection<ExplorerItemModel> models, Func<ExplorerItemModel, bool> searchCriteria)
+        public IExplorerItemModel FindItem(ObservableCollection<IExplorerItemModel> models, Func<IExplorerItemModel, bool> searchCriteria)
         {
             var explorerItemModels = models.SelectMany(explorerItemModel => explorerItemModel.Descendants()).ToList();
             return searchCriteria == null ? null : explorerItemModels.FirstOrDefault(searchCriteria);

@@ -1,24 +1,28 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Dev2.Activities;
+﻿using Dev2.Activities;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
-using Dev2.Data.ServiceModel;
-using Dev2.Messages;
+using Dev2.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
-using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Models;
 using Dev2.Threading;
 using Dev2.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
 using System.Windows.Input;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -26,11 +30,13 @@ namespace Dev2.Models
 {
     public class ExplorerItemModel : ObservableObject, IExplorerItemModel
     {
-
         #region Fields
         ICommand _editCommand;
         ICommand _deployCommand;
         ICommand _renameCommand;
+        ICommand _toggleVersionHistoryCommand;
+        ICommand _rollbackCommand;
+        ICommand _deleteVersionCommand;
         ICommand _deleteCommand;
         ICommand _removeCommand;
         ICommand _showDependenciesCommand;
@@ -52,8 +58,8 @@ namespace Dev2.Models
         private bool _isRenaming;
         private string _displayName;
         private readonly IStudioResourceRepository _studioResourceRepository;
-        private  static  bool _serverRefreshing;
-        ObservableCollection<ExplorerItemModel> _children;
+        private static bool _serverRefreshing;
+        ObservableCollection<IExplorerItemModel> _children;
         ICommand _refreshCommand;
         private Permissions _permissions;
         bool _isRefreshing;
@@ -63,21 +69,24 @@ namespace Dev2.Models
         bool _isOverwrite;
 
         private readonly Dictionary<ResourceType, Type> _activityNames;
+        IVersionInfo _versionInfo;
+        string _toggleVersionHistoryHeader;
 
         #endregion
 
 
-        public ExplorerItemModel() : this(ConnectControlSingleton.Instance)
+        public ExplorerItemModel()
+            : this(ConnectControlSingleton.Instance, StudioResourceRepository.Instance)
         {
-            
+
         }
 
-        public ExplorerItemModel(IConnectControlSingleton connectControlSingleton)
+        public ExplorerItemModel(IConnectControlSingleton connectControlSingleton, IStudioResourceRepository studioResourceRepository)
         {
-            Children = new ObservableCollection<ExplorerItemModel>();
+            Children = new ObservableCollection<IExplorerItemModel>();
             _isAuthorized = true;
             _isConnected = true;
-            _studioResourceRepository = StudioResourceRepository.Instance;
+            _studioResourceRepository = studioResourceRepository;
             Children.CollectionChanged -= ChildrenCollectionChanged;
             Children.CollectionChanged += ChildrenCollectionChanged;
             _asyncWorker = new AsyncWorker();
@@ -94,12 +103,13 @@ namespace Dev2.Models
                     }
                 };
             _connectControlSingleton = connectControlSingleton;
-            _connectControlSingleton.ConnectedStatusChanged += ConnectedStatusChanged; 
+            _connectControlSingleton.ConnectedStatusChanged += ConnectedStatusChanged;
+            ToggleVersionHistoryHeader = "Show Version History";
         }
 
         private void ConnectedStatusChanged(object sender, ConnectionStatusChangedEventArg e)
         {
-            if (EnvironmentId  == e.EnvironmentId && ResourceType == ResourceType.Server)
+            if(EnvironmentId == e.EnvironmentId && ResourceType == ResourceType.Server)
             {
                 IsRefreshing = _serverRefreshing = e.ConnectedStatus == ConnectionEnumerations.ConnectedState.Busy;
             }
@@ -111,13 +121,13 @@ namespace Dev2.Models
         }
 
         public ExplorerItemModel(IStudioResourceRepository studioResourceRepository, IAsyncWorker asyncWorker, IConnectControlSingleton connectControlSingleton)
-            : this(connectControlSingleton)
+            : this(connectControlSingleton, studioResourceRepository)
         {
             _studioResourceRepository = studioResourceRepository;
             _asyncWorker = asyncWorker;
             _connectControlSingleton = connectControlSingleton;
         }
-        
+
         #region Properties
 
         public bool CanCreateNewFolder
@@ -185,7 +195,7 @@ namespace Dev2.Models
             }
         }
         public Guid EnvironmentId { get; set; }
-        public ExplorerItemModel Parent { get; set; }
+        public IExplorerItemModel Parent { get; set; }
         public string DisplayName
         {
             get { return _displayName; }
@@ -206,11 +216,15 @@ namespace Dev2.Models
         public void SetDisplay(string display)
         {
             _displayName = display;
+// ReSharper disable ExplicitCallerInfoArgument
+            OnPropertyChanged("DisplayName");
+// ReSharper restore ExplicitCallerInfoArgument
         }
 
         public Guid ResourceId { get; set; }
         public ResourceType ResourceType { get; set; }
-        public ObservableCollection<ExplorerItemModel> Children
+
+        public ObservableCollection<IExplorerItemModel> Children
         {
             get
             {
@@ -222,6 +236,15 @@ namespace Dev2.Models
                 OnPropertyChanged();
             }
         }
+
+        public List<IExplorerItemModel> DeployChildren
+        {
+            get
+            {
+                return _children.Where(c => c.ResourceType != ResourceType.Version).ToList();
+            }
+        }
+
         public Permissions Permissions
         {
             get { return _permissions; }
@@ -315,7 +338,6 @@ namespace Dev2.Models
                 OnPropertyChanged();
             }
         }
-
         public bool IsResourcePickerSelected
         {
             get
@@ -328,7 +350,6 @@ namespace Dev2.Models
                 OnPropertyChanged();
             }
         }
-
         public bool IsDeploySourceSelected
         {
             get
@@ -341,7 +362,6 @@ namespace Dev2.Models
                 OnPropertyChanged();
             }
         }
-
         public bool IsDeployTargetSelected
         {
             get
@@ -386,7 +406,6 @@ namespace Dev2.Models
                 OnPropertyChanged();
             }
         }
-
         public bool IsRefreshing
         {
             get
@@ -396,6 +415,19 @@ namespace Dev2.Models
             set
             {
                 _isRefreshing = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IVersionInfo VersionInfo
+        {
+            get
+            {
+                return _versionInfo;
+            }
+            set
+            {
+                _versionInfo = value;
                 OnPropertyChanged();
             }
         }
@@ -463,6 +495,17 @@ namespace Dev2.Models
                 return false;
             }
         }
+        public bool IsVersion
+        {
+            get
+            {
+                if(ResourceType == ResourceType.Version && !CanExecute)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         public bool CanEdit
         {
             get
@@ -517,11 +560,34 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType <= ResourceType.EmailSource && Permissions >= Permissions.View)
+                if(ResourceType <= ResourceType.EmailSource && Permissions >= Permissions.View && ResourceType != ResourceType.Version)
                 {
                     return true;
                 }
                 return false;
+            }
+        }
+        public bool CanShowHistory
+        {
+            get
+            {
+                if(ResourceType == ResourceType.WorkflowService && Permissions >= Permissions.View)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public string ToggleVersionHistoryHeader
+        {
+            get
+            {
+                return _toggleVersionHistoryHeader;
+            }
+            set
+            {
+                _toggleVersionHistoryHeader = value;
+                OnPropertyChanged();
             }
         }
         public bool CanDisconnect
@@ -552,7 +618,9 @@ namespace Dev2.Models
         {
             get
             {
-                if(ResourceType == ResourceType.Server)
+                if(ResourceType == ResourceType.Server ||
+                    ResourceType == ResourceType.Version ||
+                    ResourceType == ResourceType.Message)
                 {
                     return _isAuthorized;
                 }
@@ -663,9 +731,57 @@ namespace Dev2.Models
         }
 
         /// <summary>
-        /// Gets the rename command.
+        /// Gets the toggle version history command.
         /// </summary>
         /// <value>
+        /// Reads the version history
+        /// </value>
+        /// <author>Tshepo Ntlhokoa</author>
+        public ICommand ToggleVersionHistoryCommand
+        {
+            get
+            {
+                DelegateCommand toggleVersionHistoryCommand = new DelegateCommand(p => ToggleVersionHistory());
+                return _toggleVersionHistoryCommand ?? (_toggleVersionHistoryCommand = toggleVersionHistoryCommand);
+            }
+        }
+
+        /// <summary>
+        /// Gets the toggle version history command.
+        /// </summary>
+        /// <value>
+        /// Rollsback to the selected version
+        /// </value>
+        /// <author>Tshepo Ntlhokoa</author>
+        public ICommand RollbackCommand
+        {
+            get
+            {
+                DelegateCommand rollbackCommand = new DelegateCommand(p => Rollback());
+                return _rollbackCommand ?? (_rollbackCommand = rollbackCommand);
+            }
+        }
+
+        /// <summary>
+        /// Gets the delete version command.
+        /// </summary>
+        /// <value>
+        /// Deletes a selected version off the server
+        /// </value>
+        /// <author>Tshepo Ntlhokoa</author>
+        public ICommand DeleteVersionCommand
+        {
+            get
+            {
+                DelegateCommand deleteVersionCommand = new DelegateCommand(p => DeleteVersion());
+                return _deleteVersionCommand ?? (_deleteVersionCommand = deleteVersionCommand);
+            }
+        }
+
+        /// <summary>
+        /// Gets the rename command.
+        /// </summary>
+        /// <value> 
         /// The delete command.
         /// </value>
         /// <author>Massimo Guerrera</author>
@@ -813,9 +929,9 @@ namespace Dev2.Models
             return result;
         }
 
-        public ExplorerItemModel Clone(IConnectControlSingleton connectControlSingleton)
+        public ExplorerItemModel Clone(IConnectControlSingleton connectControlSingleton, IStudioResourceRepository studioResourceRepository)
         {
-            ExplorerItemModel result = new ExplorerItemModel(connectControlSingleton);
+            ExplorerItemModel result = new ExplorerItemModel(connectControlSingleton, studioResourceRepository);
             var fieldInfos = GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
             foreach(FieldInfo field in fieldInfos)
             {
@@ -830,7 +946,7 @@ namespace Dev2.Models
                     {
                         foreach(ExplorerItemModel item in ((IList)field.GetValue(this)))
                         {
-                            listObject.Add(item.Clone(connectControlSingleton));
+                            listObject.Add(item.Clone(connectControlSingleton, studioResourceRepository));
                         }
                     }
                 }
@@ -848,7 +964,15 @@ namespace Dev2.Models
             var name = GetUniqueName();
             string resourcePath = String.IsNullOrEmpty(ResourcePath) ? name : string.Format("{0}\\{1}", ResourcePath, name);
 
-            ExplorerItemModel explorerItemModel = new ExplorerItemModel { DisplayName = name, ResourceType = ResourceType.Folder, Parent = this, EnvironmentId = EnvironmentId, Permissions = Permissions, ResourcePath = resourcePath };
+            ExplorerItemModel explorerItemModel = new ExplorerItemModel(_connectControlSingleton, _studioResourceRepository)
+                {
+                    DisplayName = name,
+                    ResourceType = ResourceType.Folder,
+                    Parent = this,
+                    EnvironmentId = EnvironmentId,
+                    Permissions = Permissions,
+                    ResourcePath = resourcePath
+                };
             _studioResourceRepository.AddItem(explorerItemModel);
 
             var firstOrDefault = Children.FirstOrDefault(c => c.DisplayName == name);
@@ -898,13 +1022,16 @@ namespace Dev2.Models
             int total = 0;
             foreach(ExplorerItemModel explorerItemModel in Children)
             {
-                if(explorerItemModel.ResourceType == ResourceType.Folder)
+                if(explorerItemModel.ResourceType != ResourceType.Version)
                 {
-                    total += explorerItemModel.ChildrenCount;
-                }
-                else
-                {
-                    total++;
+                    if(explorerItemModel.ResourceType == ResourceType.Folder)
+                    {
+                        total += explorerItemModel.ChildrenCount;
+                    }
+                    else
+                    {
+                        total++;
+                    }
                 }
             }
             return total;
@@ -972,7 +1099,7 @@ namespace Dev2.Models
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
             if(environmentModel != null)
             {
-                var folderList = new List<ExplorerItemModel>();
+                var folderList = new List<IExplorerItemModel>();
                 var contextualResourceModels = new Collection<IContextualResourceModel>();
                 foreach(var childModel in this.Descendants())
                 {
@@ -1005,7 +1132,7 @@ namespace Dev2.Models
                         {
                             if(folderList[i].ResourceType == ResourceType.Folder && (folderList[i].Children.Count == 0 || folderList[i].Children.All(c => c.ResourceType == ResourceType.Folder)))
                             {
-                                StudioResourceRepository.Instance.DeleteFolder(folderList[i]);
+                                _studioResourceRepository.DeleteFolder(folderList[i]);
                             }
                         }
                     }));
@@ -1018,7 +1145,7 @@ namespace Dev2.Models
                         {
                             if(folderList[i].ResourceType == ResourceType.Folder && (folderList[i].Children.Count == 0 || folderList[i].Children.All(c => c.ResourceType == ResourceType.Folder)))
                             {
-                                StudioResourceRepository.Instance.DeleteFolder(folderList[i]);
+                                _studioResourceRepository.DeleteFolder(folderList[i]);
                             }
                         }
                     }));
@@ -1026,40 +1153,129 @@ namespace Dev2.Models
             }
         }
 
-        private void Rename(string newName)
+        private void ToggleVersionHistory()
         {
-            var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
-            var resource = environmentModel.ResourceRepository.FindSingle(a => a.ID == ResourceId);
-            if(ResourceType == ResourceType.Folder)
+            if(Children.Count == 0)
             {
-                _studioResourceRepository.RenameFolder(this, newName);
+                _studioResourceRepository.ShowVersionHistory(EnvironmentId, ResourceId);
+                ToggleVersionHistoryHeader = "Hide Version History";
             }
             else
             {
-                _studioResourceRepository.RenameItem(this, newName);
+                _studioResourceRepository.HideVersionHistory(EnvironmentId, ResourceId);
+                ToggleVersionHistoryHeader = "Show Version History";
             }
-           if(resource != null)
-           {            
-                var oldName = resource.DisplayName;
-                 resource.DisplayName = newName;
-                resource.Category = resource.Category.Replace(oldName, newName);
-            }
-            if(resource != null && ResourceType <= ResourceType.ServerSource)
-            {
-                var xaml = resource.WorkflowXaml;
-                if(xaml != null)
-                {
-                    resource.WorkflowXaml = xaml
-                        .Replace("x:Class=\"" + resource.ResourceName, "x:Class=\"" + newName)
-                        .Replace("Name=\"" + resource.ResourceName, "Name=\"" + newName)
-                        .Replace("ToolboxFriendlyName=\"" + resource.ResourceName, "ToolboxFriendlyName=\"" + newName)
-                        .Replace("DisplayName=\"" + resource.ResourceName, "DisplayName=\"" + newName);                 
-                }
-                EventPublishers.Aggregator.Publish(new UpdateWorksurfaceFlowNodeDisplayName(ResourceId, DisplayName, newName));
-                EventPublishers.Aggregator.Publish(new UpdateWorksurfaceDisplayName(ResourceId, DisplayName, newName));
-            }
-
         }
+
+        private void Rollback()
+        {
+            IPopupController popup = CustomContainer.Get<IPopupController>();
+            var res = popup.ShowRollbackVersionMessage(string.Format("{0} (v.{1})", Parent.DisplayName, VersionInfo.VersionNumber));
+
+            if(res == MessageBoxResult.Yes)
+            {
+                var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
+                if(environmentModel == null)
+                {
+                    return;
+                }
+
+                IContextualResourceModel resourceModel = environmentModel.ResourceRepository
+                                                                         .FindSingle(model => model.ID == ResourceId)
+                                                                         as IContextualResourceModel;
+
+
+                if(resourceModel != null)
+                {
+                    IMainViewModel mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    var isOpen = mainViewModel.IsWorkFlowOpened(resourceModel);
+                    if(isOpen)
+                    {
+                        EventPublishers.Aggregator.Publish(new RemoveResourceAndCloseTabMessage(resourceModel, true));
+                    }
+                    _studioResourceRepository.RollbackTo(VersionInfo, EnvironmentId);
+
+                    if(isOpen)
+                    {
+                        EventPublishers.Aggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
+                    }
+                }
+            }
+        }
+
+        private void DeleteVersion()
+        {
+            IPopupController popup = CustomContainer.Get<IPopupController>();
+            var res = popup.ShowDeleteVersionMessage(string.Format("{0} (v.{1})", Parent.DisplayName, VersionInfo.VersionNumber));
+
+            if(res == MessageBoxResult.Yes)
+            {
+                _studioResourceRepository.DeleteVersion(VersionInfo, EnvironmentId);
+            }
+        }
+
+        private void Rename(string newName)
+        {
+            var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
+            if(environmentModel != null)
+            {
+                var resourceModel = environmentModel.ResourceRepository.FindSingle(a => a.ID == ResourceId) as IContextualResourceModel;
+                if(resourceModel != null)
+                {
+                    IMainViewModel mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    var isOpen = mainViewModel.IsWorkFlowOpened(resourceModel);
+                    if(isOpen)
+                    {
+                        EventPublishers.Aggregator.Publish(new RemoveResourceAndCloseTabMessage(resourceModel, true));
+                    }
+                    if(ResourceType == ResourceType.Folder)
+                    {
+                        _studioResourceRepository.RenameFolder(this, newName);
+                    }
+                    else
+                    {
+                        _studioResourceRepository.RenameItem(this, newName);
+                    }
+
+                    RefreshName(newName);
+
+                    if(isOpen)
+                    {
+                        EventPublishers.Aggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
+                    }
+                }
+            }
+        }
+
+        public void RefreshName(string newName)
+        {
+            var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
+            if(environmentModel != null)
+            {
+                var resource = environmentModel.ResourceRepository.FindSingle(a => a.ID == ResourceId);
+                SetDisplay(newName);
+                if(resource != null)
+                {
+                    var oldName = resource.DisplayName;
+                    resource.DisplayName = newName;
+                    resource.ResourceName = newName;
+                    resource.Category = resource.Category.Replace(oldName, newName);
+                }
+                if(resource != null && ResourceType <= ResourceType.ServerSource)
+                {
+                    var xaml = resource.WorkflowXaml;
+                    if(xaml != null)
+                    {
+                        resource.WorkflowXaml = xaml
+                            .Replace("x:Class=\"" + resource.ResourceName, "x:Class=\"" + newName)
+                            .Replace("Name=\"" + resource.ResourceName, "Name=\"" + newName)
+                            .Replace("ToolboxFriendlyName=\"" + resource.ResourceName, "ToolboxFriendlyName=\"" + newName)
+                            .Replace("DisplayName=\"" + resource.ResourceName, "DisplayName=\"" + newName);
+                    }
+                }
+            }
+        }
+
         [ExcludeFromCodeCoverage]
         public void CancelRename(KeyEventArgs eventArgs)
         {
@@ -1071,7 +1287,7 @@ namespace Dev2.Models
 
         public void CancelRename()
         {
-             IsRenaming = false;
+            IsRenaming = false;
         }
 
         /// <summary>
@@ -1081,11 +1297,34 @@ namespace Dev2.Models
         private void Edit()
         {
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
-            if(environmentModel != null)
+            if(environmentModel == null)
             {
+                return;
+            }
+            
+            if(ResourceType == ResourceType.Version)
+            {
+                var workflowXaml = _studioResourceRepository.GetVersion(VersionInfo, EnvironmentId);
+                if(workflowXaml != null)
+                {
+                    IResourceModel resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == Parent.ResourceId);
+                    var resourceVersion = new ResourceModel(environmentModel, EventPublishers.Aggregator)
+                        {
+                            ResourceType = resourceModel.ResourceType,
+                            ResourceName = string.Format("{0} (v.{1})", Parent.DisplayName, VersionInfo.VersionNumber),
+                            WorkflowXaml = workflowXaml,
+                            UserPermissions = Permissions.View,
+                            IsVersionResource = true,
+                            ID = ResourceId
+                        };
+                    WorkflowDesignerUtils.EditResource(resourceVersion, EventPublishers.Aggregator);
+                }
+            }
+            else
+            {
+                IResourceModel resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == ResourceId);
                 if(environmentModel.ResourceRepository != null)
                 {
-                    var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == ResourceId);
                     if(resourceModel != null)
                     {
                         WorkflowDesignerUtils.EditResource(resourceModel, EventPublishers.Aggregator);
@@ -1097,6 +1336,8 @@ namespace Dev2.Models
                 }
             }
         }
+
+  
 
         /// <summary>
         /// Deploys this instance.
@@ -1212,7 +1453,6 @@ namespace Dev2.Models
 
         public static Action<CheckStateChangedArgs> OnCheckedStateChangedAction;
         public static Action<bool> OnRenameChangedAction;
-
         /// <summary>
         ///     Verifies the state of the IsChecked property by taking the childrens IsChecked State into account
         /// </summary>
