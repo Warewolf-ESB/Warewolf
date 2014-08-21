@@ -119,10 +119,11 @@ namespace Dev2.Core.Tests.Settings
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            var schdulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+
             //------------Assert Results-------------------------
             Assert.AreEqual(@"To schedule a workflow execution, setup the trigger you want to use  and the workflow you want to execute.
-Warewolf leverages Windows Task Scheduler and the schedules can be viewed there as well.", schdulerViewModel.HelpText);
+Warewolf leverages Windows Task Scheduler and the schedules can be viewed there as well.", schedulerViewModel.HelpText);
         }
 
         [TestMethod]
@@ -131,7 +132,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_ShowError_WithSaveError_HasErrorsTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel { SelectedTask = new ScheduledResourceForTest() };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
 
             //------------Execute Test---------------------------
             schedulerViewModel.ShowError("Error while saving: test error");
@@ -145,7 +146,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_ShowError_WithNormalError_HasErrorsTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel { SelectedTask = new ScheduledResourceForTest() };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
             var _hasErrorChange = false;
             var _errorChange = false;
 
@@ -176,7 +177,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_ClearError_WithNormalError_HasErrorsSet()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel { SelectedTask = new ScheduledResourceForTest() };
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object) { SelectedTask = new ScheduledResourceForTest() };
             var _hasErrorChange = false;
             var _errorChange = false;
 
@@ -211,7 +212,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_Trigger_SetTrigger_IsDirtyTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -228,7 +229,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_RunAsapIfScheduleMissed_SetRunAsapIfScheduleMissed_IsDirtyTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -244,7 +245,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_Status_SetStatus_IsDirtyTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -260,7 +261,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_NumberOfRecordsToKeep_SetNumberOfRecordsToKeep_IsDirtyTrue()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -276,7 +277,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_NumberOfRecordsToKeep_SetNumberOfRecordsToKeepToBlank_ValueIsZero()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -291,7 +292,7 @@ Warewolf leverages Windows Task Scheduler and the schedules can be viewed there 
         public void SchedulerViewModel_NumberOfRecordsToKeep_SetNumberOfRecordsToKeepToNoNumeric_ValueIsZero()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
             var scheduledResourceForTest = new ScheduledResourceForTest();
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             //------------Execute Test---------------------------
@@ -1047,7 +1048,9 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Name_EmptyString_AddsErrorMessage()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel();
+        
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+
             var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
 
@@ -1070,7 +1073,8 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         public void SchedulerViewModel_Name_WasEmptyStringValidString_ClearsErrorMessage()
         {
             //------------Setup for test--------------------------
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+
             var scheduledResourceForTest = new ScheduledResourceForTest { Name = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
             schedulerViewModel.Name = "";
@@ -1098,7 +1102,8 @@ You need Administrator permission.", schedulerViewModel.Errors.FetchErrors().Fir
         {
             //------------Setup for test--------------------------
 
-            var schedulerViewModel = new SchedulerViewModel();
+            var schedulerViewModel = new SchedulerViewModel(new Mock<IEventAggregator>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IPopupController>().Object, new TestAsyncWorker(), new Mock<IConnectControlViewModel>().Object);
+
             var scheduledResourceForTest = new ScheduledResourceForTest { WorkflowName = "Test" };
             schedulerViewModel.SelectedTask = scheduledResourceForTest;
 
