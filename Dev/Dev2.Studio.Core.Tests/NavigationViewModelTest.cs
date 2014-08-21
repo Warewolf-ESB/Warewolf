@@ -811,13 +811,13 @@ namespace Dev2.Core.Tests
         IStudioResourceRepository BuildExplorerItems(IResourceRepository resourceRepository)
         {
             var resourceModels = resourceRepository.All();
-            var localhostItemModel = new ExplorerItemModel { DisplayName = "localhost", EnvironmentId = Guid.Empty, ResourceType = Common.Interfaces.Data.ResourceType.Server };
+            var localhostItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { DisplayName = "localhost", EnvironmentId = Guid.Empty, ResourceType = Common.Interfaces.Data.ResourceType.Server };
 
             if(resourceModels != null)
             {
                 foreach(var resourceModel in resourceModels)
                 {
-                    var resourceItemModel = new ExplorerItemModel { ResourceId = resourceModel.ID, ResourcePath = resourceModel.Category, EnvironmentId = Guid.Empty, DisplayName = resourceModel.ResourceName };
+                    var resourceItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { ResourceId = resourceModel.ID, ResourcePath = resourceModel.Category, EnvironmentId = Guid.Empty, DisplayName = resourceModel.ResourceName };
                     Common.Interfaces.Data.ResourceType correctTyping = Common.Interfaces.Data.ResourceType.WorkflowService;
                     switch(resourceModel.ResourceType)
                     {
