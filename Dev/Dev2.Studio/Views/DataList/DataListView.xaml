@@ -6,7 +6,8 @@
              xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
              xmlns:aprop="clr-namespace:Dev2.Studio.AppResources.AttachedProperties"            
              xmlns:customControls2="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
-             LostKeyboardFocus="UserControlLostKeyboardFocus">
+             LostKeyboardFocus="UserControlLostKeyboardFocus"
+             AutomationProperties.AutomationId="UI_DataListView_AutoID">
     <i:Interaction.Behaviors>
         <behaviors:UserControlFocusNextAndPreviousBehaviour />
     </i:Interaction.Behaviors>
