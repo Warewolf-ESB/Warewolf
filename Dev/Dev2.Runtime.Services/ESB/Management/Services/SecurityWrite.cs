@@ -44,6 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
 
                 Write(securitySettings);
+                ServerAuthorizationService.Instance.SecurityService.Read();
             }
             catch(Exception e)
             {

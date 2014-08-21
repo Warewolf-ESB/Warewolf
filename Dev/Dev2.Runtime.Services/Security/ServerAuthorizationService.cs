@@ -17,15 +17,11 @@ namespace Dev2.Runtime.Security
         public static IAuthorizationService Instance { get { return TheInstance.Value; } }
 
         readonly TimeSpan _timeOutPeriod;
-        private ISecurityService _securityService;
 
         protected ServerAuthorizationService(ISecurityService securityService)
             : base(securityService, true)
         {
-            _securityService = securityService;
             _timeOutPeriod = securityService.TimeOutPeriod;
-            securityService.Read();
-
         }
 
         public int CachedRequestCount { get { return _cachedRequests.Count; } }
@@ -208,9 +204,9 @@ namespace Dev2.Runtime.Security
 
         protected override void OnDisposed()
         {
-            if (_securityService != null)
+            if(SecurityService != null)
             {
-                _securityService.Dispose();
+                SecurityService.Dispose();
             }
         }
     }

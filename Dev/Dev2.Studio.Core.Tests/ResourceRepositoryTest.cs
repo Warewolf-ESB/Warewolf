@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System.Collections.ObjectModel;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -267,26 +268,6 @@ namespace BusinessDesignStudio.Unit.Tests
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.IsTrue(NewWorkflowNames.Instance.Contains("Unsaved 1"));
-        }
-
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("ResourceRepository_HydrateResourceModel")]
-        public void ResourceRepository_HydrateResourceModel_Permissions_Hydrated()
-        {
-            //------------Setup for test--------------------------
-            const Permissions TestPermissions = Permissions.Contribute | Permissions.Execute;
-
-            var resourceRepository = GetResourceRepository(TestPermissions);
-            var resourceData = BuildSerializableResourceFromName("TestWF", Dev2.Common.Interfaces.Data.ResourceType.Server);
-
-            //------------Execute Test---------------------------
-            var model = resourceRepository.HydrateResourceModel(ResourceType.Service, resourceData, Guid.Empty);
-
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.AreEqual(model.UserPermissions, TestPermissions);
         }
 
         #endregion
@@ -1288,7 +1269,10 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             return new List<IContextualResourceModel>
             {
-                new ResourceModel(environmentModel) { ResourceName = "Button" },
+                new ResourceModel(environmentModel)
+                {
+                    ResourceName = "Button"
+                },
             };
         }
 
@@ -2695,6 +2679,9 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var auth = new Mock<IAuthorizationService>();
             auth.Setup(a => a.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
+            var mockSecurityService = new Mock<ISecurityService>();
+            mockSecurityService.Setup(service => service.Permissions).Returns(new ReadOnlyCollection<WindowsGroupPermission>(new List<WindowsGroupPermission>()));
+            auth.Setup(a => a.SecurityService).Returns(mockSecurityService.Object);
             var testEnvironmentModel2 = new Mock<IEnvironmentModel>();
             testEnvironmentModel2.Setup(e => e.Connection).Returns(mockConnection.Object);
             testEnvironmentModel2.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -2702,6 +2689,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var testResources = new List<IResourceModel>(CreateResourceList(testEnvironmentModel2.Object));
             foreach(var resourceModel in testResources)
             {
+                resourceModel.ID = Guid.NewGuid();
                 resRepo.Add(resourceModel);
             }
 
@@ -2713,8 +2701,8 @@ namespace BusinessDesignStudio.Unit.Tests
             p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm } });
 
             // expect that the resource repository gets an update
-            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(2));
-            stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false));
+            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(1));
+            stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false), Times.Never());
 
         }
         [TestMethod]
@@ -2736,6 +2724,9 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var auth = new Mock<IAuthorizationService>();
             auth.Setup(a => a.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
+            var mockSecurityService = new Mock<ISecurityService>();
+            mockSecurityService.Setup(service => service.Permissions).Returns(new ReadOnlyCollection<WindowsGroupPermission>(new List<WindowsGroupPermission>()));
+            auth.Setup(a => a.SecurityService).Returns(mockSecurityService.Object);
             var testEnvironmentModel2 = new Mock<IEnvironmentModel>();
             testEnvironmentModel2.Setup(e => e.Connection).Returns(mockConnection.Object);
             testEnvironmentModel2.Setup(a => a.AuthorizationService).Returns(auth.Object);
@@ -2758,6 +2749,65 @@ namespace BusinessDesignStudio.Unit.Tests
             // expect that the resource repository gets an update
             stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(1));
             stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false), Times.Never());
+
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ResourceRepository_ReceivePermissionsModified")]
+        public void ResourceRepository_ReceivePermissionsModified_ExpectNotUpdateIfEmptyGuidWithResourcePerm()
+        {
+            var mockConnection = new Mock<IEnvironmentConnection>();
+            var stud = new Mock<IStudioResourceRepository>();
+
+
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            msg.SetMessage(TestDependencyGraph.ToString());
+            var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
+            var auth = new Mock<IAuthorizationService>();
+            auth.Setup(a => a.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
+            var mockSecurityService = new Mock<ISecurityService>();
+
+
+
+            var testEnvironmentModel2 = new Mock<IEnvironmentModel>();
+            testEnvironmentModel2.Setup(e => e.Connection).Returns(mockConnection.Object);
+            testEnvironmentModel2.Setup(a => a.AuthorizationService).Returns(auth.Object);
+            var resRepo = new ResourceRepository(testEnvironmentModel2.Object);
+
+            var res = new Mock<IResourceModel>();
+            res.Setup(a => a.ID).Returns(Guid.NewGuid());
+            var testResources = new List<IResourceModel> { res.Object };
+            foreach(var resourceModel in testResources)
+            {
+                resRepo.Add(resourceModel);
+            }
+
+            WindowsGroupPermission perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
+            WindowsGroupPermission perm2 = new WindowsGroupPermission { ResourceID = Guid.Empty, IsServer = true, Permissions = Permissions.Execute };
+
+
+            mockSecurityService.Setup(service => service.Permissions).Returns(new ReadOnlyCollection<WindowsGroupPermission>(new List<WindowsGroupPermission> { perm }));
+            auth.Setup(a => a.SecurityService).Returns(mockSecurityService.Object);
+
+            mockConnection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(payload).Verifiable();
+            mockConnection.Setup(c => c.ServerEvents).Returns(new EventPublisher());
+            mockConnection.Setup(c => c.IsConnected).Returns(true);
+
+
+
+
+            testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
+
+
+
+            PrivateObject p = new PrivateObject(resRepo);
+            resRepo.GetStudioResourceRepository = () => stud.Object;
+            p.Invoke("ReceivePermissionsModified", new object[] { new List<WindowsGroupPermission> { perm, perm2 } });
+
+            // expect that the resource repository gets an update
+            stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(1));
+            stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false), Times.Exactly(1));
 
         }
 

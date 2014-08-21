@@ -20,9 +20,17 @@ namespace Dev2.Security
         {
             VerifyArgument.IsNotNull("environmentConnection", environmentConnection);
             _environmentConnection = environmentConnection;
-            _environmentConnection.NetworkStateChanged += OnNetworkStateChanged;
+            EnvironmentConnection.NetworkStateChanged += OnNetworkStateChanged;
             _permissionsModifiedService = new PermissionsModifiedService(environmentConnection.ServerEvents);
             _permissionsModifiedService.Subscribe(Guid.Empty, ReceivePermissionsModified);
+        }
+
+        public IEnvironmentConnection EnvironmentConnection
+        {
+            get
+            {
+                return _environmentConnection;
+            }
         }
 
         void ReceivePermissionsModified(PermissionsModifiedMemo obj)
@@ -76,7 +84,7 @@ namespace Dev2.Security
             {
                 ServiceName = "SecurityReadService"
             };
-            SecuritySettingsTO securitySettingsTo = communicationController.ExecuteCommand<SecuritySettingsTO>(_environmentConnection, _environmentConnection.WorkspaceID);
+            SecuritySettingsTO securitySettingsTo = communicationController.ExecuteCommand<SecuritySettingsTO>(EnvironmentConnection, EnvironmentConnection.WorkspaceID);
             if(securitySettingsTo != null)
             {
                 return securitySettingsTo.WindowsGroupPermissions;

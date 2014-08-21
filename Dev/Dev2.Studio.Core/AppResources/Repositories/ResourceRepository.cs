@@ -100,10 +100,10 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
             // Inform the repo to reload the deployed resources against the targetEnviroment ;)
             var deployables = deployableResources.GroupBy(a => a.ResourceType);
-            foreach (var x in deployables)
+            foreach(var x in deployables)
             {
-                targetResourceRepo.FindAffectedResources(x.Select(a=>a.ID).ToList() , x.First().ResourceType, ResourceModelEqualityComparer.Current, true);
-            
+                targetResourceRepo.FindAffectedResources(x.Select(a => a.ID).ToList(), x.First().ResourceType, ResourceModelEqualityComparer.Current, true);
+
             }
         }
 
@@ -143,7 +143,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var con = _environmentModel.Connection;
             comsController.ExecuteCommand<ExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
 
-            var effectedResources = FindAffectedResources(new List<Guid>{resourceId}, resourceType, equalityComparer, fetchXaml);
+            var effectedResources = FindAffectedResources(new List<Guid> { resourceId }, resourceType, equalityComparer, fetchXaml);
 
             return effectedResources;
         }
@@ -294,7 +294,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 AddResourceToStudioResourceRepository(instanceObj, executeMessage);
             }
-            
+
             return executeMessage;
         }
 
@@ -709,14 +709,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.UnitTestTargetWorkflowService = string.Empty;
                 resource.HelpLink = string.Empty;
                 resource.IsNewWorkflow = isNewWorkflow;
-                try
-                {
-                    resource.UserPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resource.ID);
-                }
-                catch(SystemException exception)
-                {
-                    HelperUtils.ShowTrustRelationshipError(exception);
-                }
 
                 if(data.Errors != null && data.Errors.Count > 0)
                 {
@@ -1138,61 +1130,63 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             ReceivePermissionsModified(permissionsModifiedEventArgs.ModifiedWindowsGroupPermissions);
         }
 
-
         void ReceivePermissionsModified(IEnumerable<WindowsGroupPermission> modifiedPermissions)
         {
-            foreach(var windowsGroupPermission in modifiedPermissions)
-            {
-                WindowsGroupPermission permission = windowsGroupPermission;
-                var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
-                if(permission.ResourceID == Guid.Empty)
-                {
-                    ResourceModels.ForEach(model =>
-                        {
-                            var resourceId = model.ID;
-                            var resourcePermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resourceId);
-                            model.UserPermissions = resourcePermissions;
-                            StudioResourceRepository.UpdateItem(resourceId, (a =>
-                            {
-                                a.Permissions = resourcePermissions;
-                            }), _environmentModel.ID);
-                        });
-                    StudioResourceRepository.UpdateRootAndFoldersPermissions(serverPermissions, _environmentModel.ID, false);
-                    StudioResourceRepository.UpdateItem(Guid.Empty, (x =>
-                    {
-                        if(serverPermissions != Permissions.None && x.Children.Count == 0 && !x.IsRefreshing)
-                        {
-                            // This code is meant for auto update should the permissions change on the server.
-                            // It is however better to use the ConnectControlSingleton as it will raise events an notify to subscribers i.e. Connect(x.EnvironmentId).
-                            // StudioResourceRepository.Load(x.EnvironmentId, x.AsyncWorker);
-                        }
-                        else if(x.Descendants().Where(z => z.ResourceType != ResourceType.Server).All(a => a.Permissions == Permissions.None) && serverPermissions == Permissions.None)
-                        {
-                            StudioResourceRepository.PerformUpdateOnDispatcher(() => x.Children = new ObservableCollection<IExplorerItemModel>());
-                        }
-                        x.Permissions = serverPermissions;
+            var windowsGroupPermissions = modifiedPermissions as IList<WindowsGroupPermission> ?? modifiedPermissions.ToList();
+            var exclusionResourceIds = _environmentModel.AuthorizationService.SecurityService.Permissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer).Select(permission => permission.ResourceID);
 
-                    }), _environmentModel.ID);
-                }
-                else
-                {
-                    var resourceModel = FindSingle(model => model.ID == permission.ResourceID);
-                    if(resourceModel != null)
+            if(windowsGroupPermissions.Any(permission => permission.ResourceID == Guid.Empty && permission.IsServer))
+            {
+                var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
+                ResourceModels.ForEach(model =>
                     {
-                        try
+                        var resourceId = model.ID;
+                        if(exclusionResourceIds.Contains(resourceId))
                         {
-                            var resourceId = resourceModel.ID;
-                            var resourcePermissions = permission.Permissions;
-                            resourceModel.UserPermissions = resourcePermissions;
-                            StudioResourceRepository.UpdateItem(resourceId, (a =>
-                                                    {
-                                                        a.Permissions = resourcePermissions;
-                                                    }), _environmentModel.ID);
+                            return;
                         }
-                        catch(SystemException exception)
+                        model.UserPermissions = serverPermissions;
+                        StudioResourceRepository.UpdateItem(resourceId, (a =>
                         {
-                            HelperUtils.ShowTrustRelationshipError(exception);
-                        }
+                            a.Permissions = serverPermissions;
+                        }), _environmentModel.ID);
+                    });
+                StudioResourceRepository.UpdateRootAndFoldersPermissions(serverPermissions, _environmentModel.ID, false);
+                StudioResourceRepository.UpdateItem(Guid.Empty, (x =>
+                {
+                    if(serverPermissions != Permissions.None && x.Children.Count == 0 && !x.IsRefreshing)
+                    {
+                        // This code is meant for auto update should the permissions change on the server.
+                        // It is however better to use the ConnectControlSingleton as it will raise events an notify to subscribers i.e. Connect(x.EnvironmentId).
+                        // StudioResourceRepository.Load(x.EnvironmentId, x.AsyncWorker);
+                    }
+                    else if((x.Descendants().Where(z => z.ResourceType != ResourceType.Server).All(a => a.Permissions == Permissions.None) && serverPermissions == Permissions.None) && _environmentModel.AuthorizationService.SecurityService.Permissions.All(permission => permission.Permissions == Permissions.None))
+                    {
+                        StudioResourceRepository.PerformUpdateOnDispatcher(() => x.Children = new ObservableCollection<IExplorerItemModel>());
+                    }
+                    x.Permissions = serverPermissions;
+
+                }), _environmentModel.ID);
+            }
+            foreach(var perm in windowsGroupPermissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer))
+            {
+                WindowsGroupPermission permission = perm;
+                var resourceModel = FindSingle(model => model.ID == permission.ResourceID);
+                if(resourceModel != null)
+                {
+                    try
+                    {
+                        var resourceId = resourceModel.ID;
+                        var resourcePermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resourceId);
+                        resourceModel.UserPermissions = resourcePermissions;
+                        StudioResourceRepository.UpdateItem(resourceId, (a =>
+                                                {
+                                                    a.Permissions = resourcePermissions;
+                                                }), _environmentModel.ID);
+                    }
+                    catch(SystemException exception)
+                    {
+                        HelperUtils.ShowTrustRelationshipError(exception);
                     }
                 }
             }

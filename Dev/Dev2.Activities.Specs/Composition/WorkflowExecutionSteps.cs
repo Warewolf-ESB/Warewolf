@@ -1089,7 +1089,7 @@ namespace Dev2.Activities.Specs.Composition
                     var v1 = table.Rows[i+1][0].Split(new[] { ' ' });
                     Assert.IsTrue(versions[i].DisplayName.Contains(v1[0]));
 
-                }
+        }
             }
 
         }
@@ -1186,7 +1186,7 @@ namespace Dev2.Activities.Specs.Composition
 
 
         [AfterScenario]
-        public void AfterScenario()
+        public void CleanUp()
         {
             if(_debugWriterSubscriptionService != null)
             {

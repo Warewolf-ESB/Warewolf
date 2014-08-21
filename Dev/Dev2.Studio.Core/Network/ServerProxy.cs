@@ -1,4 +1,8 @@
-﻿using Dev2.Common;
+﻿using System.DirectoryServices.AccountManagement;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Windows;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Communication;
@@ -28,7 +32,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows;
 using Timer = System.Timers.Timer;
 
 namespace Dev2.Network
@@ -70,7 +73,53 @@ namespace Dev2.Network
 
             InitializeEsbProxy();
             _asyncWorker = worker;
+            SetupPrincipal();
         }
+
+        void SetupPrincipal()
+        {
+            var networkCredential = HubConnection.Credentials as NetworkCredential;
+            IPrincipal principal = ClaimsPrincipal.Current;
+            if(networkCredential != null)
+            {
+                var domainName = networkCredential.Domain;
+                var items = networkCredential.UserName.Split('\\');
+                var userName = networkCredential.UserName;
+                if(items.Length == 2)
+                {
+                    domainName = items[0];
+                    userName = items[1];
+                }
+                if(!String.IsNullOrEmpty(userName))
+                {
+                    NTAccount acct = new NTAccount(domainName, userName);
+                    try
+                    {
+                        SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
+                        var context = new PrincipalContext(domainName == Environment.MachineName ? ContextType.Machine : ContextType.Domain);
+                        var userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
+                        if(userPrincipal != null)
+                        {
+                            Impersonator.RunAs(userPrincipal.DisplayName, domainName, networkCredential.Password, () =>
+                            {
+                                var windowsIdentity = WindowsIdentity.GetCurrent();
+                                if(windowsIdentity != null)
+                                {
+                                    principal = new WindowsPrincipal(windowsIdentity);
+                                }
+                            });
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Logger.LogError("Getting NTAccount", e);
+                    }
+                }
+            }
+            Principal = principal;
+        }
+
+        public IPrincipal Principal { get; set; }
 
         public ServerProxy(string webAddress, string userName, string password)
             : this(webAddress, new NetworkCredential(userName, password), new AsyncWorker())
@@ -88,7 +137,7 @@ namespace Dev2.Network
             {
                 EsbProxy = HubConnection.CreateHubProxy("esb");
                 EsbProxy.On<string>("SendMemo", OnMemoReceived);
-                //EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
+                EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
                 EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
                 EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIdReceived);
                 EsbProxy.On<Guid>("SendServerID", OnServerIdReceived);
@@ -197,11 +246,10 @@ namespace Dev2.Network
                             case HttpStatusCode.Unauthorized:
                             case HttpStatusCode.Forbidden:
                                 UpdateIsAuthorized(false);
-                                return true; // This we know how to handle this
+                                throw new NotConnectedException();
                         }
                     }
-
-                    return true; // This we know how to handle this
+                    throw new NotConnectedException();
                 });
             }
             catch(NotConnectedException)
@@ -261,7 +309,7 @@ namespace Dev2.Network
                 {
                     _reconnectHeartbeat = new Timer();
                     _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
-                    _reconnectHeartbeat.Interval = 10000;
+                    _reconnectHeartbeat.Interval = 3000;
                     _reconnectHeartbeat.AutoReset = true;
                     _reconnectHeartbeat.Start();
                 }

@@ -1,4 +1,9 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
+using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
@@ -6,12 +11,7 @@ using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
-using System.Xml.Linq;
-
+// ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel
 {
     public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null);
@@ -48,7 +48,7 @@ namespace Dev2.Runtime.ServiceModel
             var result = new WebSource();
             try
             {
-                var xmlStr = Resources.ReadXml(workspaceId, ResourceType.WebSource, resourceId);
+                var xmlStr = ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);

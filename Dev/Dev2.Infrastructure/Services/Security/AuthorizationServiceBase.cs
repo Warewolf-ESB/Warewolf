@@ -22,6 +22,7 @@ namespace Dev2.Services.Security
         {
             VerifyArgument.IsNotNull("SecurityService", securityService);
             _securityService = securityService;
+            _securityService.Read();
             _isLocalConnection = isLocalConnection;
             _securityService.PermissionsChanged += (s, e) => RaisePermissionsChanged();
             _securityService.PermissionsModified += (s, e) => OnPermissionsModified(e);
@@ -30,23 +31,23 @@ namespace Dev2.Services.Security
             AreAdministratorsMembersOfWarewolfAdministrators = delegate
             {
                 var adGroup = FindGroup(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));
-                using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+                using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
                 {
                     ad.Children.SchemaFilter.Add("group");
-                    foreach (DirectoryEntry dChildEntry in ad.Children)
+                    foreach(DirectoryEntry dChildEntry in ad.Children)
                     {
-                        if (dChildEntry.Name == "Warewolf Administrators")
+                        if(dChildEntry.Name == "Warewolf Administrators")
                         {
                             // Now check group membership ;)
                             var members = dChildEntry.Invoke("Members");
 
-                            if (members != null)
+                            if(members != null)
                             {
-                                foreach (var member in (IEnumerable)members)
+                                foreach(var member in (IEnumerable)members)
                                 {
-                                    using (DirectoryEntry memberEntry = new DirectoryEntry(member))
+                                    using(DirectoryEntry memberEntry = new DirectoryEntry(member))
                                     {
-                                        if (memberEntry.Name == adGroup)
+                                        if(memberEntry.Name == adGroup)
                                         {
                                             return true;
                                         }
@@ -61,17 +62,18 @@ namespace Dev2.Services.Security
             };
 
         }
+
         public static string FindGroup(SecurityIdentifier searchSid)
         {
-            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
-                foreach (DirectoryEntry dChildEntry in ad.Children)
+                foreach(DirectoryEntry dChildEntry in ad.Children)
                 {
                     var bytes = (byte[])dChildEntry.Properties["objectSid"].Value;
                     var sid = new SecurityIdentifier(bytes, 0).ToString();
 
-                    if (sid == searchSid.ToString())
+                    if(sid == searchSid.ToString())
                     {
                         return dChildEntry.Name;
                     }
@@ -85,7 +87,7 @@ namespace Dev2.Services.Security
         {
             add
             {
-                if (_permissionsModifedHandler == null)
+                if(_permissionsModifedHandler == null)
                 {
                     _permissionsModifedHandler += value;
                 }
@@ -98,7 +100,7 @@ namespace Dev2.Services.Security
             }
         }
 
-        public Permissions GetResourcePermissions(Guid resourceId)
+        public virtual Permissions GetResourcePermissions(Guid resourceId)
         {
             var groupPermissions = GetGroupPermissions(ClaimsPrincipal.Current, resourceId.ToString()).ToList();
             var result = groupPermissions.Aggregate(Permissions.None, (current, gp) => current | gp.Permissions);
@@ -110,12 +112,20 @@ namespace Dev2.Services.Security
             _securityService.Remove(resourceId);
         }
 
+        public ISecurityService SecurityService
+        {
+            get
+            {
+                return _securityService;
+            }
+        }
+
         public abstract bool IsAuthorized(AuthorizationContext context, string resource);
         public abstract bool IsAuthorized(IAuthorizationRequest request);
 
         protected virtual void RaisePermissionsChanged()
         {
-            if (PermissionsChanged != null)
+            if(PermissionsChanged != null)
             {
                 PermissionsChanged(this, EventArgs.Empty);
             }
@@ -123,7 +133,7 @@ namespace Dev2.Services.Security
 
         protected virtual void OnPermissionsModified(PermissionsModifiedEventArgs e)
         {
-            if (_permissionsModifedHandler != null)
+            if(_permissionsModifedHandler != null)
             {
                 _permissionsModifedHandler(this, e);
             }
@@ -142,7 +152,7 @@ namespace Dev2.Services.Security
         public void DumpPermissionsOnError(IPrincipal principal)
         {
             // ReSharper disable ConditionIsAlwaysTrueOrFalse
-            if (principal.Identity != null)
+            if(principal.Identity != null)
             // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 this.LogError("PERM DUMP FOR [ " + principal.Identity.Name + " ]");
@@ -154,7 +164,7 @@ namespace Dev2.Services.Security
             }
             // ReSharper restore HeuristicUnreachableCode
 
-            foreach (var perm in _securityService.Permissions)
+            foreach(var perm in _securityService.Permissions)
             {
                 this.LogError("SERVER PERM -> " + perm.WindowsGroup);
                 this.LogError("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]");
@@ -168,20 +178,20 @@ namespace Dev2.Services.Security
             return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
         }
 
-        IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
+        protected IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
             var serverPermissions = _securityService.Permissions;
             var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
 
             var groupPermissions = new List<WindowsGroupPermission>();
             // ReSharper disable LoopCanBeConvertedToQuery
-            foreach (var permission in serverPermissions)
+            foreach(var permission in serverPermissions)
             {
-                if (resourcePermissions.Any(groupPermission => groupPermission.WindowsGroup == permission.WindowsGroup))
+                if(resourcePermissions.Any(groupPermission => groupPermission.WindowsGroup == permission.WindowsGroup))
                 {
                     continue;
                 }
-                if (IsInRole(principal, permission) && permission.Matches(resource))
+                if(IsInRole(principal, permission) && permission.Matches(resource))
                 {
                     groupPermissions.Add(permission);
                 }
@@ -203,11 +213,11 @@ namespace Dev2.Services.Security
                 // Prefixing with computer name does not work with Warewolf and IsInRole
                 // Plain does not work with IsInRole
                 // Hence this conditional check and divert
-                if (p.WindowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
+                if(p.WindowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
                 {
                     // We need to get the group as it is local then look for principle's membership
                     var principleName = principal.Identity.Name;
-                    if (!string.IsNullOrEmpty(principleName))
+                    if(!string.IsNullOrEmpty(principleName))
                     {
                         // Examine if BuiltIn\Administrators is still present as a Member
                         // Then inspect BuiltIn\Administrators
@@ -216,10 +226,10 @@ namespace Dev2.Services.Security
                         isInRole = principal.IsInRole(p.WindowsGroup);
 
                         // if that fails, check Administrators group membership in the Warewolf Administrators group
-                        if (!isInRole)
+                        if(!isInRole)
                         {
                             SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
-                            if (AreAdministratorsMembersOfWarewolfAdministrators.Invoke())
+                            if(AreAdministratorsMembersOfWarewolfAdministrators.Invoke())
                             {
                                 // Check user's administrator membership
                                 isInRole = principal.IsInRole(sid.Value);
@@ -254,10 +264,10 @@ namespace Dev2.Services.Security
 
         private void FilterAdminGroupForRemote(List<WindowsGroupPermission> groupPermissions)
         {
-            if (!_isLocalConnection)
+            if(!_isLocalConnection)
             {
                 var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals(WindowsGroupPermission.BuiltInAdministratorsText));
-                if (adminGroup != null)
+                if(adminGroup != null)
                 {
                     groupPermissions.Remove(adminGroup);
                 }
@@ -267,7 +277,7 @@ namespace Dev2.Services.Security
         {
             var result = new StringBuilder();
             result.AppendLine("{{");
-            foreach (var permission in _securityService.Permissions)
+            foreach(var permission in _securityService.Permissions)
             {
                 result.AppendFormat("\t{{ ResourceID:{0},\tWindowsGroup:{1},\tPermissions:{2} }}", permission.ResourceID, permission.WindowsGroup, permission.Permissions);
                 result.AppendLine();

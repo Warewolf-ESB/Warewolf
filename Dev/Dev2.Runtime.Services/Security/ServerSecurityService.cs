@@ -40,8 +40,12 @@ namespace Dev2.Runtime.Security
             SecurityWrite.Write(new SecuritySettingsTO(permissions));
         }
 
-        void InitializeConfigWatcher(string fileName)
+        public void InitializeConfigWatcher(string fileName)
         {
+            if(_configWatcher == null)
+            {
+                _configWatcher = new FileSystemWatcher();
+            }
             _configWatcher.Path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
             // Watch for changes in LastAccess and LastWrite times, and the renaming of files or directories. 

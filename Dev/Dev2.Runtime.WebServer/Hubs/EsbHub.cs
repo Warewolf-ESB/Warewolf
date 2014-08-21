@@ -98,11 +98,11 @@ namespace Dev2.Runtime.WebServer.Hubs
         public override Task OnDisconnected()
         {
             ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
-            //            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
-            //            if(authorizationServiceBase != null)
-            //        {
-            //                authorizationServiceBase.Dispose();
-            //            }
+            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
+            if(authorizationServiceBase != null)
+            {
+                authorizationServiceBase.Dispose();
+            }
             CompileMessageRepo.Instance.ClearObservable();
             if(ResourceCatalog.Instance.ResourceSaved == null)
             {
@@ -127,6 +127,15 @@ namespace Dev2.Runtime.WebServer.Hubs
         protected void SetupEvents()
         {
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
+            var authorizationServiceBase = ServerAuthorizationService.Instance as ServerAuthorizationService;
+            if(authorizationServiceBase != null)
+            {
+                var securityService = authorizationServiceBase.SecurityService as ServerSecurityService;
+                if(securityService != null)
+                {
+                    //securityService.InitializeConfigWatcher(ServerSecurityService.FileName);
+                }
+            }
             ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
             ServerExplorerRepository.Instance.MessageSubscription(this);
             if(ResourceCatalog.Instance.ResourceSaved == null)
