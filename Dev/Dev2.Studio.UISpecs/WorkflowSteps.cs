@@ -16,6 +16,7 @@ using System.Reflection;
 using System.Security;
 using System.Windows.Forms;
 using TechTalk.SpecFlow;
+using System.Threading;
 
 namespace Dev2.Studio.UI.Specs
 {
@@ -25,12 +26,16 @@ namespace Dev2.Studio.UI.Specs
         // ReSharper disable ConvertToConstant.Local
         // ReSharper disable UnusedMember.Local
 #pragma warning disable 414
-        static readonly string Explorer = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID";
+        static readonly string Explorer = "UI_DocManager_AutoID,Z36cf62ce32e24feebe226c0106caa25c,Z03b228452a964fd09950ef234c1f37d3,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID";
         static readonly string Toolbox = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
         static readonly string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
         static readonly string DebugOutput = "MainViewWindow,UI_DocManager_AutoID,Z36cf62ce32e24feebe226c0106caa25c,Z03b228452a964fd09950ef234c1f37d3,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string TabActive = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
+        
+        //Explorer
+        static readonly string ExplorerFilter = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
+        static readonly string ExplorerFolders = Explorer + ",UI_ExplorerTree_AutoID,UI_localhost_AutoID";
         //Tools
         static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
         static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
@@ -269,6 +274,13 @@ namespace Dev2.Studio.UI.Specs
             var findStartNode = WorkflowDesignerUIMap.FindStartNode(uiTestControl);
             Assert.IsNotNull(findStartNode);
         }
+
+        [Given(@"I wait for ""(.*)"" seconds")]
+        public void GivenIWaitForSeconds(int seconds)
+        {
+            Thread.Sleep(seconds * 1000);
+        }
+
 
         [When(@"I send ""(.*)"" to ""(.*)""")]
         [Given(@"I send ""(.*)"" to ""(.*)""")]
@@ -544,12 +556,6 @@ namespace Dev2.Studio.UI.Specs
             Playback.Wait(100);
             playbackErrorEventArgs.Result = PlaybackErrorOptions.Retry;
             _retryCount++;
-        }
-
-        [Given(@"I wait")]
-        public void GivenIWait()
-        {
-            Playback.Wait(500);
         }
 
         string GetCorrect(string automationIds)
