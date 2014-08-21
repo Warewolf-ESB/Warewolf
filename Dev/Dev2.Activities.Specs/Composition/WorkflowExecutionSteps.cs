@@ -13,12 +13,15 @@ using System.Xml.Linq;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Activities.Specs.Composition.DBSource;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Messages;
+using Dev2.Models;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services;
@@ -582,6 +585,7 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string workflowName)
         {
+
             BuildDataList();
 
             var activityList = CommonSteps.GetActivityList();
@@ -994,6 +998,193 @@ namespace Dev2.Activities.Specs.Composition
                 _resetEvt.WaitOne();
             }
         }
+        [When(@"workflow ""(.*)"" is saved ""(.*)"" time")]
+        public void WhenWorkflowIsSavedTime(string workflowName, int count)
+        {
+            Guid id;
+            TryGetValue("SavedId", out id);
+            if (id == Guid.Empty)
+            {
+                id = Guid.NewGuid();
+                ScenarioContext.Current.Add("SavedId",id);
+                
+            }
+            Save(workflowName,count,id);
+        }
+
+        void Save(string workflowName, int count, Guid id)
+        {
+            BuildDataList();
+
+            var activityList = CommonSteps.GetActivityList();
+
+            var flowSteps = new List<FlowStep>();
+
+            TestStartNode = new FlowStep();
+            flowSteps.Add(TestStartNode);
+
+            foreach(var activity in activityList)
+            {
+                if(TestStartNode.Action == null)
+                {
+                    TestStartNode.Action = activity.Value;
+                }
+                else
+                {
+                    var flowStep = new FlowStep { Action = activity.Value };
+                    flowSteps.Last().Next = flowStep;
+                    flowSteps.Add(flowStep);
+                }
+            }
+
+            IContextualResourceModel resourceModel;
+            IEnvironmentModel environmentModel;
+            IResourceRepository repository;
+            TryGetValue(workflowName, out resourceModel);
+            TryGetValue("environment", out environmentModel);
+            TryGetValue("resourceRepo", out repository);
+
+            string currentDl = CurrentDl;
+            resourceModel.DataList = currentDl.Replace("root", "DataList");
+            WorkflowHelper helper = new WorkflowHelper();
+            StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
+            resourceModel.WorkflowXaml = xamlDefinition;
+            resourceModel.ID = id;
+         
+            for (int i = 0; i < count; i++)
+            {
+                repository.Save(resourceModel, false);
+                repository.SaveToServer(resourceModel);
+            }
+           
+        }
+
+        [Then(@"workflow ""(.*)"" has ""(.*)"" Versions in explorer")]
+        public void ThenWorkflowHasVersionsInExplorer(string workflowName, int numberOfVersions)
+        {
+            Guid id;
+            TryGetValue("SavedId", out id);
+            IContextualResourceModel resourceModel;
+            IEnvironmentModel environmentModel;
+            IResourceRepository repository;
+            TryGetValue(workflowName, out resourceModel);
+            TryGetValue("environment", out environmentModel);
+            TryGetValue("resourceRepo", out repository);
+            IVersionRepository rep = new ServerExplorerVersionProxy(environmentModel.Connection);
+            var versions = rep.GetVersions(id);
+            ScenarioContext.Current["Versions"] = versions;
+            Assert.AreEqual(versions.Count, numberOfVersions);
+        }
+
+        [Then(@"explorer as")]
+        public void ThenExplorerAs(Table table)
+        {
+            var versions = ScenarioContext.Current["Versions"] as IList<IExplorerItem>;
+            if(versions==null|| versions.Count==table.RowCount)
+                Assert.Fail("InvalidVersions");
+            else
+            {
+                for(int i = 0 ; i< versions.Count;i++)
+                {
+                    var v1 = table.Rows[i+1][0].Split(new[] { ' ' });
+                    Assert.IsTrue(versions[i].DisplayName.Contains(v1[0]));
+
+                }
+            }
+
+        }
+        [Then(@"""(.*)"" contains an Assign ""(.*)"" as")]
+        public void ThenContainsAnAssignAs(string parentName, string assignName, Table table)
+        {
+            DsfMultiAssignActivity assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
+
+            foreach (var tableRow in table.Rows)
+            {
+                var value = tableRow["value"];
+                var variable = tableRow["variable"];
+
+                value = value.Replace('"', ' ').Trim();
+
+                if (value.StartsWith("="))
+                {
+                    value = value.Replace("=", "");
+                    value = string.Format("!~calculation~!{0}!~~calculation~!", value);
+                }
+
+                List<ActivityDTO> fieldCollection;
+                ScenarioContext.Current.TryGetValue("fieldCollection", out fieldCollection);
+
+                CommonSteps.AddVariableToVariableList(variable);
+
+                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
+            }
+            CommonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
+        }
+
+        [When(@"I rollback version ""(.*)""")]
+        public void WhenIRollbackVersion(int version)
+        {
+
+        }
+
+        [When(@"I rollback ""(.*)"" to version ""(.*)""")]
+        public void WhenIRollbackToVersion(string workflowName, string version)
+        {
+            Guid id;
+            TryGetValue("SavedId", out id);
+            IContextualResourceModel resourceModel;
+            IEnvironmentModel environmentModel;
+            IResourceRepository repository;
+            TryGetValue(workflowName, out resourceModel);
+            TryGetValue("environment", out environmentModel);
+            TryGetValue("resourceRepo", out repository);
+            IVersionRepository rep = new ServerExplorerVersionProxy(environmentModel.Connection);
+            rep.RollbackTo(id,version);
+
+        }
+
+
+        [Then(@"the '(.*)' in Workflow '(.*)' debug outputs does not exist\|")]
+        public void ThenTheInWorkflowDebugOutputsDoesNotExist(string workflowName, string version)
+        {
+
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
+
+            if (parentWorkflowName == workflowName)
+            {
+                workflowId = Guid.Empty;
+            }
+
+            var toolSpecificDebug =
+                debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(workflowName)).ToList();
+            Assert.AreEqual(0,toolSpecificDebug.Count);
+        }
+
+
+        [When(@"""(.*)"" is executed without saving")]
+        public void WhenIsExecutedWithoutSaving(string workflowName)
+        {
+            IContextualResourceModel resourceModel;
+            IEnvironmentModel environmentModel;
+            IResourceRepository repository;
+            TryGetValue(workflowName, out resourceModel);
+            TryGetValue("environment", out environmentModel);
+            TryGetValue("resourceRepo", out repository);
+
+
+            var debugStates = Get<List<IDebugState>>("debugStates");
+            debugStates.Clear();
+
+            ExecuteWorkflow(resourceModel);
+        }
+
+
         [AfterScenario]
         public void AfterScenario()
         {

@@ -3511,32 +3511,31 @@ Scenario: Workflow with Calculation using Star notation
 #       
 
 #12326
-#Scenario: Workflow Saving with Different Versions 
-#	 Given I have a workflow "WorkflowWithVersionAssign"
-#	 And "WorkflowWithVersionAssign" contains an Assign "VarsAssign" as
-#	  | variable    | value |
-#	  | [[rec().a]] | New   |
-#	  | [[rec().a]] | Test  |	 
-#	  When workflow "WorkflowWithVersionAssign" is saved "1" time
-#	  Then workflow "WorkflowWithVersionAssign" has "0" Versions in explorer
-#	  And explorer as 
-#	  | Explorer           |
-#	  | WorkflowWithAssign |
-#	  When workflow "WorkflowWithVersionAssign" is saved "2" time
-#	  Then workflow "WorkflowWithVersionAssign" has "2" Versions in explorer
-#	  And explorer as 
-#	  | Explorer           |
-#	  | WorkflowWithAssign |
-#	  | V1 DateTime        |
-#	  | V1 DateTime        |
-#	  When workflow "WorkflowWithVersionAssign" is saved "3" time
-#	   Then workflow "WorkflowWithVersionAssign" has "3" Versions in explorer
-#	   And explorer as 
-#	  | Explorer           |
-#	  | WorkflowWithAssign |
-#	  | V1 DateTime        |
-#	  | V1 DateTime        |
-#	  | V3 DateTime        |
+Scenario: Workflow Saving with Different Versions 
+	 Given I have a workflow "WorkflowWithVersionAssignTest"
+	 And "WorkflowWithVersionAssignTest" contains an Assign "VarsAssign" as
+	  | variable    | value |
+	  | [[rec().a]] | New   |
+	  | [[rec().a]] | Test  |	 
+	  When workflow "WorkflowWithVersionAssignTest" is saved "1" time
+	  Then workflow "WorkflowWithVersionAssignTest" has "0" Versions in explorer
+	  When workflow "WorkflowWithVersionAssignTest" is saved "2" time
+	  Then workflow "WorkflowWithVersionAssignTest" has "2" Versions in explorer
+	  And explorer as 
+	  | Explorer           |
+	  | WorkflowWithAssign |
+	  | v.2 DateTime        |
+	  | v.1 DateTime        |
+	  When workflow "WorkflowWithVersionAssignTest" is saved "3" time
+	  Then workflow "WorkflowWithVersionAssignTest" has "5" Versions in explorer
+	  And explorer as 
+	  | Explorer           |
+	  | WorkflowWithAssign |
+	  | v.5 DateTime Save   |
+	  | v.4 DateTime Save   |
+	  | v.3 DateTime Save   |
+	  | v.2 DateTime Save   |
+	  | v.1 DateTime Save   |
 #
 #
 #Scenario: Saving a database service with different versions
@@ -3596,95 +3595,61 @@ Scenario: Workflow with Calculation using Star notation
 
 
 
-#Scenario: Executing workflow of different versions
-#	 Given I have a workflow "WorkflowWithVersionAssign"
-#	 And "WorkflowWithVersionAssign" contains an Assign "VarsAssign" as
-#	  | variable    | value |
-#	  | [[rec().a]] | New   |
-#	  | [[rec().a]] | Test  |	 
-#	  When workflow "WorkflowWithVersionAssign" is saved "1" time
-#	  Then workflow "WorkflowWithVersionAssign" has "0" Versions in explorer
-#	  And explorer as 
-#	  | Explorer           |
-#	  | WorkflowWithAssign |
-#	  When "WorkflowWithVersionAssign" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'VarsAssign' in WorkFlow 'WorkflowWithVersionAssign' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | New       |
-#	  | 2 | [[rec().a]] = | Test      |
-#	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssign' debug outputs as    
-#	  | # |                     |
-#	  | 1 | [[rec(1).a]] = New  |
-#	  | 2 | [[rec(2).a]] = Test |
-#	  Given I have open workflow "WorkflowWithVersionAssign"
-#	  And "WorkflowWithVersionAssign" contains an Assign "VarsAssign" as
-#	  | variable    | value |
-#	  | [[rec().a]] | New   |
-#	  | [[rec().a]] | Test  |
-#	  | [[rec().a]] | V1    |
-#	  When workflow "WorkflowWithVersionAssign" is saved "2" time
-#	  Then workflow "WorkflowWithVersionAssign" has "2" Versions in explorer
-#	  And explorer as 
-#	  | Explorer           |
-#	  | WorkflowWithAssign |
-#	  | V1 DateTime        |
-#	  | V2 DateTime        |
-#	  When "WorkflowWithVersionAssign" of Version "1" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'VarsAssign' in WorkFlow 'WorkflowWithVersionAssign' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | New       |
-#	  | 2 | [[rec().a]] = | Test      |
-#	  | 3 | [[rec().a]] = | V1        |
-#	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssign' debug outputs as    
-#	  | # |                     |
-#	  | 1 | [[rec(1).a]] = New  |
-#	  | 2 | [[rec(2).a]] = Test |
-#	  | 3 | [[rec(3).a]] =  V1  |
-#	  Given I have open a workflow "WorkflowWithVersionAssign" of Version "1"
-#	  And "WorkflowWithVersionAssign" contains an Assign "VarsAssign" as
-#	  | variable    | value |
-#	  | [[rec().a]] | New   |
-#	  | [[rec().a]] | Test  |
-#	  | [[rec().a]] | V1    |
-#	  | [[rec().a]] | V2    |
-#	 When workflow "WorkflowWithVersionAssign" is saved "3" time
-#	  Then workflow "WorkflowWithVersionAssign" has "3" Versions in explorer
-#	  And explorer as 
-#	  | Explorer           |
-#	  | WorkflowWithAssign |
-#	  | V1 DateTime        |
-#	  | V2 DateTime        |
-#	  | V3 DateTime        |
-#	  When "WorkflowWithVersionAssign" of Version "1" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'VarsAssign' in WorkFlow 'WorkflowWithVersionAssign' debug inputs as
-#	  | # | Variable      | New Value |
-#	  | 1 | [[rec().a]] = | New       |
-#	  | 2 | [[rec().a]] = | Test      |
-#	  | 3 | [[rec().a]] = | V1        |
-#	  | 4 | [[rec().a]]=  | v2        |
-#	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssign' debug outputs as    
-#	  | # |                     |
-#	  | 1 | [[rec(1).a]] = New  |
-#	  | 2 | [[rec(2).a]] = Test |
-#	  | 3 | [[rec(3).a]] = V1   |
-#	  | 4 | [[rec(4).a]] = V2   |	
-#	  When i rollback version "3"
-#	  Then I have open a workflow "WorkflowWithVersionAssign" of Version "1"
-#	  And I execute "WorkflowWithVersionAssign" of version "1"
-#	  And "WorkflowWithVersionAssign" of Version "1" is executed
-#	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssign' debug outputs as    
-#	  | # |                     |
-#	  | 1 | [[rec(1).a]] = New  |
-#	  | 2 | [[rec(2).a]] = Test |
-#	  And "WorkflowWithVersionAssign" contains an Assign "VarsAssign" as
-#	  | variable    | value |
-#	  | [[rec().a]] | New   |
-#	  | [[rec().a]] | Test  |
-#	  | [[rec().a]] | V1    |
-
+Scenario: Executing workflow of different versions
+	 Given I have a workflow "WorkflowWithVersionAssignExecuted2"
+	 And "WorkflowWithVersionAssignExecuted2" contains an Assign "VarsAssign" as
+	  | variable    | value |
+	  | [[rec().a]] | New   |
+	  | [[rec().a]] | Test  |	 
+	  When workflow "WorkflowWithVersionAssignExecuted2" is saved "1" time
+	  Then workflow "WorkflowWithVersionAssignExecuted2" has "0" Versions in explorer
+	  When "WorkflowWithVersionAssignExecuted2" is executed without saving
+	  Then the workflow execution has "NO" error
+	  And the 'VarsAssign' in WorkFlow 'WorkflowWithVersionAssignExecuted2' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | New       |
+	  | 2 | [[rec().a]] = | Test      |
+	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssignExecuted2' debug outputs as    
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = New  |
+	  | 2 | [[rec(2).a]] = Test | 
+	  When workflow "WorkflowWithVersionAssignExecuted2" is saved "2" time
+	  Then workflow "WorkflowWithVersionAssignExecuted2" has "2" Versions in explorer
+	  And explorer as 
+	  | Explorer           |
+	  | WorkflowWithAssign |
+	  | v.2 DateTime        |
+	  | v.1 DateTime        |
+	 And "WorkflowWithVersionAssignExecuted2" contains an Assign "VarsAssign2" as
+	  | variable    | value |
+	  | [[rec().a]] | New   |
+	  | [[rec().a]] | Test  |
+	  | [[rec().a]] | V1    |
+	 When workflow "WorkflowWithVersionAssignExecuted2" is saved "1" time
+	 When "WorkflowWithVersionAssignExecuted2" is executed without saving
+	 Then the workflow execution has "NO" error
+	 And the 'VarsAssign2' in WorkFlow 'WorkflowWithVersionAssignExecuted2' debug inputs as
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | New       |
+	  | 2 | [[rec().a]] = | Test      |
+	  | 3 | [[rec().a]] = | V1        |	  
+	 When workflow "WorkflowWithVersionAssignExecuted2" is saved "1" time
+	  Then workflow "WorkflowWithVersionAssignExecuted2" has "4" Versions in explorer
+	  And explorer as 
+	  | Explorer           |
+	  | WorkflowWithAssign |
+	  | v.4 DateTime        |
+	  | v.3 DateTime        |
+	  | v.2 DateTime        |
+	  | v.1 DateTime        |	
+	  When I rollback "WorkflowWithVersionAssignExecuted" to version "1"
+	  When "WorkflowWithVersionAssignExecuted2" is executed without saving
+	  Then the workflow execution has "NO" error
+	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssignExecuted2' debug outputs as    
+	  | # |                     |
+	  | 1 | [[rec(1).a]] = New  |
+	  | 2 | [[rec(2).a]] = Test |
+	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssignExecuted2' debug outputs does not exist|
 
 
 

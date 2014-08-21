@@ -419,7 +419,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspaceID = Guid.NewGuid();
             var version = new Mock<IServerVersionRepository>();
             var catalog = new ResourceCatalog(null, version.Object);
-            
+
             var expected = new DbSource { ResourceID = Guid.NewGuid(), ResourceName = "TestSource", DatabaseName = "TestNewDb", Server = "TestNewServer", ServerType = enSourceType.MySqlDatabase };
 
             //------------Execute Test---------------------------
@@ -2027,6 +2027,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(xamlElem);
             Assert.IsTrue(xamlElem.ToString().Contains("DisplayName=\"Bugs\\" + newName + "\""), "Resource not renamed where used.");
             Assert.IsFalse(xamlElem.ToString().Contains("DisplayName=\"Bug6619Dep\""), "Resource not renamed where used.");
+
             Assert.AreEqual(depResource.Dependencies[0].ResourceName, newName, "Resource not renamed where used");
         }
 
@@ -2061,7 +2062,16 @@ namespace Dev2.Tests.Runtime.Hosting
             var element = xElement.Attribute("Name");
             Assert.IsNotNull(element);
             Assert.AreEqual("TestName", element.Value);
+            XElement elementCat = xElement.Element("Category");
+            Assert.IsNotNull(elementCat);
+            Assert.AreEqual("Bugs\\TestName", elementCat.Value);
             serverVersionRepository.Verify(a=>a.StoreVersion(It.IsAny<IResource>(),"unknown","Rename",workspaceID));
+            var actionElem = xElement.Element("Action");
+            Assert.IsNotNull(actionElem);
+            var xamlElem = actionElem.Element("XamlDefinition");
+// ReSharper disable PossibleNullReferenceException
+            Assert.IsTrue(xamlElem.Value.Contains("DisplayName=\"TestName\""));
+// ReSharper restore PossibleNullReferenceException
         }
 
         [TestMethod]
@@ -2128,6 +2138,9 @@ namespace Dev2.Tests.Runtime.Hosting
             XElement element = xElement.Element("Name");
             Assert.IsNotNull(element);
             Assert.AreEqual("Bug6619Dep", element.Value);
+            XElement elementCat = xElement.Element("Category");
+            Assert.IsNotNull(elementCat);
+            Assert.AreEqual("TestCategory\\Bug6619Dep", element.Value);
         }
 
         [TestMethod]
