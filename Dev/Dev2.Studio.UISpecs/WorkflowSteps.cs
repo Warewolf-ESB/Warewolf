@@ -1,4 +1,12 @@
-﻿using System;
+﻿using Dev2.Studio.UI.Tests;
+using Dev2.Studio.UI.Tests.Extensions;
+using Dev2.Studio.UI.Tests.UIMaps.Activities;
+using Dev2.Studio.UI.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
+using Microsoft.VisualStudio.TestTools.UITesting;
+using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -7,13 +15,6 @@ using System.Linq;
 using System.Reflection;
 using System.Security;
 using System.Windows.Forms;
-using Dev2.Studio.UI.Tests;
-using Dev2.Studio.UI.Tests.UIMaps.Activities;
-using Dev2.Studio.UI.Tests.Utils;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
-using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
 namespace Dev2.Studio.UI.Specs
@@ -76,7 +77,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string SecurityConnectButton = SettingsTab + ",UI_SettingsServerConnectButton_AutoID";
         static readonly string SecurityHelp = SettingsTab + ",ServerHelpToggleButton";
 
-        static readonly string SchedulerTab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SchedulerView_AutoID";
+        static readonly string SchedulerTab = "ACTIVETAB,UI_SchedulerView_AutoID";
         static readonly string SchedulerConnectDropDown = SchedulerTab + ",ConnectUserControl,UI_SettingsServerComboBox_AutoID";
         static readonly string SchedulerConnectEditButton = SchedulerTab + ",ConnectUserControl,UI_SettingsServerEditButton_AutoID";
         static readonly string SchedulerConnectConnectButton = SchedulerTab + ",ConnectUserControl,UI_SettingsServerConnectButton_AutoID";
@@ -331,7 +332,7 @@ namespace Dev2.Studio.UI.Specs
             Mouse.Click(controlToClick, new Point(5, 5));
             Playback.Wait(200);
             automationIDs = GetCorrect(itemToClickAutomationId).Split(',');
-            foreach (var automationId in automationIDs)
+            foreach(var automationId in automationIDs)
             {
                 controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, automationId);
                 startControl = controlToClick as WpfControl;
@@ -475,7 +476,6 @@ namespace Dev2.Studio.UI.Specs
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
             Assert.IsNotNull(itemFound);
-
         }
 
         [Then(@"""(.*)"" is not visible")]
@@ -484,6 +484,24 @@ namespace Dev2.Studio.UI.Specs
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
             Assert.IsNull(itemFound);
+        }
+
+        [Then(@"""(.*)"" is enabled")]
+        public void ThenIsEnabled(string itemToFindAutoIds)
+        {
+            var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
+            Assert.IsNotNull(itemFound);
+            Assert.IsTrue(itemFound.IsEnabled());
+        }
+
+        [Then(@"""(.*)"" is disabled")]
+        public void ThenIsDisabled(string itemToFindAutoIds)
+        {
+            var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
+            Assert.IsNotNull(itemFound);
+            Assert.IsFalse(itemFound.IsEnabled());
         }
 
         [Given(@"I wait till ""(.*)"" is not visible")]

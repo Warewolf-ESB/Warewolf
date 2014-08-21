@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using Dev2.Studio.UI.Tests.Extensions;
 using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
-using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System;
+using System.Linq;
 
 namespace Dev2.Studio.UI.Tests.Utils
 {
@@ -85,7 +85,7 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// <param name="startControl"></param>
         /// <param name="automationIDs">The automation attribute ds.</param>
         /// <returns></returns>
-        public static UITestControl GetControlFromRoot(bool singleSearch, int splitPaneIndex, WpfControl startControl, params string[] automationIDs)
+        public static UITestControl GetControlFromRoot(bool singleSearch, int splitPaneIndex, UITestControl startControl, params string[] automationIDs)
         {
             if(_studioWindow == null)
             {
@@ -100,87 +100,19 @@ namespace Dev2.Studio.UI.Tests.Utils
 
             if(automationIDs.Length > 0)
             {
-                //if (startControl != null)
-                //{
-                //    var list = automationIDs.ToList();
-                //    list.RemoveRange(0, automationIDs.Length - 1);
-                //    automationIDs = list.ToArray();
-                //}
-
-                WpfControl theControl = null;
-                //var theControl = new WpfControl(startControl ?? _studioWindow);
-                // handle all other pinned panes ;)
+                UITestControl theControl = null;
                 if(singleSearch)
                 {
                     var automationCounter = 0;
                     while(automationCounter <= automationIDs.Length - 1)
                     {
                         var wpfControl = startControl ?? _studioWindow;
-                        theControl = new WpfControl(wpfControl);
                         var automationId = automationIDs[automationCounter];
-                        theControl.SearchProperties[WpfControl.PropertyNames.AutomationId] = automationId;
-                        try
-                        {
-                            theControl.Find();
-                        }
-                        catch(UITestControlNotFoundException)
-                        {
-                            var children = wpfControl.GetChildren().Cast<WpfControl>();
-                            theControl = children.FirstOrDefault(control => control.AutomationId == automationId || control.Name == automationId);
-                        }
-
+                        theControl = wpfControl.FindByAutomationId(automationId);
                         startControl = theControl;
                         automationCounter++;
                     }
                     return theControl;
-                }
-
-                // handle the explorer ;)
-                // ReSharper disable ConditionIsAlwaysTrueOrFalse
-                if(!singleSearch && automationIDs.Length > 1 && splitPaneIndex >= 0)
-                // ReSharper restore ConditionIsAlwaysTrueOrFalse
-                {
-                    theControl.SearchProperties[UITestControl.PropertyNames.ClassName] = automationIDs[0];
-
-                    // 1 is the explorer pinned to top left ;)
-                    var tmp = theControl.FindMatchingControls();
-
-                    if(tmp != null)
-                    {
-                        var parent = tmp[splitPaneIndex];
-
-                        for(var i = 1; i < automationIDs.Length; i++)
-                        {
-                            if(parent == null)
-                            {
-                                continue;
-                            }
-                            var children = parent.GetChildren();
-
-                            UITestControl canidate = null;
-                            foreach(var child in children)
-                            {
-                                var childAutoId = child.GetProperty("AutomationID").ToString();
-
-                                if(childAutoId == automationIDs[i] ||
-                                   childAutoId.Contains(automationIDs[i]) ||
-                                   child.FriendlyName.Contains(automationIDs[i]) ||
-                                   child.ControlType.Name.Contains(automationIDs[i]) ||
-                                   child.ClassName.Contains(automationIDs[i]))
-                                {
-                                    canidate = child;
-                                }
-                            }
-
-                            // all done, tag it ;)
-                            parent = canidate;
-                        }
-                        return parent;
-                    }
-                    if(theControl.ControlType != null)
-                    {
-                        throw new UITestControlNotFoundException("Child with " + UITestControl.PropertyNames.ClassName + ": " + automationIDs[0] + " not found within parent with automation ID: " + theControl.GetProperty("AutomationID") + " and FriendlyName: " + theControl.FriendlyName + " and ControlType: " + theControl.ControlType.Name + " and ClassName: " + theControl.ClassName);
-                    }
                 }
             }
             return null;
