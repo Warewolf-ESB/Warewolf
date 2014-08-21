@@ -314,7 +314,8 @@
                                     </Button>
                                     <Image Style="{StaticResource AuthNoneIconStyle}"
                                            Visibility="{Binding Permissions, Converter={StaticResource NavigationViewModelPermissionVisibilityConverter}, ConverterParameter=None}"
-                                           ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipNone}" />
+                                           ToolTip="{x:Static help:HelpTextResources.ExplorerSecurityToolTipNone}"
+                                           AutomationProperties.AutomationId="UI_NotAutherized_AutoID" />
                                 </StackPanel>
 
                                 <ContentControl Content="{Binding}">

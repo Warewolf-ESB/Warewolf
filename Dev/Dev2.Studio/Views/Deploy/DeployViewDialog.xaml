@@ -15,7 +15,8 @@
         ResizeMode="CanResize"
         WindowStartupLocation="CenterOwner"
         mc:Ignorable="d"
-        d:DataContext="{d:DesignInstance deploy:DeployDialogViewModel}">
+        d:DataContext="{d:DesignInstance deploy:DeployDialogViewModel}"
+        AutomationProperties.AutomationId="UI_ResourceExistsDialog_AutoID">
     
     <i:Interaction.Behaviors>
         <local:WindowCloseBehviour CloseIndicator="{Binding CloseRequested}" />
@@ -97,7 +98,8 @@
                     Command="{Binding CancelCommand}"
                     Margin="5"
                     Width="110"
-                    MaxHeight="30"></Button>
+                    MaxHeight="30"
+                    AutomationProperties.AutomationId="UI_ResourceExistsDialog_CancelButton_AutoID"></Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
@@ -107,7 +109,8 @@
                     Command="{Binding OkCommand}"
                     Width="110"
                     Margin="5"
-                    MaxHeight="30"></Button>
+                    MaxHeight="30"
+                    AutomationProperties.AutomationId="UI_ResourceExistsDialog_OKButton_AutoID"></Button>
         </StackPanel>
     </Grid>
 </Window>

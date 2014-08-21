@@ -251,6 +251,18 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+        <Style x:Key="ResourcePermissionsRemoveRowCellStyle"
+               TargetType="{x:Type DataGridCell}"
+               BasedOn="{StaticResource DefaultDataGridCellStyle}">
+            <Setter Property="AutomationProperties.AutomationId">
+                <Setter.Value>
+                    <MultiBinding StringFormat="UI_ResourcePermissionsRemoveRow_Row_{0}_Cell_AutoID">
+                        <Binding Path="(DataGridRow.Tag)" RelativeSource="{RelativeSource AncestorType=DataGridRow}" />
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
+        </Style>
        
         <Style x:Key="PermissionsGridTextBlockStyle"
                TargetType="{x:Type TextBlock}"
@@ -933,7 +945,7 @@
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     
-                    <DataGridTemplateColumn>
+                    <DataGridTemplateColumn CellStyle="{StaticResource ResourcePermissionsRemoveRowCellStyle}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Grid.Column="1"

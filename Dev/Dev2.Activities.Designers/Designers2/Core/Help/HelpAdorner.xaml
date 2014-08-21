@@ -33,16 +33,19 @@
                     VerticalAlignment="Top"
                     Command="{Binding ShowHelpToggleCommand}"
                     ToolTip="Close Help"
-                    Style="{StaticResource CloseButtonStyle}">
+                    Style="{StaticResource CloseButtonStyle}"
+                    AutomationProperties.AutomationId="UI_CloseHelp_AutoID">
             </Button>
             <TextBlock Grid.Row="1"
                        Margin="0,5,0,0"
                        Text="{Binding HelpText}"
                        VerticalAlignment="Top"
-                       TextWrapping="WrapWithOverflow"></TextBlock>
+                       TextWrapping="WrapWithOverflow"
+                       AutomationProperties.AutomationId="UI_HelpTextBlock_AutoID"></TextBlock>
             <TextBlock Grid.Row="2"
                        Visibility="{Binding ShowExampleWorkflowLink}">
-                <Hyperlink Command="{Binding ShowItemHelpCommand}">View Sample Workflow</Hyperlink>
+                <Hyperlink Command="{Binding ShowItemHelpCommand}"
+                           AutomationProperties.AutomationId="UI_ShowExampleWorkflowLink_AutoID">View Sample Workflow</Hyperlink>
             </TextBlock>
         </Grid>
     </Border>
