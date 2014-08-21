@@ -50,6 +50,7 @@
     <converters3:NullToDebugImageConverter x:Key="NullToDebugImageConverter" />
     <converters3:NullToDebugRibbonButtonTextConverter x:Key="NullToDebugRibbonButtonTextConverter" />
     <converters:StringToAutomationIdConverter x:Key="StringToAutomationIdConverter" />
+    <converters:DataListItemModelToAutomationIdConverter x:Key="DataListItemModelToAutomationIdConverter" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     <converters1:PaddingThicknessConverter x:Key="PaddingThicknessConverter" />
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter" />
