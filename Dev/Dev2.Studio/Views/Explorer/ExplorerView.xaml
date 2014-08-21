@@ -224,32 +224,35 @@
                                           Command="{Binding DeployCommand}"
                                           Visibility="{Binding CanDeploy, Converter={StaticResource BoolToVisConverter}}"
                                           AutomationProperties.AutomationId ="UI_NewDeployContextMenuItem_AutoID" />
-                                <!--<MenuItem Header="Duplicate" Command="{Binding DuplicateCommand}" Visibility="{Binding CanDuplicate, Converter={StaticResource BoolToVisConverter}}" />-->
                                 <MenuItem Header="Rename   (F2)"
                                           Command="{Binding RenameCommand}"
                                           Visibility="{Binding CanRename, Converter={StaticResource BoolToVisConverter}}"
                                           AutomationProperties.AutomationId ="UI_RenameContextMenuItem_AutoID" />
-                                <!--<MenuItem Header="Move/Rename" Command="{Binding MoveRenameCommand}" Visibility="{Binding CanMoveRename, Converter={StaticResource BoolToVisConverter}}" />-->
                                 <MenuItem Header="Delete"
                                           Command="{Binding DeleteCommand}"
-                                          Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisConverter}}" />
+                                          Visibility="{Binding CanDelete, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId ="UI_DeleteContextMenuItem_AutoID" />
                                 <MenuItem Header="Show Dependencies"
                                           Command="{Binding ShowDependenciesCommand}"
-                                          Visibility="{Binding CanShowDependencies, Converter={StaticResource BoolToVisConverter}}" />
+                                          Visibility="{Binding CanShowDependencies, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId ="UI_ShowDependenciesContextMenuItem_AutoID" />
                                 <MenuItem Header="Debug"
                                           Command="{Binding DebugCommand}"
-                                          Visibility="{Binding CanDebug, Converter={StaticResource BoolToVisConverter}}" />
-                                <!--<MenuItem Header="Manual Edit" Command="{Binding ManualEditCommand}" Visibility="{Binding CanManualEdit, Converter={StaticResource BoolToVisConverter}}" />-->
+                                          Visibility="{Binding CanDebug, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId ="UI_DebugContextMenuItem_AutoID" />
                                 <Separator Visibility="{Binding CanShowHistory, Converter={StaticResource BoolToVisConverter}}"/>
                                 <MenuItem Header="{Binding ToggleVersionHistoryHeader}"
                                           Command="{Binding ToggleVersionHistoryCommand}"
-                                          Visibility="{Binding CanShowHistory, Converter={StaticResource BoolToVisConverter}}" />
+                                          Visibility="{Binding CanShowHistory, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId ="UI_ToggleVersionHistoryContextMenuItem_AutoID" />
                                 <MenuItem Header="Make current version"
                                           Command="{Binding RollbackCommand}"
-                                          Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisConverter}}" />
+                                          Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId ="UI_RollbackContextMenuItem_AutoID" />
                                 <MenuItem Header="Delete version"
                                           Command="{Binding DeleteVersionCommand}"
-                                          Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisConverter}}" />
+                                          Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId ="UI_DeleteVersionContextMenuItem_AutoID" />
                             </ContextMenu>
                         </Border.ContextMenu>
 
