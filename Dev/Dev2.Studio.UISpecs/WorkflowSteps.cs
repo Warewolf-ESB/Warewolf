@@ -114,7 +114,11 @@ namespace Dev2.Studio.UI.Specs
         static readonly string RibbonNewPluginConnector = "UI_RibbonHomeTabPluginServiceBtn_AutoID";
         static readonly string RibbonNewWebConnector = "UI_RibbonHomeTabWebServiceBtn_AutoID";
 
-
+        static readonly string ResourcePicker = "UI_SelectServiceWindow_AutoID";
+        static readonly string ResourcePickerFilter = ResourcePicker + ",UI_NavigationViewUserControl_AutoID,FilterTextBox,UI_DataListSearchtxt_AutoID";
+        static readonly string ResourcePickerFolders = ResourcePicker + ",UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID";
+        static readonly string ResourcePickerOkButton = ResourcePicker + ",UI_SelectServiceOKButton_AutoID";
+        
         int _retryCount;
 #pragma warning restore 414
 
