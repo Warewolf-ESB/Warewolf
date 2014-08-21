@@ -25,7 +25,7 @@ namespace Dev2.Studio.UI.Specs
         // ReSharper disable ConvertToConstant.Local
         // ReSharper disable UnusedMember.Local
 #pragma warning disable 414
-        static readonly string Explorer = "MainViewWindow,UI_DocManager_AutoID,Z36cf62ce32e24feebe226c0106caa25c,Z03b228452a964fd09950ef234c1f37d3,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID";
+        static readonly string Explorer = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID";
         static readonly string Toolbox = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
         static readonly string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
         static readonly string DebugOutput = "MainViewWindow,UI_DocManager_AutoID,Z36cf62ce32e24feebe226c0106caa25c,Z03b228452a964fd09950ef234c1f37d3,OutputPane,DebugOutput,DebugOutputTree";
@@ -455,10 +455,11 @@ namespace Dev2.Studio.UI.Specs
             //Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Playback.Wait(100);
         }
-
+      
         [When(@"I double click ""(.*)""")]
         [Given(@"I double click ""(.*)""")]
         [Given(@"I double click")]
+        [Then(@"I double click ""(.*)""")]
         public void WhenIDoubleClick(string itemToDoubleClickAutoIds)
         {
             var correcteddItemToDoubleClickAutoIds = GetCorrect(itemToDoubleClickAutoIds).Split(',');

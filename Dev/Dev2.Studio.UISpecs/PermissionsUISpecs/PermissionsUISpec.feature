@@ -1,152 +1,140 @@
-﻿Feature: Remote Server Permissions
-	In order to Check Remote server permissions in my local server
-	As a Warewolf user
-	I want to setup my Server Permissions 
+﻿Feature: Security
+	In order to be able to use warewolf
+	As a warewolf user
+	I want to be able to setup permissions for my server
 
-#Scenario Outline: Server Rights for Public
-#          Given I have Warewolf running
-#          And “RemoteServer” has permissions setup as
-#          | Resource | Group  | Permissions     |
-#          | Server   | Public | '<Permissions>' |
-#          When I connect as a “Public” user to “RemoteServer” in “Explorer”
-#		  Then connect control in "Explorer" is selected to "RemoteServer"
-#          And “RemoteServer” resources "ALL" will have '<Resourceicon>'icon
-#          And “New Workflow” in the ribbon is '<New Workflow>'
-#          And “Save” in the ribbon is '<Save>'
-#          And “Deploy” in the ribbon is '<Deploy>'
-#          And “New Plugin Service” in the ribbon is '<Services>'
-#          And “New Web Service” in the ribbon is '<Services>'
-#          And “New Database Service” in the ribbon is '<Services>'
-#          And “Execute” in the ribbon is '<Execute>'
-#          And “Settings” in the ribbon is '<Settings>'
-#		  And “Scheduler” in the ribbon is '<Scheduler>'
-#Examples: 
-#          | Permissions                                                      | Resourceicon   | New Workflow | Save     | Deploy   | Services | Execute  | Settings | Scheduler |
-#          | View                                                             | View           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
-#          | Execute                                                          | Execute        | Disabled     | Disabled | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
-#          | Deploy To                                                        | None           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
-#          | Deploy From                                                      | None           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
-#          | Contribute, view, Execute                                        | View, Execute  | Enabled      | Enabled  | Enabled  | Enabled  | Enabled  | Disabled | Disabled  |
-#          | View, Execute                                                    | View, Execute  | Disabled     | Disabled | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
-#          | View, Deploy To                                                  | View           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
-#          | View, Deploy From                                                | View           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
-#          | Deploy To, Deploy From                                           | None           | Disabled     | Disabled | Enabled  | Disabled | Disabled | Disabled | Disabled  |
-#          | Deploy To, Execute                                               | Execute        | Disabled     | Disabled | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
-#          | Deploy From, Execute                                             | Execute        | Disabled     | Disabled | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
-#          | Deploy To, View, Execute, Contribute                             | View, Execute  | Enabled      | Enabled  | Enabled  | Enabled  | Enabled  | Disabled | Disabled  |
-#          | Deploy From, View, Execute, Contribute                           | View, Execute  | Enabled      | Enabled  | Enabled  | Enabled  | Enabled  | Disabled | Disabled  |
-#          | Deploy To, Deploy From, View, Execute, Contribute, Administrator | View, Executer | Enabled      | Enabled  | Enabled  | Enabled  | Enabled  | Enabled  | Enabled   |
-#          |                                                                  | None           | Disabled     | Disabled | Disabled | Disabled | Disabled | Disabled | Disabled  |
-#
-#
-#Scenario Outline: Remote Server resource Rights for Public
-#          Given I have Warewolf running
-#          And “RemoteServer” has permissions setup as
-#          | Resource | Group  | Permissions |
-#          | Server   | Public | ""          |
-#		  And “RemoteServer” has Resource permissions setup as
-#		  | Resource                | Group  | Permissions     |
-#		  | BARNEY\DECISION TESTING | Public | '<Permissions>' | 
-#          When I connect as a “Public” user to “RemoteServer” in “Explorer”
-#		  Then connect control in "Explorer" is selected to "RemoteServer"
-#          And “RemoteServer” resource "BARNEY\DECISION TESTING" will have '<Resourceicon>'icon
-#          And “New Workflow” in the ribbon is '<New Workflow>'
-#          And “Save” in the ribbon is '<Save>'
-#          And “Deploy” in the ribbon is '<Deploy>'
-#          And “New Plugin Service” in the ribbon is '<Services>'
-#          And “New Web Service” in the ribbon is '<Services>'
-#          And “New Database Service” in the ribbon is '<Services>'
-#          And “Execute” in the ribbon is '<Execute>'
-#          And “Settings” in the ribbon is '<Settings>'
-#		  And “Scheduler” in the ribbon is '<Scheduler>'
-#Examples: 
-#          | Permissions               | Resourceicon  | New Workflow | Save     | Deploy   | Services | Execute  | Settings | Scheduler |
-#          | View                      | View          | Disabled     | Enabled  | Enabled  | Disabled | Disabled | Disabled | Disabled  |
-#          | Execute                   | Execute       | Disabled     | Enabled  | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
-#          | Contribute, View, Execute | View, Execute | Enabled      | Enabled  | Enabled  | Enabled  | Enabled  | Disabled | Disabled  |
-#          | View, Execute             | View, Execute | Disabled     | Enabled  | Enabled  | Disabled | Enabled  | Disabled | Disabled  |
-#          |                           | None          | Disabled     | Disabled | Disabled | Disabled | Disabled | Disabled | Disabled  |
-#         
-#Scenario Outline: Server and resource Rights for Public
-#          Given I have Warewolf running
-#          And “RemoteServer” has permissions setup as
-#          | Resource | Group  | Permissions           |
-#          | Server   | Public | '<ServerPermissions>' |
-#		  And “RemoteServer” has Resource permissions setup as
-#		  | Resource                | Group  | Permissions     |
-#		  | BARNEY\DECISION TESTING | Public | '<ResourcePermissions>' | 
-#          When I connect as a “Public” user to “RemoteServer” in “Explorer”
-#		  Then connect control in "Explorer" is selected to "RemoteServer"
-#          And “RemoteServer” resources "ALL" will have '<AllResourceicon>'icon
-#          And “New Workflow” in the ribbon is '<New Workflow>'
-#          And “Save” in the ribbon is '<Save>'
-#          And “Deploy” in the ribbon is '<Deploy>'
-#          And “New Plugin Service” in the ribbon is '<Services>'
-#          And “New Web Service” in the ribbon is '<Services>'
-#          And “New Database Service” in the ribbon is '<Services>'
-#          And “Execute” in the ribbon is '<Execute>'
-#          And “Settings” in the ribbon is '<Settings>'
-#		  And “Scheduler” in the ribbon is '<Settings/Sche>'
-#		  And “RemoteServer” resource "BARNEY\DECISION TESTING" will have '<SelectedResourceicon>'icon
-#		  And “New Workflow” in the ribbon for resource "BARNEY\DECISION TESTING" is '<New Workflow1>'
-#          And “Save” in the ribbon for resource "BARNEY\DECISION TESTING" is '<Save1>'
-#          And “Execute” in the ribbon for resource "BARNEY\DECISION TESTING" is '<Execute1>'
-#Examples: 
-#          | ServerPermissions                                                | New Workflow | Save     | Deploy  | Services | Execute  | Settings/Sche | AllResourceicon | ResourcePermissions | SelectedResourceicon | New Workflow1 | Save1    | Execute1 |
-#          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Disabled      | View            | View                | View                 | Disabled      | Disabled | Disabled |
-#          | Execute                                                          | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | Execute         | View                | View                 | Disabled      | Disabled | Disabled |
-#          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | View                | View                 | Disabled      | Disabled | Disabled |
-#          | View, Execute                                                    | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | View, Execute   | View                | View                 | Disabled      | Disabled | Disabled |
-#          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | View                | View                 | Disabled      | Disabled | Disabled |
-#          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Disabled      | View            | Execute             | Execute              | Disabled      | Disabled | Enabled  |
-#          | Execute                                                          | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | Execute         | Execute             | Execute              | Disabled      | Disabled | Enabled  |
-#          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Execute             | Execute              | Disabled      | Disabled | Enabled  |
-#          | View, Execute                                                    | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | View, Execute   | Execute             | Execute              | Disabled      | Disabled | Enabled  |
-#          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | Execute             | Execute              | Disabled      | Disabled | Enabled  |
-#          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Enabled       | View            | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
-#          | Execute                                                          | Disabled     | Disabled | Enabled | Enabled  | Enabled  | Disabled      | Execute         | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
-#          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
-#          | View, Execute                                                    | Disabled     | Disabled | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Contribute          | View, Executer       | Enabled       | Enabled  | Enabled  |
-#          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
-#
-#Scenario Outline: Server rights for Public and resource Rights for user 
-#          Given I have Warewolf running
-#          And “RemoteServer” has permissions setup as
-#          | Resource | Group  | Permissions           |
-#          | Server   | Public | '<ServerPermissions>' |
-#		  And “RemoteServer” has Resource permissions setup as
-#		  | Resource                | Group | Permissions             |
-#		  | BARNEY\DECISION TESTING | User  | '<ResourcePermissions>' | 
-#          When I connect as a “Public” and "User" user to “RemoteServer” in “Explorer” 
-#		  Then connect control in "Explorer" is selected to "RemoteServer"
-#          And “RemoteServer” resources "ALL" will have '<AllResourceicon>'icon
-#          And “New Workflow” in the ribbon is '<New Workflow>'
-#          And “Save” in the ribbon is '<Save>'
-#          And “Deploy” in the ribbon is '<Deploy>'
-#          And “New Plugin Service” in the ribbon is '<Services>'
-#          And “New Web Service” in the ribbon is '<Services>'
-#          And “New Database Service” in the ribbon is '<Services>'
-#          And “Execute” in the ribbon is '<Execute>'
-#          And “Settings” in the ribbon is '<Settings>'
-#		  And “Scheduler” in the ribbon is '<Settings/Sche>'
-#		  And “RemoteServer” resource "BARNEY\DECISION TESTING" will have '<SelectedResourceicon>'icon
-#		  And “New Workflow” in the ribbon for resource "BARNEY\DECISION TESTING" is '<New Workflow1>'
-#          And “Save” in the ribbon for resource "BARNEY\DECISION TESTING" is '<Save1>'
-#          And “Execute” in the ribbon for resource "BARNEY\DECISION TESTING" is '<Execute1>'
-#Examples: 
-#          | ServerPermissions                                                | New Workflow | Save     | Deploy  | Services | Execute  | Settings/Sche | AllResourceicon | ResourcePermissions | SelectedResourceicon | New Workflow1 | Save1    | Execute1 |
-#          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Disabled      | View            | View                | View                 | Disabled      | Disabled | Disabled |
-#          | Execute                                                          | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | Execute         | View                | View, Execute        | Disabled      | Disabled | Disabled |
-#          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | View                | View, Execute        | Enabled       | Enabled  | Enabled  |
-#          | View, Execute                                                    | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | View, Execute   | View                | View, Execute        | Enabled       | Disabled | Enabled  |
-#          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | View                | View, Execute        | Disabled      | Enabled  | Enabled  |
-#          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Disabled      | View            | Execute             | View, Execute        | Disabled      | Disabled | Enabled  |
-#          | Execute                                                          | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | Execute         | Execute             | View, Execute        | Disabled      | Disabled | Enabled  |
-#          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Execute             | View, Execute        | Enabled       | Enabled  | Enabled  |
-#          | View, Execute                                                    | Disabled     | Disabled | Enabled | Disabled | Enabled  | Disabled      | View, Execute   | Execute             | View, Execute        | Disabled      | Disabled | Enabled  |
-#          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | Execute             | View, Execute        | Enabled       | Enabled  | Enabled  |
-#          | View                                                             | Disabled     | Disabled | Enabled | Disabled | Disabled | Enabled       | View            | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
-#          | Execute                                                          | Disabled     | Disabled | Enabled | Enabled  | Enabled  | Disabled      | Execute         | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
-#          | Contribute, View, Execute                                        | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
-#          | View, Execute                                                    | Disabled     | Disabled | Enabled | Enabled  | Enabled  | Disabled      | View, Execute   | Contribute          | View, Executer       | Enabled       | Enabled  | Enabled  |
-#          | View, Execute, Contribute, Deploy To, Deploy From, Administrator | Enabled      | Enabled  | Enabled | Enabled  | Enabled  | Enabled       | View, Execute   | Contribute          | View, Execute        | Enabled       | Enabled  | Enabled  |
+Scenario: Set server permission View
+	Given I click "RIBBONSETTINGS"
+	And I send "SECURITYPUBLICVIEW" to "ACTIVETAB,UI_SettingsView_AutoID"
+	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SECURITYSAVE' in "ACTIVETAB,UI_SettingsView_AutoID"
+	When I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
+	And I click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+	When I double click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "RIBBONNEWENDPOINT" is not visible
+	Then "RIBBONSETTINGS" is not visible
+	Then "RIBBONNEWDATABASECONNECTOR" is not visible
+	Then "RIBBONSCHEDULE" is not visible			
+	Then "RIBBONNEWPLUGINCONNECTOR" is not visible
+	Then "RIBBONNEWWEBCONNECTOR" is not visible
+	
+
+Scenario: Set server permission execute
+	Given I click "RIBBONSETTINGS"
+	And I send "SECURITYPUBLICEXECUTE" to "ACTIVETAB,UI_SettingsView_AutoID"
+	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SECURITYSAVE' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
+	Given I click "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+	And "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+	When I double click "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"
+    Then "WINDOWDEBUG" is not visible
+	Then "WINDOWVIEWINBROWSER" is visible
+	Then I click "WINDOWCANCEL"
+	Then "RIBBONNEWDATABASECONNECTOR" is not visible
+	Then "RIBBONSCHEDULE" is not visible
+    Then "RIBBONNEWPLUGINCONNECTOR" is not visible
+	Then "RIBBONNEWWEBCONNECTOR" is not visible
+	Then "RIBBONNEWENDPOINT" is not visible
+	
+	
+Scenario: Set server permission Contribute
+	Given I click "RIBBONSETTINGS"
+	And I send "SECURITYPUBLICCONTRIBUTE" to "ACTIVETAB,UI_SettingsView_AutoID"
+	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SECURITYSAVE' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
+	Given I click "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "Explorer,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+	Then "Explorer,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+	When I double click "Explorer,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+    Then "RIBBONDEBUG" is visible
+	Then "RIBBONNEWDATABASECONNECTOR" is visible
+	Then "RIBBONSCHEDULE" is not visible
+    Then "RIBBONNEWPLUGINCONNECTOR" is visible
+	Then "RIBBONNEWWEBCONNECTOR" is visible
+	Then "RIBBONNEWENDPOINT" is visible
+	Then "RIBBONSCHEDULE" is not visible
+
+
+
+Scenario: Set server permission Deploy To
+	Given I click "RIBBONSETTINGS"
+	And I send "SECURITYDEPLOYTO" to "ACTIVETAB,UI_SettingsView_AutoID"
+	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SECURITYSAVE' in "ACTIVETAB,UI_SettingsView_AutoID"
+	When I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
+	And I click "Explorer,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "Explorer,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
+	Then "Explorer,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is not visible
+	Then "Explorer,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+	Then I double click "Explorer,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "RIBBONNEWENDPOINT" is not visible
+	Then "RIBBONSETTINGS" is not visible
+	Then "RIBBONNEWDATABASECONNECTOR" is not visible
+	Then "RIBBONSCHEDULE" is not visible			
+	Then "RIBBONNEWPLUGINCONNECTOR" is not visible
+	Then "RIBBONNEWWEBCONNECTOR" is not visible
+	Then "RIBBONDEPLOY" is visible
+	Then I click "RIBBONDEPLOY"
+	And I click on 'U_UI_SourceServercbx_AutoID_Server1' in "ACTIVETAB,DeployUserControl,ConnectUserControl,UI_SourceServercbx_AutoID"
+	Then "UI_DestinationServer_sE (http://localhost:3142/)_AutoID,UI_Unautherized_DeployToText_AutoID" is visible
+
+Scenario: Set server permission Deploy From
+	Given I click "RIBBONSETTINGS"
+	And I send "SECURITYDEPLOYFROM" to "ACTIVETAB,UI_SettingsView_AutoID"
+	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SECURITYSAVE' in "ACTIVETAB,UI_SettingsView_AutoID"
+	When I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
+	Given I click "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
+	Then "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+	Then I double click "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "RIBBONNEWENDPOINT" is not visible
+	Then "RIBBONSETTINGS" is not visible
+	Then "RIBBONNEWDATABASECONNECTOR" is not visible
+	Then "RIBBONSCHEDULE" is not visible			
+	Then "RIBBONNEWPLUGINCONNECTOR" is not visible
+	Then "RIBBONNEWWEBCONNECTOR" is not visible
+	Then "RIBBONDEPLOY" is visible
+	Then I click "RIBBONDEPLOY"
+	And I click on 'U_UI_DestinationServercbx_AutoID_Server1' in "ACTIVETAB,DeployUserControl,ConnectUserControl,UI_DestinationServercbx_AutoID"
+	Then "UI_DestinationServer_Server1 (http://localhost:3142/)_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
+
+
+Scenario: Set server permission View and Resource permission execute for public
+	Given I click "RIBBONSETTINGS"
+	And I send "SECURITYDEPLOYFROM" to "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SECURITYSAVE' in "ACTIVETAB,UI_SettingsView_AutoID"
+	When I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
+	Given I click "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
+	Then "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+	Then I double click "EXPLORER,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "RIBBONNEWENDPOINT" is not visible
+	Then "RIBBONSETTINGS" is not visible
+	Then "RIBBONNEWDATABASECONNECTOR" is not visible
+	Then "RIBBONSCHEDULE" is not visible			
+	Then "RIBBONNEWPLUGINCONNECTOR" is not visible
+	Then "RIBBONNEWWEBCONNECTOR" is not visible
+	Then "RIBBONDEPLOY" is visible
+	Then I click "RIBBONDEPLOY"
+	And I click on 'U_UI_DestinationServercbx_AutoID_Server1' in "ACTIVETAB,DeployUserControl,ConnectUserControl,UI_DestinationServercbx_AutoID"
+	Then "UI_DestinationServer_Server1 (http://localhost:3142/)_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
+	
+	
