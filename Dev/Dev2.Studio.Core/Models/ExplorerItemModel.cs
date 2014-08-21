@@ -1181,10 +1181,8 @@ namespace Dev2.Models
                 }
 
                 IContextualResourceModel resourceModel = environmentModel.ResourceRepository
-                                                                         .FindSingle(model => model.ID == ResourceId)
+                                                                         .FindSingle(model => model.ID == Parent.ResourceId)
                                                                          as IContextualResourceModel;
-
-
                 if(resourceModel != null)
                 {
                     IMainViewModel mainViewModel = CustomContainer.Get<IMainViewModel>();
