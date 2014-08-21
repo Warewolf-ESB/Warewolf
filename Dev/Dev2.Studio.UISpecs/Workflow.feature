@@ -17,14 +17,16 @@ Scenario: Correcting errors on sql bulk insert clicking Done shows small view (u
 	Then "UNSAVED1,A database must be selected." is not visible
 
 Scenario: Debug GatherSystemInformation same variables in two activites
-	#Given I have Warewolf running
-	Given I send "11330_Integration tests" to "EXPLORER,FilterTextBox,UI_DataListSearchtxt_AutoID"
-	And I double click "EXPLORER,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_SPINT 7_AutoID,UI_11330_Integration_tests_AutoID"
-	And I send "{F6}" to "MainViewWindow"
-	And I click "RIBBONDEBUG"
-	And I click "MainViewWindow,UI_DebugInputWindow_AutoID,UI_Executebtn_AutoID"
-	Then "DEBUGOUTPUT,Gather System Information" is visible
-
+	Given I have Warewolf running
+	And I send "11330_Integration tests" to "EXPLORER,FilterTextBox,UI_DataListSearchtxt_AutoID"
+	And I double click "EXPLORER,Navigation,UI_localhost,UI_SPINT 7_AutoID,UI_11330_Integration tests_AutoID"
+	And I wait till "WORKSURFACE" is visible
+	And I send "{F6}" to ""
+	And I wait till "DEBUGOUTPUT,Dev2StatusBarAutomationID,StatusBar" is not visible
+	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 1 (2),Date & Time" is visible
+	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 1 (2),CPU Available" is visible
+	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),Date & Time" is visible
+	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),CPU Available" is visible
 
 Scenario: Drag on Multiassign
 	Given I have Warewolf running
@@ -145,59 +147,109 @@ Scenario: Open folder in explorer
 
 Scenario: Set server permission View
 	Given I click "UI_RibbonHomeManageSecuritySettingsBtn_AutoID"
-	And I send "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}" to "ACTIVETAB,UI_SettingsView_AutoID"
+	And I send "SECURITYPUBLICVIEW" to "ACTIVETAB,UI_SettingsView_AutoID"
 	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
-	And I click on 'UI_SaveSettingsbtn_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SECURITYSAVE' in "ACTIVETAB,UI_SettingsView_AutoID"
 	When I create a new remote connection "Server1" as
 	| Address               | AuthType | UserName | Password |
 	| http://localhost:3142 | Public   |          |          |
 	And I click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+	When I double click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "RIBBONNEWENDPOINT" is not visible
+	Then "RIBBONSETTINGS" is not visible
+	Then "RIBBONNEWDATABASECONNECTOR" is not visible
+	Then "RIBBONSCHEDULE" is not visible			
+	Then "RIBBONNEWPLUGINCONNECTOR" is not visible
+	Then "RIBBONNEWWEBCONNECTOR" is not visible
+	
 
 Scenario: Set server permission execute
 	Given I click "UI_RibbonHomeManageSecuritySettingsBtn_AutoID"
 	And I send "SECURITYPUBLICEXECUTE" to "ACTIVETAB,UI_SettingsView_AutoID"
 	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
-	And I click on 'UI_SaveSettingsbtn_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SECURITYSAVE' in "ACTIVETAB,UI_SettingsView_AutoID"
 	And I create a new remote connection "Server1" as
 	| Address               | AuthType | UserName | Password |
 	| http://localhost:3142 | Public   |          |          |
 	Given I click "EXPLORER,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
-	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
-
-
+	And "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+	When I double click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"
+    Then "WINDOWDEBUG" is not visible
+	Then "WINDOWVIEWINBROWSER" is visible
+	Then I click "WINDOWCANCEL"
+	Then "RIBBONNEWDATABASECONNECTOR" is not visible
+	Then "RIBBONSCHEDULE" is not visible
+    Then "RIBBONNEWPLUGINCONNECTOR" is not visible
+	Then "RIBBONNEWWEBCONNECTOR" is not visible
+	Then "RIBBONNEWENDPOINT" is not visible
+	
+	
 Scenario: Set server permission Contribute
 	Given I click "UI_RibbonHomeManageSecuritySettingsBtn_AutoID"
 	And I send "SECURITYPUBLICCONTRIBUTE" to "ACTIVETAB,UI_SettingsView_AutoID"
 	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
-	And I click on 'UI_SaveSettingsbtn_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SECURITYSAVE' in "ACTIVETAB,UI_SettingsView_AutoID"
 	And I create a new remote connection "Server1" as
 	| Address               | AuthType | UserName | Password |
 	| http://localhost:3142 | Public   |          |          |
 	Given I click "EXPLORER,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
 	Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+	When I double click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+    Then "RIBBONDEBUG" is visible
+	Then "RIBBONNEWDATABASECONNECTOR" is visible
+	Then "RIBBONSCHEDULE" is not visible
+    Then "RIBBONNEWPLUGINCONNECTOR" is visible
+	Then "RIBBONNEWWEBCONNECTOR" is visible
+	Then "RIBBONNEWENDPOINT" is visible
+	Then "RIBBONSCHEDULE" is not visible
 
 
 
-Scenario: Test Ribbon Buttons
-	Given I click "RIBBONSCHEDULE"
-	Then "SCHEDULERNEWBUTTON" is visible
+Scenario: Set server permission Deploy To
+	Given I click "UI_RibbonHomeManageSecuritySettingsBtn_AutoID"
+	And I send "SECURITYDEPLOYTO" to "ACTIVETAB,UI_SettingsView_AutoID"
+	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SECURITYSAVE' in "ACTIVETAB,UI_SettingsView_AutoID"
+	When I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
+	And I click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	#Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+	#Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+	When I double click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "RIBBONNEWENDPOINT" is not visible
+	Then "RIBBONSETTINGS" is not visible
+	Then "RIBBONNEWDATABASECONNECTOR" is not visible
+	Then "RIBBONSCHEDULE" is not visible			
+	Then "RIBBONNEWPLUGINCONNECTOR" is not visible
+	Then "RIBBONNEWWEBCONNECTOR" is not visible
+	Then "RIBBONDEPLOY" is visible
+	Given I click "RIBBONDEPLOY"
 	
-
- #        RibbonDeploy
- #        RibbonSettings
- #        RibbonSchedule
- #        RibbonDebug
- #       RibbonNewEndPoint
- #        RibbonSave
- #       RibbonNewDatabaseConnector
- #       RibbonNewPluginConnector
- #       RibbonNewWebConnector
-
-
-
+Scenario: Set server permission Deploy From
+	Given I click "UI_RibbonHomeManageSecuritySettingsBtn_AutoID"
+	And I send "SECURITYDEPLOYFROM" to "ACTIVETAB,UI_SettingsView_AutoID"
+	#And I click on 'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID' in "ACTIVETAB,UI_SettingsView_AutoID"
+	And I click on 'SECURITYSAVE' in "ACTIVETAB,UI_SettingsView_AutoID"
+	When I create a new remote connection "Server1" as
+	| Address               | AuthType | UserName | Password |
+	| http://localhost:3142 | Public   |          |          |
+	And I click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	#Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+	#Then "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+	When I double click "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Then "RIBBONNEWENDPOINT" is not visible
+	Then "RIBBONSETTINGS" is not visible
+	Then "RIBBONNEWDATABASECONNECTOR" is not visible
+	Then "RIBBONSCHEDULE" is not visible			
+	Then "RIBBONNEWPLUGINCONNECTOR" is not visible
+	Then "RIBBONNEWWEBCONNECTOR" is not visible
+	Then "RIBBONDEPLOY" is visible
+	Then I click "RIBBONDEPLOY"
 
 
 
