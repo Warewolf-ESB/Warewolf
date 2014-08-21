@@ -128,9 +128,11 @@
                                 <Border Style="{StaticResource UnauthorizedTreeViewBorderStyle}"
                                         Visibility="{Binding IsAuthorizedDeployFrom, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                     <StackPanel Style="{StaticResource UnauthorizedTreeViewStackPanelStyle}">
-                                        <Image Style="{StaticResource AuthNoneIconRibbonStyle}" />
+                                        <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   AutomationProperties.AutomationId="UI_Unautherized_DeployFromImage_AutoID" />
                                         <TextBlock Style="{StaticResource UnauthorizedTreeViewTextBlockStyle}"
-                                                   Text="{x:Static help:HelpTextResources.DeploySecurityFromUnauthorized}"></TextBlock>
+                                                   Text="{x:Static help:HelpTextResources.DeploySecurityFromUnauthorized}"
+                                                   AutomationProperties.AutomationId="UI_Unautherized_DeployFrom_AutoID"></TextBlock>
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
@@ -223,9 +225,11 @@
                                 <Border Style="{StaticResource UnauthorizedTreeViewBorderStyle}"
                                         Visibility="{Binding IsAuthorizedDeployTo, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                     <StackPanel Style="{StaticResource UnauthorizedTreeViewStackPanelStyle}">
-                                        <Image Style="{StaticResource AuthNoneIconRibbonStyle}" />
+                                        <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                   AutomationProperties.AutomationId="UI_Unautherized_DeployToImage_AutoID" />
                                         <TextBlock Style="{StaticResource UnauthorizedTreeViewTextBlockStyle}"
-                                                   Text="{x:Static help:HelpTextResources.DeploySecurityToUnauthorized}"></TextBlock>
+                                                   Text="{x:Static help:HelpTextResources.DeploySecurityToUnauthorized}"
+                                                   AutomationProperties.AutomationId="UI_Unautherized_DeployToText_AutoID"></TextBlock>
                                     </StackPanel>
                                 </Border>
                             </StackPanel>
