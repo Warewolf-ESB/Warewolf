@@ -127,15 +127,6 @@ namespace Dev2.Runtime.WebServer.Hubs
         protected void SetupEvents()
         {
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
-            var authorizationServiceBase = ServerAuthorizationService.Instance as ServerAuthorizationService;
-            if(authorizationServiceBase != null)
-            {
-                var securityService = authorizationServiceBase.SecurityService as ServerSecurityService;
-                if(securityService != null)
-                {
-                    //securityService.InitializeConfigWatcher(ServerSecurityService.FileName);
-                }
-            }
             ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
             ServerExplorerRepository.Instance.MessageSubscription(this);
             if(ResourceCatalog.Instance.ResourceSaved == null)
