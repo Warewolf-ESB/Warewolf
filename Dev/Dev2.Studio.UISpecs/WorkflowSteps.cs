@@ -24,10 +24,10 @@ namespace Dev2.Studio.UI.Specs
         // ReSharper disable ConvertToConstant.Local
         // ReSharper disable UnusedMember.Local
 #pragma warning disable 414
-        static readonly string Explorer = "Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,TheNavigationView";
+        static readonly string Explorer = "MainViewWindow,UI_DocManager_AutoID,Z36cf62ce32e24feebe226c0106caa25c,Z03b228452a964fd09950ef234c1f37d3,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID";
         static readonly string Toolbox = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
         static readonly string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
-        static readonly string DebugOutput = "Z746a647dd6004001a7df7a7ca0ac65d1,Z96bb9badc4b148518ea4eff80920f8d9,OutputPane,DebugOutput,DebugOutputTree";
+        static readonly string DebugOutput = "MainViewWindow,UI_DocManager_AutoID,Z36cf62ce32e24feebe226c0106caa25c,Z03b228452a964fd09950ef234c1f37d3,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string TabActive = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
         //Tools
@@ -49,7 +49,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ToolWebRequest = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolCount = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         //Settings Tab
-        static readonly string Settings_Tab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SettingsView_AutoID";
+        static readonly string SettingsTab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SettingsView_AutoID";
         static readonly string SettingsServerPermissions = "SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID";
         //SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID
         static readonly string SecurityPublicView = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
@@ -59,23 +59,58 @@ namespace Dev2.Studio.UI.Specs
         static readonly string SecurityPublicDeployTo = SettingsServerPermissions + ",UI_Public_DeployToPermissionCheckBox_AutoID";
         static readonly string SecurityPublicDeployFrom = SettingsServerPermissions + ",UI_Public_DeployFromPermissionCheckBox_AutoID";
 
-        static readonly string SecuritySave = Settings_Tab + ",UI_SaveSettingsbtn_AutoID";
-        static readonly string SecurityDelete = Settings_Tab + ",UI_AddRemovebtn_AutoID";
-        static readonly string SecurityResourcePicker = Settings_Tab + ",UI_AddResourceToSecuritySettingsbtn_AutoID";
-        static readonly string SecurityWindowsGrouppicker = Settings_Tab + "UI__AddWindowsGroupButton_AutoID";
-        static readonly string SecurityWindowsGroupInput = Settings_Tab + ",UI_AddWindowsGroupsTextBox_AutoID";
-        static readonly string ResourceGroupPicker = Settings_Tab + ",UI__AddWindowsGroupsButton_AutoID";
-        static readonly string SecurityView = Settings_Tab + ",UI_SecuritySettingResourceViewchk_AutoID";
-        static readonly string SecurityExecute = Settings_Tab + ",UI_SecuritySettingResourceExecutechk_AutoID";
-        static readonly string SecurityContribute = Settings_Tab + ",UI_SecuritySettingResourceContributechk_AutoID";
-        static readonly string SecurityAdministrator = Settings_Tab + ",UI_SecuritySettingServerAdministratorchk_AutoID";
-        static readonly string SecurityDeployTo = Settings_Tab + ",UI_SecuritySettingServerDeployTochk_AutoID";
-        static readonly string SecurityDeployFrom = Settings_Tab + ",UI_SecuritySettingServerDeployFromchk_AutoID";
-        static readonly string SecurityConnectDropdown = Settings_Tab + ",UI_SettingsServerComboBox_AutoID";
-        static readonly string SecurityConnectEdit = Settings_Tab + ",UI_SettingsServerEditButton_AutoID";
-        static readonly string SecurityConnectButton = Settings_Tab + ",UI_SettingsServerConnectButton_AutoID";
-        static readonly string SecurityHelp = Settings_Tab + ",ServerHelpToggleButton";
-    
+        static readonly string SecuritySave = SettingsTab + ",UI_SaveSettingsbtn_AutoID";
+        static readonly string SecurityDelete = SettingsTab + ",UI_AddRemovebtn_AutoID";
+        static readonly string SecurityResourcePicker = SettingsTab + ",UI_AddResourceToSecuritySettingsbtn_AutoID";
+        static readonly string SecurityWindowsGrouppicker = SettingsTab + "UI__AddWindowsGroupButton_AutoID";
+        static readonly string SecurityWindowsGroupInput = SettingsTab + ",UI_AddWindowsGroupsTextBox_AutoID";
+        static readonly string ResourceGroupPicker = SettingsTab + ",UI__AddWindowsGroupsButton_AutoID";
+        static readonly string SecurityView = SettingsTab + ",UI_SecuritySettingResourceViewchk_AutoID";
+        static readonly string SecurityExecute = SettingsTab + ",UI_SecuritySettingResourceExecutechk_AutoID";
+        static readonly string SecurityContribute = SettingsTab + ",UI_SecuritySettingResourceContributechk_AutoID";
+        static readonly string SecurityAdministrator = SettingsTab + ",UI_SecuritySettingServerAdministratorchk_AutoID";
+        static readonly string SecurityDeployTo = SettingsTab + ",UI_SecuritySettingServerDeployTochk_AutoID";
+        static readonly string SecurityDeployFrom = SettingsTab + ",UI_SecuritySettingServerDeployFromchk_AutoID";
+        static readonly string SecurityConnectDropdown = SettingsTab + ",UI_SettingsServerComboBox_AutoID";
+        static readonly string SecurityConnectEdit = SettingsTab + ",UI_SettingsServerEditButton_AutoID";
+        static readonly string SecurityConnectButton = SettingsTab + ",UI_SettingsServerConnectButton_AutoID";
+        static readonly string SecurityHelp = SettingsTab + ",ServerHelpToggleButton";
+
+        static readonly string SchedulerTab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SchedulerView_AutoID";
+        static readonly string SchedulerConnectDropDown = SchedulerTab + ",ConnectUserControl,UI_SettingsServerComboBox_AutoID";
+        static readonly string SchedulerConnectEditButton = SchedulerTab + ",ConnectUserControl,UI_SettingsServerEditButton_AutoID";
+        static readonly string SchedulerConnectConnectButton = SchedulerTab + ",ConnectUserControl,UI_SettingsServerConnectButton_AutoID";
+        static readonly string SchedulerNewButton = SchedulerTab + ",UI_NewTaskButton_AutoID";
+        static readonly string SchedulerSaveButton = SchedulerTab + ",UI_SaveTaskButton_AutoID";
+        static readonly string SchedulerDeleteButton = SchedulerTab + ",UI_DeleteTaskButton_AutoID";
+        static readonly string SchedulerNameInput = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_NameTextbox";
+        static readonly string SchedulerStatusDisabledRadio = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_DisabledRadioButton";
+        static readonly string SchedulerStatusEnabledRadio = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_EnabledRadioButton";
+        static readonly string SchedulerWorkflowEdit = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_WorkflowNameTextBox";
+        static readonly string SchedulerWorkflowSelectorButton = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_WorkflowSelectorButton_AutoID";
+        static readonly string SchedulerRunTaskAsSoonAsPossibleCheckbox = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_RunAsapCheckBox";
+        static readonly string SchedulerHistoryToKeepInput = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_NumOfHisTextBox";
+        static readonly string SchedulerUsernameInput = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_UserNameTextBox";
+        static readonly string SchedulerPasswordInput = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_PasswordBox";
+        static readonly string SchedulerHistoryTab = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerHistoryTab_AutoID";
+        static readonly string SchedulerSavingErrorOkButton = "MainViewWindow,UI_MessageBox_AutoID,UI_OkButton_AutoID";
+        static readonly string SchedulerEditTriggerButton = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_EditTriggerButton_AutoID";
+        static readonly string SchedulerSetupTriggerOkButton = "MainViewWindow,TriggerEditDialog,okBtn";
+        static readonly string SchedulerDeleteConfirmationYesButton = "MainViewWindow,UI_MessageBox_AutoID,UI_YesButton_AutoID";
+        static readonly string SchedulerDeleteConfirmationNoButton = "MainViewWindow,UI_MessageBox_AutoID,UI_NoButton_AutoID";
+        static readonly string SchedulerHelpButton = SchedulerTab + ",UI_SchedulerHelpButton_AutoID";
+
+        static readonly string RibbonDeploy = "UI_RibbonHomeTabDeployBtn_AutoID";
+        static readonly string RibbonSettings = "UI_RibbonHomeManageSecuritySettingsBtn_AutoID";
+        static readonly string RibbonSchedule = "UI_RibbonHomeTabSchedulerBtn_AutoID";
+        static readonly string RibbonDebug = "UI_RibbonDebugBtn_AutoID";
+        static readonly string RibbonNewEndPoint = "UI_RibbonHomeTabWorkflowBtn_AutoID";
+        static readonly string RibbonSave = "UI_RibbonHomeTabSaveBtn_AutoID";
+        static readonly string RibbonNewDatabaseConnector = "UI_RibbonHomeTabDBServiceBtn_AutoID";
+        static readonly string RibbonNewPluginConnector = "UI_RibbonHomeTabPluginServiceBtn_AutoID";
+        static readonly string RibbonNewWebConnector = "UI_RibbonHomeTabWebServiceBtn_AutoID";
+
+
         int _retryCount;
 #pragma warning restore 414
 
@@ -242,7 +277,7 @@ namespace Dev2.Studio.UI.Specs
                 SendKeys.SendWait("{BACKSPACE}");
             }
 
-            Playback.Wait(100);
+            Playback.Wait(0);
             var dataToSend = GetCorrect(textToSend).Split(' ');
             foreach(var text in dataToSend)
             {

@@ -17,16 +17,14 @@ Scenario: Correcting errors on sql bulk insert clicking Done shows small view (u
 	Then "UNSAVED1,A database must be selected." is not visible
 
 Scenario: Debug GatherSystemInformation same variables in two activites
-	Given I have Warewolf running
-	And I send "11330_Integration tests" to "EXPLORER,FilterTextBox,UI_DataListSearchtxt_AutoID"
-	And I double click "EXPLORER,Navigation,UI_localhost,UI_SPINT 7_AutoID,UI_11330_Integration tests_AutoID"
-	And I wait till "WORKSURFACE" is visible
-	And I send "{F6}" to ""
-	And I wait till "DEBUGOUTPUT,Dev2StatusBarAutomationID,StatusBar" is not visible
-	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 1 (2),Date & Time" is visible
-	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 1 (2),CPU Available" is visible
-	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),Date & Time" is visible
-	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),CPU Available" is visible
+	#Given I have Warewolf running
+	Given I send "11330_Integration tests" to "EXPLORER,FilterTextBox,UI_DataListSearchtxt_AutoID"
+	And I double click "EXPLORER,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_SPINT 7_AutoID,UI_11330_Integration_tests_AutoID"
+	And I send "{F6}" to "MainViewWindow"
+	And I click "RIBBONDEBUG"
+	And I click "MainViewWindow,UI_DebugInputWindow_AutoID,UI_Executebtn_AutoID"
+	Then "DEBUGOUTPUT,Gather System Information" is visible
+
 
 Scenario: Drag on Multiassign
 	Given I have Warewolf running
@@ -183,10 +181,20 @@ Scenario: Set server permission Contribute
 
 
 
+Scenario: Test Ribbon Buttons
+	Given I click "RIBBONSCHEDULE"
+	Then "SCHEDULERNEWBUTTON" is visible
+	
 
-
-
-
+ #        RibbonDeploy
+ #        RibbonSettings
+ #        RibbonSchedule
+ #        RibbonDebug
+ #       RibbonNewEndPoint
+ #        RibbonSave
+ #       RibbonNewDatabaseConnector
+ #       RibbonNewPluginConnector
+ #       RibbonNewWebConnector
 
 
 

@@ -114,28 +114,20 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Debug GatherSystemInformation same variables in two activites", ((string[])(null)));
 #line 19
 this.ScenarioSetup(scenarioInfo);
-#line 20
- testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
- testRunner.And("I send \"11330_Integration tests\" to \"EXPLORER,FilterTextBox,UI_DataListSearchtxt_" +
-                    "AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I send \"11330_Integration tests\" to \"EXPLORER,FilterTextBox,UI_DataListSearchtxt_" +
+                    "AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
- testRunner.And("I double click \"EXPLORER,Navigation,UI_localhost,UI_SPINT 7_AutoID,UI_11330_Integ" +
-                    "ration tests_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I double click \"EXPLORER,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_SPINT 7_Au" +
+                    "toID,UI_11330_Integration_tests_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
- testRunner.And("I wait till \"WORKSURFACE\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I send \"{F6}\" to \"MainViewWindow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
- testRunner.And("I send \"{F6}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click \"RIBBONDEBUG\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
- testRunner.And("I wait till \"DEBUGOUTPUT,Dev2StatusBarAutomationID,StatusBar\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click \"MainViewWindow,UI_DebugInputWindow_AutoID,UI_Executebtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 26
- testRunner.Then("\"DEBUGOUTPUT,DebugOutputTree,Gather System Info 1 (2),Date & Time\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 27
- testRunner.Then("\"DEBUGOUTPUT,DebugOutputTree,Gather System Info 1 (2),CPU Available\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 28
- testRunner.Then("\"DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),Date & Time\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 29
- testRunner.Then("\"DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),CPU Available\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("\"DEBUGOUTPUT,Gather System Information\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -146,23 +138,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragOnMultiassign()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag on Multiassign", ((string[])(null)));
-#line 31
+#line 29
 this.ScenarioSetup(scenarioInfo);
-#line 32
+#line 30
  testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 33
+#line 31
  testRunner.And("I click \"UI_RibbonHomeTabWorkflowBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 32
  testRunner.When("I send \"Assign\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 35
+#line 33
  testRunner.And("I drag \"TOOLMULTIASSIGN\" onto \"ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkS" +
                     "urfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityT" +
                     "ypeDesigner,WorkflowItemPresenter,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 37
+#line 35
  testRunner.And("I send \"[[rec().a]]\" to \"ACTIVETAB,Assign (1)(MultiAssignDesigner),SmallViewConte" +
                     "nt,SmallDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.Activity" +
                     "DTO,Column Display Index: 1,UI__Row1_FieldName_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 38
+#line 36
  testRunner.And("I send \"test\" to \"UNSAVED1,Assign (1)(MultiAssignDesigner),SmallViewContent,Small" +
                     "DataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.ActivityDTO,Colu" +
                     "mn Display Index: 1,UI__Row1_FieldValue_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -176,23 +168,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragOnBaseCovert()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag on BaseCovert", ((string[])(null)));
-#line 40
+#line 38
 this.ScenarioSetup(scenarioInfo);
-#line 41
+#line 39
  testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 42
+#line 40
  testRunner.And("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 43
+#line 41
  testRunner.When("I send \"Base\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 44
+#line 42
  testRunner.And("I drag \"TOOLBASECONVERT\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
+#line 43
  testRunner.And("I double click \"WORKSURFACE,BaseConvert (1)(DsfBaseConvertActivity)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
+#line 44
  testRunner.And("I send \"[[rec().a]]\" to \"WORKSURFACE,BaseConvert (1)(BaseConvertDesigner),SmallVi" +
                     "ewContent,SmallDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.A" +
                     "ctivityDTO,Column Display Index: 1,UI__Row1_FieldName_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
+#line 45
  testRunner.And("close the Studio and Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -204,40 +196,40 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void Drag()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag", ((string[])(null)));
-#line 50
+#line 48
 this.ScenarioSetup(scenarioInfo);
-#line 51
+#line 49
     testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 52
+#line 50
     testRunner.Given("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 53
+#line 51
  testRunner.And("I send \"Data Merge\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 54
+#line 52
  testRunner.When("I drag \"UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb8" +
                     "9f15f346eccb7b1,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID,PART_Tools,Data,D" +
                     "sfDataMergeActivity\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 55
+#line 53
     testRunner.And("I double click \"WORKSURFACE,Data Merge (1)(DataMergeDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 54
     testRunner.And("I send \"Test\" to \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),LargeViewContent," +
                     "LargeDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.DataMergeDT" +
                     "O,Column Display Index: 1,UI__Row1_InputVariable_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
+#line 55
  testRunner.And("I send \"%\" to \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),LargeViewContent,Lar" +
                     "geDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.DataMergeDTO,C" +
                     "olumn Display Index: 3,UI__At_Row1_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 58
+#line 56
  testRunner.And("I click \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
+#line 57
  testRunner.And("I click \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),\'Using\' must be a real num" +
                     "ber\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
+#line 58
  testRunner.And("I send \"1\" to \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),LargeViewContent,Lar" +
                     "geDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.DataMergeDTO,C" +
                     "olumn Display Index: 3,UI__At_Row1_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
+#line 59
  testRunner.And("I click \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
+#line 60
  testRunner.Given("I send \"%\" to \"WORKSURFACE,Data Merge (1)(DataMergeDesigner),LargeViewContent,Lar" +
                     "geDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.DataMergeDTO,d" +
                     "ataitem,Column Display Index: 3,UI__At_Row1_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
@@ -251,25 +243,25 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void AssignLargeViewTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign Large View Test", ((string[])(null)));
-#line 65
+#line 63
 this.ScenarioSetup(scenarioInfo);
-#line 66
+#line 64
     testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 67
+#line 65
  testRunner.Given("I click \"UI_RibbonHomeTabWorkflowBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 68
+#line 66
  testRunner.And("I send \"Assign\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 67
  testRunner.When("I drag \"TOOLMULTIASSIGN\" onto \"ACTIVETAB,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 70
+#line 68
  testRunner.And("I double click \"TABACTIVE,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesi" +
                     "gner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 71
+#line 69
  testRunner.And("I send \"{TAB} {TAB} {TAB} {TAB} {TAB} [[rec(&).a]]\" to \"ACTIVETAB,Assign (1)(Mult" +
                     "iAssignDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 72
+#line 70
  testRunner.And("I click \"ACTIVETAB,Assign (1)(MultiAssignDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 73
+#line 71
  testRunner.Then("close the Studio and Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -281,17 +273,17 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragDataMerge()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag Data Merge", ((string[])(null)));
-#line 90
+#line 88
 this.ScenarioSetup(scenarioInfo);
-#line 92
+#line 90
  testRunner.Given("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 93
+#line 91
  testRunner.And("I send \"Data Merge\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 94
+#line 92
  testRunner.When(@"I drag ""TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity"" onto ""ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 95
+#line 93
  testRunner.And("I send \"Assign\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 96
+#line 94
  testRunner.When(@"I drag ""TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity"" onto ""ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Data Merge (1)(DataMergeDesigner)""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -303,13 +295,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragDataDataSplit()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag Data DataSplit", ((string[])(null)));
-#line 99
+#line 97
 this.ScenarioSetup(scenarioInfo);
-#line 101
+#line 99
  testRunner.Given("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 102
+#line 100
  testRunner.And("I send \"Data Split\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 103
+#line 101
  testRunner.When(@"I drag ""TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataSplitActivity"" onto ""ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
@@ -321,13 +313,13 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DragFindRecordIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag Find Record Index", ((string[])(null)));
-#line 106
+#line 104
 this.ScenarioSetup(scenarioInfo);
-#line 110
+#line 108
  testRunner.Given("I click \"UI_RibbonHomeTabWorkflowBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 111
+#line 109
  testRunner.And("I send \"Data Merge\" to \"TOOLBOXSEARCH\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 113
+#line 111
  testRunner.When("I drag \"TOOLDATAMERGE\" onto \"ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSur" +
                     "faceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,Activ" +
                     "ityTypeDesigner,WorkflowItemPresenter,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -341,21 +333,12 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void NewRemoteConnection()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("New Remote Connection", ((string[])(null)));
-#line 118
+#line 116
 this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Address",
-                        "AuthType",
-                        "UserName",
-                        "Password"});
-            table1.AddRow(new string[] {
-                        "http://localhost:3142",
-                        "Public",
-                        "",
-                        ""});
-#line 119
- testRunner.Given("I create a new remote connection \"Server1\" as", ((string)(null)), table1, "Given ");
+#line 120
+ testRunner.Given("I close Studio", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 122
+ testRunner.And("I start Studio as \"TestUser\" with password \"T35tu53r\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -366,15 +349,15 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SetServerPermission()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set server permission", ((string[])(null)));
-#line 124
-this.ScenarioSetup(scenarioInfo);
 #line 125
+this.ScenarioSetup(scenarioInfo);
+#line 126
  testRunner.Given("I click \"UI_RibbonHomeManageSecuritySettingsBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 127
+#line 128
  testRunner.And("I click on \'SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGri" +
                     "d_Row_1_AutoID,UI_ServerAdministratorPermissions_Row_1_Cell_AutoID,UI_Public_Adm" +
                     "inistratorPermissionCheckBox_AutoID\' in \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 128
+#line 129
  testRunner.And("I click on \'UI_SaveSettingsbtn_AutoID\' in \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -386,11 +369,11 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OpenFolderInExplorer()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Open folder in explorer", ((string[])(null)));
-#line 131
-this.ScenarioSetup(scenarioInfo);
 #line 132
- testRunner.Given(@"I click ""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_BARNEY_AutoID,Expander""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 133
+ testRunner.Given(@"I click ""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_BARNEY_AutoID,Expander""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 134
  testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_A1_AutoID,UI_A1W1_AutoID,UI_CanEdit_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -402,14 +385,49 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SetServerPermissionView()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set server permission View", ((string[])(null)));
-#line 145
-this.ScenarioSetup(scenarioInfo);
 #line 146
- testRunner.Given("I click \"UI_RibbonHomeManageSecuritySettingsBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 147
+ testRunner.Given("I click \"UI_RibbonHomeManageSecuritySettingsBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 148
  testRunner.And("I send \"{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {" +
                     "TAB} {TAB} {SPACE}\" to \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 149
+#line 150
+ testRunner.And("I click on \'UI_SaveSettingsbtn_AutoID\' in \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Address",
+                        "AuthType",
+                        "UserName",
+                        "Password"});
+            table1.AddRow(new string[] {
+                        "http://localhost:3142",
+                        "Public",
+                        "",
+                        ""});
+#line 151
+ testRunner.When("I create a new remote connection \"Server1\" as", ((string)(null)), table1, "When ");
+#line 154
+ testRunner.And(@"I click ""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 155
+ testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set server permission execute")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Workflow")]
+        public virtual void SetServerPermissionExecute()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set server permission execute", ((string[])(null)));
+#line 157
+this.ScenarioSetup(scenarioInfo);
+#line 158
+ testRunner.Given("I click \"UI_RibbonHomeManageSecuritySettingsBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 159
+ testRunner.And("I send \"SECURITYPUBLICEXECUTE\" to \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 161
  testRunner.And("I click on \'UI_SaveSettingsbtn_AutoID\' in \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
@@ -422,29 +440,33 @@ this.ScenarioSetup(scenarioInfo);
                         "Public",
                         "",
                         ""});
-#line 150
- testRunner.When("I create a new remote connection \"Server1\" as", ((string)(null)), table2, "When ");
-#line 153
- testRunner.And(@"I click ""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 154
+#line 162
+ testRunner.And("I create a new remote connection \"Server1\" as", ((string)(null)), table2, "And ");
+#line 165
+ testRunner.Given("I click \"EXPLORER,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_S" +
+                    "erver1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_Auto" +
+                    "ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 166
  testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 167
+ testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set server permission execute")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set server permission Contribute")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Workflow")]
-        public virtual void SetServerPermissionExecute()
+        public virtual void SetServerPermissionContribute()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set server permission execute", ((string[])(null)));
-#line 156
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set server permission Contribute", ((string[])(null)));
+#line 170
 this.ScenarioSetup(scenarioInfo);
-#line 157
+#line 171
  testRunner.Given("I click \"UI_RibbonHomeManageSecuritySettingsBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 158
- testRunner.And("I send \"SECURITYPUBLICEXECUTE\" to \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 160
+#line 172
+ testRunner.And("I send \"SECURITYPUBLICCONTRIBUTE\" to \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 174
  testRunner.And("I click on \'UI_SaveSettingsbtn_AutoID\' in \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -457,55 +479,32 @@ this.ScenarioSetup(scenarioInfo);
                         "Public",
                         "",
                         ""});
-#line 161
+#line 175
  testRunner.And("I create a new remote connection \"Server1\" as", ((string)(null)), table3, "And ");
-#line 164
+#line 178
  testRunner.Given("I click \"EXPLORER,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_S" +
                     "erver1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_Auto" +
                     "ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 165
+#line 179
  testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 166
- testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 180
+ testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Set server permission Contribute")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Test Ribbon Buttons")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Workflow")]
-        public virtual void SetServerPermissionContribute()
+        public virtual void TestRibbonButtons()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Set server permission Contribute", ((string[])(null)));
-#line 169
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Test Ribbon Buttons", ((string[])(null)));
+#line 184
 this.ScenarioSetup(scenarioInfo);
-#line 170
- testRunner.Given("I click \"UI_RibbonHomeManageSecuritySettingsBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 171
- testRunner.And("I send \"SECURITYPUBLICCONTRIBUTE\" to \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 173
- testRunner.And("I click on \'UI_SaveSettingsbtn_AutoID\' in \"ACTIVETAB,UI_SettingsView_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Address",
-                        "AuthType",
-                        "UserName",
-                        "Password"});
-            table4.AddRow(new string[] {
-                        "http://localhost:3142",
-                        "Public",
-                        "",
-                        ""});
-#line 174
- testRunner.And("I create a new remote connection \"Server1\" as", ((string)(null)), table4, "And ");
-#line 177
- testRunner.Given("I click \"EXPLORER,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_S" +
-                    "erver1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_Auto" +
-                    "ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 178
- testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 179
- testRunner.Then(@"""UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_Server1 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 185
+ testRunner.Given("I click \"RIBBONSCHEDULE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 186
+ testRunner.Then("\"SCHEDULERNEWBUTTON\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
