@@ -26,19 +26,18 @@ taskkill /im "Warewolf Server.exe"
 REM  Wait 10 seconds ;)
 ping -n 10 127.0.0.1 > nul
 
-REM Test Config binaries are deployed to root and binaries from the debug bin folder are deployed to a seperate sub-directory called ServerbinDebug.
-IF EXIST "%DeploymentDirectory%\Warewolf Server.exe" GOTO Rootstart
-IF EXIST "%DeploymentDirectory%\ServerbinDebug\Warewolf Server.exe" GOTO DebugBinStart
+IF EXIST %DeploymentDirectory% GOTO RunDeployed
 
-:RootStart
-REM ** Start Warewolf server from deploy directory root **
-START "%DeploymentDirectory%\Warewolf Server.exe" /D %DeploymentDirectory% "Warewolf Server.exe"
+:RunLocal
+REM ** Start Warewolf server from local binaries built in debug config**
+START "..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" /D "..\..\Dev2.Server\bin\Debug" "Warewolf Server.exe"
 GOTO exit
-:DebugBinStart
+
+:RunDeployed
 REM ** Start Warewolf server from deployed binaries built in debug config**
 START "%DeploymentDirectory%\ServerbinDebug\Warewolf Server.exe" /D %DeploymentDirectory%\ServerbinDebug "Warewolf Server.exe"
-
 :exit
+
 REM  Wait 20 seconds ;)
 ping -n 20 127.0.0.1 > nul
 
