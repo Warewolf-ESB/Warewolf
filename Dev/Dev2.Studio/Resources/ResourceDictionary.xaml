@@ -1066,6 +1066,7 @@
                 Value="Stretch" />
         <Setter Property="VerticalContentAlignment"
                 Value="Center" />
+        <Setter Property="AutomationProperties.AutomationId" Value="UI_DatalistFilterTextBox_AutoID"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
@@ -1084,7 +1085,7 @@
                                  UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"
                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                     AutomationProperties.AutomationId="UI_DataListSearchtxt_AutoID">
+                                     AutomationProperties.AutomationId="UI_TextBox_AutoID">
                                 <TextBox.Style>
                                     <Style TargetType="TextBox"
                                            BasedOn="{StaticResource {x:Type TextBox}}">
@@ -1104,7 +1105,8 @@
                                     Height="15"
                                     Width="15"
                                     VerticalAlignment="Center"
-                                    IsEnabled="{Binding ElementName=TheTextBox,Path=Text,Converter={StaticResource FilterStringToBoolConverter}}">                                                               
+                                    IsEnabled="{Binding ElementName=TheTextBox,Path=Text,Converter={StaticResource FilterStringToBoolConverter}}"
+                                    AutomationProperties.AutomationId="UI_FilterButton_AutoID">
                                 <Image Source="{StaticResource ClearFilter-32}" Height="15" Width="15"></Image>                         
                             </Button>
                         </Grid>
