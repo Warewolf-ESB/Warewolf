@@ -241,7 +241,7 @@ namespace Dev2.Models
         {
             get
             {
-                return _children.Where(c => c.ResourceType != ResourceType.Version).ToList();
+                return _children.Where(c => c.ResourceType != ResourceType.Version && c.ResourceType != ResourceType.Message).ToList();
             }
         }
 
@@ -1022,7 +1022,8 @@ namespace Dev2.Models
             int total = 0;
             foreach(ExplorerItemModel explorerItemModel in Children)
             {
-                if(explorerItemModel.ResourceType != ResourceType.Version)
+                if(explorerItemModel.ResourceType != ResourceType.Version && 
+                   explorerItemModel.ResourceType != ResourceType.Message)
                 {
                     if(explorerItemModel.ResourceType == ResourceType.Folder)
                     {
