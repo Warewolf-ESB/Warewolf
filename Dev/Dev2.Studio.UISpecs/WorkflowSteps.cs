@@ -25,7 +25,7 @@ namespace Dev2.Studio.UI.Specs
         // ReSharper disable ConvertToConstant.Local
         // ReSharper disable UnusedMember.Local
 #pragma warning disable 414
-        static readonly string Explorer = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID";
+        static readonly string Explorer = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID";
         static readonly string ExplorerConnectControl = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID";
         static readonly string ExplorerConnectProgress = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_IndicatorConnecting_AutoID";
         static readonly string Toolbox = "UI_DocManager_AutoID,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
