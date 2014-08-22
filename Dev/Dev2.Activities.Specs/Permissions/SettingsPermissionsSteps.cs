@@ -140,9 +140,9 @@ namespace Dev2.Activities.Specs.Permissions
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
             }
-            // ReSharper disable EmptyGeneralCatchClause
+// ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
-            // ReSharper restore EmptyGeneralCatchClause
+// ReSharper restore EmptyGeneralCatchClause
             {
                 /* Invalid user account */
             }
@@ -275,7 +275,7 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.ForceLoadResources();
 
             var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
-            resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
+
             SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var permissionsString in permissionsStrings)
@@ -288,6 +288,7 @@ namespace Dev2.Activities.Specs.Permissions
             }
             if(resourceModel != null)
             {
+                resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
                 Assert.AreEqual(resourcePermissions, resourceModel.UserPermissions);
             }
         }

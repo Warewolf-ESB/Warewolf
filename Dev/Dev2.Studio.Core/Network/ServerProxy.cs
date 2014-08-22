@@ -87,7 +87,7 @@ namespace Dev2.Network
                 var userName = networkCredential.UserName;
                 if(items.Length == 1)
                 {
-                    domainName = Environment.MachineName;
+                    domainName = AppServerUri.Host;
                 }
                 if(items.Length == 2)
                 {
@@ -100,18 +100,35 @@ namespace Dev2.Network
                     try
                     {
                         SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
-                        var context = new PrincipalContext(domainName == Environment.MachineName ? ContextType.Machine : ContextType.Domain);
+                        var context = new PrincipalContext(domainName.ToLower() == Environment.MachineName.ToLower() ? ContextType.Machine : ContextType.Domain);
                         var userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
+
+                        if(userPrincipal == null)
+                        {
+                            acct = new NTAccount(Environment.UserDomainName, userName);
+                            id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
+                            context = new PrincipalContext(domainName.ToLower() == Environment.MachineName.ToLower() ? ContextType.Machine : ContextType.Domain);
+                            userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
+                        }
+
                         if(userPrincipal != null)
                         {
-                            Impersonator.RunAs(userPrincipal.DisplayName, domainName, networkCredential.Password, () =>
+                            if(userPrincipal.UserPrincipalName != null)
                             {
-                                var windowsIdentity = WindowsIdentity.GetCurrent();
-                                if(windowsIdentity != null)
+                                var identity = new WindowsIdentity(userPrincipal.UserPrincipalName);
+                                principal = new WindowsPrincipal(identity);
+                            }
+                            else
+                            {
+                                Impersonator.RunAs(userPrincipal.DisplayName, domainName, networkCredential.Password, () =>
                                 {
-                                    principal = new WindowsPrincipal(windowsIdentity);
-                                }
-                            });
+                                    var windowsIdentity = WindowsIdentity.GetCurrent();
+                                    if(windowsIdentity != null)
+                                    {
+                                        principal = new WindowsPrincipal(windowsIdentity);
+                                    }
+                                });
+                            }
                         }
                     }
                     catch(Exception e)
