@@ -240,7 +240,8 @@
                             Value="{Binding Path=DataContext.Name, RelativeSource={RelativeSource Self},Converter={StaticResource StringToAutomationIdConverter}}" />
                     <Setter Property="ItemContainerStyle">
                         <Setter.Value>
-                            <Style>
+                            <Style TargetType="{x:Type TreeViewItem}"
+                                   BasedOn="{StaticResource {x:Type TreeViewItem}}">
                                 <Setter Property="AutomationProperties.AutomationId"
                                         Value="{Binding Path=DataContext, RelativeSource={RelativeSource Self},Converter={StaticResource DataListItemModelToAutomationIdConverter}}" />
                             </Style>
