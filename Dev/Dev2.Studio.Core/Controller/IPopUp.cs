@@ -25,5 +25,7 @@ namespace Dev2.Studio.Core.Controller
         MessageBoxResult ShowConnectionTimeoutConfirmation(string serverName);
         MessageBoxResult ShowDeleteVersionMessage(string displayName);
         MessageBoxResult ShowRollbackVersionMessage(string displayName);
+
+        void ShowInvalidCharacterMessage(string invalidText);
     }
 }

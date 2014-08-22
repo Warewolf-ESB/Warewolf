@@ -95,13 +95,17 @@ namespace Dev2.Core.Tests.ProperMoqs
             return _result;
         }
 
+        public void ShowInvalidCharacterMessage(string invalidText)
+        {
+        }
+
         public MessageBoxResult ShowDeleteVersionMessage(string displayName)
         {
             return MessageBoxResult.None;
-        }
+            }
 
         public MessageBoxResult ShowRollbackVersionMessage(string displayName)
-        {
+            {
             return MessageBoxResult.None;
         }
 

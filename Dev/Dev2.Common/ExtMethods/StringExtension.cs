@@ -20,6 +20,13 @@ namespace Dev2.Common.ExtMethods
         static readonly Regex IsHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
         static readonly Regex IsHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
 
+        public static bool ContainsUnicodeCharacter(this string input)
+        {
+            const int MaxAnsiCode = 255;
+
+            return input.Any(c => c > MaxAnsiCode);
+        }
+
         public static string Escape(this string unescaped)
         {
             XmlDocument doc = new XmlDocument();
@@ -38,7 +45,7 @@ namespace Dev2.Common.ExtMethods
             }
             catch(Exception)
             {
-                string xml = string.Format("<dummycake>{0}</dummycake>", payload);
+                string xml = String.Format("<dummycake>{0}</dummycake>", payload);
                 doc.LoadXml(xml);
 
             }
@@ -47,7 +54,7 @@ namespace Dev2.Common.ExtMethods
                 return doc.DocumentElement.InnerText;
             }
 
-            return string.Empty;
+            return String.Empty;
         }
 
         /// <summary>
@@ -59,7 +66,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsAlpha(this string payload)
         {
-            if(string.IsNullOrEmpty(payload))
+            if(String.IsNullOrEmpty(payload))
             {
                 return false;
             }
@@ -92,7 +99,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsWholeNumber(this string payload, out int value)
         {
-            if(int.TryParse(payload, out value))
+            if(Int32.TryParse(payload, out value))
             {
                 if(value >= 0)
                 {
@@ -125,7 +132,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsRealNumber(this string payload, out int value)
         {
-            return int.TryParse(payload, out value);
+            return Int32.TryParse(payload, out value);
         }
 
         /// <summary>
@@ -155,7 +162,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsNumeric(this string payload, out decimal value)
         {
-            if (string.IsNullOrEmpty(payload))
+            if(String.IsNullOrEmpty(payload))
             {
                 value = 0;
                 return false;
@@ -163,20 +170,20 @@ namespace Dev2.Common.ExtMethods
 
             string evalString = payload;
 
-            if (payload[0] == '-')
+            if(payload[0] == '-')
             {
                 evalString = payload.Substring(1, payload.Length - 1);
             }
 
             NumberFormatInfo current = CultureInfo.CurrentCulture.NumberFormat;
-            if(evalString.Any(c => !char.IsDigit(c)
+            if(evalString.Any(c => !Char.IsDigit(c)
                 && c != current.NumberDecimalSeparator[0]))
             {
                 value = 0;
                 return false;
             }
 
-            return decimal.TryParse(payload, out value);
+            return Decimal.TryParse(payload, out value);
         }
 
         /// <summary>
@@ -188,7 +195,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsAlphaNumeric(this string payload)
         {
-            return (!string.IsNullOrEmpty(payload) && (IsAlpha(payload) || IsNumeric(payload) || IsAlphaNumericRegex.IsMatch(payload)));
+            return (!String.IsNullOrEmpty(payload) && (IsAlpha(payload) || IsNumeric(payload) || IsAlphaNumericRegex.IsMatch(payload)));
         }
 
         /// <summary>
@@ -200,7 +207,7 @@ namespace Dev2.Common.ExtMethods
         /// </returns>
         public static bool IsEmail(this string payload)
         {
-            if(string.IsNullOrEmpty(payload))
+            if(String.IsNullOrEmpty(payload))
             {
                 return false;
             }

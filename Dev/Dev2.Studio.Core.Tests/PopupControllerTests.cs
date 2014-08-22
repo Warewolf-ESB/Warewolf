@@ -285,5 +285,44 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(MessageBoxImage.Information, imageType);
             Assert.AreEqual(GlobalConstants.Dev2MessageBoxNoInputsWhenHyperlinkClickedDialog, dontShowAgainKey);
         }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("PopupController_ShowInvalidCharacterMessagek")]
+        public void PopupController_ShowInvalidCharacterMessage_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            string dontShowAgainKey = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OK;
+            MessageBoxImage imageType = MessageBoxImage.Error;
+            const string expectedDesc = "some invalid text is invalid. Warewolf only supports latin characters";
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    imageType = img;
+                    popupWasCalled = true;
+                    dontShowAgainKey = dntShwAgKy;
+                    return MessageBoxResult.OK;
+                }
+            };
+
+            //------------Execute Test---------------------------
+            popupController.ShowInvalidCharacterMessage("some invalid text");
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual("Invalid text", header);
+            Assert.AreEqual(expectedDesc, description);
+            Assert.AreEqual(MessageBoxImage.Error, imageType);
+            Assert.AreEqual(null, dontShowAgainKey);
+        }
     }
 }

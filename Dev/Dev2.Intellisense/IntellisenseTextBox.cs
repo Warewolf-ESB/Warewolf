@@ -14,8 +14,10 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dev2.Common.ExtMethods;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.InterfaceImplementors;
 
@@ -170,7 +172,7 @@ namespace Dev2.UI
             }
             set
             {
-              
+
                 SetValue(HasErrorProperty, value);
             }
         }
@@ -612,8 +614,8 @@ namespace Dev2.UI
         private int _caretPositionOnPopup;
         private string _textOnPopup;
         private object _cachedState;
-        private readonly List<Key> _wrapInBracketKey = new List<Key>{Key.F6,Key.F7};
-        ToolTip _toolTip;
+        private readonly List<Key> _wrapInBracketKey = new List<Key> { Key.F6, Key.F7 };
+        readonly ToolTip _toolTip;
 
         private bool _forcedOpen;
         private bool _fromPopup;
@@ -623,19 +625,8 @@ namespace Dev2.UI
         #region Public Properties
 
         //public ItemCollection Items { get { return _listBox.Items; } }
-        ObservableCollection<IntellisenseProviderResult> _items;
 
-        public ObservableCollection<IntellisenseProviderResult> Items
-        {
-            get
-            {
-                return _items;
-            }
-            set
-            {
-                _items = value;
-            }
-        }
+        public ObservableCollection<IntellisenseProviderResult> Items { get; set; }
 
         #endregion
 
@@ -766,6 +757,11 @@ namespace Dev2.UI
         {
             try
             {
+                if(CheckHasUnicodeInText(Text))
+                {
+                    return;
+                }
+
                 if(AllowUserInsertLine && GetLastVisibleLineIndex() + 1 == LineCount)
                 {
                     double lineHeight = FontSize * FontFamily.LineSpacing;
@@ -842,6 +838,21 @@ namespace Dev2.UI
             catch(InvalidOperationException)
             {
             }
+        }
+
+        public bool CheckHasUnicodeInText(string inputText)
+        {
+            var hasUnicode = inputText.ContainsUnicodeCharacter();
+            if(hasUnicode)
+            {
+                var previousInput = inputText;
+                Text = "";
+                CustomContainer.Get<IPopupController>()
+                               .ShowInvalidCharacterMessage(previousInput);
+
+                return true;
+            }
+            return false;
         }
 
         protected virtual void OnAllowMultilinePasteChanged(bool oldValue, bool newValue)
@@ -1023,7 +1034,9 @@ namespace Dev2.UI
                         int errorCount = 0;
                         IntellisenseProviderResult popup = null;
 
-                        for(int i = 0; i < results.Count; i++)
+                        // ReSharper disable ForCanBeConvertedToForeach
+                        for(var i = 0; i < results.Count; i++)
+                        // ReSharper restore ForCanBeConvertedToForeach
                         {
                             IntellisenseProviderResult currentResult = results[i];
 
@@ -1319,18 +1332,18 @@ namespace Dev2.UI
 
         private void ExecWrapBrackets()
         {
-            if (_listBox != null && IsOpen && !IsKeyboardFocusWithin && !_listBox.IsKeyboardFocused &&
+            if(_listBox != null && IsOpen && !IsKeyboardFocusWithin && !_listBox.IsKeyboardFocused &&
                 !_listBox.IsKeyboardFocusWithin)
             {
                 CloseDropDown(true);
             }
 
-            if (WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
+            if(WrapInBrackets && !string.IsNullOrWhiteSpace(Text))
             {
                 Text = AddBracketsToExpression(Text);
             }
 
-            if (IsOnlyRecordsets && !string.IsNullOrEmpty(Text))
+            if(IsOnlyRecordsets && !string.IsNullOrEmpty(Text))
             {
                 Text = AddRecordsetNotationToExpresion(Text);
             }
@@ -1358,26 +1371,12 @@ namespace Dev2.UI
 
             if(!result.StartsWith("[["))
             {
-                if(!result.StartsWith("["))
-                {
-                    result = string.Concat("[[", result);
-                }
-                else
-                {
-                    result = string.Concat("[", result);
-                }
+                result = string.Concat(!result.StartsWith("[") ? "[[" : "[", result);
             }
 
             if(!expression.EndsWith("]]"))
             {
-                if(!expression.EndsWith("]"))
-                {
-                    result = string.Concat(result, "]]");
-                }
-                else
-                {
-                    result = string.Concat(result, "]");
-                }
+                result = string.Concat(result, !expression.EndsWith("]") ? "]]" : "]");
             }
 
             return result;
@@ -1403,7 +1402,9 @@ namespace Dev2.UI
 
                 if(_listBox != null)
                 {
+                    // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
                     if(selectedItem is IDataListVerifyPart)
+                    // ReSharper restore CanBeReplacedWithTryCastAndCheckForNull
                     {
                         appendText = ((IDataListVerifyPart)selectedItem).DisplayValue;
                     }
@@ -1508,13 +1509,13 @@ namespace Dev2.UI
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
 
-             base.OnPreviewKeyDown(e);
+            base.OnPreviewKeyDown(e);
             bool isOpen = IsOpen;
 
             if(e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
                 object appendText = null;
-                bool isInsert = false;
+                const bool isInsert = false;
                 bool expand = false;
 
                 if(AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None)
@@ -1532,7 +1533,9 @@ namespace Dev2.UI
 
                     if(_listBox != null && (selectedItem = _listBox.SelectedItem) != null)
                     {
+                        // ReSharper disable CanBeReplacedWithTryCastAndCheckForNull
                         if(selectedItem is IDataListVerifyPart)
+                        // ReSharper restore CanBeReplacedWithTryCastAndCheckForNull
                         {
                             appendText = ((IDataListVerifyPart)selectedItem).DisplayValue;
                         }
@@ -1556,7 +1559,7 @@ namespace Dev2.UI
 
                 if(e.Key != Key.Tab)
                 {
-                    if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn && !isInsert)
+                    if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn)
                     {
                     }
                     else
@@ -1606,7 +1609,7 @@ namespace Dev2.UI
 
         public void HandleWrapInBrackets(Key e)
         {
-            if (_wrapInBracketKey.Contains(e))
+            if(_wrapInBracketKey.Contains(e))
             {
                 ExecWrapBrackets();
             }

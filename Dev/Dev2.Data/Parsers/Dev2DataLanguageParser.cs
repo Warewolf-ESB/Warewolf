@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Dev2.Common.ExtMethods;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
@@ -31,7 +32,7 @@ namespace Dev2.Data.Parsers
         /// <returns></returns>
         public IList<IIntellisenseResult> ParseExpressionIntoParts(string expression, IList<IDev2DataLanguageIntellisensePart> dataListParts)
         {
-            if (string.IsNullOrEmpty(expression) || dataListParts == null)
+            if(string.IsNullOrEmpty(expression) || dataListParts == null)
             {
                 return new List<IIntellisenseResult>();
             }
@@ -47,68 +48,23 @@ namespace Dev2.Data.Parsers
         /// <param name="payload">The payload.</param>
         /// <param name="dataList">The data list.</param>
         /// <param name="addCompleteParts">if set to <c>true</c> [add complete parts].</param>
-        /// <param name="filterTO">The filter TO.</param>
+        /// <param name="filterTo">The filter TO.</param>
         /// <param name="isFromIntellisense">if set to <c>true</c> [is from intellisense].</param>
         /// <returns></returns>
-        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO filterTO = null, bool isFromIntellisense = false)
+        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO filterTo = null, bool isFromIntellisense = false)
         {
-            if (string.IsNullOrEmpty(payload))
+            if(string.IsNullOrEmpty(payload))
             {
                 return new List<IIntellisenseResult>();
             }
 
-            IList<IDev2DataLanguageIntellisensePart> parts = DataListFactory.GenerateIntellisensePartsFromDataList(dataList, filterTO);
+            IList<IDev2DataLanguageIntellisensePart> parts = DataListFactory.GenerateIntellisensePartsFromDataList(dataList, filterTo);
 
             IList<IIntellisenseResult> result = PartsGeneration(payload, parts, addCompleteParts, isFromIntellisense);
 
             return result;
         }
 
-        /// <summary>
-        /// Used to compare data list items to IO mapping
-        /// </summary>
-        /// <param name="parts"></param>
-        /// <param name="dataList"></param>
-        /// <returns></returns>
-        public IList<IIntellisenseResult> ParseForMissingDataListItems(IList<IDataListVerifyPart> parts, string dataList)
-        {
-            if(parts == null || string.IsNullOrEmpty(dataList))
-            {
-                return new List<IIntellisenseResult>();
-            }
-
-            IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
-            IList<IDev2DataLanguageIntellisensePart> dlParts = DataListFactory.GenerateIntellisensePartsFromDataList(dataList);
-
-            foreach(IDataListVerifyPart t in parts)
-            {
-                string tmpVal = t.DisplayValue;
-                if(tmpVal.Contains(DataListUtil.OpeningSquareBrackets) || tmpVal.Contains(DataListUtil.ClosingSquareBrackets))
-                {
-                    // it is a data region, evaluate it was such
-                    tmpVal = tmpVal.Replace(DataListUtil.ClosingSquareBrackets, "").Replace(DataListUtil.OpeningSquareBrackets, "");
-                    ParseTO tmp = new ParseTO { Payload = tmpVal, StartIndex = 2, EndIndex = (tmpVal.Length - 1), HangingOpen = false, Parent = null, Child = null };
-
-                    IList<IIntellisenseResult> tmpResult = ExtractIntellisenseOptions(tmp, dlParts, false);
-                    result = result.Union(tmpResult).ToList();
-                }
-                else
-                {
-                    if(tmpVal.Contains(DataListUtil.OpeningSquareBrackets) && !tmpVal.Contains(DataListUtil.ClosingSquareBrackets))
-                    {
-                        IDataListVerifyPart p = IntellisenseFactory.CreateDataListValidationScalarPart(tmpVal);
-                        result.Add(IntellisenseFactory.CreateErrorResult(0, tmpVal.Length, p, "Invalid syntax - Open ( [[ ) without a Close ( ]] ).", enIntellisenseErrorCode.SyntaxError, true));
-                    }
-                    else if(tmpVal.Contains(DataListUtil.ClosingSquareBrackets) && !tmpVal.Contains(DataListUtil.OpeningSquareBrackets))
-                    {
-                        IDataListVerifyPart p = IntellisenseFactory.CreateDataListValidationScalarPart(tmpVal);
-                        result.Add(IntellisenseFactory.CreateErrorResult(0, tmpVal.Length, p, "Invalid syntax - Close ( ]] ) without an Open ( [[ ).", enIntellisenseErrorCode.SyntaxError, true));
-                    }
-                }
-            }
-
-            return result;
-        }
 
         /// <summary>
         /// Return a list of data list parts from the evaluated region
@@ -117,7 +73,7 @@ namespace Dev2.Data.Parsers
         /// <returns></returns>
         public IList<String> ParseForActivityDataItems(string payload)
         {
-            if (string.IsNullOrEmpty(payload))
+            if(string.IsNullOrEmpty(payload))
             {
                 return new List<string>();
             }
@@ -211,14 +167,7 @@ namespace Dev2.Data.Parsers
                     // do the last hanging region intellisense injection
                     if(magicRegion != null)
                     {
-                        if(isFromIntellisense)
-                        {
-                            result = ExtractActualIntellisenseOptions(magicRegion, parts, false);
-                        }
-                        else
-                        {
-                            result = ExtractIntellisenseOptions(magicRegion, parts, false);
-                        }
+                        result = isFromIntellisense ? ExtractActualIntellisenseOptions(magicRegion, parts, false) : ExtractIntellisenseOptions(magicRegion, parts, false);
 
                     }
 
@@ -227,15 +176,7 @@ namespace Dev2.Data.Parsers
                         .ToList()
                         .ForEach(evalPart =>
                         {
-                            IList<IIntellisenseResult> tmp;
-                            if(isFromIntellisense)
-                            {
-                                tmp = ExtractIntellisenseOptions(evalPart, parts, false);
-                            }
-                            else
-                            {
-                                tmp = ExtractIntellisenseOptions(evalPart, parts, addCompleteParts);
-                            }
+                            IList<IIntellisenseResult> tmp = ExtractIntellisenseOptions(evalPart, parts, !isFromIntellisense && addCompleteParts);
                             if(tmp != null)
                             {
                                 result = result.Union(tmp).ToList();
@@ -254,7 +195,7 @@ namespace Dev2.Data.Parsers
 
         public IList<ParseTO> MakePartsWithOutRecsetIndex(string payload)
         {
-            if (string.IsNullOrEmpty(payload))
+            if(string.IsNullOrEmpty(payload))
             {
                 return new List<ParseTO>();
             }
@@ -448,16 +389,7 @@ namespace Dev2.Data.Parsers
 
                 try
                 {
-                    IEnumerable<IIntellisenseResult> results;
-
-                    if(parts.Length == 1)
-                    {
-                        results = CreateResultsGeneric(refParts, payload, search, addCompleteParts);
-                    }
-                    else
-                    {
-                        results = CreateResultsGeneric(refParts, payload, parts[1], addCompleteParts);
-                    }
+                    IEnumerable<IIntellisenseResult> results = CreateResultsGeneric(refParts, payload, parts.Length == 1 ? search : parts[1], addCompleteParts);
 
                     // we need to search recordset fields to filter ;)
                     if(parts.Length == 2)
@@ -850,12 +782,10 @@ namespace Dev2.Data.Parsers
                                             // add in recordset with index if around
                                             if(addCompleteParts)
                                             {
-                                                IDataListVerifyPart p;
-
                                                 string idx = DataListUtil.ExtractIndexRegionFromRecordset(parts[0]);
                                                 string recset = DataListUtil.ExtractRecordsetNameFromValue(parts[0]);
 
-                                                p = IntellisenseFactory.CreateDataListValidationRecordsetPart(recset, string.Empty, t1.Description, payload.Child != null ? payload.Child.Payload : idx);
+                                                IDataListVerifyPart p = IntellisenseFactory.CreateDataListValidationRecordsetPart(recset, string.Empty, t1.Description, payload.Child != null ? payload.Child.Payload : idx);
 
                                                 result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, p, p.Description));
                                             }
@@ -1014,14 +944,7 @@ namespace Dev2.Data.Parsers
                                 enIntellisenseErrorCode code = enIntellisenseErrorCode.RecordsetNotFound;
                                 if(!isRs)
                                 {
-                                    if(display.IndexOf(' ') >= 0)
-                                    {
-                                        code = enIntellisenseErrorCode.SyntaxError;
-                                    }
-                                    else
-                                    {
-                                        code = enIntellisenseErrorCode.ScalarNotFound;
-                                    }
+                                    code = display.IndexOf(' ') >= 0 ? enIntellisenseErrorCode.SyntaxError : enIntellisenseErrorCode.ScalarNotFound;
 
                                     part = IntellisenseFactory.CreateDataListValidationScalarPart(display);
                                 }
@@ -1034,14 +957,7 @@ namespace Dev2.Data.Parsers
                                     part = IntellisenseFactory.CreateDataListValidationRecordsetPart(display, "");
                                 }
                                 // add error
-                                if(!display.Contains(' '))
-                                {
-                                    result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your variable list", code, (!payload.HangingOpen)));
-                                }
-                                else
-                                {
-                                    result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] contains a space, this is an invalid character for a variable name", code, (!payload.HangingOpen)));
-                                }
+                                result.Add(!display.Contains(' ') ? IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] does not exist in your variable list", code, (!payload.HangingOpen)) : IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] contains a space, this is an invalid character for a variable name", code, (!payload.HangingOpen)));
                             }
                         }
                     }
@@ -1055,7 +971,7 @@ namespace Dev2.Data.Parsers
                     // recordset with field lookup
 
                     // Check index
-                    ParseTO tmpTO = new ParseTO { Payload = parts[0], StartIndex = 0, EndIndex = (parts[0].Length - 1) };
+                    ParseTO tmpTo = new ParseTO { Payload = parts[0], StartIndex = 0, EndIndex = (parts[0].Length - 1) };
 
                     var isRecName = (isRs && rawSearch.Contains(DataListUtil.RecordsetIndexOpeningBracket) && rawSearch.EndsWith(DataListUtil.RecordsetIndexClosingBracket));
 
@@ -1079,7 +995,7 @@ namespace Dev2.Data.Parsers
 
                     try
                     {
-                        IsValidIndex(tmpTO);
+                        IsValidIndex(tmpTo);
                     }
                     catch(Dev2DataLanguageParseError e)
                     {
@@ -1135,18 +1051,8 @@ namespace Dev2.Data.Parsers
                                     string match = t.Name.ToLower();
                                     if(match.Contains(search) && ((match != search) || (match == search && addCompleteParts)))
                                     {
-                                        string index;
-
                                         // set recordset index
-                                        if(payload.Child != null)
-                                        {
-                                            index = payload.Child.Payload;
-                                        }
-                                        else
-                                        {
-                                            // we have an * or int index
-                                            index = DataListUtil.ExtractIndexRegionFromRecordset(parts[0]);
-                                        }
+                                        string index = payload.Child != null ? payload.Child.Payload : DataListUtil.ExtractIndexRegionFromRecordset(parts[0]);
 
                                         IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(partName, t.Name, t.Description, index);
                                         result.Add(IntellisenseFactory.CreateSelectableResult((parts[0].Length), payload.EndIndex, part, part.Description));
@@ -1162,14 +1068,7 @@ namespace Dev2.Data.Parsers
                         if(result.Count == 0 && !emptyOk)
                         {
                             IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(parts[0], search);
-                            if(Char.IsNumber(search[0]))
-                            {
-                                result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, (parts[0].Length - 1), part, "Invalid Expression: Recordset Field [ " + search + " ] starts with a number", enIntellisenseErrorCode.SyntaxError, (!payload.HangingOpen)));
-                            }
-                            else
-                            {
-                                result.Add(IntellisenseFactory.CreateErrorResult((parts[0].Length), payload.EndIndex, part, "Recordset Field [ " + search + " ] does not exist for [ " + parts[0] + " ]", enIntellisenseErrorCode.FieldNotFound, (!payload.HangingOpen)));
-                            }
+                            result.Add(Char.IsNumber(search[0]) ? IntellisenseFactory.CreateErrorResult(payload.StartIndex, (parts[0].Length - 1), part, "Invalid Expression: Recordset Field [ " + search + " ] starts with a number", enIntellisenseErrorCode.SyntaxError, (!payload.HangingOpen)) : IntellisenseFactory.CreateErrorResult((parts[0].Length), payload.EndIndex, part, "Recordset Field [ " + search + " ] does not exist for [ " + parts[0] + " ]", enIntellisenseErrorCode.FieldNotFound, (!payload.HangingOpen)));
                         }
                     }
                     else
@@ -1281,6 +1180,10 @@ namespace Dev2.Data.Parsers
                         {
                             return intellisenseResult;
                         }
+                        if(name.ContainsUnicodeCharacter())
+                        {
+                            return intellisenseResult;
+                        }
                         XmlConvert.VerifyName(name);
 
                     }
@@ -1304,7 +1207,7 @@ namespace Dev2.Data.Parsers
         private IIntellisenseResult AddErrorToResults(bool isRs, string part, Dev2DataLanguageParseError e, bool isOpen)
         {
             // add error
-            IDataListVerifyPart pTO;
+            IDataListVerifyPart pTo;
             if(isRs)
             {
                 int start = part.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
@@ -1313,14 +1216,14 @@ namespace Dev2.Data.Parsers
                 {
                     rs = rs.Substring(0, start);
                 }
-                pTO = IntellisenseFactory.CreateDataListValidationRecordsetPart(rs, "", "");
+                pTo = IntellisenseFactory.CreateDataListValidationRecordsetPart(rs, "", "");
             }
             else
             {
-                pTO = IntellisenseFactory.CreateDataListValidationScalarPart(part.Replace("]", ""));
+                pTo = IntellisenseFactory.CreateDataListValidationScalarPart(part.Replace("]", ""));
             }
 
-            return IntellisenseFactory.CreateErrorResult(e.StartIndex, e.EndIndex, pTO, e.Message, e.ErrorCode, isOpen);
+            return IntellisenseFactory.CreateErrorResult(e.StartIndex, e.EndIndex, pTo, e.Message, e.ErrorCode, isOpen);
         }
 
         /// <summary>

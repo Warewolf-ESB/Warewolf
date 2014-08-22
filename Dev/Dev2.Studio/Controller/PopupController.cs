@@ -154,6 +154,15 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public void ShowInvalidCharacterMessage(string invalidText)
+        {
+            Description = string.Format("{0} is invalid. Warewolf only supports latin characters", invalidText);
+            Header = "Invalid text";
+            Buttons = MessageBoxButton.OK;
+            ImageType = MessageBoxImage.Error;
+            Show();
+        }
+
         public MessageBoxResult ShowDeleteVersionMessage(string displayName)
         {
             Header = "Delete version";

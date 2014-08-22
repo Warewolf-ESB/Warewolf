@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Dev2.Data.Interfaces;
 using Dev2.Data.TO;
 
 
@@ -15,18 +14,10 @@ namespace Dev2.DataList.Contract
         /// <param name="payload">The payload.</param>
         /// <param name="dataList">The data list.</param>
         /// <param name="addCompleteParts">if set to <c>true</c> [add complete parts].</param>
-        /// <param name="fiterTO">The filter TO.</param>
+        /// <param name="filterTo">The filter TO.</param>
         /// <param name="isFromIntellisense"></param>
         /// <returns></returns>
-        IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO fiterTO = null, bool isFromIntellisense = false);
-
-        /// <summary>
-        /// Parses for missing data list items.
-        /// </summary>
-        /// <param name="parts">The parts.</param>
-        /// <param name="dataList">The data list.</param>
-        /// <returns></returns>
-        IList<IIntellisenseResult> ParseForMissingDataListItems(IList<IDataListVerifyPart> parts, string dataList);
+        IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string payload, string dataList, bool addCompleteParts = false, IntellisenseFilterOpsTO filterTo = null, bool isFromIntellisense = false);
 
         /// <summary>
         /// Makes the parts.

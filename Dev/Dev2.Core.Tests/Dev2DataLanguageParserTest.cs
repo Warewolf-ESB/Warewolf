@@ -1,6 +1,5 @@
 ﻿using Dev2.Common;
 using Dev2.Data.Enums;
-using Dev2.Data.Interfaces;
 using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -42,11 +41,7 @@ namespace Dev2.Tests
             return DataListFactory.CreateLanguageParser().ParseDataLanguageForIntellisense(transform, dataList, addCompleteParts, filterOps, isFromIntellisense);
         }
 
-        private IList<IIntellisenseResult> ParseForMissingDataListItems(IList<IDataListVerifyPart> parts, string dataList)
-        {
-            return DataListFactory.CreateLanguageParser().ParseForMissingDataListItems(parts, dataList);
-        }
-
+        
         #region recordset test
 
         [TestMethod]
@@ -552,10 +547,10 @@ namespace Dev2.Tests
             const string payload = "[[recset([[s";
             IList<IIntellisenseResult> result = ParseDataLanguageForIntellisense(payload, dl, false, true);
 
-            Assert.AreEqual(6,result.Count);
-            Assert.AreEqual("[[recset(",result[0].Option.DisplayValue);
-            Assert.AreEqual("[[recset(*).f1]]",result[2].Option.DisplayValue);
-            Assert.AreEqual("[[scalar]]",result[5].Option.DisplayValue);
+            Assert.AreEqual(6, result.Count);
+            Assert.AreEqual("[[recset(", result[0].Option.DisplayValue);
+            Assert.AreEqual("[[recset(*).f1]]", result[2].Option.DisplayValue);
+            Assert.AreEqual("[[scalar]]", result[5].Option.DisplayValue);
         }
 
         // Bug : 5793 - Travis.Frisinger : 19.10.2012
@@ -666,7 +661,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             var dev2LanuageParser = new Dev2DataLanguageParser();
             //------------Execute Test---------------------------
-            var parts = dev2LanuageParser.ParseDataLanguageForIntellisense("","");
+            var parts = dev2LanuageParser.ParseDataLanguageForIntellisense("", "");
             //------------Assert Results-------------------------
             Assert.AreEqual(0, parts.Count);
         }
@@ -764,45 +759,6 @@ namespace Dev2.Tests
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2DataLanguageParser_ParseForMissingDataListItems")]
-        public void Dev2DataLanguageParser_ParseForMissingDataListItems_PartsIsNull_NoIntellisenseResult()
-        {
-            //------------Setup for test--------------------------
-            var dev2LanuageParser = new Dev2DataLanguageParser();
-            //------------Execute Test---------------------------
-            var parts = dev2LanuageParser.ParseForMissingDataListItems(null, "<a></a>");
-            //------------Assert Results-------------------------
-            Assert.AreEqual(0, parts.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2DataLanguageParser_ParseForMissingDataListItems")]
-        public void Dev2DataLanguageParser_ParseForMissingDataListItems_DataListIsEmpty_NoIntellisenseResult()
-        {
-            //------------Setup for test--------------------------
-            var dev2LanuageParser = new Dev2DataLanguageParser();
-            //------------Execute Test---------------------------
-            var parts = dev2LanuageParser.ParseForMissingDataListItems(new List<IDataListVerifyPart>(), "");
-            //------------Assert Results-------------------------
-            Assert.AreEqual(0, parts.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
-        [TestCategory("Dev2DataLanguageParser_ParseForMissingDataListItems")]
-        public void Dev2DataLanguageParser_ParseForMissingDataListItems_DataListIsNull_NoIntellisenseResult()
-        {
-            //------------Setup for test--------------------------
-            var dev2LanuageParser = new Dev2DataLanguageParser();
-            //------------Execute Test---------------------------
-            var parts = dev2LanuageParser.ParseForMissingDataListItems(new List<IDataListVerifyPart>(), null);
-            //------------Assert Results-------------------------
-            Assert.AreEqual(0, parts.Count);
-        }
-
-        [TestMethod]
-        [Owner("Tshepo Ntlhokoa")]
         [TestCategory("Dev2DataLanguageParser_ValidateName")]
         public void Dev2DataLanguageParser_ValidateName_NameIsNull_Null()
         {
@@ -812,6 +768,21 @@ namespace Dev2.Tests
             var res = dev2LanuageParser.ValidateName(null, "");
             //------------Assert Results-------------------------
             Assert.IsNull(res);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("Dev2DataLanguageParser_ValidateName")]
+        public void Dev2DataLanguageParser_ValidateName_NotLatinCharacter_ShowMessageBox_TextMadeEmpty()
+        {
+            //------------Setup for test--------------------------          
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            const string Text = "أَبْجَدِي";
+            //------------Execute Test---------------------------
+            var intellisenseResult = dev2LanuageParser.ValidateName(Text, "");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(intellisenseResult);
+            Assert.AreEqual(enIntellisenseErrorCode.SyntaxError, intellisenseResult.ErrorCode);
         }
 
         [TestMethod]
@@ -1003,36 +974,6 @@ namespace Dev2.Tests
         #endregion
 
         #region FindMissing
-        [TestMethod]
-        public void Verify_Region_Find__Two_Missing_Scalars()
-        {
-
-            const string DL = "<ADL><fname/><lname/></ADL>";
-
-            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
-
-            parts.Add(IntellisenseFactory.CreateDataListValidationScalarPart("abc"));
-            parts.Add(IntellisenseFactory.CreateDataListValidationScalarPart("def"));
-
-            IList<IIntellisenseResult> result = ParseForMissingDataListItems(parts, DL);
-
-            Assert.IsTrue(result.Count == 2 && result[0].ErrorCode == enIntellisenseErrorCode.ScalarNotFound && result[1].ErrorCode == enIntellisenseErrorCode.ScalarNotFound);
-        }
-
-        [TestMethod]
-        public void Verify_Region_Find_Missing_Recordset()
-        {
-
-            const string DL = "<ADL><fname/><lname/></ADL>";
-
-            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
-
-            parts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart("cars", "abc"));
-
-            IList<IIntellisenseResult> result = ParseForMissingDataListItems(parts, DL);
-
-            Assert.IsTrue(result.Count == 1 && result[0].ErrorCode == enIntellisenseErrorCode.NeitherRecordsetNorFieldFound);
-        }
 
         //2013.05.31: Ashley Lewis for bug 9472
         [TestMethod]
@@ -1045,21 +986,6 @@ namespace Dev2.Tests
             Assert.IsNull(result.FirstOrDefault(intellisenseResults => intellisenseResults.Option.DisplayValue == "[[recset()]]"));
         }
 
-        [TestMethod]
-        public void Verify_Region_Find_Missing_Recordset_Field()
-        {
-
-            const string DL = "<ADL><fname/><lname/><cars><foo/></cars></ADL>";
-
-            IList<IDataListVerifyPart> parts = new List<IDataListVerifyPart>();
-
-            parts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart("cars", "bar"));
-
-            IList<IIntellisenseResult> result = ParseForMissingDataListItems(parts, DL);
-
-            Assert.IsTrue(result.Count == 1);
-            Assert.IsTrue(result[0].ErrorCode == enIntellisenseErrorCode.NeitherRecordsetNorFieldFound);
-        }
 
         #endregion
 

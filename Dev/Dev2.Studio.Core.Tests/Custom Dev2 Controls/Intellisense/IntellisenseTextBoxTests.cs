@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Dev2.Core.Tests.Utils;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.ViewModels.DataList;
@@ -32,6 +33,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            CustomContainer.Register<IPopupController>(new Mock<IPopupController>().Object);
         }
 
         [TestCleanup]
@@ -192,8 +194,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsButTextIsScalar_ToolTipHasErrorMessage()
         {
-            var textBox = new IntellisenseTextBox();
-            textBox.FilterType = enIntellisensePartType.RecordsetFields;
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
             textBox.EnsureIntellisenseResults("[[var]]", false, IntellisenseDesiredResultSet.Default);
             Assert.IsTrue(textBox.HasError);
         }
@@ -203,8 +204,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsRecordsetFieldsAndTextIsRecordset_ToolTipHasNoErrorMessage()
         {
-            var textBox = new IntellisenseTextBox();
-            textBox.FilterType = enIntellisensePartType.RecordsetFields;
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
             textBox.EnsureIntellisenseResults("[[var()]]", false, IntellisenseDesiredResultSet.Default);
             Assert.IsFalse(textBox.HasError);
         }
@@ -215,11 +215,8 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         public void IntellisenseTextBox_KeyDown_CannotWrapInBracketsWhenNotFSix()
         {
             //------------Setup for test--------------------------
-            var textBox = new IntellisenseTextBox();
-            textBox.FilterType = enIntellisensePartType.RecordsetFields;
-            textBox.WrapInBrackets = true;
-            textBox.Text = "var()";
-          //------------Execute Test---------------------------
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields, WrapInBrackets = true, Text = "var()" };
+            //------------Execute Test---------------------------
             textBox.HandleWrapInBrackets(Key.F10);
             //------------Assert Results-------------------------
             Assert.AreEqual("var()", textBox.Text);
@@ -229,7 +226,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBox_KeyDown")]
         public void IntellisenseTextBox_KeyDown_CannotCauseWrapInBrackets_WhenWrapInBrackets()
         {
-   
+
             RunWrappedKeyPress(Key.F6);
             RunWrappedKeyPress(Key.F7);
         }
@@ -237,10 +234,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         private static void RunWrappedKeyPress(Key key)
         {
             //------------Setup for test--------------------------
-            var textBox = new IntellisenseTextBox();
-            textBox.FilterType = enIntellisensePartType.RecordsetFields;
-            textBox.WrapInBrackets = false;
-            textBox.Text = "var()";
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields, WrapInBrackets = false, Text = "var()" };
             //------------Execute Test---------------------------
             textBox.HandleWrapInBrackets(key);
             //------------Assert Results-------------------------
@@ -253,10 +247,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         public void IntellisenseTextBox_KeyDown_CannotCauseWrapInBrackets_WhenNotWrapInBrackets()
         {
             //------------Setup for test--------------------------
-            var textBox = new IntellisenseTextBox();
-            textBox.FilterType = enIntellisensePartType.RecordsetFields;
-            textBox.WrapInBrackets = false;
-            textBox.Text = "var()";
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields, WrapInBrackets = false, Text = "var()" };
             //------------Execute Test---------------------------
             textBox.HandleWrapInBrackets(Key.F6);
             //------------Assert Results-------------------------
@@ -327,8 +318,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyAndTextIsScalar_ToolTipHasNoErrorMessage()
         {
-            var textBox = new IntellisenseTextBox();
-            textBox.FilterType = enIntellisensePartType.ScalarsOnly;
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.ScalarsOnly };
             textBox.EnsureIntellisenseResults("[[var]]", false, IntellisenseDesiredResultSet.Default);
             Assert.IsFalse(textBox.HasError);
         }
@@ -338,8 +328,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestCategory("IntellisenseTextBoxTests_SetText")]
         public void IntellisenseTextBoxTests_SetText_FilterTypeIsScalarsOnlyButTextIsRecordset_ToolTipHaErrorMessage()
         {
-            var textBox = new IntellisenseTextBox();
-            textBox.FilterType = enIntellisensePartType.ScalarsOnly;
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.ScalarsOnly };
             textBox.EnsureIntellisenseResults("[[var()]]", false, IntellisenseDesiredResultSet.Default);
             Assert.IsTrue(textBox.HasError);
 
@@ -462,6 +451,29 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             textBox.InsertItem(intellisenseProviderResult, false);
             //------------Assert Results-------------------------
             Assert.AreEqual("dd yyyy", textBox.Text);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("IntellisenseTextBox_Text")]
+        public void IntellisenseTextBox_Text_NotLatinCharacter_ShowMessageBox_TextMadeEmpty()
+        {
+            //------------Setup for test--------------------------            
+            CustomContainer.DeRegister<IPopupController>();
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(controller => controller.ShowInvalidCharacterMessage(It.IsAny<string>()));
+            CustomContainer.Register<IPopupController>(mockPopupController.Object);
+            Mock<IIntellisenseProvider> intellisenseProvider = new Mock<IIntellisenseProvider>();
+            intellisenseProvider.Setup(a => a.HandlesResultInsertion).Returns(false);
+            //------------Execute Test---------------------------
+            IntellisenseTextBox textBox = new IntellisenseTextBox();
+            textBox.CreateVisualTree();
+            textBox.Text = "أَبْجَدِي";
+            var checkHasUnicodeInText = textBox.CheckHasUnicodeInText(textBox.Text);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(checkHasUnicodeInText);
+            Assert.AreEqual("", textBox.Text);
+            mockPopupController.Verify(controller => controller.ShowInvalidCharacterMessage(It.IsAny<string>()), Times.AtLeastOnce());
         }
 
         [TestMethod]

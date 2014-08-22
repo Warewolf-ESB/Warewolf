@@ -39,5 +39,13 @@ namespace Dev2
             }
             return null;
         }
+
+        public static void DeRegister<T>()
+        {
+            if(RegisterdTypes.ContainsKey(typeof(T)))
+            {
+                RegisterdTypes.Remove(typeof(T));
+            }
+        }
     }
 }

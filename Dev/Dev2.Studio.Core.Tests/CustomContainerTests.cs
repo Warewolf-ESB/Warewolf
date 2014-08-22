@@ -21,11 +21,29 @@ namespace Dev2.Core.Tests
         public void CustomContainer_Register_TypeOnce_OneEntryIsRegistered()
         {
             //------------Setup for test--------------------------
-           var o = new SimpleObject();
+            var o = new SimpleObject();
             //------------Execute Test---------------------------
             CustomContainer.Register<ISimpleObject>(o);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, CustomContainer.EntiresCount);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("CustomContainer_Deregister")]
+        public void CustomContainer_Deregister_TypeExists_TypeRemoved()
+        {
+            //------------Setup for test--------------------------
+            var o = new SimpleObject();
+            CustomContainer.Register<ISimpleObject>(o);
+            var simpleObject = CustomContainer.Get<ISimpleObject>();
+            //------------Preconditions--------------------------
+            Assert.IsNotNull(simpleObject);
+            //------------Execute Test---------------------------
+            CustomContainer.DeRegister<ISimpleObject>();
+            //------------Assert Results-------------------------
+            var objectAfterDeregister = CustomContainer.Get<ISimpleObject>();
+            Assert.IsNull(objectAfterDeregister);
         }
 
         [TestMethod]

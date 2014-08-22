@@ -2,6 +2,8 @@
 using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable CheckNamespace
 namespace Dev2.Common.Test
 {
     [TestClass]
@@ -84,7 +86,7 @@ namespace Dev2.Common.Test
         public void StringExtensions_Escape_EscapeXml_XmlIsEscaped()
         {
             //------------Setup for test--------------------------
-            string xml = @"<ResourceXml><Service ID=""9e62d8ec-41f1-4613-8439-1f9f7c6a2c68"" Version=""1.0"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" Name=""ForEachUpgradeTest"" ResourceType=""WorkflowService"" IsValid=""true"">
+            const string xml = @"<ResourceXml><Service ID=""9e62d8ec-41f1-4613-8439-1f9f7c6a2c68"" Version=""1.0"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"" Name=""ForEachUpgradeTest"" ResourceType=""WorkflowService"" IsValid=""true"">
   <DisplayName>ForEachUpgradeTest</DisplayName>
   <Category>Mo</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -103,6 +105,19 @@ namespace Dev2.Common.Test
 
             StringAssert.Contains(actual, "&gt;");
             StringAssert.Contains(actual, "&lt;");
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("StringExtension_Text")]
+        public void StringExtensions_Text_NotLatinCharacter_ShowMessageBox_TextMadeEmpty()
+        {
+            //------------Setup for test--------------------------            
+            const string Text = "أَبْجَدِي";
+            //------------Execute Test---------------------------
+            var checkHasUnicodeInText = Text.ContainsUnicodeCharacter();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(checkHasUnicodeInText);
         }
     }
 }
