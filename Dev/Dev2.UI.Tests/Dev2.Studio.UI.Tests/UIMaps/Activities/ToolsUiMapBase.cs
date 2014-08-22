@@ -42,12 +42,12 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public void EnterVariables(string variables)
         {
-            GetQuickVariableInputView().FindByAutomationId("QviVariableListBox").EnterText(variables);
+            GetQuickVariableInputView().FindByAutomationId("QviVariableListBox", false).EnterText(variables);
         }
 
         public void SelectSplitOn(int index)
         {
-            WpfComboBox comboBox = GetQuickVariableInputView().FindByAutomationId("QviSplitOnCombobox") as WpfComboBox;
+            WpfComboBox comboBox = GetQuickVariableInputView().FindByAutomationId("QviSplitOnCombobox", false) as WpfComboBox;
             if(comboBox != null)
             {
                 comboBox.SelectedIndex = index;
@@ -56,17 +56,17 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         public void EnterSplitCharacter(string splitChar)
         {
-            GetQuickVariableInputView().FindByAutomationId("QviSplitOnCharacter").EnterText(splitChar);
+            GetQuickVariableInputView().FindByAutomationId("QviSplitOnCharacter", false).EnterText(splitChar);
         }
 
         public void SelectReplaceOption()
         {
-            GetQuickVariableInputView().FindByAutomationId("ReplaceOption").Click();
+            GetQuickVariableInputView().FindByAutomationId("ReplaceOption", false).Click();
         }
 
         public void SelectAppendOption()
         {
-            GetQuickVariableInputView().FindByAutomationId("AppendOption").Click();
+            GetQuickVariableInputView().FindByAutomationId("AppendOption", false).Click();
         }
 
         public void ClickAddButton()

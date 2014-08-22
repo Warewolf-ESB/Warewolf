@@ -28,7 +28,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         public void AddAResource(string serverName, string serviceType, string folderName, string projectName)
         {
             UITestControl addResourcePopupWindow = GetPopupWindow();
-            var searchResourceTextBox = addResourcePopupWindow.FindByAutomationId(DataListSearchTextBoxId);
+            var searchResourceTextBox = addResourcePopupWindow.FindByAutomationId(DataListSearchTextBoxId, false);
             searchResourceTextBox.EnterText(projectName);
             DoubleClickOpenProject(serverName, serviceType, folderName, projectName);
         }
@@ -63,7 +63,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             Playback.Wait(200);
 
             var args = new List<string> { serverName, folderName, projectName };
-            var parent = StudioWindow.GetChildren()[0].FindByAutomationId("Navigation");
+            var parent = StudioWindow.GetChildren()[0].FindByAutomationId("Navigation", false);
 
             foreach(var arg in args)
             {

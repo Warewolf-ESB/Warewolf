@@ -73,7 +73,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 
         WpfButton GetDoneButton()
         {
-            UITestControl doneButton = Activity.FindByAutomationId("DoneButton");
+            UITestControl doneButton = Activity.FindByAutomationId("DoneButton", false);
             return doneButton as WpfButton;
         }
 

@@ -33,10 +33,10 @@ namespace Dev2.Studio.UI.Tests.Extensions
             return control;
         }
 
-        public static UITestControl FindByAutomationId(this UITestControl container, string automationId)
+        public static UITestControl FindByAutomationId(this UITestControl container, string automationId, bool returnNullIfNotFound)
         {
             List<UITestControl> parentCollection = container.GetChildren()
-                                                            .Where(c => !(c is WpfListItem) && c is WpfControl)
+                                                            .Where(c => c is WpfControl)
                                                             .ToList();
 
             var control = parentCollection.FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
@@ -65,7 +65,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 }
             }
 
-            if(control == null)
+            if(control == null && !returnNullIfNotFound)
             {
                 string message = string.Format("Control with automation id : [{0}] was not found", automationId);
                 throw new Exception(message);
@@ -117,26 +117,32 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static void Click(this UITestControl control)
         {
-            control.SetFocus();
-            Point point;
-            if(control.TryGetClickablePoint(out point))
+            if(control is WpfListItem)
             {
-                point.Offset(control.Left, control.Top);
-                Mouse.Move(point);
-                Mouse.Click();
+                var uiTestControl = control.GetParent();
+                Mouse.Click(uiTestControl, new Point(5, 5));
             }
-            else
+
+            Mouse.Click(control, new Point(5, 5));
+            var checkBox = control as WpfCheckBox;
+            var combobox = control as WpfComboBox;
+            var wpfListItem = control as WpfListItem;
+            if(checkBox == null && combobox == null && wpfListItem == null)
             {
-                throw new Exception("Cannot get clickable point on control");
+                var clickablePoint = control.GetClickablePoint();
+                clickablePoint.Offset(5, 5);
+                Mouse.Click(control, clickablePoint);
+                Playback.Wait(100);
             }
         }
 
         public static void DoubleClick(this UITestControl control)
         {
-            Point point = new Point(control.BoundingRectangle.X + 20, control.BoundingRectangle.Y + 5);
-            Mouse.Move(point);
-            Mouse.Click();
-            Mouse.DoubleClick();
+            Mouse.Click(control, new Point(5, 5));
+            var clickablePoint = control.GetClickablePoint();
+            clickablePoint.Offset(5, 5);
+            Mouse.DoubleClick(control, clickablePoint);
+            Playback.Wait(100);
         }
 
         public static void EnterText(this UITestControl control, string text)
@@ -228,6 +234,18 @@ namespace Dev2.Studio.UI.Tests.Extensions
             }
 
             return editControl.Text;
+        }
+
+        public static void Select(this UITestControl control, int selectedIndex)
+        {
+            var editControl = control as WpfComboBox;
+
+            if(editControl == null)
+            {
+                throw new Exception("This is not an editable control");
+            }
+
+            editControl.SelectedIndex = selectedIndex;
         }
     }
 }

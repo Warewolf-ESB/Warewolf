@@ -83,9 +83,10 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// <param name="singleSearch">if set to <c>true</c> [single search].</param>
         /// <param name="splitPaneIndex">Index of the split pane.</param>
         /// <param name="startControl"></param>
+        /// <param name="returnNullIfNotFound"></param>
         /// <param name="automationIDs">The automation attribute ds.</param>
         /// <returns></returns>
-        public static UITestControl GetControlFromRoot(bool singleSearch, int splitPaneIndex, UITestControl startControl, params string[] automationIDs)
+        public static UITestControl GetControlFromRoot(bool singleSearch, int splitPaneIndex, UITestControl startControl, bool returnNullIfNotFound, params string[] automationIDs)
         {
             if(_studioWindow == null)
             {
@@ -108,7 +109,11 @@ namespace Dev2.Studio.UI.Tests.Utils
                     {
                         var wpfControl = startControl ?? _studioWindow;
                         var automationId = automationIDs[automationCounter];
-                        theControl = wpfControl.FindByAutomationId(automationId);
+                        theControl = wpfControl.FindByAutomationId(automationId, returnNullIfNotFound);
+                        if(theControl == null && returnNullIfNotFound)
+                        {
+                            return null;
+                        }
                         startControl = theControl;
                         automationCounter++;
                     }
@@ -116,6 +121,11 @@ namespace Dev2.Studio.UI.Tests.Utils
                 }
             }
             return null;
+        }
+
+        public static UITestControl GetControlFromRoot(bool singleSearch, int splitPaneIndex, UITestControl startControl, params string[] automationIDs)
+        {
+            return GetControlFromRoot(singleSearch, splitPaneIndex,startControl , false , automationIDs);
         }
     }
 }

@@ -2,7 +2,6 @@
 {
     using Microsoft.VisualStudio.TestTools.UITesting;
     using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
-    using System;
     using System.Drawing;
     using System.Windows.Forms;
     using Mouse = Microsoft.VisualStudio.TestTools.UITesting.Mouse;

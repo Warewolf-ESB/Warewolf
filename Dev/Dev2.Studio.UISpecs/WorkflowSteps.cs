@@ -14,7 +14,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security;
-using System.Windows.Forms;
 using TechTalk.SpecFlow;
 using System.Threading;
 
@@ -26,9 +25,13 @@ namespace Dev2.Studio.UI.Specs
         // ReSharper disable ConvertToConstant.Local
         // ReSharper disable UnusedMember.Local
 #pragma warning disable 414
-        static readonly string Explorer = "UI_DocManager_AutoID,Z36cf62ce32e24feebe226c0106caa25c,Z03b228452a964fd09950ef234c1f37d3,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID";
+        static readonly string Explorer = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID";
+        static readonly string ExplorerConnectControl = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID";
+        static readonly string ExplorerConnectProgress = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_IndicatorConnecting_AutoID";
         static readonly string Toolbox = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
-        static readonly string Worksurface = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner)";
+        //static readonly string WorkflowDesigner = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
+        static readonly string WorkflowDesigner = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,ActivityTypeDesigner,WorkflowItemPresenter";
+        static readonly string Worksurface = WorkflowDesigner + ",Unsaved 1(FlowchartDesigner)";
         static readonly string DebugOutput = "MainViewWindow,UI_DocManager_AutoID,Z36cf62ce32e24feebe226c0106caa25c,Z03b228452a964fd09950ef234c1f37d3,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string TabActive = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
@@ -58,7 +61,7 @@ namespace Dev2.Studio.UI.Specs
         //Settings Tab
         static readonly string SettingsTab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SettingsView_AutoID";
         static readonly string SettingsServerPermissions = "SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID";
-        //SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID
+        static readonly string SecurityViewContent = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID";
         static readonly string SecurityPublicView = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
         static readonly string SecurityPublicExecute = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
         static readonly string SecurityPublicContribute = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
@@ -66,7 +69,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string SecurityPublicDeployTo = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
         static readonly string SecurityPublicDeployFrom = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
 
-        static readonly string SecuritySave = "UI_SaveSettingsbtn_AutoID";
+        static readonly string SecuritySave = "ACTIVETAB,UI_SettingsView_AutoID,UI_SaveSettingsbtn_AutoID";
         static readonly string SecurityDelete = SettingsTab + ",UI_AddRemovebtn_AutoID";
         static readonly string SecurityResourcePicker = SettingsTab + ",UI_AddResourceToSecuritySettingsbtn_AutoID";
         static readonly string SecurityWindowsGrouppicker = SettingsTab + "UI__AddWindowsGroupButton_AutoID";
@@ -124,7 +127,8 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ResourcePickerFilter = ResourcePicker + ",UI_NavigationViewUserControl_AutoID,FilterTextBox,UI_DataListSearchtxt_AutoID";
         static readonly string ResourcePickerFolders = ResourcePicker + ",UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID";
         static readonly string ResourcePickerOkButton = ResourcePicker + ",UI_SelectServiceOKButton_AutoID";
-        
+
+
         int _retryCount;
 #pragma warning restore 414
 
@@ -289,13 +293,11 @@ namespace Dev2.Studio.UI.Specs
         {
             var correctedAutoIds = GetCorrect(automationIds).Split(',');
             var startControl = GetStartUiTestControl(ref correctedAutoIds);
-            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, correctedAutoIds);
+            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, startControl,false, correctedAutoIds);
             if(!string.IsNullOrEmpty(automationIds))
             {
-                Mouse.Click(controlToSendData, new Point(5, 5));
-                Keyboard.SendKeys("{HOME}");
-                Keyboard.SendKeys("+{END}");
-                SendKeys.SendWait("{BACKSPACE}");
+                controlToSendData.Click();
+                // controlToSendData.EnterText("");
             }
 
             Playback.Wait(0);
@@ -307,14 +309,14 @@ namespace Dev2.Studio.UI.Specs
 
         }
 
-        WpfControl GetStartUiTestControl(ref string[] correctedAutoIds)
+        UITestControl GetStartUiTestControl(ref string[] correctedAutoIds)
         {
-            WpfControl startControl = null;
+            UITestControl startControl = null;
             if(correctedAutoIds.Any())
             {
                 if(correctedAutoIds[0] == "ACTIVETAB")
                 {
-                    startControl = TabManagerUIMap.GetActiveTab() as WpfControl;
+                    startControl = TabManagerUIMap.GetActiveTab();
                     var listOfIds = correctedAutoIds.ToList();
                     listOfIds.RemoveAt(0);
                     correctedAutoIds = listOfIds.ToArray();
@@ -329,42 +331,52 @@ namespace Dev2.Studio.UI.Specs
         [Given(@"I click")]
         public void GivenIClick(string automationIds)
         {
-            var automationIDs = GetCorrect(automationIds).Split(',');
-            var startControl = GetStartUiTestControl(ref automationIDs);
-            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, automationIDs);
-
-            Mouse.Click(controlToClick, new Point(5, 5));
-            Playback.Wait(100);
+            var controlToClick = GetAControlStrict(automationIds);
+            controlToClick.Click();
         }
 
-        [Given(@"I click on '(.*)' in ""(.*)""")]
-        [When(@"I click on '(.*)' in ""(.*)""")]
-        [Then(@"I click on '(.*)' in ""(.*)""")]
-        public void GivenIClickOn(string itemToClickAutomationId, string parentItem)
+        [Given(@"""(.*)"" is checked")]
+        [When(@"""(.*)"" is checked")]
+        [Then(@"""(.*)"" is checked")]
+        public void GivenIsChecked(string automationIds)
         {
-            var automationIDs = GetCorrect(parentItem).Split(',');
-            var startControl = GetStartUiTestControl(ref automationIDs);
-            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, automationIDs);
+            var checkBox = GetAControlStrict(automationIds) as WpfCheckBox;
+            Assert.IsNotNull(checkBox, "Control must be a combobox");
+            checkBox.Check(true);
+        }
 
-            Mouse.Click(controlToClick, new Point(5, 5));
-            Playback.Wait(200);
-            automationIDs = GetCorrect(itemToClickAutomationId).Split(',');
-            foreach(var automationId in automationIDs)
+        [Given(@"""(.*)"" is unchecked")]
+        [When(@"""(.*)"" is unchecked")]
+        [Then(@"""(.*)"" is unchecked")]
+        public void GivenIsUnchecked(string automationIds)
+        {
+            var checkBox = GetAControlStrict(automationIds) as WpfCheckBox;
+            Assert.IsNotNull(checkBox, "Control must be a check box");
+            checkBox.Check(false);
+        }
+
+        UITestControl GetAControlStrict(string automationIds)
+        {
+            var automationIDs = GetCorrect(automationIds).Split(',');
+            var startControl = GetStartUiTestControl(ref automationIDs);
+            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false, automationIDs);
+            return controlToClick;
+        }
+
+        UITestControl GetAControlRelaxed(string automationIds)
             {
-                controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, automationId);
-                startControl = controlToClick as WpfControl;
-            }
-            //controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, automationIDs);
-            Mouse.Click(controlToClick, new Point(5, 5));
-            Playback.Wait(100);
+            var automationIDs = GetCorrect(automationIds).Split(',');
+            var startControl = GetStartUiTestControl(ref automationIDs);
+            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, true, automationIDs);
+            return controlToClick;
         }
 
         [Given(@"I create a new remote connection ""(.*)"" as")]
         [When(@"I create a new remote connection ""(.*)"" as")]
         public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
         {
-            GivenIClickOn("U_UI_ExplorerServerCbx_AutoID_New Remote Server...", "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,Explorer,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID");
-            Playback.Wait(5000);
+            GivenIClick("UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...");
+            Playback.Wait(3000);
             var serverDetailsRow = table.Rows[0];
             NewServerUIMap.ClearServerAddress();
             NewServerUIMap.EnterServerAddress(serverDetailsRow["Address"]);
@@ -383,6 +395,15 @@ namespace Dev2.Studio.UI.Specs
             Playback.Wait(1500);
             NewServerUIMap.ClickSave();
             Playback.Wait(1500);
+            var spinnerControl = GetAControlStrict(ExplorerConnectProgress);
+            Assert.IsNotNull(spinnerControl, "Server is not connecting after creating a source ...");
+            var canExit = false;
+            while(!canExit)
+            {
+                Playback.Wait(500);
+                spinnerControl = GetAControlStrict(ExplorerConnectProgress);
+                canExit = spinnerControl.State == ControlStates.Offscreen;
+            }
         }
 
         [Given(@"I close Studio")]
@@ -457,10 +478,11 @@ namespace Dev2.Studio.UI.Specs
             var startControlDragDestination = GetStartUiTestControl(ref correctedDragDestinationAutoIds);
 
 
-            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem, correcteddDragItemAutoIds);
-            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination, correctedDragDestinationAutoIds);
+            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem,false, correcteddDragItemAutoIds);
+            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination,false, correctedDragDestinationAutoIds);
 
-            Mouse.Click(itemToDrag, new Point(15, 15));
+            itemToDrag.Click();
+            //Mouse.Click(itemToDrag, new Point(15, 15));
             var clickablePoint = itemToDrag.GetClickablePoint();
             Mouse.StartDragging(itemToDrag, clickablePoint);
 
@@ -481,18 +503,39 @@ namespace Dev2.Studio.UI.Specs
         {
             var correcteddItemToDoubleClickAutoIds = GetCorrect(itemToDoubleClickAutoIds).Split(',');
             var startControl = GetStartUiTestControl(ref correcteddItemToDoubleClickAutoIds);
-            var itemToDoubleClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, correcteddItemToDoubleClickAutoIds);
-            var clickablePoint = itemToDoubleClick.GetClickablePoint();
-            clickablePoint.Offset(5, 5);
-            Mouse.DoubleClick(itemToDoubleClick, clickablePoint);
+            var itemToDoubleClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false, correcteddItemToDoubleClickAutoIds);
+            itemToDoubleClick.DoubleClick();
+        }
 
+        [Then(@"""(.*)"" is visible within ""(.*)"" seconds")]
+        [Given(@"""(.*)"" is visible within ""(.*)"" seconds")]
+        [When(@"""(.*)"" is visible within ""(.*)"" seconds")]
+        public void ThenIsVisibleWithinSeconds(string itemToFindAutoIds, int seconds)
+        {
+            long timetolookup = seconds * 1000;
+            var stopWatch = Stopwatch.StartNew();
+            while(timetolookup > 0)
+            {
+                var control = GetAControlRelaxed(itemToFindAutoIds);
+                if(control != null)
+                {
+                    break;
+                }
+                timetolookup -= stopWatch.ElapsedMilliseconds;
+            }
+            stopWatch.Stop();
+            if(timetolookup <= 0)
+            {
+                string message = string.Format("{0} - Was not visible within {1} seconds", itemToFindAutoIds, seconds);
+                Assert.Fail(message);
+            }
         }
 
         [Then(@"""(.*)"" is visible")]
         public void ThenIsVisible(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
             Assert.IsNotNull(itemFound);
         }
 
@@ -500,7 +543,7 @@ namespace Dev2.Studio.UI.Specs
         public void ThenIsNotVisible(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null,false, correctedditemToFindAutoIds);
             Assert.IsNull(itemFound);
         }
 
@@ -508,7 +551,7 @@ namespace Dev2.Studio.UI.Specs
         public void ThenIsEnabled(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null,false, correctedditemToFindAutoIds);
             Assert.IsNotNull(itemFound);
             Assert.IsTrue(itemFound.IsEnabled());
         }
@@ -517,7 +560,7 @@ namespace Dev2.Studio.UI.Specs
         public void ThenIsDisabled(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
             Assert.IsNotNull(itemFound);
             Assert.IsFalse(itemFound.IsEnabled());
         }
@@ -526,7 +569,7 @@ namespace Dev2.Studio.UI.Specs
         public void GivenIWaitTillIsNotVisible(string itemAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
             while(itemFound != null && itemFound.Exists)
             {
                 Playback.Wait(100);
@@ -540,7 +583,7 @@ namespace Dev2.Studio.UI.Specs
             _retryCount = 0;
             Playback.PlaybackError += PlaybackOnPlaybackError;
 
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
             if(itemFound.State != ControlStates.Invisible)
             {
                 Playback.PlaybackError -= PlaybackOnPlaybackError;
