@@ -63,7 +63,7 @@
                             <Setter Property="AutomationProperties.AutomationId">
                                 <Setter.Value>
                                     <MultiBinding StringFormat="UI_SourceServer_{0}_AutoID">
-                                        <Binding Path="DisplayName" />
+                                        <Binding Path="DisplayName" Converter="{StaticResource StringToAutomationIdConverter}" />
                                     </MultiBinding>
                                 </Setter.Value>
                             </Setter>
@@ -175,7 +175,7 @@
                             <Setter Property="AutomationProperties.AutomationId">
                                 <Setter.Value>
                                     <MultiBinding StringFormat="UI_DestinationServer_{0}_AutoID">
-                                        <Binding Path="DisplayName" />
+                                        <Binding Path="DisplayName" Converter="{StaticResource StringToAutomationIdConverter}" />
                                     </MultiBinding>
                                 </Setter.Value>
                             </Setter>
