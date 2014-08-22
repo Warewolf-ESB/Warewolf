@@ -509,6 +509,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                                     //06-12-2012 - Massimo.Guerrera - Added for PBI 6665
                                     DsfActivity d = DsfActivityFactory.CreateDsfActivity(theResource, droppedActivity, true, EnvironmentRepository.Instance, _resourceModel.Environment.IsLocalHostCheck());
                                     d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = navigationItemViewModel.ResourcePath;
+                                    if(theResource != null)
+                                    {
+                                        d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = theResource.Category;
+                                    }
                                     ExplorerItemModelToIconConverter converter = new ExplorerItemModelToIconConverter();
                                     var bitmapImage = converter.Convert(new object[] { navigationItemViewModel.ResourceType, false }, null, null, null) as BitmapImage;
                                     if(bitmapImage != null)
