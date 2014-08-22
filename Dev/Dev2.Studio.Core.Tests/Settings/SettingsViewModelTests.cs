@@ -535,6 +535,29 @@ You need Administrator permission.", viewModel.Errors);
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SettingsViewModel_IsDirty")]
+        public void SettingsViewModel_WhenIsDirtySecurityModelFiresPropertyChange_SetsSettingsViewModelIsDirty()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = CreateViewModel(CreateSettings().ToString());
+            bool _wasCalled = false;
+            viewModel.SecurityViewModel.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == "IsDirty")
+                {
+                    _wasCalled = true;
+                }
+            };
+            //------------Execute Test---------------------------
+            viewModel.SecurityViewModel.IsDirty = true;
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_wasCalled);
+            Assert.IsTrue(viewModel.IsDirty);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SettingsViewModel_IsDirty")]
         public void SettingsViewModel_IsDirty_FalseSecurityNameHasNoStar()
         {
             //------------Setup for test--------------------------

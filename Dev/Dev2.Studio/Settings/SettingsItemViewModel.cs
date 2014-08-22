@@ -1,10 +1,13 @@
-﻿using Dev2.Runtime.Configuration.ViewModels.Base;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Dev2.Annotations;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Windows;
 using System.Windows.Input;
 
 namespace Dev2.Settings
 {
-    public abstract class SettingsItemViewModel : DependencyObject
+    public abstract class SettingsItemViewModel : DependencyObject, INotifyPropertyChanged
     {
         protected SettingsItemViewModel()
         {
@@ -24,11 +27,27 @@ namespace Dev2.Settings
         public bool IsDirty
         {
             get { return (bool)GetValue(IsDirtyProperty); }
-            set { SetValue(IsDirtyProperty, value); }
+            set
+            {
+                SetValue(IsDirtyProperty, value);
+                OnPropertyChanged();
+            }
         }
 
         public static readonly DependencyProperty IsDirtyProperty = DependencyProperty.Register("IsDirty", typeof(bool), typeof(SettingsItemViewModel), new PropertyMetadata(false));
 
         protected abstract void CloseHelp();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        [NotifyPropertyChangedInvocator]
+        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            var handler = PropertyChanged;
+            if(handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }

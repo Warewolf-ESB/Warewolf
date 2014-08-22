@@ -1,8 +1,11 @@
 ﻿using Caliburn.Micro;
+using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.CustomControls.Connections;
+using Dev2.Dialogs;
 using Dev2.Settings;
 using Dev2.Settings.Security;
 using Dev2.Studio.Core.Controller;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Moq;
 using System.Windows.Forms;
@@ -30,7 +33,7 @@ namespace Dev2.Core.Tests.Settings
         public SecurityViewModel TheSecurityViewModel { get; set; }
         protected override SecurityViewModel CreateSecurityViewModel()
         {
-            return TheSecurityViewModel ?? base.CreateSecurityViewModel();
+            return TheSecurityViewModel ?? new SecurityViewModel(Settings.Security, new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
         }
 
         public void CallDeactivate()

@@ -322,9 +322,14 @@ namespace Dev2.Settings
         void AddPropertyChangedHandlers()
         {
             var isDirtyProperty = DependencyPropertyDescriptor.FromProperty(SettingsItemViewModel.IsDirtyProperty, typeof(SettingsItemViewModel));
-
-            isDirtyProperty.AddValueChanged(SecurityViewModel, OnIsDirtyPropertyChanged);
             isDirtyProperty.AddValueChanged(LoggingViewModel, OnIsDirtyPropertyChanged);
+            SecurityViewModel.PropertyChanged += (sender, args) =>
+            {
+                if(args.PropertyName == "IsDirty")
+                {
+                    OnIsDirtyPropertyChanged(null, new EventArgs());
+                }
+            };
         }
 
         void OnIsDirtyPropertyChanged(object sender, EventArgs eventArgs)

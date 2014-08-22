@@ -85,6 +85,10 @@ namespace Dev2.Network
                 var domainName = networkCredential.Domain;
                 var items = networkCredential.UserName.Split('\\');
                 var userName = networkCredential.UserName;
+                if(items.Length == 1)
+                {
+                    domainName = Environment.MachineName;
+                }
                 if(items.Length == 2)
                 {
                     domainName = items[0];

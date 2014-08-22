@@ -10,7 +10,6 @@ using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Security.Principal;
-using System.Threading;
 using TechTalk.SpecFlow;
 using SecPermissions = Dev2.Common.Interfaces.Security.Permissions;
 namespace Dev2.Activities.Specs.Permissions
@@ -74,18 +73,15 @@ namespace Dev2.Activities.Specs.Permissions
         [When(@"connected as user part of '(.*)'")]
         public void WhenConnectedAsUserPartOf(string userGroup)
         {
-            UserPrincipal userPrincipal;
-            PrincipalContext context;
-            SecurityIdentifier id;
             if(AccountExists("SpecsUser"))
             {
                 if(!IsUserInGroup("SpecsUser", userGroup))
                 {
                     try
                     {
-                        id = GetUserSecurityIdentifier("SpecsUser");
-                        context = new PrincipalContext(ContextType.Machine);
-                        userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
+                        SecurityIdentifier id = GetUserSecurityIdentifier("SpecsUser");
+                        PrincipalContext context = new PrincipalContext(ContextType.Machine);
+                        UserPrincipal userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
                         AddUserToGroup(userGroup, context, userPrincipal);
                     }
                     catch(Exception)
@@ -98,24 +94,6 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 CreateLocalWindowsAccount("SpecsUser", userGroup);
             }
-
-            id = GetUserSecurityIdentifier("SpecsUser");
-            context = new PrincipalContext(ContextType.Machine);
-            userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
-
-            if(userPrincipal != null)
-            {
-                Impersonator.RunAs(userPrincipal.DisplayName, "", "T35t3r!@#", () =>
-                {
-                    var windowsIdentity = WindowsIdentity.GetCurrent();
-                    if(windowsIdentity != null)
-                    {
-                        //windowsIdentity.AddClaim(new Claim(ClaimTypes.Role, "Users"));
-                        Thread.CurrentPrincipal = new WindowsPrincipal(windowsIdentity);
-                    }
-                });
-            }
-
             var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#")) { Name = "Other Connection" };
             reconnectModel.Connect();
             ScenarioContext.Current.Add("currentEnvironment", reconnectModel);
@@ -162,9 +140,9 @@ namespace Dev2.Activities.Specs.Permissions
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
             }
-// ReSharper disable EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
-// ReSharper restore EmptyGeneralCatchClause
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 /* Invalid user account */
             }
@@ -231,6 +209,11 @@ namespace Dev2.Activities.Specs.Permissions
                 environmentModel.ForceLoadResources();
 
             }
+            var resourceModels = environmentModel.ResourceRepository.All();
+            foreach(var resourceModel in resourceModels)
+            {
+                resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
+            }
             return environmentModel;
         }
 
@@ -292,6 +275,7 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.ForceLoadResources();
 
             var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
+            resourceModel.UserPermissions = environmentModel.AuthorizationService.GetResourcePermissions(resourceModel.ID);
             SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var permissionsString in permissionsStrings)
