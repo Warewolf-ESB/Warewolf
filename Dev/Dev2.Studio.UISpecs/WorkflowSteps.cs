@@ -341,7 +341,7 @@ namespace Dev2.Studio.UI.Specs
         }
 
 
-        [Then(@"I right click ""(.*)""")]
+        [Given(@"I right click ""(.*)""")]
         [When(@"I right click ""(.*)""")]
         [Then(@"I right click ""(.*)""")]
         public void ThenIRightClick(string automationIds)
