@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.UI.Tests.Utils;
+﻿using System.Windows.Forms;
+using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
@@ -136,9 +137,17 @@ namespace Dev2.Studio.UI.Tests.Extensions
             }
         }
 
+        public static void RightClick(this UITestControl control)
+        {
+            //Mouse.Click(control, new Point(5, 5));
+            //var clickablePoint = control.GetClickablePoint();
+            //clickablePoint.Offset(5, 5);
+            Mouse.Click(control, MouseButtons.Right);
+            Playback.Wait(100);
+        }
+
         public static void DoubleClick(this UITestControl control)
         {
-            Mouse.Click(control, new Point(5, 5));
             var clickablePoint = control.GetClickablePoint();
             clickablePoint.Offset(5, 5);
             Mouse.DoubleClick(control, clickablePoint);

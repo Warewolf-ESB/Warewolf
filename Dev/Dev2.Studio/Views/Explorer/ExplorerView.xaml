@@ -114,7 +114,7 @@
 
                         <Border.ContextMenu>
                             <!--Visibility="{Binding HasExecutableCommands, Converter={StaticResource BoolToVisConverter}}"-->
-                            <ContextMenu>
+                            <ContextMenu AutomationProperties.AutomationId ="UI_ConnectContextMenu_AutoID">
                                 <ContextMenu.Resources>
                                     <Style TargetType="{x:Type MenuItem}" >
                                         <Setter Property="HorizontalContentAlignment"

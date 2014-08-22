@@ -25,14 +25,13 @@ namespace Dev2.Studio.UI.Specs
         // ReSharper disable ConvertToConstant.Local
         // ReSharper disable UnusedMember.Local
 #pragma warning disable 414
-        static readonly string Explorer = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID";
-        static readonly string ExplorerConnectControl = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID";
-        static readonly string ExplorerConnectProgress = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_IndicatorConnecting_AutoID";
-        static readonly string Toolbox = "UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
-        //static readonly string WorkflowDesigner = "UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.Workflow.WorkflowDesignerViewModel,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
+        static readonly string Explorer = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID";
+        static readonly string ExplorerConnectControl = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID";
+        static readonly string ExplorerConnectProgress = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_IndicatorConnecting_AutoID";
+        static readonly string Toolbox = "UI_DocManager_AutoID,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
         static readonly string WorkflowDesigner = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,ActivityTypeDesigner,WorkflowItemPresenter";
         static readonly string Worksurface = WorkflowDesigner + ",Unsaved 1(FlowchartDesigner)";
-        static readonly string DebugOutput = "MainViewWindow,UI_DocManager_AutoID,Z36cf62ce32e24feebe226c0106caa25c,Z03b228452a964fd09950ef234c1f37d3,OutputPane,DebugOutput,DebugOutputTree";
+        static readonly string DebugOutput = "MainViewWindow,UI_DocManager_AutoID,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string TabActive = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
         
@@ -301,7 +300,7 @@ namespace Dev2.Studio.UI.Specs
             }
 
             Playback.Wait(0);
-            var dataToSend = GetCorrect(textToSend).Split(' ');
+            var dataToSend = GetCorrect(textToSend).Split('|');
             foreach(var text in dataToSend)
             {
                 Keyboard.SendKeys(text);
@@ -333,6 +332,22 @@ namespace Dev2.Studio.UI.Specs
         {
             var controlToClick = GetAControlStrict(automationIds);
             controlToClick.Click();
+        }
+
+        [Then(@"Wait for ""(.*)"" seconds")]
+        public void ThenWaitForSeconds(int seconds)
+        {
+            Thread.Sleep(seconds * 1000);
+        }
+
+
+        [Then(@"I right click ""(.*)""")]
+        [When(@"I right click ""(.*)""")]
+        [Then(@"I right click ""(.*)""")]
+        public void ThenIRightClick(string automationIds)
+        {
+            var controlToClick = GetAControlStrict(automationIds);
+            controlToClick.RightClick();
         }
 
         [Given(@"""(.*)"" is checked")]
