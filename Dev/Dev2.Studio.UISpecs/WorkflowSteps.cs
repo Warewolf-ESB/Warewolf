@@ -390,7 +390,7 @@ namespace Dev2.Studio.UI.Specs
         [When(@"I create a new remote connection ""(.*)"" as")]
         public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
         {
-            GivenIClick("UI_DocManager_AutoID,Zc30a7af8e0c54bb5bccfbea116f8ab0d,Zf1166e575b5d43bb89f15f346eccb7b1,Z3d0e8544bdbd4fbc8b0369ecfce4e928,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...");
+            GivenIClick("UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...");
             Playback.Wait(3000);
             var serverDetailsRow = table.Rows[0];
             NewServerUIMap.ClearServerAddress();
@@ -546,6 +546,79 @@ namespace Dev2.Studio.UI.Specs
             }
         }
 
+        [Given(@"""(.*)"" is invisible within ""(.*)"" seconds")]
+        [Then(@"""(.*)"" is invisible within ""(.*)"" seconds")]
+        [When(@"""(.*)"" is invisible within ""(.*)"" seconds")]
+        public void ThenIsInvisibleWithinSeconds(string itemToFindAutoIds, int seconds)
+        {
+            long timetolookup = seconds * 1000;
+            var stopWatch = Stopwatch.StartNew();
+            while(timetolookup > 0)
+            {
+                var control = GetAControlRelaxed(itemToFindAutoIds);
+                if(control == null)
+                {
+                    break;
+                }
+                timetolookup -= stopWatch.ElapsedMilliseconds;
+            }
+            stopWatch.Stop();
+            if(timetolookup <= 0)
+            {
+                string message = string.Format("{0} - Was not invisible within {1} seconds", itemToFindAutoIds, seconds);
+                Assert.Fail(message);
+            }
+        }
+
+        [Given(@"""(.*)"" is enabled within ""(.*)"" seconds")]
+        [Then(@"""(.*)"" is enabled within ""(.*)"" seconds")]
+        [When(@"""(.*)"" is enabled within ""(.*)"" seconds")]
+        public void ThenIsEnabledWithinSeconds(string itemToFindAutoIds, int seconds)
+        {            
+            ValidateEnableState(itemToFindAutoIds, seconds, true);
+        }
+        
+        [Given(@"""(.*)"" is disabled within ""(.*)"" seconds")]
+        [Then(@"""(.*)"" is disabled within ""(.*)"" seconds")]
+        [When(@"""(.*)"" is disabled within ""(.*)"" seconds")]
+        public void ThenIsDisabledWithinSeconds(string itemToFindAutoIds, int seconds)
+        {
+            ValidateEnableState(itemToFindAutoIds, seconds, false);
+        }
+
+        void ValidateEnableState(string itemToFindAutoIds, int seconds, bool enableState)
+        {
+            long timetolookup = seconds * 1000;
+            var stopWatch = Stopwatch.StartNew();
+            while(timetolookup > 0)
+            {
+                var control = GetAControlRelaxed(itemToFindAutoIds);
+                Assert.IsNotNull(control, "Could not find control to determine it's enable state");
+                if(control.IsEnabled() == enableState)
+                {
+                    break;
+                }
+                timetolookup -= stopWatch.ElapsedMilliseconds;
+            }
+            stopWatch.Stop();
+            if(timetolookup <= 0)
+            {
+                string message = string.Format("{0} - Was not {1} within {2} seconds", itemToFindAutoIds, enableState ? "enabled" : "disbaled", seconds);
+                Assert.Fail(message);
+            }
+        }
+
+        [Given(@"all tabs are closed")]
+        [When(@"all tabs are closed")]
+        [Then(@"all tabs are closed")]
+        public void GivenAllTabsAreClosed()
+        {
+            TabManagerUIMap.CloseAllTabs();
+        }
+
+
+        [Then(@"""(.*)"" is visible")]
+        [Then(@"""(.*)"" is visible")]
         [Then(@"""(.*)"" is visible")]
         public void ThenIsVisible(string itemToFindAutoIds)
         {

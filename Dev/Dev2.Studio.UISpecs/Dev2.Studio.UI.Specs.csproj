@@ -59,15 +59,10 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExplorerUISpecs\ExplorerUISpecs.feature.cs">
+    <Compile Include="DevToolKit.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>ExplorerUISpecs.feature</DependentUpon>
-    </Compile>
-    <Compile Include="SchedulerUISpecs\SchedulerUISpecs.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>SchedulerUISpecs.feature</DependentUpon>
+      <DependentUpon>DevToolKit.feature</DependentUpon>
     </Compile>
     <Compile Include="WorkflowSteps.cs" />
     <Compile Include="Connect Control\Connect Control1.feature.cs">
@@ -108,18 +103,14 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Connect Control1.feature.cs</LastGenOutput>
     </None>
-    <None Include="ExplorerUISpecs\ExplorerUISpecs.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>ExplorerUISpecs.feature.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
     <None Include="PermissionsUISpecs\PermissionsUISpec.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>PermissionsUISpec.feature.cs</LastGenOutput>
     </None>
-    <None Include="SchedulerUISpecs\SchedulerUISpecs.feature">
+    <None Include="DevToolKit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>SchedulerUISpecs.feature.cs</LastGenOutput>
+      <LastGenOutput>DevToolKit.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools Large ViewUISpecs\ToolsTestUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

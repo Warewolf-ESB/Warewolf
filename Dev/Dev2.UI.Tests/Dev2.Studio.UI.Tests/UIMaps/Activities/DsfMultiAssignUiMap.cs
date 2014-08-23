@@ -1,10 +1,8 @@
-﻿using System.Drawing;
-using System.Linq;
-using Dev2.Studio.UI.Tests.Enums;
+﻿using Dev2.Studio.UI.Tests.Enums;
 using Dev2.Studio.UI.Tests.Extensions;
-using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
+using System.Linq;
 
 namespace Dev2.Studio.UI.Tests.UIMaps.Activities
 {

@@ -1,11 +1,11 @@
-﻿using System.Windows.Forms;
-using Dev2.Studio.UI.Tests.Utils;
+﻿using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace Dev2.Studio.UI.Tests.Extensions
 {
@@ -81,7 +81,8 @@ namespace Dev2.Studio.UI.Tests.Extensions
                                                             .Where(c => !(c is WpfListItem) && c is WpfControl)
                                                             .ToList();
 
-            var control = parentCollection.SingleOrDefault(b => b.FriendlyName.Equals(friendlyName));
+            var cleanName = friendlyName.Replace("*", "");
+            var control = parentCollection.SingleOrDefault(b => b.FriendlyName.Equals(cleanName) || b.FriendlyName.StartsWith(cleanName));
 
             if(control != null)
             {
@@ -95,7 +96,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                     .ToList();
 
                 control = uiTestControlCollection
-                    .SingleOrDefault(b => b.FriendlyName.Equals(friendlyName));
+                    .SingleOrDefault(b => b.FriendlyName.Equals(cleanName) || b.FriendlyName.StartsWith(cleanName));
 
                 if(control == null)
                 {
@@ -109,7 +110,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
             if(control == null)
             {
-                string message = string.Format("Control with friendly name : [{0}] was not found", friendlyName);
+                string message = string.Format("Control with friendly name : [{0}] was not found", cleanName);
                 throw new Exception(message);
             }
 
@@ -118,40 +119,103 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static void Click(this UITestControl control)
         {
-            if(control is WpfListItem)
+            try
             {
-                var uiTestControl = control.GetParent();
-                Mouse.Click(uiTestControl, new Point(5, 5));
+                switch(control.ControlType.ToString())
+                {
+                    case "Custom":
+                        {
+                            var point = GetClickablePoint(control);
+                            Mouse.Click(point);
+                            break;
+                        }
+                    case "CheckBox":
+                    case "ComboBox":
+                    case "List":
+                    case "RadioButton":
+                        {
+                            Mouse.Click(control, new Point(5, 5));
+                            break;
+                        }
+                    case "TreeItem":
+                    case "ListItem":
+                    case "MenuItem":
+                        {
+                            Mouse.Click(control.GetParent());
+                            Mouse.Click(control, new Point(5, 5));
+                            break;
+                        }
+                    default:
+                        {
+                            Mouse.Click(control.GetParent());
+                            Mouse.Click(control, new Point(5, 5));
+                            var clickablePoint = control.GetClickablePoint();
+                            clickablePoint.Offset(5, 5);
+                            Mouse.Click(control, clickablePoint);
+                            Playback.Wait(100);
+                            break;
+                        }
+                }
             }
+            catch(Exception e)
+            {
+                var point = GetClickablePoint(control);
+                Mouse.Click(point);
+            }
+        }
 
-            Mouse.Click(control, new Point(5, 5));
-            var checkBox = control as WpfCheckBox;
-            var combobox = control as WpfComboBox;
-            var wpfListItem = control as WpfListItem;
-            if(checkBox == null && combobox == null && wpfListItem == null)
-            {
-                var clickablePoint = control.GetClickablePoint();
-                clickablePoint.Offset(5, 5);
-                Mouse.Click(control, clickablePoint);
-                Playback.Wait(100);
-            }
+        public static bool HasClickableParent(this UITestControl control)
+        {
+            return !(control is WpfCheckBox || control is WpfComboBox || control is WpfList || control is WpfListItem); 
         }
 
         public static void RightClick(this UITestControl control)
         {
-            //Mouse.Click(control, new Point(5, 5));
-            //var clickablePoint = control.GetClickablePoint();
-            //clickablePoint.Offset(5, 5);
-            Mouse.Click(control, MouseButtons.Right);
-            Playback.Wait(100);
+            try
+            {
+                switch(control.ControlType.ToString())
+                {
+                    case "TreeItem":
+                    case "ListItem":
+                    case "MenuItem":
+                        {
+                            Mouse.Click(control);
+                            var point = GetClickablePoint(control);
+                            Mouse.Click(point);
+                            Mouse.Click(MouseButtons.Right);
+                            break;
+                        }
+                    default:
+                        {
+                            var point = GetClickablePoint(control);
+                            Mouse.Click(point);
+                            Mouse.Click(MouseButtons.Right);
+                            break;
+                        }
+                }
+            }
+            catch(Exception e)
+            {
+                Mouse.Click(control, MouseButtons.Right);
+            }
         }
 
         public static void DoubleClick(this UITestControl control)
         {
-            var clickablePoint = control.GetClickablePoint();
-            clickablePoint.Offset(5, 5);
-            Mouse.DoubleClick(control, clickablePoint);
-            Playback.Wait(100);
+            var point = GetClickablePoint(control);
+            Mouse.DoubleClick(point);
+        }
+
+        static Point GetClickablePoint(UITestControl control)
+        {
+            var boundingRect = control.BoundingRectangle;
+            if(boundingRect.Y == -1 || boundingRect.X == -1)
+            {
+                Mouse.Click(control.GetParent());
+                boundingRect = control.BoundingRectangle;
+            }
+            var point = new Point(boundingRect.X + boundingRect.Width / 2, boundingRect.Top + 5);
+            return point;
         }
 
         public static void EnterText(this UITestControl control, string text)
