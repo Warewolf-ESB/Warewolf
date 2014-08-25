@@ -59,14 +59,19 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ToolCount = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         //Settings Tab
         static readonly string SettingsTab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SettingsView_AutoID";
-        static readonly string SettingsServerPermissions = "SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID";
+        static readonly string SettingsServerPermissionsGrid = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid";
+        static readonly string SettingsResoureceselect = SettingsTab + ",SecurityViewContent,ResourcePermissionsDataGrid,UI_PermissionsGrid_Row_0_AutoID,UI_ResourcePermissionsColumn_Row_0_Cell_AutoID,UI__AddResourceButton_AutoID";
+        static readonly string SettingsForGroup = "ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_2_AutoID,UI_ServerPermissionsColumn_Row_2_Cell_AutoID,UI_UI Testing Group_AddWindowsGroupTextBox_AutoID";
         static readonly string SecurityViewContent = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID";
-        static readonly string SecurityPublicView = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
-        static readonly string SecurityPublicExecute = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
-        static readonly string SecurityPublicContribute = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
-        static readonly string SecurityPublicAdministrator = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
-        static readonly string SecurityPublicDeployTo = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
-        static readonly string SecurityPublicDeployFrom = "{TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {TAB} {SPACE}";
+        static readonly string SecurityPublicView = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID";
+        static readonly string SecurityPublicExecute = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerExecutePermissions_Row_1_Cell_AutoID,UI_Public_ExecutePermissionCheckBox_AutoID";
+        static readonly string SecurityPublicContribute = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerContributePermissions_Row_1_Cell_AutoID,UI_Public_ContributePermissionCheckBox_AutoID";
+        static readonly string SecurityPublicAdministrator = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerAdministratorPermissions_Row_1_Cell_AutoID,UI_Public_AdministratorPermissionCheckBox_AutoID";
+        static readonly string SecurityPublicDeployTo = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerDeployToPermissions_Row_1_Cell_AutoID,UI_Public_DeployToPermissionCheckBox_AutoID";
+        static readonly string SecurityPublicDeployFrom = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerDeployFromPermissions_Row_1_Cell_AutoID,UI_Public_DeployFromPermissionCheckBox_AutoID";
+        //Deploy Tab
+        static readonly string DeploySource = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,SourceNavigationView,UI_ExplorerTree_AutoID";
+        static readonly string DeployDestination = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,TargetNavigationView,UI_ExplorerTree_AutoID";
 
         static readonly string SecuritySave = "ACTIVETAB,UI_SettingsView_AutoID,UI_SaveSettingsbtn_AutoID";
         static readonly string SecurityDelete = SettingsTab + ",UI_AddRemovebtn_AutoID";
@@ -620,6 +625,7 @@ namespace Dev2.Studio.UI.Specs
         [Then(@"""(.*)"" is visible")]
         [Then(@"""(.*)"" is visible")]
         [Then(@"""(.*)"" is visible")]
+        [When(@"""(.*)"" is visible")]
         public void ThenIsVisible(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
