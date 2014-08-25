@@ -166,7 +166,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                         }
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 var point = GetClickablePoint(control);
                 Mouse.Click(point);
@@ -175,7 +175,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static bool HasClickableParent(this UITestControl control)
         {
-            return !(control is WpfCheckBox || control is WpfComboBox || control is WpfList || control is WpfListItem); 
+            return !(control is WpfCheckBox || control is WpfComboBox || control is WpfList || control is WpfListItem);
         }
 
         public static void RightClick(this UITestControl control)
@@ -203,7 +203,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                         }
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             {
                 Mouse.Click(control, MouseButtons.Right);
             }
