@@ -64,6 +64,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DevToolKit.feature</DependentUpon>
     </Compile>
+    <Compile Include="ExplorerUISpecs\ExplorerUISpecs.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExplorerUISpecs.feature</DependentUpon>
+    </Compile>
     <Compile Include="WorkflowSteps.cs" />
     <Compile Include="Connect Control\Connect Control1.feature.cs">
       <AutoGen>True</AutoGen>
@@ -102,6 +107,10 @@
     <None Include="Connect Control\Connect Control.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Connect Control1.feature.cs</LastGenOutput>
+    </None>
+    <None Include="ExplorerUISpecs\ExplorerUISpecs.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ExplorerUISpecs.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
     <None Include="PermissionsUISpecs\PermissionsUISpec.feature">
