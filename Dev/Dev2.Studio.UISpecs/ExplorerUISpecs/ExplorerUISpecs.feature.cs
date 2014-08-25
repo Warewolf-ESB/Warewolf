@@ -80,78 +80,98 @@ namespace Dev2.Studio.UI.Specs.ExplorerUISpecs
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
- testRunner.Given("I click \"EXPLORERFILTERCLEARBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 9
- testRunner.And("I send \"Utility\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I double click \"EXPLORER,UI_localhost_AutoID,UI_EXAMPLES_AutoID,UI_Utility - Assi" +
+                    "gn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.And("I double click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("\"WORKFLOWDESIGNER,Utility - Assign(FlowchartDesigner)\" is visible within \"2\" seco" +
+                    "nds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.And("I click \"EXPLORERFILTERCLEARBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
  testRunner.And("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
+#line 12
  testRunner.When("I click \"UI_ToggleVersionHistoryContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 13
+ testRunner.Then("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID,UI_There is no ver" +
+                    "sion history to display_AutoID\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 14
+ testRunner.When("I click \"RIBBONSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 15
+ testRunner.Then("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID,v.1*\" is visible w" +
+                    "ithin \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 16
+ testRunner.When("I click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID,v.1*,UI_Ca" +
+                    "nEdit_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("MakeOldVersionCurrentAndHide")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDHide")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExplorerUISpecs")]
-        public virtual void MakeOldVersionCurrentAndHide()
+        public virtual void CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDHide()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MakeOldVersionCurrentAndHide", ((string[])(null)));
-#line 25
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDHide", ((string[])(null)));
+#line 23
 this.ScenarioSetup(scenarioInfo);
-#line 26
- testRunner.Given("I click \"EXPLORERFILTERCLEARBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 27
- testRunner.And("I send \"recordset - recor\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 28
+#line 24
+ testRunner.Given("I click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 25
  testRunner.And("I double click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_" +
                     "AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("RenameCurrentVersionCreatesNewVersion")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExplorerUISpecs")]
-        public virtual void RenameCurrentVersionCreatesNewVersion()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("RenameCurrentVersionCreatesNewVersion", ((string[])(null)));
-#line 44
-this.ScenarioSetup(scenarioInfo);
-#line 45
- testRunner.Given("I send \"oldresourcename\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 46
- testRunner.And("I double click \"EXPLORERFOLDERS,UI_OldResourceName_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
- testRunner.And("I click \"ExplorerFilterClearButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
- testRunner.And("I right click \"EXPLORERFOLDERS,UI_OldResourceName_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 49
- testRunner.When("I click \"UI_ToggleVersionHistoryContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 50
- testRunner.Then("\"UI_There is no version history to display_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 51
- testRunner.When("I click \"RIBBONSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 52
- testRunner.Then("\" v1 \" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 53
- testRunner.Given("I right click \"EXPLORERFOLDERS,UI_OldResourceName_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 54
- testRunner.When("I click \"UI_RenameContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 55
- testRunner.And("I send \"OldResourceName2\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 56
+#line 26
+ testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
+                    "gthDesigner)\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 28
+ testRunner.When("I send \"{DELETE}\" to \"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesign" +
+                    "er),Length(RecordsLengthDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 29
  testRunner.And("I click \"RIBBONSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 57
- testRunner.Then("\"v2 * Rename\" is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 58
- testRunner.And("\"v2 * Save\" is not visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 59
- testRunner.And("\"v1 * Save\" is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 30
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_A" +
+                    "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 31
+ testRunner.And("I click \"UI_ToggleVersionHistoryContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 32
+ testRunner.And("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.1*\" is" +
+                    " visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 34
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_A" +
+                    "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+ testRunner.And("I click \"UI_RenameContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
+ testRunner.And("I send \"Recordset - Records Length RENAME{ENTER}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+ testRunner.Then("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length RENAME_AutoID\" " +
+                    "is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 38
+ testRunner.And("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length RENAME_AutoID,v" +
+                    ".2*\" is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 40
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length R" +
+                    "ENAME_AutoID,v.1*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+ testRunner.When("I click \"UI_RollbackContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 42
+ testRunner.And("I click \"UI_MessageBox_AutoID,UI_YesButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 43
+ testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
+                    "gthDesigner)\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 44
+ testRunner.And("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.3*\" is" +
+                    " visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 46
+ testRunner.When("I click \"RIBBONDEPLOY\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 47
+ testRunner.Then("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.3*\" is" +
+                    " invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 49
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_A" +
+                    "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 50
+ testRunner.And("I click \"UI_ToggleVersionHistoryContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -162,23 +182,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void DeployDoesNotHaveVersions()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("DeployDoesNotHaveVersions", ((string[])(null)));
-#line 61
+#line 54
 this.ScenarioSetup(scenarioInfo);
-#line 62
+#line 55
  testRunner.Given("I send \"RenameR\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 63
+#line 56
  testRunner.And("I right click \"EXPLORERFOLDERS,UI_RenameResourceTest_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 64
+#line 57
  testRunner.When("I click \"UI_ToggleVersionHistoryContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 65
+#line 58
  testRunner.And("I click \"ExplorerFilterClearButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 66
+#line 59
  testRunner.Then("\"UI_There is no version history to display_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 67
+#line 60
  testRunner.When("I click \"RIBBONDEPLOY\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 68
+#line 61
  testRunner.And("I send \"RenameR\" to \"deploy filter\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 69
+#line 62
  testRunner.Then("\",UI_SourceServer_RenameResourceTest_AutoID,UI_SourceServer_There is no version h" +
                     "istory to display_AutoID\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

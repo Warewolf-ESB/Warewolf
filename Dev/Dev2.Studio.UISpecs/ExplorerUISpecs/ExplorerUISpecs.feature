@@ -5,58 +5,51 @@
 
 @mytag
 Scenario: CreateVersionAndCheckAndDeleteVersion
-	Given I click "EXPLORERFILTERCLEARBUTTON"
-	And I send "Utility" to "EXPLORERFILTER"
-	And I double click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID"
-	And  I click "EXPLORERFILTERCLEARBUTTON"
+	Given I click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID"
+	And I double click "EXPLORER,UI_localhost_AutoID,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID"
+	And "WORKFLOWDESIGNER,Utility - Assign(FlowchartDesigner)" is visible within "2" seconds
 	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID"
 	When I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
-	#Then "UI_There is no version history to display_AutoID" is visible within "5" seconds
-	#When I click "RIBBONSAVE"
-	#And I click "RIBBONSAVE"
-	#Then "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID,UI_v.2  *" is visible
-	#When I click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID,UI_v.2  *,UI_CanEdit_AutoID"
-	#Then "RIBBONSAVE" is disabled
-	#When I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID,UI_v.2  *"
+	Then "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID,UI_There is no version history to display_AutoID" is visible within "2" seconds
+	When I click "RIBBONSAVE"
+	Then "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID,v.1*" is visible within "3" seconds
+	When I click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID,v.1*,UI_CanEdit_AutoID"
+	#Then "RIBBONSAVE" is disabled within "2" seconds
+	#When I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID,v.1*"
 	#And I click "UI_DeleteVersionContextMenuItem_AutoID"
-	#Then " v2 " is not visible
+	#Then "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID,v.1*" is not visible
 	#And I right click ""
 
-Scenario: MakeOldVersionCurrentAndHide
-	Given I click "EXPLORERFILTERCLEARBUTTON"
-	And I send "recordset - recor" to "EXPLORERFILTER"
+Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDHide
+	Given I click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
-	#Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)" is visible within "1" seconds
-	#And I click "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)"
-	#When I send "{DELETE}" to "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)"
-	#And I click "RIBBONSAVE"
-	#And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID"
-	#And I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
-	#And " v1 " is visible within "1" seconds
-	#And I right click " v1 "
-	#When I click "UI_RollbackContextMenuItem_AutoID"
-	#Then "TABACTIVE,Recordset - Records Length(FlowchartDesigner),Use the Records Length tool to:(CommentDesigner)" is visible within "2" seconds
-	#And " v2 * Rollback" is visible within "1" seconds
-	#When I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Utility - Assign_AutoID"
-	#And I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
-	#And " v2 * Rollback" is not visible within "1" seconds
-	
-Scenario: RenameCurrentVersionCreatesNewVersion
-	Given I send "oldresourcename" to "EXPLORERFILTER"
-	And I double click "EXPLORERFOLDERS,UI_OldResourceName_AutoID"
-	And I click "ExplorerFilterClearButton"
-	And I right click "EXPLORERFOLDERS,UI_OldResourceName_AutoID"
-	When I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
-	Then "UI_There is no version history to display_AutoID" is visible
-	When I click "RIBBONSAVE"
-	Then " v1 " is visible
-	Given I right click "EXPLORERFOLDERS,UI_OldResourceName_AutoID"
-	When I click "UI_RenameContextMenuItem_AutoID"
-	And I send "OldResourceName2" to ""
+	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)" is visible within "2" seconds
+	#CreateNewVersion
+	When I send "{DELETE}" to "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)"
 	And I click "RIBBONSAVE"
-	Then "v2 * Rename" is visible within "1" seconds
-	And "v2 * Save" is not visible within "1" seconds
-	And "v1 * Save" is visible within "1" seconds
+	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
+	And I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
+	And "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.1*" is visible within "1" seconds
+	#Rename
+	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
+	And I click "UI_RenameContextMenuItem_AutoID"
+	And I send "Recordset - Records Length RENAME{ENTER}" to ""
+	Then "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length RENAME_AutoID" is visible within "1" seconds
+	And "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length RENAME_AutoID,v.2*" is visible within "1" seconds
+	#MakeOldVersionCurrent
+	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length RENAME_AutoID,v.1*"
+	When I click "UI_RollbackContextMenuItem_AutoID"
+	And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID"
+	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)" is visible within "2" seconds
+	And "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.3*" is visible within "1" seconds
+	#CheckDeploy [does not have any versions showing up]
+	When I click "RIBBONDEPLOY"
+	Then "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.3*" is invisible within "3" seconds	
+	#Hide
+	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
+	And I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
+	#Then "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.2*" is invisible within "1" seconds
+	
 	
 Scenario: DeployDoesNotHaveVersions
 	Given I send "RenameR" to "EXPLORERFILTER"
