@@ -32,7 +32,7 @@ Scenario: Drag on Multiassign
 	Given I have Warewolf running
 	And I click "UI_RibbonHomeTabWorkflowBtn_AutoID"
 	When I send "Assign" to "TOOLBOX,PART_SearchBox"
-	And I drag "TOOLMULTIASSIGN" onto "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
+	And I drag "TOOLMULTIASSIGN" onto "ACTIVETAB,WorkflowDesignerView,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
 	#And I double click "WORKSURFACE,Assign (1)(MultiAssignDesigner)"
 	And I send "[[rec().a]]" to "ACTIVETAB,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.ActivityDTO,Column Display Index: 1,UI__Row1_FieldName_AutoID"
 	And I send "test" to "UNSAVED1,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,Unlimited.Applications.BusinessDesignStudio.Activities.ActivityDTO,Column Display Index: 1,UI__Row1_FieldValue_AutoID"
@@ -80,10 +80,10 @@ Scenario: Assign Large View Test
 	
 	
 	#And I send "Test" to "Workflow_Designer + ",Data Merge (1)(DataMergeDesigner),LargeViewContent,LargeDataGrid,"Entire Row"" Grid row1" ,UI__Row1_FieldName_AutoID"
-	# And I send "Data Merge" to "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Assign (1)(MultiAssignDesigner),DisplayNameBox"
+	# And I send "Data Merge" to "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Assign (1)(MultiAssignDesigner),DisplayNameBox"
 	 #And I click "UI_DebugInputWindow_AutoID,UI_Executebtn_AutoID"
 	 #Given I click "UI_RibbonDebugBtn_AutoID"
-	#Given I click "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner),DoneButton"
+	#Given I click "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner),DoneButton"
 	
 
 
@@ -91,16 +91,16 @@ Scenario: Drag Data Merge
     #Given I have Warewolf running
 	Given I click new "Workflow"
 	And I send "Data Merge" to "TOOLBOX,PART_SearchBox"
-	When I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity" onto "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
+	When I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
 	And I send "Assign" to "TOOLBOX,PART_SearchBox"
-	When I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity" onto "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Data Merge (1)(DataMergeDesigner)"
+	When I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Data Merge (1)(DataMergeDesigner)"
 
 
 Scenario: Drag Data DataSplit
     #Given I have Warewolf running
 	Given I click new "Workflow"
 	And I send "Data Split" to "TOOLBOX,PART_SearchBox"
-	When I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataSplitActivity" onto "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
+	When I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataSplitActivity" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
 
 
 Scenario: Drag Find Record Index
@@ -109,11 +109,11 @@ Scenario: Drag Find Record Index
    # Given I have Warewolf running
 	Given I click "UI_RibbonHomeTabWorkflowBtn_AutoID"
 	And I send "Data Merge" to "TOOLBOXSEARCH"
-	#When I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity" onto "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
-	When I drag "TOOLDATAMERGE" onto "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
-	#When I drag "TOOLBOX,PART_Tools,Recordset,Unlimited.Applications.BusinessDesignStudio.Activities.DsfFindRecordsMultipleCriteriaActivity" onto "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
-	 #And I double click "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner)"
-	# Given "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Find Record Index (1)(FindRecordsMultipleCriteriaDesigner)" is Highlighted
+	#When I drag "TOOLBOX,PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
+	When I drag "TOOLDATAMERGE" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
+	#When I drag "TOOLBOX,PART_Tools,Recordset,Unlimited.Applications.BusinessDesignStudio.Activities.DsfFindRecordsMultipleCriteriaActivity" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
+	 #And I double click "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),Assign (1)(MultiAssignDesigner)"
+	# Given "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Find Record Index (1)(FindRecordsMultipleCriteriaDesigner)" is Highlighted
 	 
 Scenario: New Remote Connection
 	#Given I create a new remote connection "Server1" as

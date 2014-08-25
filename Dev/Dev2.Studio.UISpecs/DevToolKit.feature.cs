@@ -77,21 +77,6 @@ namespace Dev2.Studio.UI.Specs
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MakeMuraliHide", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
-#line 9
- testRunner.Given("I double click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_" +
-                    "AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 10
- testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
-                    "gthDesigner)\" is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 11
- testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
-                    "gthDesigner)\" is invisible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 12
- testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
-                    "gthDesigner)\" is enabled within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 13
- testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
-                    "gthDesigner)\" is disabled within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -102,10 +87,44 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void TshepoCodedUISpecTestForMurali()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TshepoCodedUISpecTestForMurali", ((string[])(null)));
-#line 20
+#line 24
 this.ScenarioSetup(scenarioInfo);
-#line 46
-  testRunner.Given("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("MuraliAgainWithAutoIDS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SpecFlowFeature1")]
+        public virtual void MuraliAgainWithAutoIDS()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("MuraliAgainWithAutoIDS", ((string[])(null)));
+#line 55
+this.ScenarioSetup(scenarioInfo);
+#line 81
+       testRunner.Given("I click \"UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_Svr0054\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 82
+       testRunner.Then("\"DEPLOYDESTINATION,UI_DestinationServer_Svr0054 (http://localhost:3142/)_AutoID,U" +
+                    "I_Unautherized_DeployToText_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("BarneyTest1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SpecFlowFeature1")]
+        public virtual void BarneyTest1()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("BarneyTest1", ((string[])(null)));
+#line 84
+this.ScenarioSetup(scenarioInfo);
+#line 85
+ testRunner.Given("I click \"EXPLORERFILTERCLEARBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 86
+ testRunner.And("I type \"Utility\" in \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 93
+ testRunner.Given("I click \"RIBBONSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }

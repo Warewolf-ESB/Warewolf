@@ -33,7 +33,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string Worksurface = WorkflowDesigner + ",Unsaved 1(FlowchartDesigner)";
         static readonly string DebugOutput = "MainViewWindow,UI_DocManager_AutoID,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
-        static readonly string TabActive = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
+        static readonly string TabActive = "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
         
         //Explorer
         static readonly string ExplorerFilter = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
@@ -252,7 +252,9 @@ namespace Dev2.Studio.UI.Specs
             DatabaseServiceWizardUIMap.CreateDbService(serviceName);
         }
 
+        [Given(@"""(.*)"" is in the explorer")]
         [Then(@"""(.*)"" is in the explorer")]
+        [When(@"""(.*)"" is in the explorer")]
         public void ThenIsInTheExplorer(string resourceName)
         {
             Assert.IsTrue(ExplorerUIMap.ValidateHasResource(resourceName));
@@ -260,31 +262,37 @@ namespace Dev2.Studio.UI.Specs
             Bootstrap.DeleteService(resourceName);
         }
 
-
-
+        [Given(@"a new tab is created")]
         [Then(@"a new tab is created")]
+        [When(@"a new tab is created")]
         public void ThenANewTabIsCreated()
         {
             var uiTestControl = TabManagerUIMap.GetActiveTab();
             Assert.IsNotNull(uiTestControl);
         }
 
+        [Given(@"the tab name contains ""(.*)""")]
         [Then(@"the tab name contains ""(.*)""")]
+        [When(@"the tab name contains ""(.*)""")]
         public void ThenTheTabNameContains(string p0)
         {
             var activeTabName = TabManagerUIMap.GetActiveTabName();
             StringAssert.Contains(activeTabName, p0);
         }
 
+        [Given(@"start node is visible")]
         [Then(@"start node is visible")]
+        [When(@"start node is visible")]
         public void ThenStartNodeIsVisible()
         {
             var uiTestControl = TabManagerUIMap.GetActiveTab();
             var findStartNode = WorkflowDesignerUIMap.FindStartNode(uiTestControl);
-            Assert.IsNotNull(findStartNode);
+            Assert.IsNotNull(findStartNode, "Start node is not visible");
         }
 
         [Given(@"I wait for ""(.*)"" seconds")]
+        [Then(@"I wait for ""(.*)"" seconds")]
+        [When(@"I wait for ""(.*)"" seconds")]
         public void GivenIWaitForSeconds(int seconds)
         {
             Thread.Sleep(seconds * 1000);
@@ -293,6 +301,7 @@ namespace Dev2.Studio.UI.Specs
 
         [When(@"I send ""(.*)"" to ""(.*)""")]
         [Given(@"I send ""(.*)"" to ""(.*)""")]
+        [Then(@"I send ""(.*)"" to ""(.*)""")]
         public void WhenISendTo(string textToSend, string automationIds)
         {
             var correctedAutoIds = GetCorrect(automationIds).Split(',');
@@ -312,6 +321,18 @@ namespace Dev2.Studio.UI.Specs
             }
 
         }
+
+        [Given(@"I type ""(.*)"" in ""(.*)""")]
+        [When(@"I type ""(.*)"" in ""(.*)""")]
+        [Then(@"I type ""(.*)"" in ""(.*)""")]
+        public void GivenITypeIn(string textToSend, string automationIds)
+        {
+            var correctedAutoIds = GetCorrect(automationIds).Split(',');
+            var startControl = GetStartUiTestControl(ref correctedAutoIds);
+            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false, correctedAutoIds);
+            controlToSendData.EnterText(textToSend);
+        }
+
 
         UITestControl GetStartUiTestControl(ref string[] correctedAutoIds)
         {
@@ -483,6 +504,8 @@ namespace Dev2.Studio.UI.Specs
         }
 
         [Given(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        [Then(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        [When(@"I start Studio as ""(.*)"" with password ""(.*)""")]
         public void GivenIStartStudioAsWithPassword(string userName, string password)
         {
             RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation);
@@ -490,6 +513,8 @@ namespace Dev2.Studio.UI.Specs
 
 
         [When(@"I drag ""(.*)"" onto ""(.*)""")]
+        [Given(@"I drag ""(.*)"" onto ""(.*)""")]
+        [Then(@"I drag ""(.*)"" onto ""(.*)""")]
         public void WhenIDragOnto(string dragItemAutoIds, string dragDestinationAutoIds)
         {
             var correcteddDragItemAutoIds = GetCorrect(dragItemAutoIds).Split(',');
@@ -622,44 +647,56 @@ namespace Dev2.Studio.UI.Specs
         }
 
 
+        [Given(@"""(.*)"" is visible")]
         [Then(@"""(.*)"" is visible")]
         [Then(@"""(.*)"" is visible")]
         [Then(@"""(.*)"" is visible")]
-        [When(@"""(.*)"" is visible")]
         public void ThenIsVisible(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
-            Assert.IsNotNull(itemFound);
+            var message = string.Format("Control with Auto ID : [{0}] is not visible", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
+            Assert.IsNotNull(itemFound, message);
         }
 
+        [Given(@"""(.*)"" is not visible")]
         [Then(@"""(.*)"" is not visible")]
+        [When(@"""(.*)"" is not visible")]
         public void ThenIsNotVisible(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null,false, correctedditemToFindAutoIds);
-            Assert.IsNull(itemFound);
+            var message = string.Format("Control with Auto ID : [{0}] is visible", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
+            Assert.IsNull(itemFound, message);
         }
 
+        [Given(@"""(.*)"" is enabled")]
         [Then(@"""(.*)"" is enabled")]
+        [When(@"""(.*)"" is enabled")]
         public void ThenIsEnabled(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null,false, correctedditemToFindAutoIds);
             Assert.IsNotNull(itemFound);
-            Assert.IsTrue(itemFound.IsEnabled());
+            var message = string.Format("Control with Auto ID : [{0}] is not enabled", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
+            Assert.IsTrue(itemFound.IsEnabled(), message);
         }
 
+        [When(@"""(.*)"" is disabled")]
         [Then(@"""(.*)"" is disabled")]
+        [Given(@"""(.*)"" is disabled")]
         public void ThenIsDisabled(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
             Assert.IsNotNull(itemFound);
-            Assert.IsFalse(itemFound.IsEnabled());
+            var message = string.Format("Control with Auto ID : [{0}] is not disabled", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
+            Assert.IsFalse(itemFound.IsEnabled(), message);
         }
 
         [Given(@"I wait till ""(.*)"" is not visible")]
+        [Then(@"I wait till ""(.*)"" is not visible")]
+        [When(@"I wait till ""(.*)"" is not visible")]
         public void GivenIWaitTillIsNotVisible(string itemAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemAutoIds).Split(',');
@@ -671,6 +708,8 @@ namespace Dev2.Studio.UI.Specs
         }
 
         [Given(@"I wait till ""(.*)"" is visible")]
+        [Then(@"I wait till ""(.*)"" is visible")]
+        [When(@"I wait till ""(.*)"" is visible")]
         public void GivenIWaitTillIsVisible(string itemAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemAutoIds).Split(',');
@@ -715,6 +754,7 @@ namespace Dev2.Studio.UI.Specs
             }
             return replace;
         }
+
         [When(@"close the Studio and Server")]
         [Then(@"close the Studio and Server")]
         public void WhenCloseTheStudioAndServer()

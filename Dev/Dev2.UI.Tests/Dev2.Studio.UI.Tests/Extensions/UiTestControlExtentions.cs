@@ -123,6 +123,11 @@ namespace Dev2.Studio.UI.Tests.Extensions
             {
                 switch(control.ControlType.ToString())
                 {
+                    case "Button":
+                        {
+                            Mouse.Click(control);
+                            break;
+                        }
                     case "Custom":
                         {
                             var point = GetClickablePoint(control);
@@ -202,6 +207,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static void DoubleClick(this UITestControl control)
         {
+            Click(control);
             var point = GetClickablePoint(control);
             Mouse.DoubleClick(point);
         }
