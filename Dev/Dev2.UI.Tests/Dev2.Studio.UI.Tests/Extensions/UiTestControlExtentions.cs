@@ -189,8 +189,8 @@ namespace Dev2.Studio.UI.Tests.Extensions
                     case "MenuItem":
                         {
                             Mouse.Click(control);
-                            var point = GetClickablePoint(control);
-                            Mouse.Click(point);
+                            //var point = GetClickablePoint(control);
+                            //Mouse.Click(point);
                             Mouse.Click(MouseButtons.Right);
                             break;
                         }
