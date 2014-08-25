@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 // ReSharper disable RedundantUsingDirective
 
 // ReSharper restore RedundantUsingDirective
-using Dev2.Studio.Utils;
 using Trackerbird.Tracker;
+
+#if ! DEBUG
+using Dev2.Studio.Utils;
+#endif
 
 namespace Dev2.Instrumentation
 {
