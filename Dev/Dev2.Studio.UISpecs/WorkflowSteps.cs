@@ -448,12 +448,14 @@ namespace Dev2.Studio.UI.Specs
         }
 
         [Given(@"I close Studio")]
+        [Then(@"I close Studio")]
         public void GivenICloseStudio()
         {
             Bootstrap.KillStudio();
         }
 
         [Given(@"I close Server")]
+        [Then(@"I close Server")]
         public void GivenICloseServer()
         {
             Bootstrap.KillServer();
