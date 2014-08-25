@@ -102,7 +102,7 @@ namespace Dev2.Services.Sql
             return FetchDataTable(_command);
         }
 
-        public  DataTable FetchDataTable(IDbCommand command)
+        public DataTable FetchDataTable(IDbCommand command)
         {
             VerifyArgument.IsNotNull("command", command);
 
@@ -124,7 +124,7 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("command", command);
             AddParameters(command, parameters);
-           return _factory.FetchDataSet(command);
+            return _factory.FetchDataSet(command);
 
 
         }
@@ -133,7 +133,7 @@ namespace Dev2.Services.Sql
 
         #region FetchStoredProcedures
 
-        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string,string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string,string, bool> functionProcessor, bool continueOnProcessorException = false)
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false)
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
@@ -164,9 +164,9 @@ namespace Dev2.Services.Sql
                         {
                             functionProcessor(command, parameters, helpText, fullProcedureName);
                         }
-                        else if (IsTableValueFunction(row, procedureTypeColumn))
+                        else if(IsTableValueFunction(row, procedureTypeColumn))
                         {
-                            functionProcessor(command, parameters,helpText, CreateTVFCommand(fullProcedureName,parameters));
+                            functionProcessor(command, parameters, helpText, CreateTVFCommand(fullProcedureName, parameters));
                         }
                     }
                     catch(Exception)
@@ -180,9 +180,11 @@ namespace Dev2.Services.Sql
             }
         }
 
+        // ReSharper disable InconsistentNaming
         string CreateTVFCommand(string fullProcedureName, List<IDbDataParameter> parameters)
+        // ReSharper restore InconsistentNaming
         {
-            if( parameters == null || parameters.Count == 0)
+            if(parameters == null || parameters.Count == 0)
             {
                 return string.Format("select * from {0}()", fullProcedureName);
             }
@@ -265,20 +267,20 @@ namespace Dev2.Services.Sql
         DataTable GetSchema(IDbConnection connection)
         {
 
-    
+
 
             const string CommandText = GlobalConstants.SchemaQuery;
-            using(var command = _factory.CreateCommand(connection,CommandType.Text,CommandText ))
+            using(var command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
             {
                 return FetchDataTable(command);
             }
-            
+
         }
 
         DataTable GetSchemaFromConnection(IDbConnection connection, string collectionName)
         {
 
-            return _factory.GetSchema(connection,collectionName); //todo: fix this
+            return _factory.GetSchema(connection, collectionName); //todo: fix this
         }
 
         string GetHelpText(IDbConnection connection, string objectName)
@@ -367,12 +369,12 @@ namespace Dev2.Services.Sql
                 return false;
             }
 
-            return row[procedureTypeColumn].ToString().Equals("SQL_SCALAR_FUNCTION") ; 
+            return row[procedureTypeColumn].ToString().Equals("SQL_SCALAR_FUNCTION");
         }
 
         public static bool IsTableValueFunction(DataRow row, DataColumn procedureTypeColumn)
         {
-            if (row == null || procedureTypeColumn == null)
+            if(row == null || procedureTypeColumn == null)
             {
                 return false;
             }
