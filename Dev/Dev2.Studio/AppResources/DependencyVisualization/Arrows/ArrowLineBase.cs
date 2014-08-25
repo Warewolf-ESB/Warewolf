@@ -13,9 +13,9 @@ namespace Petzold.Media2D
     /// </summary>
     public abstract class ArrowLineBase : Shape
     {
-        protected PathGeometry pathgeo;
-        protected PathFigure pathfigLine;
-        protected PolyLineSegment polysegLine;
+        protected PathGeometry Pathgeo;
+        protected PathFigure PathfigLine;
+        protected PolyLineSegment PolysegLine;
 
         PathFigure pathfigHead1;
         PolyLineSegment polysegHead1;
@@ -101,11 +101,11 @@ namespace Petzold.Media2D
         /// </summary>
         public ArrowLineBase()
         {
-            pathgeo = new PathGeometry();
+            Pathgeo = new PathGeometry();
 
-            pathfigLine = new PathFigure();
-            polysegLine = new PolyLineSegment();
-            pathfigLine.Segments.Add(polysegLine);
+            PathfigLine = new PathFigure();
+            PolysegLine = new PolyLineSegment();
+            PathfigLine.Segments.Add(PolysegLine);
 
             pathfigHead1 = new PathFigure();
             polysegHead1 = new PolyLineSegment();
@@ -123,28 +123,28 @@ namespace Petzold.Media2D
         {
             get
             {
-                int count = polysegLine.Points.Count;
+                int count = PolysegLine.Points.Count;
 
                 if(count > 0)
                 {
                     // Draw the arrow at the start of the line.
                     if((ArrowEnds & ArrowEnds.Start) == ArrowEnds.Start)
                     {
-                        Point pt1 = pathfigLine.StartPoint;
-                        Point pt2 = polysegLine.Points[0];
-                        pathgeo.Figures.Add(CalculateArrow(pathfigHead1, pt2, pt1));
+                        Point pt1 = PathfigLine.StartPoint;
+                        Point pt2 = PolysegLine.Points[0];
+                        Pathgeo.Figures.Add(CalculateArrow(pathfigHead1, pt2, pt1));
                     }
 
                     // Draw the arrow at the end of the line.
                     if((ArrowEnds & ArrowEnds.End) == ArrowEnds.End)
                     {
-                        Point pt1 = count == 1 ? pathfigLine.StartPoint :
-                                                 polysegLine.Points[count - 2];
-                        Point pt2 = polysegLine.Points[count - 1];
-                        pathgeo.Figures.Add(CalculateArrow(pathfigHead2, pt1, pt2));
+                        Point pt1 = count == 1 ? PathfigLine.StartPoint :
+                                                 PolysegLine.Points[count - 2];
+                        Point pt2 = PolysegLine.Points[count - 1];
+                        Pathgeo.Figures.Add(CalculateArrow(pathfigHead2, pt1, pt2));
                     }
                 }
-                return pathgeo;
+                return Pathgeo;
             }
         }
 

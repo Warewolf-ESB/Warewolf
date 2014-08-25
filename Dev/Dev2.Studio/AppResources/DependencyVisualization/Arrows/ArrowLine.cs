@@ -92,13 +92,13 @@ namespace Petzold.Media2D
             get
             {
                 // Clear out the PathGeometry.
-                pathgeo.Figures.Clear();
+                Pathgeo.Figures.Clear();
 
                 // Define a single PathFigure with the points.
-                pathfigLine.StartPoint = new Point(X1, Y1);
-                polysegLine.Points.Clear();
-                polysegLine.Points.Add(new Point(X2, Y2));
-                pathgeo.Figures.Add(pathfigLine);
+                PathfigLine.StartPoint = new Point(X1, Y1);
+                PolysegLine.Points.Clear();
+                PolysegLine.Points.Add(new Point(X2, Y2));
+                Pathgeo.Figures.Add(PathfigLine);
 
                 // Call the base property to add arrows on the ends.
                 return base.DefiningGeometry;
