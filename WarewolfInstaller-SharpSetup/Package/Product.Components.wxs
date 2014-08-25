@@ -698,6 +698,9 @@
             <Component Id="cmpC5CCA527CC5E1F8070A942D59C38F4BB_Studio" Directory="dirStudioRoot" Guid="{F65ECD79-71E0-4405-88BA-4D6872615CD7}">
                 <File Id="fil8D8B2B137D03621CF9EE76A4B1229829_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\d3dx9_43.dll" />
             </Component>
+          <Component Id="cmp68D647FAC36F42DD85AE085BCD190EF3_Studio" Directory="dirServerRoot" Guid="{CD61937E-F1DE-4A20-BF9A-DC604C8DD5BB}">
+            <File Id="fil8F6304C8AB574A4BBFDEC950EF9C58E5_Studio" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Common.Interfaces" />
+          </Component>
             <Component Id="cmpEA37E6F9106B4056E67DF48C77F3191E_Studio" Directory="dirStudioRoot" Guid="{394E9CA6-0EF0-4211-BCCA-5E716DF8FBDE}">
                 <File Id="filFAA247EB448473B725E0DF137D5705E4_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Activities.Designers.dll" />
             </Component>
