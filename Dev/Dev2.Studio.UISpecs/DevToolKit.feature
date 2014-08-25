@@ -46,7 +46,7 @@ Scenario: TshepoCodedUISpecTestForMurali
      #Given I click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_tshepo_AutoID"
      #Given I right click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_tshepo_AutoID"
      #Then I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
-	 #Given I double click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_tshepo_AutoID,v.1*"
+	 Given "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_tshepo_AutoID,v.1*,UI_CanEdit_AutoID" is disabled
 	 #Given all tabs are closed
 	 #Given "RIBBONSCHEDULE" is enabled within "1" seconds
 	 # Given I double click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_tshepo_AutoID"

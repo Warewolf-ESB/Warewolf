@@ -82,7 +82,9 @@ namespace Dev2.Studio.UI.Tests.Extensions
                                                             .ToList();
 
             var cleanName = friendlyName.Replace("*", "");
-            var control = parentCollection.SingleOrDefault(b => b.FriendlyName.Equals(cleanName) || b.FriendlyName.StartsWith(cleanName));
+            var control = parentCollection.SingleOrDefault(b => b.FriendlyName.Equals(cleanName) 
+                                                             || b.FriendlyName.StartsWith(cleanName)
+                                                             || ((WpfControl)b).AutomationId.Contains(cleanName));
 
             if(control != null)
             {
@@ -96,7 +98,9 @@ namespace Dev2.Studio.UI.Tests.Extensions
                     .ToList();
 
                 control = uiTestControlCollection
-                    .SingleOrDefault(b => b.FriendlyName.Equals(cleanName) || b.FriendlyName.StartsWith(cleanName));
+                    .SingleOrDefault(b => b.FriendlyName.Equals(cleanName)
+                                        || b.FriendlyName.StartsWith(cleanName)
+                                        || ((WpfControl)b).AutomationId.Contains(cleanName));
 
                 if(control == null)
                 {
