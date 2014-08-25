@@ -199,6 +199,9 @@
             <Component Id="cmp55DF0D784BE4DAD3FF259BC20051D262" Directory="dirServerRoot" Guid="{9F081D38-E69F-4027-8618-7FE1BA42ABF5}">
                 <File Id="filBB2B385DE35BB1D317B12C560E7E5572" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Core.dll" />
             </Component>
+          <Component Id="cmp68D647FAC36F42DD85AE085BCD190EF7" Directory="dirServerRoot" Guid="{47900955-F0E2-4CDF-A9B8-74A18954A6AE}">
+            <File Id="fil8F6304C8AB574A4BBFDEC950EF9C58E8" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Common.Interfaces" />
+          </Component>
             <Component Id="cmp60F753FE0780E8B708E5A665E1C9309D" Directory="dirServerRoot" Guid="{34A8080C-0D02-4F44-9673-73520DC26ACD}">
                 <File Id="fil094215BD5B122918EFA5D63E7C773F7C" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.CustomControls.dll" />
             </Component>
