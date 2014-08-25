@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 // ReSharper disable RedundantUsingDirective
 
 // ReSharper restore RedundantUsingDirective
+using Dev2.Studio.Utils;
 using Trackerbird.Tracker;
 
 namespace Dev2.Instrumentation
@@ -23,7 +24,7 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void StartServer()
         {
-#if ! DEBUG 
+#if ! DEBUG
             // RELEASE
             Start("2386158864", "http://40589.tbnet1.com");
             TBApp.StartAutoSync(true);
@@ -36,15 +37,15 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void StartStudio()
         {
-#if ! DEBUG 
+#if ! DEBUG
             // RELEASE
             Start("2386158962", "http://94687.tbnet1.com");
 #endif
         }
 
-// ReSharper disable UnusedMember.Local
+        // ReSharper disable UnusedMember.Local
         static void Start(string productId, string callHomeUrl)
-// ReSharper restore UnusedMember.Local
+        // ReSharper restore UnusedMember.Local
         {
             Perform(() =>
             {
@@ -71,7 +72,7 @@ namespace Dev2.Instrumentation
         /// </summary>
         public static void Stop()
         {
-#if ! DEBUG 
+#if ! DEBUG
             WriteError(TBApp.Stop());
 #endif
         }
@@ -84,7 +85,7 @@ namespace Dev2.Instrumentation
         /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
         public static void TrackEvent(TrackerEventGroup eventGroup, TrackerEventName eventName, string eventValue = null)
         {
-#if ! DEBUG 
+#if ! DEBUG
             TrackEvent(eventGroup, eventName.ToString(), eventValue);
 #endif
         }
@@ -97,7 +98,7 @@ namespace Dev2.Instrumentation
         /// <param name="eventValue">An optional value which is related to your event and you would like to store.</param>
         public static void TrackEvent(TrackerEventGroup eventGroup, string customText, string eventValue = "")
         {
-#if ! DEBUG 
+#if ! DEBUG
             Perform(() => TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
 #endif
         }
@@ -110,7 +111,7 @@ namespace Dev2.Instrumentation
         /// <param name="ex">The handled exception.</param>
         public static void TrackException(string className, string methodName, Exception ex)
         {
-#if ! DEBUG 
+#if ! DEBUG
             var idx = className.LastIndexOf('.');
             var newClassName = className.Substring(idx + 1);
             newClassName = newClassName.Replace("`", "").Replace("1", "");
