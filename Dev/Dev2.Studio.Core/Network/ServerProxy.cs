@@ -46,6 +46,7 @@ namespace Dev2.Network
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
         {
             AuthenticationType = AuthenticationType.Windows;
+            Principal = ClaimsPrincipal.Current;
         }
 
         public static bool IsShuttingDown { get; private set; }
@@ -73,7 +74,7 @@ namespace Dev2.Network
 
             InitializeEsbProxy();
             _asyncWorker = worker;
-            SetupPrincipal();
+
         }
 
         void SetupPrincipal()
@@ -145,9 +146,17 @@ namespace Dev2.Network
         public ServerProxy(string webAddress, string userName, string password)
             : this(webAddress, new NetworkCredential(userName, password), new AsyncWorker())
         {
-            AuthenticationType = AuthenticationType.User;
             UserName = userName;
             Password = password;
+            if(userName == "\\")
+            {
+                AuthenticationType = AuthenticationType.Public;
+            }
+            else
+            {
+                AuthenticationType = AuthenticationType.User;
+                SetupPrincipal();
+            }
         }
 
         public bool IsLocalHost { get { return DisplayName == "localhost"; } }

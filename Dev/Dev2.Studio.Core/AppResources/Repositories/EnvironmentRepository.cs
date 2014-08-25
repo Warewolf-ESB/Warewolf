@@ -302,6 +302,11 @@ namespace Dev2.Studio.Core
             }
             else
             {
+                if(authenticationType == AuthenticationType.Public)
+                {
+                    userName = "\\";
+                    password = "";
+                }
                 connectionProxy = new ServerProxy(applicationServerUri.ToString(), userName, password);
             }
             return new EnvironmentModel(id, connectionProxy) { Name = name };
@@ -520,7 +525,15 @@ namespace Dev2.Studio.Core
             }
             else
             {
-                connectionProxy = new ServerProxy(connection.WebAddress, connection.UserName, connection.Password);
+                var userName = connection.UserName;
+                var password = connection.Password;
+                if(connection.AuthenticationType == AuthenticationType.Public)
+                {
+                    userName = "\\";
+                    password = "";
+                }
+
+                connectionProxy = new ServerProxy(connection.WebAddress, userName, password);
             }
             return new EnvironmentModel(resourceId, connectionProxy) { Name = connection.ResourceName };
         }
