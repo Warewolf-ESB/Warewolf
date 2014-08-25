@@ -46,7 +46,7 @@ Scenario: TshepoCodedUISpecTestForMurali
      #Given I click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_tshepo_AutoID"
      #Given I right click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_tshepo_AutoID"
      #Then I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
-	 Given "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_tshepo_AutoID,v.1*,UI_CanEdit_AutoID" is disabled
+	 #Given "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_tshepo_AutoID,v.1*,UI_CanEdit_AutoID" is disabled
 	 #Given all tabs are closed
 	 #Given "RIBBONSCHEDULE" is enabled within "1" seconds
 	 # Given I double click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_tshepo_AutoID"
@@ -92,3 +92,20 @@ Scenario: BarneyTest1
 	#Then "UI_There is no version history to display_AutoID" is visible within "2" seconds
 	Given I click "RIBBONSAVE"
 	#And I click "RIBBONSAVE"
+	
+Scenario:TshepoJustRightClick
+	Given I click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
+	And I double click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
+	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)" is visible within "2" seconds
+	When I send "{DELETE}" to "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)"
+	And I click "RIBBONSAVE"
+	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
+	And I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
+	And "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.1*" is visible within "1" seconds
+	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.1*"
+	When I click "UI_RollbackContextMenuItem_AutoID"
+	And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID"
+	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)" is visible within "2" seconds
+
+Scenario:TshepoVisibilityIsNotWorkingDude	
+	Given "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.3*" is invisible within "1" seconds

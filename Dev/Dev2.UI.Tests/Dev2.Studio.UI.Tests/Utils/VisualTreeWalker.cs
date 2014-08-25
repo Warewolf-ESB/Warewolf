@@ -109,7 +109,7 @@ namespace Dev2.Studio.UI.Tests.Utils
                     {
                         var wpfControl = startControl ?? _studioWindow;
                         var automationId = automationIDs[automationCounter];
-                        theControl = automationId.EndsWith("*") ?  wpfControl.FindByFriendlyName(automationId) :
+                        theControl = automationId.EndsWith("*") ?  wpfControl.FindByFriendlyName(automationId, returnNullIfNotFound) :
                                                                    wpfControl.FindByAutomationId(automationId, returnNullIfNotFound); ;
                         if(theControl == null && returnNullIfNotFound)
                         {

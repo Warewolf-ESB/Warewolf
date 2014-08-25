@@ -89,9 +89,6 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TshepoCodedUISpecTestForMurali", ((string[])(null)));
 #line 24
 this.ScenarioSetup(scenarioInfo);
-#line 49
-  testRunner.Given("\"EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_tshepo_AutoID,v.1*,UI_CanEdit_A" +
-                    "utoID\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -128,6 +125,65 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I type \"Utility\" in \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 93
  testRunner.Given("I click \"RIBBONSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("TshepoJustRightClick")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SpecFlowFeature1")]
+        public virtual void TshepoJustRightClick()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TshepoJustRightClick", ((string[])(null)));
+#line 96
+this.ScenarioSetup(scenarioInfo);
+#line 97
+ testRunner.Given("I click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 98
+ testRunner.And("I double click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_" +
+                    "AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 99
+ testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
+                    "gthDesigner)\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 100
+ testRunner.When("I send \"{DELETE}\" to \"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesign" +
+                    "er),Length(RecordsLengthDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 101
+ testRunner.And("I click \"RIBBONSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 102
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_A" +
+                    "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 103
+ testRunner.And("I click \"UI_ToggleVersionHistoryContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 104
+ testRunner.And("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.1*\" is" +
+                    " visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 105
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_A" +
+                    "utoID,v.1*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
+ testRunner.When("I click \"UI_RollbackContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 107
+ testRunner.And("I click \"UI_MessageBox_AutoID,UI_YesButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 108
+ testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
+                    "gthDesigner)\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("TshepoVisibilityIsNotWorkingDude")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SpecFlowFeature1")]
+        public virtual void TshepoVisibilityIsNotWorkingDude()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TshepoVisibilityIsNotWorkingDude", ((string[])(null)));
+#line 110
+this.ScenarioSetup(scenarioInfo);
+#line 111
+ testRunner.Given("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.3*\" is" +
+                    " invisible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }

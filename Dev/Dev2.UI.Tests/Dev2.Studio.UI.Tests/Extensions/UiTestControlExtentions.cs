@@ -75,7 +75,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
             return control;
         }
 
-        public static UITestControl FindByFriendlyName(this UITestControl container, string friendlyName)
+        public static UITestControl FindByFriendlyName(this UITestControl container, string friendlyName, bool returnNullIfNotFound)
         {
             List<UITestControl> parentCollection = container.GetChildren()
                                                             .Where(c => !(c is WpfListItem) && c is WpfControl)
@@ -112,7 +112,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 }
             }
 
-            if(control == null)
+            if(control == null && !returnNullIfNotFound)
             {
                 string message = string.Format("Control with friendly name : [{0}] was not found", cleanName);
                 throw new Exception(message);
