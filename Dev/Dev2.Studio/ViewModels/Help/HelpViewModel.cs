@@ -2,14 +2,13 @@
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;
 using Dev2.Webs.Callbacks;
-using System;
 using System.ComponentModel.Composition;
-using System.IO;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
@@ -56,10 +55,10 @@ namespace Dev2.Studio.ViewModels.Help
         {
             get { return WorkSurfaceContext.Help; }
         }
-       
+
         protected override void OnViewLoaded(object view)
         {
-            base.OnViewLoaded(view);    
+            base.OnViewLoaded(view);
             var helpView = view as HelpView;
             if(helpView == null)
             {
@@ -102,7 +101,7 @@ namespace Dev2.Studio.ViewModels.Help
                 }
                 else
                 {
-                    ResourcePath = Path.Combine(Environment.CurrentDirectory, StringResources.Uri_Studio_PageNotAvailable);
+                    ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
                     HelpViewWrapper.Navigate(ResourcePath);
                     HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
                     HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
@@ -115,7 +114,7 @@ namespace Dev2.Studio.ViewModels.Help
             FieldInfo fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
             if(fiComWebBrowser == null)
             {
-                return; 
+                return;
             }
 
             object objComWebBrowser = fiComWebBrowser.GetValue(webBrowser);
@@ -126,9 +125,9 @@ namespace Dev2.Studio.ViewModels.Help
 
             objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { true });
         }
-        
+
         public void Handle(TabClosedMessage message)
-        {   
+        {
             this.TraceInfo(message.GetType().Name);
             if(!message.Context.Equals(this)) return;
 
@@ -138,4 +137,3 @@ namespace Dev2.Studio.ViewModels.Help
         }
     }
 }
-    

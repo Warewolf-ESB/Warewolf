@@ -50,8 +50,8 @@ namespace Dev2.Studio.Core.AppResources.Browsers
 
         static void ShowErrorPage(IWebBrowser browser, string pageUri)
         {
-            var path = FileHelper.GetFullPath(pageUri);
-            browser.Load(path);
+                var path = FileHelper.GetFullPath(pageUri);
+                browser.Load(path);
         }
 
         #endregion
