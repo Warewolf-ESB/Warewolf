@@ -11,20 +11,17 @@ namespace Dev2.Studio.AppResources.Converters
 
     public class MessageBoxImageToSystemIconConverter : IValueConverter
     {
-
-
-        private static Bitmap _emptyBitmap;
-        private static IntPtr _hicon;
+        private static readonly IntPtr Hicon;
 
         static MessageBoxImageToSystemIconConverter()
         {
-            _emptyBitmap = new Bitmap(1, 1);
-            _hicon = _emptyBitmap.GetHicon();
+            var emptyBitmap = new Bitmap(1, 1);
+            Hicon = emptyBitmap.GetHicon();
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Icon icon = Icon.FromHandle(_hicon);
+            var icon = Icon.FromHandle(Hicon);
 
             if(value == null)
             {
