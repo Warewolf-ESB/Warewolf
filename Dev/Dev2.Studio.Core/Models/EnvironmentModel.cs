@@ -26,7 +26,7 @@ namespace Dev2.Studio.Core.Models
         {
         }
         //, IWizardEngine wizardEngine
-        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IStudioResourceRepository studioResourceRepository) 
+        public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection, IStudioResourceRepository studioResourceRepository)
         {
             Initialize(id, environmentConnection, null, studioResourceRepository);
         }
@@ -54,8 +54,7 @@ namespace Dev2.Studio.Core.Models
 
             Connection.NetworkStateChanged += OnNetworkStateChanged;
 
-            AuthorizationService = CreateAuthorizationService(environmentConnection);
-            AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
+
             OnAuthorizationServicePermissionsChanged(this, EventArgs.Empty);
             PermissionsModifiedService = new PermissionsModifiedService(Connection.ServerEvents);
 
@@ -232,10 +231,20 @@ namespace Dev2.Studio.Core.Models
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
             RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
+            if(e.ToState == NetworkState.Online)
+            {
+                if(AuthorizationService == null)
+                {
+                    AuthorizationService = CreateAuthorizationService(Connection);
+                    AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
+                }
+
+            }
         }
 
         void RaiseNetworkStateChanged(bool isOnline)
         {
+
             RaiseIsConnectedChanged(isOnline);
             if(!isOnline)
                 HasLoadedResources = false;

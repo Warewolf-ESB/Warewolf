@@ -413,7 +413,7 @@ namespace Dev2.Core.Tests.Environments
 
             //------------Execute Test---------------------------
             var env = new EnvironmentModel(Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, new Mock<IStudioResourceRepository>().Object);
-
+            connection.Raise(environmentConnection => environmentConnection.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
             //------------Assert Results-------------------------
             Assert.IsNotNull(env.AuthorizationService);
         }
@@ -448,7 +448,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.IsAuthorized).Returns(true);
 
             var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
-
+            connection.Raise(environmentConnection => environmentConnection.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
             Assert.IsFalse(envModel.IsAuthorizedDeployFrom);
 
             //------------Execute Test---------------------------
@@ -469,7 +469,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(c => c.IsAuthorized).Returns(true);
 
             var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
-
+            connection.Raise(environmentConnection => environmentConnection.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
             Assert.IsFalse(envModel.IsAuthorizedDeployTo);
 
             //------------Execute Test---------------------------
@@ -489,7 +489,7 @@ namespace Dev2.Core.Tests.Environments
             var connection = CreateConnection();
 
             var envModel = new TestEnvironmentModel(new Mock<IEventAggregator>().Object, Guid.NewGuid(), connection.Object, new Mock<IResourceRepository>().Object, false);
-
+            connection.Raise(environmentConnection => environmentConnection.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
             envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployFrom, null)).Returns(false).Verifiable();
             envModel.AuthorizationServiceMock.Setup(a => a.IsAuthorized(AuthorizationContext.DeployTo, null)).Returns(false).Verifiable();
 
@@ -682,6 +682,7 @@ namespace Dev2.Core.Tests.Environments
             var repo = new Mock<IResourceRepository>();
 #pragma warning disable 168
             var environment = new EnvironmentModel(Guid.NewGuid(), connection.Object, repo.Object, srepo.Object) { Name = "localhost" };
+            connection.Raise(environmentConnection => environmentConnection.NetworkStateChanged += null, new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
 #pragma warning restore 168
             connection.Setup(a => a.DisplayName).Returns("bob");
             //------------Execute Test---------------------------

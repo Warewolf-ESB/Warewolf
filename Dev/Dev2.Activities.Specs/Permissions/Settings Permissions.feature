@@ -54,10 +54,10 @@ Examples:
         | 13 | Warewolf Administrators | Execute                   | BARNEY\DECISION TESTING | View, Execute             | Users      | All       | None   | BARNEY\DECISION TESTING | View, Execute             |
         | 14 | Warewolf Administrators | Contribute, View, Execute | BARNEY\DECISION TESTING | View, Execute             | Users      | All       | None   | BARNEY\DECISION TESTING | View, Execute             |
         | 15 | Warewolf Administrators | View, Execute             | BARNEY\DECISION TESTING | View, Execute             | Users      | All       | None   | BARNEY\DECISION TESTING | View, Execute             |
-        | 16 | Warewolf Administrators | View                      | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
-        | 17 | Warewolf Administrators | Execute                   | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
-        | 18 | Warewolf Administrators | Contribute, View, Execute | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
-        | 19 | Warewolf Administrators | View, Execute             | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
+        #| 16 | Warewolf Administrators | View                      | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
+        #| 17 | Warewolf Administrators | Execute                   | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
+        #| 18 | Warewolf Administrators | Contribute, View, Execute | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
+        #| 19 | Warewolf Administrators | View, Execute             | BARNEY\DECISION TESTING | None                      | Users      | All       | None   | BARNEY\DECISION TESTING | None                      |
 
 @Security
 Scenario Outline: Setting Selected Resource Permissions for users overlapping groups

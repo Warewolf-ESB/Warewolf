@@ -5,7 +5,6 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Composition;
 using Dev2.ConnectionHelpers;
-using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
 using Dev2.Factory;
@@ -536,7 +535,7 @@ namespace Dev2.Core.Tests
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("MainViewModel_IsWorkFlowOpened")]
         public void MainViewModel_IsWorkFlowOpened_ResourceIsOpened_True()
-        {   
+        {
             //------------Setup for test--------------------------
             CreateFullExportsAndVm();
             FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
@@ -545,7 +544,7 @@ namespace Dev2.Core.Tests
             //------------Execute Test---------------------------
             Assert.IsTrue(isWorkflowOpened);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("MainViewModel_IsWorkFlowOpened")]
@@ -1814,6 +1813,7 @@ namespace Dev2.Core.Tests
             Mock<IEnvironmentModel> mockEnvironmentModel = new Mock<IEnvironmentModel>();
             mockEnvironmentModel.Setup(model => model.ID).Returns(environmentID);
             mockEnvironmentModel.Setup(model => model.ResourceRepository).Returns(mockResourceRepository.Object);
+            mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             var environmentModel = mockEnvironmentModel.Object;
             mockResourceModel.Setup(model => model.Environment).Returns(environmentModel);
             envRepo.Setup(e => e.Source).Returns(environmentModel);

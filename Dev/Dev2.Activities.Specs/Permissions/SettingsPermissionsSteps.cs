@@ -1,4 +1,5 @@
-﻿using Dev2.Network;
+﻿using System.Threading;
+using Dev2.Network;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -20,10 +21,14 @@ namespace Dev2.Activities.Specs.Permissions
         [BeforeScenario("Security")]
         public void ClearSecuritySettings()
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppSettings.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
-
+            while(!environmentModel.IsConnected)
+            {
+                environmentModel.Disconnect();
+                Thread.Sleep(100);
+            }
             Data.Settings.Settings settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
@@ -36,7 +41,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Given(@"I have a server ""(.*)""")]
         public void GivenIHaveAServer(string serverName)
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppSettings.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
             var environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             ScenarioContext.Current.Add("environment", environmentModel);
@@ -95,7 +100,14 @@ namespace Dev2.Activities.Specs.Permissions
                 CreateLocalWindowsAccount("SpecsUser", userGroup);
             }
             var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#")) { Name = "Other Connection" };
-            reconnectModel.Connect();
+            try
+            {
+                reconnectModel.Connect();
+            }
+            catch(Exception e)
+            {
+                Console.WriteLine(e);
+            }
             ScenarioContext.Current.Add("currentEnvironment", reconnectModel);
         }
 
@@ -140,9 +152,9 @@ namespace Dev2.Activities.Specs.Permissions
                 var id = GetUserSecurityIdentifier(name);
                 accountExists = id.IsAccountSid();
             }
-// ReSharper disable EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
-// ReSharper restore EmptyGeneralCatchClause
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 /* Invalid user account */
             }

@@ -1,4 +1,6 @@
 using System;
+using Dev2.AppResources.Repositories;
+using Dev2.ConnectionHelpers;
 using Dev2.Models;
 using Dev2.Providers.Events;
 using Dev2.Services.Security;
@@ -28,9 +30,9 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
 
-            var environmentVm = new ExplorerItemModel();
+            var environmentVm = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, StudioResourceRepository.Instance);
 
-            var child = new Mock<ExplorerItemModel>().Object;
+            var child = new Mock<IExplorerItemModel>().Object;
 
             environmentVm.Children.Add(child);
             environmentVm.Children.Add(child);
@@ -58,9 +60,9 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(authorizationService.Object);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
 
-            var environmentVm = new ExplorerItemModel();
+            var environmentVm = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, StudioResourceRepository.Instance);
 
-            var child = new Mock<ExplorerItemModel>().Object;
+            var child = new Mock<IExplorerItemModel>().Object;
             environmentVm.Children.Add(child);
             environmentVm.Children.Add(child);
             environmentVm.Children.Add(child);
@@ -85,9 +87,9 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(e => e.IsAuthorized).Returns(true);
             mockEnvironmentModel.Setup(model => model.Connection).Returns(connection.Object);
 
-            var environmentVm = new ExplorerItemModel();
+            var environmentVm = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, StudioResourceRepository.Instance);
 
-            var child = new Mock<ExplorerItemModel>().Object;
+            var child = new Mock<IExplorerItemModel>().Object;
 
             environmentVm.Children.Add(child);
             environmentVm.Children.Add(child);

@@ -10,7 +10,6 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;

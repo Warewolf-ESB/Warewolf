@@ -5,6 +5,7 @@ using Dev2.Models;
 using Dev2.Network;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
+using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
@@ -93,7 +94,7 @@ namespace Dev2.Activities.Specs.Explorer
         public void WhenIAddAFolderWithAName(string folderName)
         {
             var localhost = Guid.Empty;
-
+            AppSettings.LocalHost = "http://localhost:3142";
             ExecuteService(() =>
                 {
                     var repository = ScenarioContext.Current.Get<StudioResourceRepository>("repository");

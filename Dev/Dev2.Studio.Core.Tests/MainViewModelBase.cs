@@ -73,7 +73,9 @@ namespace Dev2.Core.Tests
             mockEnv.SetupProperty(g => g.ActiveEnvironment); // Start tracking changes
             mockEnv.Setup(g => g.All()).Returns(new List<IEnvironmentModel>());
             mockEnv.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
-            mockEnv.Setup(repository => repository.Source).Returns(new Mock<IEnvironmentModel>().Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
+            mockEnv.Setup(repository => repository.Source).Returns(mockEnvironmentModel.Object);
             var environmentRepo = mockEnv.Object;
 
             EventAggregator = new Mock<IEventAggregator>();
