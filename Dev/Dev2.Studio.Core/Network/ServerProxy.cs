@@ -98,12 +98,21 @@ namespace Dev2.Network
                 if(!String.IsNullOrEmpty(userName))
                 {
                     NTAccount acct = new NTAccount(domainName, userName);
+                    UserPrincipal userPrincipal = null;
+                    SecurityIdentifier id;
+                    PrincipalContext context;
                     try
                     {
-                        SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
-                        var context = new PrincipalContext(domainName.ToLower() == Environment.MachineName.ToLower() ? ContextType.Machine : ContextType.Domain);
-                        var userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
-
+                        id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
+                        context = new PrincipalContext(domainName.ToLower() == Environment.MachineName.ToLower() ? ContextType.Machine : ContextType.Domain);
+                        userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
+                    }
+                    catch(Exception e)
+                    {
+                        Logger.LogError("Getting NTAccount", e);
+                    }
+                    try
+                    {
                         if(userPrincipal == null)
                         {
                             acct = new NTAccount(Environment.UserDomainName, userName);
