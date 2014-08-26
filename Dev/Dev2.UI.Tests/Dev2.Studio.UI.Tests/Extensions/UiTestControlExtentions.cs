@@ -1,4 +1,5 @@
 ﻿using Dev2.Studio.UI.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UITest.Extension;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
@@ -36,6 +37,17 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static UITestControl FindByAutomationId(this UITestControl container, string automationId, bool returnNullIfNotFound)
         {
+            if (container == null)
+            {
+                if(returnNullIfNotFound)
+                {
+                    return null;
+                }
+
+                string message = string.Format("Control with automation id : [{0}] was not found", automationId);
+                throw new Exception(message);
+            }
+            
             List<UITestControl> parentCollection = container.GetChildren()
                                                             .Where(c => c is WpfControl)
                                                             .ToList();
@@ -78,11 +90,23 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static UITestControl FindByFriendlyName(this UITestControl container, string friendlyName, bool returnNullIfNotFound)
         {
+            var cleanName = friendlyName.Replace("*", "");
+
+            if(container == null)
+            {
+                if(returnNullIfNotFound)
+                {
+                    return null;
+                }
+
+                string message = string.Format("Control with friendly name : [{0}] was not found", cleanName);
+                throw new Exception(message);
+            }
+
             List<UITestControl> parentCollection = container.GetChildren()
                                                             .Where(c => !(c is WpfListItem) && c is WpfControl)
                                                             .ToList();
-
-            var cleanName = friendlyName.Replace("*", "");
+            
             var control = parentCollection.SingleOrDefault(b => b.FriendlyName.Equals(cleanName)
                                                              || b.FriendlyName.StartsWith(cleanName)
                                                              || ((WpfControl)b).AutomationId.Contains(cleanName));
@@ -184,12 +208,11 @@ namespace Dev2.Studio.UI.Tests.Extensions
         {
             try
             {
-                string state = control.State.ToString().ToLower();
-                if(state.Contains("invisible") || state.Contains("offscreen"))
+                if(control.State.HasFlag(ControlStates.Invisible) ||
+                    control.State.HasFlag(ControlStates.Offscreen))
                 {
                     Mouse.Click(control);
                 }
-
                 var point = GetClickablePoint(control);
                 Mouse.Click(point);
                 Mouse.Click(MouseButtons.Right);
@@ -202,12 +225,11 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static void DoubleClick(this UITestControl control)
         {
-            string state = control.State.ToString().ToLower();
-            if(state.Contains("invisible") || state.Contains("offscreen"))
+            if(control.State.HasFlag(ControlStates.Invisible) ||
+               control.State.HasFlag(ControlStates.Offscreen))
             {
                 Mouse.Click(control);
             }
-
             var point = GetClickablePoint(control);
             Mouse.DoubleClick(point);
         }

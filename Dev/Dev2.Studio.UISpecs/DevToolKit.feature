@@ -69,7 +69,7 @@
 #       #And I click "EXPLORER,UI_Svr0054 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 #       #Then "EXPLORER,UI_Svr0054 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
 #       ##Given "EXPLORER,UI_Svr0054 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is disabled
-#       #Given I click "EXPLORER,UI_Server5 (http://localhost:3142/)_AutoID" 
+#       #Given I click "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID" 
 #       #Then "RIBBONNEWENDPOINT" is disabled
 #       #Then "RIBBONSETTINGS" is disabled
 #       #Then "RIBBONNEWDATABASECONNECTOR" is disabled
@@ -105,7 +105,7 @@
 #	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.1*"
 #	When I click "UI_RollbackContextMenuItem_AutoID"
 #	And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID"
-#	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)" is visible within "2" seconds
+	#Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)" is visible within "2" seconds
 #
 #Scenario:TshepoVisibilityIsNotWorkingDude	
 #	Given "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.3*" is invisible within "1" seconds
@@ -120,3 +120,133 @@
 #	#And I send "Javascript Testing2{ENTER}" to ""
 #	#Then "EXPLORERFOLDERS,UI_BARNEY_AutoID,UI_Javascript Testing2_AutoID" is visible within "3" seconds
 #	Given "EXPLORERFOLDERS,UI_BARNEY_AutoID,UI_Javascript Testing2_AutoID,v.1*" is visible within "4" seconds
+#
+Scenario: TshepoPermissionsExample
+       Given I click "EXPLORER,UI_localhost_AutoID" 
+       And I click "RIBBONSETTINGS"   
+       And I click "SECURITYPUBLICADMINISTRATOR"  
+       And "SECURITYPUBLICVIEW" is unchecked
+       And "SECURITYPUBLICEXECUTE" is unchecked
+       And "SECURITYPUBLICDEPLOYTO" is unchecked
+       And "SECURITYPUBLICDEPLOYFROM" is unchecked
+       And I click "SECURITYPUBLICVIEW"
+       And I click "SECURITYSAVE"
+       Given I create a new remote connection "Svr12" as
+       | Address               | AuthType | UserName | Password |
+       | http://localhost:3142 | Public   |          |          |
+       Then I click "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID"   
+       Given I click "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       Then "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+       Then "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+       Given I double click "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"      
+       Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "3" seconds
+       Then "RIBBONDEBUG" is visible
+       Then "RIBBONNEWDATABASECONNECTOR" is disabled
+       Then "RIBBONSCHEDULE" is disabled
+       Then "RIBBONNEWPLUGINCONNECTOR" is disabled
+       Then "RIBBONNEWWEBCONNECTOR" is disabled
+       Then "RIBBONNEWENDPOINT" is disabled
+       Then "RIBBONSCHEDULE" is disabled
+	   #Then close the Studio and Server
+       #Set server permission execute
+       Given I click "EXPLORER,UI_localhost_AutoID" 
+       And I click "RIBBONSETTINGS"   
+       And I click "SECURITYPUBLICADMINISTRATOR"  
+       And "SECURITYPUBLICVIEW" is unchecked
+       And "SECURITYPUBLICEXECUTE" is unchecked
+       And "SECURITYPUBLICDEPLOYTO" is unchecked
+       And "SECURITYPUBLICDEPLOYFROM" is unchecked
+       And I click "SECURITYPUBLICEXECUTE"
+       And I click "SECURITYSAVE"
+       #Refresh local host
+       And I click "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       Then "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is not visible
+       And "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+       When I double click "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"
+       Then "WINDOWDEBUG" is disabled
+       Then "WINDOWVIEWINBROWSER" is visible
+       Then I click "WINDOWCANCEL"
+       Then "RIBBONNEWDATABASECONNECTOR" is disabled
+       Then "RIBBONSCHEDULE" is disabled
+       Then "RIBBONNEWPLUGINCONNECTOR" is disabled
+       Then "RIBBONNEWWEBCONNECTOR" is disabled
+       Then "RIBBONNEWENDPOINT" is disabled
+       #Set server permission Contribute
+       Given I click "EXPLORER,UI_localhost_AutoID" 
+       And I click "RIBBONSETTINGS"   
+       And I click "SECURITYPUBLICADMINISTRATOR"  
+       And "SECURITYPUBLICVIEW" is unchecked
+       And "SECURITYPUBLICEXECUTE" is unchecked
+       And "SECURITYPUBLICDEPLOYTO" is unchecked
+       And "SECURITYPUBLICDEPLOYFROM" is unchecked
+       And I click "SECURITYPUBLICCONTRIBUTE"
+       And I click "SECURITYSAVE"
+       #Refresh
+       And I click "EXPLORER,UI_ExplorerTree_AutoID,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       Then "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+       Then "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+       When I double click "Explorer,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       Then "RIBBONDEBUG" is visible
+       Then "RIBBONNEWDATABASECONNECTOR" is visible
+       Then "RIBBONSCHEDULE" is disabled
+       Then "RIBBONNEWPLUGINCONNECTOR" is visible
+       Then "RIBBONNEWWEBCONNECTOR" is visible
+       Then "RIBBONNEWENDPOINT" is visible
+       Then "RIBBONSCHEDULE" is disabled
+       #Set server permission Deploy To
+       Given I click "EXPLORER,UI_localhost_AutoID" 
+       And I click "RIBBONSETTINGS"   
+       And I click "SECURITYPUBLICADMINISTRATOR"  
+       And "SECURITYPUBLICVIEW" is unchecked
+       And "SECURITYPUBLICEXECUTE" is unchecked
+       And "SECURITYPUBLICDEPLOYTO" is unchecked
+       And "SECURITYPUBLICDEPLOYFROM" is unchecked
+       And I click "SECURITYPUBLICDEPLOYTO"
+       And I click "SECURITYSAVE"
+       Given I click "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       And "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
+       #And "EXPLORER,UI_Server4 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is not visible
+       #And "EXPLORER,UI_Server4 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+       And I click "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       Then "RIBBONNEWENDPOINT" is disabled
+       Then "RIBBONSETTINGS" is disabled
+       Then "RIBBONNEWDATABASECONNECTOR" is disabled
+       Then "RIBBONSCHEDULE" is disabled            
+       Then "RIBBONNEWPLUGINCONNECTOR" is disabled
+       Then "RIBBONNEWWEBCONNECTOR" is disabled
+       Then "RIBBONDEPLOY" is visible
+       Then I click "RIBBONDEPLOY"
+       Then I click "ACTIVETAB,DeployUserControl,ConnectUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_Svr12"
+       Then "DEPLOYSOURCE,UI_SourceServer_UI_Svr12 (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
+       #Set server permission Deploy From
+       And I click "EXPLORER,UI_localhost_AutoID" 
+       And I click "RIBBONSETTINGS"   
+       And I click "SECURITYPUBLICADMINISTRATOR"  
+       And "SECURITYPUBLICVIEW" is unchecked
+       And "SECURITYPUBLICEXECUTE" is unchecked
+       And "SECURITYPUBLICDEPLOYTO" is unchecked
+       And "SECURITYPUBLICDEPLOYFROM" is unchecked
+       And I click "SECURITYPUBLICDEPLOYFROM"
+       And I click "SECURITYSAVE" 
+       And I click "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       Then "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
+       #Given "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is disabled
+       Given I click "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID" 
+       Then "RIBBONNEWENDPOINT" is disabled
+       Then "RIBBONSETTINGS" is disabled
+       Then "RIBBONNEWDATABASECONNECTOR" is disabled
+       Then "RIBBONSCHEDULE" is disabled                   
+       Then "RIBBONNEWPLUGINCONNECTOR" is disabled
+       Then "RIBBONNEWWEBCONNECTOR" is disabled
+       Then "RIBBONDEPLOY" is visible
+       Then I click "RIBBONDEPLOY"
+       Given I click "UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_Svr12"
+       Then "DEPLOYDESTINATION,UI_SourceServer_UI_Svr12 (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
+
+Scenario: TshepoTest5555
+#   #Given "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+#   #Given "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+#   Given "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible within "2" seconds
+#   Given I click "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+#Given "EXPLORER,UI_Svr12 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" is visible
+Given all tabs are closed

@@ -417,7 +417,7 @@ namespace Dev2.Studio.UI.Specs
         public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
         {
             GivenIClick("UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...");
-            Playback.Wait(3000);
+            Playback.Wait(4000);
             var serverDetailsRow = table.Rows[0];
             NewServerUIMap.ClearServerAddress();
             NewServerUIMap.EnterServerAddress(serverDetailsRow["Address"]);
@@ -566,7 +566,13 @@ namespace Dev2.Studio.UI.Specs
                 var control = GetAControlRelaxed(itemToFindAutoIds);
                 if(control != null)
                 {
-                    break;
+                    var isInvisible = control.State.HasFlag(ControlStates.Invisible) ||
+                             control.State.HasFlag(ControlStates.Offscreen);
+                    
+                    if (!isInvisible)
+                    {
+                        break;
+                    }
                 }
                 timetolookup -= stopWatch.ElapsedMilliseconds;
             }
@@ -592,6 +598,15 @@ namespace Dev2.Studio.UI.Specs
                 {
                     break;
                 }
+
+                var isInvisible = control.State.HasFlag(ControlStates.Invisible) ||
+                            control.State.HasFlag(ControlStates.Offscreen);
+
+                if(isInvisible)
+                {
+                    break;
+                }
+
                 timetolookup -= stopWatch.ElapsedMilliseconds;
             }
             stopWatch.Stop();
@@ -645,7 +660,18 @@ namespace Dev2.Studio.UI.Specs
         [Then(@"all tabs are closed")]
         public void GivenAllTabsAreClosed()
         {
-            TabManagerUIMap.CloseAllTabs();
+            StudioWindow.SetFocus();
+            var tabManager = TabManagerUIMap.GetManager();
+
+            if(tabManager != null)
+            {
+                var tabs = tabManager.GetChildren();
+                foreach(var tab in tabs)
+                {
+                    var closeButton = tab.FindByAutomationId("closeBtn",false);   
+                    closeButton.Click();
+                }
+            }
         }
 
 
@@ -659,6 +685,11 @@ namespace Dev2.Studio.UI.Specs
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
             var message = string.Format("Control with Auto ID : [{0}] is not visible", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
             Assert.IsNotNull(itemFound, message);
+
+            var isInvisible = itemFound.State.HasFlag(ControlStates.Invisible) ||
+                              itemFound.State.HasFlag(ControlStates.Offscreen);
+
+            Assert.IsFalse(isInvisible, message);
         }
 
         [Given(@"""(.*)"" is not visible")]
@@ -669,7 +700,13 @@ namespace Dev2.Studio.UI.Specs
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null,false, correctedditemToFindAutoIds);
             var message = string.Format("Control with Auto ID : [{0}] is visible", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
-            Assert.IsNull(itemFound, message);
+            if (itemFound != null)
+            {
+                var isInvisible = itemFound.State.HasFlag(ControlStates.Invisible) ||
+                                  itemFound.State.HasFlag(ControlStates.Offscreen);
+
+                Assert.IsTrue(isInvisible, message);
+            }
         }
 
         [Given(@"""(.*)"" is enabled")]
@@ -696,35 +733,35 @@ namespace Dev2.Studio.UI.Specs
             Assert.IsFalse(itemFound.IsEnabled(), message);
         }
 
-        [Given(@"I wait till ""(.*)"" is not visible")]
-        [Then(@"I wait till ""(.*)"" is not visible")]
-        [When(@"I wait till ""(.*)"" is not visible")]
-        public void GivenIWaitTillIsNotVisible(string itemAutoIds)
-        {
-            var correctedditemToFindAutoIds = GetCorrect(itemAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
-            while(itemFound != null && itemFound.Exists)
-            {
-                Playback.Wait(100);
-            }
-        }
+        //[Given(@"I wait till ""(.*)"" is not visible")]
+        //[Then(@"I wait till ""(.*)"" is not visible")]
+        //[When(@"I wait till ""(.*)"" is not visible")]
+        //public void GivenIWaitTillIsNotVisible(string itemAutoIds)
+        //{
+        //    var correctedditemToFindAutoIds = GetCorrect(itemAutoIds).Split(',');
+        //    var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
+        //    while(itemFound != null && itemFound.Exists)
+        //    {
+        //        Playback.Wait(100);
+        //    }
+        //}
 
-        [Given(@"I wait till ""(.*)"" is visible")]
-        [Then(@"I wait till ""(.*)"" is visible")]
-        [When(@"I wait till ""(.*)"" is visible")]
-        public void GivenIWaitTillIsVisible(string itemAutoIds)
-        {
-            var correctedditemToFindAutoIds = GetCorrect(itemAutoIds).Split(',');
-            _retryCount = 0;
-            Playback.PlaybackError += PlaybackOnPlaybackError;
+        //[Given(@"I wait till ""(.*)"" is visible")]
+        //[Then(@"I wait till ""(.*)"" is visible")]
+        //[When(@"I wait till ""(.*)"" is visible")]
+        //public void GivenIWaitTillIsVisible(string itemAutoIds)
+        //{
+        //    var correctedditemToFindAutoIds = GetCorrect(itemAutoIds).Split(',');
+        //    _retryCount = 0;
+        //    Playback.PlaybackError += PlaybackOnPlaybackError;
 
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
-            if(itemFound.State != ControlStates.Invisible)
-            {
-                Playback.PlaybackError -= PlaybackOnPlaybackError;
-                _retryCount = 0;
-            }
-        }
+        //    var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
+        //    if(itemFound.State != ControlStates.Invisible)
+        //    {
+        //        Playback.PlaybackError -= PlaybackOnPlaybackError;
+        //        _retryCount = 0;
+        //    }
+        //}
 
         void PlaybackOnPlaybackError(object sender, PlaybackErrorEventArgs playbackErrorEventArgs)
         {
