@@ -49,16 +49,17 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
             while(parentCollection.Count > 0)
             {
-                var uiTestControlCollection = parentCollection
-                    .SelectMany(c => c.GetChildren())
-                    .ToList();
+                var collectionToSearch = parentCollection
+                                .SelectMany(c => c.GetChildren())
+                                .Where(c => c is WpfControl)
+                                .ToList();
 
-                control = uiTestControlCollection
+                control = collectionToSearch
                     .FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
 
                 if(control == null)
                 {
-                    parentCollection = uiTestControlCollection;
+                    parentCollection = collectionToSearch;
                 }
                 else
                 {
@@ -82,7 +83,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                                                             .ToList();
 
             var cleanName = friendlyName.Replace("*", "");
-            var control = parentCollection.SingleOrDefault(b => b.FriendlyName.Equals(cleanName) 
+            var control = parentCollection.SingleOrDefault(b => b.FriendlyName.Equals(cleanName)
                                                              || b.FriendlyName.StartsWith(cleanName)
                                                              || ((WpfControl)b).AutomationId.Contains(cleanName));
 
@@ -95,6 +96,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
             {
                 var uiTestControlCollection = parentCollection
                     .SelectMany(c => c.GetChildren())
+                    .Where(c => c is WpfControl)
                     .ToList();
 
                 control = uiTestControlCollection
@@ -182,26 +184,15 @@ namespace Dev2.Studio.UI.Tests.Extensions
         {
             try
             {
-                switch(control.ControlType.ToString())
+                string state = control.State.ToString().ToLower();
+                if(state.Contains("invisible") || state.Contains("offscreen"))
                 {
-                    case "TreeItem":
-                    case "ListItem":
-                    case "MenuItem":
-                        {
-                            Mouse.Click(control);
-                            //var point = GetClickablePoint(control);
-                            //Mouse.Click(point);
-                            Mouse.Click(MouseButtons.Right);
-                            break;
-                        }
-                    default:
-                        {
-                            var point = GetClickablePoint(control);
-                            Mouse.Click(point);
-                            Mouse.Click(MouseButtons.Right);
-                            break;
-                        }
+                    Mouse.Click(control);
                 }
+
+                var point = GetClickablePoint(control);
+                Mouse.Click(point);
+                Mouse.Click(MouseButtons.Right);
             }
             catch(Exception)
             {
@@ -211,7 +202,12 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static void DoubleClick(this UITestControl control)
         {
-            Click(control);
+            string state = control.State.ToString().ToLower();
+            if(state.Contains("invisible") || state.Contains("offscreen"))
+            {
+                Mouse.Click(control);
+            }
+
             var point = GetClickablePoint(control);
             Mouse.DoubleClick(point);
         }

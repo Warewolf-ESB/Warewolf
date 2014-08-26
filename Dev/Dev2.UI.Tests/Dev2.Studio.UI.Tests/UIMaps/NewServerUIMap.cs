@@ -143,6 +143,7 @@
                             break;
                         }
                 }
+                Playback.Wait(1000);
             }
         }
 
