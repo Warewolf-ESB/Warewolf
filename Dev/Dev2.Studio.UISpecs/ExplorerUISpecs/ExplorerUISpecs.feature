@@ -9,7 +9,7 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 	And I click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
 	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)" is visible within "2" seconds
-	#CreateNewVersion 
+	#CreateNewVersion
 	When I send "{DELETE}" to "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)"
 	And I click "RIBBONSAVE"
 	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
@@ -31,7 +31,7 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 	And I click "RIBBONDEPLOY"
 	Then "DEPLOYSOURCE,UI_SourceServer_UI_localhost_AutoID_AutoID,UI_SourceServer_UI_EXAMPLES_AutoID_AutoID,UI_SourceServer_UI_Recordset - Records Length_AutoID_AutoID,v.1*" is invisible within "3" seconds	
 	And all tabs are closed
-	#Delete
+	#Delete [Also proves that rollback after rename worked as UI Auto ID no longer contains RENAME]
 	When I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.3*"
 	And I click "UI_DeleteVersionContextMenuItem_AutoID"
 	And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID"
