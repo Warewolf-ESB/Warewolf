@@ -3,7 +3,7 @@
 	I want to know that versioning is working in the system
 	So that I can rollback, rename and delete with comfort.
 
-@mytag
+@ExplorerUISpecs
 Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDeleteANDConfirmReadOnlyANDHide
 	Given I have Warewolf running
 	And I click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"

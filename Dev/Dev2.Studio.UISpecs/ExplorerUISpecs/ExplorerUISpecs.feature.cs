@@ -73,12 +73,12 @@ namespace Dev2.Studio.UI.Specs.ExplorerUISpecs
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDeleteANDConfir" +
             "mReadOnlyANDHide")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExplorerUISpecs")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mytag")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("ExplorerUISpecs")]
         public virtual void CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDeleteANDConfirmReadOnlyANDHide()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDeleteANDConfir" +
                     "mReadOnlyANDHide", new string[] {
-                        "mytag"});
+                        "ExplorerUISpecs"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
