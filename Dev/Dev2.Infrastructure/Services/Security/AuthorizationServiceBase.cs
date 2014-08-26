@@ -199,11 +199,11 @@ namespace Dev2.Services.Security
             // ReSharper restore LoopCanBeConvertedToQuery
 
             groupPermissions.AddRange(resourcePermissions);
-            FilterAdminGroupForRemote(groupPermissions);
+            //FilterAdminGroupForRemote(groupPermissions);
             return groupPermissions;
         }
 
-        bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
+        protected virtual bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
         {
             var isInRole = false;
 
@@ -213,7 +213,8 @@ namespace Dev2.Services.Security
                 // Prefixing with computer name does not work with Warewolf and IsInRole
                 // Plain does not work with IsInRole
                 // Hence this conditional check and divert
-                if(p.WindowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
+                var windowsGroup = p.WindowsGroup;
+                if(windowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
                 {
                     // We need to get the group as it is local then look for principle's membership
                     var principleName = principal.Identity.Name;
@@ -223,20 +224,57 @@ namespace Dev2.Services.Security
                         // Then inspect BuiltIn\Administrators
 
                         // Examine group for this member ;)  
-                        isInRole = principal.IsInRole(p.WindowsGroup);
+                        isInRole = principal.IsInRole(windowsGroup);
 
                         // if that fails, check Administrators group membership in the Warewolf Administrators group
                         if(!isInRole)
                         {
                             SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
-                            if(AreAdministratorsMembersOfWarewolfAdministrators.Invoke())
+                            var windowsPrincipal = principal as WindowsPrincipal;
+                            var windowsIdentity = principal.Identity as WindowsIdentity;
+                            if(windowsPrincipal != null)
                             {
-                                // Check user's administrator membership
+                                isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole(sid);
+                                if(windowsIdentity != null && !isInRole)
+                                {
+                                    if(windowsIdentity.Groups != null)
+                                    {
+                                        isInRole = windowsIdentity.Groups.Any(reference =>
+                                        {
+                                            if(reference.Value == sid.Value)
+                                            {
+                                                return true;
+                                            }
+                                            try
+                                            {
+                                                var identityReference = reference.Translate(typeof(NTAccount));
+                                                if(identityReference != null)
+                                                {
+                                                    return identityReference.Value == windowsGroup;
+                                                }
+                                            }
+                                            catch(Exception)
+                                            {
+                                                return false;
+                                                //Complete failure
+                                            }
+                                            return false;
+                                        });
+                                    }
+                                }
+                            }
+                            else
+                            {
+
+                                if(AreAdministratorsMembersOfWarewolfAdministrators.Invoke())
+                                {
+                                    // Check user's administrator membership
+                                    isInRole = principal.IsInRole(sid.Value);
+                                }
+
+                                //Check regardless. Not installing the software can create a situation where the "Administrators" group is not part of Warewolf
                                 isInRole = principal.IsInRole(sid.Value);
                             }
-
-                            //Check regardless. Not installing the software can create a situation where the "Administrators" group is not part of Warewolf
-                            isInRole = principal.IsInRole(sid.Value);
                         }
 
                         return isInRole;
@@ -245,7 +283,7 @@ namespace Dev2.Services.Security
                 else
                 {
                     // THIS TRY-CATCH IS HERE TO AVOID THE EXPLORER NOT LOADING ANYTHING WHEN THE DOMAIN CANNOT BE CONTACTED!
-                    isInRole = principal.IsInRole(p.WindowsGroup);
+                    isInRole = principal.IsInRole(windowsGroup);
                 }
             }
             // ReSharper disable EmptyGeneralCatchClause

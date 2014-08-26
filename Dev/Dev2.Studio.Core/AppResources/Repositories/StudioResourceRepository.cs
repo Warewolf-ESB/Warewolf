@@ -388,15 +388,15 @@ namespace Dev2.AppResources.Repositories
                 resourcePath = resourcePath.Equals(item.DisplayName) ? "" : resourcePath.Substring(0, resourcePath.LastIndexOf("\\" + item.DisplayName, StringComparison.Ordinal));
             }
 
-// ReSharper disable ImplicitlyCapturedClosure
+            // ReSharper disable ImplicitlyCapturedClosure
             var parent = FindItem(model => model.ResourcePath != null && model.ResourcePath.Equals(resourcePath) && model.EnvironmentId == environmentId);
             var alreadyAdded = FindItem(model => model.ResourceId == item.ResourceId && model.ResourcePath == item.ResourcePath && model.EnvironmentId == environmentId) != null;
-// ReSharper restore ImplicitlyCapturedClosure
+            // ReSharper restore ImplicitlyCapturedClosure
             var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
             var resourceRepository = environmentModel.ResourceRepository;
-// ReSharper disable ImplicitlyCapturedClosure
+            // ReSharper disable ImplicitlyCapturedClosure
             var resourceModel = resourceRepository.FindSingle(model => model.ID == item.ResourceId);
-// ReSharper restore ImplicitlyCapturedClosure
+            // ReSharper restore ImplicitlyCapturedClosure
             if(resourceModel == null && item.ResourceType != ResourceType.Folder)
             {
                 if(item.ResourceType == ResourceType.ServerSource)
@@ -451,7 +451,7 @@ namespace Dev2.AppResources.Repositories
         {
             if(explorerItem != null)
             {
-                if (explorerItem.ResourceId == Guid.Empty)
+                if(explorerItem.ResourceId == Guid.Empty)
                 {
                     parent.Children.Add(explorerItem);
                     parent.OnChildrenChanged();
@@ -611,13 +611,12 @@ namespace Dev2.AppResources.Repositories
             {
                 return null;
             }
-            //bool isExpanded = item.ResourceType == ResourceType.Server;
-
             string displayname = item.DisplayName;
+            // ReSharper disable ImplicitlyCapturedClosure
+            IEnvironmentModel environmentModel = environmentRepository.FindSingle(model => GetEnvironmentModel(model, item, environmentId));
             if((item.ResourceType == ResourceType.Server && environmentId != Guid.Empty) || (environmentId == Guid.Empty && displayname.ToLower() == Environment.MachineName.ToLower()))
             {
-                // ReSharper disable ImplicitlyCapturedClosure
-                IEnvironmentModel environmentModel = environmentRepository.FindSingle(model => GetEnvironmentModel(model, item, environmentId));
+                environmentModel = environmentRepository.FindSingle(model => GetEnvironmentModel(model, item, environmentId));
                 if(environmentModel != null && environmentModel.Connection != null)
                 {
                     displayname = environmentModel.DisplayName;
@@ -630,7 +629,7 @@ namespace Dev2.AppResources.Repositories
                 DisplayName = displayname,
                 ResourceType = item.ResourceType,
                 ResourceId = item.ResourceId,
-                Permissions = item.Permissions,
+                Permissions = environmentModel == null || environmentModel.IsLocalHost ? item.Permissions : environmentModel.AuthorizationService.GetResourcePermissions(item.ResourceId),
                 ResourcePath = item.ResourcePath,
                 VersionInfo = item.VersionInfo
             };
@@ -677,7 +676,7 @@ namespace Dev2.AppResources.Repositories
 
         public void HideVersionHistory(Guid environmentId, Guid resourceId)
         {
-            var parent = FindItem(i => i.ResourceId == resourceId && i.EnvironmentId == environmentId); 
+            var parent = FindItem(i => i.ResourceId == resourceId && i.EnvironmentId == environmentId);
 
             if(parent != null)
             {
@@ -701,7 +700,7 @@ namespace Dev2.AppResources.Repositories
 
             if(rollbackResult != null)
             {
-                var parent = FindItem(i => i.ResourceId == resourceId && i.EnvironmentId == environmentId); 
+                var parent = FindItem(i => i.ResourceId == resourceId && i.EnvironmentId == environmentId);
                 if(parent != null && parent.DisplayName != rollbackResult.DisplayName)
                 {
                     parent.RefreshName(rollbackResult.DisplayName);
@@ -722,9 +721,9 @@ namespace Dev2.AppResources.Repositories
         void AttachVersionHistoryToParent(Guid environmentId, Guid resourceId, IList<IExplorerItem> versions)
         {
             ObservableCollection<IExplorerItemModel> explorerItemModels;
-// ReSharper disable ImplicitlyCapturedClosure
-            var parent = FindItem(i => i.ResourceId == resourceId && i.EnvironmentId == environmentId); 
-// ReSharper restore ImplicitlyCapturedClosure
+            // ReSharper disable ImplicitlyCapturedClosure
+            var parent = FindItem(i => i.ResourceId == resourceId && i.EnvironmentId == environmentId);
+            // ReSharper restore ImplicitlyCapturedClosure
 
             if(versions == null || versions.Count == 0)
             {
@@ -732,7 +731,7 @@ namespace Dev2.AppResources.Repositories
             }
             else
             {
-// ReSharper disable ImplicitlyCapturedClosure
+                // ReSharper disable ImplicitlyCapturedClosure
                 explorerItemModels = versions.Select(version => MapData(version, GetEnvironmentRepository(), environmentId)).ToObservableCollection();
                 explorerItemModels.ForEach(e =>
                     {
@@ -766,8 +765,8 @@ namespace Dev2.AppResources.Repositories
         readonly Dictionary<string, Guid> _versionKeys = new Dictionary<string, Guid>();
         private Guid GenerateVersionResourceId(Guid resourceId, Guid environmentId, string versionNumber)
         {
-            var key = string.Format("{0}{1}{2}",resourceId , environmentId,versionNumber);
-          
+            var key = string.Format("{0}{1}{2}", resourceId, environmentId, versionNumber);
+
             if(_versionKeys.ContainsKey(key))
             {
                 return _versionKeys[key];
@@ -780,7 +779,7 @@ namespace Dev2.AppResources.Repositories
 
         public void RefreshVersionHistory(Guid environmentId, Guid resourceId)
         {
-            var parent = FindItem(i => i.ResourceId == resourceId && i.EnvironmentId == environmentId); 
+            var parent = FindItem(i => i.ResourceId == resourceId && i.EnvironmentId == environmentId);
             if(parent != null && parent.Children.Count > 0)
             {
                 ShowVersionHistory(environmentId, resourceId);

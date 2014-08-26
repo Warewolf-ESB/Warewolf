@@ -54,8 +54,6 @@ namespace Dev2.Studio.Core.Models
 
             Connection.NetworkStateChanged += OnNetworkStateChanged;
 
-
-            OnAuthorizationServicePermissionsChanged(this, EventArgs.Empty);
             PermissionsModifiedService = new PermissionsModifiedService(Connection.ServerEvents);
 
             // MUST subscribe to Guid.Empty as memo.InstanceID is NOT set by server!
@@ -237,6 +235,7 @@ namespace Dev2.Studio.Core.Models
                 {
                     AuthorizationService = CreateAuthorizationService(Connection);
                     AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
+                    OnAuthorizationServicePermissionsChanged(this, EventArgs.Empty);
                 }
 
             }
