@@ -290,6 +290,94 @@ You need Administrator permission.", viewModel.Errors);
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SettingsViewModel_SaveCommand")]
+        public void SettingsViewModel_SaveCommand_DuplicateServerPermissions_HasErrorsIsTrueCorrectErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new TestSecurityViewModel { IsDirty = true };
+            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = Guid.Empty,
+                IsServer = true
+            });
+
+            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = Guid.Empty,
+                IsServer = true
+            });
+            var viewModel = CreateViewModel(CreateSettings().ToString(), null, securityViewModel);
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.IsConnected).Returns(true);
+            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
+            viewModel.CurrentEnvironment = environment.Object;
+            viewModel.IsDirty = true;
+
+
+            //------------Execute Test---------------------------
+            viewModel.SaveCommand.Execute(null);
+
+            //------------Assert Results-------------------------            
+            Assert.IsTrue(viewModel.IsDirty);
+            Assert.IsFalse(viewModel.IsSaved);
+            Assert.IsTrue(viewModel.HasErrors);
+            Assert.AreEqual(@"There are duplicate server permissions, 
+    i.e Server permissions have been setup up with the same group twice. 
+    Please clear the duplicates before saving.", viewModel.Errors);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SettingsViewModel_SaveCommand")]
+        public void SettingsViewModel_SaveCommand_DuplicateResourcePermissions_HasErrorsIsTrueCorrectErrorMessage()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new TestSecurityViewModel { IsDirty = true };
+            var resourceId = Guid.NewGuid();
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = resourceId,
+                IsServer = false
+            });
+
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = resourceId,
+                IsServer = false,
+            });
+            var viewModel = CreateViewModel(CreateSettings().ToString(), null, securityViewModel);
+
+            var environment = new Mock<IEnvironmentModel>();
+            environment.Setup(e => e.IsConnected).Returns(true);
+            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
+            viewModel.CurrentEnvironment = environment.Object;
+            viewModel.IsDirty = true;
+
+
+            //------------Execute Test---------------------------
+            viewModel.SaveCommand.Execute(null);
+
+            //------------Assert Results-------------------------            
+            Assert.IsTrue(viewModel.IsDirty);
+            Assert.IsFalse(viewModel.IsSaved);
+            Assert.IsTrue(viewModel.HasErrors);
+            Assert.AreEqual(@"There are duplicate permissions for a resource, 
+    i.e. one resource has permissions set twice with the same group. 
+    Please clear the duplicates before saving.", viewModel.Errors);
+        }
+
+        [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("SettingsViewModel_SaveCommand")]
         public void SettingsViewModel_SaveCommand_NotConnected_HasErrorsIsTrueCorrectErrorMessage()

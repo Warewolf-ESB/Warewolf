@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -385,6 +386,26 @@ namespace Dev2.Settings.Security
         {
             Server,
             Resource
+        }
+
+        public bool HasDuplicateResourcePermissions()
+        {
+            var duplicates = ResourcePermissions
+                                  .Where(i => !i.IsDeleted)
+                                  .GroupBy(i => new { i.ResourceID, i.WindowsGroup })
+                                  .Where(g => g.Count() > 1)
+                                  .Select(g => g.Key);
+            return duplicates.Any();
+        }
+
+        public bool HasDuplicateServerPermissions()
+        {
+            var duplicates = ServerPermissions
+                                .Where(i => !i.IsDeleted)
+                                .GroupBy(i => i.WindowsGroup)
+                                .Where(g => g.Count() > 1)
+                                .Select(g => g.Key);
+            return duplicates.Any();
         }
     }
 

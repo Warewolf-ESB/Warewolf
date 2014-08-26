@@ -52,6 +52,20 @@ namespace Dev2.Activities.Specs.Composition
             BuildShapeAndTestData();
         }
 
+        [BeforeScenario("WorkflowExecution")]
+        public void Setup()
+        {
+            if(_debugWriterSubscriptionService != null)
+            {
+                _debugWriterSubscriptionService.Unsubscribe();
+                _debugWriterSubscriptionService.Dispose();
+            }
+            //if(_resetEvt != null)
+            //{
+            //    _resetEvt.Close();
+            //}
+        }
+
         [Then(@"the workflow execution has ""(.*)"" error")]
         public void ThenTheWorkflowExecutionHasError(string hasError)
         {
@@ -1003,13 +1017,13 @@ namespace Dev2.Activities.Specs.Composition
         {
             Guid id;
             TryGetValue("SavedId", out id);
-            if (id == Guid.Empty)
+            if(id == Guid.Empty)
             {
                 id = Guid.NewGuid();
-                ScenarioContext.Current.Add("SavedId",id);
-                
+                ScenarioContext.Current.Add("SavedId", id);
+
             }
-            Save(workflowName,count,id);
+            Save(workflowName, count, id);
         }
 
         void Save(string workflowName, int count, Guid id)
@@ -1050,13 +1064,13 @@ namespace Dev2.Activities.Specs.Composition
             StringBuilder xamlDefinition = helper.GetXamlDefinition(FlowchartActivityBuilder);
             resourceModel.WorkflowXaml = xamlDefinition;
             resourceModel.ID = id;
-         
-            for (int i = 0; i < count; i++)
+
+            for(int i = 0; i < count; i++)
             {
                 repository.Save(resourceModel, false);
                 repository.SaveToServer(resourceModel);
             }
-           
+
         }
 
         [Then(@"workflow ""(.*)"" has ""(.*)"" Versions in explorer")]
@@ -1080,16 +1094,16 @@ namespace Dev2.Activities.Specs.Composition
         public void ThenExplorerAs(Table table)
         {
             var versions = ScenarioContext.Current["Versions"] as IList<IExplorerItem>;
-            if(versions==null|| versions.Count==table.RowCount)
+            if(versions == null || versions.Count == table.RowCount)
                 Assert.Fail("InvalidVersions");
             else
             {
-                for(int i = 0 ; i< versions.Count;i++)
+                for(int i = 0; i < versions.Count; i++)
                 {
-                    var v1 = table.Rows[i+1][0].Split(new[] { ' ' });
+                    var v1 = table.Rows[i + 1][0].Split(new[] { ' ' });
                     Assert.IsTrue(versions[i].DisplayName.Contains(v1[0]));
 
-        }
+                }
             }
 
         }
@@ -1098,14 +1112,14 @@ namespace Dev2.Activities.Specs.Composition
         {
             DsfMultiAssignActivity assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
 
-            foreach (var tableRow in table.Rows)
+            foreach(var tableRow in table.Rows)
             {
                 var value = tableRow["value"];
                 var variable = tableRow["variable"];
 
                 value = value.Replace('"', ' ').Trim();
 
-                if (value.StartsWith("="))
+                if(value.StartsWith("="))
                 {
                     value = value.Replace("=", "");
                     value = string.Format("!~calculation~!{0}!~~calculation~!", value);
@@ -1139,7 +1153,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("environment", out environmentModel);
             TryGetValue("resourceRepo", out repository);
             IVersionRepository rep = new ServerExplorerVersionProxy(environmentModel.Connection);
-            rep.RollbackTo(id,version);
+            rep.RollbackTo(id, version);
 
         }
 
@@ -1156,14 +1170,14 @@ namespace Dev2.Activities.Specs.Composition
             var debugStates = Get<List<IDebugState>>("debugStates");
             var workflowId = debugStates.First(wf => wf.DisplayName.Equals(workflowName)).ID;
 
-            if (parentWorkflowName == workflowName)
+            if(parentWorkflowName == workflowName)
             {
                 workflowId = Guid.Empty;
             }
 
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.ParentID == workflowId && ds.DisplayName.Equals(workflowName)).ToList();
-            Assert.AreEqual(0,toolSpecificDebug.Count);
+            Assert.AreEqual(0, toolSpecificDebug.Count);
         }
 
 

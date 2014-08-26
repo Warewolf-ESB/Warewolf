@@ -777,4 +777,14 @@ You need Administrator permission.</value>
   <data name="Warewolf_Checksum" xml:space="preserve">
     <value>http://warewolf.io/checksum.txt</value>
   </data>
+  <data name="SaveSettingsDuplicateResourcePermissions" xml:space="preserve">
+    <value>There are duplicate permissions for a resource, 
+    i.e. one resource has permissions set twice with the same group. 
+    Please clear the duplicates before saving.</value>
+  </data>
+  <data name="SaveSettingsDuplicateServerPermissions" xml:space="preserve">
+    <value>There are duplicate server permissions, 
+    i.e Server permissions have been setup up with the same group twice. 
+    Please clear the duplicates before saving.</value>
+  </data>
 </root>

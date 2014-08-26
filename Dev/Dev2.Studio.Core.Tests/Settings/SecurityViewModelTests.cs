@@ -580,9 +580,7 @@ namespace Dev2.Core.Tests.Settings
                 ResourceName = ResourceName
             };
 
-            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
-            viewModel.Result = DialogResult.Cancel;
-            viewModel.SelectedObjects = new[] { (DirectoryObject)null };
+            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object) { Result = DialogResult.Cancel, SelectedObjects = new[] { (DirectoryObject)null } };
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(permission);
 
@@ -612,9 +610,7 @@ namespace Dev2.Core.Tests.Settings
                 ResourceName = ResourceName
             };
 
-            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
-            viewModel.Result = DialogResult.OK;
-            viewModel.SelectedObjects = new[] { (DirectoryObject)null };
+            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object) { Result = DialogResult.OK, SelectedObjects = new[] { (DirectoryObject)null } };
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(permission);
 
@@ -675,9 +671,7 @@ namespace Dev2.Core.Tests.Settings
             };
             var picker = new Mock<DirectoryObjectPickerDialog>();
 
-            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<IResourcePickerDialog>().Object, picker.Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
-            viewModel.Result = DialogResult.OK;
-            viewModel.SelectedObjects = new[] { (DirectoryObject)null };
+            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<IResourcePickerDialog>().Object, picker.Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object) { Result = DialogResult.OK, SelectedObjects = new[] { (DirectoryObject)null } };
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(viewModel.ResourcePermissions[0]);
 
@@ -711,9 +705,7 @@ namespace Dev2.Core.Tests.Settings
 
             var picker = new Mock<DirectoryObjectPickerDialog>();
 
-            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<IResourcePickerDialog>().Object, picker.Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
-            viewModel.Result = DialogResult.OK;
-            viewModel.SelectedObjects = new[] { directoryObj };
+            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<IResourcePickerDialog>().Object, picker.Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object) { Result = DialogResult.OK, SelectedObjects = new[] { directoryObj } };
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(viewModel.ResourcePermissions[0]);
 
@@ -743,9 +735,7 @@ namespace Dev2.Core.Tests.Settings
                 ResourceName = ResourceName
             };
 
-            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
-            viewModel.Result = DialogResult.Cancel;
-            viewModel.SelectedObjects = new DirectoryObject[0];
+            var viewModel = new TestSecurityViewModel(new SecuritySettingsTO(new[] { permission }), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object) { Result = DialogResult.Cancel, SelectedObjects = new DirectoryObject[0] };
             //------------Execute Test---------------------------
             viewModel.PickWindowsGroupCommand.Execute(permission);
 
@@ -1114,6 +1104,194 @@ namespace Dev2.Core.Tests.Settings
             }
             Assert.AreEqual(1, viewModel.ResourcePermissions.Count(p => p.IsNew));
             Assert.AreEqual(1, viewModel.ServerPermissions.Count(p => p.IsNew));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        public void SecurityViewModel_ServerDuplicates_NoDuplicates_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
+            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = Guid.Empty,
+                IsServer = true
+            });
+
+            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group2",
+                ResourceID = Guid.Empty,
+                IsServer = true
+            });
+            //------------Execute Test---------------------------
+            var hasDuplicateServerPermissions = securityViewModel.HasDuplicateServerPermissions();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(hasDuplicateServerPermissions);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        public void SecurityViewModel_ServerDuplicates_HasDuplicatesDeleted_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
+            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = Guid.Empty,
+                IsServer = true
+            });
+
+            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = Guid.Empty,
+                IsServer = true,
+                IsDeleted = true
+            });
+            //------------Execute Test---------------------------
+            var hasDuplicateServerPermissions = securityViewModel.HasDuplicateServerPermissions();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(hasDuplicateServerPermissions);
+        }
+
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SecurityViewModel_ServerDuplicates")]
+        public void SecurityViewModel_ServerDuplicates_Duplicates_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
+            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = Guid.Empty,
+                IsServer = true
+            });
+
+            securityViewModel.ServerPermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = Guid.Empty,
+                IsServer = true
+            });
+            //------------Execute Test---------------------------
+            var hasDuplicateServerPermissions = securityViewModel.HasDuplicateServerPermissions();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(hasDuplicateServerPermissions);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesResourceID_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = Guid.NewGuid(),
+                IsServer = false
+            });
+
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = Guid.NewGuid(),
+                IsServer = false
+            });
+            //------------Execute Test---------------------------
+            var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(hasDuplicateResourcePermissions);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        public void SecurityViewModel_HasDuplicateResourcePermissions_NoDuplicatesWindowsGroup_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
+            var resourceId = Guid.NewGuid();
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = resourceId,
+                IsServer = false
+            });
+
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group2",
+                ResourceID = resourceId,
+                IsServer = false
+            });
+            //------------Execute Test---------------------------
+            var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(hasDuplicateResourcePermissions);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        public void SecurityViewModel_HasDuplicateResourcePermissions_DuplicateDeleted_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
+            var resourceId = Guid.NewGuid();
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = resourceId,
+                IsServer = false
+            });
+
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = resourceId,
+                IsServer = false,
+                IsDeleted = true
+            });
+            //------------Execute Test---------------------------
+            var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
+            //------------Assert Results-------------------------
+            Assert.IsFalse(hasDuplicateResourcePermissions);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SecurityViewModel_HasDuplicateResourcePermissions")]
+        public void SecurityViewModel_HasDuplicateResourcePermissions_DuplicateNotDeleted_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var securityViewModel = new SecurityViewModel(new SecuritySettingsTO(), new Mock<IResourcePickerDialog>().Object, new Mock<DirectoryObjectPickerDialog>().Object, new Mock<IWin32Window>().Object, new Mock<IEnvironmentModel>().Object);
+            var resourceId = Guid.NewGuid();
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = resourceId,
+                IsServer = false
+            });
+
+            securityViewModel.ResourcePermissions.Add(new WindowsGroupPermission
+            {
+                WindowsGroup = "Some Group",
+                ResourceID = resourceId,
+                IsServer = false,
+            });
+            //------------Execute Test---------------------------
+            var hasDuplicateResourcePermissions = securityViewModel.HasDuplicateResourcePermissions();
+            //------------Assert Results-------------------------
+            Assert.IsTrue(hasDuplicateResourcePermissions);
         }
 
         static List<WindowsGroupPermission> CreatePermissions()

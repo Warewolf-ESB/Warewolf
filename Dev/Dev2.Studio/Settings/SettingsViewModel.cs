@@ -402,7 +402,21 @@ namespace Dev2.Settings
 
                     ResetIsDirtyForChildren();
                     ClearErrors();
+                    if(SecurityViewModel.HasDuplicateResourcePermissions())
+                    {
+                        IsSaved = false;
+                        IsDirty = true;
+                        ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateResourcePermissions);
+                        return false;
+                    }
 
+                    if(SecurityViewModel.HasDuplicateServerPermissions())
+                    {
+                        IsSaved = false;
+                        IsDirty = true;
+                        ShowError(StringResources.SaveSettingErrorPrefix, StringResources.SaveSettingsDuplicateServerPermissions);
+                        return false;
+                    }
                     SecurityViewModel.Save(Settings.Security);
 
                     var isWritten = WriteSettings();

@@ -952,6 +952,28 @@ namespace Dev2 {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are duplicate permissions for a resource, 
+        ///    i.e. one resource has permissions set twice with the same group. 
+        ///    Please clear the duplicates before saving..
+        /// </summary>
+        public static string SaveSettingsDuplicateResourcePermissions {
+            get {
+                return ResourceManager.GetString("SaveSettingsDuplicateResourcePermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are duplicate server permissions, 
+        ///    i.e Server permissions have been setup up with the same group twice. 
+        ///    Please clear the duplicates before saving..
+        /// </summary>
+        public static string SaveSettingsDuplicateServerPermissions {
+            get {
+                return ResourceManager.GetString("SaveSettingsDuplicateServerPermissions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error while saving: Server unreachable..
         /// </summary>
         public static string SaveSettingsNotReachableErrorMsg {
