@@ -79,6 +79,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CI Environments", "CI Envir
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{A84D58BE-B72E-4D94-B182-38DC8375173E}"
+	ProjectSection(SolutionItems) = preProject
+		TestSettings\Sandbox\SpecFlow.testsettings = TestSettings\Sandbox\SpecFlow.testsettings
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local", "Local", "{E75E179E-771C-4853-B440-B3EFC880EAC5}"
 	ProjectSection(SolutionItems) = preProject
