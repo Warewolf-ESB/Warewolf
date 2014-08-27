@@ -1116,10 +1116,14 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
 
             _environmentModel = environmentModel;
-            if(_environmentModel.AuthorizationService != null)
+            _environmentModel.AuthorizationServiceSet += (sender, args) =>
             {
-                _environmentModel.AuthorizationService.PermissionsModified += AuthorizationServiceOnPermissionsModified;
-            }
+                if(_environmentModel.AuthorizationService != null)
+                {
+                    _environmentModel.AuthorizationService.PermissionsModified += AuthorizationServiceOnPermissionsModified;
+                }
+            };
+
             _reservedServices = new List<string>();
             ResourceModels = new List<IResourceModel>();
             _cachedServices = new HashSet<Guid>();
