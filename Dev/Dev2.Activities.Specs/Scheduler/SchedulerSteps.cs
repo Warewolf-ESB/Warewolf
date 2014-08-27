@@ -5,6 +5,7 @@ using System.Threading;
 using System.Windows.Controls;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Activities.Specs.Permissions;
 using Dev2.CustomControls.Connections;
 using Dev2.Scheduler.Interfaces;
 using Dev2.Services.Events;
@@ -29,9 +30,6 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"I have a schedule ""(.*)""")]
         public void GivenIHaveASchedule(string scheduleName)
         {
-            //var x = new TaskService();
-            //var folder =x.GetFolder("Warewolf");
-            //folder.DeleteTask(scheduleName,false);
             ScenarioContext.Current.Add("ScheduleName", scheduleName);
         }
 
@@ -44,6 +42,10 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"""(.*)"" has a username of ""(.*)"" and a Password of ""(.*)""")]
         public void GivenHasAUsernameOfAndAPasswordOf(string scheduleName, string userName, string password)
         {
+            if(!SettingsPermissionsSteps.AccountExists("LocalSchedulerAdmin"))
+            {
+                SettingsPermissionsSteps.CreateLocalWindowsAccount("LocalSchedulerAdmin", "987Sched#@!", "Administrtators");
+            }
             ScenarioContext.Current.Add("UserName", userName);
             ScenarioContext.Current.Add("Password", password);
         }

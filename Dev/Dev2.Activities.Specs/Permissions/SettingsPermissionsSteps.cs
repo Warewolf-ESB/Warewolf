@@ -97,7 +97,7 @@ namespace Dev2.Activities.Specs.Permissions
             }
             else
             {
-                CreateLocalWindowsAccount("SpecsUser", userGroup);
+                CreateLocalWindowsAccount("SpecsUser", "T35t3r!@#", userGroup);
             }
             var reconnectModel = new EnvironmentModel(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, "SpecsUser", "T35t3r!@#")) { Name = "Other Connection" };
             try
@@ -111,13 +111,13 @@ namespace Dev2.Activities.Specs.Permissions
             ScenarioContext.Current.Add("currentEnvironment", reconnectModel);
         }
 
-        public static bool CreateLocalWindowsAccount(string username, string groupName)
+        public static bool CreateLocalWindowsAccount(string username, string password, string groupName)
         {
             try
             {
                 PrincipalContext context = new PrincipalContext(ContextType.Machine);
                 UserPrincipal user = new UserPrincipal(context);
-                user.SetPassword("T35t3r!@#");
+                user.SetPassword(password);
                 user.DisplayName = username;
                 user.Name = username;
                 user.UserCannotChangePassword = true;
@@ -144,7 +144,7 @@ namespace Dev2.Activities.Specs.Permissions
             }
         }
 
-        bool AccountExists(string name)
+        public static bool AccountExists(string name)
         {
             bool accountExists = false;
             try
