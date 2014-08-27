@@ -69,6 +69,8 @@ namespace Dev2.Security
                                     using(var ad = new DirectoryEntry("WinNT://" + _environmentConnection.AppServerUri.Host.ToLower() + ",computer"))
                                     {
                                         ad.Children.SchemaFilter.Add("group");
+                                        var groupIsPartOfWarewolfAdmins = false;
+                                        var userIsPartOfGroup = false;
                                         foreach(DirectoryEntry dChildEntry in ad.Children)
                                         {
                                             if(dChildEntry.Name == "Warewolf Administrators")
@@ -84,13 +86,28 @@ namespace Dev2.Security
                                                         {
                                                             if(memberEntry.Name == adGroup)
                                                             {
-                                                                return true;
+                                                                groupIsPartOfWarewolfAdmins = true;
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
+                                            if(dChildEntry.Name == adGroup)
+                                            {
+                                                var members = dChildEntry.Invoke("Members");
+                                                foreach(var member in (IEnumerable)members)
+                                                {
+                                                    using(DirectoryEntry memberEntry = new DirectoryEntry(member))
+                                                    {
+                                                        if(principleName.ToLower().Contains(memberEntry.Name.ToLower()))
+                                                        {
+                                                            userIsPartOfGroup = true;
+                                                        }
+                                                    }
+                                                }
+                                            }
                                         }
+                                        return userIsPartOfGroup && groupIsPartOfWarewolfAdmins;
                                     }
                                 }
                             }
