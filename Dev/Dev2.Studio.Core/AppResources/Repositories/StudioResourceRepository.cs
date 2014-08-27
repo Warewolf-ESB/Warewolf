@@ -629,7 +629,7 @@ namespace Dev2.AppResources.Repositories
                 DisplayName = displayname,
                 ResourceType = item.ResourceType,
                 ResourceId = item.ResourceId,
-                Permissions = environmentModel == null || environmentModel.IsLocalHost ? item.Permissions : environmentModel.AuthorizationService.GetResourcePermissions(item.ResourceId),
+                Permissions = environmentModel == null || environmentModel.IsLocalHost || environmentModel.AuthorizationService == null ? item.Permissions : environmentModel.AuthorizationService.GetResourcePermissions(item.ResourceId),
                 ResourcePath = item.ResourcePath,
                 VersionInfo = item.VersionInfo
             };
