@@ -40,6 +40,10 @@ namespace Dev2.ViewModels.Deploy
                 if(_environment != null)
                 {
                     FilterEnvironments(_environment);
+                    _environment.AuthorizationServiceSet += (sender, args) =>
+                    {
+                        AuthorizationService = _environment.AuthorizationService;
+                    };
                 }
             }
         }

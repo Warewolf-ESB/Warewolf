@@ -613,6 +613,7 @@ namespace Dev2.AppResources.Repositories
             }
             string displayname = item.DisplayName;
             // ReSharper disable ImplicitlyCapturedClosure
+            // ReSharper disable RedundantAssignment
             IEnvironmentModel environmentModel = environmentRepository.FindSingle(model => GetEnvironmentModel(model, item, environmentId));
             if((item.ResourceType == ResourceType.Server && environmentId != Guid.Empty) || (environmentId == Guid.Empty && displayname.ToLower() == Environment.MachineName.ToLower()))
             {
@@ -629,7 +630,8 @@ namespace Dev2.AppResources.Repositories
                 DisplayName = displayname,
                 ResourceType = item.ResourceType,
                 ResourceId = item.ResourceId,
-                Permissions = environmentModel == null || environmentModel.IsLocalHost || environmentModel.AuthorizationService == null ? item.Permissions : environmentModel.AuthorizationService.GetResourcePermissions(item.ResourceId),
+                Permissions = item.Permissions,
+                //Permissions = environmentModel == null || environmentModel.IsLocalHost || environmentModel.AuthorizationService == null ? item.Permissions : environmentModel.AuthorizationService.GetResourcePermissions(item.ResourceId),
                 ResourcePath = item.ResourcePath,
                 VersionInfo = item.VersionInfo
             };

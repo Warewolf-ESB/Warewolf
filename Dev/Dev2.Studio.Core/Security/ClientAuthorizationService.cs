@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 
@@ -43,7 +44,7 @@ namespace Dev2.Security
                 // Plain does not work with IsInRole
                 // Hence this conditional check and divert
                 var windowsGroup = p.WindowsGroup;
-                if(windowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
+                if(windowsGroup == WindowsGroupPermission.BuiltInAdministratorsText && _environmentConnection.AuthenticationType != AuthenticationType.Public)
                 {
                     // We need to get the group as it is local then look for principle's membership
                     var principleName = principal.Identity.Name;
@@ -62,7 +63,7 @@ namespace Dev2.Security
                             var windowsPrincipal = principal as WindowsPrincipal;
                             if(windowsPrincipal != null)
                             {
-                                isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole(sid);
+                                isInRole = (windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole(sid)) && _environmentConnection.IsLocalHost;
                                 if(!isInRole)
                                 {
                                     var adGroup = FindGroup(new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null));

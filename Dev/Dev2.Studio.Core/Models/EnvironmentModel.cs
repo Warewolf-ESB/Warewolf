@@ -16,9 +16,21 @@ namespace Dev2.Studio.Core.Models
     public class EnvironmentModel : ObservableObject, IEnvironmentModel
     {
         IStudioResourceRepository _studioResourceRepo;
+        IAuthorizationService _authorizationService;
 
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
         public event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
+        public event EventHandler AuthorizationServiceSet;
+
+        protected virtual void OnAuthorizationServiceSet()
+        {
+            var handler = AuthorizationServiceSet;
+            if(handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
+        }
+
         #region CTOR
         //, IWizardEngine wizardEngine
         public EnvironmentModel(Guid id, IEnvironmentConnection environmentConnection)
@@ -75,7 +87,18 @@ namespace Dev2.Studio.Core.Models
 
         #region Properties
 
-        public IAuthorizationService AuthorizationService { get; private set; }
+        public IAuthorizationService AuthorizationService
+        {
+            get
+            {
+                return _authorizationService;
+            }
+            private set
+            {
+                _authorizationService = value;
+                OnAuthorizationServiceSet();
+            }
+        }
 
         public bool CanStudioExecute { get; set; }
 
@@ -170,6 +193,7 @@ namespace Dev2.Studio.Core.Models
             if(Connection.IsConnected)
             {
                 Connection.Disconnect();
+                AuthorizationService = null;
             }
         }
 

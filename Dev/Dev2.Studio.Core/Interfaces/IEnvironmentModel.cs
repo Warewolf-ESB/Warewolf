@@ -34,6 +34,8 @@ namespace Dev2.Studio.Core.Interfaces
         string Category { get; set; }
         string DisplayName { get; }
         void RaiseResourcesLoaded();
+
+        event EventHandler AuthorizationServiceSet;
     }
 
     public class ConnectedEventArgs : EventArgs

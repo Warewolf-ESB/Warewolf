@@ -164,8 +164,8 @@ namespace Dev2.Network
             else
             {
                 AuthenticationType = AuthenticationType.User;
-                SetupPrincipal();
             }
+            SetupPrincipal();
         }
 
         public bool IsLocalHost { get { return DisplayName == "localhost"; } }

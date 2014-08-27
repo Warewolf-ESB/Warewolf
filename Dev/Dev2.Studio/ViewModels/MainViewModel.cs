@@ -552,6 +552,7 @@ namespace Dev2.Studio.ViewModels
         {
             ActiveEnvironment = activeEnvironment;
             EnvironmentRepository.ActiveEnvironment = ActiveEnvironment;
+            ActiveEnvironment.AuthorizationServiceSet += (sender, args) => OnActiveEnvironmentChanged();
         }
 
         public void Handle(ShowDependenciesMessage message)
