@@ -90,6 +90,8 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             var dataObject = context.GetExtension<IDSFDataObject>();
             var compiler = DataListFactory.CreateDataListCompiler();
             var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
