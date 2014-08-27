@@ -118,9 +118,10 @@ namespace Dev2.Studio.UI.Specs
         static readonly string RibbonSettings = "UI_RibbonHomeManageSecuritySettingsBtn_AutoID";
         static readonly string RibbonSchedule = "UI_RibbonHomeTabSchedulerBtn_AutoID";
         static readonly string RibbonDebug = "UI_RibbonDebugBtn_AutoID";
-        static readonly string WindowDebug = "UI_DebugInputWindow_AutoID,UI_Executebtn_AutoID";
-        static readonly string WindowViewInBrowser = "UI_Browserbtn_AutoID";
-        static readonly string WindowCancel = "UI_Browserbtn_AutoID";
+        static readonly string WindowDebug = "UI_DebugInputWindow_AutoID";
+        static readonly string WindowDebugButton = WindowDebug + ",UI_Executebtn_AutoID";
+        static readonly string WindowViewInBrowser = WindowDebug + ",UI_Browserbtn_AutoID";
+        static readonly string WindowCancel = WindowDebug + ",UI_Cancelbtn_AutoID";
         static readonly string RibbonNewEndPoint = "UI_RibbonHomeTabWorkflowBtn_AutoID";
         static readonly string RibbonSave = "UI_RibbonHomeTabSaveBtn_AutoID";
         static readonly string RibbonNewDatabaseConnector = "UI_RibbonHomeTabDBServiceBtn_AutoID";
@@ -563,6 +564,7 @@ namespace Dev2.Studio.UI.Specs
             var stopWatch = Stopwatch.StartNew();
             while(timetolookup > 0)
             {
+                Playback.Wait(1000);
                 var control = GetAControlRelaxed(itemToFindAutoIds);
                 if(control != null)
                 {
@@ -593,6 +595,7 @@ namespace Dev2.Studio.UI.Specs
             var stopWatch = Stopwatch.StartNew();
             while(timetolookup > 0)
             {
+                Playback.Wait(1000);
                 var control = GetAControlRelaxed(itemToFindAutoIds);
                 if(control == null)
                 {
@@ -639,6 +642,7 @@ namespace Dev2.Studio.UI.Specs
             var stopWatch = Stopwatch.StartNew();
             while(timetolookup > 0)
             {
+                Playback.Wait(1000);
                 var control = GetAControlRelaxed(itemToFindAutoIds);
                 Assert.IsNotNull(control, "Could not find control to determine it's enable state");
                 if(control.IsEnabled() == enableState)

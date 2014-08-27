@@ -6,6 +6,8 @@
 @ExplorerUISpecs
 Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDeleteANDConfirmReadOnlyANDHide
 	Given I have Warewolf running
+	And all tabs are closed
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
 	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)" is visible within "2" seconds
@@ -14,7 +16,7 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 	And I click "RIBBONSAVE"
 	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
 	And I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
-	And "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.1*" is visible within "1" seconds
+	And "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.1*" is visible within "2" seconds
 	#Rename
 	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
 	And I click "UI_RenameContextMenuItem_AutoID"

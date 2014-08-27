@@ -177,7 +177,25 @@ namespace Dev2.Studio.UI.Tests.Extensions
                     case "MenuItem":
                         {
                             Mouse.Click(control.GetParent());
-                            Mouse.Click(control, new Point(5, 5));
+
+                            var treeItem = control as WpfTreeItem;
+                            if(treeItem != null)
+                            {
+                                treeItem.Selected = true;
+                                Mouse.Click(control);
+                            }
+
+                            var listItem = control as WpfListItem;
+                            if(listItem != null)
+                            {
+                                Mouse.Click(control, new Point(5, 5));
+                            }
+
+                            var menuItem = control as WpfMenuItem;
+                            if(menuItem != null)
+                            {
+                                Mouse.Click(control, new Point(5, 5));
+                            }
                             break;
                         }
                     default:
