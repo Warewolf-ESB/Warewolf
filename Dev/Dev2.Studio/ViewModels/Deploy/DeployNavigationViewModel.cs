@@ -133,7 +133,7 @@ namespace Dev2.ViewModels.Deploy
         {
             if(connection != null)
             {
-                var isAuthorizedDeployTo = AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, Guid.Empty.ToString());
+                var isAuthorizedDeployTo = AuthorizationService != null && AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, Guid.Empty.ToString());
                 if(isAuthorizedDeployTo && _target)
                 {
                     ObservableCollection<IExplorerItemModel> explorerItemModels = new ObservableCollection<IExplorerItemModel>
@@ -151,7 +151,7 @@ namespace Dev2.ViewModels.Deploy
                 }
                 else
                 {
-                    var isAuthorizedDeployFrom = AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, Guid.Empty.ToString());
+                    var isAuthorizedDeployFrom = AuthorizationService != null && AuthorizationService.IsAuthorized(AuthorizationContext.DeployFrom, Guid.Empty.ToString());
                     if(isAuthorizedDeployFrom && !_target)
                     {
                         var explorerItemModels = new ObservableCollection<IExplorerItemModel>
@@ -176,8 +176,11 @@ namespace Dev2.ViewModels.Deploy
                             if(model.Count == 1)
                             {
                                 StudioResourceRepository.PerformUpdateOnDispatcher(() => model[0].Children = new ObservableCollection<IExplorerItemModel>());
-                                var resourcePermissions = AuthorizationService.GetResourcePermissions(Guid.Empty);
-                                model[0].Permissions = resourcePermissions;
+                                if(AuthorizationService != null)
+                                {
+                                    var resourcePermissions = AuthorizationService.GetResourcePermissions(Guid.Empty);
+                                    model[0].Permissions = resourcePermissions;
+                                }
                             }
                             ExplorerItemModels = model;
                         }

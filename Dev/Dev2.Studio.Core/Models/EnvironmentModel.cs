@@ -193,7 +193,6 @@ namespace Dev2.Studio.Core.Models
             if(Connection.IsConnected)
             {
                 Connection.Disconnect();
-                AuthorizationService = null;
             }
         }
 
@@ -255,13 +254,9 @@ namespace Dev2.Studio.Core.Models
             RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
             if(e.ToState == NetworkState.Online)
             {
-                if(AuthorizationService == null)
-                {
-                    AuthorizationService = CreateAuthorizationService(Connection);
-                    AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
-                    OnAuthorizationServicePermissionsChanged(this, EventArgs.Empty);
-                }
-
+                AuthorizationService = CreateAuthorizationService(Connection);
+                AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
+                OnAuthorizationServicePermissionsChanged(this, EventArgs.Empty);
             }
         }
 
