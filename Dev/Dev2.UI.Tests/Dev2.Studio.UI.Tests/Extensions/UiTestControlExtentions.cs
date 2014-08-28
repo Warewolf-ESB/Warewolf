@@ -160,7 +160,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                         }
                     case "Custom":
                         {
-                            var point = GetClickablePoint(control);
+                            var point = GetPointToClick(control);
                             Mouse.Click(point);
                             break;
                         }
@@ -178,23 +178,30 @@ namespace Dev2.Studio.UI.Tests.Extensions
                         {
                             var parent = control.GetParent();
                             var parentAsCombobox = parent as WpfComboBox;
-                            if(parentAsCombobox != null && !((WpfControl)control).AutomationId.Contains("_New Remote Server..."))
+                            if(parentAsCombobox != null)
                             {
-                                var autoId = ((WpfControl)control).AutomationId;
-                                var index = parentAsCombobox.Items.ToList().FindIndex(i => ((WpfControl)i).AutomationId.Equals(autoId));
-
-                                if(index <= 1)
+                                if(((WpfControl)control).AutomationId.Contains("_New Remote Server..."))
                                 {
-                                    var message = string.Format("Item with id : [{0}] could not be selected", autoId);
-                                    throw new Exception(message);
+                                    Mouse.Click(parent);
+                                    Mouse.Click(control);
                                 }
+                                else
+                                {
+                                    var autoId = ((WpfControl)control).AutomationId;
+                                    var index = parentAsCombobox.Items.ToList().FindIndex(i => ((WpfControl)i).AutomationId.Equals(autoId));
 
-                                parentAsCombobox.SelectedIndex = index;
+                                    if(index <= 1)
+                                    {
+                                        var message = string.Format("Item with id : [{0}] could not be selected", autoId);
+                                        throw new Exception(message);
+                                    }
+                                    parentAsCombobox.SelectedIndex = index;
+                                }
                             }
                             else
                             {
                                 control.EnsureClickable();
-                                var point = GetClickablePoint(control);
+                                var point = GetPointToClick(control);
                                 Mouse.Click(point);
                             }
                             break;
@@ -213,9 +220,23 @@ namespace Dev2.Studio.UI.Tests.Extensions
             }
             catch(Exception)
             {
-                var point = GetClickablePoint(control);
+                var point = GetPointToClick(control);
                 Mouse.Click(point);
             }
+        }
+
+        public static void Click(this UITestControl control, Point point)
+        {
+            if(control == null)
+            {
+                return;
+            }
+
+            var startingPoint = new Point(control.BoundingRectangle.X, control.BoundingRectangle.Y);
+            startingPoint.Offset(point);
+            var onclick = startingPoint;
+            Mouse.Move(onclick);
+            Mouse.Click(onclick);
         }
 
         public static bool HasClickableParent(this UITestControl control)
@@ -232,7 +253,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 {
                     Mouse.Click(control);
                 }
-                var point = GetClickablePoint(control);
+                var point = GetPointToClick(control);
                 Mouse.Click(point);
                 Mouse.Click(MouseButtons.Right);
             }
@@ -249,11 +270,11 @@ namespace Dev2.Studio.UI.Tests.Extensions
             {
                 Mouse.Click(control);
             }
-            var point = GetClickablePoint(control);
+            var point = GetPointToClick(control);
             Mouse.DoubleClick(point);
         }
 
-        static Point GetClickablePoint(UITestControl control)
+        public static Point GetPointToClick(this UITestControl control)
         {
             var boundingRect = control.BoundingRectangle;
             if(boundingRect.Y == -1 || boundingRect.X == -1)

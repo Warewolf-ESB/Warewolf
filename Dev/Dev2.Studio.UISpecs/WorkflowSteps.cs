@@ -420,26 +420,52 @@ namespace Dev2.Studio.UI.Specs
         [When(@"I create a new remote connection ""(.*)"" as")]
         public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
         {
-            GivenIClick("UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...");
-            Playback.Wait(3500);
+            var newServerAutoId = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...";
+            GivenIClick(newServerAutoId);
+            ThenIsVisibleWithinSeconds("WebBrowserWindow", 3);
+            var window = GetAControlStrict("WebBrowserWindow");
+            //ENTER ADDRESS
             var serverDetailsRow = table.Rows[0];
-            NewServerUIMap.ClearServerAddress();
-            NewServerUIMap.EnterServerAddress(serverDetailsRow["Address"]);
+            window.Click(new Point(170, 50));
+            Keyboard.SendKeys(serverDetailsRow["Address"]);
+            //SELECT AUTH TYPE
             var authType = serverDetailsRow["AuthType"];
-            NewServerUIMap.SelectAuthenticationType(authType);
-            if(authType == "User")
+            switch(authType)
             {
-                NewServerUIMap.EnterPassword(serverDetailsRow["Password"]);
-                NewServerUIMap.EnterUserName(serverDetailsRow["UserName"]);
+                case "User":
+                    {
+                        window.Click(new Point(262, 85));
+                        //ENTER CREDENTIALS
+                        window.Click(new Point(170, 120));
+                        Keyboard.SendKeys(serverDetailsRow["UserName"]);
+                        window.Click(new Point(170, 150));
+                        Keyboard.SendKeys(serverDetailsRow["Password"]);
+                        //CLICK TEST
+                        window.Click(new Point(350, 200));
+                        Playback.Wait(2000);
+                        break;
+                    }
+                case "Windows":
+                    window.Click(new Point(178, 85));
+                    //CLICK TEST
+                    window.Click(new Point(350, 120));
+                    Playback.Wait(2000);
+                    break;
+                case "Public":
+                    window.Click(new Point(328, 85));
+                    //CLICK TEST
+                    window.Click(new Point(350, 120));
+                    Playback.Wait(2000);
+                    break;
             }
-            NewServerUIMap.ClickTestConnection();
-            Playback.Wait(1500);
-            NewServerUIMap.ClickSave();
-            Playback.Wait(1500);
-            NewServerUIMap.SaveNameInDialog(serverName);
-            Playback.Wait(1500);
-            NewServerUIMap.ClickSave();
-            Playback.Wait(1500);
+            //SAVE CONNECTION
+            window.Click(new Point(500, 490));
+            Playback.Wait(200);
+            //SAVE NAME (SAVE DIALOG)
+            window.Click(new Point(180, 420));
+            Keyboard.SendKeys(serverName);
+            window.Click(new Point(490, 470));
+            //WAIT FOR LOADING OF RESOURCES
             var spinnerControl = GetAControlStrict(ExplorerConnectProgress);
             Assert.IsNotNull(spinnerControl, "Server is not connecting after creating a source ...");
             var canExit = false;
