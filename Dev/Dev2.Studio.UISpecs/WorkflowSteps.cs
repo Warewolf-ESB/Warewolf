@@ -74,7 +74,7 @@ namespace Dev2.Studio.UI.Specs
 
         //Deploy Tab
         static readonly string DeploySource = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,SourceNavigationView,UI_ExplorerTree_AutoID";
-        static readonly string DeployDestination = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl";
+        static readonly string DeployDestination = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,TargetNavigationView,UI_ExplorerTree_AutoID";
 
         static readonly string SecuritySave = "ACTIVETAB,UI_SettingsView_AutoID,UI_SaveSettingsbtn_AutoID";
         static readonly string SecurityDelete = SettingsTab + ",UI_AddRemovebtn_AutoID";
@@ -418,6 +418,7 @@ namespace Dev2.Studio.UI.Specs
 
         [Given(@"I create a new remote connection ""(.*)"" as")]
         [When(@"I create a new remote connection ""(.*)"" as")]
+        [Then(@"I create a new remote connection ""(.*)"" as")]
         public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
         {
             var newServerAutoId = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...";
@@ -477,11 +478,25 @@ namespace Dev2.Studio.UI.Specs
             }
         }
 
+        [Given(@"I click point ""(.*)"" on ""(.*)""")]
+        [When(@"I click point ""(.*)"" on ""(.*)""")]
+        [Then(@"I click point ""(.*)"" on ""(.*)""")]
+        public void GivenIClickPointOn(string points, string automationIds)
+        {
+            var control = GetAControlRelaxed(automationIds);
+            var pointsToClick = points.Split('|')
+                            .ToList()
+                            .Select(p => new Point(int.Parse(p.Split(',')[0]),int.Parse(p.Split(',')[1])))
+                            .ToList();
+            pointsToClick.ForEach(control.Click);
+        }
+
+
         [Given(@"I close Studio")]
         [Then(@"I close Studio")]
         public void GivenICloseStudio()
         {
-            Bootstrap.KillStudio();
+            Bootstrap.KillStudio(); 
         }
 
         [Given(@"I close Server")]

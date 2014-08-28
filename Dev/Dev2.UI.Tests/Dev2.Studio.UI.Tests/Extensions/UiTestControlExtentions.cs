@@ -48,6 +48,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 throw new Exception(message);
             }
             
+
             List<UITestControl> parentCollection = container.GetChildren()
                                                             .Where(c => c is WpfControl)
                                                             .ToList();
@@ -59,8 +60,10 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 return control;
             }
 
-            while(parentCollection.Count > 0)
+            var levelsDeep = 0;
+            while(parentCollection.Count > 0 && levelsDeep < 4)
             {
+                levelsDeep++;
                 var collectionToSearch = parentCollection
                                 .SelectMany(c => c.GetChildren())
                                 .Where(c => c is WpfControl)
@@ -107,7 +110,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                                                             .Where(c => !(c is WpfListItem) && c is WpfControl)
                                                             .ToList();
             
-            var control = parentCollection.SingleOrDefault(b => b.FriendlyName.Equals(cleanName)
+            var control = parentCollection.FirstOrDefault(b => b.FriendlyName.Equals(cleanName)
                                                              || b.FriendlyName.StartsWith(cleanName)
                                                              || ((WpfControl)b).AutomationId.Contains(cleanName));
 
@@ -116,15 +119,17 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 return control;
             }
 
-            while(parentCollection.Count > 0)
+            var levelsDeep = 0;
+            while(parentCollection.Count > 0 && levelsDeep < 4)
             {
+                levelsDeep++;
                 var uiTestControlCollection = parentCollection
                     .SelectMany(c => c.GetChildren())
                     .Where(c => c is WpfControl)
                     .ToList();
 
                 control = uiTestControlCollection
-                    .SingleOrDefault(b => b.FriendlyName.Equals(cleanName)
+                    .FirstOrDefault(b => b.FriendlyName.Equals(cleanName)
                                         || b.FriendlyName.StartsWith(cleanName)
                                         || ((WpfControl)b).AutomationId.Contains(cleanName));
 

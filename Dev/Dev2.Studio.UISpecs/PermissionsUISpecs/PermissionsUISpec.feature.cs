@@ -341,8 +341,7 @@ this.ScenarioSetup(scenarioInfo);
        testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_Destinat" +
                     "ionServercbx_AutoID_SVR003\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 144
-       testRunner.Then("\"DEPLOYDESTINATION,UI_DestinationServer_SVR003 (http://localhost:3142/)_AutoID,UI" +
-                    "_Unautherized_DeployToText_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+       testRunner.Then("\"DEPLOYDESTINATION,SVR003*,UI_Unautherized_DeployToText_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -405,8 +404,8 @@ this.ScenarioSetup(scenarioInfo);
             table2.AddRow(new string[] {
                         "http://localhost:3142",
                         "User",
-                        "I73573r0",
-                        "Integrationtester"});
+                        "Integrationtester",
+                        "I73573r0"});
 #line 173
        testRunner.Given("I create a new remote connection \"TestingPermisions\" as", ((string)(null)), table2, "Given ");
 #line 176
@@ -450,7 +449,8 @@ this.ScenarioSetup(scenarioInfo);
        testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_Destinat" +
                     "ionServercbx_AutoID_TestingPermisions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 197
-       testRunner.Given("\"DEPLOYDESTINATION,UI_Unautherized_DeployToText_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("\"DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployToText_AutoID\" is vis" +
+                    "ible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 198
        testRunner.Then("I click \"ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServerc" +
                     "bx_AutoID_TestingPermisions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -546,7 +546,8 @@ this.ScenarioSetup(scenarioInfo);
        testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_Destinat" +
                     "ionServercbx_AutoID_TestingPermisions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 246
-       testRunner.Given("\"DEPLOYDESTINATION,UI_Unautherized_DeployFrom_AutoID\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("\"DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployFrom_AutoID\" is not v" +
+                    "isible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 247
        testRunner.Then("I click \"ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServerc" +
                     "bx_AutoID_TestingPermisions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
@@ -623,7 +624,8 @@ this.ScenarioSetup(scenarioInfo);
        testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_Destinat" +
                     "ionServercbx_AutoID_TestingPermisions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 287
-       testRunner.Given("\"DEPLOYDESTINATION,UI_Unautherized_DeployToText_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("\"DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployToText_AutoID\" is vis" +
+                    "ible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 288
        testRunner.Then("I click \"ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServerc" +
                     "bx_AutoID_TestingPermisions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");

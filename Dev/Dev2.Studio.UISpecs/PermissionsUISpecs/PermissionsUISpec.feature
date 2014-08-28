@@ -141,7 +141,7 @@ Scenario: Set server permission View
 	   #Checking Deploy UnAuthorized
        Then I click "RIBBONDEPLOY"
        Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_SVR003"
-       Then "DEPLOYDESTINATION,UI_DestinationServer_SVR003 (http://localhost:3142/)_AutoID,UI_Unautherized_DeployToText_AutoID" is visible
+       Then "DEPLOYDESTINATION,SVR003*,UI_Unautherized_DeployToText_AutoID" is visible
 	
 
 
@@ -171,8 +171,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I wait for "2" seconds
 	   #Create Remote Connection as User "Integration Tester" 
        Given I create a new remote connection "TestingPermisions" as
-       | Address               | AuthType | UserName | Password          |
-       | http://localhost:3142 | User     | I73573r0 | Integrationtester |
+       | Address               | AuthType | UserName          | Password |
+       | http://localhost:3142 | User     | Integrationtester | I73573r0 |
 	   And I wait for "5" seconds
 	   #Checking Remote Server Resource Icon in Explorer  
 	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
@@ -194,7 +194,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   #Checking Deploy Permissions "UnAuthorized"
 	   Given I click "RIBBONDEPLOY"
        Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_TestingPermisions"
-       Given "DEPLOYDESTINATION,UI_Unautherized_DeployToText_AutoID" is visible
+       Given "DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployToText_AutoID" is visible
        Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_TestingPermisions"
        Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is visible		
 # End Test - 1
@@ -243,7 +243,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   #Checking Deploy Permissions "Authorized"
 	   Given I click "RIBBONDEPLOY"
        Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_TestingPermisions"
-       Given "DEPLOYDESTINATION,UI_Unautherized_DeployFrom_AutoID" is not visible
+       Given "DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployFrom_AutoID" is not visible
        Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_TestingPermisions"
 	   Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is not visible	
 #End Test - 2
@@ -284,7 +284,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   #Checking Deploy Permissions "UnAuthorized"
 	    Given I click "RIBBONDEPLOY"
        Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_TestingPermisions"
-       Given "DEPLOYDESTINATION,UI_Unautherized_DeployToText_AutoID" is visible
+       Given "DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployToText_AutoID" is visible
        Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_TestingPermisions"
        Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is visible		
 #End Test - 3

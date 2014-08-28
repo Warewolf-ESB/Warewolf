@@ -77,19 +77,8 @@ namespace Dev2.Studio.UI.Specs
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TshepoPermissionsExample", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Address",
-                        "AuthType",
-                        "UserName",
-                        "Password"});
-            table1.AddRow(new string[] {
-                        "http://localhost:3142",
-                        "User",
-                        "Integrationtester",
-                        "I73573r0"});
-#line 133
-  testRunner.Given("I create a new remote connection \"SVR11\" as", ((string)(null)), table1, "Given ");
+#line 130
+       testRunner.Given("\"DEPLOYDESTINATION,SVR004*,UI_Unautherized_DeployToText_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }
