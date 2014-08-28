@@ -1,4 +1,5 @@
-﻿Feature: Explorer
+﻿@Explorer
+Feature: Explorer
 	In order to interact with resources on my machine
 	As a Warewolf user
 	I want an explorer that represents a tree of items on my disk

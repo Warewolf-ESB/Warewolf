@@ -2,7 +2,6 @@
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Models;
-using Dev2.Network;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Dev2.Util;
@@ -22,9 +21,11 @@ namespace Dev2.Activities.Specs.Explorer
     {
         const string ServerProcessName = "Warewolf Server";
 
+
         [Given(@"I have a path '(.*)'")]
         public void GivenIHaveAPath(string path)
         {
+            AppSettings.LocalHost = "http://localhost:3142";
             var paths = path.Split("\\".ToArray()).ToList();
             var root = paths.First();
             var serverProcessPath = GetServerProcessPath();
@@ -144,12 +145,6 @@ namespace Dev2.Activities.Specs.Explorer
             var repository = new StudioResourceRepository(null, localhost, (a, b) => a())
                 {
                     GetCurrentEnvironment = () => localhost,
-                    GetExplorerProxy = id =>
-                        {
-                            var connection = new ServerProxy(new Uri(string.Format("http://{0}:3142", "localhost")));
-                            connection.Connect();
-                            return new ServerExplorerClientProxy(connection);
-                        },
                     GetEnvironmentRepository = () => environmentRepository.Object
                 };
 

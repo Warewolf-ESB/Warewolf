@@ -52,7 +52,7 @@ namespace Dev2.Activities.Specs.Composition
             BuildShapeAndTestData();
         }
 
-        [BeforeScenario("WorkflowExecution")]
+        [BeforeScenario]
         public void Setup()
         {
             if(_debugWriterSubscriptionService != null)
@@ -60,10 +60,6 @@ namespace Dev2.Activities.Specs.Composition
                 _debugWriterSubscriptionService.Unsubscribe();
                 _debugWriterSubscriptionService.Dispose();
             }
-            //if(_resetEvt != null)
-            //{
-            //    _resetEvt.Close();
-            //}
         }
 
         [Then(@"the workflow execution has ""(.*)"" error")]
