@@ -176,25 +176,36 @@ namespace Dev2.Studio.UI.Tests.Extensions
                     case "ListItem":
                     case "MenuItem":
                         {
-                            Mouse.Click(control.GetParent());
+                            var parent = control.GetParent();
 
-                            var treeItem = control as WpfTreeItem;
-                            if(treeItem != null)
+                            var box = parent as WpfComboBox;
+                            if(box != null)
                             {
-                                treeItem.Selected = true;
-                                Mouse.Click(control);
+                                WpfComboBox comboBox = box;
+                                comboBox.SelectedIndex = comboBox.Items.IndexOf(control);
                             }
-
-                            var listItem = control as WpfListItem;
-                            if(listItem != null)
+                            else
                             {
-                                Mouse.Click(control, new Point(5, 5));
-                            }
+                                Mouse.Click(parent);
 
-                            var menuItem = control as WpfMenuItem;
-                            if(menuItem != null)
-                            {
-                                Mouse.Click(control, new Point(5, 5));
+                                var treeItem = control as WpfTreeItem;
+                                if(treeItem != null)
+                                {
+                                    treeItem.Selected = true;
+                                    Mouse.Click(control);
+                                }
+
+                                var listItem = control as WpfListItem;
+                                if(listItem != null)
+                                {
+                                    Mouse.Click(control, new Point(5, 5));
+                                }
+
+                                var menuItem = control as WpfMenuItem;
+                                if(menuItem != null)
+                                {
+                                    Mouse.Click(control, new Point(5, 5));
+                                }
                             }
                             break;
                         }
