@@ -418,7 +418,7 @@ namespace Dev2.Studio.UI.Specs
         public void GivenICreateANewRemoteConnectionAs(string serverName, Table table)
         {
             GivenIClick("UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...");
-            Playback.Wait(4000);
+            Playback.Wait(2000);
             var serverDetailsRow = table.Rows[0];
             NewServerUIMap.ClearServerAddress();
             NewServerUIMap.EnterServerAddress(serverDetailsRow["Address"]);
@@ -568,8 +568,12 @@ namespace Dev2.Studio.UI.Specs
                 var control = GetAControlRelaxed(itemToFindAutoIds);
                 if(control != null)
                 {
-                    var isInvisible = control.State.HasFlag(ControlStates.Invisible) ||
-                             control.State.HasFlag(ControlStates.Offscreen);
+                    if (control.State.HasFlag(ControlStates.Offscreen))
+                    {
+                        control.EnsureClickable();
+                    }
+
+                    var isInvisible = control.State.HasFlag(ControlStates.Invisible);
                     
                     if (!isInvisible)
                     {

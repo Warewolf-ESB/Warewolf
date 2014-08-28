@@ -177,35 +177,25 @@ namespace Dev2.Studio.UI.Tests.Extensions
                     case "MenuItem":
                         {
                             var parent = control.GetParent();
-
-                            var box = parent as WpfComboBox;
-                            if(box != null)
+                            var parentAsCombobox = parent as WpfComboBox;
+                            if(parentAsCombobox != null && !((WpfControl)control).AutomationId.Contains("_New Remote Server..."))
                             {
-                                WpfComboBox comboBox = box;
-                                comboBox.SelectedIndex = comboBox.Items.IndexOf(control);
+                                var autoId = ((WpfControl)control).AutomationId;
+                                var index = parentAsCombobox.Items.ToList().FindIndex(i => ((WpfControl)i).AutomationId.Equals(autoId));
+
+                                if(index <= 1)
+                                {
+                                    var message = string.Format("Item with id : [{0}] could not be selected", autoId);
+                                    throw new Exception(message);
+                                }
+
+                                parentAsCombobox.SelectedIndex = index;
                             }
                             else
                             {
-                                Mouse.Click(parent);
-
-                                var treeItem = control as WpfTreeItem;
-                                if(treeItem != null)
-                                {
-                                    treeItem.Selected = true;
-                                    Mouse.Click(control);
-                                }
-
-                                var listItem = control as WpfListItem;
-                                if(listItem != null)
-                                {
-                                    Mouse.Click(control, new Point(5, 5));
-                                }
-
-                                var menuItem = control as WpfMenuItem;
-                                if(menuItem != null)
-                                {
-                                    Mouse.Click(control, new Point(5, 5));
-                                }
+                                control.EnsureClickable();
+                                var point = GetClickablePoint(control);
+                                Mouse.Click(point);
                             }
                             break;
                         }
