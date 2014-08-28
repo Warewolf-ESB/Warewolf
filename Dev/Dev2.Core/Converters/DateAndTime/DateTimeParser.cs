@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Converters.DateAndTime.Interfaces;
 using Dev2.Converters.DateAndTime.TO;
+using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Dev2.Converters.DateAndTime
 {
@@ -106,9 +106,9 @@ namespace Dev2.Converters.DateAndTime
             // Get input format string for the dotnet parts
             //
             var dev2Format = "";
-            foreach (var part in dotNetFormatParts)
+            foreach(var part in dotNetFormatParts)
             {
-                if (part.Isliteral)
+                if(part.Isliteral)
                     dev2Format += "'" + part.Value + "'";
                 else
                     dev2Format += part.Value;
@@ -119,7 +119,7 @@ namespace Dev2.Converters.DateAndTime
         private List<IDateTimeFormatPartTO> ReplaceToken(List<IDateTimeFormatPartTO> currentPartList, string findTokenValue, string describeReplaceWith)
         {
             var mPart = currentPartList.FindIndex(part => part.Value == findTokenValue);
-            while (mPart > -1 && mPart < currentPartList.Count)
+            while(mPart > -1 && mPart < currentPartList.Count)
             {
                 currentPartList[mPart] = DateTimeFormatParts[DateTimeFormatParts.FindIndex(part => part.Description.Contains(describeReplaceWith))];
                 mPart = currentPartList.FindIndex(part => part.Value == findTokenValue);
@@ -154,25 +154,25 @@ namespace Dev2.Converters.DateAndTime
             var count = 0;
 
             var currentValue = "";
-            while (count < formatArray.Length && nothingDied)
+            while(count < formatArray.Length && nothingDied)
             {
                 var forwardLookupLength = 0;
                 var currentChar = formatArray[count];
 
-                if (literalRegionState == LiteralRegionStates.OutsideLiteralRegion)
+                if(literalRegionState == LiteralRegionStates.OutsideLiteralRegion)
                 {
                     string tmpForwardLookupResult;
-                    if (currentChar == DateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+                    if(currentChar == DateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
                     {
                         forwardLookupLength = tmpForwardLookupResult.Length;
                         literalRegionState = LiteralRegionStates.InsideInferredLiteralRegion;
                         currentValue += currentChar;
                     }
-                    else if (currentChar == DateLiteralCharacter)
+                    else if(currentChar == DateLiteralCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideLiteralRegion;
                     }
-                    else if (TryGetDateTimeFormatPart(formatArray, count, currentChar, dateTimeFormatForwardLookups, dateTimeFormatPartOptions, out currentValue, out error))
+                    else if(TryGetDateTimeFormatPart(formatArray, count, currentChar, dateTimeFormatForwardLookups, dateTimeFormatPartOptions, out currentValue, out error))
                     {
                         forwardLookupLength = currentValue.Length;
                         formatParts.Add(new DateTimeFormatPartTO(currentValue, false, ""));
@@ -185,26 +185,26 @@ namespace Dev2.Converters.DateAndTime
                         currentValue += currentChar;
                     }
                 }
-                else if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegion)
+                else if(literalRegionState == LiteralRegionStates.InsideInferredLiteralRegion)
                 {
                     string tmpCurrentValue;
                     string tmpForwardLookupResult;
-                    if (currentChar == DateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+                    if(currentChar == DateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
                     {
                         forwardLookupLength = tmpForwardLookupResult.Length;
                         currentValue += currentChar;
                     }
-                    else if (currentChar == DateLiteralCharacter)
+                    else if(currentChar == DateLiteralCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideLiteralRegion;
                         formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
                         currentValue = "";
                     }
-                    else if (currentChar == EscapeCharacter)
+                    else if(currentChar == EscapeCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideInferredLiteralRegionWithEscape;
                     }
-                    else if (TryGetDateTimeFormatPart(formatArray, count, currentChar, dateTimeFormatForwardLookups, dateTimeFormatPartOptions, out tmpCurrentValue, out error))
+                    else if(TryGetDateTimeFormatPart(formatArray, count, currentChar, dateTimeFormatForwardLookups, dateTimeFormatPartOptions, out tmpCurrentValue, out error))
                     {
                         literalRegionState = LiteralRegionStates.OutsideLiteralRegion;
                         forwardLookupLength = tmpCurrentValue.Length;
@@ -218,9 +218,9 @@ namespace Dev2.Converters.DateAndTime
                         currentValue += currentChar;
                     }
                 }
-                else if (literalRegionState == LiteralRegionStates.InsideInferredLiteralRegionWithEscape)
+                else if(literalRegionState == LiteralRegionStates.InsideInferredLiteralRegionWithEscape)
                 {
-                    if (currentChar == DateLiteralCharacter || currentChar == EscapeCharacter)
+                    if(currentChar == DateLiteralCharacter || currentChar == EscapeCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideInferredLiteralRegion;
                         currentValue += currentChar;
@@ -231,21 +231,21 @@ namespace Dev2.Converters.DateAndTime
                         error = "A \'\\\' character must be followed by a \' or preceeded by a \\.";
                     }
                 }
-                else if (literalRegionState == LiteralRegionStates.InsideLiteralRegion)
+                else if(literalRegionState == LiteralRegionStates.InsideLiteralRegion)
                 {
                     string tmpForwardLookupResult;
-                    if (currentChar == DateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
+                    if(currentChar == DateLiteralCharacter && CheckForDoubleEscapedLiteralCharacter(formatArray, count, out tmpForwardLookupResult, out error))
                     {
                         forwardLookupLength = tmpForwardLookupResult.Length;
                         currentValue += currentChar;
                     }
-                    else if (currentChar == DateLiteralCharacter)
+                    else if(currentChar == DateLiteralCharacter)
                     {
                         literalRegionState = LiteralRegionStates.OutsideLiteralRegion;
                         formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
                         currentValue = "";
                     }
-                    else if (currentChar == EscapeCharacter)
+                    else if(currentChar == EscapeCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideLiteralRegionWithEscape;
                     }
@@ -254,9 +254,9 @@ namespace Dev2.Converters.DateAndTime
                         currentValue += currentChar;
                     }
                 }
-                else if (literalRegionState == LiteralRegionStates.InsideLiteralRegionWithEscape)
+                else if(literalRegionState == LiteralRegionStates.InsideLiteralRegionWithEscape)
                 {
-                    if (currentChar == DateLiteralCharacter || currentChar == EscapeCharacter)
+                    if(currentChar == DateLiteralCharacter || currentChar == EscapeCharacter)
                     {
                         literalRegionState = LiteralRegionStates.InsideLiteralRegion;
                         currentValue += currentChar;
@@ -269,17 +269,17 @@ namespace Dev2.Converters.DateAndTime
                 }
 
                 count++;
-                if (forwardLookupLength > 0)
+                if(forwardLookupLength > 0)
                 {
                     count += forwardLookupLength - 1;
                 }
             }
 
-            if (currentValue.Length > 0 && literalRegionState != LiteralRegionStates.InsideLiteralRegion && literalRegionState != LiteralRegionStates.InsideLiteralRegionWithEscape)
+            if(currentValue.Length > 0 && literalRegionState != LiteralRegionStates.InsideLiteralRegion && literalRegionState != LiteralRegionStates.InsideLiteralRegionWithEscape)
             {
                 formatParts.Add(new DateTimeFormatPartTO(currentValue, true, ""));
             }
-            else if (currentValue.Length > 0)
+            else if(currentValue.Length > 0)
             {
                 nothingDied = false;
                 error = "A \' character defines a start or end of a non date time region, there apears to be a extra \' character.";
@@ -291,7 +291,7 @@ namespace Dev2.Converters.DateAndTime
         internal static int GetDayOfWeekInt(DayOfWeek dayOfWeek)
         {
             int val;
-            if (dayOfWeek == DayOfWeek.Sunday)
+            if(dayOfWeek == DayOfWeek.Sunday)
             {
                 val = 7;
             }
@@ -320,16 +320,16 @@ namespace Dev2.Converters.DateAndTime
             //2013.05.03: Ashley Lewis - Bug 9300 try invariant culture
             var culturesTried = 0;
             const int MaxAttempts = 8;
-            if (string.IsNullOrWhiteSpace(data))
+            if(string.IsNullOrWhiteSpace(data))
             {
                 //2013.07.24: Ashley Lewis for PBI 10028 - null to default
                 data = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString();
             }
 
-            if (string.IsNullOrWhiteSpace(inputFormat))
+            if(string.IsNullOrWhiteSpace(inputFormat))
             {
                 //07.03.2013: Ashley Lewis for Bug 9167 - null to default
-                inputFormat = TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, out error);
+                inputFormat = TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat.Replace("ss", "ss.fff"), out error);
             }
             else
             {
@@ -337,7 +337,7 @@ namespace Dev2.Converters.DateAndTime
                 culturesTried = MaxAttempts;
             }
             //2013.05.03: Ashley Lewis - Bug 9300 try invariant culture
-            while (culturesTried <= MaxAttempts)
+            while(culturesTried <= MaxAttempts)
             {
                 char[] dateTimeArray = data.ToArray();
                 List<IDateTimeFormatPartTO> formatParts;
@@ -347,22 +347,22 @@ namespace Dev2.Converters.DateAndTime
                 // Get input format parts
                 //
                 nothingDied = TryGetDateTimeFormatParts(inputFormat, DateTimeFormatForwardLookups, DateTimeFormatPartOptions, out formatParts, out error);
-                if (!string.IsNullOrEmpty(error))
+                if(!string.IsNullOrEmpty(error))
                 {
                     return false;
                 }
-                if (nothingDied)
+                if(nothingDied)
                 {
                     //
                     // Extract information from the dateTime string for every part
                     //
                     int count = 0;
-                    while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
+                    while(count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
                     {
                         IDateTimeFormatPartTO formatPart = formatParts[count];
-                            
+
                         int resultLength;
-                        if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime, out resultLength, out error))
+                        if(TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime, out resultLength, out error))
                         {
                             position += resultLength;
                         }
@@ -376,9 +376,9 @@ namespace Dev2.Converters.DateAndTime
                         count++;
                     }
                     //2013.05.03: Ashley Lewis - Bug 9300 try other cultures and patterns (be very lenient if the user left input format blank)
-                    if (!nothingDied)
+                    if(!nothingDied)
                     {
-                        switch (culturesTried)
+                        switch(culturesTried)
                         {
                             case 0: inputFormat = TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
                                 break;
@@ -400,7 +400,7 @@ namespace Dev2.Converters.DateAndTime
                                 string finalPattern = shortPattern + " " + longPattern;
                                 if(finalPattern.Contains("ss"))
                                 {
-                                    finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal)+2,".fff");
+                                    finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
                                 }
                                 inputFormat = TranslateDotNetToDev2Format(finalPattern, out error);
                                 break;
@@ -408,7 +408,7 @@ namespace Dev2.Converters.DateAndTime
 
                         if(culturesTried >= MaxAttempts)
                         {
-                            if (!IsBlankResult(result))
+                            if(!IsBlankResult(result))
                             {
                                 //Return the result if it isn't blank
                                 nothingDied = true;
@@ -464,17 +464,17 @@ namespace Dev2.Converters.DateAndTime
         private static bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
         {
             bool nothingDied = true;
-            
+
             error = "";
             resultLength = 0;
 
             bool dataFound = false;
 
-            if (part.Isliteral)
+            if(part.Isliteral)
             {
                 string forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, part.Value.Length);
 
-                if (forwardLookupResult != part.Value)
+                if(forwardLookupResult != part.Value)
                 {
                     nothingDied = false;
                     error = string.Concat("Literal expressed from index ", startPosition, " doesn't match what is specified in the input format.");
@@ -491,9 +491,9 @@ namespace Dev2.Converters.DateAndTime
                 //
                 List<IDateTimeFormatPartOptionTO> partOptions;
 
-                if (passAsTime)
+                if(passAsTime)
                 {
-                    if (!TimeFormatPartOptions.TryGetValue(part.Value, out partOptions))
+                    if(!TimeFormatPartOptions.TryGetValue(part.Value, out partOptions))
                     {
                         nothingDied = false;
                         error = string.Concat("Unrecognised format part '", part.Value, "'.");
@@ -501,22 +501,22 @@ namespace Dev2.Converters.DateAndTime
                 }
                 else
                 {
-                    if (!DateTimeFormatPartOptions.TryGetValue(part.Value, out partOptions))
+                    if(!DateTimeFormatPartOptions.TryGetValue(part.Value, out partOptions))
                     {
                         nothingDied = false;
                         error = string.Concat("Unrecognised format part '", part.Value, "'.");
                     }
                 }
-                
 
-                if (nothingDied)
+
+                if(nothingDied)
                 {
                     int partOptionsCount = 0;
 
                     //
                     // Try get a value for each option
                     //
-                    while (partOptionsCount < partOptions.Count)
+                    while(partOptionsCount < partOptions.Count)
                     {
                         IDateTimeFormatPartOptionTO partOption = partOptions[partOptionsCount];
 
@@ -524,10 +524,10 @@ namespace Dev2.Converters.DateAndTime
                         bool predicateRun;
 
                         //Added by Massimo.Guerrera - For Bug 9494 to let the input format to be more forgiving
-                        if (partOption.Length != partOption.ResultLength)
+                        if(partOption.Length != partOption.ResultLength)
                         {
                             forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.ResultLength);
-                            predicateRun= partOption.Predicate(forwardLookupResult, passAsTime);
+                            predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
                             if(!predicateRun)
                             {
                                 forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
@@ -537,14 +537,14 @@ namespace Dev2.Converters.DateAndTime
                         else
                         {
                             forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
-                            
-                            predicateRun =partOption.Predicate(forwardLookupResult, passAsTime);
+
+                            predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
                         }
 
                         //
                         // Check length of forward lookup is correct
                         //
-                        if ((forwardLookupResult.Length == partOption.Length || forwardLookupResult.Length == partOption.ResultLength) && (partOption.Predicate == null || predicateRun))
+                        if((forwardLookupResult.Length == partOption.Length || forwardLookupResult.Length == partOption.ResultLength) && (partOption.Predicate == null || predicateRun))
                         {
                             //
                             // Set exit and result length
@@ -557,11 +557,11 @@ namespace Dev2.Converters.DateAndTime
                             // Decide on the correct value to use
                             //
                             IConvertible value;
-                            if (partOption.ActualValue != null)
+                            if(partOption.ActualValue != null)
                             {
                                 value = partOption.ActualValue;
                             }
-                            else if (partOption.IsNumeric)
+                            else if(partOption.IsNumeric)
                             {
                                 value = Convert.ToInt32(forwardLookupResult);
                             }
@@ -573,7 +573,7 @@ namespace Dev2.Converters.DateAndTime
                             //
                             // Assign the value to the result
                             //
-                            if (partOption.AssignAction != null)
+                            if(partOption.AssignAction != null)
                             {
                                 partOption.AssignAction(result, passAsTime, value);
                             }
@@ -585,7 +585,7 @@ namespace Dev2.Converters.DateAndTime
                     //
                     // If no viable data was found set error
                     //
-                    if (!dataFound)
+                    if(!dataFound)
                     {
                         nothingDied = false;
                         error = string.Concat("Unexpected value at index ", startPosition, ".");
@@ -603,7 +603,7 @@ namespace Dev2.Converters.DateAndTime
         {
             error = "";
             //2013.06.03: Ashley Lewis for bug 9601 - reduced forward look up from 3 to 2
-            result = ForwardLookup(formatArray, startPosition, 2); 
+            result = ForwardLookup(formatArray, startPosition, 2);
             return (result == "''");
         }
 
@@ -619,29 +619,29 @@ namespace Dev2.Converters.DateAndTime
             result = "";
 
             List<int> lookupLengths;
-            if (dateTimeFormatForwardLookups.TryGetValue(forwardLookupIndex, out lookupLengths))
+            if(dateTimeFormatForwardLookups.TryGetValue(forwardLookupIndex, out lookupLengths))
             {
                 //
                 // Perform all forward lookups
                 //
                 List<string> lookupResults = lookupLengths.Select(i => ForwardLookup(formatArray, startPosition, i)).ToList();
-                
+
                 int count = 0;
-                while (count < lookupResults.Count && nothingDied)
+                while(count < lookupResults.Count && nothingDied)
                 {
                     //
                     // Check if forward lookup result is a known date time format part
                     //
                     List<IDateTimeFormatPartOptionTO> tmp;
-                    if (dateTimeFormatPartOptions.TryGetValue(lookupResults[count], out tmp))
+                    if(dateTimeFormatPartOptions.TryGetValue(lookupResults[count], out tmp))
                     {
                         result = lookupResults[count];
                         count = lookupResults.Count;
                     }
-                    else if (count == lookupLengths.Count - 1)
+                    else if(count == lookupLengths.Count - 1)
                     {
                         nothingDied = false;
-                        error = string.Concat("Failed to find any format part matches in forward lookups from character '", forwardLookupIndex, "' at index ", startPosition, " of format.");                        
+                        error = string.Concat("Failed to find any format part matches in forward lookups from character '", forwardLookupIndex, "' at index ", startPosition, " of format.");
                     }
 
                     count++;
@@ -663,8 +663,8 @@ namespace Dev2.Converters.DateAndTime
         {
             string result = "";
             int position = startPosition;
-            
-            while (position >= 0 && position < formatArray.Length && position < (startPosition + lookupLength))
+
+            while(position >= 0 && position < formatArray.Length && position < (startPosition + lookupLength))
             {
                 result += formatArray[position];
                 position++;
@@ -920,7 +920,7 @@ namespace Dev2.Converters.DateAndTime
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberWeekOfYear, true, null, AssignWeeks),
                 new DateTimeFormatPartOptionTO(1, IsNumberWeekOfYear, true, null, AssignWeeks),
-            });            
+            });
 
             DateTimeFormatsParts.Add("24h", new DateTimeFormatPartTO("24h", false, "Hours in 24 hour format: 15"));
             DateTimeFormatPartOptions.Add("24h",
@@ -974,22 +974,22 @@ namespace Dev2.Converters.DateAndTime
             DateTimeFormatsParts.Add("Z", new DateTimeFormatPartTO("Z", false, "Time zone in short format: GMT (if available on the system)"));
             DateTimeFormatPartOptions.Add("Z", TimeZones.Select(k =>
             {
-                IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
-                return dateTimeFormatPartOptionTO;
+                IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTo = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
+                return dateTimeFormatPartOptionTo;
             }).OrderByDescending(k => k.Length).ToList());
 
             DateTimeFormatsParts.Add("ZZ", new DateTimeFormatPartTO("ZZ", false, "Time zone: Grenwich mean time"));
             DateTimeFormatPartOptions.Add("ZZ", TimeZones.Select(k =>
             {
-                IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
-                return dateTimeFormatPartOptionTO;
+                IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTo = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
+                return dateTimeFormatPartOptionTo;
             }).OrderByDescending(k => k.Length).ToList());
 
             DateTimeFormatsParts.Add("ZZZ", new DateTimeFormatPartTO("ZZZ", false, "Time zone offset: GMT + 02:00"));
             DateTimeFormatPartOptions.Add("ZZZ", TimeZones.Select(k =>
             {
-                IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
-                return dateTimeFormatPartOptionTO;
+                IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTo = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
+                return dateTimeFormatPartOptionTo;
             }).OrderByDescending(k => k.Length).ToList());
 
             DateTimeFormatsParts.Add("Era", new DateTimeFormatPartTO("Era", false, "A.D."));
@@ -1146,22 +1146,22 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(2, IsTextAmPm, false, null, AssignAmPm),
             });
 
-            TimeFormatPartOptions.Add("Z", TimeZones.Select(k => 
+            TimeFormatPartOptions.Add("Z", TimeZones.Select(k =>
                 {
-                    IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
-                    return dateTimeFormatPartOptionTO;
+                    IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTo = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
+                    return dateTimeFormatPartOptionTo;
                 }).OrderByDescending(k => k.Length).ToList());
 
             TimeFormatPartOptions.Add("ZZ", TimeZones.Select(k =>
             {
-                IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
-                return dateTimeFormatPartOptionTO;
+                IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTo = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
+                return dateTimeFormatPartOptionTo;
             }).OrderByDescending(k => k.Length).ToList());
 
             TimeFormatPartOptions.Add("ZZZ", TimeZones.Select(k =>
             {
-                IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTO = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
-                return dateTimeFormatPartOptionTO;
+                IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTo = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
+                return dateTimeFormatPartOptionTo;
             }).OrderByDescending(k => k.Length).ToList());
 
             TimeFormatPartOptions.Add("era",
@@ -1196,11 +1196,11 @@ namespace Dev2.Converters.DateAndTime
             TimeZones.Add(UctShort.ToLower(), new TimeZoneTO(UctShort, UctShort, UctLong));
             TimeZones.Add(UctLong.ToLower(), new TimeZoneTO(UctShort, UctShort, UctLong));
 
-            for (int hours = -12; hours < 13; hours++)
+            for(int hours = -12; hours < 13; hours++)
             {
-                if (hours != 0)
+                if(hours != 0)
                 {
-                    for (int minutes = 0; minutes < 2; minutes++)
+                    for(int minutes = 0; minutes < 2; minutes++)
                     {
                         string min = (minutes == 0) ? "00" : "30";
                         string hrs = string.Concat(((hours / Math.Abs(hours) < 0) ? "-" : "+"), Math.Abs(hours).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0'));
@@ -1224,11 +1224,11 @@ namespace Dev2.Converters.DateAndTime
             TimeZones.Add(GmtShort.ToLower(), new TimeZoneTO(GmtShort, GmtShort, GmtLong));
             TimeZones.Add(GmtLong.ToLower(), new TimeZoneTO(GmtShort, GmtShort, GmtLong));
 
-            for (int hours = -12; hours < 13; hours++)
+            for(int hours = -12; hours < 13; hours++)
             {
-                if (hours != 0)
+                if(hours != 0)
                 {
-                    for (int minutes = 0; minutes < 2; minutes++)
+                    for(int minutes = 0; minutes < 2; minutes++)
                     {
                         string min = (minutes == 0) ? "00" : "30";
                         string hrs = string.Concat(((hours / Math.Abs(hours) < 0) ? "-" : "+"), Math.Abs(hours).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0'));
@@ -1246,20 +1246,20 @@ namespace Dev2.Converters.DateAndTime
             //
             // Read in system time zones
             //
-            foreach (TimeZoneInfo timeZoneInfo in TimeZoneInfo.GetSystemTimeZones())
+            foreach(TimeZoneInfo timeZoneInfo in TimeZoneInfo.GetSystemTimeZones())
             {
-                ITimeZoneTO timeZoneTO;
-                if (!TimeZones.TryGetValue(timeZoneInfo.DisplayName.ToLower(), out timeZoneTO))
+                ITimeZoneTO timeZoneTo;
+                if(!TimeZones.TryGetValue(timeZoneInfo.DisplayName.ToLower(), out timeZoneTo))
                 {
                     TimeZones.Add(timeZoneInfo.DisplayName.ToLower(), new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));
                 }
 
-                if (!TimeZones.TryGetValue(timeZoneInfo.DaylightName.ToLower(), out timeZoneTO))
+                if(!TimeZones.TryGetValue(timeZoneInfo.DaylightName.ToLower(), out timeZoneTo))
                 {
                     TimeZones.Add(timeZoneInfo.DaylightName.ToLower(), new TimeZoneTO(timeZoneInfo.DaylightName, timeZoneInfo.DaylightName, timeZoneInfo.DisplayName));
                 }
 
-                if (!TimeZones.TryGetValue(timeZoneInfo.StandardName.ToLower(), out timeZoneTO))
+                if(!TimeZones.TryGetValue(timeZoneInfo.StandardName.ToLower(), out timeZoneTo))
                 {
                     TimeZones.Add(timeZoneInfo.StandardName.ToLower(), new TimeZoneTO(timeZoneInfo.StandardName, timeZoneInfo.StandardName, timeZoneInfo.DisplayName));
                 }
@@ -1407,96 +1407,96 @@ namespace Dev2.Converters.DateAndTime
 
         #region DateTime Assign Actions
 
-        private static void AssignEra(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignEra(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.Era = value.ToString(CultureInfo.InvariantCulture);
+            dateTimeResultTo.Era = value.ToString(CultureInfo.InvariantCulture);
         }
 
-        private static void AssignYears(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignYears(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
             int years = Convert.ToInt32(value);
 
-            if (!assignAsTime && years < 100)
+            if(!assignAsTime && years < 100)
             {
                 years = CultureInfo.InvariantCulture.Calendar.ToFourDigitYear(years);
             }
 
-            dateTimeResultTO.Years = Convert.ToInt32(years);
+            dateTimeResultTo.Years = Convert.ToInt32(years);
         }
 
-        private static void AssignMonths(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignMonths(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.Months = Convert.ToInt32(value);
+            dateTimeResultTo.Months = Convert.ToInt32(value);
         }
 
-        private static void AssignDays(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignDays(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.Days = Convert.ToInt32(value);
+            dateTimeResultTo.Days = Convert.ToInt32(value);
         }
 
-        private static void AssignDaysOfWeek(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignDaysOfWeek(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.DaysOfWeek = Convert.ToInt32(value);
+            dateTimeResultTo.DaysOfWeek = Convert.ToInt32(value);
         }
 
-        private static void AssignDaysOfYear(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignDaysOfYear(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.DaysOfYear = Convert.ToInt32(value);
+            dateTimeResultTo.DaysOfYear = Convert.ToInt32(value);
         }
 
-        private static void AssignWeeks(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignWeeks(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.Weeks = Convert.ToInt32(value);
+            dateTimeResultTo.Weeks = Convert.ToInt32(value);
         }
 
-        private static void Assign12Hours(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void Assign12Hours(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.Hours = Convert.ToInt32(value);
+            dateTimeResultTo.Hours = Convert.ToInt32(value);
         }
 
-        private static void Assign24Hours(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void Assign24Hours(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.Hours = Convert.ToInt32(value);
-            dateTimeResultTO.Is24H = true;
+            dateTimeResultTo.Hours = Convert.ToInt32(value);
+            dateTimeResultTo.Is24H = true;
         }
 
-        private static void AssignMinutes(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignMinutes(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.Minutes = Convert.ToInt32(value);
+            dateTimeResultTo.Minutes = Convert.ToInt32(value);
         }
 
-        private static void AssignSeconds(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignSeconds(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.Seconds = Convert.ToInt32(value);
+            dateTimeResultTo.Seconds = Convert.ToInt32(value);
         }
 
-        private static void AssignMilliseconds(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignMilliseconds(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            dateTimeResultTO.Milliseconds = Convert.ToInt32(value);
+            dateTimeResultTo.Milliseconds = Convert.ToInt32(value);
         }
 
-        private static void AssignAmPm(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignAmPm(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
             string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
-            if (lowerValue == "pm" || lowerValue == "p.m" || lowerValue == "p.m.")
+            if(lowerValue == "pm" || lowerValue == "p.m" || lowerValue == "p.m.")
             {
-                dateTimeResultTO.AmPm = DateTimeAmPm.pm;
+                dateTimeResultTo.AmPm = DateTimeAmPm.pm;
             }
             else
             {
-                dateTimeResultTO.AmPm = DateTimeAmPm.am;
+                dateTimeResultTo.AmPm = DateTimeAmPm.am;
             }
         }
 
-        private static void AssignTimeZone(IDateTimeResultTO dateTimeResultTO, bool assignAsTime, IConvertible value)
+        private static void AssignTimeZone(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
             string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
-            ITimeZoneTO timeZoneTO;
-            if (TimeZones.TryGetValue(lowerValue, out timeZoneTO))
+            ITimeZoneTO timeZoneTo;
+            if(TimeZones.TryGetValue(lowerValue, out timeZoneTo))
             {
-                dateTimeResultTO.TimeZone = timeZoneTO;
+                dateTimeResultTo.TimeZone = timeZoneTo;
             }
         }
 
@@ -1512,9 +1512,9 @@ namespace Dev2.Converters.DateAndTime
             bool nothingDied = true;
 
             int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if(int.TryParse(data, NumberStyles.None, null, out numericData))
             {
-                if (!treatAsTime)
+                if(!treatAsTime)
                 {
                     nothingDied = (numericData >= 0 && numericData <= 59);
                 }
@@ -1535,9 +1535,9 @@ namespace Dev2.Converters.DateAndTime
             bool nothingDied = true;
 
             int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if(int.TryParse(data, NumberStyles.None, null, out numericData))
             {
-                if (!treatAsTime)
+                if(!treatAsTime)
                 {
                     nothingDied = (numericData >= 0 && numericData <= 999);
                 }
@@ -1558,9 +1558,9 @@ namespace Dev2.Converters.DateAndTime
             bool nothingDied = true;
 
             int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if(int.TryParse(data, NumberStyles.None, null, out numericData))
             {
-                if (!treatAsTime)
+                if(!treatAsTime)
                 {
                     nothingDied = (numericData >= 0 && numericData <= 59);
                 }
@@ -1581,9 +1581,9 @@ namespace Dev2.Converters.DateAndTime
             bool nothingDied = true;
 
             int numericData;
-            if (data.Length == 2 && int.TryParse(data, out numericData))
+            if(data.Length == 2 && int.TryParse(data, out numericData))
             {
-                if (!treatAsTime)
+                if(!treatAsTime)
                 {
                     nothingDied = (numericData >= 0 && numericData <= 24);
                 }
@@ -1604,9 +1604,9 @@ namespace Dev2.Converters.DateAndTime
             bool nothingDied = true;
 
             int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if(int.TryParse(data, NumberStyles.None, null, out numericData))
             {
-                if (!treatAsTime)
+                if(!treatAsTime)
                 {
                     nothingDied = (numericData >= 1 && numericData <= 12);
                 }
@@ -1627,9 +1627,9 @@ namespace Dev2.Converters.DateAndTime
             bool nothingDied = true;
 
             int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if(int.TryParse(data, NumberStyles.None, null, out numericData))
             {
-                if (!treatAsTime)
+                if(!treatAsTime)
                 {
                     nothingDied = (numericData >= 1 && numericData <= 12);
                 }
@@ -1650,9 +1650,9 @@ namespace Dev2.Converters.DateAndTime
             bool nothingDied = true;
 
             int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if(int.TryParse(data, NumberStyles.None, null, out numericData))
             {
-                if (!treatAsTime)
+                if(!treatAsTime)
                 {
                     nothingDied = (numericData >= 1 && numericData <= 31);
                 }
@@ -1673,9 +1673,9 @@ namespace Dev2.Converters.DateAndTime
             bool nothingDied = true;
 
             int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if(int.TryParse(data, NumberStyles.None, null, out numericData))
             {
-                if (!treatAsTime)
+                if(!treatAsTime)
                 {
                     nothingDied = (numericData >= 1 && numericData <= 7);
                 }
@@ -1696,7 +1696,7 @@ namespace Dev2.Converters.DateAndTime
             bool nothingDied = true;
 
             int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData) && (numericData >= 1 && numericData <= 365))
+            if(int.TryParse(data, NumberStyles.None, null, out numericData) && (numericData >= 1 && numericData <= 365))
             {
                 //nothing to do since nothignDied is already true
             }
@@ -1716,9 +1716,9 @@ namespace Dev2.Converters.DateAndTime
             bool nothingDied = true;
 
             int numericData;
-            if (int.TryParse(data, NumberStyles.None, null, out numericData))
+            if(int.TryParse(data, NumberStyles.None, null, out numericData))
             {
-                if (!treatAsTime)
+                if(!treatAsTime)
                 {
                     nothingDied = (numericData >= 1 && numericData <= 52);
                 }
@@ -1755,8 +1755,8 @@ namespace Dev2.Converters.DateAndTime
         private static bool IsTextTimeZone(string data, bool treatAsTime)
         {
             string lowerData = data.ToLower();
-            ITimeZoneTO timeZoneTO;
-            return TimeZones.TryGetValue(lowerData, out timeZoneTO);
+            ITimeZoneTO timeZoneTo;
+            return TimeZones.TryGetValue(lowerData, out timeZoneTo);
         }
 
         /// <summary>
@@ -1932,11 +1932,11 @@ namespace Dev2.Converters.DateAndTime
 
         #endregion Predicates
         #endregion Private Methods
-     
+
 
         #region Properties
 
-        public List<IDateTimeFormatPartTO> DateTimeFormatParts 
+        public List<IDateTimeFormatPartTO> DateTimeFormatParts
         {
             get
             {

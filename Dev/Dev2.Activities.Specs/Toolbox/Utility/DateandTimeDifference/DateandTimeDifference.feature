@@ -330,20 +330,20 @@ Scenario: Calculate the number of split seconds
 	| [[result]] = 68 |
 
 #Bug 12330
-##Scenario: Calculate the number of split seconds by using default date format
-#	Given I have a first date "06/01/2014 08:00:01.00" 
-#	And I have a second date "06/01/2014 08:00:01.68" 
-#	And the date format as ""
-#	And I selected output in "Split Secs" 	
-#	When the datetime difference tool is executed
-#	Then the difference should be "68"
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| Input 1                | Input 2                | Input Format | Output In  |
-#	| 06/01/2014 08:00:01.00 | 06/01/2014 08:00:01.68 |              | Split Secs |
-#	And the debug output as 
-#	|                 |
-#	| [[result]] = 68 |
+Scenario: Calculate the number of split seconds by using default date format
+	Given I have a first date "2014/01/06 08:00:01.00" 
+	And I have a second date "2014/01/06 08:00:01.68" 
+	And the date format as ""
+	And I selected output in "Split Secs" 	
+	When the datetime difference tool is executed
+	Then the difference should be "68"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Input 1                | Input 2                | Input Format | Output In  |
+	| 2014/01/06 08:00:01.00 | 2014/01/06 08:00:01.68 | ""           | Split Secs |
+	And the debug output as 
+	|                 |
+	| [[result]] = 68 |
 
 Scenario: Calculate the number of weeks
 	Given I have a first date "06/01/2014 08:00:01.00" 
@@ -360,108 +360,108 @@ Scenario: Calculate the number of weeks
 	|                |
 	| [[result]] = 3 |
 
-#Scenario: Calculate the number of weeks by using default format
-#	Given I have a first date "06/01/2014 08:00:01.00" 
-#	And I have a second date "30/01/2014 08:00:01.06" 
-#	And the date format as ""
-#	And I selected output in "Weeks" 	
-#	When the datetime difference tool is executed
-#	Then the difference should be "3"
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| # | Input 1                | Input 2                | Input Format | Output In |
-#	| # | 06/01/2014 08:00:01.00 | 30/01/2014 08:00:01.06 |              | Weeks |
-#	And the debug output as 
-#	|                |
-#	| [[result]] = 3 |
+Scenario: Calculate the number of weeks by using default format
+	Given I have a first date "2014/01/06 08:00:01.00" 
+	And I have a second date "2014/01/30 08:00:01.06" 
+	And the date format as ""
+	And I selected output in "Weeks" 	
+	When the datetime difference tool is executed
+	Then the difference should be "3"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Input 1                | Input 2                | Input Format | Output In |
+	| 2014/01/06 08:00:01.00 | 2014/01/30 08:00:01.06 | ""           | Weeks     |
+	And the debug output as 
+	|                |
+	| [[result]] = 3 |
 
-#Scenario: Calculate the number of hours by using default format
-#	Given I have a first date "06/01/2014 08:00:01.00" 
-#	And I have a second date "30/01/2014 08:00:01.06" 
-#	And the date format as ""
-#	And I selected output in "Hours" 	
-#	When the datetime difference tool is executed
-#	Then the difference should be "576"
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| # | Input 1                | Input 2                | Input Format | Output In |
-#	| # | 06/01/2014 08:00:01.00 | 30/01/2014 08:00:01.06 |              | Hours |
-#	And the debug output as 
-#	|                |
-#	| [[result]] = 576 |
-#
-#
-#Scenario: Calculate the number of Minutes by using default format
-#	Given I have a first date "06/01/2014 08:00:01.00" 
-#	And I have a second date "30/01/2014 08:00:01.68" 
-#	And the date format as ""
-#	And I selected output in "Minutes" 	
-#	When the datetime difference tool is executed
-#	Then the difference should be "34560"
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| Input 1                | Input 2                | Input Format | Output In |
-#	| 06/01/2014 08:00:01.00 | 30/01/2014 08:00:01.68 |              | Minutes   |
-#	And the debug output as 
-#	|                    |
-#	| [[result]] = 34560 |
-#
-#Scenario: Calculate the number of Seconds by using default format
-#	Given I have a first date "06/01/2014 08:00:01.00" 
-#	And I have a second date "30/01/2014 08:00:01.68" 
-#	And the date format as ""
-#	And I selected output in "Seconds" 	
-#	When the datetime difference tool is executed
-#	Then the difference should be "2073600"
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| Input 1                | Input 2                | Input Format | Output In |
-#	| 06/01/2014 08:00:01.00 | 30/01/2014 08:00:01.68 |              | Seconds   |
-#	And the debug output as 
-#	|                      |
-#	| [[result]] = 2073600 |
-#
-#Scenario: Calculate the number of Days by using default format
-#	Given I have a first date "06/01/2014 08:00:01.00" 
-#	And I have a second date "30/06/2016 08:00:01.68" 
-#	And the date format as ""
-#	And I selected output in "Days" 	
-#	When the datetime difference tool is executed
-#	Then the difference should be "906"
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| Input 1                | Input 2                | Input Format | Output In |
-#	| 06/01/2014 08:00:01.00 | 30/01/2014 08:00:01.68 |              | Days   |
-#	And the debug output as 
-#	|                  |
-#	| [[result]] = 906 |
-#
-#Scenario: Calculate the number of Months by using default format
-#	Given I have a first date "06/01/2014 08:00:01.00" 
-#	And I have a second date "30/06/2016 08:00:01.68" 
-#	And the date format as ""
-#	And I selected output in "Months" 	
-#	When the datetime difference tool is executed
-#	Then the difference should be "29"
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| Input 1                | Input 2                | Input Format | Output In |
-#	| 06/01/2014 08:00:01.00 | 30/01/2014 08:00:01.68 | Months       |           |
-#	And the debug output as 
-#	|                 |
-#	| [[result]] = 29 |
-#
-#Scenario: Calculate the number of Years by using default format
-#	Given I have a first date "06/01/2014 08:00:01.00" 
-#	And I have a second date "30 06 2016 08:00:01.68" 
-#	And the date format as ""
-#	And I selected output in "Years" 	
-#	When the datetime difference tool is executed
-#	Then the difference should be "2"
-#	And the execution has "NO" error
-#	And the debug inputs as  
-#	| Input 1                | Input 2                | Input Format | Output In |
-#	| 06/01/2014 08:00:01.00 | 30/01/2014 08:00:01.68 | Years        |           |
-#	And the debug output as 
-#	|                |
-#	| [[result]] = 2 |
+Scenario: Calculate the number of hours by using default format
+	Given I have a first date "2014/01/06 08:00:01.00" 
+	And I have a second date "2014/01/30 08:00:01.06" 
+	And the date format as ""
+	And I selected output in "Hours" 	
+	When the datetime difference tool is executed
+	Then the difference should be "576"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Input 1                | Input 2                | Input Format | Output In |
+	| 2014/01/06 08:00:01.00 | 2014/01/30 08:00:01.06 |    ""          | Hours     |
+	And the debug output as 
+	|                |
+	| [[result]] = 576 |
+
+
+Scenario: Calculate the number of Minutes by using default format
+	Given I have a first date "2014/01/06 08:00:01.00" 
+	And I have a second date "2014/01/30 08:00:01.68" 
+	And the date format as ""
+	And I selected output in "Minutes" 	
+	When the datetime difference tool is executed
+	Then the difference should be "34560"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Input 1                | Input 2                | Input Format | Output In |
+	| 2014/01/06 08:00:01.00 | 2014/01/30 08:00:01.68 | ""           | Minutes   |
+	And the debug output as 
+	|                    |
+	| [[result]] = 34560 |
+
+Scenario: Calculate the number of Seconds by using default format
+	Given I have a first date "2014/01/06 08:00:01.00" 
+	And I have a second date "2014/01/30 08:00:01.68" 
+	And the date format as ""
+	And I selected output in "Seconds" 	
+	When the datetime difference tool is executed
+	Then the difference should be "2073600"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Input 1                | Input 2                | Input Format | Output In |
+	| 2014/01/06 08:00:01.00 | 2014/01/30 08:00:01.68 | ""           | Seconds   |
+	And the debug output as 
+	|                      |
+	| [[result]] = 2073600 |
+
+Scenario: Calculate the number of Days by using default format
+	Given I have a first date "2014/01/06 08:00:01.00" 
+	And I have a second date "2014/01/30 08:00:01.68" 
+	And the date format as ""
+	And I selected output in "Days" 	
+	When the datetime difference tool is executed
+	Then the difference should be "24"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Input 1                | Input 2                | Input Format | Output In |
+	| 2014/01/06 08:00:01.00 | 2014/01/30 08:00:01.68 | ""           | Days      |
+	And the debug output as 
+	|                 |
+	| [[result]] = 24 |
+
+Scenario: Calculate the number of Months by using default format
+	Given I have a first date "2011/08/06 08:00:01.00" 
+	And I have a second date "2014/01/30 08:00:01.68" 
+	And the date format as ""
+	And I selected output in "Months" 	
+	When the datetime difference tool is executed
+	Then the difference should be "29"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Input 1                | Input 2                | Input Format | Output In |
+	| 2011/08/06 08:00:01.00 | 2014/01/30 08:00:01.68 | ""           | Months    |
+	And the debug output as 
+	|                 |
+	| [[result]] = 29 |
+
+Scenario: Calculate the number of Years by using default format
+	Given I have a first date "2014/01/06 08:00:01.00" 
+	And I have a second date "2016/01/06 08:00:01.68" 
+	And the date format as ""
+	And I selected output in "Years" 	
+	When the datetime difference tool is executed
+	Then the difference should be "2"
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Input 1                | Input 2                | Input Format | Output In |
+	| 2014/01/06 08:00:01.00 | 2016/01/06 08:00:01.68 | ""           | Years     |
+	And the debug output as 
+	|                |
+	| [[result]] = 2 |

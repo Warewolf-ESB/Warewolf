@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Globalization;
+using System.Threading;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -92,6 +95,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
         [When(@"the datetime difference tool is executed")]
         public void WhenTheDatetimeDifferenceToolIsExecuted()
         {
+            var currentCulture = new CultureInfo("en-ZA");
+            Thread.CurrentThread.CurrentCulture = currentCulture;
+            Thread.CurrentThread.CurrentUICulture = currentCulture;
             BuildDataList();
             IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
             ScenarioContext.Current.Add("result", result);

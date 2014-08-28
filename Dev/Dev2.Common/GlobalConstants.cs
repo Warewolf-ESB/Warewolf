@@ -296,7 +296,7 @@ namespace Dev2.Common
         public static string WebServerSslPort { get; set; }
         public static int VersionCount = 20;
 
-        public const string SchemaQuery =@"SELECT name AS ROUTINE_NAME
+        public const string SchemaQuery = @"SELECT name AS ROUTINE_NAME
 ,SCHEMA_NAME(schema_id) AS SPECIFIC_SCHEMA
 ,type_desc as ROUTINE_TYPE
 FROM sys.objects
