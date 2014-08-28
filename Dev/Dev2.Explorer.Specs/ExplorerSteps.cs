@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Dev2.Data.ServiceModel;
-using Dev2.Interfaces;
+using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Models;
 using Dev2.Network;
 using Dev2.Runtime.Hosting;
-using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
@@ -54,7 +53,7 @@ namespace Dev2.Explorer.Specs
         {
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Name == "localhost");
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
-            var result = repository.RenameItem(new ServerExplorerItem(  "FolderToRename",Guid.NewGuid(),ResourceType.Folder, null,Permissions.Administrator, "FolderToRename"),p0,Guid.Empty);
+            var result = repository.RenameItem(new ServerExplorerItem("FolderToRename", Guid.NewGuid(), Common.Interfaces.Data.ResourceType.Folder, null, Permissions.Administrator, "FolderToRename"), p0, Guid.Empty);
 
             Assert.AreEqual(result.Status, ExecStatus.Success);
             var explorerItemModel = repository.Load(Guid.Empty);
@@ -72,12 +71,12 @@ namespace Dev2.Explorer.Specs
                 var childName = tableRow["Child"];
                 var type = tableRow["Type"];
 
-                ResourceType resourceType;
+                Common.Interfaces.Data.ResourceType resourceType;
                 Enum.TryParse(type, out resourceType);
                 var eim = new ExplorerItemModel
                 {
                     DisplayName = childName,
-                    Children = new ObservableCollection<ExplorerItemModel>( ),
+                    Children = new ObservableCollection<IExplorerItemModel>( ),
                     ResourceType = resourceType
                 };
 
@@ -111,12 +110,12 @@ namespace Dev2.Explorer.Specs
                 var childName = tableRow["Child"];
                 var type = tableRow["Type"];
 
-                ResourceType resourceType;
+                Common.Interfaces.Data.ResourceType resourceType;
                 Enum.TryParse(type, out resourceType);
                 var eim = new ExplorerItemModel
                 {
                     DisplayName = childName,
-                    Children = new ObservableCollection<ExplorerItemModel>(),
+                    Children = new ObservableCollection<IExplorerItemModel>(),
                     ResourceType = resourceType
                 };
 
@@ -144,7 +143,7 @@ namespace Dev2.Explorer.Specs
 
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Name == "localhost");
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
-            repository.RenameItem(new ServerExplorerItem(  "FolderToRename",Guid.NewGuid(),ResourceType.Folder, null,Permissions.Administrator, "FolderToRename"),p0, Guid.Empty);
+            repository.RenameItem(new ServerExplorerItem("FolderToRename", Guid.NewGuid(), Common.Interfaces.Data.ResourceType.Folder, null, Permissions.Administrator, "FolderToRename"), p0, Guid.Empty);
         }
 
 
@@ -189,7 +188,7 @@ namespace Dev2.Explorer.Specs
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
 
 
-            var result = repository.DeleteItem(new ServerExplorerItem("FolderToDelete", Guid.NewGuid(), ResourceType.Folder, null, Permissions.Administrator, "FolderToDelete"), Guid.Empty);
+            var result = repository.DeleteItem(new ServerExplorerItem("FolderToDelete", Guid.NewGuid(), Common.Interfaces.Data.ResourceType.Folder, null, Permissions.Administrator, "FolderToDelete"), Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
             var explorerItemModel = repository.Load(Guid.Empty);
             ScenarioContext.Current.Add("localhost", explorerItemModel);
@@ -204,7 +203,7 @@ namespace Dev2.Explorer.Specs
 
             Assert.AreEqual(0,repository.Load(Guid.Empty).Children.Count(a=>a.DisplayName==folderName));
 
-            var result = repository.AddItem(new ServerExplorerItem(folderName,Guid.NewGuid(),ResourceType.Folder, null,Permissions.Administrator,""), Guid.Empty);
+            var result = repository.AddItem(new ServerExplorerItem(folderName, Guid.NewGuid(), Common.Interfaces.Data.ResourceType.Folder, null, Permissions.Administrator, ""), Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
             var explorerItemModel = repository.Load(Guid.Empty);
 
@@ -221,7 +220,7 @@ namespace Dev2.Explorer.Specs
             ScenarioContext.Current.TryGetValue("folderName", out folderName);
             var folder = item.Children.FirstOrDefault(a => a.DisplayName == folderName);
             Assert.IsNotNull(folder);
-            Assert.AreEqual(folder.ResourceType,ResourceType.Folder);
+            Assert.AreEqual(folder.ResourceType, Common.Interfaces.Data.ResourceType.Folder);
             Assert.AreEqual(folder.Children.Count,0);
 
         }
@@ -234,7 +233,7 @@ namespace Dev2.Explorer.Specs
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
 
 
-            var result = repository.DeleteItem(new ServerExplorerItem(folderToDelete, Guid.NewGuid(), ResourceType.Folder, null, Permissions.Administrator, ""), Guid.Empty);
+            var result = repository.DeleteItem(new ServerExplorerItem(folderToDelete, Guid.NewGuid(), Common.Interfaces.Data.ResourceType.Folder, null, Permissions.Administrator, ""), Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
             var explorerItemModel = repository.Load(Guid.Empty);
             ScenarioContext.Current.Add("localhost", explorerItemModel);
@@ -248,7 +247,7 @@ namespace Dev2.Explorer.Specs
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
 
 
-            var result = repository.DeleteItem(new ServerExplorerItem(folderToDelete, Guid.NewGuid(), ResourceType.Folder, null, Permissions.Administrator, ""), Guid.Empty);
+            var result = repository.DeleteItem(new ServerExplorerItem(folderToDelete, Guid.NewGuid(), Common.Interfaces.Data.ResourceType.Folder, null, Permissions.Administrator, ""), Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
             var explorerItemModel = repository.Load(Guid.Empty);
             Assert.IsFalse(0==explorerItemModel.Children.Count(a=>a.DisplayName==folderToDelete));
@@ -278,7 +277,7 @@ namespace Dev2.Explorer.Specs
         {
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Name == "localhost");
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
-            var result = repository.RenameItem(new ServerExplorerItem(folderToRename, Guid.NewGuid(), ResourceType.Folder, null, Permissions.Administrator, ""), newName, Guid.Empty);
+            var result = repository.RenameItem(new ServerExplorerItem(folderToRename, Guid.NewGuid(), Common.Interfaces.Data.ResourceType.Folder, null, Permissions.Administrator, ""), newName, Guid.Empty);
 
             Assert.AreEqual(result.Status, ExecStatus.Success);
             var explorerItemModel = repository.Load(Guid.Empty);

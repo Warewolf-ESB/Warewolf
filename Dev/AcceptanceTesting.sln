@@ -125,9 +125,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts"
 		TestScripts\Acceptance\Startup.bat = TestScripts\Acceptance\Startup.bat
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Explorer.Specs", "Dev2.Explorer.Specs\Dev2.Explorer.Specs.csproj", "{3C6D24ED-71A4-4A97-A941-15C02754A0DE}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 36
+		SccNumberOfProjects = 37
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
 		SccLocalPath0 = .
@@ -236,6 +238,9 @@ Global
 		SccProjectUniqueName35 = Dev2.Util\\Dev2.Util.csproj
 		SccProjectName35 = Dev2.Util
 		SccLocalPath35 = Dev2.Util
+		SccProjectUniqueName36 = Dev2.Explorer.Specs\\Dev2.Explorer.Specs.csproj
+		SccProjectName36 = Dev2.Explorer.Specs
+		SccLocalPath36 = Dev2.Explorer.Specs
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -610,6 +615,16 @@ Global
 		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Release|x64.ActiveCfg = Release|Any CPU
 		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Release|x86.ActiveCfg = Release|x86
 		{1990550D-EA6F-4DAC-9B5E-8571E86923ED}.Release|x86.Build.0 = Release|x86
+		{3C6D24ED-71A4-4A97-A941-15C02754A0DE}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{3C6D24ED-71A4-4A97-A941-15C02754A0DE}.Debug|Any CPU.Build.0 = Debug|x86
+		{3C6D24ED-71A4-4A97-A941-15C02754A0DE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3C6D24ED-71A4-4A97-A941-15C02754A0DE}.Debug|x86.ActiveCfg = Debug|x86
+		{3C6D24ED-71A4-4A97-A941-15C02754A0DE}.Debug|x86.Build.0 = Debug|x86
+		{3C6D24ED-71A4-4A97-A941-15C02754A0DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C6D24ED-71A4-4A97-A941-15C02754A0DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C6D24ED-71A4-4A97-A941-15C02754A0DE}.Release|x64.ActiveCfg = Release|Any CPU
+		{3C6D24ED-71A4-4A97-A941-15C02754A0DE}.Release|x86.ActiveCfg = Release|x86
+		{3C6D24ED-71A4-4A97-A941-15C02754A0DE}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
