@@ -214,7 +214,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                     default:
                         {
                             Mouse.Click(control.GetParent());
-                            Mouse.Click(control, new Point(5, 5));
+                            control.EnsureClickable();
                             var clickablePoint = control.GetClickablePoint();
                             clickablePoint.Offset(5, 5);
                             Mouse.Click(control, clickablePoint);
@@ -239,9 +239,8 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
             var startingPoint = new Point(control.BoundingRectangle.X, control.BoundingRectangle.Y);
             startingPoint.Offset(point);
-            var onclick = startingPoint;
-            Mouse.Move(onclick);
-            Mouse.Click(onclick);
+            Mouse.Move(startingPoint);
+            Mouse.Click(startingPoint);
         }
 
         public static bool HasClickableParent(this UITestControl control)
@@ -256,9 +255,10 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 if(control.State.HasFlag(ControlStates.Invisible) ||
                     control.State.HasFlag(ControlStates.Offscreen))
                 {
-                    Mouse.Click(control);
+                    control.EnsureClickable();
                 }
                 var point = GetPointToClick(control);
+                Mouse.Move(point);
                 Mouse.Click(point);
                 Mouse.Click(MouseButtons.Right);
             }
@@ -268,15 +268,43 @@ namespace Dev2.Studio.UI.Tests.Extensions
             }
         }
 
+        public static void RightClick(this UITestControl control, Point point)
+        {
+            if(control == null)
+            {
+                return;
+            }
+
+            var startingPoint = new Point(control.BoundingRectangle.X, control.BoundingRectangle.Y);
+            startingPoint.Offset(point);
+            Mouse.Move(startingPoint);
+            Mouse.Click(startingPoint);
+            Mouse.Click(MouseButtons.Right);
+        }
+
         public static void DoubleClick(this UITestControl control)
         {
             if(control.State.HasFlag(ControlStates.Invisible) ||
                control.State.HasFlag(ControlStates.Offscreen))
             {
-                Mouse.Click(control);
+                control.EnsureClickable();
             }
             var point = GetPointToClick(control);
+            Mouse.Move(point);
             Mouse.DoubleClick(point);
+        }
+
+        public static void DoubleClick(this UITestControl control, Point point)
+        {
+            if(control == null)
+            {
+                return;
+            }
+
+            var startingPoint = new Point(control.BoundingRectangle.X, control.BoundingRectangle.Y);
+            startingPoint.Offset(point);
+            Mouse.Move(startingPoint);
+            Mouse.DoubleClick(startingPoint);
         }
 
         public static Point GetPointToClick(this UITestControl control)
@@ -298,6 +326,10 @@ namespace Dev2.Studio.UI.Tests.Extensions
             {
                 throw new Exception("Cannot enter text in a non editable control");
             }
+
+            var point = control.GetPointToClick();
+            Mouse.Move(point);
+
             if(editControl.Text != text)
             {
                 editControl.Text = text;
@@ -315,6 +347,9 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 throw new Exception("Cannot enter text in a non editable control");
             }
 
+            var point = control.GetPointToClick();
+            Mouse.Move(point);
+
             editControl.Text += text;
             control.WaitForControlReady();
         }
@@ -326,6 +361,9 @@ namespace Dev2.Studio.UI.Tests.Extensions
             {
                 throw new Exception("Cannot enter text in a non editable control");
             }
+
+            var point = control.GetPointToClick();
+            Mouse.Move(point);
 
             editControl.Text = string.Empty;
             control.WaitForControlReady();
@@ -340,6 +378,8 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 throw new Exception("Control must be a check box");
             }
 
+            var point  = control.GetPointToClick();
+            Mouse.Move(point);
             checkBox.Checked = isChecked;
         }
 
@@ -352,6 +392,9 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 throw new Exception("Control must be a check box");
             }
 
+            var point = control.GetPointToClick();
+            Mouse.Move(point);
+
             return checkBox.Checked;
         }
 
@@ -362,11 +405,15 @@ namespace Dev2.Studio.UI.Tests.Extensions
             {
                 throw new Exception("Control must be a radio button");
             }
+            var point = control.GetPointToClick();
+            Mouse.Move(point);
             return radioButton.Selected;
         }
 
         public static bool IsEnabled(this UITestControl control)
         {
+            var point = control.GetPointToClick();
+            Mouse.Move(point);
             return control.Enabled;
         }
 
@@ -379,6 +426,9 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 throw new Exception("This is not an editable control");
             }
 
+            var point = control.GetPointToClick();
+            Mouse.Move(point);
+
             return editControl.Text;
         }
 
@@ -390,6 +440,9 @@ namespace Dev2.Studio.UI.Tests.Extensions
             {
                 throw new Exception("This is not an editable control");
             }
+
+            var point = control.GetPointToClick();
+            Mouse.Move(point);
 
             editControl.SelectedIndex = selectedIndex;
         }

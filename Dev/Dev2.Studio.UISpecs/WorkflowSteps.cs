@@ -14,8 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Security;
-using TechTalk.SpecFlow;
 using System.Threading;
+using TechTalk.SpecFlow;
 
 namespace Dev2.Studio.UI.Specs
 {
@@ -34,7 +34,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string DebugOutput = "MainViewWindow,UI_DocManager_AutoID,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string TabActive = "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
-        
+
         //Explorer
         static readonly string ExplorerFilter = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
         static readonly string ExplorerFilterClearButton = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
@@ -153,6 +153,7 @@ namespace Dev2.Studio.UI.Specs
             Playback.Initialize();
 
         }
+
 
         [When(@"I debug ""(.*)"" in ""(.*)""")]
         public void WhenIDebugIn(string workflowName, string folderName)
@@ -314,7 +315,7 @@ namespace Dev2.Studio.UI.Specs
         {
             var correctedAutoIds = GetCorrect(automationIds).Split(',');
             var startControl = GetStartUiTestControl(ref correctedAutoIds);
-            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, startControl,false, correctedAutoIds);
+            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false, correctedAutoIds);
             if(!string.IsNullOrEmpty(automationIds))
             {
                 controlToSendData.Click();
@@ -368,6 +369,27 @@ namespace Dev2.Studio.UI.Specs
             controlToClick.Click();
         }
 
+        [Given(@"I clear table ""(.*)""")]
+        [When(@"I clear table ""(.*)""")]
+        [Then(@"I clear table ""(.*)""")]
+        public void GivenIClearTable(string automationIds)
+        {
+            var control = GetAControlStrict(automationIds);
+            Assert.IsNotNull(control);
+            var table = control as WpfTable;
+            Assert.IsNotNull(table, string.Format("Given control with ID : [{0}] is not a Table", automationIds));
+
+            foreach(var row in table.Rows)
+            {
+                var closeBtn = row.FindByAutomationId("UI_AddRemovebtn_AutoID", false);
+                if(closeBtn != null)
+                {
+                    closeBtn.Click(new Point(10, 10));
+                }
+            }
+        }
+
+
         [Then(@"Wait for ""(.*)"" seconds")]
         public void ThenWaitForSeconds(int seconds)
         {
@@ -413,7 +435,7 @@ namespace Dev2.Studio.UI.Specs
         }
 
         UITestControl GetAControlRelaxed(string automationIds)
-            {
+        {
             var automationIDs = GetCorrect(automationIds).Split(',');
             var startControl = GetStartUiTestControl(ref automationIDs);
             var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, true, automationIDs);
@@ -488,19 +510,44 @@ namespace Dev2.Studio.UI.Specs
         public void GivenIClickPointOn(string points, string automationIds)
         {
             var control = GetAControlRelaxed(automationIds);
-            var pointsToClick = points.Split('|')
-                            .ToList()
-                            .Select(p => new Point(int.Parse(p.Split(',')[0]),int.Parse(p.Split(',')[1])))
-                            .ToList();
+            var pointsToClick = GetPoints(points);
             pointsToClick.ForEach(control.Click);
         }
 
+        static List<Point> GetPoints(string points)
+        {
+            var pointsToClick = points.Split('|')
+                                      .ToList()
+                                      .Select(p => new Point(int.Parse(p.Split(',')[0]), int.Parse(p.Split(',')[1])))
+                                      .ToList();
+            return pointsToClick;
+        }
+
+        [Given(@"I right click point ""(.*)"" on ""(.*)""")]
+        [Then(@"I right click point ""(.*)"" on ""(.*)""")]
+        [When(@"I right click point ""(.*)"" on ""(.*)""")]
+        public void GivenIRightClickPointOn(string points, string automationIds)
+        {
+            var control = GetAControlRelaxed(automationIds);
+            var pointsToClick = GetPoints(points);
+            pointsToClick.ForEach(control.RightClick);
+        }
+
+        [Given(@"I double click point ""(.*)"" on ""(.*)""")]
+        [Then(@"I double click point ""(.*)"" on ""(.*)""")]
+        [When(@"I double click point ""(.*)"" on ""(.*)""")]
+        public void GivenIDoubleClickPointOn(string points, string automationIds)
+        {
+            var control = GetAControlRelaxed(automationIds);
+            var pointsToClick = GetPoints(points);
+            pointsToClick.ForEach(control.DoubleClick);
+        }
 
         [Given(@"I close Studio")]
         [Then(@"I close Studio")]
         public void GivenICloseStudio()
         {
-            Bootstrap.KillStudio(); 
+            Bootstrap.KillStudio();
         }
 
         [Given(@"I close Server")]
@@ -574,8 +621,8 @@ namespace Dev2.Studio.UI.Specs
             var startControlDragDestination = GetStartUiTestControl(ref correctedDragDestinationAutoIds);
 
 
-            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem,false, correcteddDragItemAutoIds);
-            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination,false, correctedDragDestinationAutoIds);
+            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem, false, correcteddDragItemAutoIds);
+            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination, false, correctedDragDestinationAutoIds);
 
             itemToDrag.Click();
             //Mouse.Click(itemToDrag, new Point(15, 15));
@@ -590,7 +637,7 @@ namespace Dev2.Studio.UI.Specs
             //Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
             Playback.Wait(100);
         }
-      
+
         [When(@"I double click ""(.*)""")]
         [Given(@"I double click ""(.*)""")]
         [Given(@"I double click")]
@@ -616,14 +663,14 @@ namespace Dev2.Studio.UI.Specs
                 var control = GetAControlRelaxed(itemToFindAutoIds);
                 if(control != null)
                 {
-                    if (control.State.HasFlag(ControlStates.Offscreen))
+                    if(control.State.HasFlag(ControlStates.Offscreen))
                     {
                         control.EnsureClickable();
                     }
 
                     var isInvisible = control.State.HasFlag(ControlStates.Invisible);
-                    
-                    if (!isInvisible)
+
+                    if(!isInvisible)
                     {
                         break;
                     }
@@ -676,10 +723,10 @@ namespace Dev2.Studio.UI.Specs
         [Then(@"""(.*)"" is enabled within ""(.*)"" seconds")]
         [When(@"""(.*)"" is enabled within ""(.*)"" seconds")]
         public void ThenIsEnabledWithinSeconds(string itemToFindAutoIds, int seconds)
-        {            
+        {
             ValidateEnableState(itemToFindAutoIds, seconds, true);
         }
-        
+
         [Given(@"""(.*)"" is disabled within ""(.*)"" seconds")]
         [Then(@"""(.*)"" is disabled within ""(.*)"" seconds")]
         [When(@"""(.*)"" is disabled within ""(.*)"" seconds")]
@@ -724,8 +771,14 @@ namespace Dev2.Studio.UI.Specs
                 var tabs = tabManager.GetChildren();
                 foreach(var tab in tabs)
                 {
-                    var closeButton = tab.FindByAutomationId("closeBtn",false);   
+                    var closeButton = tab.FindByAutomationId("closeBtn", false);
                     closeButton.Click();
+                    var savedialog = GetAControlRelaxed("UI_MessageBox_AutoID");
+                    if(savedialog != null)
+                    {
+                        var closedialog = savedialog.FindByAutomationId("UI_NoButton_AutoID", false);
+                        closedialog.Click(new Point(10, 10));
+                    }
                 }
             }
         }
@@ -754,9 +807,9 @@ namespace Dev2.Studio.UI.Specs
         public void ThenIsNotVisible(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null,false, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
             var message = string.Format("Control with Auto ID : [{0}] is visible", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
-            if (itemFound != null)
+            if(itemFound != null)
             {
                 var isInvisible = itemFound.State.HasFlag(ControlStates.Invisible) ||
                                   itemFound.State.HasFlag(ControlStates.Offscreen);
@@ -771,7 +824,7 @@ namespace Dev2.Studio.UI.Specs
         public void ThenIsEnabled(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null,false, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
             Assert.IsNotNull(itemFound);
             var message = string.Format("Control with Auto ID : [{0}] is not enabled", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
             Assert.IsTrue(itemFound.IsEnabled(), message);

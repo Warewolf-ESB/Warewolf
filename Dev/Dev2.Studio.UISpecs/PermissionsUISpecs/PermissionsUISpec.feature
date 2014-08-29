@@ -2,6 +2,20 @@
 	In order to be able to use warewolf
 	As a warewolf user
 	I want to be able to setup permissions for my server
+	
+Background: 
+	   Given I click "EXPLORER,UI_localhost_AutoID"
+	   Given I click "RIBBONSETTINGS"   
+	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
+	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
+	   And "SECURITYPUBLICADMINISTRATOR" is unchecked  
+       And "SECURITYPUBLICVIEW" is unchecked
+       And "SECURITYPUBLICEXECUTE" is unchecked
+       And "SECURITYPUBLICDEPLOYTO" is unchecked
+       And "SECURITYPUBLICDEPLOYFROM" is unchecked       
+	   And "SECURITYPUBLICCONTRIBUTE" is unchecked
+       And I click "SECURITYSAVE" 
+	   Given all tabs are closed
 
 Scenario: Set server permission View
        Given all tabs are closed

@@ -75,10 +75,10 @@ namespace Dev2.Studio.UI.Specs
         public virtual void TshepoPermissionsExample()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TshepoPermissionsExample", ((string[])(null)));
-#line 6
+#line 20
 this.ScenarioSetup(scenarioInfo);
-#line 130
-       testRunner.Given("\"DEPLOYDESTINATION,SVR004*,UI_Unautherized_DeployToText_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 154
+   testRunner.Given("I double click point \"80,250\" on \"EXPLORERFOLDERS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }
