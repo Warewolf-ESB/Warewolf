@@ -700,13 +700,13 @@ namespace Dev2.Studio.UI.Specs
         {
             //SETUP DESTIATION
             var destinationControl = GetAControlStrict(dragDestinationAutoIds);
-            var destinationPoint = destinationControl.GetPointToClick();
-            destinationPoint.Offset(point);
+            var dragStopPoint = new Point(destinationControl.BoundingRectangle.X, destinationControl.BoundingRectangle.Y);
+            dragStopPoint.Offset(point);
             //SETUP SOURCE
             var controlToDrag = GetAControlStrict(dragItemAutoIds);
             //DRAG
             Mouse.StartDragging(controlToDrag, new Point(5,5));
-            Mouse.StopDragging(destinationPoint);
+            Mouse.StopDragging(dragStopPoint);
             Playback.Wait(100);
         }
 
