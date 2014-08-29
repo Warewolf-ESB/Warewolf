@@ -84,6 +84,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Data-Assign.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Utility-Comment.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Utility-Comment.feature</DependentUpon>
+    </Compile>
     <Compile Include="WorkflowSteps.cs" />
     <Compile Include="Connect Control\Connect Control1.feature.cs">
       <AutoGen>True</AutoGen>
@@ -151,6 +156,10 @@
     <None Include="Tools\Data-Assign.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Data-Assign.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Utility-Comment.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Utility-Comment.feature.cs</LastGenOutput>
     </None>
     <None Include="Workflow.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

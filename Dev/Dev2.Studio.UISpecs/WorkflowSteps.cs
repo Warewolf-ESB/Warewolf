@@ -31,7 +31,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string Toolbox = "UI_DocManager_AutoID,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
         static readonly string WorkflowDesigner = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,ActivityTypeDesigner,WorkflowItemPresenter";
         static readonly string Worksurface = WorkflowDesigner + ",Unsaved 1(FlowchartDesigner)";
-        static readonly string DebugOutput = "MainViewWindow,UI_DocManager_AutoID,OutputPane,DebugOutput,DebugOutputTree";
+        static readonly string DebugOutput = "UI_DocManager_AutoID,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string TabActive = "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
 
@@ -54,9 +54,10 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ToolEmail = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolSystemInfo = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolXpath = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
-        static readonly string ToolComment = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolComment = Toolbox + ",PART_Tools,Utility,Unlimited.Applications.BusinessDesignStudio.Activities.DsfCommentActivity";
         static readonly string ToolWebRequest = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolCount = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        static readonly string ToolForEach = Toolbox + ",PART_Tools,Loop Constructs,Unlimited.Applications.BusinessDesignStudio.Activities.DsfForEachActivity";
         //Settings Tab
         static readonly string SettingsTab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SettingsView_AutoID";
         static readonly string SettingsServerPermissionsGrid = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid";
