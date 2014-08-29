@@ -39,6 +39,10 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ExplorerFilter = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
         static readonly string ExplorerFilterClearButton = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
         static readonly string ExplorerFolders = Explorer + ",UI_ExplorerTree_AutoID,UI_localhost_AutoID";
+        
+        //Variables
+        static readonly string VariableScalar = "UI_DocManager_AutoID,Variables,UI_DataListView_AutoID,UI_VariableTreeView_AutoID,UI_Variable_AutoID";
+        static readonly string VariableRecordset = "UI_DocManager_AutoID,Variables,UI_DataListView_AutoID,UI_VariableTreeView_AutoID,UI_Recordset_AutoID";
         //Tools
         static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
         static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";

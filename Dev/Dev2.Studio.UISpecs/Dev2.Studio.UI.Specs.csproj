@@ -59,6 +59,11 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DesignerUISpecs\DesignerUISpecs.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DesignerUISpecs.feature</DependentUpon>
+    </Compile>
     <Compile Include="DevToolKit.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -68,6 +73,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ExplorerUISpecs.feature</DependentUpon>
+    </Compile>
+    <Compile Include="RemoteServerUISpecs\RemoteServerUISpecs.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RemoteServerUISpecs.feature</DependentUpon>
     </Compile>
     <Compile Include="WorkflowSteps.cs" />
     <Compile Include="Connect Control\Connect Control1.feature.cs">
@@ -108,6 +118,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Connect Control1.feature.cs</LastGenOutput>
     </None>
+    <None Include="DesignerUISpecs\DesignerUISpecs.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DesignerUISpecs.feature.cs</LastGenOutput>
+    </None>
     <None Include="ExplorerUISpecs\ExplorerUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExplorerUISpecs.feature.cs</LastGenOutput>
@@ -120,6 +134,10 @@
     <None Include="DevToolKit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DevToolKit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="RemoteServerUISpecs\RemoteServerUISpecs.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>RemoteServerUISpecs.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools Large ViewUISpecs\ToolsTestUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
