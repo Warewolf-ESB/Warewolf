@@ -71,54 +71,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UndoFramework", "Dev2.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Util", "Dev2.Util\Dev2.Util.csproj", "{1990550D-EA6F-4DAC-9B5E-8571E86923ED}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestSettings", "TestSettings", "{2364746E-B10A-4834-9EE8-76473E2AAE36}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CI Environments", "CI Environments", "{2FBB5EE1-0B2F-4C64-9E48-15124FB33AB7}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\CI Environments\SpecFlow.testsettings = TestSettings\CI Environments\SpecFlow.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{A84D58BE-B72E-4D94-B182-38DC8375173E}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Sandbox\SpecFlow.testsettings = TestSettings\Sandbox\SpecFlow.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local", "Local", "{E75E179E-771C-4853-B440-B3EFC880EAC5}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Local\SpecFlow.testsettings = TestSettings\Local\SpecFlow.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nightly", "Nightly", "{698D6753-2228-4EBC-BDCB-EFBCCABB913A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win7", "Win7", "{74798B93-537A-4F5A-B01C-C2BBD216A3FC}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win8", "Win8", "{72D96F74-33B3-491F-9273-979A58F75281}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win2k8", "Win2k8", "{46A96C77-12D4-4ED3-A205-25BE1F4D6E9D}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Nightly\Win2k8\SpecFlow.testsettings = TestSettings\Nightly\Win2k8\SpecFlow.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workgroup", "Workgroup", "{33BB46EC-6EF5-479E-A92C-0BA295FEF9CB}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Nightly\Win7\Workgroup\SpecFlow.testsettings = TestSettings\Nightly\Win7\Workgroup\SpecFlow.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x86", "x86", "{AC9A832C-4EFA-4B12-8CFF-82172FE9FD6E}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Nightly\Win7\x86\SpecFlow.testsettings = TestSettings\Nightly\Win7\x86\SpecFlow.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{BB645BEF-4268-431B-BA3A-E1A1A6869947}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Nightly\Win8\Domain\SpecFlow.testsettings = TestSettings\Nightly\Win8\Domain\SpecFlow.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workgroup", "Workgroup", "{101EBEF8-86A5-4180-8426-2F7B9B201F03}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Nightly\Win8\Workgroup\SpecFlow.testsettings = TestSettings\Nightly\Win8\Workgroup\SpecFlow.testsettings
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{C6750CCC-03BB-42BF-8EB7-0D9ACB927923}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\Acceptance\Cleanup.bat = TestScripts\Acceptance\Cleanup.bat
@@ -126,6 +78,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts"
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Explorer.Specs", "Dev2.Explorer.Specs\Dev2.Explorer.Specs.csproj", "{3C6D24ED-71A4-4A97-A941-15C02754A0DE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{20848FEE-00A7-4B96-9FA1-80F2890E37AB}"
+	ProjectSection(SolutionItems) = preProject
+		TestSettings\SpecFlow\CI Environments.testsettings = TestSettings\SpecFlow\CI Environments.testsettings
+		TestSettings\SpecFlow\Local.testsettings = TestSettings\SpecFlow\Local.testsettings
+		TestSettings\SpecFlow\Sandbox.testsettings = TestSettings\SpecFlow\Sandbox.testsettings
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -630,16 +589,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2FBB5EE1-0B2F-4C64-9E48-15124FB33AB7} = {2364746E-B10A-4834-9EE8-76473E2AAE36}
-		{A84D58BE-B72E-4D94-B182-38DC8375173E} = {2364746E-B10A-4834-9EE8-76473E2AAE36}
-		{E75E179E-771C-4853-B440-B3EFC880EAC5} = {2364746E-B10A-4834-9EE8-76473E2AAE36}
-		{698D6753-2228-4EBC-BDCB-EFBCCABB913A} = {2364746E-B10A-4834-9EE8-76473E2AAE36}
-		{74798B93-537A-4F5A-B01C-C2BBD216A3FC} = {698D6753-2228-4EBC-BDCB-EFBCCABB913A}
-		{72D96F74-33B3-491F-9273-979A58F75281} = {698D6753-2228-4EBC-BDCB-EFBCCABB913A}
-		{46A96C77-12D4-4ED3-A205-25BE1F4D6E9D} = {698D6753-2228-4EBC-BDCB-EFBCCABB913A}
-		{33BB46EC-6EF5-479E-A92C-0BA295FEF9CB} = {74798B93-537A-4F5A-B01C-C2BBD216A3FC}
-		{AC9A832C-4EFA-4B12-8CFF-82172FE9FD6E} = {74798B93-537A-4F5A-B01C-C2BBD216A3FC}
-		{BB645BEF-4268-431B-BA3A-E1A1A6869947} = {72D96F74-33B3-491F-9273-979A58F75281}
-		{101EBEF8-86A5-4180-8426-2F7B9B201F03} = {72D96F74-33B3-491F-9273-979A58F75281}
+		{C6750CCC-03BB-42BF-8EB7-0D9ACB927923} = {20848FEE-00A7-4B96-9FA1-80F2890E37AB}
 	EndGlobalSection
 EndGlobal
