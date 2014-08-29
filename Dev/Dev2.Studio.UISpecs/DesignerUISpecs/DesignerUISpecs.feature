@@ -10,7 +10,7 @@ Scenario: ChangeWorkflowMappingsAlertsAffectedOnSave
 	#And I click "EXPLORER,UI_localhost_AutoID"
 	#And I send "InnerWF" to "EXPLORERFILTER"
 	#And I click "EXPLORERFOLDERS,UI_InnerWF_AutoID"
-	#And I click "VariableScalar,UI_Variable_AutoID,UI_Variable_result_AutoID,UI_IsInputCheckbox_AutoID"
+	#And I click "VARIABLESCALAR,UI_Variable_result_AutoID,UI_IsInputCheckbox_AutoID"
 	#When I click "RIBBONSAVE"
 	#Then "UI_DeleteResourceNoBtn_AutoID" is visible within "2" seconds
 	#When I click "Show Affected Workflows"
