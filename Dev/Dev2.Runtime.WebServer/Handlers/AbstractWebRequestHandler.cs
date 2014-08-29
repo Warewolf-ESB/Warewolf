@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Security.Principal;
+using System.Threading;
 using System.Web;
 using Dev2.Common;
 using Dev2.Communication;
@@ -211,10 +212,20 @@ namespace Dev2.Runtime.WebServer.Handlers
             if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
             {
                 compiler.ForceDeleteDataListByID(executionDlid);
-                if(!dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode() && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
                 {
                     DataListRegistar.ClearDataList();
                 }
+                else
+                {
+                    foreach(var thread in dataObject.ThreadsToDispose)
+                    {
+                        DataListRegistar.DisposeScope(thread.Key, executionDlid);
+                    }
+
+                    DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, executionDlid);
+                }
+
             }
 
             // old HTML throw back ;)

@@ -35,6 +35,7 @@ namespace Dev2.Runtime.ESB.Control
         #region IFrameworkDuplexDataChannel Members
 
         readonly Dictionary<string, IFrameworkDuplexCallbackChannel> _users = new Dictionary<string, IFrameworkDuplexCallbackChannel>();
+        bool _doNotWipeDataList;
 
         public void Register(string userName)
         {
@@ -251,11 +252,19 @@ namespace Dev2.Runtime.ESB.Control
             finally
             {
                 // clean up after the request has executed ;)
-                if(dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode() && !_doNotWipeDataList)
                 {
                     DataListRegistar.ClearDataList();
                 }
+                else
+                {
+                    foreach(var thread in dataObject.ThreadsToDispose)
+                    {
+                        DataListRegistar.DisposeScope(thread.Key, resultID);
+                    }
 
+                    DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
+                }
 
             }
 
@@ -307,8 +316,10 @@ namespace Dev2.Runtime.ESB.Control
             ServerLogger.LogMessage("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
 
             var result = dataObject.DataListID;
+            _doNotWipeDataList = false;
             if(dataObject.RunWorkflowAsync)
             {
+                _doNotWipeDataList = true;
                 ExecuteRequestAsync(dataObject, compiler, invoker, isLocal, oldID, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
             }
@@ -319,6 +330,7 @@ namespace Dev2.Runtime.ESB.Control
                 {
                     if(!isLocal)
                     {
+                        _doNotWipeDataList = true;
                         SetRemoteExecutionDataList(dataObject, executionContainer);
                     }
                     executionContainer.InstanceOutputDefinition = outputDefs;

@@ -311,7 +311,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             var debugSerializated = JsonConvert.SerializeObject(debugState);
             var hubCallerConnectionContext = Clients;
 
-            this.LogTrace("Send Debug State For [ " + Context.User.Identity.Name + " ]");
+            this.LogError("Send Debug State For [ " + Context.User.Identity.Name + " ]");
 
             var user = hubCallerConnectionContext.All;
             user.SendDebugState(debugSerializated);

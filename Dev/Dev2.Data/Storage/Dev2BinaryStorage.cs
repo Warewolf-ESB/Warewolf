@@ -738,16 +738,6 @@ namespace Dev2.Data.Storage
             {
                 _bufferIndexes = new ConcurrentDictionary<string, BinaryStorageKey>();
                 _lstIndexes = new ConcurrentDictionary<string, BinaryStorageKey>();
-                _file.Close();
-                _file.Dispose();
-                try
-                {
-                    File.Delete(_completeFilename);
-                }
-                catch(Exception ex)
-                {
-                    this.LogError(ex);
-                }
             }
         }
     }
