@@ -111,7 +111,8 @@
                     Command="{Binding CancelCommand}"
                     Margin="5"
                     Width="110"
-                    MaxHeight="30"></Button>
+                    MaxHeight="30"
+                    AutomationProperties.AutomationId="UI_SelectServiceCancelButton_AutoID"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
@@ -121,7 +122,7 @@
                     Width="110"
                     Margin="5"
                     MaxHeight="30"
-                  AutomationProperties.AutomationId="UI_SelectServiceOKButton_AutoID"/>
+                    AutomationProperties.AutomationId="UI_SelectServiceOKButton_AutoID"/>
         </StackPanel>
     </Grid>
 </Window>
