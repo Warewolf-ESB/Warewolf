@@ -176,3 +176,9 @@ Scenario: TshepoDesignerExample
 	#Given I click "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID"
 	#Given I double click "WORKSURFACE,Assign (1)(MultiAssignDesigner)"
 	Given "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.1*" is visible within "2" seconds
+
+Scenario: TshepoDragandDropExample
+	#Given I double click "TOOLBOX,PART_SearchBox"
+	#And I send "for Each" to ""
+	#When I drag "TOOLFOREACH" onto "WORKSURFACE,Assign (2)(MultiAssignDesigner)"
+	Given I drag "WORKSURFACE,Assign (2)(MultiAssignDesigner)" to point "50,70" on "WORKSURFACE,For Each(ForeachDesigner)"

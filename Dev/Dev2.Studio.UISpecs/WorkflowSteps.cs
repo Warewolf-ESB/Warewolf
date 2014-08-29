@@ -642,31 +642,56 @@ namespace Dev2.Studio.UI.Specs
         [Then(@"I drag ""(.*)"" onto ""(.*)""")]
         public void WhenIDragOnto(string dragItemAutoIds, string dragDestinationAutoIds)
         {
+            var point = new Point();
+            DragAndDropToStartPoint(dragItemAutoIds, dragDestinationAutoIds, point);
+        }
+
+        [Given(@"I drag ""(.*)"" to point ""(.*)"" on ""(.*)""")]
+        [When(@"I drag ""(.*)"" to point ""(.*)"" on ""(.*)""")]
+        [Then(@"I drag ""(.*)"" to point ""(.*)"" on ""(.*)""")]
+        public void WhenIDragToPointOn(string dragItemAutoIds, string point, string dragDestinationAutoIds)
+        {
+            DragAndDropToPoint(dragItemAutoIds, dragDestinationAutoIds, GetPoints(point)[0]);
+        }
+        
+        void DragAndDropToStartPoint(string dragItemAutoIds, string dragDestinationAutoIds, Point point)
+        {
             var correcteddDragItemAutoIds = GetCorrect(dragItemAutoIds).Split(',');
             var startControlDragItem = GetStartUiTestControl(ref correcteddDragItemAutoIds);
             var correctedDragDestinationAutoIds = GetCorrect(dragDestinationAutoIds).Split(',');
             var startControlDragDestination = GetStartUiTestControl(ref correctedDragDestinationAutoIds);
 
-
             var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem, false, correcteddDragItemAutoIds);
             var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination, false, correctedDragDestinationAutoIds);
 
             itemToDrag.Click();
-            //Mouse.Click(itemToDrag, new Point(15, 15));
             var clickablePoint = itemToDrag.GetClickablePoint();
             Mouse.StartDragging(itemToDrag, clickablePoint);
 
-
             var boundingRect = dragDestinationItem.BoundingRectangle;
             var pointToDrag = new Point(boundingRect.X + boundingRect.Width / 2, boundingRect.Bottom + 10);
+            pointToDrag.Offset(point);
 
             Mouse.StopDragging(pointToDrag);
-            //Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.AllThreads;
+            Playback.Wait(100);
+        }
+
+        void DragAndDropToPoint(string dragItemAutoIds, string dragDestinationAutoIds, Point point)
+        {
+            //SETUP DESTIATION
+            var destinationControl = GetAControlStrict(dragDestinationAutoIds);
+            var destinationPoint = destinationControl.GetPointToClick();
+            destinationPoint.Offset(point);
+            //SETUP SOURCE
+            var controlToDrag = GetAControlStrict(dragItemAutoIds);
+            //DRAG
+            Mouse.StartDragging(controlToDrag, new Point(5,5));
+            Mouse.StopDragging(destinationPoint);
             Playback.Wait(100);
         }
 
         [When(@"I double click ""(.*)""")]
-        [Given(@"I double click ""(.*)""")]
+        [Given(@"I double click ""(.*)""")] 
         [Given(@"I double click")]
         [Then(@"I double click ""(.*)""")]
         public void WhenIDoubleClick(string itemToDoubleClickAutoIds)

@@ -97,6 +97,21 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("TshepoDragandDropExample")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "SpecFlowFeature1")]
+        public virtual void TshepoDragandDropExample()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TshepoDragandDropExample", ((string[])(null)));
+#line 180
+this.ScenarioSetup(scenarioInfo);
+#line 184
+ testRunner.Given("I drag \"WORKSURFACE,Assign (2)(MultiAssignDesigner)\" to point \"50,70\" on \"WORKSUR" +
+                    "FACE,For Each(ForeachDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
