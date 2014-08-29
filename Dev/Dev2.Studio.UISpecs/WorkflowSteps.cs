@@ -39,10 +39,6 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ExplorerFilter = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
         static readonly string ExplorerFilterClearButton = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
         static readonly string ExplorerFolders = Explorer + ",UI_ExplorerTree_AutoID,UI_localhost_AutoID";
-        
-        //Variables
-        static readonly string VariableScalar = "UI_DocManager_AutoID,Variables,UI_DataListView_AutoID,UI_VariableTreeView_AutoID,UI_Variable_AutoID";
-        static readonly string VariableRecordset = "UI_DocManager_AutoID,Variables,UI_DataListView_AutoID,UI_VariableTreeView_AutoID,UI_Recordset_AutoID";
         //Tools
         static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
         static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
@@ -150,8 +146,38 @@ namespace Dev2.Studio.UI.Specs
             // ReSharper disable PossiblyMistakenUseOfParamsMethod
             Bootstrap.ResolvePathsToTestAgainst();
             // ReSharper restore PossiblyMistakenUseOfParamsMethod
-            Playback.Initialize();
+            InitSpec();
+        }
 
+        public static void InitSpec()
+        {
+            try
+            {
+                //Playback.Initialize();
+                //Playback.PlaybackError += PlaybackPlaybackError;
+
+                Playback.PlaybackSettings.ContinueOnError = false;
+                Playback.PlaybackSettings.ShouldSearchFailFast = true;
+                Playback.PlaybackSettings.SearchTimeout = 1000;
+                Playback.PlaybackSettings.SmartMatchOptions = SmartMatchOptions.None;
+                Playback.PlaybackSettings.MatchExactHierarchy = true;
+                Playback.PlaybackSettings.DelayBetweenActions = 0;
+                Playback.PlaybackSettings.MaximumRetryCount = 10;
+                Playback.PlaybackSettings.ThinkTimeMultiplier = 0;
+                Playback.PlaybackSettings.WaitForReadyLevel = WaitForReadyLevel.UIThreadOnly;
+                // make the mouse quick ;)
+                Mouse.MouseMoveSpeed = 20000;
+                Mouse.MouseDragSpeed = 20000;
+               
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+
+            }
+
+            Bootstrap.Init();
         }
 
 
@@ -675,7 +701,8 @@ namespace Dev2.Studio.UI.Specs
                         break;
                     }
                 }
-                timetolookup -= stopWatch.ElapsedMilliseconds;
+                var elapsedMilliseconds = stopWatch.ElapsedMilliseconds;
+                timetolookup -= elapsedMilliseconds;
             }
             stopWatch.Stop();
             if(timetolookup <= 0)
@@ -771,13 +798,16 @@ namespace Dev2.Studio.UI.Specs
                 var tabs = tabManager.GetChildren();
                 foreach(var tab in tabs)
                 {
-                    var closeButton = tab.FindByAutomationId("closeBtn", false);
-                    closeButton.Click();
-                    var savedialog = GetAControlRelaxed("UI_MessageBox_AutoID");
-                    if(savedialog != null)
+                    var closeButton = tab.FindByAutomationId("closeBtn", true);
+                    if(closeButton != null)
                     {
-                        var closedialog = savedialog.FindByAutomationId("UI_NoButton_AutoID", false);
-                        closedialog.Click(new Point(10, 10));
+                        closeButton.Click();
+                        var savedialog = GetAControlRelaxed("UI_MessageBox_AutoID");
+                        if(savedialog != null)
+                        {
+                            var closedialog = savedialog.FindByAutomationId("UI_NoButton_AutoID", false);
+                            closedialog.Click(new Point(10, 10));
+                        }
                     }
                 }
             }

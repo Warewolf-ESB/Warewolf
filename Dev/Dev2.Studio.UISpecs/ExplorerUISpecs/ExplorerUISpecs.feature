@@ -20,7 +20,8 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 	#Rename
 	And I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
 	And I click "UI_RenameContextMenuItem_AutoID"
-	And I send "Recordset - Records Length RENAME{ENTER}" to ""
+	And I type "Recordset - Records Length RENAME" in "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,UI_RenameTexbox_AutoID"
+	And I send "{ENTER}" to ""
 	Then "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length RENAME_AutoID" is visible within "1" seconds
 	And "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length RENAME_AutoID,v.2*" is visible within "1" seconds
 	#MakeOldVersionCurrent

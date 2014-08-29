@@ -151,7 +151,28 @@ Scenario: TshepoPermissionsExample
    
    #Given I click point "50,50" on "RIBBONSETTINGS"
    #Given I right click point "80,250" on "EXPLORERFOLDERS"
-   Given I double click point "80,250" on "EXPLORERFOLDERS"
+   #Given I double click point "80,250" on "EXPLORERFOLDERS"
+
+#	Given I right click "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
+#	And I click "UI_RenameContextMenuItem_AutoID"
+#	And I send "Recordset - Records Length RENAME{ENTER}" to ""
+#	And I type "Recordset - Records Length RENAME" in "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,UI_RenameTexbox_AutoID"
+
+Given "WINDOWDEBUG" is visible within "5" seconds
 
 
-
+Scenario: TshepoDesignerExample
+	#Given I have Warewolf running
+	#And all tabs are closed
+	#And I click "RIBBONNEWENDPOINT"
+	#And I double click "TOOLBOX,PART_SearchBox"
+	#And I send "Assign" to ""
+	#Given I drag "TOOLMULTIASSIGN" onto "WORKSURFACE,StartSymbol"
+	#And "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID" is visible within "1" seconds
+	#Given I type "myvar" in "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID"
+	#And I send "{TAB}" to ""
+	#Given I type "HELLO" in "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID"
+	#And I send "{TAB}" to ""
+	#Given I click "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID"
+	#Given I double click "WORKSURFACE,Assign (1)(MultiAssignDesigner)"
+	Given "EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.1*" is visible within "2" seconds

@@ -164,6 +164,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                             break;
                         }
                     case "Custom":
+                    case "Edit":
                         {
                             var point = GetPointToClick(control);
                             Mouse.Click(point);

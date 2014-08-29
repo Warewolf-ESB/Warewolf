@@ -2,20 +2,20 @@
 	In order to be able to use warewolf
 	As a warewolf user
 	I want to be able to setup permissions for my server
-	
-Background: 
-	   Given I click "EXPLORER,UI_localhost_AutoID"
-	   Given I click "RIBBONSETTINGS"   
-	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
-	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
-	   And "SECURITYPUBLICADMINISTRATOR" is unchecked  
-       And "SECURITYPUBLICVIEW" is unchecked
-       And "SECURITYPUBLICEXECUTE" is unchecked
-       And "SECURITYPUBLICDEPLOYTO" is unchecked
-       And "SECURITYPUBLICDEPLOYFROM" is unchecked       
-	   And "SECURITYPUBLICCONTRIBUTE" is unchecked
-       And I click "SECURITYSAVE" 
-	   Given all tabs are closed
+#	
+#Background: 
+#	   Given I click "EXPLORER,UI_localhost_AutoID"
+#	   Given I click "RIBBONSETTINGS"   
+#	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
+#	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
+#	   And "SECURITYPUBLICADMINISTRATOR" is unchecked  
+#       And "SECURITYPUBLICVIEW" is unchecked
+#       And "SECURITYPUBLICEXECUTE" is unchecked
+#       And "SECURITYPUBLICDEPLOYTO" is unchecked
+#       And "SECURITYPUBLICDEPLOYFROM" is unchecked       
+#	   And "SECURITYPUBLICCONTRIBUTE" is unchecked
+#       And I click "SECURITYSAVE" 
+#	   Given all tabs are closed
 
 Scenario: Set server permission View
        Given all tabs are closed
@@ -65,10 +65,10 @@ Scenario: Set server permission View
        And I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
        Then "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is not visible
        And "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
-       When I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"	   
-       And I wait for "5" seconds
+       When I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"	          
 	   #Checking Debug Window Buttons
-	   Then "WINDOWDEBUG" is visible within "1" seconds
+	   Then I wait for "2" seconds
+	   Given "WINDOWDEBUG" is visible within "3" seconds
        Then "WINDOWDEBUGBUTTON" is disabled
        Then "WINDOWVIEWINBROWSER" is visible
        Then I click "WINDOWCANCEL"
