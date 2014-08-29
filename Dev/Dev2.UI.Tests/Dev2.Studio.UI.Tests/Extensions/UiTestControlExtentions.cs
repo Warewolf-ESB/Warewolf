@@ -421,16 +421,17 @@ namespace Dev2.Studio.UI.Tests.Extensions
         public static string GetText(this UITestControl control)
         {
             var editControl = control as WpfEdit;
+            var textControl = control as WpfText;
 
-            if(editControl == null)
+            if(editControl == null && textControl == null)
             {
-                throw new Exception("This is not an editable control");
+                throw new Exception("This is not text control");
             }
 
             var point = control.GetPointToClick();
             Mouse.Move(point);
 
-            return editControl.Text;
+            return editControl == null? textControl.DisplayText : editControl.Text;
         }
 
         public static void Select(this UITestControl control, int selectedIndex)

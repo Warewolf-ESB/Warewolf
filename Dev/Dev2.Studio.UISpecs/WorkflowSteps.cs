@@ -62,7 +62,8 @@ namespace Dev2.Studio.UI.Specs
         static readonly string SettingsTab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SettingsView_AutoID";
         static readonly string SettingsServerPermissionsGrid = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid";
         static readonly string SettingsResoureceselect = SettingsTab + ",SecurityViewContent,ResourcePermissionsDataGrid,UI_PermissionsGrid_Row_0_AutoID,UI__AddResourceButton_AutoID";
-        static readonly string SettingsResourCeExecute = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid,UI_PermissionsGrid_Row_0_AutoID";
+        static readonly string SettingsResourceRow1 = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid,UI_PermissionsGrid_Row_0_AutoID";
+        static readonly string SettingsAddResourCe = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid";
         static readonly string SettingsForGroup = "ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_2_AutoID,UI_ServerPermissionsColumn_Row_2_Cell_AutoID,UI__AddWindowsGroupTextBox_AutoID";
         static readonly string SecurityViewContent = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_2_AutoID,UI_ServerPermissionsColumn_Row_2_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID";
         static readonly string SecurityPublicView = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerViewPermissions_Row_1_Cell_AutoID,UI_Public_ViewPermissionCheckBox_AutoID";
@@ -92,7 +93,8 @@ namespace Dev2.Studio.UI.Specs
         static readonly string SecurityConnectDropdown = SettingsTab + ",UI_SettingsServerComboBox_AutoID";
         static readonly string SecurityConnectEdit = SettingsTab + ",UI_SettingsServerEditButton_AutoID";
         static readonly string SecurityConnectButton = SettingsTab + ",UI_SettingsServerConnectButton_AutoID";
-        static readonly string SecurityHelp = SettingsTab + ",ServerHelpToggleButton";
+        static readonly string SecurityServerHelp = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_SettingsView_AutoID,SecurityViewContent,ServerHelpToggleButton";
+        static readonly string SecurityResourceHelp = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_SettingsView_AutoID,SecurityViewContent,ResourceHelpToggleButton";
 
         static readonly string SchedulerTab = "ACTIVETAB,UI_SchedulerView_AutoID";
         static readonly string SchedulerConnectDropDown = SchedulerTab + ",ConnectUserControl,UI_SettingsServerComboBox_AutoID";
@@ -145,7 +147,7 @@ namespace Dev2.Studio.UI.Specs
         public static void SetupForTest()
         {
             // ReSharper disable PossiblyMistakenUseOfParamsMethod
-            Bootstrap.ResolvePathsToTestAgainst();
+                Bootstrap.ResolvePathsToTestAgainst();
             // ReSharper restore PossiblyMistakenUseOfParamsMethod
             InitSpec();
         }

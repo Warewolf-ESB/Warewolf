@@ -20,13 +20,29 @@ Scenario: Debug GatherSystemInformation same variables in two activites
 	Given I have Warewolf running
 	And I send "11330_Integration tests" to "EXPLORER,FilterTextBox,UI_DataListSearchtxt_AutoID"
 	And I double click "EXPLORER,Navigation,UI_localhost,UI_SPINT 7_AutoID,UI_11330_Integration tests_AutoID"
-	And I wait till "WORKSURFACE" is visible
+	And "WORKSURFACE" is visible within "2" seconds
 	And I send "{F6}" to ""
-	And I wait till "DEBUGOUTPUT,Dev2StatusBarAutomationID,StatusBar" is not visible
+	And "DEBUGOUTPUT,Dev2StatusBarAutomationID,StatusBar" is not visible
 	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 1 (2),Date & Time" is visible
 	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 1 (2),CPU Available" is visible
 	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),Date & Time" is visible
 	Then "DEBUGOUTPUT,DebugOutputTree,Gather System Info 2 (2),CPU Available" is visible
+
+Scenario: Drag Workflow to design surface and checking services are not showing in workflow resource picker
+    Given I have Warewolf running
+	Given I click new "Workflow"
+	And I send "Workflow" to "TOOLBOX,PART_SearchBox"
+	And I drag "TOOLBOX,PART_Tools,Unlimited.Applications.BusinessDesignStudio.Activities.DsfWorkflowActivity" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
+	And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	And I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	And I drag "TOOLBOX,PART_Tools,Unlimited.Applications.BusinessDesignStudio.Activities.DsfWorkflowActivity" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
+    And I send "Control" to "UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID"
+	Then "RESOURCEPICKERFOLDERS,UI_EXAMPLES_AutoID,UI_Control Flow - Decision_AutoID" is visible
+	And I click "UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID"
+	And I click "RESOURCEPICKERFOLDERS,UI_DBSERVICES_AutoID,Expander"
+	And "RESOURCEPICKERFOLDERS,UI_DBSERVICES_AutoID,UI_MapLocations_AutoID" is not visible	
+	And close the Studio and Server
+
 
 Scenario: Drag on Multiassign
 	Given I have Warewolf running
@@ -73,8 +89,7 @@ Scenario: Assign Large View Test
 	Then close the Studio and Server
 	
 	
-	
-	
+
 	
 	
 	
@@ -142,6 +157,7 @@ Scenario: Open folder in explorer
 #	And I send "{TAB} {TAB} {TAB} {TAB} {TAB} [[rec(&).a]]" to "ACTIVETAB,Assign (1)(MultiAssignDesigner)"
 #	And I click "ACTIVETAB,Assign (1)(MultiAssignDesigner),DoneButton"
 #	Then close the Studio and Server
+
 
 
 

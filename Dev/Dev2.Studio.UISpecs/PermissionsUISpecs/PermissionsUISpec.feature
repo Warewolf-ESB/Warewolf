@@ -166,28 +166,22 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   #Open Settings Tab
 	   And I click "RIBBONSETTINGS" 
 	   #SetUp Server Permissions View for Public
-	   And I click "SECURITYPUBLICADMINISTRATOR"  
-       And "SECURITYPUBLICVIEW" is unchecked
-	   And "SECURITYPUBLICEXECUTE" is unchecked
-	   And "SECURITYPUBLICDEPLOYTO" is unchecked
-	   And "SECURITYPUBLICDEPLOYFROM" is unchecked
        And I click "SECURITYPUBLICVIEW"
 	   #SetUp Server Permissions Execute for "UI Testing Group" Specific Group
 	   Given I type "UI Testing Group" in "SETTINGSSERVERPERMISSIONSGRID,UI_ServerPermissionsGrid_Row_2_AutoID,UI__AddWindowsGroupTextBox_AutoID"
        And I click "SETTINGSSERVERPERMISSIONSGRID,UI_ServerPermissionsGrid_Row_2_AutoID,UI__ViewPermissionCheckBox_AutoID"
 	   #SetUp Resource Permissions for "UI Testing Group" Specific Group
-       Given I click "SETTINGSRESOURECESELECT"
+      Given I click "SETTINGSRESOURECESELECT"
        And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
-	   Given I type "UI Testing Group" in "UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid,UI_PermissionsGrid_Row_0_AutoID,UI__AddWindowsGroupsTextBox_AutoID"
-       And I click "SETTINGSRESOURCEEXECUTE,UI__ExecutePermissionCheckBox_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "UI Testing Group" to ""
+       And I click "SETTINGSRESOURCEROW1,UI__ExecutePermissionCheckBox_AutoID"
        And I click "SECURITYSAVE"
-	   And I wait for "2" seconds
 	   #Create Remote Connection as User "Integration Tester" 
        Given I create a new remote connection "TestingPermisions" as
        | Address               | AuthType | UserName          | Password |
        | http://localhost:3142 | User     | Integrationtester | I73573r0 |
-	   And I wait for "5" seconds
 	   #Checking Remote Server Resource Icon in Explorer  
 	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	   Given "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
@@ -228,12 +222,13 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   Given I click "SETTINGSSERVERPERMISSIONSGRID,UI_ServerPermissionsGrid_Row_2_AutoID,UI_UI Testing Group_DeployToPermissionCheckBox_AutoID" 
 	   Given I click "SETTINGSSERVERPERMISSIONSGRID,UI_ServerPermissionsGrid_Row_2_AutoID,UI_UI Testing Group_DeployFromPermissionCheckBox_AutoID" 
 	   #Setup Blank permission to selected resource
-	   Given I click "SETTINGSRESOURCEEXECUTE,UI_AddRemovebtn_AutoID"
+	   Given I click "SETTINGSRESOURCEROW1,UI_AddRemovebtn_AutoID"
 	   And I click "SECURITYSAVE"
-	   Given I click "SETTINGSRESOURECESELECT"
+	    Given I click "SETTINGSRESOURECESELECT"
        And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
-	   Given I type "UI Testing Group" in "UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid,UI_PermissionsGrid_Row_0_AutoID,UI__AddWindowsGroupsTextBox_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "UI Testing Group" to ""
 	   And I click "SECURITYSAVE"
 	   #Checking Resource Icon in Explorer 
 	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
@@ -267,14 +262,15 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   #Open Settings Tab
 	   And I click "RIBBONSETTINGS" 
 	   #SetUp Server Permissions View for "UI Testing Group" Specific Group
-	   Given I click "SETTINGSRESOURCEEXECUTE,UI_AddRemovebtn_AutoID"
+	   Given I click "SETTINGSRESOURCEROW1,UI_AddRemovebtn_AutoID"
 	   And I click "SECURITYSAVE"
 	   #SetUp Resource Permissions Contribute for "UI Testing Group" Specific Group
-	   Given I click "SETTINGSRESOURECESELECT"
+	    Given I click "SETTINGSRESOURECESELECT"
        And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
-	   Given I type "UI Testing Group" in "UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid,UI_PermissionsGrid_Row_0_AutoID,UI__AddWindowsGroupsTextBox_AutoID"
-       And I click "SETTINGSRESOURCEEXECUTE,UI__ContributePermissionCheckBox_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "UI Testing Group" to ""
+       And I click "SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID"
        And I click "SECURITYSAVE"
 	   #Checking Resource Icon in Explorer 
 	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
@@ -302,3 +298,100 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
        Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_TestingPermisions"
        Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is visible		
 #End Test - 3
+ 
+
+ Scenario: Testing Setiings Tab Scro
+        #SecuritySettingsUiTestsAdd10ResourcesMakeSureScrollBarIsThere
+        #SecuritySettingsUiTestsAddResourcesAndRelatedPriviledgesResourcesAreAddedSuccessfullyAndSaveButtonDisabled
+        #SecuritySettingsUiTestsOpenHelpAdornersHelpAdornersOpenedAndClosedSuccessfully
+       Given all tabs are closed
+       And I click "RIBBONSETTINGS" 
+	   #Adding Resource Permissions Row1
+       Given I click "SETTINGSRESOURECESELECT"
+       And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "UI Testing Group" to ""
+       And I click "SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID"
+	   #Adding Resource Permissions Row2
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_1_AutoID,UI__AddResourceButton_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Javascript Testing_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "Testing" to ""
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_1_AutoID,UI__ContributePermissionCheckBox_AutoID"
+	   #Adding Resource Permissions Row3
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_2_AutoID,UI__AddResourceButton_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_EXAMPLES_AutoID,UI_File and Folder - Unzip_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "Testing" to ""
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_2_AutoID,UI__ContributePermissionCheckBox_AutoID"
+	   #Adding Resource Permissions Row4
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_3_AutoID,UI__AddResourceButton_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_EXAMPLES_AutoID,UI_File and Folder - Write File_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "Testing" to ""
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_3_AutoID,UI__ContributePermissionCheckBox_AutoID"
+	   #Adding Resource Permissions Row5
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_4_AutoID,UI__AddResourceButton_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Count Records_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "Testing" to ""
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_4_AutoID,UI__ContributePermissionCheckBox_AutoID"
+	   #Adding Resource Permissions Row6
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_5_AutoID,UI__AddResourceButton_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Find Records_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "Testing" to ""
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_5_AutoID,UI__ContributePermissionCheckBox_AutoID"
+	   #Adding Resource Permissions Row7
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_6_AutoID,UI__AddResourceButton_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "Testing" to ""
+	   Given I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_6_AutoID,UI__ExecutePermissionCheckBox_AutoID"
+	   #Adding Resource Permissions Row8
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_7_AutoID,UI__AddResourceButton_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - SQL Bulk Insert_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "Testing" to ""
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_7_AutoID,UI__ContributePermissionCheckBox_AutoID"
+	   #Adding Resource Permissions Row9
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_8_AutoID,UI__AddResourceButton_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Unique Records_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "Testing" to ""
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_8_AutoID,UI__ContributePermissionCheckBox_AutoID"
+	   #Adding Resource Permissions Row10
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_9_AutoID,UI__AddResourceButton_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_EXAMPLES_AutoID,UI_Scripting - CMD Line_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "Testing" to ""
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_9_AutoID,UI__ContributePermissionCheckBox_AutoID"
+	   #Adding Resource Permissions Row11
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_10_AutoID,UI__AddResourceButton_AutoID"
+	   And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "Testing" to ""
+	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_10_AutoID,UI__ContributePermissionCheckBox_AutoID"
+	   #Saving 
+       And I click "SECURITYSAVE"
+	   #Checking Validation Message Of Duplicate Permissions
+
+	   #Deleting Duplicate Row
+       Given I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_0_AutoID,UI_AddRemovebtn_AutoID"
+	   And I click "SECURITYSAVE"
+	   #Checking Help Text
+	   Given I click "SECURITYSERVERHELP"
+	   Given "UI_DocManager_AutoID, UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_SettingsView_AutoID" contains text "To set server permissions"
+	   And I click "SECURITYRESOURCEHELP"
+	  

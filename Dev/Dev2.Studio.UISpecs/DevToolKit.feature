@@ -181,7 +181,11 @@ Scenario: TshepoDragandDropExample
 	#Given I double click "TOOLBOX,PART_SearchBox"
 	#And I send "for Each" to ""
 	#When I drag "TOOLFOREACH" onto "WORKSURFACE,Assign (2)(MultiAssignDesigner)"
-	#Given I drag "WORKSURFACE,Assign (2)(MultiAssignDesigner)" to point "50,70" on "WORKSURFACE,For Each(ForeachDesigner)"
+	#Given I drag "WORKSURFACE,Assign (1)(MultiAssignDesigner)" to point "130,90" on "WORKSURFACE,For Each(ForeachDesigner)"
 	#Given I type "Shaka" in "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID"
 	#Given "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID" has text "[[Shaka]]"
-	Given "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID" contains text "Tshepo"
+	#Given "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID" contains text "Tshepo"
+	Given "SETTINGSTAB,UI_Errors_AutoID" contains text "Michael Jackson"
+
+
+	

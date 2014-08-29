@@ -16,52 +16,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestSettings", "TestSettings", "{F6BA6701-359E-4521-9978-4298A7302A5A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local", "Local", "{A0453DEE-B2BF-47CB-9D93-79C13308D08D}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Local\UI.testsettings = TestSettings\Local\UI.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nightly", "Nightly", "{83F0E604-D0AC-4D3D-8460-352BF2DAD644}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win2k8", "Win2k8", "{86EF3B79-C25A-47C9-A8A7-B3276ADA72DA}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Nightly\Win2k8\UI.testsettings = TestSettings\Nightly\Win2k8\UI.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win7", "Win7", "{EAA7E8CD-4B61-49F5-8324-88E873C20987}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win8", "Win8", "{2705BDA8-4662-476C-90EB-F25EE1FF8425}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workgroup", "Workgroup", "{16E99B47-DA37-43A7-8E77-27847B4743B5}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Nightly\Win7\Workgroup\UI.testsettings = TestSettings\Nightly\Win7\Workgroup\UI.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "x86", "x86", "{9D9B8C16-40F3-49B8-90B6-716A06D0573C}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Nightly\Win7\x86\UI.testsettings = TestSettings\Nightly\Win7\x86\UI.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{C61F9390-0DB1-4A8B-B6A0-BFF1C717551F}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Nightly\Win8\Domain\UI.testsettings = TestSettings\Nightly\Win8\Domain\UI.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workgroup", "Workgroup", "{9CAAB7AC-A0F9-47C7-9FEF-8BABAD5E969D}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Nightly\Win8\Workgroup\UI.testsettings = TestSettings\Nightly\Win8\Workgroup\UI.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sandbox", "Sandbox", "{03CF629F-5860-42E2-8ABD-F46714B4E9D6}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\Sandbox\UI.testsettings = TestSettings\Sandbox\UI.testsettings
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CI Environments", "CI Environments", "{73DD239A-7EF0-4A27-81B0-588E5638BA00}"
-	ProjectSection(SolutionItems) = preProject
-		TestSettings\CI Environments\UI Test Agent 1 (TST7X64-CIUI1).testsettings = TestSettings\CI Environments\UI Test Agent 1 (TST7X64-CIUI1).testsettings
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{380CF0B0-6BA2-41E1-B275-62B61CEDFD73}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\UI\Cleanup.bat = TestScripts\UI\Cleanup.bat
@@ -184,17 +138,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F6BA6701-359E-4521-9978-4298A7302A5A} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
 		{380CF0B0-6BA2-41E1-B275-62B61CEDFD73} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
-		{A0453DEE-B2BF-47CB-9D93-79C13308D08D} = {F6BA6701-359E-4521-9978-4298A7302A5A}
-		{83F0E604-D0AC-4D3D-8460-352BF2DAD644} = {F6BA6701-359E-4521-9978-4298A7302A5A}
-		{03CF629F-5860-42E2-8ABD-F46714B4E9D6} = {F6BA6701-359E-4521-9978-4298A7302A5A}
-		{73DD239A-7EF0-4A27-81B0-588E5638BA00} = {F6BA6701-359E-4521-9978-4298A7302A5A}
-		{86EF3B79-C25A-47C9-A8A7-B3276ADA72DA} = {83F0E604-D0AC-4D3D-8460-352BF2DAD644}
-		{EAA7E8CD-4B61-49F5-8324-88E873C20987} = {83F0E604-D0AC-4D3D-8460-352BF2DAD644}
-		{2705BDA8-4662-476C-90EB-F25EE1FF8425} = {83F0E604-D0AC-4D3D-8460-352BF2DAD644}
-		{16E99B47-DA37-43A7-8E77-27847B4743B5} = {EAA7E8CD-4B61-49F5-8324-88E873C20987}
-		{9D9B8C16-40F3-49B8-90B6-716A06D0573C} = {EAA7E8CD-4B61-49F5-8324-88E873C20987}
-		{C61F9390-0DB1-4A8B-B6A0-BFF1C717551F} = {2705BDA8-4662-476C-90EB-F25EE1FF8425}
-		{9CAAB7AC-A0F9-47C7-9FEF-8BABAD5E969D} = {2705BDA8-4662-476C-90EB-F25EE1FF8425}
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = e700b763-40fc-4ea1-a307-b85689995018

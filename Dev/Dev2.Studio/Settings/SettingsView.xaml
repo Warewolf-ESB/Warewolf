@@ -132,7 +132,8 @@
                 <TextBlock Foreground="{StaticResource ValidationErrorElement}"
                            Text="{Binding Errors}"
                            VerticalAlignment="Center"
-                           Visibility="{Binding IsErrorsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                           Visibility="{Binding IsErrorsVisible, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                           AutomationProperties.AutomationId="UI_Errors_AutoID">
                 </TextBlock>
 
                 <Button Content="Save"
