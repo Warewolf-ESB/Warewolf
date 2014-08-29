@@ -100,7 +100,7 @@ namespace Dev2.Security
                                                 {
                                                     using(DirectoryEntry memberEntry = new DirectoryEntry(member))
                                                     {
-                                                        if(principleName.ToLower().Contains(memberEntry.Name.ToLower()))
+                                                        if(memberEntry.Path.ToLower().Contains(principleName.Replace('\\', '/').ToLower()))
                                                         {
                                                             userIsPartOfGroup = true;
                                                         }

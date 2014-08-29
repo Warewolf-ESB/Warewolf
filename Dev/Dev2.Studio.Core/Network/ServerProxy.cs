@@ -157,14 +157,7 @@ namespace Dev2.Network
         {
             UserName = userName;
             Password = password;
-            if(userName == "\\")
-            {
-                AuthenticationType = AuthenticationType.Public;
-            }
-            else
-            {
-                AuthenticationType = AuthenticationType.User;
-            }
+            AuthenticationType = userName == "\\" ? AuthenticationType.Public : AuthenticationType.User;
             SetupPrincipal();
         }
 

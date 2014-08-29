@@ -160,12 +160,18 @@ namespace Dev2.Activities.Specs.Composition
         {
             List<IDebugState> debugStates;
             string workflowName;
+            IEnvironmentModel environmentModel;
             TryGetValue("debugStates", out debugStates);
             TryGetValue("parentWorkflowName", out workflowName);
-
-            debugStates.Add(debugState);
+            TryGetValue("environment", out environmentModel);
+            if(debugState.WorkspaceID == environmentModel.Connection.WorkspaceID)
+            {
+                debugStates.Add(debugState);
+            }
             if(debugState.IsFinalStep() && debugState.DisplayName.Equals(workflowName))
+            {
                 _resetEvt.Set();
+            }
 
         }
 
