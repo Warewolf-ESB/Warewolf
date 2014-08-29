@@ -25,7 +25,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime", "Dev2.Runtim
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{700CECB5-6964-47D6-95BC-C73EB882066A}"
 	ProjectSection(SolutionItems) = preProject
+		TestSettings\Integration\CI Environments.testsettings = TestSettings\Integration\CI Environments.testsettings
 		IntegrationTests.vsmdi = IntegrationTests.vsmdi
+		TestSettings\Integration\Local.testsettings = TestSettings\Integration\Local.testsettings
+		TestSettings\Integration\Sandbox.testsettings = TestSettings\Integration\Sandbox.testsettings
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Runtime.Services", "Dev2.Runtime.Services\Dev2.Runtime.Services.csproj", "{B48FFDF5-6B1B-4279-A93F-2913B9D3BE83}"
