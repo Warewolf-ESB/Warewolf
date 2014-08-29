@@ -106,9 +106,9 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("TshepoDragandDropExample", ((string[])(null)));
 #line 180
 this.ScenarioSetup(scenarioInfo);
-#line 184
- testRunner.Given("I drag \"WORKSURFACE,Assign (2)(MultiAssignDesigner)\" to point \"50,70\" on \"WORKSUR" +
-                    "FACE,For Each(ForeachDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 187
+ testRunner.Given("\"WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_Ac" +
+                    "tivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID\" contains text \"Tshepo\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }

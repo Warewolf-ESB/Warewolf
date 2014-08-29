@@ -363,10 +363,30 @@ namespace Dev2.Studio.UI.Specs
         [Then(@"I type ""(.*)"" in ""(.*)""")]
         public void GivenITypeIn(string textToSend, string automationIds)
         {
-            var correctedAutoIds = GetCorrect(automationIds).Split(',');
-            var startControl = GetStartUiTestControl(ref correctedAutoIds);
-            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false, correctedAutoIds);
-            controlToSendData.EnterText(textToSend);
+            var control = GetAControlStrict(automationIds);
+            control.EnterText(textToSend);
+        }
+        
+        [Given(@"""(.*)"" has text ""(.*)""")]
+        [When(@"""(.*)"" has text ""(.*)""")]
+        [Then(@"""(.*)"" has text ""(.*)""")]
+        public void GivenHasText(string automationIds, string text)
+        {
+            var control = GetAControlStrict(automationIds);
+            var contolText = control.GetText();
+            var message = string.Format("Expected text : {0} but control has {1}", text, contolText);
+            Assert.AreEqual(text, contolText, message);
+        }
+
+        [Given(@"""(.*)"" contains text ""(.*)""")]
+        [When(@"""(.*)"" contains text ""(.*)""")]
+        [Then(@"""(.*)"" contains text ""(.*)""")]
+        public void GivenContainsText(string automationIds, string text)
+        {
+            var control = GetAControlStrict(automationIds);
+            var contolText = control.GetText();
+            var message = string.Format("{0} does not contain {1}", contolText, text);
+            Assert.IsTrue(contolText.Contains(text), message);
         }
 
 
@@ -404,7 +424,7 @@ namespace Dev2.Studio.UI.Specs
             var control = GetAControlStrict(automationIds);
             Assert.IsNotNull(control);
             var table = control as WpfTable;
-            Assert.IsNotNull(table, string.Format("Given control with ID : [{0}] is not a Table", automationIds));
+            Assert.IsNotNull(table, string.Format("Given control with ID : {0} is not a Table", automationIds));
 
             foreach(var row in table.Rows)
             {
@@ -841,14 +861,13 @@ namespace Dev2.Studio.UI.Specs
 
 
         [Given(@"""(.*)"" is visible")]
-        [Then(@"""(.*)"" is visible")]
-        [Then(@"""(.*)"" is visible")]
+        [When(@"""(.*)"" is visible")]
         [Then(@"""(.*)"" is visible")]
         public void ThenIsVisible(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
-            var message = string.Format("Control with Auto ID : [{0}] is not visible", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
+            var message = string.Format("Control with Auto ID : {0} is not visible", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
             Assert.IsNotNull(itemFound, message);
 
             var isInvisible = itemFound.State.HasFlag(ControlStates.Invisible) ||
@@ -864,7 +883,7 @@ namespace Dev2.Studio.UI.Specs
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
-            var message = string.Format("Control with Auto ID : [{0}] is visible", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
+            var message = string.Format("Control with Auto ID : {0} is visible", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
             if(itemFound != null)
             {
                 var isInvisible = itemFound.State.HasFlag(ControlStates.Invisible) ||
@@ -882,7 +901,7 @@ namespace Dev2.Studio.UI.Specs
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
             Assert.IsNotNull(itemFound);
-            var message = string.Format("Control with Auto ID : [{0}] is not enabled", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
+            var message = string.Format("Control with Auto ID : {0} is not enabled", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
             Assert.IsTrue(itemFound.IsEnabled(), message);
         }
 
@@ -894,7 +913,7 @@ namespace Dev2.Studio.UI.Specs
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
             var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
             Assert.IsNotNull(itemFound);
-            var message = string.Format("Control with Auto ID : [{0}] is not disabled", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
+            var message = string.Format("Control with Auto ID : {0} is not disabled", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
             Assert.IsFalse(itemFound.IsEnabled(), message);
         }
 
