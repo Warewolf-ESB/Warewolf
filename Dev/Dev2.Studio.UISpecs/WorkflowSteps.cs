@@ -34,13 +34,27 @@ namespace Dev2.Studio.UI.Specs
         static readonly string DebugOutput = "UI_DocManager_AutoID,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string TabActive = "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
-       
+
         //Explorer
         static readonly string ExplorerFilter = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
         static readonly string ExplorerFilterClearButton = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
         static readonly string ExplorerFolders = Explorer + ",UI_ExplorerTree_AutoID,UI_localhost_AutoID";
+        //Variables
+        static readonly string VariableScalar = "UI_DocManager_AutoID,Variables,UI_DataListView_AutoID,UI_VariableTreeView_AutoID,UI_Variable_AutoID";
+        static readonly string VariableRecordset = "UI_DocManager_AutoID,Variables,UI_DataListView_AutoID,UI_VariableTreeView_AutoID,UI_Recordset_AutoID";
+
         //Tools
-        static readonly string ToolMultiAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
+        static readonly string ToolDecision = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowDecision";
+        static readonly string ToolSwitch = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowSwitch`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]";
+        static readonly string ToolSequence = Toolbox + ",PART_Tools,Control Flow,Dev2.Activities.DsfSequenceActivity";
+
+        static readonly string ToolForEach = Toolbox + ",PART_Tools,Loop Constructs,Unlimited.Applications.BusinessDesignStudio.Activities.DsfForEachActivity";
+
+        static readonly string ToolCount = Toolbox + ",PART_Tools,Recordset,Unlimited.Applications.BusinessDesignStudio.Activities.DsfCountRecordsetActivity";
+        static readonly string ToolLength = Toolbox + ",PART_Tools,Recordset,Unlimited.Applications.BusinessDesignStudio.Activities.DsfRecordsetLengthActivity";
+        static readonly string ToolDelete = Toolbox + ",PART_Tools,Recordset,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDeleteRecordActivity";
+        static readonly string ToolFind = Toolbox + ",PART_Tools,Recordset,Unlimited.Applications.BusinessDesignStudio.Activities.DsfFindRecordsMultipleCriteriaActivity";
+        
         static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolBaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfBaseConvertActivity";
         static readonly string ToolCaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
@@ -55,10 +69,9 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ToolSystemInfo = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolXpath = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolComment = Toolbox + ",PART_Tools,Utility,Unlimited.Applications.BusinessDesignStudio.Activities.DsfCommentActivity";
-        static readonly string ToolWebRequest = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
-        static readonly string ToolCount = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
-        static readonly string ToolForEach = Toolbox + ",PART_Tools,Loop Constructs,Unlimited.Applications.BusinessDesignStudio.Activities.DsfForEachActivity";
-        static readonly string ToolWorkFlow = Toolbox + ",PART_Tools,Unlimited.Applications.BusinessDesignStudio.Activities.DsfWorkflowActivity";
+
+        static readonly string ToolWorkflow = Toolbox + ",PART_Tools,Resources,Unlimited.Applications.BusinessDesignStudio.Activities.DsfWorkflowActivity";
+
         //Settings Tab
         static readonly string SettingsTab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SettingsView_AutoID";
         static readonly string SettingsServerPermissionsGrid = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid";
@@ -136,9 +149,11 @@ namespace Dev2.Studio.UI.Specs
         static readonly string RibbonNewWebConnector = "UI_RibbonHomeTabWebServiceBtn_AutoID";
 
         static readonly string ResourcePicker = "UI_SelectServiceWindow_AutoID";
-        static readonly string ResourcePickerFilter = ResourcePicker + ",UI_NavigationViewUserControl_AutoID,FilterTextBox,UI_DataListSearchtxt_AutoID";
+        static readonly string ResourcePickerFilter = ResourcePicker + ",UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
         static readonly string ResourcePickerFolders = ResourcePicker + ",UI_NavigationViewUserControl_AutoID,UI_ExplorerTree_AutoID,UI_localhost_AutoID";
         static readonly string ResourcePickerOkButton = ResourcePicker + ",UI_SelectServiceOKButton_AutoID";
+
+
 
 
         int _retryCount;

@@ -15,7 +15,7 @@ Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDr
 	#CheckVariableAdd
 	And I type "myvar" in "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID"
 	And I send "{TAB}" to ""
-	And "VARIABLESCALAR,UI_Variable_myvar_AutoID" is visible within "1" seconds
+	And "VARIABLESCALAR,UI_Variable_myvar_AutoID,UI_NameTextBox_AutoID" is visible within "1" seconds
 	And I send "=[[rec(1).set]]+1" to ""
 	And I send "{TAB}" to ""
 	And I send "5{TAB}" to ""
@@ -38,9 +38,11 @@ Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDr
 	When I click "WORKSURFACE,Assign (2)(MultiAssignDesigner),DoneButton"
 	Then "WORKSURFACE,Assign (2)(MultiAssignDesigner),SmallViewContent" is visible
 	#NoDrillDownInForEach [Check that after drop Start is still visible ]
-	And I double click "TOOLBOX,PART_SearchBox"
-	And I send "for Each" to ""
-	When I drag "TOOLFOREACH" onto "WORKSURFACE,Assign (2)(MultiAssignDesigner)"
+	When I double click "TOOLBOX,PART_SearchBox"
+	And I send "Each" to ""
+	And I click point "40,10" on "TOOLFOREACH"
+	And I drag "TOOLFOREACH" to point "40,400" on "WORKSURFACE"
 	And I drag "WORKSURFACE,Assign (2)(MultiAssignDesigner)" to point "130,80" on "WORKSURFACE,For Each(ForeachDesigner)"
 	Then "WORKSURFACE,StartSymbol" is visible within "1" seconds
+	And "WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Assign (2)(MultiAssignDesigner)" is visible
 		

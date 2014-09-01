@@ -79,6 +79,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RemoteServerUISpecs.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\ControlFlow-Sequence.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ControlFlow-Sequence.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Data-Assign.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -162,6 +167,10 @@
     <None Include="Tools Large ViewUISpecs\ToolsTestUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ToolsTestUISpecs.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\ControlFlow-Sequence.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>ControlFlow-Sequence.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\Data-Assign.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
