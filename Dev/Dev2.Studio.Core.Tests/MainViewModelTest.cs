@@ -1912,7 +1912,7 @@ namespace Dev2.Core.Tests
         {
             var popupController = new Mock<IBrowserPopupController>();
             popupController.Setup(p => p.ShowPopup(It.IsAny<string>())).Verifiable();
-
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
             var envRepo = new Mock<IEnvironmentRepository>();
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
             envRepo.Setup(e => e.Source).Returns(new Mock<IEnvironmentModel>().Object);
@@ -1928,6 +1928,7 @@ namespace Dev2.Core.Tests
         {
             var mockEventAggregator = new Mock<IEventAggregator>();
             var envRepo = new Mock<IEnvironmentRepository>();
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
             envRepo.Setup(e => e.Source).Returns(new Mock<IEnvironmentModel>().Object);
             var vm = new MainViewModel(mockEventAggregator.Object, new Mock<IAsyncWorker>().Object, envRepo.Object, new Mock<IVersionChecker>().Object, false);

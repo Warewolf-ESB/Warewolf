@@ -315,5 +315,21 @@ namespace Dev2.Activities.Specs.Permissions
                 Assert.AreEqual(resourcePermissions, resourceModel.UserPermissions);
             }
         }
+
+        [AfterScenario("Security")]
+        public void DoCleanUp()
+        {
+            var currentEnvironment = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
+            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
+
+            if(currentEnvironment != null)
+            {
+                currentEnvironment.Disconnect();
+            }
+            if(environmentModel != null)
+            {
+                environmentModel.Disconnect();
+            }
+        }
     }
 }

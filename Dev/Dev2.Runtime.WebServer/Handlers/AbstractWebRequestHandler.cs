@@ -212,7 +212,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
             {
                 compiler.ForceDeleteDataListByID(executionDlid);
-                if(dataObject.IsDebugMode() && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
+                if(dataObject.IsDebug && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
                 {
                     DataListRegistar.ClearDataList();
                 }

@@ -252,7 +252,7 @@ namespace Dev2.Runtime.ESB.Control
             finally
             {
                 // clean up after the request has executed ;)
-                if(dataObject.IsDebugMode() && !_doNotWipeDataList)
+                if(dataObject.IsDebug && !_doNotWipeDataList)
                 {
                     DataListRegistar.ClearDataList();
                 }
