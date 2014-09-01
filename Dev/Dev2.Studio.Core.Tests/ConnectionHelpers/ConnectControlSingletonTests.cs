@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Providers.Events;

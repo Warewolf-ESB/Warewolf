@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces.Communication;
+using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
-using Dev2.Hosting;
 
 namespace Dev2.Services
 {

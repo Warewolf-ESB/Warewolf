@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Dev2.Composition;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -18,18 +15,9 @@ namespace Dev2.Core.Tests.Webs
     [ExcludeFromCodeCoverage]
     public class FileChooserCallbackHandlerTests
     {
-        static ImportServiceContext _importContext;
-
         [ClassInitialize]
         public static void ClassInit(TestContext context)
         {
-            _importContext = new ImportServiceContext();
-            ImportService.CurrentContext = _importContext;
-
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
         }
 
         [TestInitialize]
@@ -37,7 +25,6 @@ namespace Dev2.Core.Tests.Webs
         {
             EventPublishers.Aggregator = null;
             AppSettings.LocalHost = "http://localhost:3142";
-            ImportService.CurrentContext = _importContext;
         }
 
 

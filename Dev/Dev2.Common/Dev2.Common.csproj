@@ -94,38 +94,27 @@
     <Compile Include="DB Support\DBConnectionProperties.cs" />
     <Compile Include="DB Support\DBConnectionString.cs" />
     <Compile Include="DB Support\DB_Helper\DBHelperFactory.cs" />
-    <Compile Include="DB Support\DB_Helper\IDBHelper.cs" />
     <Compile Include="DB Support\DB_Sanity\AbstractSanitizer.cs" />
     <Compile Include="DB Support\DB_Sanity\DataSanitizerFactory.cs" />
-    <Compile Include="DB Support\DB_Sanity\IDataProviderSanitizer.cs" />
     <Compile Include="DB Support\DB_Sanity\MS_SQL_Sanitizer.cs" />
     <Compile Include="DB Support\enSupportedDBTypes.cs" />
+    <Compile Include="Dev2EnumConverter.cs" />
     <Compile Include="Dev2Tokenizer.cs" />
-    <Compile Include="Enums\Dev2EnumConverter.cs" />
-    <Compile Include="Enums\enRandomType.cs" />
-    <Compile Include="Enums\enScriptType.cs" />
-    <Compile Include="Enums\PopulateOptions.cs" />
     <Compile Include="ExtMethods\BaseEnumExtensions.cs" />
     <Compile Include="ExtMethods\DirectoryInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\FieldInfoExtensionMethods.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
     <Compile Include="GlobalConstants.cs" />
-    <Compile Include="Interfaces\IDev2TOFn.cs" />
-    <Compile Include="Interfaces\IFrameworkRepository.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />
-    <Compile Include="Patterns\ISpookyLoadable.cs" />
     <Compile Include="Patterns\SpookyAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\GAC.cs" />
     <Compile Include="StringTokenizer\Builders\Dev2TokenizerBuilder.cs" />
     <Compile Include="StringTokenizer\Errors\TokenizeError.cs" />
-    <Compile Include="StringTokenizer\Interfaces\IDev2Tokenizer.cs" />
-    <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2EoFOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2IndexOp.cs" />
     <Compile Include="StringTokenizer\TokenOps\Dev2TokenOp.cs" />
-    <Compile Include="Utils\ICryptoProvider.cs" />
     <Compile Include="Utils\JSONUtils.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <Compile Include="Utils\VersionInfo.cs" />
@@ -134,13 +123,13 @@
     <Compile Include="Wrappers\DirectoryEntryWrapper.cs" />
     <Compile Include="Wrappers\DirectoryWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />
-    <Compile Include="Wrappers\Interfaces\IDirectory.cs" />
-    <Compile Include="Wrappers\Interfaces\IDirectoryEntry.cs" />
-    <Compile Include="Wrappers\Interfaces\IDirectoryEntryFactory.cs" />
-    <Compile Include="Wrappers\Interfaces\IFile.cs" />
-    <Compile Include="Wrappers\Interfaces\IWrappedObject.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

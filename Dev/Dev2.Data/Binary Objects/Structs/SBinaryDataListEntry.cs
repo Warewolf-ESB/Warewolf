@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Binary_Objects.Structs;
 using Dev2.Data.Storage;

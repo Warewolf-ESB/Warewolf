@@ -1,8 +1,7 @@
-﻿
+﻿using System;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Builders;
-using System;
 using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Builders;
 
 namespace Dev2.Data.Interfaces
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Dev2.Common;
-using Dev2.Converters.DateAndTime.Interfaces;
+using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 
 namespace Dev2.Converters.DateAndTime
 {

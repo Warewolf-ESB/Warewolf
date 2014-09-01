@@ -1,20 +1,20 @@
-﻿using Dev2.Activities.Preview;
-using Dev2.Common;
-using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Common.StringTokenizer.Interfaces;
-using Dev2.Data.Util;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Validation;
-using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Services.Events;
-using Dev2.Studio.Core.Messages;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Xml;
+using Dev2.Activities.Preview;
+using Dev2.Common;
+using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
+using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
+using Dev2.Data.Util;
+using Dev2.Providers.Errors;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Services.Events;
+using Dev2.Studio.Core.Messages;
 
 namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 {

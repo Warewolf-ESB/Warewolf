@@ -1,5 +1,4 @@
-﻿
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using Dev2.CustomControls;
 using Dev2.Studio.Views.Help;

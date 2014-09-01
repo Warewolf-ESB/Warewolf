@@ -1,9 +1,9 @@
-﻿using Dev2.Studio.Core.Interfaces;
+﻿using System;
+using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Utils;
 using Dev2.Studio.ViewModels.Administration;
-using System;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Factory
 {
     public static class DialogViewModelFactory

@@ -1,9 +1,10 @@
-﻿using Dev2.Data.TO;
+﻿using System;
+using System.Collections.Generic;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Data.TO;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
-using System;
-using System.Collections.Generic;
 
 namespace Dev2.Activities.Debug
 {
@@ -79,9 +80,9 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        public override List<DebugItemResult> GetDebugItemResult()
+        public override List<IDebugItemResult> GetDebugItemResult()
         {
-            List<DebugItemResult> debugItemsResults;
+            List<IDebugItemResult> debugItemsResults;
             if(DebugTO != null)
             {
                 debugItemsResults = CreateDebugItemForOutput(DebugTO, LabelText, _regions);
@@ -94,7 +95,7 @@ namespace Dev2.Activities.Debug
                 }
                 else
                 {
-                    debugItemsResults = new List<DebugItemResult>{
+                    debugItemsResults = new List<IDebugItemResult>{
                  new DebugItemResult
                     {
                         Type = DebugItemResultType.Variable, 

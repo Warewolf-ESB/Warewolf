@@ -2,8 +2,8 @@
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using Dev2.Common.Utils;
-using Dev2.Common.Wrappers.Interfaces;
+using Dev2.Common.Interfaces.Utils;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Studio.Core.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

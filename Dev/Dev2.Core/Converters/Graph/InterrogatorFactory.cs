@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Converters.Graph.DataTable;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String;
 

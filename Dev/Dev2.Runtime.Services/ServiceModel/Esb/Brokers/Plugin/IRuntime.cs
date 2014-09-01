@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {

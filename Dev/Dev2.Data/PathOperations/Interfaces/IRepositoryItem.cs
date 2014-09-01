@@ -1,5 +1,6 @@
 ﻿
 using System.Runtime.Serialization;
+
 namespace Dev2.PathOperations.Interfaces
 {
     /// <summary>

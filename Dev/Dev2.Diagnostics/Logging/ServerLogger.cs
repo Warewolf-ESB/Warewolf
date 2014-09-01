@@ -1,8 +1,4 @@
-﻿using Dev2.Common.Common;
-using Dev2.Diagnostics.Debug;
-using Dev2.Instrumentation;
-using Dev2.Runtime.Configuration.Settings;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -11,6 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Diagnostics.Debug;
+using Dev2.Instrumentation;
+using Dev2.Runtime.Configuration.Settings;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming

@@ -1,4 +1,4 @@
-﻿using Unlimited.Framework.Converters.Graph.Interfaces;
+﻿using Dev2.Common.Interfaces.Core.Graph;
 using Unlimited.Framework.Converters.Graph.Output;
 
 namespace Unlimited.Framework.Converters.Graph

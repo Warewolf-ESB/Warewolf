@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Studio.Core;
@@ -43,7 +42,6 @@ namespace Dev2.Core.Tests
 
         void Setup()
         {
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             //_mockMediatorRepo = new Mock<IMediatorRepo>();
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
@@ -399,7 +397,6 @@ namespace Dev2.Core.Tests
         {
 
             //------------Setup for test--------------------------
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
@@ -431,7 +428,6 @@ namespace Dev2.Core.Tests
         {
 
             //------------Setup for test--------------------------
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
@@ -463,7 +459,6 @@ namespace Dev2.Core.Tests
         {
 
             //------------Setup for test--------------------------
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
@@ -494,7 +489,6 @@ namespace Dev2.Core.Tests
         {
 
             //------------Setup for test--------------------------
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
@@ -531,7 +525,6 @@ namespace Dev2.Core.Tests
         {
 
             //------------Setup for test--------------------------
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
@@ -562,7 +555,6 @@ namespace Dev2.Core.Tests
         {
 
             //------------Setup for test--------------------------
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 

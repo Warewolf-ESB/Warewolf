@@ -1,4 +1,6 @@
-﻿namespace Dev2.Runtime.Hosting
+﻿using Dev2.Common.Interfaces.Hosting;
+
+namespace Dev2.Runtime.Hosting
 {
     public class ResourceCatalogResult
     {

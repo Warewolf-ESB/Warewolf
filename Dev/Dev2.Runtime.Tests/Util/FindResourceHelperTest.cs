@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.ServiceModel.Data;

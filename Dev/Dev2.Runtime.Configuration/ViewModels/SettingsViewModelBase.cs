@@ -1,5 +1,4 @@
-﻿
-using Caliburn.Micro;
+﻿using Caliburn.Micro;
 using Dev2.Runtime.Configuration.Services;
 
 namespace Dev2.Runtime.Configuration.ViewModels

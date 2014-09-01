@@ -1,17 +1,19 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace Dev2.Core.Tests {
+namespace Dev2.Core.Tests
+{
     /// <summary>
     /// Summary description for WebResourceViewModelTest
     /// </summary>
-    [TestClass][ExcludeFromCodeCoverage]
-    public class WebResourceViewModelTest {
+    [TestClass]
+    [ExcludeFromCodeCoverage]
+    public class WebResourceViewModelTest
+    {
         /// <summary>
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.
@@ -21,36 +23,39 @@ namespace Dev2.Core.Tests {
         #region Additional result attributes
         // Use TestInitialize to run code before running each result 
         [TestInitialize]
-        public void MyTestInitialize() 
-        { 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
+        public void MyTestInitialize()
+        {
         }
 
         #endregion
 
         #region Ctor Test
-        
+
         [TestMethod]
-       
-        public void ConstructorTestWithNullRoot() {
+
+        public void ConstructorTestWithNullRoot()
+        {
             WebResourceViewModel tmp = new WebResourceViewModel(null);
 
             Assert.IsNull(tmp.Parent);
         }
 
         [TestMethod]
-        public void ConstructorTestWithNullRootChildrenContainerNotNull() {
+        public void ConstructorTestWithNullRootChildrenContainerNotNull()
+        {
             WebResourceViewModel tmp = new WebResourceViewModel(null);
 
             Assert.IsNotNull(tmp.Children);
         }
-        
+
         #endregion
 
         #region AddChild Tests
+        // ReSharper disable InconsistentNaming
 
         [TestMethod]
-        public void AddChild_Expected_ObjectAddedToResourceViewModel() {
+        public void AddChild_Expected_ObjectAddedToResourceViewModel()
+        {
             WebResourceViewModel tmp = new WebResourceViewModel(null);
             Mock<IWebResourceViewModel> tmpChild = new Mock<IWebResourceViewModel>();
 
@@ -66,7 +71,8 @@ namespace Dev2.Core.Tests {
         #region SetParent Tests
 
         [TestMethod]
-        public void SetParent_Expected_ChangesTheParentToTheParentPassedIn() {
+        public void SetParent_Expected_ChangesTheParentToTheParentPassedIn()
+        {
             WebResourceViewModel tmp = new WebResourceViewModel(null);
             Mock<IWebResourceViewModel> tmpParent = new Mock<IWebResourceViewModel>();
 

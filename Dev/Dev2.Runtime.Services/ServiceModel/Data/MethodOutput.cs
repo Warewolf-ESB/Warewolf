@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Xml.Linq;
-using Dev2.DataList.Contract;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {

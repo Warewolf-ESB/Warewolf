@@ -9,7 +9,8 @@ using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
@@ -20,8 +21,6 @@ using Dev2.Network;
 using Dev2.Network.Execution;
 using Dev2.Providers.Events;
 using Dev2.Services.Security;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -148,7 +147,6 @@ namespace Dev2.Core.Tests
             {
                 if(_mockMainViewModel == null)
                 {
-                    CompositionInitializer.InitializeForMeflessBaseViewModel();
                     var eventPublisher = new Mock<IEventAggregator>();
                     var environmentRepository = new Mock<IEnvironmentRepository>();
                     var environmentModel = new Mock<IEnvironmentModel>();
@@ -158,7 +156,7 @@ namespace Dev2.Core.Tests
                     environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
                     var versionChecker = new Mock<IVersionChecker>();
                     var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-                    _mockMainViewModel = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, 
+                    _mockMainViewModel = new Mock<MainViewModel>(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object,
                                                                  versionChecker.Object, false, null, null, null, null, null, new Mock<IStudioResourceRepository>().Object,
                                                                  new Mock<IConnectControlSingleton>().Object, new Mock<IConnectControlViewModel>().Object);
                 }
@@ -348,7 +346,7 @@ namespace Dev2.Core.Tests
             {
                 mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(resourceRepositoryFakeBacker.Add);
             }
-            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
+            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
             mockResourceModel.Setup(r => r.All()).Returns(new List<IResourceModel> { returnResource.Object });
 
             return mockResourceModel;
@@ -359,7 +357,7 @@ namespace Dev2.Core.Tests
             var mockResourceModel = new Mock<IResourceRepository>();
             mockResourceModel.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(returnResource.Object);
             mockResourceModel.Setup(r => r.Save(It.IsAny<IResourceModel>())).Callback<IResourceModel>(resourceRepositoryFakeBacker.Add);
-            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
+            mockResourceModel.Setup(r => r.ReloadResource(It.IsAny<Guid>(), It.IsAny<Studio.Core.AppResources.Enums.ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), true)).Returns(new List<IResourceModel> { returnResource.Object });
             mockResourceModel.Setup(r => r.All()).Returns(returnResources);
 
             return mockResourceModel;
@@ -374,7 +372,7 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
             mockResourceModel.Setup(resModel => resModel.IconPath).Returns("");
-            mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
             mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
 
@@ -390,7 +388,7 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
             mockResourceModel.Setup(resModel => resModel.IconPath).Returns("");
-            mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
             mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
 
@@ -406,14 +404,14 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
             mockResourceModel.Setup(resModel => resModel.IconPath).Returns("");
-            mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
             mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, new List<IResourceModel>()).Object);
 
             return mockResourceModel;
         }
 
-        static public Mock<IContextualResourceModel> SetupResourceModelMock(ResourceType resourceType, Guid resourceID = new Guid())
+        static public Mock<IContextualResourceModel> SetupResourceModelMock(Studio.Core.AppResources.Enums.ResourceType resourceType, Guid resourceID = new Guid())
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
@@ -431,7 +429,7 @@ namespace Dev2.Core.Tests
             return mockResourceModel;
         }
 
-        static public Mock<IContextualResourceModel> SetupResourceModelMock(ResourceType resourceType, string resourceName, bool returnSelf = true)
+        static public Mock<IContextualResourceModel> SetupResourceModelMock(Studio.Core.AppResources.Enums.ResourceType resourceType, string resourceName, bool returnSelf = true)
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
@@ -455,7 +453,7 @@ namespace Dev2.Core.Tests
             return mockResourceModel;
         }
 
-        static public Mock<IContextualResourceModel> SetupResourceModelMock(ResourceType resourceType, string resourceName, Mock<IContextualResourceModel> findSingleReturn)
+        static public Mock<IContextualResourceModel> SetupResourceModelMock(Studio.Core.AppResources.Enums.ResourceType resourceType, string resourceName, Mock<IContextualResourceModel> findSingleReturn)
         {
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.Setup(res => res.DataList).Returns(StringResourcesTest.xmlDataList);
@@ -480,7 +478,7 @@ namespace Dev2.Core.Tests
             mockResourceModel.Setup(resModel => resModel.DisplayName).Returns("TestResource");
             mockResourceModel.Setup(resModel => resModel.Category).Returns("Testing");
             mockResourceModel.Setup(resModel => resModel.IconPath).Returns("");
-            mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(ResourceType.WorkflowService);
+            mockResourceModel.Setup(resModel => resModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             mockResourceModel.Setup(resModel => resModel.DataTags).Returns("WFI1,WFI2,WFI3");
             mockResourceModel.Setup(resModel => resModel.Environment).Returns(SetupEnvironmentModel(mockResourceModel, resourceRepositoryFakeBacker).Object);
 
@@ -653,23 +651,6 @@ namespace Dev2.Core.Tests
 
 
             return _mockDataMappingViewModel;
-        }
-
-
-        public static Mock<IDev2ConfigurationProvider> CreateConfigurationProvider(string[] key, string[] val)
-        {
-            Mock<IDev2ConfigurationProvider> result = new Mock<IDev2ConfigurationProvider>();
-            IDictionary d = new Dictionary<string, string>();
-            const int pos = 0;
-
-            foreach(string k in key)
-            {
-                d.Add(k, val[pos]);
-            }
-
-            result.Setup(c => c.ReadKey(It.IsAny<string>())).Returns((string kk) => (string)d[kk]);
-
-            return result;
         }
 
         public static Mock<IPopupController> CreateIPopup(MessageBoxResult returningResult)

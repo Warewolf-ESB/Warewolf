@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Dev2.DataList.Contract;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.DynamicServices.Objects.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -60,7 +61,7 @@ namespace Dev2.DynamicServices.Objects
         /// The type of action that this action will invoke
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public enActionType ActionType { get; set; }
+        public Common.Interfaces.Core.DynamicServices.enActionType ActionType { get; set; }
         /// <summary>
         /// The name of the data source - maps to a source in the sources list of the service directory
         /// </summary>
@@ -170,7 +171,7 @@ namespace Dev2.DynamicServices.Objects
         {
             ServiceActionInputs = new List<ServiceActionInput>();
             ServiceActionOutputs = new List<IDev2Definition>(); // Travis.Frisinger
-            ActionType = enActionType.Unknown;
+            ActionType = Common.Interfaces.Core.DynamicServices.enActionType.Unknown;
         }
         #endregion
 
@@ -242,19 +243,19 @@ namespace Dev2.DynamicServices.Objects
             switch(ActionType)
             {
 
-                case enActionType.InvokeDynamicService:
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeDynamicService:
                     if(string.IsNullOrEmpty(ServiceName))
                     {
                         WriteCompileError(Resources.CompilerError_MissingServiceName);
                     }
                     break;
 
-                case enActionType.Workflow:
+                case Common.Interfaces.Core.DynamicServices.enActionType.Workflow:
                     break;
 
                 default:
                     //A Source Name is required except in the case of Management Dynamic Services
-                    if(string.IsNullOrEmpty(SourceName) && ActionType != enActionType.InvokeManagementDynamicService)
+                    if(string.IsNullOrEmpty(SourceName) && ActionType != Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService)
                     {
                         WriteCompileError(Resources.CompilerError_MissingSourceName);
                     }
@@ -263,7 +264,7 @@ namespace Dev2.DynamicServices.Objects
                         WriteCompileError(Resources.CompilerError_MissingSourceMethod);
                     }
                     //A source is required except in the case of Management Dynamic Services
-                    if(Source == null && ActionType != enActionType.InvokeManagementDynamicService)
+                    if(Source == null && ActionType != Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService)
                     {
                         WriteCompileError(Resources.CompilerError_SourceNotFound);
                     }

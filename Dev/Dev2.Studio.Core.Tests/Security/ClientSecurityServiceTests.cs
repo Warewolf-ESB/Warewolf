@@ -5,6 +5,7 @@ using System.Network;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Providers.Events;

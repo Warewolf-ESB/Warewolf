@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
-    [Export(typeof(IFrameworkRepository<UserInterfaceLayoutModel>))]
     public class UserInterfaceLayoutRepository : IFrameworkRepository<UserInterfaceLayoutModel>
     {
         #region Class Members
@@ -32,7 +31,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region Properties
 
-        [Import]
         public IFilePersistenceProvider FilePersistenceProvider { get; set; }
 
         #endregion Properties

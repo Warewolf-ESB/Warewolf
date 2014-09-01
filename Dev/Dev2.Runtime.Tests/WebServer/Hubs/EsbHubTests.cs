@@ -1,4 +1,6 @@
-﻿using Dev2.Communication;
+﻿using Dev2.Common.Interfaces.Communication;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Communication;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Explorer;
@@ -152,7 +154,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             SetupEvents();
         }
 
-        public void TestOnCompilerMessageReceived(IList<CompileMessageTO> messages)
+        public void TestOnCompilerMessageReceived(IList<ICompileMessageTO> messages)
         {
             OnCompilerMessageReceived(messages);
         }

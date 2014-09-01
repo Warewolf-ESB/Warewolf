@@ -3,7 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using Dev2.Common;
-
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Diagnostics.Debug
 {

@@ -196,8 +196,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="IntellisenseProvider\CompositeIntellisenseProviderTests.cs" />
-    <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryHelperMethods.cs" />
-    <Compile Include="Configuration\RuntimeConfigurationAssemblyRepositoryTests.cs" />
     <Compile Include="ConverterTests\BoolToStringConvertTests.cs" />
     <Compile Include="ConverterTests\CalculateIntellisenseTextConverterTests.cs" />
     <Compile Include="ConverterTests\GridRowNumberConverterTests.cs" />
@@ -234,7 +232,6 @@
     <Compile Include="MainViewModelMock.cs" />
     <Compile Include="Custom Dev2 Controls\Dev2DataGridTests.cs" />
     <Compile Include="Custom Dev2 Controls\Intellisense\IntellisenseTextBoxTests.cs" />
-    <Compile Include="CompositionInitializer.cs" />
     <Compile Include="ModelTests\ExplorerItemModelTest.cs" />
     <Compile Include="NavigationViewModelTest.cs">
       <SubType>Code</SubType>
@@ -316,16 +313,13 @@
     <Compile Include="ResourceRepositoryTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ResourceWizardViewModelTests.cs" />
     <Compile Include="Environments\ServerProviderTest.cs" />
-    <Compile Include="ServiceLocatorTests.cs" />
     <Compile Include="SplashScreenTest.cs" />
     <Compile Include="StringResourcesTest1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>StringResourcesTest.resx</DependentUpon>
     </Compile>
-    <Compile Include="TestAggregateCatalog.cs" />
     <Compile Include="TestResourceStrings.Designer.cs" />
     <Compile Include="DebugProviderTests.cs" />
     <Compile Include="FlowControllerTests.cs" />
@@ -354,7 +348,6 @@
     <Compile Include="ViewModelTests\FeedbackViewModelTest.cs" />
     <Compile Include="ViewModelTests\ExceptionViewModelTest.cs" />
     <Compile Include="WebActivityTests.cs" />
-    <Compile Include="WebCommunicationTest.cs" />
     <Compile Include="WebResourceViewModelTest.cs" />
     <Compile Include="Webs\RootWebSiteTest.cs" />
     <Compile Include="Webs\ServiceCallbackHandlerMock.cs" />
@@ -402,10 +395,6 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Composition\Dev2.Composition.csproj">
-      <Project>{b91813c8-499c-4d65-a0d4-57c7fa5f5413}</Project>
-      <Name>Dev2.Composition</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
       <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
@@ -481,6 +470,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Configuration\" />
     <Folder Include="Diagnostics\Debug\" />
     <Folder Include="ViewModelTests\Configuration\" />
     <Folder Include="ViewModelTests\ViewModelMocks\" />

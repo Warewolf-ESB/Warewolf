@@ -1,8 +1,8 @@
 ﻿using System;
-using Dev2.Models;
-using Dev2.Studio.Core.Interfaces;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Dev2.Models;
+using Dev2.Studio.Core.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Navigation

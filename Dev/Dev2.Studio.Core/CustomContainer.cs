@@ -20,7 +20,7 @@ namespace Dev2
             RegisterdTypes.Clear();
         }
 
-        public static void Register<T>(object concrete)
+        public static void Register<T>(T concrete)
         {
             if(RegisterdTypes.ContainsKey(typeof(T)))
             {
@@ -36,6 +36,17 @@ namespace Dev2
             {
                 var registerdType = RegisterdTypes[requestedType];
                 return registerdType as T;
+            }
+            return null;
+        }
+
+        public static object Get(Type type)
+        {
+            var requestedType = type;
+            if(RegisterdTypes.ContainsKey(requestedType))
+            {
+                var registerdType = RegisterdTypes[requestedType];
+                return registerdType;
             }
             return null;
         }

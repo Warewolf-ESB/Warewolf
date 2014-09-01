@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.Composition;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using System.Xml.Serialization;
 using Dev2.Studio.Core.Interfaces;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core
 {
-    [Export(typeof(IFilePersistenceProvider))]
     public class FilePersistenceProvider : IFilePersistenceProvider
     {
         public void Write(string containerName, string data)

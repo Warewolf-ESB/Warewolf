@@ -1,12 +1,11 @@
-﻿using Dev2.Common.Interfaces.Data;
+﻿using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using Unlimited.Framework.Converters.Graph;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Integration.Tests.Services.Sql
 {

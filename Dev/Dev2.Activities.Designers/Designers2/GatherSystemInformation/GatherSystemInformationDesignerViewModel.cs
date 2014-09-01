@@ -1,9 +1,9 @@
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Common;
+using Dev2.Common.Interfaces.Enums.Enums;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.Enums;
-using Dev2.Providers.Errors;
 
 namespace Dev2.Activities.Designers2.GatherSystemInformation
 {

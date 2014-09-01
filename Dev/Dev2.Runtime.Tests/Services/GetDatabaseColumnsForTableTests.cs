@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
-using Dev2.DynamicServices;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -123,7 +123,11 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
-            string someJsonData = JsonConvert.SerializeObject(dbSource);
+            string someJsonData = JsonConvert.SerializeObject(dbSource, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects,
+                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+            });
             var esb = new GetDatabaseColumnsForTable();
             var mockWorkspace = new Mock<IWorkspace>();
             mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
@@ -132,7 +136,11 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             var value = actual.ToString();
             Assert.IsFalse(string.IsNullOrEmpty(value));
-            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString(), new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects,
+                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+            });
             Assert.AreEqual(4, result.Items.Count);
 
             // Check Columns Returned ;)
@@ -165,7 +173,11 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
-            string someJsonData = JsonConvert.SerializeObject(dbSource);
+            string someJsonData = JsonConvert.SerializeObject(dbSource,new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects,
+                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+            });
             var esb = new GetDatabaseColumnsForTable();
             var mockWorkspace = new Mock<IWorkspace>();
             mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
@@ -174,7 +186,11 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             var value = actual.ToString();
             Assert.IsFalse(string.IsNullOrEmpty(value));
-            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString(), new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects,
+                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+            });
             Assert.AreEqual(3, result.Items.Count);
 
             // Check Columns Returned ;)
@@ -202,7 +218,11 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
-            string someJsonData = JsonConvert.SerializeObject(dbSource);
+            string someJsonData = JsonConvert.SerializeObject(dbSource, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects,
+                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+            });
             var esb = new GetDatabaseColumnsForTable();
             var mockWorkspace = new Mock<IWorkspace>();
             mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
@@ -211,7 +231,11 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             var value = actual.ToString();
             Assert.IsFalse(string.IsNullOrEmpty(value));
-            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString());
+            var result = JsonConvert.DeserializeObject<DbColumnList>(actual.ToString(), new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects,
+                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+            });
             Assert.AreEqual(3, result.Items.Count);
 
             // Check Columns Returned ;)

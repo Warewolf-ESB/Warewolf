@@ -113,7 +113,7 @@ namespace Dev2.Activities.Specs.Explorer
                             DisplayName = folderName,
                             EnvironmentId = localhost,
                             ResourcePath = resourcePath + "\\" + folderName,
-                            Permissions = SecPermissions.Contribute,
+                            Permissions = Common.Interfaces.Security.Permissions.Contribute,
                             ResourceType = ResourceType.Folder,
                             Parent = parent
                         });

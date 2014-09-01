@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities.Designers2.BaseConvert;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Converters;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

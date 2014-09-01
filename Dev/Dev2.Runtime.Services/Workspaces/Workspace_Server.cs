@@ -1,5 +1,5 @@
 ﻿using System;
-using Dev2.DynamicServices;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Runtime.Hosting;
 
 namespace Dev2.Workspaces

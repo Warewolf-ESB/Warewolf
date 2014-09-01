@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
@@ -30,6 +29,11 @@ namespace Dev2.Core.Tests.ViewModelTests
             _testDir = context.DeploymentDirectory;
         }
 
+        [TestInitialize]
+        public void TestSetup()
+        {
+            CustomContainer.Clear();
+        }
         #endregion
 
         private SystemInfoTO GetMockSysInfo()
@@ -50,8 +54,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+            CustomContainer.Register<ISystemInfoService>(mockSysInfo.Object);
             var feedbackViewModel = new FeedbackViewModel();
             string versionNumber = VersionInfo.FetchVersionInfo();
             StringAssert.Contains(feedbackViewModel.Comment, @"Comments : 
@@ -75,8 +78,7 @@ OS version : ");
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
+            CustomContainer.Register(mockSysInfo.Object);
 
             var mockCommService = new Mock<ICommService<EmailCommMessage>>();
             mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
@@ -86,6 +88,7 @@ OS version : ");
 
             mockCommService.Verify(c => c.SendCommunication(It.IsAny<EmailCommMessage>()), Times.Once());
         }
+        // ReSharper disable InconsistentNaming
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
@@ -93,9 +96,7 @@ OS version : ");
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
-
+            CustomContainer.Register(mockSysInfo.Object);
             var mockCommService = new Mock<ICommService<EmailCommMessage>>();
             mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
 
@@ -106,7 +107,7 @@ OS version : ");
                 {"StudioLog", "StudioLog.log"}
             };
 
-            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
+            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = e => true };
             feedbackViewModel.Send(mockCommService.Object);
 
             Assert.AreEqual("RecordingLog.log;ServerLog.log;StudioLog.log", feedbackViewModel.Attachments);
@@ -121,7 +122,6 @@ OS version : ");
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
 
             var mockCommService = new Mock<ICommService<EmailCommMessage>>();
             mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
@@ -133,8 +133,7 @@ OS version : ");
                 {"StudioLog", "StudioLog.log"}
             };
 
-            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
-            feedbackViewModel.IsOutlookInstalled = () => true;
+            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = e => true, IsOutlookInstalled = () => true };
 
             Assert.AreEqual("Open Outlook Mail", feedbackViewModel.SendMessageButtonCaption);
         }
@@ -148,7 +147,6 @@ OS version : ");
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
 
             var mockCommService = new Mock<ICommService<EmailCommMessage>>();
             mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
@@ -160,8 +158,7 @@ OS version : ");
                 {"StudioLog", "StudioLog.log"}
             };
 
-            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
-            feedbackViewModel.IsOutlookInstalled = () => false;
+            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = e => true, IsOutlookInstalled = () => false };
 
             Assert.AreEqual("Go to Community", feedbackViewModel.SendMessageButtonCaption);
         }
@@ -175,7 +172,6 @@ OS version : ");
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
 
             var mockCommService = new Mock<ICommService<EmailCommMessage>>();
             mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
@@ -187,7 +183,7 @@ OS version : ");
                 {"StudioLog", "StudioLog.log"}
             };
 
-            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
+            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = e => true };
 
             var popupController = new Mock<IBrowserPopupController>();
             popupController.Setup(m => m.ShowPopup(It.IsAny<string>())).Verifiable();
@@ -207,7 +203,6 @@ OS version : ");
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
 
             var mockCommService = new Mock<ICommService<EmailCommMessage>>();
             mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
@@ -219,7 +214,7 @@ OS version : ");
                 {"StudioLog", "StudioLog.log"}
             };
 
-            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
+            var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = e => true };
 
             var popupController = new Mock<IBrowserPopupController>();
             popupController.Setup(m => m.ShowPopup(It.IsAny<string>())).Verifiable();
@@ -230,55 +225,18 @@ OS version : ");
             popupController.Verify(m => m.ShowPopup(It.IsAny<string>()), Times.Never());
         }
 
-        //[TestMethod]
-        //[Owner("Tshepo Ntlhokoa")]
-        //[TestCategory("FeedbackViewModel_GetDefaultMailClient")]
-        //[Ignore]//testing environments need outlook installed
-        //public void FeedbackViewModel_GetDefaultMailClient_OutlookIsInstalled_MailClientIsOutlook()
-        //{
-        //    var mockSysInfo = new Mock<ISystemInfoService>();
-        //    mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
-
-        //    ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
-
-        //    var mockCommService = new Mock<ICommService<EmailCommMessage>>();
-        //    mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
-
-        //    var attacheFiles = new Dictionary<string, string>
-        //    {
-        //        { "RecordingLog", "RecordingLog.log" },
-        //        { "ServerLog", "ServerLog.log" },
-        //        { "StudioLog", "StudioLog.log" }
-        //    };
-
-        //    var feedbackViewModel = new FeedbackViewModel(attacheFiles) { DoesFileExists = (e) => true };
-
-        //    var popupController = new Mock<IBrowserPopupController>();
-        //    popupController.Setup(m => m.ShowPopup(It.IsAny<string>())).Verifiable();
-        //    feedbackViewModel.BrowserPopupController = popupController.Object;
-        //    var isOutlookInstalled = feedbackViewModel.IsOutlookInstalled();
-        //    object mailClient = Registry.GetValue(@"HKEY_LOCAL_MACHINE\SOFTWARE\Clients\Mail", "", "none") as string;
-
-        //    //Assert that the outlook is the default mail client only if its installed on the machine
-        //    if(isOutlookInstalled)
-        //    {
-        //        Assert.AreEqual("Microsoft Outlook", mailClient);
-        //    }
-        //}
-
         [TestMethod]
         public void FeedbackViewModelSendWithValidCommWithRecordingAttachmentExpectedSendMethodInvokedWithAttachment()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(sysInfo => sysInfo.GetSystemInfo()).Returns(GetMockSysInfo());
-
+            CustomContainer.Register(mockSysInfo.Object);
             var mockCommService = new Mock<ICommService<EmailCommMessage>>();
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
             mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
 
             // PBI 9598 - 2013.06.10 - TWR : fixed paths
             var attachmentPath = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
-            File.WriteAllText(attachmentPath, "test text");
+            File.WriteAllText(attachmentPath, @"test text");
 
             var attachedFiles = new Dictionary<string, string> { { "ServerLog", attachmentPath } };
             var viewModel = new FeedbackViewModel(attachedFiles);
@@ -294,20 +252,19 @@ OS version : ");
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(sysInfo => sysInfo.GetSystemInfo()).Returns(GetMockSysInfo());
-
+            CustomContainer.Register(mockSysInfo.Object);
             var mockCommService = new Mock<ICommService<EmailCommMessage>>();
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
             mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Verifiable();
 
             // PBI 9598 - 2013.06.10 - TWR : fixed paths
             var attachmentPath1 = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
-            File.WriteAllText(attachmentPath1, "test text");
+            File.WriteAllText(attachmentPath1, @"test text");
 
             var attachmentPath2 = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
-            File.WriteAllText(attachmentPath2, "test text");
+            File.WriteAllText(attachmentPath2, @"test text");
 
             var attachmentPath3 = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
-            File.WriteAllText(attachmentPath2, "test text");
+            File.WriteAllText(attachmentPath2, @"test text");
 
             var attachedFiles = new Dictionary<string, string>
             {
@@ -337,7 +294,6 @@ OS version : ");
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(c => c.GetSystemInfo()).Returns(GetMockSysInfo());
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
 
             var feedbackViewModel = new FeedbackViewModel();
             feedbackViewModel.Send(null);
@@ -350,17 +306,16 @@ OS version : ");
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
             mockSysInfo.Setup(sysInfo => sysInfo.GetSystemInfo()).Returns(GetMockSysInfo());
-
+            CustomContainer.Register(mockSysInfo.Object);
             var mockCommService = new Mock<ICommService<EmailCommMessage>>();
-            ImportService.CurrentContext = CompositionInitializer.InitializeEmailFeedbackTest(mockSysInfo);
             var actual = new EmailCommMessage();
-            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Callback<EmailCommMessage>((msg) =>
+            mockCommService.Setup(c => c.SendCommunication(It.IsAny<EmailCommMessage>())).Callback<EmailCommMessage>(msg =>
             {
                 actual = msg;
             });
 
             var attachmentPath = Path.Combine(_testDir, string.Format("FeedbackTest_{0}.txt", Guid.NewGuid()));
-            File.WriteAllText(attachmentPath, "test text");
+            File.WriteAllText(attachmentPath, @"test text");
 
             var attachedFiles = new Dictionary<string, string> { { "ServerLog", attachmentPath } };
 

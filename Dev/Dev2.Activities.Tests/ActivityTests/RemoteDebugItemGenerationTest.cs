@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using ActivityUnitTests;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.Management.Services;
@@ -60,6 +62,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject dObj = (obj as IDSFDataObject);
             Guid id;
+            Assert.IsNotNull(dObj);
             Guid.TryParse(dObj.RemoteInvokerID, out id);
             var msgs = RemoteDebugMessageRepo.Instance.FetchDebugItems(id);
             // remove test datalist ;)
@@ -79,13 +82,14 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes, true);
 
             IDSFDataObject dObj = (obj as IDSFDataObject);
+            Assert.IsNotNull(dObj);
             Guid id;
             Guid.TryParse(dObj.RemoteInvokerID, out id);
             var msgs = RemoteDebugMessageRepo.Instance.FetchDebugItems(id);
+            var serialiser = new Dev2JsonSerializer();
+            var tmp = serialiser.SerializeToBuilder(msgs);
 
-            var tmp = JsonConvert.SerializeObject(msgs);
-
-            var tmp2 = JsonConvert.DeserializeObject<IList<DebugState>>(tmp);
+            var tmp2 = serialiser.Deserialize<IList<DebugState>>(tmp);
 
             // remove test datalist ;)
             DataListRemoval(dObj.DataListID);
@@ -105,6 +109,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                                 ActivityStrings.DebugDataListWithData, out inRes, out outRes, true);
 
             IDSFDataObject dObj = (obj as IDSFDataObject);
+            Assert.IsNotNull(dObj);
             Guid id;
             Guid.TryParse(dObj.RemoteInvokerID, out id);
 
@@ -114,8 +119,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             d["InvokerID"] = new StringBuilder(id.ToString());
 
             var str = frm.Execute(d, null);
-
-            var tmp2 = JsonConvert.DeserializeObject<IList<DebugState>>(str.ToString());
+            var jsonSer = new Dev2JsonSerializer();
+            var tmp2 = jsonSer.Deserialize<IList<DebugState>>(str.ToString());
 
             // remove test datalist ;)
             DataListRemoval(dObj.DataListID);

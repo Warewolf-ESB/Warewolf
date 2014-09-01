@@ -1,6 +1,5 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
-using Dev2.Composition;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
@@ -23,7 +22,6 @@ namespace Dev2.Core.Tests.Deploy
 {
     public abstract class DeployViewModelTestBase
     {
-        protected static ImportServiceContext OkayContext = new Mock<ImportServiceContext>().Object;
         static readonly Action<System.Action, DispatcherPriority> Invoke = (a, b) => { };
         #region Setup DeploymentViewModel
         protected static DeployStatsCalculator SetupDeployViewModel(out DeployViewModel deployViewModel)
@@ -118,7 +116,6 @@ namespace Dev2.Core.Tests.Deploy
 
         protected static DeployViewModel SetupDeployViewModel(out Mock<IEnvironmentModel> destEnv, out Mock<IEnvironmentModel> destServer)
         {
-            ImportService.CurrentContext = OkayContext;
 
             var destConnection = new Mock<IEnvironmentConnection>();
 
@@ -151,7 +148,6 @@ namespace Dev2.Core.Tests.Deploy
 
         protected static Guid SetupVmForMessages(out IEnvironmentModel server, out DeployViewModel vm, Mock<IEventAggregator> mockEventAggregator = null)
         {
-            ImportService.CurrentContext = new Mock<ImportServiceContext>().Object;
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
             var envId = env.Object.ID;
             server = env.Object;

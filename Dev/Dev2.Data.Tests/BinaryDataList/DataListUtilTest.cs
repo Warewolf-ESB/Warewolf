@@ -1,5 +1,5 @@
 ﻿using Dev2.Common;
-using Dev2.Common.StringTokenizer.Interfaces;
+using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

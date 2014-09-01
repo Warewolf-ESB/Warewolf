@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using ActivityUnitTests;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -56,7 +57,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             ThenTheDebugInputsAs(table, inputDebugItems);
         }
 
-        public void ThenTheDebugInputsAs(Table table, List<DebugItemResult> inputDebugItems, bool isDataMerge = false)
+        public void ThenTheDebugInputsAs(Table table, List<IDebugItemResult> inputDebugItems, bool isDataMerge = false)
         {
             var expectedDebugItems = BuildExpectedDebugItems(table);
             CollectionsAssert(expectedDebugItems, inputDebugItems);
@@ -69,7 +70,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             ThenTheDebugOutputAs(table, outputDebugItems);
         }
 
-        public void ThenTheDebugOutputAs(Table table, List<DebugItemResult> outputDebugItems, bool isDataMerge = false)
+        public void ThenTheDebugOutputAs(Table table, List<IDebugItemResult> outputDebugItems, bool isDataMerge = false)
         {
             var expectedDebugItems = BuildExpectedDebugItems(table);
 
@@ -383,7 +384,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             return objRef;
         }
 
-        public static List<DebugItemResult> GetInputDebugItems(Activity act = null)
+        public static List<IDebugItemResult> GetInputDebugItems(Activity act = null)
         {
             ErrorResultTO errors;
             var comiler = DataListFactory.CreateDataListCompiler();
@@ -414,14 +415,14 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
-        static List<DebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IBinaryDataList dl)
+        static List<IDebugItemResult> DebugItemResults<T>(DsfActivityAbstract<T> dsfActivityAbstractString, IBinaryDataList dl)
         {
             return dsfActivityAbstractString.GetDebugInputs(dl)
                 .SelectMany(r => r.ResultsList)
                 .ToList();
         }
 
-        public static List<DebugItemResult> GetOutputDebugItems(Activity act = null)
+        public static List<IDebugItemResult> GetOutputDebugItems(Activity act = null)
         {
             ErrorResultTO errors;
             var comiler = DataListFactory.CreateDataListCompiler();
@@ -445,10 +446,10 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
-        static List<DebugItemResult> BuildExpectedDebugItems(Table table)
+        static List<IDebugItemResult> BuildExpectedDebugItems(Table table)
         {
             var columnHeaders = table.Header.ToArray();
-            List<DebugItemResult> list = new List<DebugItemResult>();
+            List<IDebugItemResult> list = new List<IDebugItemResult>();
 
 
             foreach(TableRow row in table.Rows)
@@ -464,7 +465,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
 
 
-        static void BuildDebugItems(TableRow row, int index, string columnHeader, List<DebugItemResult> list)
+        static void BuildDebugItems(TableRow row, int index, string columnHeader, List<IDebugItemResult> list)
         {
             if(!string.IsNullOrEmpty(row[index]))
             {
@@ -575,7 +576,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
-        static void CollectionsAssert(List<DebugItemResult> expectedDebugItems, List<DebugItemResult> inputDebugItems)
+        static void CollectionsAssert(List<IDebugItemResult> expectedDebugItems, List<IDebugItemResult> inputDebugItems)
         {
             Assert.AreEqual(expectedDebugItems.Count, inputDebugItems.Count);
 
@@ -625,7 +626,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
-        static void RemoveTralingAndLeadingSpaces(List<DebugItemResult> expectedDebugItems, List<DebugItemResult> inputDebugItems)
+        static void RemoveTralingAndLeadingSpaces(List<IDebugItemResult> expectedDebugItems, List<IDebugItemResult> inputDebugItems)
         {
             for(int i = 0; i < expectedDebugItems.Count; i++)
             {

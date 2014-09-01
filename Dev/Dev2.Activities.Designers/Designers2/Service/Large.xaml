@@ -14,7 +14,8 @@
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.Service"
                                xmlns:interfaces="clr-namespace:Dev2.Data.Interfaces;assembly=Dev2.Data"
                                xmlns:system="clr-namespace:System;assembly=mscorlib"
-                               MinWidth="350"
+    xmlns:data="clr-namespace:Dev2.Common.Interfaces.Data;assembly=Dev2.Common.Interfaces"
+    MinWidth="350"
                                Width="350"
                                MinHeight="200"
                                Padding="7"
@@ -88,7 +89,7 @@
                                             MinWidth="125"
                                             Header="Input Data or [[Variable]]"
                                             HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=interfaces:IInputOutputViewModel}">
+                                            d:DataContext="{d:DesignInstance Type=data:IInputOutputViewModel}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ui:IntellisenseTextBox AllowUserInsertLine="False"
@@ -148,7 +149,7 @@
                                             MinWidth="65"
                                             Header="To Service"
                                             HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=interfaces:IInputOutputViewModel}">
+                                            d:DataContext="{d:DesignInstance Type=data:IInputOutputViewModel}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
@@ -213,7 +214,7 @@
                                             MinWidth="90"
                                             Header="Output From Service"
                                             HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=interfaces:IInputOutputViewModel}">
+                                            d:DataContext="{d:DesignInstance Type=data:IInputOutputViewModel}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid Background="{StaticResource DataGridColumnHeaderBackgroundBrush}">
@@ -235,7 +236,7 @@
                                             IsReadOnly="False"
                                             Header="To [[Variable]]"
                                             HeaderStyle="{StaticResource ActivityMapppingDataGridHeaderStyle}"
-                                            d:DataContext="{d:DesignInstance Type=interfaces:IInputOutputViewModel}">
+                                            d:DataContext="{d:DesignInstance Type=data:IInputOutputViewModel}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <ui:IntellisenseTextBox AllowUserInsertLine="False"

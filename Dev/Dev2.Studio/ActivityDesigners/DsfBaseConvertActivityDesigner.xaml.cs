@@ -10,7 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Dev2;
 using Dev2.Activities.Designers2.Core.Controls;
-using Dev2.Common;
+using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Converters;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Models.QuickVariableInput;

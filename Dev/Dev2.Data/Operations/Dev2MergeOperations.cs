@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Text;
 using Dev2.Data.Enums;
 

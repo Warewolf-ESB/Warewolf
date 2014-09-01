@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
-using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;

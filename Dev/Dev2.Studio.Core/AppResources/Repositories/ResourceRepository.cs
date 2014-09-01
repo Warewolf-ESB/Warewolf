@@ -1,15 +1,23 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Windows;
+using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices;
 using Dev2.Explorer;
 using Dev2.Models;
 using Dev2.Providers.Logs;
@@ -25,15 +33,6 @@ using Dev2.Studio.Core.Utils;
 using Dev2.Utils;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Windows;
-using System.Xml.Linq;
-
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Repositories

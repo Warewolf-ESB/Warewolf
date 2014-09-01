@@ -1,19 +1,17 @@
-﻿using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core.AppResources;
-using Dev2.Studio.Core.Interfaces;
-using System;
-using System.ComponentModel.Composition;
+﻿using System;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Core.AppResources;
+using Dev2.Studio.Core.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Administration
 {
 
-    [Export(typeof(IDialogueViewModel))]
     public class DialogueViewModel : IDialogueViewModel
     {
 

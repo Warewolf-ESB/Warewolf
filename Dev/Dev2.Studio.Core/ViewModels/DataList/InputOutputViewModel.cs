@@ -1,9 +1,9 @@
-﻿using Dev2.Data.Interfaces;
+﻿using System;
+using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
-using System;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace

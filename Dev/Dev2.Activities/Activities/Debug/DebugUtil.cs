@@ -1,7 +1,7 @@
-﻿using Dev2.Data.Util;
+﻿using System;
+using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using System;
 
 namespace Dev2.Activities.Debug
 {

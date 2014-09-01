@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Dev2.Common.StringTokenizer.Interfaces;
+using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Common

@@ -1,5 +1,6 @@
 ﻿using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Integration.Tests.Dev2.Application.Server.Tests.Workspace.XML;
 using Dev2.Integration.Tests.Helpers;
@@ -16,7 +17,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml.Linq;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.Ouput;
 
 // ReSharper disable InconsistentNaming

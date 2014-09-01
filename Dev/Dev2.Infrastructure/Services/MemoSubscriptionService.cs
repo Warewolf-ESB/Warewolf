@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.Communication;
-using Dev2.Providers.Events;
+using Dev2.Common.Interfaces.Communication;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 
 namespace Dev2.Services
 {

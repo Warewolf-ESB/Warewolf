@@ -1,4 +1,9 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -8,17 +13,11 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;
 using Dev2.Webs.Callbacks;
-using System.ComponentModel.Composition;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Help
 // ReSharper restore CheckNamespace
 {
-    [Export]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     public class HelpViewModel : BaseWorkSurfaceViewModel,
         IHandle<TabClosedMessage>
     {
@@ -55,10 +54,10 @@ namespace Dev2.Studio.ViewModels.Help
         {
             get { return WorkSurfaceContext.Help; }
         }
-
+       
         protected override void OnViewLoaded(object view)
         {
-            base.OnViewLoaded(view);
+            base.OnViewLoaded(view);    
             var helpView = view as HelpView;
             if(helpView == null)
             {
@@ -114,7 +113,7 @@ namespace Dev2.Studio.ViewModels.Help
             FieldInfo fiComWebBrowser = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
             if(fiComWebBrowser == null)
             {
-                return;
+                return; 
             }
 
             object objComWebBrowser = fiComWebBrowser.GetValue(webBrowser);
@@ -125,9 +124,9 @@ namespace Dev2.Studio.ViewModels.Help
 
             objComWebBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objComWebBrowser, new object[] { true });
         }
-
+        
         public void Handle(TabClosedMessage message)
-        {
+        {   
             this.TraceInfo(message.GetType().Name);
             if(!message.Context.Equals(this)) return;
 

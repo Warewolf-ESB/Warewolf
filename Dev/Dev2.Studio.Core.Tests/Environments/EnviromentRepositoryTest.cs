@@ -1,10 +1,8 @@
 ﻿using System.Linq.Expressions;
-using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
-using Dev2.Composition;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices;
 using Dev2.Providers.Events;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -17,7 +15,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -38,9 +35,6 @@ namespace Dev2.Core.Tests.Environments
     [ExcludeFromCodeCoverage]
     public class EnviromentRepositoryTest
     {
-        // Needed for Source initialization!!!
-        public static ImportServiceContext EnviromentRepositoryImportServiceContext;
-
         static readonly object TestLock = new object();
 
         #region MyClass/TestInitialize
@@ -54,21 +48,12 @@ namespace Dev2.Core.Tests.Environments
 
         static void SetupMef()
         {
-
-            var eventAggregator = new Mock<IEventAggregator>();
-
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>());
-            ImportService.AddExportedValueToContainer(eventAggregator.Object);
-            EnviromentRepositoryImportServiceContext = importServiceContext;
         }
 
         [TestInitialize]
         public void MyTestInitialize()
         {
             Monitor.Enter(TestLock);
-            ImportService.CurrentContext = EnviromentRepositoryImportServiceContext;
         }
 
         [TestCleanup]

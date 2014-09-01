@@ -1,5 +1,5 @@
 ﻿using System;
-using Dev2.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Scheduler.Test

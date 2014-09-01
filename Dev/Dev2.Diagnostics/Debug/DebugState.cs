@@ -9,6 +9,7 @@ using System.Xml.Schema;
 using System.Xml.Serialization;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 #endregion
 
@@ -18,7 +19,7 @@ namespace Dev2.Diagnostics.Debug
     ///     A default debug state
     /// </summary>
     [Serializable]
-    public class DebugState : IDebugState, IXmlSerializable
+    public class DebugState : IDebugState
     {
         /// <summary>
         ///     Gets or sets a value indicating whether this instance has an error.
@@ -31,8 +32,8 @@ namespace Dev2.Diagnostics.Debug
 
         public DebugState()
         {
-            Inputs = new List<DebugItem>();
-            Outputs = new List<DebugItem>();
+            Inputs = new List<IDebugItem>();
+            Outputs = new List<IDebugItem>();
 
             _tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
             if(!Directory.Exists(_tempPath))
@@ -160,12 +161,12 @@ namespace Dev2.Diagnostics.Debug
         /// <summary>
         ///     Gets the inputs.
         /// </summary>
-        public List<DebugItem> Inputs { get; private set; }
+        public List<IDebugItem> Inputs { get; private set; }
 
         /// <summary>
         ///     Gets the outputs.
         /// </summary>
-        public List<DebugItem> Outputs { get; private set; }
+        public List<IDebugItem> Outputs { get; private set; }
 
         /// <summary>
         ///     Gets or sets the server name.
@@ -315,7 +316,7 @@ namespace Dev2.Diagnostics.Debug
 
         #region IDebugItem serialization helper methods
 
-        private void Serialize(IByteWriterBase writer, IList<DebugItem> items)
+        private void Serialize(IByteWriterBase writer, IList<IDebugItem> items)
         {
 
             writer.Write(items.Count);
@@ -338,7 +339,7 @@ namespace Dev2.Diagnostics.Debug
             // ReSharper restore ForCanBeConvertedToForeach
         }
 
-        private static void Deserialize(IByteReaderBase reader, ICollection<DebugItem> items)
+        private static void Deserialize(IByteReaderBase reader, ICollection<IDebugItem> items)
         {
             var count = reader.ReadInt32();
             for(var i = 0; i < count; i++)
@@ -453,7 +454,7 @@ namespace Dev2.Diagnostics.Debug
 
                 if(reader.IsStartElement("Inputs"))
                 {
-                    Inputs = new List<DebugItem>();
+                    Inputs = new List<IDebugItem>();
                     reader.ReadStartElement();
                     while(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugItem")
                     {
@@ -466,7 +467,7 @@ namespace Dev2.Diagnostics.Debug
 
                 if(reader.IsStartElement("Outputs"))
                 {
-                    Outputs = new List<DebugItem>();
+                    Outputs = new List<IDebugItem>();
                     reader.ReadStartElement();
                     while(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugItem")
                     {

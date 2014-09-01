@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;

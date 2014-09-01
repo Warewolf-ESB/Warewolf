@@ -1,4 +1,5 @@
 ﻿// Copyright (C) Josh Smith - May 2007
+
 using System;
 using System.ComponentModel;
 using System.Windows;

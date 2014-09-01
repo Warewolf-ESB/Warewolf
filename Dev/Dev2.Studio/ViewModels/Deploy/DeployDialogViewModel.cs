@@ -1,5 +1,4 @@
-﻿
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Base;

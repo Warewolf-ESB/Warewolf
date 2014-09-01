@@ -1,10 +1,10 @@
-﻿using Dev2.Common;
-using Dev2.Converters.DateAndTime.Interfaces;
-using Dev2.Converters.DateAndTime.TO;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
+using Dev2.Converters.DateAndTime.TO;
 
 namespace Dev2.Converters.DateAndTime
 {
@@ -360,7 +360,7 @@ namespace Dev2.Converters.DateAndTime
                     while(count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
                     {
                         IDateTimeFormatPartTO formatPart = formatParts[count];
-
+                            
                         int resultLength;
                         if(TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime, out resultLength, out error))
                         {
@@ -464,7 +464,7 @@ namespace Dev2.Converters.DateAndTime
         private static bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
         {
             bool nothingDied = true;
-
+            
             error = "";
             resultLength = 0;
 
@@ -507,7 +507,7 @@ namespace Dev2.Converters.DateAndTime
                         error = string.Concat("Unrecognised format part '", part.Value, "'.");
                     }
                 }
-
+                
 
                 if(nothingDied)
                 {
@@ -537,7 +537,7 @@ namespace Dev2.Converters.DateAndTime
                         else
                         {
                             forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, partOption.Length);
-
+                            
                             predicateRun = partOption.Predicate(forwardLookupResult, passAsTime);
                         }
 
@@ -603,7 +603,7 @@ namespace Dev2.Converters.DateAndTime
         {
             error = "";
             //2013.06.03: Ashley Lewis for bug 9601 - reduced forward look up from 3 to 2
-            result = ForwardLookup(formatArray, startPosition, 2);
+            result = ForwardLookup(formatArray, startPosition, 2); 
             return (result == "''");
         }
 
@@ -625,7 +625,7 @@ namespace Dev2.Converters.DateAndTime
                 // Perform all forward lookups
                 //
                 List<string> lookupResults = lookupLengths.Select(i => ForwardLookup(formatArray, startPosition, i)).ToList();
-
+                
                 int count = 0;
                 while(count < lookupResults.Count && nothingDied)
                 {
@@ -641,7 +641,7 @@ namespace Dev2.Converters.DateAndTime
                     else if(count == lookupLengths.Count - 1)
                     {
                         nothingDied = false;
-                        error = string.Concat("Failed to find any format part matches in forward lookups from character '", forwardLookupIndex, "' at index ", startPosition, " of format.");
+                        error = string.Concat("Failed to find any format part matches in forward lookups from character '", forwardLookupIndex, "' at index ", startPosition, " of format.");                        
                     }
 
                     count++;
@@ -663,7 +663,7 @@ namespace Dev2.Converters.DateAndTime
         {
             string result = "";
             int position = startPosition;
-
+            
             while(position >= 0 && position < formatArray.Length && position < (startPosition + lookupLength))
             {
                 result += formatArray[position];
@@ -920,7 +920,7 @@ namespace Dev2.Converters.DateAndTime
             { 
                 new DateTimeFormatPartOptionTO(2, IsNumberWeekOfYear, true, null, AssignWeeks),
                 new DateTimeFormatPartOptionTO(1, IsNumberWeekOfYear, true, null, AssignWeeks),
-            });
+            });            
 
             DateTimeFormatsParts.Add("24h", new DateTimeFormatPartTO("24h", false, "Hours in 24 hour format: 15"));
             DateTimeFormatPartOptions.Add("24h",
@@ -1146,7 +1146,7 @@ namespace Dev2.Converters.DateAndTime
                 new DateTimeFormatPartOptionTO(2, IsTextAmPm, false, null, AssignAmPm),
             });
 
-            TimeFormatPartOptions.Add("Z", TimeZones.Select(k =>
+            TimeFormatPartOptions.Add("Z", TimeZones.Select(k => 
                 {
                     IDateTimeFormatPartOptionTO dateTimeFormatPartOptionTo = new DateTimeFormatPartOptionTO(k.Key.Length, IsTextTimeZone, false, null, AssignTimeZone);
                     return dateTimeFormatPartOptionTo;
@@ -1932,11 +1932,11 @@ namespace Dev2.Converters.DateAndTime
 
         #endregion Predicates
         #endregion Private Methods
-
+     
 
         #region Properties
 
-        public List<IDateTimeFormatPartTO> DateTimeFormatParts
+        public List<IDateTimeFormatPartTO> DateTimeFormatParts 
         {
             get
             {

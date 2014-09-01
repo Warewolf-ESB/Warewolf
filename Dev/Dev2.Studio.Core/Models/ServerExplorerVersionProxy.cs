@@ -1,11 +1,11 @@
-﻿using Dev2.Common.Interfaces.Explorer;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using Dev2.Controller;
 using Dev2.Studio.Core.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Dev2.Models
 {

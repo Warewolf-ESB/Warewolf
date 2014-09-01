@@ -1,4 +1,6 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Runtime.Serialization;
+using Caliburn.Micro;
 using Dev2.Messages;
 using Dev2.Security;
 using Dev2.Studio.AppResources.Comparers;
@@ -7,8 +9,6 @@ using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.ViewModels.Diagnostics;
-using System;
-using System.Runtime.Serialization;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface

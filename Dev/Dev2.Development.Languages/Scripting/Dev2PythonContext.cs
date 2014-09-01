@@ -1,6 +1,6 @@
 ﻿using System;
-using Dev2.Common;
-using Dev2.Common.Enums;
+using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Scripting;
 using IronPython.Hosting;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;

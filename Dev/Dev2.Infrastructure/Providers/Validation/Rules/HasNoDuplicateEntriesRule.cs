@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {

@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Reflection;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 
 namespace Dev2.Providers.Events
 {

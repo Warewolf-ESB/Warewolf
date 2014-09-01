@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using Unlimited.Framework.Converters.Graph.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Json;
 
 namespace Dev2.Tests.Runtime.Util

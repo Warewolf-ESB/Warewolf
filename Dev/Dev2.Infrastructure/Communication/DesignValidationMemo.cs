@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 namespace Dev2.Communication
 {
@@ -8,7 +8,7 @@ namespace Dev2.Communication
     {
         public DesignValidationMemo()
         {
-            Errors = new List<ErrorInfo>();
+            Errors = new List<IErrorInfo>();
             IsValid = true;
         }
 
@@ -17,6 +17,6 @@ namespace Dev2.Communication
         public Guid ServiceID { get; set; }
         public bool IsValid { get; set; }
 
-        public List<ErrorInfo> Errors { get; set; }
+        public List<IErrorInfo> Errors { get; set; }
     }
 }

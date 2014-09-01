@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Input;
-using Dev2.Data.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Configuration.ViewModels.Base;

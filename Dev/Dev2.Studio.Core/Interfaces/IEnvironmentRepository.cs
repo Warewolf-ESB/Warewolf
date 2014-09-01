@@ -1,6 +1,7 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces;
+
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Interfaces

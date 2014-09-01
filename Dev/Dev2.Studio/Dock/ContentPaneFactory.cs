@@ -1,9 +1,4 @@
-﻿using Dev2.Studio.ViewModels;
-using Dev2.Studio.ViewModels.WorkSurface;
-using Infragistics;
-using Infragistics.Windows.DockManager;
-using Infragistics.Windows.DockManager.Events;
-using System;
+﻿using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -12,6 +7,11 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using Dev2.Studio.ViewModels;
+using Dev2.Studio.ViewModels.WorkSurface;
+using Infragistics;
+using Infragistics.Windows.DockManager;
+using Infragistics.Windows.DockManager.Events;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Dock

@@ -7,9 +7,8 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Timers;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Data.Enums;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data.ServiceModel.Messages;
-using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -19,8 +18,8 @@ namespace Dev2.Runtime.Hosting
     public class CompileMessageRepo : IDisposable
     {
         // used for storing message about resources ;) 
-        readonly IDictionary<Guid, IList<CompileMessageTO>> _messageRepo = new Dictionary<Guid, IList<CompileMessageTO>>();
-        static Subject<IList<CompileMessageTO>> _allMessages = new Subject<IList<CompileMessageTO>>();
+        readonly IDictionary<Guid, IList<ICompileMessageTO>> _messageRepo = new Dictionary<Guid, IList<ICompileMessageTO>>();
+        static Subject<IList<ICompileMessageTO>> _allMessages = new Subject<IList<ICompileMessageTO>>();
         private static readonly object Lock = new object();
         private static bool _changes;
         private static readonly Timer PersistTimer = new Timer(1000 * 5); // wait 5 seconds to fire ;)
@@ -84,7 +83,7 @@ namespace Dev2.Runtime.Hosting
 
         public int MessageCount(Guid wId)
         {
-            IList<CompileMessageTO> messages;
+            IList<ICompileMessageTO> messages;
 
             if(_messageRepo.TryGetValue(wId, out messages))
             {
@@ -121,7 +120,7 @@ namespace Dev2.Runtime.Hosting
                                 {
                                     object obj = bf.Deserialize(s);
 
-                                    var listOf = (obj as IList<CompileMessageTO>);
+                                    var listOf = (obj as IList<ICompileMessageTO>);
 
                                     if(listOf != null)
                                     {
@@ -187,7 +186,7 @@ namespace Dev2.Runtime.Hosting
                         var keys = _messageRepo.Keys;
                         foreach(var k in keys)
                         {
-                            IList<CompileMessageTO> val;
+                            IList<ICompileMessageTO> val;
                             if(_messageRepo.TryGetValue(k, out val))
                             {
                                 var pPath = Path.Combine(path, k + ".msg");
@@ -216,7 +215,7 @@ namespace Dev2.Runtime.Hosting
         /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="msgs">The MSGS.</param>
         /// <returns></returns>
-        public bool AddMessage(Guid workspaceId, IList<CompileMessageTO> msgs)
+        public bool AddMessage(Guid workspaceId, IList<ICompileMessageTO> msgs)
         {
             if(msgs.Count == 0)
             {
@@ -224,10 +223,10 @@ namespace Dev2.Runtime.Hosting
             }
             lock(Lock)
             {
-                IList<CompileMessageTO> messages;
+                IList<ICompileMessageTO> messages;
                 if(!_messageRepo.TryGetValue(workspaceId, out messages))
                 {
-                    messages = new List<CompileMessageTO>();
+                    messages = new List<ICompileMessageTO>();
                 }
 
                 // clean up any messages with the same id and add
@@ -261,12 +260,12 @@ namespace Dev2.Runtime.Hosting
         {
             lock(Lock)
             {
-                IList<CompileMessageTO> messages;
+                IList<ICompileMessageTO> messages;
                 if(_messageRepo.TryGetValue(workspaceId, out messages))
                 {
                     var candidateMessage = messages.Where(c => c.ServiceID == serviceId);
 
-                    var compileMessageTos = candidateMessage as IList<CompileMessageTO> ?? candidateMessage.ToList();
+                    var compileMessageTos = candidateMessage as IList<ICompileMessageTO> ?? candidateMessage.ToList();
                     foreach(var msg in compileMessageTos)
                     {
                         messages.Remove(msg);
@@ -289,11 +288,11 @@ namespace Dev2.Runtime.Hosting
         /// <returns></returns>
         public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, IList<IResourceForTree> deps, CompileMessageType[] filter = null)
         {
-            IList<CompileMessageTO> result = new List<CompileMessageTO>();
+            IList<ICompileMessageTO> result = new List<ICompileMessageTO>();
 
             lock(Lock)
             {
-                IList<CompileMessageTO> messages;
+                IList<ICompileMessageTO> messages;
                 if(_messageRepo.TryGetValue(workspaceId, out messages))
                 {
                     // Fetch dep list and process ;)
@@ -303,7 +302,7 @@ namespace Dev2.Runtime.Hosting
                         {
                             IResourceForTree d1 = d;
                             var candidateMessage = messages.Where(c => c.ServiceID == d1.ResourceID);
-                            var compileMessageTos = candidateMessage as IList<CompileMessageTO> ??
+                            var compileMessageTos = candidateMessage as IList<ICompileMessageTO> ??
                                                     candidateMessage.ToList();
 
                             foreach(var msg in compileMessageTos)
@@ -330,16 +329,16 @@ namespace Dev2.Runtime.Hosting
 
         public CompileMessageList FetchMessages(Guid workspaceId, Guid serviceId, IList<string> dependants, CompileMessageType[] filter = null)
         {
-            IList<CompileMessageTO> result = new List<CompileMessageTO>();
+            IList<ICompileMessageTO> result = new List<ICompileMessageTO>();
 
             lock(Lock)
             {
-                IList<CompileMessageTO> messages;
+                IList<ICompileMessageTO> messages;
                 if(_messageRepo.TryGetValue(workspaceId, out messages))
                 {
 
                     var candidateMessage = messages.Where(c => c.ServiceID == serviceId);
-                    var compileMessageTos = candidateMessage as IList<CompileMessageTO> ??
+                    var compileMessageTos = candidateMessage as IList<ICompileMessageTO> ??
                                             candidateMessage.ToList();
 
                     foreach(var msg in compileMessageTos)
@@ -360,7 +359,7 @@ namespace Dev2.Runtime.Hosting
             return compileMessageList;
         }
 
-        public IObservable<IList<CompileMessageTO>> AllMessages
+        public IObservable<IList<ICompileMessageTO>> AllMessages
         {
             get
             {
@@ -388,7 +387,7 @@ namespace Dev2.Runtime.Hosting
         public void ClearObservable()
         {
             _allMessages.OnCompleted();
-            _allMessages = new Subject<IList<CompileMessageTO>>();
+            _allMessages = new Subject<IList<ICompileMessageTO>>();
         }
     }
 }

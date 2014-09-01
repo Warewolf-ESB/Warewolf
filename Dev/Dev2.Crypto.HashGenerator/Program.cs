@@ -2,7 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using Dev2.Common.Utils;
+using Dev2.Common.Interfaces.Utils;
 
 namespace Dev2.Crypto.HashGenerator
 {

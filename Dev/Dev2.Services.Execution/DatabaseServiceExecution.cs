@@ -6,10 +6,10 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Services.Execution
 {
@@ -42,7 +42,7 @@ namespace Dev2.Services.Execution
             try
             {
                 _sqlServer = new SqlServer();
-                var connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, Service.Method.Name);
+                var connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, String.IsNullOrEmpty(Service.Method.ExecuteAction) ? Service.Method.Name : Service.Method.ExecuteAction);
                 if(!connected)
                 {
                     this.LogError(string.Format("Failed to connect with the following connection string: '{0}'", Source.ConnectionString));

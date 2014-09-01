@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Dev2.Common;
-using Dev2.Common.Enums;
+using Dev2.Common.Interfaces.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests

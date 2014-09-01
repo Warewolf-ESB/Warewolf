@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Services;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

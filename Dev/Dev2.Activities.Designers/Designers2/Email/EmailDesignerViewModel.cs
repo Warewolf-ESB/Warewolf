@@ -1,9 +1,18 @@
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Communication;
 using Dev2.Data.Enums;
-using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Runtime.Configuration.ViewModels.Base;
@@ -16,13 +25,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Validation;
-using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
-using System.Windows.Input;
 
 namespace Dev2.Activities.Designers2.Email
 {

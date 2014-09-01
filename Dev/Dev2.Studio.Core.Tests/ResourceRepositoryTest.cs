@@ -1,11 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
-using Dev2.Composition;
 using Dev2.Controller;
 using Dev2.Core.Tests;
 using Dev2.Core.Tests.Environments;
@@ -2430,7 +2431,6 @@ namespace BusinessDesignStudio.Unit.Tests
             var payload = JsonConvert.SerializeObject(msg);
 
             //MEF!!!!
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
             var mockEnvironment = new Mock<IEnvironmentModel>();
             var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentConnection.Setup(c => c.IsConnected).Returns(true);

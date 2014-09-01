@@ -1,5 +1,4 @@
-﻿using Dev2.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
@@ -7,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Interactivity;
+using Dev2.Models;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.AppResources.Behaviors

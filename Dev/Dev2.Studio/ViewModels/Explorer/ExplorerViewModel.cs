@@ -1,6 +1,7 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Linq;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
-using Dev2.Common.Interfaces;
 using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
 using Dev2.Interfaces;
@@ -12,15 +13,10 @@ using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
-using System;
-using System.ComponentModel.Composition;
-using System.Linq;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Explorer
 {
-    [Export]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     public class ExplorerViewModel : BaseViewModel,
                                      IHandle<RemoveEnvironmentMessage>,
                                      IHandle<EnvironmentDeletedMessage>
@@ -61,10 +57,8 @@ namespace Dev2.Studio.ViewModels.Explorer
         #endregion Commands
 
         #region Properties
-        [Import]
         public IFilePersistenceProvider FilePersistenceProvider { get; set; }
 
-        [Import]
         public IWindowManager WindowManager { get; set; }
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }

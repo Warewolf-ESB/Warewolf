@@ -246,7 +246,6 @@
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
     <Compile Include="AppResources\AttachedProperties\TreeViewItemScrollBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\ActivityDesignerAugmentationBehavior.cs" />
-    <Compile Include="AppResources\Behaviors\AutomationIdCreationBehaviour.cs" />
     <Compile Include="AppResources\Behaviors\BringIntoViewWhenSelectedBehavior.cs" />
     <Compile Include="AppResources\Behaviors\ButtonPopupWorkaroundBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TextboxSetFocusOnCreationBehavior.cs" />
@@ -586,7 +585,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Wizards\DsfActivityWizCallback.cs" />
     <Page Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1328,10 +1326,6 @@
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Composition\Dev2.Composition.csproj">
-      <Project>{B91813C8-499C-4D65-A0D4-57C7FA5F5413}</Project>
-      <Name>Dev2.Composition</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.OutputLibraries\Dev2.OutputLibraries.csproj">
       <Project>{38650e4e-90e2-44de-a32f-30f3c4d1438b}</Project>
       <Name>Dev2.OutputLibraries</Name>
@@ -1365,7 +1359,9 @@
       <Name>Dev2.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Wizards\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">
     <PostBuildEvent>

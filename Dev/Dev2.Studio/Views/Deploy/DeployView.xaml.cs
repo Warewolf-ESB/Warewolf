@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using Dev2.Models;
 using Dev2.Studio.ViewModels.Deploy;
-using System.Windows;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Deploy

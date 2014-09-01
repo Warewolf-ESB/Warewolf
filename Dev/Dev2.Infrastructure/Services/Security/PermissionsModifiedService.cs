@@ -1,5 +1,5 @@
-﻿using Dev2.Communication;
-using Dev2.Providers.Events;
+﻿using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Communication;
 
 namespace Dev2.Services.Security
 {

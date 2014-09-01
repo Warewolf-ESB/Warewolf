@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

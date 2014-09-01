@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ActivityUnitTests;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;

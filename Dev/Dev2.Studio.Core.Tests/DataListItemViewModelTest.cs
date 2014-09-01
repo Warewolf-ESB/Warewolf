@@ -1,107 +1,45 @@
 ﻿using Caliburn.Micro;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.ViewModels;
-using Microsoft.VisualStudio.TestTools.UnitTesting;using System.Diagnostics.CodeAnalysis;
-using System;
-using Dev2.Studio.Core.Interfaces;
-using System.Collections.Generic;
-using Moq;
-using System.Collections.ObjectModel;
-using Unlimited.Framework;
-using Dev2.Studio.Core;
-using Dev2.Composition;
-using System.ComponentModel.Composition.Primitives;
-using System.ComponentModel.Composition.Hosting;
-using System.Reflection;
-using System.Xml.Linq;
-using Dev2.Core.Tests.Utils;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.Factories;
 
 namespace Dev2.Core.Tests
 {
-    
-    
+
+    // ReSharper disable InconsistentNaming
+
     /// <summary>
     ///This is a test class for DataListItemViewModelTest and is intended
     ///to contain all DataListItemViewModelTest Unit Tests
     ///</summary>
-    [TestClass()]
-    public class DataListItemViewModelTest:IHandle<DataListItemSelectedMessage> {
-        
-        #region Locals
-                
-        private DataListViewModelTestHelper _helper;        
-        IDataListItemModel _dataListItemModel;
-        int count = 0;
+    [TestClass]
+    public class DataListItemViewModelTest : IHandle<DataListItemSelectedMessage>
+    {
 
-        private static ImportServiceContext _importServiceContext;
+        #region Locals
+
+        IDataListItemModel _dataListItemModel;
+        int _count;
+
 
         #endregion
-       
-        private TestContext testContextInstance;
 
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
-        public TestContext TestContext {
-            get {
-                return testContextInstance;
-            }
-            set {
-                testContextInstance = value;
-            }
-        }
 
         #region Additional test attributes
-        // 
-        //You can use the following additional attributes as you write your tests:
-        //
-        //Use ClassInitialize to run code before running the first test in the class
 
-        [ClassInitialize()]
+        [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
-            _importServiceContext = CompositionInitializer.InitializeMockedMainViewModel();
         }
-        //
-        //Use ClassCleanup to run code after all tests in a class have run
-        //[ClassCleanup()]
-        //public static void MyClassCleanup()
-        //{
-        //}
-        //
-        //Use TestInitialize to run code before running each test
-        [TestInitialize()]
-        public void MyTestInitialize() {
-            ImportService.CurrentContext = _importServiceContext;
-            _helper = new DataListViewModelTestHelper();           
+
+        [TestInitialize]
+        public void MyTestInitialize()
+        {
             _dataListItemModel = DataListItemModelFactory.CreateDataListModel("testItem");
-
-            //PrepopulateDataListItemViewModel();
         }
 
 
-        //
-        //Use TestCleanup to run code after each test has run
-        //[TestCleanup()]
-        //public void MyTestCleanup()
-        //{
-        //}
-        //
-
-        //private void PrepopulateDataListItemViewModel() {
-        //    _dataListItemModel.Description = "testDescription";
-        //    _dataListItemModel.Name = "testName";
-
-        //    _dataListItemModel.Children.Add(new DataListItemModel(_mockDataListViewModel.Object) { Parent = _dataListItemModel, Name = "Country", Description = "Name of Country", IsSelected = true });
-        //    IDataListItemModel carRecordset = new DataListItemModel(_mockDataListViewModel.Object) { Parent = _dataListItemModel, Name = "Car", Description = "A recordset of information about a car" };
-        //    carRecordset.Children.Add(new DataListItemModel(_mockDataListViewModel.Object) { Parent = carRecordset, Name = "Make", Description = "Make of vehicle" });
-        //    carRecordset.Children.Add(new DataListItemModel(_mockDataListViewModel.Object) { Parent = carRecordset, Name = "Model", Description = "Model of vehicle" });
-        //    _dataListItemModel.Children.Add(carRecordset);
-        //}
         #endregion
 
         #region Parent Property Tests
@@ -109,8 +47,9 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for DataListItemViewModel Parent Property Setter
         ///</summary>
-        [TestMethod()]
-        public void CreationofItemAsChild_ExpectedCorrectReferenceToParent() {
+        [TestMethod]
+        public void CreationofItemAsChild_ExpectedCorrectReferenceToParent()
+        {
             IDataListItemModel childSet = DataListItemModelFactory.CreateDataListModel("TestChild", "", _dataListItemModel);
 
             Assert.AreEqual("testItem", childSet.Parent.Name);
@@ -123,8 +62,9 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A test for Adding DataListItems to the DataListViewModel
         ///</summary>
-        [TestMethod()]
-        public void AddChild_ExpectedChildCreationOnDataListItem() {
+        [TestMethod]
+        public void AddChild_ExpectedChildCreationOnDataListItem()
+        {
             IDataListItemModel dataListItemToAdd = DataListItemModelFactory.CreateDataListModel("testName");
             int countBeforeAdd = _dataListItemModel.Children.Count;
             _dataListItemModel.Children.Add(dataListItemToAdd);
@@ -137,9 +77,10 @@ namespace Dev2.Core.Tests
         /// A test for adding invalid children
         /// </summary>
         [TestMethod]
-        public void AddChild_InvalidChildrenCollection_Expected_ChildrenContainErrors() {   
+        public void AddChild_InvalidChildrenCollection_Expected_ChildrenContainErrors()
+        {
             IDataListItemModel child = DataListItemModelFactory.CreateDataListModel("test!@#");
-            
+
             _dataListItemModel.Children.Add(child);
 
             Assert.IsTrue(_dataListItemModel.Children.Count == 1 && _dataListItemModel.Children[0].HasError);
@@ -150,7 +91,8 @@ namespace Dev2.Core.Tests
         #region RemoveChild Tests
 
         [TestMethod]
-        public void RemoveChild_ExpectRootDataListItemToHaveOneChild() {
+        public void RemoveChild_ExpectRootDataListItemToHaveOneChild()
+        {
             IDataListItemModel dataListItemToAdd = DataListItemModelFactory.CreateDataListModel("testDataListItem");
             _dataListItemModel.Children.Add(dataListItemToAdd);
 
@@ -168,30 +110,33 @@ namespace Dev2.Core.Tests
         ///A test for DisplayName
         ///</summary>
         [TestMethod]
-        public void GetDisplayName_ExpectedReturnDataListItemDisplayName() {
-           _dataListItemModel.Children.Add(DataListItemModelFactory.CreateDataListModel("testChild","",_dataListItemModel));
-           string expected = "testChild";
+        public void GetDisplayName_ExpectedReturnDataListItemDisplayName()
+        {
+            _dataListItemModel.Children.Add(DataListItemModelFactory.CreateDataListModel("testChild", "", _dataListItemModel));
+            const string expected = "testChild";
 
-            string actual = _dataListItemModel.Children[0].DisplayName;            
+            string actual = _dataListItemModel.Children[0].DisplayName;
             Assert.AreEqual(expected, actual);
         }
 
         /// <summary>
         ///A test for IsRecordSet
         ///</summary>
-        [TestMethod()]
-        public void IsNotRecordSet_ExpectedDataItemNotContainChildren() {
-            bool expected = false;
+        [TestMethod]
+        public void IsNotRecordSet_ExpectedDataItemNotContainChildren()
+        {
+            const bool expected = false;
             bool actual = _dataListItemModel.IsRecordset;
             Assert.AreEqual(expected, actual);
-        }       
+        }
 
         /// <summary>
         ///A test for Name
         ///</summary>
-        [TestMethod()]
-        public void DataItemNameUpdate_ExpectedDataItemNameUpdated() {
-            string expected = "testItem";
+        [TestMethod]
+        public void DataItemNameUpdate_ExpectedDataItemNameUpdated()
+        {
+            const string expected = "testItem";
             string actual = _dataListItemModel.Name;
             Assert.AreEqual(expected, actual);
         }
@@ -200,25 +145,24 @@ namespace Dev2.Core.Tests
         /// Tests if an invalidly formed DataListItem is sent to the ActivityComparer
         ///</summary>
         [TestMethod]
-        public void MalformedDataListItemToDsfActivityComparer() {
-            string mediatorKey = string.Empty;
-            //mediatorKey = Mediator.RegisterToReceiveMessage(MediatorMessages.DataListItemSelected, input => MediatorRecieveTestMethod());
+        public void MalformedDataListItemToDsfActivityComparer()
+        {
             _dataListItemModel.HasError = true;
             _dataListItemModel.IsSelected = true;
-            Assert.AreEqual(0, count);
-            //Mediator.DeRegisterAllActionsForMessage(MediatorMessages.DataListItemSelected);
-            
+            Assert.AreEqual(0, _count);
+
         }
 
-        #endregion Properties Tests   
+        #endregion Properties Tests
 
         #region VerifyName Tests
 
         /// <summary>
         ///Verifying the name has no special chars
         ///</summary>
-        [TestMethod()]
-        public void VerifyNameHasNoSpecialChars() {
+        [TestMethod]
+        public void VerifyNameHasNoSpecialChars()
+        {
             _dataListItemModel.DisplayName = "test@";
             Assert.IsTrue(_dataListItemModel.HasError);
         }
@@ -251,7 +195,7 @@ namespace Dev2.Core.Tests
         //[TestMethod]
         //public void VerifyDataListStructureDataListContainingChildren_Expected_DataListViewModelAddRowMethodCall() {
         //    _mockDataListViewModel.Setup(dl => dl.AddRowIfAllRowsHaveData()).Verifiable();
-            
+
         //    _dataListItemModel.VerifyDataListStructure();
         //    _mockDataListViewModel.Verify(dl => dl.AddRowIfAllRowsHaveData(), Times.Once());
         //}
@@ -266,7 +210,7 @@ namespace Dev2.Core.Tests
 
         //    IDataListItemModel dlVM = _helper.CreateDataListItemViewModel("test", _mockDataListViewModel.Object);
         //    _dataListItemModel.IsRoot = true;
-            
+
         //    _dataListItemModel.VerifyDataListStructure();
 
         //    _mockDataListViewModel.Verify(dl => dl.AddRowIfAllRowsHaveData(), Times.Never());
@@ -275,7 +219,7 @@ namespace Dev2.Core.Tests
         //#endregion VerifyDataList Structure Tests
 
         //#region MatchesSearchFilter Tests
-        
+
         ///// <summary>
         ///// Test to ensure that partial matches are made by the MatchesSearchFilter Method
         ///// </summary>
@@ -291,7 +235,7 @@ namespace Dev2.Core.Tests
         ///// </summary>
         //[TestMethod]
         //public void MatchesSearchFilter_SearchStringDoesNotMatchDataListItem_Expected_ReturnFalse() {
-            
+
         //    int numberOfDataListItems = 10;
         //    IDataListItemModel dataListItemViewModel = _helper.CreateDataListItemViewModel(string.Empty, _mockDataListViewModel.Object);
         //    IList<IDataListItemModel> dataListItemViewModelList = _helper.CreateDataListItemViewModel("UniteTestDataListItem", numberOfDataListItems, _mockDataListViewModel.Object);
@@ -325,9 +269,10 @@ namespace Dev2.Core.Tests
 
         #region Internal Test Methods
 
-        public int MediatorRecieveTestMethod() {
-            count++;
-            return count;
+        public int MediatorRecieveTestMethod()
+        {
+            _count++;
+            return _count;
         }
 
         #endregion Internal Test Methods

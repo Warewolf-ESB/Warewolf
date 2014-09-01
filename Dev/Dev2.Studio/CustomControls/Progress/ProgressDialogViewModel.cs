@@ -1,8 +1,8 @@
-﻿using Microsoft.Expression.Interactivity.Core;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
+using Microsoft.Expression.Interactivity.Core;
 
 namespace Dev2.CustomControls.Progress
 {

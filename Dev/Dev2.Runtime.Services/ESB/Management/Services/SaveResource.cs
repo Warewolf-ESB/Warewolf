@@ -1,4 +1,10 @@
-﻿using Dev2.Common.Interfaces.Infrastructure;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.Serialization;
+using System.Text;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
@@ -6,10 +12,6 @@ using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -51,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 compiledResources = new ServiceDefinitionLoader().GenerateServiceGraph(resourceDefinition);
                 if(compiledResources.Count == 0)
                 {
-                    CompileMessageRepo.Instance.AddMessage(workspaceID, new List<CompileMessageTO>
+                    CompileMessageRepo.Instance.AddMessage(workspaceID, new List<ICompileMessageTO>
                     {
                         new CompileMessageTO
                         {
@@ -66,7 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception)
             {
-                CompileMessageRepo.Instance.AddMessage(workspaceID, new List<CompileMessageTO>
+                CompileMessageRepo.Instance.AddMessage(workspaceID, new List<ICompileMessageTO>
                 {
                     new CompileMessageTO
                     {

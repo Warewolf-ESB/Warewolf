@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Data;
 using System.Text;
-using Dev2.Common;
-using Dev2.Common.Enums;
+using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Patterns;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
-
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.DataList.Contract

@@ -1,13 +1,20 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
-using Dev2.Data.Enums;
-using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
-using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Handlers;
@@ -15,12 +22,6 @@ using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
@@ -265,7 +266,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             return null;
         }
 
-        protected void OnCompilerMessageReceived(IList<CompileMessageTO> messages)
+        protected void OnCompilerMessageReceived(IList<ICompileMessageTO> messages)
         {
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.MappingChange || m.MessageType == CompileMessageType.MappingIsRequiredChanged), CoalesceMappingChangedErrors);
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
@@ -274,7 +275,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         #region CoalesceMappingChangedErrors
 
-        static void CoalesceMappingChangedErrors(DesignValidationMemo memo, CompileMessageTO compilerMessage)
+        static void CoalesceMappingChangedErrors(DesignValidationMemo memo, ICompileMessageTO compilerMessage)
         {
             memo.ServiceID = compilerMessage.ServiceID;
             memo.IsValid = false;
@@ -285,7 +286,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         #region CoalesceResourceSavedErrors
 
-        static void CoalesceResourceSavedErrors(DesignValidationMemo memo, CompileMessageTO compilerMessage)
+        static void CoalesceResourceSavedErrors(DesignValidationMemo memo, ICompileMessageTO compilerMessage)
         {
             memo.ServiceID = compilerMessage.ServiceID;
             memo.IsValid = true;
@@ -305,10 +306,16 @@ namespace Dev2.Runtime.WebServer.Hubs
             CompileMessageRepo.Instance.ClearObservable();
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
+        readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
+        {
+            TypeNameHandling = TypeNameHandling.Objects,
+            TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+        };
 
         public void SendDebugState(DebugState debugState)
         {
-            var debugSerializated = JsonConvert.SerializeObject(debugState);
+            var debugSerializated = JsonConvert.SerializeObject(debugState, _serializerSettings);
+
             var hubCallerConnectionContext = Clients;
 
             this.LogError("Send Debug State For [ " + Context.User.Identity.Name + " ]");
@@ -317,7 +324,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             user.SendDebugState(debugSerializated);
         }
 
-        void WriteEventProviderClientMessage<TMemo>(IEnumerable<CompileMessageTO> messages, Action<TMemo, CompileMessageTO> coalesceErrors)
+        void WriteEventProviderClientMessage<TMemo>(IEnumerable<ICompileMessageTO> messages, Action<TMemo, ICompileMessageTO> coalesceErrors)
            where TMemo : IMemo, new()
         {
             var messageArray = messages.ToArray();
@@ -334,7 +341,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             WriteEventProviderClientMessage(instanceGroupings, coalesceErrors);
         }
 
-        void WriteEventProviderClientMessage<TMemo>(IEnumerable<IGrouping<Guid, CompileMessageTO>> groupings, Action<TMemo, CompileMessageTO> coalesceErrors)
+        void WriteEventProviderClientMessage<TMemo>(IEnumerable<IGrouping<Guid, ICompileMessageTO>> groupings, Action<TMemo, ICompileMessageTO> coalesceErrors)
             where TMemo : IMemo, new()
         {
 

@@ -1,4 +1,4 @@
-﻿using Dev2.Diagnostics;
+﻿using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Diagnostics

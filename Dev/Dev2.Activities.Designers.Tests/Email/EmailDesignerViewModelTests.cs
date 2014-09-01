@@ -1,7 +1,15 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Text;
+using System.Windows;
+using Caliburn.Micro;
 using Dev2.Activities.Designers2.Email;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
-using Dev2.DynamicServices;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
@@ -11,14 +19,6 @@ using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Windows;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Email

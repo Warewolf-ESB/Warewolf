@@ -1,4 +1,4 @@
-﻿using Dev2.Composition;
+﻿using Dev2.Common.Interfaces.Data;
 using Dev2.Core.Tests.Utils;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -15,7 +15,7 @@ namespace Dev2.Core.Tests
     ///This is a result class for InputOutputViewModelTest and is intended
     ///to contain all InputOutputViewModelTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestClass]
     public class InputOutputViewModelTest
     {
 
@@ -25,23 +25,11 @@ namespace Dev2.Core.Tests
 
         #endregion Local Test variables
 
-        private TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the result context which provides
         ///information about and functionality for the current result run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional result attributes
         // 
@@ -60,10 +48,9 @@ namespace Dev2.Core.Tests
         //}
         //
         //Use TestInitialize to run code before running each result
-        [TestInitialize()]
+        [TestInitialize]
         public void MyTestInitialize()
         {
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
             InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
             _inputOutputViewModel = new InputOutputViewModel(testObject.Name, testObject.Value, testObject.MapsTo, testObject.DefaultValue, testObject.Required, testObject.RecordSetName);
 
@@ -83,29 +70,19 @@ namespace Dev2.Core.Tests
         #endregion
 
         #region CTOR Tests
-
-        /// <summary>
-        ///A result for InputOutputViewModel Constructor
-        ///</summary>
-        [TestMethod]
-        public void InputOutputMappingViewModel_Constructor()
-        {
-
-            //Assert.AreEqual(inputOutputViewModel.Value, inputOutputViewModel.SelectedDataListItem.Name);
-        }
+        // ReSharper disable InconsistentNaming
 
 
         // Travis  : PBI 5779
-        [TestMethod()]
+        [TestMethod]
         public void InputOutputMappingViewModel_DefaultWithEmptyToNull_Expect_EmptyToNullString()
         {
-            string name = "vehicleColor";
-            string xmlDataList = StringResources.xmlDataList;
-            string value = "vehicleColor";
-            string mapsTo = "testMapsTo";
+            const string name = "vehicleColor";
+            const string value = "vehicleColor";
+            const string mapsTo = "testMapsTo";
             string defaultValue = string.Empty;
-            string recordSetName = "testRecSetName";
-            bool required = true;
+            const string recordSetName = "testRecSetName";
+            const bool required = true;
             _inputOutputViewModel = new InputOutputViewModel(name, value, mapsTo, defaultValue, required, recordSetName, true);
             string actual = _inputOutputViewModel.DisplayDefaultValue;
             Assert.AreEqual("Empty to NULL", actual);
@@ -113,32 +90,30 @@ namespace Dev2.Core.Tests
 
 
         // Travis  : PBI 5779
-        [TestMethod()]
+        [TestMethod]
         public void InputOutputMappingViewModel_DefaultWithEmptyToNull_Expect_EmptyString()
         {
-            string name = "vehicleColor";
-            string xmlDataList = StringResources.xmlDataList;
-            string value = "vehicleColor";
-            string mapsTo = "testMapsTo";
+            const string name = "vehicleColor";
+            const string value = "vehicleColor";
+            const string mapsTo = "testMapsTo";
             string defaultValue = string.Empty;
-            string recordSetName = "testRecSetName";
-            bool required = true;
+            const string recordSetName = "testRecSetName";
+            const bool required = true;
             _inputOutputViewModel = new InputOutputViewModel(name, value, mapsTo, defaultValue, required, recordSetName, false);
             string actual = _inputOutputViewModel.DisplayDefaultValue;
             Assert.AreEqual(string.Empty, actual);
         }
 
         // Travis  : PBI 5779
-        [TestMethod()]
+        [TestMethod]
         public void InputOutputMappingViewModel_DefaultWithEmptyToNullDefaultValueSet_Expect_DefaultValue()
         {
-            string name = "vehicleColor";
-            string xmlDataList = StringResources.xmlDataList;
-            string value = "vehicleColor";
-            string mapsTo = "testMapsTo";
-            string defaultValue = "default val";
-            string recordSetName = "testRecSetName";
-            bool required = true;
+            const string name = "vehicleColor";
+            const string value = "vehicleColor";
+            const string mapsTo = "testMapsTo";
+            const string defaultValue = "default val";
+            const string recordSetName = "testRecSetName";
+            const bool required = true;
             _inputOutputViewModel = new InputOutputViewModel(name, value, mapsTo, defaultValue, required, recordSetName, true);
             string actual = _inputOutputViewModel.DisplayDefaultValue;
             Assert.AreEqual("Default: default val", actual);
@@ -156,21 +131,10 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("testRecSetName(*).vehicleColor", actual);
         }
 
-        //BUG - This test replicates a big issue with the logic in the Input Mapper creation
-
-        //[TestMethod]
-        //public void DisplayNameScalarNullRecordSet_Expected_ScalarNotationSetAsDisplayName() {
-        //    InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
-        //    testObject.Name = null;
-        //    SetInputOutputMappingViewModelFromTestMappingObject(testObject);
-        //    Assert.IsFalse(Unlimited.Framework.DataList.DataListUtil.IsValueRecordset(_inputOutputViewModel.DisplayName));
-        //}
-
         [TestMethod]
         public void InputOutputMappingViewModel_DisplayNameScalarEmptyStringRecordSet_Expected_ScalarNotationSetAsDisplayName()
         {
-            InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
-            testObject.RecordSetName = string.Empty;
+            InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject { RecordSetName = string.Empty };
             SetInputOutputMappingViewModelFromTestMappingObject(testObject);
 
             Assert.IsFalse(DataListUtil.IsValueRecordset(_inputOutputViewModel.DisplayName));
@@ -182,11 +146,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void InputOutputMappingViewModel_DisplayNameRecordSet_Expected_DisplayNameIsRecordSetNotation()
         {
-            InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
-            testObject.Name = string.Empty;
-            testObject.RecordSetName = "TestRC";
-            testObject.Value = "val";
-            SetInputOutputMappingViewModelFromTestMappingObject(testObject); ;
+            InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject { Name = string.Empty, RecordSetName = "TestRC", Value = "val" };
+            SetInputOutputMappingViewModelFromTestMappingObject(testObject);
 
             Assert.IsTrue(DataListUtil.IsValueRecordset(_inputOutputViewModel.DisplayName));
         }
@@ -211,19 +172,18 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A result for MapsTo
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void InputOutputMappingViewModel_MapsTo_ValueSupplied_Expected_MapsToFieldcorrectlySet()
         {
-            string expected = "testMapsTo";
+            const string expected = "testMapsTo";
             string actual = _inputOutputViewModel.MapsTo;
             Assert.AreEqual(expected, actual);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void InputOutputMappingViewModel_MapsTo_EmptyValueSupplied_Expected_MapsToFieldcorrectlySet()
         {
-            InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
-            testObject.MapsTo = string.Empty;
+            InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject { MapsTo = string.Empty };
             SetInputOutputMappingViewModelFromTestMappingObject(testObject);
 
             string actual = _inputOutputViewModel.MapsTo;
@@ -237,10 +197,10 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A result for Name
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void InputOutputMappingViewModel_Name_ValueSuppliedForName_Expected_NamePropertySetToValueSupplied()
         {
-            string expected = "vehicleColor";
+            const string expected = "vehicleColor";
             string actual = _inputOutputViewModel.Name;
             Assert.AreEqual(expected, actual);
         }
@@ -277,7 +237,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void InputOutputMappingViewModel_InputOutputMappingViewModel_Value()
         {
-            string expected = "vehicleColor";
+            const string expected = "vehicleColor";
             string actual = _inputOutputViewModel.Value;
             Assert.AreEqual(expected, actual);
         }
@@ -296,8 +256,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void InputOutputMappingViewModel_GetGenerationTO_InvalidViewModel_Expected_NullDev2DefinitionCreated()
         {
-            InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject();
-            testObject.Name = null;
+            InputOutputViewModelTestObject testObject = new InputOutputViewModelTestObject { Name = null };
             SetInputOutputMappingViewModelFromTestMappingObject(testObject);
             IDev2Definition actual = _inputOutputViewModel.GetGenerationTO();
             // Not sure of the outcome here, it is a null name value, and the name is the most essential part of this
@@ -383,13 +342,6 @@ namespace Dev2.Core.Tests
         }
 
         #region Test Methods
-
-
-
-        private void SetInputOutputMappingViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName)
-        {
-            _inputOutputViewModel = InputOutputViewModelFactory.CreateInputOutputViewModel(name, value, mapsTo, defaultValue, required, recordSetName);
-        }
 
         private void SetInputOutputMappingViewModelFromTestMappingObject(InputOutputViewModelTestObject mappingObject)
         {

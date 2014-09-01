@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using Dev2.Common.Enums;
 using System.Text;
+using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Common
 {

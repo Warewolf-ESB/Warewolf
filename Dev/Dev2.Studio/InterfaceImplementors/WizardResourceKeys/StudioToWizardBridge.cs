@@ -1,9 +1,9 @@
-﻿using Dev2.Data.Util;
+﻿using System;
+using System.Text;
+using Dev2.Data.Util;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using System;
-using System.Text;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors.WizardResourceKeys

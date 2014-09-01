@@ -1,8 +1,8 @@
-﻿using Dev2.Common.Interfaces.Data;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.AppResources.Converters
 {

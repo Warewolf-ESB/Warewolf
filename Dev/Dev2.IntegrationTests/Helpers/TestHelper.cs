@@ -6,6 +6,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
 using Dev2.Integration.Tests.MEF.WebTester;

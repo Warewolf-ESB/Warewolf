@@ -3,8 +3,9 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
-using Dev2.Common.Enums;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -102,7 +103,7 @@ namespace Dev2.Activities
                     {
                         string scriptValue = colItr.FetchNextRow(scriptItr).TheValue;
 
-                        var engine = new ScriptingEngineRepo().FindMatch(ScriptType);
+                        var engine = new ScriptingEngineRepo().CreateEngine(ScriptType);
                         var value = engine.Execute(scriptValue);
 
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result

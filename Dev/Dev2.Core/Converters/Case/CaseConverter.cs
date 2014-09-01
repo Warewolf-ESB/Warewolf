@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core.Convertors.Case;
+using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Interfaces;
 
 namespace Dev2
 {

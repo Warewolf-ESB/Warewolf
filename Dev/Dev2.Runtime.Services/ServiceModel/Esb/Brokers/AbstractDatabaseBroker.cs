@@ -3,10 +3,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Common.Interfaces.Services.Sql;
 using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Services.Sql;
 using Unlimited.Framework.Converters.Graph;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {

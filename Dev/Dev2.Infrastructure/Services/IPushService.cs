@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Dev2.Hosting;
+using Dev2.Common.Interfaces.Hosting;
 
 namespace Dev2.Services
 {

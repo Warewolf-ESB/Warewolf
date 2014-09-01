@@ -1,6 +1,6 @@
 ﻿using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Random;
-using Dev2.Common.Enums;
+using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Activities.Designers.Tests.Random
 {

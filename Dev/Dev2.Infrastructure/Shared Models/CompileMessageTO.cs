@@ -1,10 +1,10 @@
-﻿using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Data.Enums;
+﻿using System;
+using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
 
 namespace Dev2.Data.ServiceModel.Messages
 {
@@ -13,7 +13,7 @@ namespace Dev2.Data.ServiceModel.Messages
     /// </summary>
     [Serializable]
     // ReSharper disable InconsistentNaming
-    public class CompileMessageTO
+    public class CompileMessageTO : ICompileMessageTO
     {
         public Guid UniqueID { get; set; }
         public Guid ServiceID { get; set; }
@@ -29,7 +29,7 @@ namespace Dev2.Data.ServiceModel.Messages
         // should be json or other sensable string data ;)
         public string MessagePayload { get; set; }
 
-        public CompileMessageTO Clone()
+        public ICompileMessageTO Clone()
         {
             return new CompileMessageTO
             {
@@ -44,7 +44,7 @@ namespace Dev2.Data.ServiceModel.Messages
             };
         }
 
-        public ErrorInfo ToErrorInfo()
+        public IErrorInfo ToErrorInfo()
         {
             return new ErrorInfo
             {

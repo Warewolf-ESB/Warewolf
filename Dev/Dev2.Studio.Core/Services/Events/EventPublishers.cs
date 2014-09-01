@@ -1,4 +1,5 @@
 ﻿using Caliburn.Micro;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Providers.Events;
 
 namespace Dev2.Services.Events

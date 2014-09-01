@@ -1,5 +1,5 @@
 ﻿using Dev2.Activities.Utils;
-using Dev2.DynamicServices;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Activities.Designers.Tests.UtilTests

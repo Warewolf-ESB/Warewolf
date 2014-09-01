@@ -1,7 +1,7 @@
-﻿using Dev2.DataList.Contract.Binary_Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Dev2.DataList.Contract.Binary_Objects;
 
 namespace Dev2.DataList.Contract
 {

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation;
 using Dev2.Providers.Validation.Rules;

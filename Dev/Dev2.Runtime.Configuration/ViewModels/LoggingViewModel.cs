@@ -1,11 +1,12 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Data;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.ComponentModel;
+using Dev2.Common.Interfaces.Runtime.Configuration.Settings;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.Settings;
 using Dev2.Runtime.Configuration.Views;

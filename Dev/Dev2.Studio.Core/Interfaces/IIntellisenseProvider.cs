@@ -5,13 +5,13 @@
 // -----------------------------------------------------------------------
 
 // ReSharper disable once CheckNamespace
+
+using System;
+using System.Collections.Generic;
+using Dev2.DataList.Contract;
+
 namespace Dev2.Studio.Core.Interfaces
 {
-    using System;
-    using System.Collections.Generic;
-    using Dev2.DataList.Contract;
-
-
     /// <summary>
     /// The intellisense provider gives is used to handle intellisense result requests.
     /// </summary>

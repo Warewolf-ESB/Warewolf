@@ -2,9 +2,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Data.Util;
-using Dev2.DataList.Contract;
-using Dev2.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.SortRecords

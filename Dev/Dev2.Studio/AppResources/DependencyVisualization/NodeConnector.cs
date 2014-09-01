@@ -1,11 +1,12 @@
 ﻿//using MvvmFoundation.Wpf;
-using Dev2.AppResources.DependencyVisualization;
-using Petzold.Media2D;
+
 using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media.Animation;
+using Dev2.AppResources.DependencyVisualization;
+using Petzold.Media2D;
 
 // ReSharper disable once CheckNamespace
 namespace CircularDependencyTool

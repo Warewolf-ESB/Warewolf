@@ -1,4 +1,5 @@
 // Copyright (C) Josh Smith - November 2006 
+
 using System.Windows;
 using System.Windows.Controls;
 

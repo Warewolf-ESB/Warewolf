@@ -5,10 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Security;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.Communication;
-using Dev2.Diagnostics.Debug;
-using Dev2.Scheduler.Interfaces;
-using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.Scheduler

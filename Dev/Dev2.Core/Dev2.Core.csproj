@@ -133,7 +133,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Activity\IWorkflowActivityMessage.cs" />
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
     <Compile Include="Common\Dev2Random.cs" />
     <Compile Include="Common\Field.cs" />
@@ -146,17 +145,6 @@
     <Compile Include="Converters\DateAndTime\DateTimeParser.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Converters\DateAndTime\Interfaces\IDateTimeComparer.cs" />
-    <Compile Include="Converters\DateAndTime\Interfaces\IDateTimeDiffTO.cs" />
-    <Compile Include="Converters\DateAndTime\Interfaces\IDateTimeFormatPartOptionTO.cs" />
-    <Compile Include="Converters\DateAndTime\Interfaces\IDateTimeFormatPartTO.cs" />
-    <Compile Include="Converters\DateAndTime\Interfaces\IDateTimeFormatter.cs" />
-    <Compile Include="Converters\DateAndTime\Interfaces\IDateTimeOperationTO.cs" />
-    <Compile Include="Converters\DateAndTime\Interfaces\IDateTimeParser.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Converters\DateAndTime\Interfaces\IDateTimeResultTO.cs" />
-    <Compile Include="Converters\DateAndTime\Interfaces\ITimeZoneTO.cs" />
     <Compile Include="Converters\DateAndTime\TO\DateTimeDiffTO.cs" />
     <Compile Include="Converters\DateAndTime\TO\DateTimeFormatPartOptionTO.cs" />
     <Compile Include="Converters\DateAndTime\TO\DateTimeFormatPartTO.cs" />
@@ -171,13 +159,9 @@
     <Compile Include="Converters\Base\Dev2HexConverter.cs" />
     <Compile Include="Converters\Base\Dev2TextConverter.cs" />
     <Compile Include="Converters\Base\enDev2BaseConvertType.cs" />
-    <Compile Include="Converters\Base\Interfaces\IBaseConversionBroker.cs" />
-    <Compile Include="Converters\Base\Interfaces\IBaseConverter.cs" />
     <Compile Include="Converters\Base\TO\BaseConvertTO.cs" />
     <Compile Include="Converters\Case\CaseConverter.cs" />
     <Compile Include="Converters\Case\CaseConverterFactory.cs" />
-    <Compile Include="Converters\Case\Interfaces\ICaseConverter.cs" />
-    <Compile Include="Converters\Case\Interfaces\ICaseConvertTO.cs" />
     <Compile Include="Converters\Case\TO\CaseConvertTO.cs" />
     <Compile Include="Converters\Graph\BasePath.cs" />
     <Compile Include="Converters\Graph\DataBrowser.cs" />
@@ -189,16 +173,6 @@
     <Compile Include="Converters\Graph\DataTable\DataTablePath.cs" />
     <Compile Include="Converters\Graph\DataTable\DataTablePathSegment.cs" />
     <Compile Include="Converters\Graph\IndexedPathSegmentTreeNode.cs" />
-    <Compile Include="Converters\Graph\Interfaces\IDataBrowser.cs" />
-    <Compile Include="Converters\Graph\Interfaces\IDataSourceShape.cs" />
-    <Compile Include="Converters\Graph\Interfaces\IInterrogator.cs" />
-    <Compile Include="Converters\Graph\Interfaces\IMapper.cs" />
-    <Compile Include="Converters\Graph\Interfaces\INavigator.cs" />
-    <Compile Include="Converters\Graph\Interfaces\IOutputDescription.cs" />
-    <Compile Include="Converters\Graph\Interfaces\IOutputDescriptionSerializationService.cs" />
-    <Compile Include="Converters\Graph\Interfaces\IOutputFormatter.cs" />
-    <Compile Include="Converters\Graph\Interfaces\IPath.cs" />
-    <Compile Include="Converters\Graph\Interfaces\IPathSegment.cs" />
     <Compile Include="Converters\Graph\InterrogatorFactory.cs" />
     <Compile Include="Converters\Graph\NavigatorBase.cs" />
     <Compile Include="Converters\Graph\Ouput\DataSourceShape.cs" />
@@ -207,7 +181,6 @@
     <Compile Include="Converters\Graph\OutputDescriptionFactory.cs" />
     <Compile Include="Converters\Graph\Ouput\OutputDescriptionSerializationService.cs" />
     <Compile Include="Converters\Graph\OutputDescriptionSerializationServiceFactory.cs" />
-    <Compile Include="Converters\Graph\OutputEnums.cs" />
     <Compile Include="Converters\Graph\OutputFormatterFactory.cs" />
     <Compile Include="Converters\Graph\Poco\PocoInterrogator.cs" />
     <Compile Include="Converters\Graph\Poco\PocoMapper.cs" />
@@ -268,14 +241,12 @@
     <Compile Include="Web\WebServiceInvoker.cs" />
     <Compile Include="DynamicServices\Objects\DynamicService.cs" />
     <Compile Include="DynamicServices\Objects\Base\DynamicServiceObjectBase.cs" />
-    <Compile Include="DynamicServices\Interfaces\IDynamicServiceObject.cs" />
     <Compile Include="DynamicServices\Resources1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Exceptions.cs" />
-    <Compile Include="Globals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FrameworkResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -337,6 +308,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Diagnostics\" />
+    <Folder Include="DynamicServices\Interfaces\" />
     <Folder Include="Exceptions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

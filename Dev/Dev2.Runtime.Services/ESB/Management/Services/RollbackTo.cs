@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;

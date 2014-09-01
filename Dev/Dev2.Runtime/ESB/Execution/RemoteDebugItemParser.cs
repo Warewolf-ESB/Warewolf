@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
-using Dev2.Diagnostics.Debug;
 
 namespace Dev2.Runtime.ESB.Execution
 {

@@ -5,18 +5,18 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
-using Dev2.Diagnostics;
-using Dev2.Diagnostics.Debug;
 using Dev2.Messages;
-using Dev2.Providers.Events;
 using Dev2.Services.Security;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -81,7 +81,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Constructor_ValidArguments_DebugOutputViewModelNotNull()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -104,7 +103,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Constructor_SchedularWorksurfaceContext_DebugOutputViewModelNotNull()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var mockWorkSurfaceViewModel = new SchedulerViewModel();
             //------------Execute Test---------------------------
@@ -120,7 +118,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_EnvironmentModelIsConnectedChanged_False_DebugStatusFinished()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -144,7 +141,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_DebugOutputMessage_DebugStateHasData_OnlyOneRootItemIsDisplayed()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -170,7 +166,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_DebugOutputMessage_DebugStateHasNoData_RootItemsIsZero()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey { WorkSurfaceContext = WorkSurfaceContext.Scheduler };
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -323,7 +318,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_BindToModel_CallsBindToModelOnWorkSurfaceViewModel()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -348,33 +342,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_CanDebug_ExpectTrue()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
-            var workSurfaceKey = new WorkSurfaceKey();
-            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
-            var mockedConn = new Mock<IEnvironmentConnection>();
-            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
-            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
-            var environmentModel = mockEnvironmentModel.Object;
-            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
-            mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
-            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
-// ReSharper disable UseObjectOrCollectionInitializer
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
-// ReSharper restore UseObjectOrCollectionInitializer
-            workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
-            //------------Execute Test---------------------------
-            Assert.IsTrue(workSurfaceContextViewModel.CanDebug());
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("WorkSurfaceContextViewModel_CanDebug")]
-        public void WorkSurfaceContextViewModel_CanSave_ExpectTrue()
-        {
-            //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -387,7 +354,32 @@ namespace Dev2.Core.Tests.ViewModelTests
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
             // ReSharper disable UseObjectOrCollectionInitializer
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
-// ReSharper restore UseObjectOrCollectionInitializer
+            // ReSharper restore UseObjectOrCollectionInitializer
+            workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
+            //------------Execute Test---------------------------
+            Assert.IsTrue(workSurfaceContextViewModel.CanDebug());
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("WorkSurfaceContextViewModel_CanDebug")]
+        public void WorkSurfaceContextViewModel_CanSave_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+            var workSurfaceKey = new WorkSurfaceKey();
+            var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
+            var mockedConn = new Mock<IEnvironmentConnection>();
+            mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+            var mockEnvironmentModel = new Mock<IEnvironmentModel>();
+            mockEnvironmentModel.Setup(model => model.Connection).Returns(mockedConn.Object);
+            var environmentModel = mockEnvironmentModel.Object;
+            mockWorkSurfaceViewModel.Setup(model => model.EnvironmentModel).Returns(environmentModel);
+            mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
+            var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
+            // ReSharper disable UseObjectOrCollectionInitializer
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
+            // ReSharper restore UseObjectOrCollectionInitializer
             workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
             //------------Execute Test---------------------------
             Assert.IsTrue(workSurfaceContextViewModel.CanSave());
@@ -401,7 +393,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_CanExecute_ExpectTrue()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -424,7 +415,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_CanViewInBrowser_ExpectTrue()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -447,7 +437,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_SaveCallsCheckForServerMessages()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -469,7 +458,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
             PrivateObject pvt = new PrivateObject(workSurfaceContextViewModel);
-            pvt.SetField("_hasMappingChange",true);
+            pvt.SetField("_hasMappingChange", true);
             bool attempted = false;
             //------------Execute Test---------------------------
             try
@@ -479,7 +468,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             catch(Exception e)
             {
 
-                if ("No connected environment found to perform operation on." == e.Message) attempted = true; 
+                if("No connected environment found to perform operation on." == e.Message) attempted = true;
             }
             Assert.IsTrue(attempted);
 
@@ -493,7 +482,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_SaveCallsCheckForServerMessages_NoMessagesAvailable_NothingHappen()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -513,7 +501,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             // object to work on 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
-            
+
             var st = new Mock<IStudioCompileMessageRepoFactory>();
             var mr = new Mock<IStudioCompileMessageRepo>();
             workSurfaceContextViewModel.StudioCompileMessageRepoFactory = st.Object;
@@ -529,15 +517,15 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
             PrivateObject pvt = new PrivateObject(workSurfaceContextViewModel);
             pvt.SetField("_hasMappingChange", true);
-      
+
             //------------Execute Test---------------------------
-        
+
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
-            mr.Verify(a=>a.GetCompileMessagesFromServer(It.IsAny<IContextualResourceModel>()),Times.Once());
-            rsHandler.Verify(a=>a.ShowResourceChanged(It.IsAny<IContextualResourceModel>(),It.IsAny<IList<string>>(),null),Times.Never());
+            mr.Verify(a => a.GetCompileMessagesFromServer(It.IsAny<IContextualResourceModel>()), Times.Once());
+            rsHandler.Verify(a => a.ShowResourceChanged(It.IsAny<IContextualResourceModel>(), It.IsAny<IList<string>>(), null), Times.Never());
 
 
-         
+
 
         }
 
@@ -547,7 +535,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_SaveCallsCheckForServerMessages_MessagesAvailable_SuffHappens()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -568,7 +555,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             // object to work on 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
 
-            var lst = new CompileMessageList { MessageList = new List<CompileMessageTO> { new CompileMessageTO() } };
+            var lst = new CompileMessageList { MessageList = new List<ICompileMessageTO> { new CompileMessageTO() } };
             var st = new Mock<IStudioCompileMessageRepoFactory>();
             var mr = new Mock<IStudioCompileMessageRepo>();
             workSurfaceContextViewModel.StudioCompileMessageRepoFactory = st.Object;
@@ -602,7 +589,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Debug_CallsBindToModelOnWorkSurfaceViewModel()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -638,7 +624,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_GetServiceInputDataFromUser()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -670,7 +655,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Handle_DebugResourceMessage_CallsBindModelAndSave()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -703,7 +687,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Handle_ExecuteResourceMessage_CallsBindModelAndSave()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -735,7 +718,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Handle_SaveResourceMessage_CallsBindModelAndSave()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -771,7 +753,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Handle_Save_InvalidXml_CausesPopup()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -793,7 +774,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-            var dlvm = new  Mock<IDataListViewModel>();
+            var dlvm = new Mock<IDataListViewModel>();
             dlvm.Setup(a => a.HasErrors).Returns(true);
             workSurfaceContextViewModel.DataListViewModel = dlvm.Object;
             //------------Execute Test---------------------------
@@ -810,7 +791,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Handle_Save_IsNewWF_CausesWebPopup()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -851,7 +831,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Handle_Save_WhenContextualResourceModelIsNotNull()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -874,10 +853,10 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b) => { called = true; });
-            
+
             mockWorkSurfaceViewModel.Setup(a => a.ResourceModel).Returns(mockResourceModel.Object);
             workSurfaceContextViewModel.WorkSurfaceViewModel = new WorkSurfaceViewModelTest();
-        
+
             var dlvm = new Mock<IDataListViewModel>();
             dlvm.Setup(a => a.HasErrors).Returns(false);
             workSurfaceContextViewModel.DataListViewModel = dlvm.Object;
@@ -894,7 +873,6 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Dispose_ExpectObjectsCleanedUp()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -912,10 +890,10 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
             var popup = new Mock<IPopupController>();
-            
-          //  bool called = false;
 
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b) => {  });
+            //  bool called = false;
+
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b) => { });
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
@@ -933,7 +911,6 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(IEnvironmentModel environmentModel, Mock<IContextualResourceModel> ResourceModel = null)
         {
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockResourceModel = ResourceModel ?? new Mock<IContextualResourceModel>();
@@ -1013,7 +990,6 @@ namespace Dev2.Core.Tests.ViewModelTests
 
         static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel(Permissions userPermissions)
         {
-            CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -1077,7 +1053,7 @@ namespace Dev2.Core.Tests.ViewModelTests
 
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
-            
+
             var environmentModel = Mock.Get(workSurfaceContextViewModel.ContextualResourceModel.Environment);
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
@@ -1107,8 +1083,8 @@ namespace Dev2.Core.Tests.ViewModelTests
             var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
             var ctx = new Mock<IContextualResourceModel>();
-        
-             var environmentModel = new Mock<IEnvironmentModel>();
+
+            var environmentModel = new Mock<IEnvironmentModel>();
 
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.IsConnected).Returns(true);
@@ -1117,10 +1093,10 @@ namespace Dev2.Core.Tests.ViewModelTests
             var popup = new Mock<IPopupController>();
             ctx.Setup(a => a.DataList).Returns("asdasda$%^");
             PrivateObject pvt = new PrivateObject(workSurfaceContextViewModel);
-            pvt.SetField("_contextualResourceModel",ctx.Object);
+            pvt.SetField("_contextualResourceModel", ctx.Object);
             pvt.SetField("_popupController", popup.Object);
             ctx.Setup(a => a.Environment).Returns(environmentModel.Object);
-            pvt.SetField("_dataListViewModel",new DataListViewModel());
+            pvt.SetField("_dataListViewModel", new DataListViewModel());
 
 
             //------------Execute Test---------------------------
@@ -1128,7 +1104,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             workSurfaceContextViewModel.QuickDebug();
 
             popup.Verify(a => a.Show(It.IsAny<string>(), "Error Debugging", MessageBoxButton.OK, MessageBoxImage.Error, "true"));
-            
+
         }
 
 
@@ -1143,7 +1119,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         }
 
         public TestWorkSurfaceContextViewModel(IEventAggregator eventPublisher, WorkSurfaceKey workSurfaceKey, IWorkSurfaceViewModel workSurfaceViewModel)
-            : base(eventPublisher, workSurfaceKey, workSurfaceViewModel,new Mock<IPopupController>().Object,(a,b)=>{})
+            : base(eventPublisher, workSurfaceKey, workSurfaceViewModel, new Mock<IPopupController>().Object, (a, b) => { })
         {
         }
 
@@ -1182,7 +1158,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void Deactivate(bool close)
         {
             Activated(this, null);
-            AttemptingDeactivation(null,null);
+            AttemptingDeactivation(null, null);
             Deactivated(null, null);
             PropertyChanged(null, null);
         }
@@ -1323,11 +1299,11 @@ namespace Dev2.Core.Tests.ViewModelTests
         }
     }
 
-    public class DebugVM :DebugOutputViewModel
+    public class DebugVM : DebugOutputViewModel
     {
-// ReSharper disable UnusedParameter.Local
+        // ReSharper disable UnusedParameter.Local
         public DebugVM(IEventPublisher serverEventPublisher, IEnvironmentRepository environmentRepository)
-// ReSharper restore UnusedParameter.Local
+            // ReSharper restore UnusedParameter.Local
             : base(new Mock<IEventPublisher>().Object, new Mock<IEnvironmentRepository>().Object)
         {
         }

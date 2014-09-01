@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Dev2.DataList.Contract;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.DynamicServices {
     public class ServiceHydrationTO {

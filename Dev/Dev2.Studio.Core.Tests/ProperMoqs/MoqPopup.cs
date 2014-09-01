@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.Composition;
-using System.Windows;
-using Dev2.Studio.Core.Controller;
+﻿using System.Windows;
+using Dev2.Common.Interfaces.Studio.Controller;
 
 namespace Dev2.Core.Tests.ProperMoqs
 {
-    [Export(typeof(IPopupController))]
     public class MoqPopup : IPopupController
     {
         readonly MessageBoxResult _result;

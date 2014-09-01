@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 
 namespace Dev2.Common {
     internal class Dev2IndexOp : IDev2SplitOp{

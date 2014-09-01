@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-using Dev2.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Enums.Enums;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters

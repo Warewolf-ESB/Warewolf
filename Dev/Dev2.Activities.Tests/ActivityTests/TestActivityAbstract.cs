@@ -1,3 +1,4 @@
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics.Debug;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 

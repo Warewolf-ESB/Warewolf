@@ -1,13 +1,13 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Models;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Dev2.ViewModels.Deploy
 {

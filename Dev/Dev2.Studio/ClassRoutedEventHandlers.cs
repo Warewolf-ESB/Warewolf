@@ -1,11 +1,10 @@
-﻿using Dev2.Common;
-using Dev2.Composition;
-using Dev2.Studio.Core.Controller;
-using Dev2.UI;
-using System;
+﻿using System;
 using System.Windows;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.UI;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio
 {
     /// <summary>
@@ -40,7 +39,7 @@ namespace Dev2.Studio
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                IPopupController popup = ImportService.GetExportValue<IPopupController>();
+                IPopupController popup = CustomContainer.Get<IPopupController>();
                 popup.Show("You have pasted text which contins tabs into a textbox on the design surface. Tabs are not allowed in textboxes on the design surface and will be replaced with spaces. "
                     + Environment.NewLine + Environment.NewLine +
                     "Please note that tabs are fully supported but the runtime, in variables and when reading from files.",

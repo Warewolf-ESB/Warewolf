@@ -1,53 +1,4 @@
-﻿using Caliburn.Micro;
-using Dev2.Activities;
-using Dev2.Activities.Designers2.Core;
-using Dev2.AppResources.Converters;
-using Dev2.Collections;
-using Dev2.Common;
-using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Common.Interfaces.Security;
-using Dev2.Composition;
-using Dev2.CustomControls.Utils;
-using Dev2.Data.Interfaces;
-using Dev2.Data.SystemTemplates.Models;
-using Dev2.Data.Util;
-using Dev2.DataList.Contract;
-using Dev2.Dialogs;
-using Dev2.Enums;
-using Dev2.Factories;
-using Dev2.Factory;
-using Dev2.Interfaces;
-using Dev2.Messages;
-using Dev2.Models;
-using Dev2.Providers.Logs;
-using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Services.Events;
-using Dev2.Services.Security;
-using Dev2.Studio.ActivityDesigners;
-using Dev2.Studio.AppResources.AttachedProperties;
-using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Core;
-using Dev2.Studio.Core.Activities.Services;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
-using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Factories;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Interfaces.DataList;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Core.Network;
-using Dev2.Studio.Core.Utils;
-using Dev2.Studio.Core.ViewModels;
-using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.Threading;
-using Dev2.UndoFramework;
-using Dev2.Utilities;
-using Dev2.Utils;
-using Dev2.ViewModels.Workflow;
-using Dev2.Workspaces;
-using System;
+﻿using System;
 using System.Activities;
 using System.Activities.Core.Presentation;
 using System.Activities.Debugger;
@@ -72,6 +23,54 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Xaml;
 using System.Xml.Linq;
+using Caliburn.Micro;
+using Dev2.Activities;
+using Dev2.Activities.Designers2.Core;
+using Dev2.AppResources.Converters;
+using Dev2.Common;
+using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.Collections;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.CustomControls.Utils;
+using Dev2.Data.Interfaces;
+using Dev2.Data.SystemTemplates.Models;
+using Dev2.Data.Util;
+using Dev2.DataList.Contract;
+using Dev2.Dialogs;
+using Dev2.Enums;
+using Dev2.Factories;
+using Dev2.Factory;
+using Dev2.Interfaces;
+using Dev2.Messages;
+using Dev2.Models;
+using Dev2.Providers.Logs;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Services.Events;
+using Dev2.Services.Security;
+using Dev2.Studio.ActivityDesigners;
+using Dev2.Studio.AppResources.AttachedProperties;
+using Dev2.Studio.AppResources.ExtensionMethods;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Services;
+using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
+using Dev2.Studio.Core.AppResources.Enums;
+using Dev2.Studio.Core.Factories;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Core.Network;
+using Dev2.Studio.Core.Utils;
+using Dev2.Studio.Core.ViewModels;
+using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Threading;
+using Dev2.UndoFramework;
+using Dev2.Utilities;
+using Dev2.Utils;
+using Dev2.ViewModels.Workflow;
+using Dev2.Workspaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable CheckNamespace
@@ -129,7 +128,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
             : this(eventPublisher, resource, workflowHelper,
-                ImportService.GetExportValue<IPopupController>(), createDesigner)
+                CustomContainer.Get<IPopupController>(), createDesigner)
         {
         }
 

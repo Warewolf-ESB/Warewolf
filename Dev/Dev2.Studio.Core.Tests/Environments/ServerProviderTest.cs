@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
@@ -28,7 +27,6 @@ namespace Dev2.Core.Tests.Environments
         [TestInitialize]
         public void MyTestInitialize()
         {
-            ImportService.CurrentContext = EnviromentRepositoryTest.EnviromentRepositoryImportServiceContext;
             AppSettings.LocalHost = "http://localhost:3142";
         }
 

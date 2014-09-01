@@ -1,13 +1,12 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Communication;
-using Dev2.Composition;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
-using Dev2.Interfaces;
 using Dev2.Models;
-using Dev2.Providers.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -332,7 +331,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             Mock<IResourceRepository> mockResourceRepository;
             SetupWithOutViewModel(false, true, out mockResourceRepository);
-            var viewModel = CreateViewModel(GetEnvironmentRepository(_mockEnvironmentModel),mockResourceRepository, true, enDsfActivityType.Workflow);
+            var viewModel = CreateViewModel(GetEnvironmentRepository(_mockEnvironmentModel), mockResourceRepository, true, enDsfActivityType.Workflow);
             viewModel.SelectedItem = new ExplorerItemModel { DisplayName = "test1" };
             //------------Execute Test---------------------------
             Assert.IsFalse(viewModel.SelectedItem.IsRenaming);
@@ -603,7 +602,6 @@ namespace Dev2.Core.Tests
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
             envRepo.Setup(e => e.Source).Returns(localhost.Object);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(envRepo);
 
             var viewModel = CreateViewModel(envRepo.Object, new Mock<IResourceRepository>());
             viewModel.AddEnvironment(localhost.Object);
@@ -625,7 +623,6 @@ namespace Dev2.Core.Tests
             envRepo.Setup(e => e.All()).Returns(new List<IEnvironmentModel>());
             envRepo.Setup(e => e.Source).Returns(localhost.Object);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(envRepo);
 
             var viewModel = CreateViewModel(envRepo.Object, new Mock<IResourceRepository>());
 
@@ -673,7 +670,6 @@ namespace Dev2.Core.Tests
             envRepo.Setup(e => e.All()).Returns(envList);
             envRepo.Setup(e => e.Source).Returns(localhost.Object);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(envRepo);
             var localhostExplorerItemModel = new ExplorerItemModel { EnvironmentId = Guid.Empty, DisplayName = "localhost" };
 
             ExplorerItemModel anotherEnvironment = new ExplorerItemModel { DisplayName = "Other Server", EnvironmentId = toBeRemoved.Object.ID };
@@ -879,8 +875,6 @@ namespace Dev2.Core.Tests
 
             IList<IEnvironmentModel> models = new List<IEnvironmentModel>();
             repo.Setup(l => l.All()).Returns(models);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(repo);
 
             Mock<IContextualResourceModel> mockResourceModel11 = null;
 

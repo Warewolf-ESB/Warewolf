@@ -3,10 +3,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-// ReSharper disable RedundantUsingDirective
+using Trackerbird.Tracker;
+    // ReSharper disable RedundantUsingDirective
 
 // ReSharper restore RedundantUsingDirective
-using Trackerbird.Tracker;
 
 #if ! DEBUG
 using Dev2.Studio.Utils;

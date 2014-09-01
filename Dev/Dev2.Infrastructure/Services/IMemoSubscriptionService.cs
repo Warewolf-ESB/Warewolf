@@ -1,5 +1,5 @@
 ﻿using System;
-using Dev2.Communication;
+using Dev2.Common.Interfaces.Communication;
 
 namespace Dev2.Services
 {

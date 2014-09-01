@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Dev2.Providers.Validation;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 
 namespace Dev2.Activities.Designers2.Core

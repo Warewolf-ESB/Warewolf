@@ -1,16 +1,15 @@
-﻿using System.Windows.Input;
+﻿using System.Drawing;
+using System.IO;
+using System.Windows;
+using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media.Imaging;
 using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Model;
-using System.Drawing;
-using System.IO;
-using System.Windows;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -34,8 +33,8 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public ExceptionViewModel()
         {
             //MEF!!!
-            WindowNavigation = ImportService.GetExportValue<IWindowManager>();
-            FeedbackInvoker = ImportService.GetExportValue<IFeedbackInvoker>();
+            WindowNavigation = CustomContainer.Get<IWindowManager>();
+            FeedbackInvoker = CustomContainer.Get<IFeedbackInvoker>();
         }
 
         #endregion Constructor

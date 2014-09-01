@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

@@ -1,6 +1,6 @@
-﻿using Dev2.Validation;
+﻿using System.Collections.ObjectModel;
+using Dev2.Validation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.ObjectModel;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {

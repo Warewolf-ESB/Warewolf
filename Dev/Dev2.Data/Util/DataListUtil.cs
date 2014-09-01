@@ -1,9 +1,4 @@
-﻿using Dev2.Common;
-using Dev2.Common.StringTokenizer.Interfaces;
-using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.DataList.Contract.Value_Objects;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -11,6 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
+using Dev2.DataList.Contract;
+using Dev2.DataList.Contract.Binary_Objects;
+using Dev2.DataList.Contract.Value_Objects;
 
 namespace Dev2.Data.Util
 {

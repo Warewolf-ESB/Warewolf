@@ -2,8 +2,8 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Common;
-using Dev2.Common.Enums;
+using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Enums.Enums;
 
 namespace Dev2.Activities.Designers2.Script
 {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

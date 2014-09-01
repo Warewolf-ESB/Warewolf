@@ -1,5 +1,5 @@
-﻿using Dev2.CustomControls.Panels;
-using System.Windows;
+﻿using System.Windows;
+using Dev2.CustomControls.Panels;
 
 // ReSharper disable once CheckNamespace
 namespace CircularDependencyTool

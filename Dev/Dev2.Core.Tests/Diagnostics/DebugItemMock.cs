@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 
 namespace Dev2.Tests.Diagnostics
@@ -16,9 +17,7 @@ namespace Dev2.Tests.Diagnostics
             return false;
         }
 
-        public void Add(IDebugItemResult itemToAdd, bool isDeserialize = false)
-        {
-        }
+
 
         public void AddRange(IList<IDebugItemResult> itemsToAdd)
         {

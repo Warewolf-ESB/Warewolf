@@ -1,10 +1,10 @@
-﻿using Dev2.Activities.Designers2.Core.QuickVariableInput;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows;
+using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Preview;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Diagnostics.CodeAnalysis;
-using System.Windows;
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {

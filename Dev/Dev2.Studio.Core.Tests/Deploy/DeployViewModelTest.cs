@@ -1,13 +1,12 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
-using Dev2.Composition;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Deploy;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
 using Dev2.Models;
-using Dev2.Providers.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -676,7 +675,6 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DeployViewModel_CanSelectAllDependencies_IsAuthorizedToDeployFrom_Correct()
         {
-            ImportService.CurrentContext = OkayContext;
             Verify_CanSelectAllDependencies_IsAuthorized(expectedCanSelect: false, isAuthorizedDeployFrom: false);
             Verify_CanSelectAllDependencies_IsAuthorized(expectedCanSelect: true, isAuthorizedDeployFrom: true);
         }

@@ -1,11 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using Caliburn.Micro;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Threading;
 using Dev2.TO;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
+using Dev2.Threading;
 
 namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 {

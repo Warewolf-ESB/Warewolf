@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using Dev2.Communication;
-using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Workspaces;
@@ -382,12 +379,6 @@ namespace Dev2.Core.Tests.Workspaces
 
             #region Setup ImportService - GRRR!
 
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
 
             #endregion
 

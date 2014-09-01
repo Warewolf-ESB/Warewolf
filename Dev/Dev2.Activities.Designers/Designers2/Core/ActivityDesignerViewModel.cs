@@ -1,12 +1,3 @@
-using Dev2.Activities.Designers2.Core.Converters;
-using Dev2.Activities.Designers2.Core.Help;
-using Dev2.Activities.Designers2.Service;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Validation;
-using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.Utils;
-using Dev2.Utils;
 using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
@@ -17,6 +8,15 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using Dev2.Activities.Designers2.Core.Converters;
+using Dev2.Activities.Designers2.Core.Help;
+using Dev2.Activities.Designers2.Service;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Utils;
+using Dev2.Utils;
 
 namespace Dev2.Activities.Designers2.Core
 {

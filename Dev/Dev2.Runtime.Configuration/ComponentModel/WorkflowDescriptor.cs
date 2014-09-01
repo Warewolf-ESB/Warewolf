@@ -1,5 +1,6 @@
 ﻿using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.ComponentModel;
 
 namespace Dev2.Runtime.Configuration.ComponentModel
 {

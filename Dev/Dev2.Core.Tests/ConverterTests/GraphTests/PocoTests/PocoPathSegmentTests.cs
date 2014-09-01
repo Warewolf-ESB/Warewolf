@@ -1,6 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Dev2.Common.Interfaces.Core.Graph;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics.CodeAnalysis;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.Poco;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.PocoTests

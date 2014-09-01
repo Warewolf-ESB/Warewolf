@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Models;
-using Dev2.Services.Security;
 using Dev2.Studio.Core.ViewModels;
 
 // ReSharper disable CheckNamespace

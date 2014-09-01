@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Data;
-using Dev2.Common;
+using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Data.Enums;
 
 // ReSharper disable once CheckNamespace

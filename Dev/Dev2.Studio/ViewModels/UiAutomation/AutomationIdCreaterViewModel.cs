@@ -1,6 +1,6 @@
-﻿using Dev2.Runtime.Configuration.ViewModels.Base;
+﻿using System.Windows.Input;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.ViewModels.Base;
-using System.Windows.Input;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.UiAutomation

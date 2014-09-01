@@ -1,7 +1,14 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
@@ -13,12 +20,6 @@ using Dev2.Instrumentation;
 using Dev2.Runtime.Execution;
 using Dev2.Simulation;
 using Dev2.Util;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
@@ -699,9 +700,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void AddDebugInputItem(DebugOutputBase parameters)
         {
-            DebugItem itemToAdd = new DebugItem();
+            IDebugItem itemToAdd = new DebugItem();
             itemToAdd.AddRange(parameters.GetDebugItemResult());
-            _debugInputs.Add(itemToAdd);
+            _debugInputs.Add((DebugItem)itemToAdd);
         }
 
         protected void AddDebugOutputItem(DebugOutputBase parameters)

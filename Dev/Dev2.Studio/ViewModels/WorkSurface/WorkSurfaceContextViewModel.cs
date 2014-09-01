@@ -1,9 +1,16 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Activities.Presentation.View;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Threading;
+using System.Windows;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
-using Dev2.Composition;
-using Dev2.Diagnostics;
 using Dev2.Factory;
 using Dev2.Messages;
 using Dev2.Providers.Events;
@@ -16,7 +23,6 @@ using Dev2.Studio.Controller;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
@@ -30,13 +36,6 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utils;
 using Dev2.Webs;
 using Dev2.Workspaces;
-using System;
-using System.Activities.Presentation.View;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Threading;
-using System.Windows;
-using System.Windows.Input;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface
@@ -72,7 +71,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         bool _hasMappingChange;
         readonly IEnvironmentModel _environmentModel;
         readonly IPopupController _popupController;
-        Action<IContextualResourceModel, bool> _saveDialogAction;
+        readonly Action<IContextualResourceModel, bool> _saveDialogAction;
         IStudioCompileMessageRepoFactory _studioCompileMessageRepoFactory;
         IResourceChangeHandlerFactory _resourceChangeHandlerFactory;
 
@@ -206,7 +205,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             WorkSurfaceKey = workSurfaceKey;
             WorkSurfaceViewModel = workSurfaceViewModel;
 
-            ImportService.TryGetExportValue(out _windowManager);
+            _windowManager = CustomContainer.Get<IWindowManager>();
             _workspaceItemRepository = WorkspaceItemRepository.Instance;
 
             var model = WorkSurfaceViewModel as IWorkflowDesignerViewModel;
@@ -296,7 +295,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 {
                     Save(message.Resource, message.IsLocalSave, message.AddToTabManager);
                 }
-                
+
             }
         }
 
@@ -814,10 +813,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 ContextualResourceModel.OnDesignValidationReceived -= ValidationMemoReceived;
             }
 
-            if(DataListViewModel != null && (DataListViewModel is SimpleBaseViewModel))
+            var model = DataListViewModel as SimpleBaseViewModel;
+            if(model != null)
             {
                 DataListViewModel.Parent = null;
-                ((SimpleBaseViewModel)DataListViewModel).Dispose();
+                model.Dispose();
                 DataListViewModel.Dispose();
             }
 

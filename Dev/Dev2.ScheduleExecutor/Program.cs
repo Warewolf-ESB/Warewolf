@@ -7,6 +7,8 @@ using System.Net;
 using System.Security.Principal;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.Communication;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;

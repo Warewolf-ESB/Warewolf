@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -10,10 +9,8 @@ using Dev2.Studio.Core.Messages;
 namespace Dev2.Webs
 {
 
-    [Export(typeof(IWebController))]
     public class WebController : IHandle<CloseWizardMessage>, IWebController
     {
-        [ImportingConstructor]
         public WebController()
         {
             EventPublishers.Aggregator.Subscribe(this);

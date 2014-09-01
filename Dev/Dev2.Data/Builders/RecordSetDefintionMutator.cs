@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.DataList.Contract
 {

@@ -13,9 +13,9 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Utils;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Communication;
-using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
@@ -25,7 +25,6 @@ using Dev2.Services;
 using Dev2.Services.Events;
 using Dev2.Simulation;
 using Dev2.Studio.Core;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -96,7 +95,7 @@ namespace Dev2.Activities.Designers2.Service
             InitializeProperties();
             InitializeImageSource();
 
-            IsAsyncVisible = ActivityTypeToActionTypeConverter.ConvertToActionType(Type) == DynamicServices.enActionType.Workflow;
+            IsAsyncVisible = ActivityTypeToActionTypeConverter.ConvertToActionType(Type) == Common.Interfaces.Core.DynamicServices.enActionType.Workflow;
             OutputMappingEnabled = !RunWorkflowAsync;
 
             // When the active environment is not local, we need to get smart around this piece of logic.
@@ -617,7 +616,7 @@ namespace Dev2.Activities.Designers2.Service
 
         bool CheckSourceMissing()
         {
-            if(ResourceModel != null && (ResourceModel.ResourceType == ResourceType.Service && _environment != null))
+            if(ResourceModel != null && (ResourceModel.ResourceType == Studio.Core.AppResources.Enums.ResourceType.Service && _environment != null))
             {
                 var resourceModel = _environment.ResourceRepository.FindSingle(c => c.ID == ResourceModel.ID, true) as IContextualResourceModel;
                 if(resourceModel != null)
@@ -683,29 +682,29 @@ namespace Dev2.Activities.Designers2.Service
 
         void InitializeImageSource()
         {
-            DynamicServices.enActionType actionType = ActivityTypeToActionTypeConverter.ConvertToActionType(Type);
+            Common.Interfaces.Core.DynamicServices.enActionType actionType = ActivityTypeToActionTypeConverter.ConvertToActionType(Type);
             ImageSource = GetIconPath(actionType);
         }
 
-        string GetIconPath(DynamicServices.enActionType actionType)
+        string GetIconPath(Common.Interfaces.Core.DynamicServices.enActionType actionType)
         {
             switch(actionType)
             {
-                case DynamicServices.enActionType.InvokeStoredProc:
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeStoredProc:
                     return "DatabaseService-32";
 
-                case DynamicServices.enActionType.InvokeWebService:
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeWebService:
                     return "WebService-32";
 
-                case DynamicServices.enActionType.Plugin:
+                case Common.Interfaces.Core.DynamicServices.enActionType.Plugin:
                     return "PluginService-32";
 
-                case DynamicServices.enActionType.Workflow:
+                case Common.Interfaces.Core.DynamicServices.enActionType.Workflow:
                     return string.IsNullOrEmpty(ServiceUri)
                         ? "Workflow-32"
                         : "RemoteWarewolf-32";
 
-                case DynamicServices.enActionType.RemoteService:
+                case Common.Interfaces.Core.DynamicServices.enActionType.RemoteService:
                     return "RemoteWarewolf-32";
 
             }
@@ -1080,7 +1079,7 @@ namespace Dev2.Activities.Designers2.Service
             RootModel.RemoveError(worstError);
         }
 
-        void RemoveErrors(IEnumerable<ErrorInfo> worstErrors)
+        void RemoveErrors(IEnumerable<IErrorInfo> worstErrors)
         {
             worstErrors.ToList().ForEach(RemoveError);
         }
@@ -1117,7 +1116,7 @@ namespace Dev2.Activities.Designers2.Service
 
         #region UpdateDesignValidationErrors
 
-        void UpdateDesignValidationErrors(IEnumerable<ErrorInfo> errors)
+        void UpdateDesignValidationErrors(IEnumerable<IErrorInfo> errors)
         {
             DesignValidationErrors.Clear();
             RootModel.ClearErrors();

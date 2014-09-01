@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
-using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Factory;
@@ -15,22 +14,20 @@ namespace Dev2.Core.Tests.Diagnostics
     public class ExceptionFactoryTests
     {
         Mock<IEnvironmentModel> _contextModel;
-        private Mock<IEnvironmentConnection> con;
+        private Mock<IEnvironmentConnection> _con;
 
         [TestInitialize]
         public void MyTestInitialize()
         {
             _contextModel = new Mock<IEnvironmentModel>();
 
-            con = new Mock<IEnvironmentConnection>();
+            _con = new Mock<IEnvironmentConnection>();
 
-            con.Setup(c => c.IsConnected).Returns(true);
-            con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(""));
+            _con.Setup(c => c.IsConnected).Returns(true);
+            _con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(""));
 
-            _contextModel.Setup(c => c.Connection).Returns(con.Object);
+            _contextModel.Setup(c => c.Connection).Returns(_con.Object);
 
-            //_contextModel.Setup(f => f.Connection.ExecuteCommand(It.IsAny<String>(),Guid.Empty,Guid.Empty));
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
         }
 
         #region Create Exception
@@ -110,6 +107,7 @@ namespace Dev2.Core.Tests.Diagnostics
 
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
+        // ReSharper disable InconsistentNaming
         public void ExceptionFactoryCreateCriticalExceptionViewModel_LogFilesExists_EnsureThatTheLogFilesAreAlsoInitialized()
         {
             //Initialization
@@ -117,9 +115,9 @@ namespace Dev2.Core.Tests.Diagnostics
             const string studioLog = "Studio.log";
             ExceptionFactory.GetStudioLogTempPath = () => studioLog;
             const string uniqueTxt = "Unique.txt";
-            ExceptionFactory.GetUniqueOutputPath = (ext) => uniqueTxt;
+            ExceptionFactory.GetUniqueOutputPath = ext => uniqueTxt;
             const string severTxt = "Sever.txt";
-            ExceptionFactory.GetServerLogTempPath = (evn) => severTxt;
+            ExceptionFactory.GetServerLogTempPath = evn => severTxt;
             //Execute
             var vm = ExceptionFactory.CreateViewModel(e, _contextModel.Object, ErrorSeverity.Critical);
             //Assert

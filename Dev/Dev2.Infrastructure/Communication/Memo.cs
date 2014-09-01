@@ -1,4 +1,5 @@
 ﻿using System;
+using Dev2.Common.Interfaces.Communication;
 
 namespace Dev2.Communication
 {

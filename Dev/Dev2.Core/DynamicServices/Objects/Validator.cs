@@ -10,6 +10,7 @@
 //                  
 #endregion
 
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices.Objects.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;

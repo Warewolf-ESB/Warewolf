@@ -6,7 +6,6 @@ using System.Activities.Presentation.Services;
 using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -19,9 +18,11 @@ using Dev2.Activities;
 using Dev2.Activities.Designers2.Foreach;
 using Dev2.AppResources.Repositories;
 using Dev2.Collections;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
-using Dev2.Composition;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
@@ -38,7 +39,6 @@ using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
@@ -1624,15 +1624,7 @@ namespace Dev2.Core.Tests.Workflows
 
             #endregion
 
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
             var eventAggregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer(eventAggregator.Object);
-
             var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object);
             var expectedMessage = new ConfigureDecisionExpressionMessage
             {
@@ -1784,18 +1776,9 @@ namespace Dev2.Core.Tests.Workflows
 
             #region setup event aggregator
 
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
-
-            var eventAggregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer(eventAggregator.Object);
 
             #endregion
-
+            var eventAggregator = new Mock<IEventAggregator>();
             var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object);
 
             var expectedMessage = new ConfigureSwitchExpressionMessage
@@ -3157,15 +3140,7 @@ namespace Dev2.Core.Tests.Workflows
 
             #region setup event aggregator
 
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
-
             var eventAggregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer(eventAggregator.Object);
 
             #endregion
 
@@ -3237,15 +3212,7 @@ namespace Dev2.Core.Tests.Workflows
 
             #region setup event aggregator
 
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
-
             var eventAggregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer(eventAggregator.Object);
 
             #endregion
 

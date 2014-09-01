@@ -1,4 +1,11 @@
-﻿using Dev2.Composition;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Windows.Input;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
@@ -7,14 +14,6 @@ using Dev2.Studio.Core.Services.Communication;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Utils;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Windows.Input;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Help
@@ -52,7 +51,7 @@ namespace Dev2.Studio.ViewModels.Help
 
         public FeedbackViewModel(Dictionary<string, string> attachedFiles)
         {
-            SysInfoService = ImportService.GetExportValue<ISystemInfoService>();
+            SysInfoService = CustomContainer.Get<ISystemInfoService>();
 
             var sysInfo = SysInfoService.GetSystemInfo();
             Init(sysInfo, attachedFiles);
@@ -403,9 +402,9 @@ namespace Dev2.Studio.ViewModels.Help
                 Process.Start("explorer.exe", "/select, \"" + path + "\"");
             }
             // ReSharper disable once EmptyGeneralCatchClause
-// ReSharper disable EmptyGeneralCatchClause
+            // ReSharper disable EmptyGeneralCatchClause
             catch
-// ReSharper restore EmptyGeneralCatchClause
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 //fail silently if the folder to the attachment couldn't be opened
             }

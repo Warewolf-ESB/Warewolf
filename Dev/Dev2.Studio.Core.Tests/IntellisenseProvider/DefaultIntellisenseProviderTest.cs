@@ -1,6 +1,5 @@
 ﻿using System;
 using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
@@ -34,8 +33,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void Init()
         {
             Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
 
@@ -1210,8 +1207,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         
         static void CreateActiveDataListViewModel()
         {
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
-
             var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);

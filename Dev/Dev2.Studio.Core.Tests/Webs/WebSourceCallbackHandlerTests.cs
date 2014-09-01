@@ -1,42 +1,25 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
-using System.Diagnostics.CodeAnalysis;
-using Caliburn.Micro;
-using Dev2.Composition;
+﻿using System.Diagnostics.CodeAnalysis;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Core.Tests.Webs
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class WebSourceCallbackHandlerTests
     {
-        static ImportServiceContext _importContext;
-
-        private static Mock<IEventAggregator> _eventAgrregator;
 
         #region Class/TestInitialize
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            _importContext = new ImportServiceContext();
-            ImportService.CurrentContext = _importContext;
-
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
-            _eventAgrregator = new Mock<IEventAggregator>();
-            ImportService.AddExportedValueToContainer(_eventAgrregator.Object);
-
         }
 
         [TestInitialize]
         public void TestInitialize()
         {
-            ImportService.CurrentContext = _importContext;
         }
 
         #endregion
@@ -58,7 +41,9 @@ namespace Dev2.Core.Tests.Webs
 
             var env = new Mock<IEnvironmentRepository>();
             var handler = new WebSourceCallbackHandlerMock(env.Object);
+#pragma warning disable 168
             foreach(var scheme in schemes)
+#pragma warning restore 168
             {
                 Assert.AreEqual(0, handler.StartUriProcessHitCount);
             }

@@ -1,17 +1,17 @@
-﻿using Dev2.Data.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
+using Dev2.Data.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.UI;
 using ICSharpCode.AvalonEdit;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.AvalonEdit.Highlighting;
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
-using System.Windows.Automation;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Workflow

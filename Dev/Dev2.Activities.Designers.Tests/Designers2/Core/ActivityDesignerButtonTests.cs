@@ -1,13 +1,13 @@
-﻿using Dev2.Activities.Designers2.Core;
-using Dev2.Common.Interfaces.Infrastructure;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Input;
+using Dev2.Activities.Designers2.Core;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Errors;
-using Dev2.Providers.Validation;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Windows.Input;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core
 {

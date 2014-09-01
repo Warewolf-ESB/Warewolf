@@ -1,4 +1,5 @@
 // Copyright (C) Josh Smith - September 2006
+
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;

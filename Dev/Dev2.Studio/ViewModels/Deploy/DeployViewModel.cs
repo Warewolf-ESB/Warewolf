@@ -1,4 +1,9 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.AppResources.Repositories;
 using Dev2.CustomControls.Connections;
@@ -17,12 +22,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Windows.Input;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -62,8 +61,8 @@ namespace Dev2.Studio.ViewModels.Deploy
         private int _destinationDeployItemCount;
         private Guid? _destinationContext;
         private Guid? _sourceContext;
-        private Action<IEnvironmentModel> _setActive = SetActiveEnvironment;
-        private Func<IEnvironmentModel> _getActive = GetActiveEnvironment; 
+        private readonly Action<IEnvironmentModel> _setActive = SetActiveEnvironment;
+        private readonly Func<IEnvironmentModel> _getActive = GetActiveEnvironment; 
         #endregion Class Members
 
         #region Constructor
@@ -178,7 +177,6 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
-        [Import(typeof(IWindowManager))]
         public IWindowManager WindowManager { get; set; }
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }

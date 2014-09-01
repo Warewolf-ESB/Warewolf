@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using Dev2.Common.Wrappers.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Common.Wrappers
 {

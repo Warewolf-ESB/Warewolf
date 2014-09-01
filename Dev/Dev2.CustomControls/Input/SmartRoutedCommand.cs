@@ -1,4 +1,5 @@
 ﻿// Copyright (C) Josh Smith - July 2008
+
 using System;
 using System.Windows;
 using System.Windows.Input;

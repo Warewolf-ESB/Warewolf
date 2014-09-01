@@ -1,4 +1,6 @@
 ﻿using System;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
@@ -14,7 +16,7 @@ namespace Dev2.Providers.Validation.Rules
         }
     }
 
-    public abstract class RuleBase
+    public abstract class RuleBase : IRuleBase
     {
         protected RuleBase()
         {

@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Services.Sql;
 
 namespace Dev2.Services.Sql
 {

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
-using Dev2.Studio.Core.Controller;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utilities;

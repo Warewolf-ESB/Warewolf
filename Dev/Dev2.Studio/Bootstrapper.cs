@@ -1,25 +1,23 @@
-﻿using Caliburn.Micro;
-using Dev2.Composition;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using Caliburn.Micro;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Services;
 using Dev2.Studio;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.WindowManagers;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Services;
+using Dev2.Studio.Core.Services.System;
+using Dev2.Studio.Feedback;
 using Dev2.Studio.StartupResources;
-using Dev2.Workspaces;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
+using Dev2.Studio.ViewModels;
 
 namespace Dev2
 {
@@ -47,7 +45,6 @@ namespace Dev2
 
         #region Fields
 
-        private CompositionContainer _container;
         bool _serverServiceStartedFromStudio;
 
         #endregion
@@ -56,21 +53,14 @@ namespace Dev2
 
         protected override void Configure()
         {
-            IEnumerable<AssemblyCatalog> assemblyCatalog = AssemblySource.Instance.Select(x => new AssemblyCatalog(x));
-            // ReSharper disable RedundantEnumerableCastCall
-            IEnumerable<ComposablePartCatalog> ofType = assemblyCatalog.OfType<ComposablePartCatalog>();
-            // ReSharper restore RedundantEnumerableCastCall
-            _container = new CompositionContainer(new AggregateCatalog(ofType));
-
-            var batch = new CompositionBatch();
-
-            batch.AddExportedValue<IWindowManager>(new WindowManager());
-            batch.AddExportedValue<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
-            batch.AddExportedValue(WorkspaceItemRepository.Instance);
-            batch.AddExportedValue(_container);
-
-            _container.Compose(batch);
-            ImportService.Initialize(_container);
+            CustomContainer.Register<IWindowManager>(new WindowManager());
+            CustomContainer.Register<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
+            //CustomContainer.Register<IWorkspaceRepository>(WorkspaceRepository.Instance);
+            CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
+            CustomContainer.Register<IFeedBackRecorder>(new FeedbackRecorder());
+            CustomContainer.Register<IPopupController>(new PopupController());
+            CustomContainer.Register<IFeedbackInvoker>(new FeedbackInvoker());
+            CustomContainer.Register<IMainViewModel>(new MainViewModel());
 
             ClassRoutedEventHandlers.RegisterEvents();
         }
@@ -93,32 +83,9 @@ namespace Dev2
         #endregion
 
 
-        protected override object GetInstance(Type serviceType, string key)
-        {
-            string contract = string.IsNullOrEmpty(key) ? AttributedModelServices.GetContractName(serviceType) : key;
-            var exports = _container.GetExportedValues<object>(contract).ToList();
-
-            if(exports.Any())
-            {
-                return exports.First();
-            }
-
-            throw new Exception(string.Format("Could not locate any instances of contract {0}.", contract));
-        }
-
-        protected override IEnumerable<object> GetAllInstances(Type serviceType)
-        {
-            return _container.GetExportedValues<object>(AttributedModelServices.GetContractName(serviceType));
-        }
-
-        protected override void BuildUp(object instance)
-        {
-            _container.SatisfyImportsOnce(instance);
-        }
 
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-            //Dev2MessageBoxViewModel.Show("cake you broke something with something ntuff cake you broke something with something ntuff", "heading cake", MessageBoxButton.OK, MessageBoxImage.Error);
 
             // ReSharper disable JoinDeclarationAndInitializer
             // ReSharper disable RedundantAssignment
@@ -148,6 +115,15 @@ namespace Dev2
             base.StartRuntime();
         }
 
+        #region Overrides of BootstrapperBase
+
+        protected override object GetInstance(Type service, string key)
+        {
+            return CustomContainer.Get(service);
+        }
+
+        #endregion
+
         #endregion Public Methods
 
         #region Private Methods
@@ -160,8 +136,8 @@ namespace Dev2
          */
         private bool CheckWindowsService()
         {
-            IWindowsServiceManager windowsServiceManager = ImportService.GetExportValue<IWindowsServiceManager>();
-            IPopupController popup = ImportService.GetExportValue<IPopupController>();
+            IWindowsServiceManager windowsServiceManager = CustomContainer.Get<IWindowsServiceManager>();
+            IPopupController popup = CustomContainer.Get<IPopupController>();
             ServerServiceConfiguration ssc = new ServerServiceConfiguration(windowsServiceManager, popup);
 
             if(ssc.DoesServiceExist())

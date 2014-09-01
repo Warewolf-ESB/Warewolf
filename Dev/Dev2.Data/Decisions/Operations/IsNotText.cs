@@ -1,5 +1,5 @@
-﻿using Dev2.Common.ExtMethods;
-using System;
+﻿using System;
+using Dev2.Common.ExtMethods;
 
 namespace Dev2.Data.Decisions.Operations
 {

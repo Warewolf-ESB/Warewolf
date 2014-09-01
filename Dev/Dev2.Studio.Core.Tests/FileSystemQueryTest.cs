@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
-using Dev2.Common.Wrappers.Interfaces;
 using Dev2.Intellisense.Helper;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

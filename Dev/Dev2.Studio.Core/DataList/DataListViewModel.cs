@@ -1,4 +1,9 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
@@ -15,11 +20,6 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Core.ViewModels.Base;
 using ServiceStack.Common.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace

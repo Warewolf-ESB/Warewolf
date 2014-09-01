@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Communication;
 using Newtonsoft.Json;
 
 namespace Dev2.Communication

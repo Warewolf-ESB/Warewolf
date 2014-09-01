@@ -8,6 +8,9 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core.Convertors.Case;
+using Dev2.Common.Interfaces.DataList.Contract;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -186,7 +189,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         static void ValidateVariable(string fieldName, IDataListCompiler compiler, IDSFDataObject dataObject, out ErrorResultTO errors)
         {
             fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
-            var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+            var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), Dev2.DataList.Contract.enTranslationDepth.Shape, out errors);
             if(!string.IsNullOrEmpty(datalist))
             {
                 var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist)

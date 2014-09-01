@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Dev2.Common.Interfaces.Core.Convertors.Base;
 
 namespace Dev2.Converters {
     internal class Dev2TextConverter : IBaseConverter {

@@ -1,15 +1,14 @@
-﻿using Dev2.Composition;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.Model;
 using Dev2.Studio.ViewModels.Diagnostics;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Factory
 {
     /// <summary>
@@ -145,7 +144,6 @@ namespace Dev2.Studio.Factory
             }
 
             vm.FeedbackAction = FeedbackFactory.CreateEmailFeedbackAction(attachedFiles, environmentModel);
-            ImportService.SatisfyImports(vm);
             vm.Exception.Clear();
             vm.Exception.Add(Create(e, isCritical == ErrorSeverity.Critical));
             return vm;

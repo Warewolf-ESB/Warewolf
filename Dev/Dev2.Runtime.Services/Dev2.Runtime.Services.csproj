@@ -176,9 +176,13 @@
     <Compile Include="Hosting\CompileMessageRepo.cs" />
     <Compile Include="Hosting\ExplorerItemFactory.cs" />
     <Compile Include="Hosting\ExplorerRepositoryResult.cs" />
+    <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
+    <Compile Include="Hosting\ResourceUpgrade.cs" />
+    <Compile Include="Hosting\ResourceUpgrader.cs" />
+    <Compile Include="Hosting\ResourceUpgraderFactory.cs" />
     <Compile Include="Hosting\ServerVersionRepository.cs" />
+    <Compile Include="Hosting\UpgradePath.cs" />
     <Compile Include="Hosting\VersionStrategy.cs" />
-    <Compile Include="Interfaces\IExplorerItemFactory.cs" />
     <Compile Include="Hosting\ServerExplorerRepository.cs" />
     <Compile Include="Network\IContextManager.cs" />
     <Compile Include="Collections\CaseInsensitiveComparer.cs" />
@@ -211,12 +215,12 @@
     <Compile Include="Hosting\ServiceDefinitionLoader.cs" />
     <Compile Include="Hosting\IResourceCatalog.cs" />
     <Compile Include="Hosting\ManagementServiceResource.cs" />
-    <Compile Include="Hosting\ResourceCatalogBuilder.cs" />
     <Compile Include="Hosting\ResourceCatalogResult.cs" />
     <Compile Include="Network\IStudioNetworkSession.cs" />
     <Compile Include="Network\StudioAccount.cs" />
     <Compile Include="Network\StudioNetworkSession.cs" />
     <Compile Include="Compiler\ServiceModelCompiler.cs" />
+    <Compile Include="ResourceUpgrades\BaseResourceUpgrader.cs" />
     <Compile Include="Security\ServerAuthorizationService.cs" />
     <Compile Include="Security\ProcessHost.cs" />
     <Compile Include="Security\ServerSecurityService.cs" />
@@ -343,7 +347,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="SSL Generation\makecert.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -1,4 +1,5 @@
 ﻿using ActivityUnitTests;
+using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

@@ -1,5 +1,4 @@
 ﻿using System.Text;
-using Dev2.Composition;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;
@@ -14,11 +13,11 @@ namespace Dev2.Core.Tests
     ///This is a result class for ResourceDesignerViewModelTest and is intended
     ///to contain all ResourceDesignerViewModelTest Unit Tests
     ///</summary>
-    [TestClass()]
+    [TestClass]
     public class ResourceDesignerViewModelTest
     {
 
-        ResourceDesignerViewModel target;
+        ResourceDesignerViewModel _target;
 
         /// <summary>
         ///Gets or sets the result context which provides
@@ -30,47 +29,18 @@ namespace Dev2.Core.Tests
         public void MyTestInitialize()
         {
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             var m = new Mock<IContextualResourceModel>();
             m.Setup(c => c.WorkflowXaml).Returns(new StringBuilder("result"));
             m.Setup(c => c.ResourceType).Returns(ResourceType.Service);
 
             IContextualResourceModel model = m.Object;
-            IEnvironmentModel environment = null; // TODO: Initialize to an appropriate value
-            target = new ResourceDesignerViewModel(model, environment);
+            _target = new ResourceDesignerViewModel(model, null);
         }
 
-
-        #region CTOR Tests
-        /// <summary>
-        ///A result for ResourceDesignerViewModel Constructor
-        ///</summary>
-        [TestMethod()]
-        public void ResourceDesignerViewModelConstructorTest()
-        {
-            // init 
-        }
-
-        /// <summary>
-        /// Tests that the constructor can handle null resourceModel being passed to it
-        /// </summary>
-        [TestMethod]
-        public void Constructor_NullResourceModel_Expected_ConstructorCreatesNewResourceModel()
-        {
-        }
-
-        /// <summary>
-        /// Tests that the constructor complains when a null environmentmodel is passed in
-        /// </summary>
-        [TestMethod]
-        public void Constructor_NullEnvironmentModel_Expected_ExceptionThrown()
-        {
-        }
-
-        #endregion CTOR
 
         #region DefaultDefinition Tests
+        // ReSharper disable InconsistentNaming
 
         /// <summary>
         /// Tests that the Default Service Definition for Services
@@ -81,9 +51,10 @@ namespace Dev2.Core.Tests
             Mock<IContextualResourceModel> m = new Mock<IContextualResourceModel>();
             m.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(string.Empty)).Verifiable();
             m.Setup(c => c.ResourceType).Returns(ResourceType.Service);
-            IEnvironmentModel environment = null; // TODO: Initialize to an appropriate value
-            target = new ResourceDesignerViewModel(m.Object, environment);
-            var actual = target.ServiceDefinition;
+            _target = new ResourceDesignerViewModel(m.Object, null);
+#pragma warning disable 168
+            var serviceDefinition = _target.ServiceDefinition;
+#pragma warning restore 168
             m.Verify(c => c.WorkflowXaml, Times.Exactly(3));
         }
 
@@ -96,9 +67,10 @@ namespace Dev2.Core.Tests
             Mock<IContextualResourceModel> m = new Mock<IContextualResourceModel>();
             m.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(string.Empty)).Verifiable();
             m.Setup(c => c.ResourceType).Returns(ResourceType.Source);
-            IEnvironmentModel environment = null; // TODO: Initialize to an appropriate value
-            target = new ResourceDesignerViewModel(m.Object, environment);
-            var actual = target.ServiceDefinition;
+            _target = new ResourceDesignerViewModel(m.Object, null);
+#pragma warning disable 168
+            var actual = _target.ServiceDefinition;
+#pragma warning restore 168
             m.Verify(c => c.WorkflowXaml, Times.Exactly(3));
         }
 
@@ -109,13 +81,13 @@ namespace Dev2.Core.Tests
         /// <summary>
         ///A result for UpdateServiceDefinition
         ///</summary>
-        [TestMethod()]
+        [TestMethod]
         public void UpdateServiceDefinition()
         {
 
-            target.ServiceDefinition = new StringBuilder("result");
+            _target.ServiceDefinition = new StringBuilder("result");
 
-            Assert.IsTrue(target.ServiceDefinition.ToString() == "result");
+            Assert.IsTrue(_target.ServiceDefinition.ToString() == "result");
         }
 
         #endregion UpdateServiceDefinition Tests

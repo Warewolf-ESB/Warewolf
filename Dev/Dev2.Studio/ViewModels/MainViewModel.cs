@@ -1,6 +1,15 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Security.Claims;
+using System.Windows;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
 using Dev2.Factory;
@@ -20,7 +29,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
@@ -35,7 +43,6 @@ using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
 using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels.DependencyVisualization;
-using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -45,14 +52,6 @@ using Dev2.Utils;
 using Dev2.Webs;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager.Events;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.Linq;
-using System.Security.Claims;
-using System.Windows;
-using System.Windows.Input;
-using UserInterfaceLayoutModel = Dev2.Studio.Core.Models.UserInterfaceLayoutModel;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels
@@ -60,8 +59,6 @@ namespace Dev2.Studio.ViewModels
     /// <summary>
     /// 
     /// </summary>
-    [Export(typeof(IMainViewModel))]
-    [PartCreationPolicy(CreationPolicy.Shared)]
     public class MainViewModel : BaseConductor<WorkSurfaceContextViewModel>, IMainViewModel,
                                         IHandle<DeleteResourcesMessage>,
                                         IHandle<DeleteFolderMessage>,
@@ -73,13 +70,10 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<ShowHelpTabMessage>,
                                         IHandle<ShowNewResourceWizard>,
                                         IHandle<RemoveResourceAndCloseTabMessage>,
-                                        IHandle<GetActiveEnvironmentCallbackMessage>,
                                         IHandle<SaveAllOpenTabsMessage>,
                                         IHandle<ShowReverseDependencyVisualizer>,
-                                        IHandle<GetContextualEnvironmentCallbackMessage>,
                                         IHandle<FileChooserMessage>,
-                                        IHandle<DisplayMessageBoxMessage>,
-                                        IPartImportsSatisfiedNotification
+                                        IHandle<DisplayMessageBoxMessage>
     {
         #region Fields
 
@@ -95,15 +89,12 @@ namespace Dev2.Studio.ViewModels
         private ICommand _deployCommand;
         private ICommand _displayAboutDialogueCommand;
         private ICommand _exitCommand;
-        private ICommand _resetLayoutCommand;
         private AuthorizeCommand _settingsCommand;
         private AuthorizeCommand _schedulerCommand;
         private ICommand _startFeedbackCommand;
         private ICommand _showCommunityPageCommand;
         private ICommand _startStopRecordedFeedbackCommand;
-        private ICommand _reportsCommand;
         private readonly bool _createDesigners;
-        private ICommand _notImplementedCommand;
         private ICommand _showStartPageCommand;
         bool _hasActiveConnection;
         bool _canDebug = true;
@@ -115,7 +106,6 @@ namespace Dev2.Studio.ViewModels
         #region imports
         public FlowController FlowController { get; set; }
 
-        [Import(typeof(IWebController))]
         public IWebController WebController { get; set; }
 
         public IWindowManager WindowManager { get; set; }
@@ -124,13 +114,10 @@ namespace Dev2.Studio.ViewModels
 
         public IEnvironmentRepository EnvironmentRepository { get; private set; }
 
-        [Import]
         public IFeedbackInvoker FeedbackInvoker { get; set; }
 
-        [Import]
         public IFeedBackRecorder FeedBackRecorder { get; set; }
 
-        [Import(typeof(IFrameworkRepository<UserInterfaceLayoutModel>))]
         public IFrameworkRepository<UserInterfaceLayoutModel> UserInterfaceLayoutRepository { get; set; }
 
         #endregion imports
@@ -260,15 +247,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public ICommand NotImplementedCommand
-        {
-            get
-            {
-                return _notImplementedCommand ??
-                       (_notImplementedCommand = new DelegateCommand(param => MessageBox.Show("Please implement me!")));
-            }
-        }
-
 
         public ICommand AddStudioShortcutsPageCommand
         {
@@ -333,21 +311,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public ICommand ResetLayoutCommand
-        {
-            get
-            {
-                return _resetLayoutCommand ??
-                       (_resetLayoutCommand = new DelegateCommand(param =>
-                       {
-                           Logger.KeepMyNamespaces();
-                           this.TraceInfo("Publish message of type - " + typeof(ResetLayoutMessage));
-                           EventPublisher.Publish(
-                               new ResetLayoutMessage(param as FrameworkElement));
-                       }));
-            }
-        }
-
         public AuthorizeCommand SettingsCommand
         {
             get
@@ -366,14 +329,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public ICommand ReportsCommand
-        {
-            get
-            {
-                return _reportsCommand ?? (_reportsCommand =
-                                            new RelayCommand(param => AddReportsWorkSurface()));
-            }
-        }
 
         public AuthorizeCommand<string> NewResourceCommand
         {
@@ -384,6 +339,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        [ExcludeFromCodeCoverage]
         public ICommand ExitCommand
         {
             get
@@ -469,6 +425,7 @@ namespace Dev2.Studio.ViewModels
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             AddWorkspaceItems();
             ShowStartPage();
+            DisplayName = "Warewolf" + string.Format(" ({0})", ClaimsPrincipal.Current.Identity.Name).ToUpperInvariant();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
         }
@@ -494,17 +451,6 @@ namespace Dev2.Studio.ViewModels
             PersistTabs();
         }
 
-        public void Handle(GetActiveEnvironmentCallbackMessage message)
-        {
-            this.TraceInfo(message.GetType().Name);
-            message.Callback.Invoke(ActiveEnvironment);
-        }
-
-        public void Handle(GetContextualEnvironmentCallbackMessage message)
-        {
-            this.TraceInfo(message.GetType().Name);
-            message.Callback.Invoke(ActiveItem.Environment);
-        }
 
         public void Handle(AddWorkSurfaceMessage message)
         {
@@ -855,20 +801,16 @@ namespace Dev2.Studio.ViewModels
                      });
         }
 
+        [ExcludeFromCodeCoverage] //Excluded due to needing a parent window
         public void AddSettingsWorkSurface()
         {
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
         }
 
+        [ExcludeFromCodeCoverage] //Excluded due to needing a parent window
         public void AddSchedulerWorkSurface()
         {
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
-        }
-
-        public void AddReportsWorkSurface()
-        {
-            ActivateOrCreateUniqueWorkSurface<ReportsManagerViewModel>
-                (WorkSurfaceContext.ReportsManager);
         }
 
         public void AddHelpTabWorkSurface(string uriToDisplay)
@@ -1035,16 +977,6 @@ namespace Dev2.Studio.ViewModels
 
 
         #endregion
-
-        #region ImportsSatisfied
-
-        public void OnImportsSatisfied()
-        {
-            DisplayName = "Warewolf" + string.Format(" ({0})", ClaimsPrincipal.Current.Identity.Name).ToUpperInvariant();
-        }
-
-        #endregion
-
         #region Resource Deletion
 
         private bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)

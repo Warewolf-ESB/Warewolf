@@ -5,17 +5,17 @@ using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.ConnectionHelpers;
 using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
 using Dev2.ExtMethods;
 using Dev2.Messages;
-using Dev2.Providers.Events;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
@@ -38,7 +38,7 @@ namespace Dev2.Network
 {
     public class ServerProxy : IDisposable, IEnvironmentConnection
     {
-        Timer _reconnectHeartbeat;
+        System.Timers.Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
         readonly IAsyncWorker _asyncWorker;
 
@@ -119,7 +119,7 @@ namespace Dev2.Network
                             id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
                             context = new PrincipalContext(domainName.ToLower() == Environment.MachineName.ToLower() ? ContextType.Machine : ContextType.Domain);
                             userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
-                        }
+        }
 
                         if(userPrincipal != null)
                         {
@@ -210,7 +210,10 @@ namespace Dev2.Network
         void OnDebugStateReceived(string objString)
         {
 
-            var obj = JsonConvert.DeserializeObject<DebugState>(objString);
+            var obj = JsonConvert.DeserializeObject<DebugState>(objString, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            });
             Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });
         }
@@ -339,7 +342,7 @@ namespace Dev2.Network
             {
                 if(_reconnectHeartbeat == null)
                 {
-                    _reconnectHeartbeat = new Timer();
+                    _reconnectHeartbeat = new System.Timers.Timer();
                     _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
                     _reconnectHeartbeat.Interval = 3000;
                     _reconnectHeartbeat.AutoReset = true;

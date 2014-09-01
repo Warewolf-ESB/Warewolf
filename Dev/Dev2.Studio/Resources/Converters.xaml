@@ -11,7 +11,8 @@
                     xmlns:valueConverters="clr-namespace:WPF.JoshSmith.Data.ValueConverters;assembly=Dev2.CustomControls"
                     xmlns:converters4="clr-namespace:Dev2.Converters;assembly=Dev2.Core"
                     xmlns:converters1="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
-                    xmlns:converters5="clr-namespace:Dev2.AppResources.Converters">
+                    xmlns:converters5="clr-namespace:Dev2.AppResources.Converters"
+    xmlns:debug="clr-namespace:Dev2.Common.Interfaces.Diagnostics.Debug;assembly=Dev2.Common.Interfaces">
 
     <Activities:ImagePathConverter x:Key="ImagePathConverter" />
     <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter"></converters2:FilterStringToBoolConverter>
@@ -91,8 +92,8 @@
     <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverterActivityTypeWorkflow">
         <converters:EnumToVisibilityConverter.VisibleEnumValues>
             <converters:EnumCollection>
-                <x:Static Member="Dev2Enums:ActivityType.Workflow" />
-                <x:Static Member="Dev2Enums:ActivityType.Service" />
+                <x:Static Member="debug:ActivityType.Workflow" />
+                <x:Static Member="debug:ActivityType.Service" />
             </converters:EnumCollection>
         </converters:EnumToVisibilityConverter.VisibleEnumValues>
     </converters:EnumToVisibilityConverter>
@@ -100,7 +101,7 @@
     <converters:EnumToBoolConverter x:Key="EnumToBoolConverterActivityTypeWorkflow">
         <converters:EnumToBoolConverter.TrueEnumValues>
             <converters:EnumCollection>
-                <x:Static Member="Dev2Enums:ActivityType.Workflow" />
+                <x:Static Member="debug:ActivityType.Workflow" />
             </converters:EnumCollection>
         </converters:EnumToBoolConverter.TrueEnumValues>
     </converters:EnumToBoolConverter>
@@ -108,7 +109,7 @@
     <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverterActivityTypeStep">
         <converters:EnumToVisibilityConverter.VisibleEnumValues>
             <converters:EnumCollection>
-                <x:Static Member="Dev2Enums:ActivityType.Step" />
+                <x:Static Member="debug:ActivityType.Step" />
             </converters:EnumCollection>
         </converters:EnumToVisibilityConverter.VisibleEnumValues>
     </converters:EnumToVisibilityConverter>
@@ -116,8 +117,8 @@
     <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverterStateTypeBefore">
         <converters:EnumToVisibilityConverter.VisibleEnumValues>
             <converters:EnumCollection>
-                <x:Static Member="Dev2Enums:StateType.Before" />
-                <x:Static Member="Dev2Enums:StateType.Start" />
+                <x:Static Member="debug:StateType.Before" />
+                <x:Static Member="debug:StateType.Start" />
             </converters:EnumCollection>
         </converters:EnumToVisibilityConverter.VisibleEnumValues>
     </converters:EnumToVisibilityConverter>
@@ -125,8 +126,8 @@
     <converters:EnumToVisibilityConverter x:Key="EnumToVisibilityConverterStateTypeAfter">
         <converters:EnumToVisibilityConverter.VisibleEnumValues>
             <converters:EnumCollection>
-                <x:Static Member="Dev2Enums:StateType.After" />
-                <x:Static Member="Dev2Enums:StateType.End" />
+                <x:Static Member="debug:StateType.After" />
+                <x:Static Member="debug:StateType.End" />
             </converters:EnumCollection>
         </converters:EnumToVisibilityConverter.VisibleEnumValues>
     </converters:EnumToVisibilityConverter>

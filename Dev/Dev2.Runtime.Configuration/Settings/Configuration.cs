@@ -6,7 +6,6 @@ using Caliburn.Micro;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.ViewModels;
 using Dev2.Runtime.Configuration.Views;
-using Action = System.Action;
 
 namespace Dev2.Runtime.Configuration.Settings
 {
@@ -174,7 +173,7 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region Static Methods
 
-        public static UserControl EntryPoint(XElement configurationXML, Func<XElement, XElement> saveCallback, Action cancelCallback, Action settingChangedCallback)
+        public static UserControl EntryPoint(XElement configurationXML, Func<XElement, XElement> saveCallback, System.Action cancelCallback, System.Action settingChangedCallback)
         {
             MainView settingsView = new MainView();
             MainViewModel mainViewModel = new MainViewModel(configurationXML, saveCallback, cancelCallback, settingChangedCallback);

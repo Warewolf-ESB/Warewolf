@@ -9,23 +9,15 @@ using System.Windows;
 using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
-// ReSharper disable RedundantUsingDirective
-using Dev2.Interfaces;
-using Dev2.Network;
-using Dev2.Studio.Controller;
 using Dev2.Studio.Core.AppResources.Browsers;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
-using Dev2.Threading;
 using Dev2.Util;
-using Dev2.Views.Dialogs;
+    // ReSharper disable RedundantUsingDirective
 
 // ReSharper restore RedundantUsingDirective
 
@@ -40,7 +32,7 @@ namespace Dev2.Studio
     {
         MainViewModel _mainViewModel;
         //This is ignored because when starting the studio twice the second one crashes without this line
-        // ReSharper disable once RedundantDefaultFieldInitializer
+        // ReSharper disable RedundantDefaultFieldInitializer
         // ReSharper disable NotAccessedField.Local
         // ReSharper disable RedundantDefaultFieldInitializer
         private Mutex _processGuard = null;
@@ -105,8 +97,6 @@ namespace Dev2.Studio
             base.OnStartup(e);
 
             _mainViewModel = MainWindow.DataContext as MainViewModel;
-            CustomContainer.Register<IPopupController>(new PopupController());
-            CustomContainer.Register<IMainViewModel>(_mainViewModel);
             //2013.07.01: Ashley Lewis for bug 9817 - setup exception handler on 'this', with main window data context as the popup dialog controller
             _appExceptionHandler = new AppExceptionHandler(this, _mainViewModel);
 

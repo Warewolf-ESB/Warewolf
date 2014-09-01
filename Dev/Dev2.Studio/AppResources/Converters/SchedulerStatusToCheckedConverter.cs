@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using Dev2.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.AppResources.Converters

@@ -1,4 +1,6 @@
-﻿using Dev2.Providers.Logs;
+﻿using Dev2.Common.Interfaces.Activity;
+using Dev2.Common.Interfaces.Core;
+using Dev2.Providers.Logs;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Administration

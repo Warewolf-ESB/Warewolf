@@ -258,8 +258,6 @@
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Configuration\RuntimeConfigurationAssemblyRepository.cs" />
-    <Compile Include="Configuration\IRuntimeConfigurationAssemblyRepository.cs" />
     <Compile Include="AppResources\WindowManagers\IDockAwareWindowManager.cs" />
     <Compile Include="AppResources\WindowManagers\XamDockManagerDockAwareWindowManager.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlEnvironment.cs" />
@@ -272,7 +270,6 @@
     <Compile Include="ConnectionHelpers\IConnectControlSingleton.cs" />
     <Compile Include="Controller\CommunicationController.cs" />
     <Compile Include="Controller\ICommunicationControllerFactory.cs" />
-    <Compile Include="Controller\IPopUp.cs" />
     <Compile Include="CustomContainer.cs" />
     <Compile Include="Interfaces\IMainViewModel.cs" />
     <Compile Include="Messages\DeleteFolderMessage.cs" />
@@ -303,7 +300,6 @@
     <Compile Include="DataList\DataListSingleton.cs" />
     <Compile Include="InterfaceImplementors\DeployDTO.cs" />
     <Compile Include="InterfaceImplementors\DeployService.cs" />
-    <Compile Include="InterfaceImplementors\Dev2ConfigurationProvider.cs" />
     <Compile Include="Interfaces\DataList\IDataListItemModel.cs" />
     <Compile Include="Interfaces\IDataMappingViewModelFactory.cs" />
     <Compile Include="Interfaces\IDataMappingViewModel.cs" />
@@ -377,8 +373,6 @@
     <Compile Include="Messages\EditCaseExpressionMessage.cs" />
     <Compile Include="Messages\EnvironmentDeletedMessage.cs" />
     <Compile Include="Messages\ExecuteResourceMessage.cs" />
-    <Compile Include="Messages\GetActiveEnvironmentCallbackMessage.cs" />
-    <Compile Include="Messages\GetContextualEnvironmentCallbackMessage.cs" />
     <Compile Include="Messages\IMessage.cs" />
     <Compile Include="Messages\IResetLayoutMessage.cs" />
     <Compile Include="Messages\RefreshExplorerMessage.cs" />
@@ -420,7 +414,6 @@
     <Compile Include="Models\DataMapping\TransferObject.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Interfaces\ITagCloudItemModel.cs" />
     <Compile Include="Interfaces\ITagModel.cs" />
     <Compile Include="Models\EnvironmentModel.cs" />
     <Compile Include="Models\ExplorerItemModel.cs" />
@@ -430,15 +423,11 @@
     <Compile Include="Models\ResourceModel.cs" />
     <Compile Include="Models\RoleModel.cs" />
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
-    <Compile Include="Models\TagCloudItemModel.cs" />
     <Compile Include="Models\TagModel.cs" />
     <Compile Include="Models\UserInterfaceLayoutModel.cs" />
     <Compile Include="Models\WorkflowActivityMessage.cs" />
     <Compile Include="Network\Enums.cs" />
-    <Compile Include="Network\IServiceEndpointGenerationStrategyProvider.cs" />
-    <Compile Include="Network\IServiceLocator.cs" />
     <Compile Include="Network\ServerState.cs" />
-    <Compile Include="Network\ServiceLocator.cs" />
     <Compile Include="Network\ServerProxy.cs" />
     <Compile Include="Network\ServiceProxy.cs" />
     <Compile Include="Network\WebServer.cs" />
@@ -501,7 +490,6 @@
     <Compile Include="ViewModels\DataList\InputOutputViewModelFactory.cs" />
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />
     <Compile Include="ViewModels\Navigation\INavigationContext.cs" />
-    <Compile Include="ViewModels\ResourceManagement\ResourceWizardViewModel.cs" />
     <Compile Include="Interfaces\IResourceDesignerViewModel.cs" />
     <Compile Include="ViewModels\ResourceManagement\ResourceDesignerViewModel.cs" />
     <Compile Include="Interfaces\ILayoutGridViewModel.cs" />
@@ -574,10 +562,6 @@
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Composition\Dev2.Composition.csproj">
-      <Project>{B91813C8-499C-4D65-A0D4-57C7FA5F5413}</Project>
-      <Name>Dev2.Composition</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
       <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
       <Name>Dev2.Runtime.Configuration</Name>
@@ -604,6 +588,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CalculateParser\" />
+    <Folder Include="Configuration\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

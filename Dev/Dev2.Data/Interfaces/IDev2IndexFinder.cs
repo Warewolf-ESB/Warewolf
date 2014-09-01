@@ -1,5 +1,5 @@
-﻿using Dev2.Data.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Dev2.Data.Enums;
 
 namespace Dev2.Data.Interfaces
 {

@@ -1,9 +1,9 @@
-﻿using Microsoft.Windows.Controls.Ribbon;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
+using Microsoft.Windows.Controls.Ribbon;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.RibbonControl

@@ -1,5 +1,6 @@
 using System;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.ConnectionHelpers;
 using Dev2.Models;
 using Dev2.Providers.Events;

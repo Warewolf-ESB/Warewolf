@@ -54,8 +54,6 @@ namespace Dev2.Core.Tests
 
         void Run()
         {
-            // ImportService.CurrentContext = CompositionInitializer.InitDeployServiceTest();
-
             var eventPublisher = new EventPublisher();
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(e => e.ServerEvents).Returns(eventPublisher);

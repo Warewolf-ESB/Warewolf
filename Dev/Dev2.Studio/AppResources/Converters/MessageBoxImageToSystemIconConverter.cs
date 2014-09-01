@@ -1,10 +1,10 @@
-﻿using Dev2.Common;
-using System;
+﻿using System;
 using System.Drawing;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
+using Dev2.Common;
 
 namespace Dev2.Studio.AppResources.Converters
 {

@@ -8,6 +8,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Utils;
 
 // ReSharper disable CheckNamespace
@@ -15,7 +16,7 @@ namespace Dev2.Diagnostics
 // ReSharper restore CheckNamespace
 {
     [Serializable]
-    public class DebugItem : IDebugItem, IXmlSerializable
+    public class DebugItem : IDebugItem
     {
         #region private fields
 
@@ -38,7 +39,7 @@ namespace Dev2.Diagnostics
         public const int ActCharDispatchCount = 100;
 
         public static List<DebugItem> EmptyList = new List<DebugItem>();
-        public List<DebugItemResult> ResultsList { get; set; }
+        public List<IDebugItemResult> ResultsList { get; set; }
 
         #endregion properties
 
@@ -49,9 +50,9 @@ namespace Dev2.Diagnostics
         {
         }
 
-        public DebugItem(IEnumerable<DebugItemResult> results)
+        public DebugItem(IEnumerable<IDebugItemResult> results)
         {
-            ResultsList = new List<DebugItemResult>();
+            ResultsList = new List<IDebugItemResult>();
             _tempPath = Path.Combine(Path.GetTempPath(), "Warewolf", "Debug");
             if(!Directory.Exists(_tempPath))
             {
@@ -80,7 +81,7 @@ namespace Dev2.Diagnostics
 
         #region Public Methods
 
-        public void Add(DebugItemResult itemToAdd, bool isDeserialize = false)
+        public void Add(IDebugItemResult itemToAdd, bool isDeserialize = false)
         {
             if(!string.IsNullOrWhiteSpace(itemToAdd.GroupName) && itemToAdd.GroupIndex > MaxItemDispatchCount)
             {
@@ -127,7 +128,7 @@ namespace Dev2.Diagnostics
             ResultsList.Add(itemToAdd);
         }
 
-        public void AddRange(IList<DebugItemResult> itemsToAdd)
+        public void AddRange(List<IDebugItemResult> itemsToAdd)
         {
             foreach(var debugItemResult in itemsToAdd)
             {
@@ -135,14 +136,14 @@ namespace Dev2.Diagnostics
             }
         }
 
-        public IList<DebugItemResult> FetchResultsList()
+        public IList<IDebugItemResult> FetchResultsList()
         {
             return ResultsList;
         }
 
         #region TryCache
 
-        public void TryCache(DebugItemResult item)
+        public void TryCache(IDebugItemResult item)
         {
             if(item == null)
             {
@@ -221,7 +222,7 @@ namespace Dev2.Diagnostics
 
             if(reader.ReadToDescendant("DebugItemResults"))
             {
-                ResultsList = new List<DebugItemResult>();
+                ResultsList = new List<IDebugItemResult>();
                 reader.ReadStartElement();
                 while(reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DebugItemResult")
                 {

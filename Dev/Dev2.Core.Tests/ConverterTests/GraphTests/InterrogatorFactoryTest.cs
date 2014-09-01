@@ -1,8 +1,8 @@
 ﻿using System.Data;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Converters.Graph.DataTable;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Tests.ConverterTests.GraphTests
 {

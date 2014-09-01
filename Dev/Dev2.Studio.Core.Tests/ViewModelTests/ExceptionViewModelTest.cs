@@ -2,7 +2,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Factory;
 using Dev2.Studio.Feedback;
@@ -18,26 +17,17 @@ namespace Dev2.Core.Tests.ViewModelTests
     {
         #region Class Members
         private static string _tempTestFolder;
-        private static readonly object _testLock = new object();
-        private TestContext testContextInstance;
+
         #endregion Class Members
 
         #region Properties
+
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
+
         #endregion Properties
 
         #region Additional test attributes
@@ -63,37 +53,36 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestInitialize]
         public void MyTestInitialize()
         {
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
         }
 
         #endregion
+        // ReSharper disable InconsistentNaming
 
         [TestMethod]
         public void Send_Where_OutputPathDoesntExist_Expected_PathCreatedAndActionIvoked()
         {
             var tmpOutputPath = new FileInfo(GetUniqueOutputPath(".txt"));
-            string newOutputFolder = Path.Combine(tmpOutputPath.Directory.FullName, Guid.NewGuid().ToString());
-            string newOutputpath = Path.Combine(newOutputFolder, tmpOutputPath.Name);
+            if(tmpOutputPath.Directory != null)
+            {
+                string newOutputFolder = Path.Combine(tmpOutputPath.Directory.FullName, Guid.NewGuid().ToString());
+                string newOutputpath = Path.Combine(newOutputFolder, tmpOutputPath.Name);
 
-            var vm = new ExceptionViewModel();
+                var vm = new ExceptionViewModel { OutputPath = newOutputpath, OutputText = ExceptionFactory.Create(GetException()).ToString() };
 
-            vm.OutputPath = newOutputpath;
-            vm.OutputText = ExceptionFactory.Create(GetException()).ToString();
+                var mockEmailAction = new Mock<IFeedbackAction>();
+                mockEmailAction.Setup(c => c.StartFeedback()).Verifiable();
 
-            var mockEmailAction = new Mock<IFeedbackAction>();
-            mockEmailAction.Setup(c => c.StartFeedback()).Verifiable();
+                var mockInvoker = new Mock<IFeedbackInvoker>();
+                mockInvoker.Setup(i => i.InvokeFeedback(It.IsAny<IFeedbackAction>())).Verifiable();
 
-            var mockInvoker = new Mock<IFeedbackInvoker>();
-            mockInvoker.Setup(i => i.InvokeFeedback(It.IsAny<IFeedbackAction>())).Verifiable();
+                vm.FeedbackAction = mockEmailAction.Object;
+                vm.FeedbackInvoker = mockInvoker.Object;
 
-            vm.FeedbackAction = mockEmailAction.Object;
-            vm.FeedbackInvoker = mockInvoker.Object;
+                vm.SendReport();
 
-            vm.SendReport();
-
-            mockInvoker.Verify(a => a.InvokeFeedback(It.IsAny<IFeedbackAction>()), Times.Once());
-            Assert.AreEqual(Directory.Exists(newOutputFolder), true);
+                mockInvoker.Verify(a => a.InvokeFeedback(It.IsAny<IFeedbackAction>()), Times.Once());
+                Assert.AreEqual(Directory.Exists(newOutputFolder), true);
+            }
         }
 
         [TestMethod]
@@ -101,15 +90,13 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void Send_Where_OutputPathIsntZipOrXml_Expected_InvalidOperationException()
         {
             string outputPath = GetUniqueOutputPath(".cake");
-            var vm = new ExceptionViewModel();
-            vm.OutputPath = outputPath;
+            var vm = new ExceptionViewModel { OutputPath = outputPath };
             vm.SendReport();
         }
 
         [TestMethod]
         public void ShowExceptionDialog_Expected_WindowManagerInvokedForViewModel()
         {
-            string outputPath = GetUniqueOutputPath(".cake");
             var vm = new ExceptionViewModel();
 
             Mock<IWindowManager> mockWinManager = new Mock<IWindowManager>();
@@ -129,8 +116,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             FileInfo conflictingPath = new FileInfo(GetUniqueOutputPath(".txt"));
             conflictingPath.Create().Close();
 
-            var vm = new ExceptionViewModel();
-            vm.OutputPath = conflictingPath.FullName;
+            var vm = new ExceptionViewModel { OutputPath = conflictingPath.FullName };
 
             vm.SendReport();
         }
@@ -146,7 +132,9 @@ namespace Dev2.Core.Tests.ViewModelTests
             {
                 Directory.Delete(_tempTestFolder, true);
             }
+            // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
+            // ReSharper restore EmptyGeneralCatchClause
             {
                 //Fail silently if folder couldn't be deleted.
             }

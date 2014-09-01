@@ -1,6 +1,5 @@
 ﻿using System;
-using Dev2.Diagnostics.Debug;
-
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Diagnostics
 {

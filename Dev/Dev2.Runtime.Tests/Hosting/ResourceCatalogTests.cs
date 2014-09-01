@@ -11,12 +11,14 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Hosting;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
-using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -393,6 +395,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(nameAttribute);
             Assert.AreEqual(resourceName, nameAttribute.Value);
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ResourceCatalog_SaveResource")]

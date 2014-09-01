@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core.Convertors.Base;
 
 namespace Dev2.Converters {
     public class Dev2BaseConversionFactory : SpookyAction<IBaseConverter, Enum> {
@@ -19,7 +20,18 @@ namespace Dev2.Converters {
         /// <param name="typeOf"></param>
         /// <returns></returns>
         public IBaseConverter CreateConverter(enDev2BaseConvertType typeOf) {
-            return FindMatch(typeOf);
+            switch (typeOf)
+            {
+                case enDev2BaseConvertType.Base64 :
+                    return new Dev2Base64Converter();
+                case enDev2BaseConvertType.Binary :
+                    return  new Dev2BinaryConverter();
+                case enDev2BaseConvertType.Hex :
+                    return new Dev2HexConverter();
+                case enDev2BaseConvertType.Text :
+                    return new Dev2TextConverter();
+                default :throw new Exception("");
+            }
         }
     }
 }

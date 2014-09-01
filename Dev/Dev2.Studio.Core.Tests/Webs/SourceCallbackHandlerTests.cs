@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -15,36 +13,23 @@ using Newtonsoft.Json.Linq;
 
 namespace Dev2.Core.Tests.Webs
 {
-    [TestClass][ExcludeFromCodeCoverage]
+    [TestClass]
+    [ExcludeFromCodeCoverage]
     public class SourceCallbackHandlerTests
     {
-        static ImportServiceContext _importContext;
-
-        private static Mock<IEventAggregator> _eventAgrregator;
 
         #region Class/TestInitialize
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            _importContext = new ImportServiceContext();
-            ImportService.CurrentContext = _importContext;
-
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
-            _eventAgrregator = new Mock<IEventAggregator>();
-           
             var workspace = new Mock<IWorkspaceItemRepository>();
-            ImportService.AddExportedValueToContainer(workspace.Object);
-
+            CustomContainer.Register<IWorkspaceItemRepository>(workspace.Object);
         }
 
         [TestInitialize]
         public void TestInitialize()
         {
-            ImportService.CurrentContext = _importContext;
         }
 
         #endregion
@@ -55,7 +40,7 @@ namespace Dev2.Core.Tests.Webs
         public void SourceCallbackHandlerSaveWithValidArgsExpectedPublishesUpdateResourceMessage()
         {
             const string ResourceName = "TestSource";
-            Guid ResourceID = Guid.NewGuid();
+            Guid resourceId = Guid.NewGuid();
 
             var resourceModel = new Mock<IResourceModel>();
             resourceModel.Setup(r => r.ResourceName).Returns(ResourceName);
@@ -80,7 +65,7 @@ namespace Dev2.Core.Tests.Webs
                             })
                              .Verifiable();
 
-            var jsonObj = JObject.Parse("{ 'ResourceID': '" + ResourceID + "'}");
+            var jsonObj = JObject.Parse("{ 'ResourceID': '" + resourceId + "'}");
             handler.TestSave(envModel.Object, jsonObj);
 
             aggregator.Verify(e => e.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());

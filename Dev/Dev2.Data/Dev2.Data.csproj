@@ -139,8 +139,6 @@
     <Compile Include="Decisions\Operations\NotStartsWith.cs" />
     <Compile Include="Enums\enForEachType.cs" />
     <Compile Include="Enums\enTypeOfSystemInformationToGather.cs" />
-    <Compile Include="Globals.cs" />
-    <Compile Include="Interfaces\IInputOutputViewModel.cs" />
     <Compile Include="Network\DataListMessage.cs" />
     <Compile Include="Parsers\XPathParser.cs" />
     <Compile Include="PathOperations\Enums\WriteType.cs" />
@@ -178,7 +176,6 @@
     <Compile Include="Binary Objects\enDev2ColumnArgumentDirection.cs" />
     <Compile Include="Binary Objects\IBinaryDataList.cs" />
     <Compile Include="Binary Objects\IBinaryDataListEntry.cs" />
-    <Compile Include="Binary Objects\IBinaryDataListItem.cs" />
     <Compile Include="Binary Objects\BinaryDataListEntryBuilder.cs" />
     <Compile Include="Binary Objects\IIndexIterator.cs" />
     <Compile Include="Binary Objects\IndexIterator.cs" />
@@ -249,7 +246,6 @@
     <Compile Include="PathOperations\Interfaces\IPathRead.cs" />
     <Compile Include="PathOperations\Interfaces\IRepository.cs" />
     <Compile Include="PathOperations\Interfaces\IRepositoryItem.cs" />
-    <Compile Include="PathOperations\Interfaces\IResult.cs" />
     <Compile Include="PathOperations\Interfaces\IUnZip.cs" />
     <Compile Include="PathOperations\Interfaces\IZip.cs" />
     <Compile Include="PathOperations\TO\Dev2CRUDOperationTO.cs" />
@@ -295,13 +291,11 @@
     <Compile Include="Interfaces\IDataListVerifyPart.cs" />
     <Compile Include="Interfaces\IDataListVerifyPartDuplicationParser.cs" />
     <Compile Include="Interfaces\IDataValue.cs" />
-    <Compile Include="Interfaces\IDev2ConfigurationProvider.cs" />
     <Compile Include="Interfaces\IDev2DataLangaugeParseError.cs" />
     <Compile Include="Interfaces\IDev2DataLanguageIntellisensePart.cs" />
     <Compile Include="Interfaces\IDev2DataLanguageParser.cs" />
     <Compile Include="Interfaces\IDev2DataListEvaluateIterator.cs" />
     <Compile Include="Interfaces\IDev2DataListUpsertPayloadBuilder.cs" />
-    <Compile Include="Interfaces\IDev2Definition.cs" />
     <Compile Include="Interfaces\IDev2IndexFinder.cs" />
     <Compile Include="Interfaces\IDev2IteratorCollection.cs" />
     <Compile Include="Interfaces\IDev2LanguageParser.cs" />

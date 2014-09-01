@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dev2.Common;
+using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Builders;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.Util;

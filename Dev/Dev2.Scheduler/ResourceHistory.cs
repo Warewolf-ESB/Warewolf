@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Dev2.Diagnostics.Debug;
-using Dev2.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Scheduler
 {

@@ -1,4 +1,5 @@
 // Copyright (C) Josh Smith - February 2007
+
 using System;
 using System.Collections;
 using System.Windows;

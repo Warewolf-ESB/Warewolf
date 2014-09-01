@@ -6,7 +6,8 @@
                          xmlns:adorners="clr-namespace:Dev2.Activities.Designers2.Core.Adorners"
                          xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                          xmlns:errors="clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"
-                         mc:Ignorable="d"
+    xmlns:errors2="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"
+    mc:Ignorable="d"
                          d:DesignHeight="300"
                          d:DesignWidth="300"
                          d:DataContext="{d:DesignInstance core:ActivityDesignerViewModel}">
@@ -23,7 +24,7 @@
         <Grid x:Name="ErrorsGrid">
             <Grid.Resources>
                 <DataTemplate x:Key="ErrorDisplayTemplate"
-                              DataType="errors:IActionableErrorInfo">
+                              DataType="errors2:IActionableErrorInfo">
                     <StackPanel Margin="0,5,0,5" AutomationProperties.AutomationId="ErrorsPanel">
                         <TextBlock TextWrapping="Wrap"
                                    VerticalAlignment="Top">

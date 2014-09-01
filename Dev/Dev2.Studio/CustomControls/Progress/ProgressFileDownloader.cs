@@ -8,11 +8,12 @@ using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Windows;
-using Dev2.Common.Utils;
+using Dev2.Common.Interfaces.Utils;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
-using Dev2.Common.Wrappers.Interfaces;
 using Dev2.Helpers;
 using Dev2.Studio.Core.Helpers;
+
 namespace Dev2.CustomControls.Progress
 {
     public class ProgressFileDownloader : IProgressFileDownloader

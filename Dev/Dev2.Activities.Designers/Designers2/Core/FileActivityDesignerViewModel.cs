@@ -3,7 +3,7 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Dev2.Validation;
 

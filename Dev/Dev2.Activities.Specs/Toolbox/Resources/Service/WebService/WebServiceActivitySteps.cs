@@ -2,6 +2,7 @@
 using System.Activities.Statements;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
@@ -9,7 +10,6 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Activities.XML;
 using Moq;
 using TechTalk.SpecFlow;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources.Service.WebService
 {

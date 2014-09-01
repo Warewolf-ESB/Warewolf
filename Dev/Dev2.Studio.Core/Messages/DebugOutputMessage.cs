@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Dev2.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Messages

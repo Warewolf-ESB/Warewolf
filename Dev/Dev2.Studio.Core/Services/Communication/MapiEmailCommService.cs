@@ -1,7 +1,7 @@
 ﻿using System;
-//using Dev2.Studio.Core.Services.Communication.Mapi;
 using SendFileTo;
 using ServiceStack.Common.Extensions;
+    //using Dev2.Studio.Core.Services.Communication.Mapi;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Services.Communication

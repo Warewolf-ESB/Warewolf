@@ -2,8 +2,8 @@
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Validation;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 
 namespace Dev2.Activities.Designers2.Core.Errors
 {

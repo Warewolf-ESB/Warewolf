@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 
@@ -167,6 +168,15 @@ namespace Dev2.Tests.Logging
                     EndTime = _startDate.AddMinutes(1)
                 };
         }
+
+        #region Implementation of IDebugProvider
+
+        public IEnumerable<IDebugState> GetDebugStates(string serverWebUri, IDirectoryPath directory, IFilePath path)
+        {
+            yield break;
+        }
+
+        #endregion
     }
 
 }

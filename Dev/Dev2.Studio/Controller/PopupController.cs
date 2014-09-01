@@ -1,15 +1,13 @@
-﻿using Dev2.Common;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.ViewModels.Dialogs;
-using System;
-using System.ComponentModel.Composition;
+﻿using System;
 using System.Windows;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Studio.ViewModels.Dialogs;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Controller
 {
 
-    [Export(typeof(IPopupController))]
     public class PopupController : IPopupController
     {
         public PopupController(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons)

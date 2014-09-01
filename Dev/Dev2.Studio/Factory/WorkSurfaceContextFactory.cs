@@ -6,8 +6,8 @@ using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Studio.ViewModels.Workflow;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Factory

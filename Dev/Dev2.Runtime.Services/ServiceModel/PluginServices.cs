@@ -46,7 +46,12 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var service = JsonConvert.DeserializeObject<PluginService>(args);
+           
+                
+                var service = JsonConvert.DeserializeObject<PluginService>(args,new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Objects
+            });
                 return FetchRecordset(service, true);
             }
             catch(Exception ex)

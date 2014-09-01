@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;

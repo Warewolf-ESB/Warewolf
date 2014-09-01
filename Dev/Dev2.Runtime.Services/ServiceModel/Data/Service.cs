@@ -4,11 +4,11 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
-using Dev2.DynamicServices;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {

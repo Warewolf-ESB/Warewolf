@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Binary_Objects;
-using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
@@ -127,7 +126,7 @@ namespace Dev2.DataList
 
                 if(activity.ResourceModel != null)
                 {
-                    IsWorkflow = activity.ResourceModel.ResourceType == ResourceType.WorkflowService;
+                    IsWorkflow = activity.ResourceModel.ResourceType == Studio.Core.AppResources.Enums.ResourceType.WorkflowService;
 
                     string inputs;
                     string outputs;

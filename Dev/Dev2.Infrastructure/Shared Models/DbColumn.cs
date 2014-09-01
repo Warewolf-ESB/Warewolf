@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Data;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public class DbColumn
+    public class DbColumn : IDbColumn
     {
         SqlDbType _sqlDataType;
 

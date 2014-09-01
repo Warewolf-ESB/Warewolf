@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using Dev2.Composition;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Services.Events;
@@ -16,14 +16,9 @@ namespace Dev2.Core.Tests
     [ExcludeFromCodeCoverage]
     public class DebugStateTreeViewItemViewModelTests
     {
-        // ReSharper disable NotAccessedField.Local
-        static ImportServiceContext _importContext;
-        // ReSharper restore NotAccessedField.Local
-
         [ClassInitialize]
         public static void Initialize(TestContext testContext)
         {
-            _importContext = CompositionInitializer.DefaultInitialize();
         }
 
         // BUG 8373: TWR

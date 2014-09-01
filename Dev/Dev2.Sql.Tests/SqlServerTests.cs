@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Services.Sql;
 using Dev2.Services.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

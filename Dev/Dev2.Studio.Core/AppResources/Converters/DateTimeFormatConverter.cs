@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-
 using System.Windows.Data;
 
 namespace Dev2.AppResources.Converters

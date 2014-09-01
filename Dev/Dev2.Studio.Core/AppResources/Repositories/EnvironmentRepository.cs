@@ -5,14 +5,14 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Linq;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Util;
-using ResourceType = Dev2.Studio.Core.AppResources.Enums.ResourceType;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Dev2.Data.Interfaces;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.DataList
 {

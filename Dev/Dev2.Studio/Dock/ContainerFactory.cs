@@ -1,5 +1,4 @@
-﻿using Infragistics;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -9,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
+using Infragistics;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Dock

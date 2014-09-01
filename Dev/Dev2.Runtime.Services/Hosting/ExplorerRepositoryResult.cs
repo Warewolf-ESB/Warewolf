@@ -1,4 +1,5 @@
-﻿using Dev2.Interfaces;
+﻿using Dev2.Common.Interfaces.Hosting;
+using Dev2.Common.Interfaces.Infrastructure;
 
 namespace Dev2.Runtime.Hosting
 {

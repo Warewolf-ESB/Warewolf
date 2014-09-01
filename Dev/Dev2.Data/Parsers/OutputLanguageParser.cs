@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Parsers

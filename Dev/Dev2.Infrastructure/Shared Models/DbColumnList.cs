@@ -1,9 +1,9 @@
-﻿
-using System;
+﻿using System;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    public class DbColumnList : ResultList<DbColumn>
+    public class DbColumnList : ResultList<IDbColumn>, IDbColumnList
     {
         public DbColumnList()
         {

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Interactivity;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;

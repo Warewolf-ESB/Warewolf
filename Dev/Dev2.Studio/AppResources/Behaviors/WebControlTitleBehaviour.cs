@@ -1,9 +1,8 @@
-﻿
-using CefSharp.Wpf;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Interactivity;
+using CefSharp.Wpf;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {

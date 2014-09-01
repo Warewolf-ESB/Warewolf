@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

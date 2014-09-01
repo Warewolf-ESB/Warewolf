@@ -4,7 +4,7 @@ using System.Data;
 using System.Text;
 using System.Xml;
 using Dev2.Common;
-using Dev2.Common.Enums;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;

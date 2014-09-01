@@ -3,7 +3,6 @@ using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common.Utils;
-using Dev2.Composition;
 using Dev2.Interfaces;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core;
@@ -31,7 +30,6 @@ namespace Dev2.Webs.Callbacks
             EventPublisher = eventPublisher;
 
             CurrentEnvironmentRepository = currentEnvironmentRepository;
-            ImportService.SatisfyImports(this);
             ShowDependencyProvider = showDependencyProvider ?? new ShowDependencyProvider();
         }
 
@@ -57,7 +55,7 @@ namespace Dev2.Webs.Callbacks
 
         #region ReloadResource
 
-        protected void ReloadResource(IEnvironmentModel environmentModel, Guid resourceID, ResourceType resourceType)
+        protected void ReloadResource(IEnvironmentModel environmentModel, Guid resourceId, ResourceType resourceType)
         {
             if(environmentModel == null || environmentModel.ResourceRepository == null)
             {
@@ -66,8 +64,8 @@ namespace Dev2.Webs.Callbacks
 
             var getWorksurfaceItemRepo = WorkspaceItemRepository.Instance;
 
-            CheckForServerMessages(environmentModel, resourceID, getWorksurfaceItemRepo);
-            var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceID, resourceType, ResourceModelEqualityComparer.Current, true);
+            CheckForServerMessages(environmentModel, resourceId, getWorksurfaceItemRepo);
+            var effectedResources = environmentModel.ResourceRepository.ReloadResource(resourceId, resourceType, ResourceModelEqualityComparer.Current, true);
             if(effectedResources != null)
             {
                 foreach(var resource in effectedResources)
@@ -182,16 +180,16 @@ namespace Dev2.Webs.Callbacks
 
         #endregion
 
-        protected void CheckForServerMessages(IEnvironmentModel environmentModel, Guid resourceID, IWorkspaceItemRepository workspace)
+        protected void CheckForServerMessages(IEnvironmentModel environmentModel, Guid resourceId, IWorkspaceItemRepository workspace)
         {
-            var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceID);
+            var resourceModel = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId);
             if(resourceModel != null)
             {
                 var resource = new ResourceModel(environmentModel);
                 resource.Update(resourceModel);
                 var compileMessageList = new StudioCompileMessageRepo().GetCompileMessagesFromServer(resource);
 
-                if(compileMessageList.Count == 0)
+                if(compileMessageList == null || compileMessageList.Count == 0)
                 {
                     return;
                 }

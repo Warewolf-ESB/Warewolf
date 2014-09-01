@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
+using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Repositories
 {
-    [Export(typeof(IFrameworkRepository<IDataListViewModel>))]
     public class DataListRepository : IFrameworkRepository<IDataListViewModel>
     {
         private readonly List<IDataListViewModel> _dataListViewModels;

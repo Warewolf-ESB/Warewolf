@@ -3,7 +3,6 @@ using System.Text;
 using Caliburn.Micro;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Core.Tests.Environments;
-using Dev2.Data.ServiceModel;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
@@ -38,7 +37,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -81,7 +79,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -124,7 +121,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -167,7 +163,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -210,7 +205,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -254,7 +248,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -297,7 +290,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -341,7 +333,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -384,7 +375,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -428,7 +418,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -472,7 +461,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -516,7 +504,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -560,7 +547,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -604,7 +590,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -648,7 +633,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -691,7 +675,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -734,7 +717,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -777,7 +759,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -820,7 +801,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -863,7 +843,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -906,7 +885,6 @@ namespace Dev2.Core.Tests.Webs
         {
 
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
 
             RootWebSite.IsTestMode = true;
 
@@ -1027,7 +1005,6 @@ namespace Dev2.Core.Tests.Webs
         public void RootWebSite_ShowFileChooser_Environment_HasCorrectUri()
         {
             //------------Setup for test--------------------------
-            CompositionInitializer.DefaultInitialize();
             RootWebSite.IsTestMode = true;
             Mock<IEnvironmentModel> environment = new Mock<IEnvironmentModel>();
             environment.Setup(model => model.Name).Returns("localhost");
@@ -1128,7 +1105,6 @@ namespace Dev2.Core.Tests.Webs
 
         static Mock<IContextualResourceModel> SetupResourceModel()
         {
-            CompositionInitializer.DefaultInitialize();
             RootWebSite.IsTestMode = true;
             Mock<IEnvironmentModel> environment = new Mock<IEnvironmentModel>();
             environment.SetupGet(r => r.Name).Returns("localhost");

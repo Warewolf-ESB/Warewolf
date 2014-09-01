@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using Dev2.Common;
+using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract.Binary_Objects;
-using System.Collections.Generic;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.DataList.Contract.Value_Objects

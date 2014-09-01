@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dev2.Common;
+using Dev2.Common.Interfaces.Patterns;
 
 namespace Dev2.Interfaces
 {

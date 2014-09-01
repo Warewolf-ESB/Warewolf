@@ -78,15 +78,7 @@
     <Compile Include="Debug\DebugItemResultEqualityComparer.cs" />
     <Compile Include="Debug\DebugState.cs" />
     <Compile Include="Debug\DirectoryPath.cs" />
-    <Compile Include="Debug\Enums.cs" />
     <Compile Include="Debug\FilePath.cs" />
-    <Compile Include="Debug\IDebugDispatcher.cs" />
-    <Compile Include="Debug\IDebugItem.cs" />
-    <Compile Include="Debug\IDebugItemResult.cs" />
-    <Compile Include="Debug\IDebugProvider.cs" />
-    <Compile Include="Debug\IDebugState.cs" />
-    <Compile Include="Debug\IDebugSubItem.cs" />
-    <Compile Include="Debug\IDebugWriter.cs" />
     <Compile Include="Debug\ProfilingUtil.cs" />
     <Compile Include="Debug\RemoteDebugMessageRepo.cs" />
     <Compile Include="Debug\Workflow.cs" />
@@ -96,6 +88,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}</Project>
       <Name>Dev2.Common</Name>

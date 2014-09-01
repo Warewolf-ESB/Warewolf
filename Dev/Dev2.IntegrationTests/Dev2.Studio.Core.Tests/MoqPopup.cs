@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.Composition;
 using System.Windows;
-using Dev2.Studio.Core.Controller;
+using Dev2.Common.Interfaces.Studio.Controller;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Core.Tests.ProperMoqs

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Security;

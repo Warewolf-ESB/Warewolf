@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Dev2.Validation;
 

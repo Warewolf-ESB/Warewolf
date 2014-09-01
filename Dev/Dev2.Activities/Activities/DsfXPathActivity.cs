@@ -6,6 +6,8 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Dev2.Activities.Debug;
+using Dev2.Common.Interfaces.DataList.Contract;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;

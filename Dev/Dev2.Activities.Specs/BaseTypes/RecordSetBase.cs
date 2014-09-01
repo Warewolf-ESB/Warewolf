@@ -1,4 +1,5 @@
 ﻿using ActivityUnitTests;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Dev2.Diagnostics;
@@ -21,12 +22,12 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         protected abstract void BuildDataList();
 
-        protected virtual List<DebugItemResult> GetDebugInputItemResults(Activity activity)
+        protected virtual List<IDebugItemResult> GetDebugInputItemResults(Activity activity)
         {
             return CommonSteps.GetInputDebugItems(activity);
         }
 
-        protected virtual List<DebugItemResult> GetDebugOutputItemResults(Activity activity)
+        protected virtual List<IDebugItemResult> GetDebugOutputItemResults(Activity activity)
         {
             return CommonSteps.GetOutputDebugItems(activity);
         }

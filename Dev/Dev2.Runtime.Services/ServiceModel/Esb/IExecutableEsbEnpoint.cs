@@ -1,6 +1,6 @@
-﻿using Dev2.Runtime.ServiceModel.Data;
-using System;
-using Unlimited.Framework.Converters.Graph.Interfaces;
+﻿using System;
+using Dev2.Common.Interfaces.Core.Graph;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Runtime.ServiceModel.Esb
 {

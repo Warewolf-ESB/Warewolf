@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Dev2.Common.StringTokenizer.Interfaces;
+using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 
 namespace Dev2.Common
 {

@@ -4,7 +4,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Data.ServiceModel;
 using Dev2.Models;
 
 namespace Dev2.Studio.AppResources.Behaviors

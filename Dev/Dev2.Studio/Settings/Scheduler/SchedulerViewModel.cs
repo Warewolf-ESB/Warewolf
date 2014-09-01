@@ -1,28 +1,4 @@
-﻿using Caliburn.Micro;
-using CubicOrange.Windows.Forms.ActiveDirectory;
-using Dev2.Activities.Designers2.Core;
-using Dev2.Activities.Designers2.Core.Help;
-using Dev2.Common.ExtMethods;
-using Dev2.CustomControls.Connections;
-using Dev2.DataList.Contract;
-using Dev2.Diagnostics.Debug;
-using Dev2.Dialogs;
-using Dev2.Interfaces;
-using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Scheduler;
-using Dev2.Scheduler.Interfaces;
-using Dev2.Services.Events;
-using Dev2.Services.Security;
-using Dev2.Studio.Controller;
-using Dev2.Studio.Core.Controller;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Enums;
-using Dev2.Studio.ViewModels.WorkSurface;
-using Dev2.TaskScheduler.Wrappers;
-using Dev2.Threading;
-using Microsoft.Win32.TaskScheduler;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
@@ -32,6 +8,31 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
+using Caliburn.Micro;
+using CubicOrange.Windows.Forms.ActiveDirectory;
+using Dev2.Activities.Designers2.Core;
+using Dev2.Activities.Designers2.Core.Help;
+using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Data.TO;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.CustomControls.Connections;
+using Dev2.DataList.Contract;
+using Dev2.Dialogs;
+using Dev2.Interfaces;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Scheduler;
+using Dev2.Services.Events;
+using Dev2.Services.Security;
+using Dev2.Studio.Controller;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
+using Dev2.Studio.Enums;
+using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.TaskScheduler.Wrappers;
+using Dev2.Threading;
+using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.Settings.Scheduler
 {
@@ -551,7 +552,7 @@ namespace Dev2.Settings.Scheduler
             get { return Errors.HasErrors(); }
         }
 
-        public ErrorResultTO Errors
+        public IErrorResultTO Errors
         {
             get { return _selectedTask != null ? _selectedTask.Errors : new ErrorResultTO(); }
             set

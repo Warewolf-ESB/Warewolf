@@ -3,17 +3,15 @@ using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
-using Dev2.Composition;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Dialogs;
 using Dev2.Explorer;
-using Dev2.Interfaces;
 using Dev2.Models;
-using Dev2.Providers.Events;
-using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -25,7 +23,6 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
@@ -506,9 +503,6 @@ namespace Dev2.Core.Tests.Dialogs
 
         static void SetupMef()
         {
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-            ImportService.Initialize(new List<ComposablePartCatalog>());
         }
 
     }

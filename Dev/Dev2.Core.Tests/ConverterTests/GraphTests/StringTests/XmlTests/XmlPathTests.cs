@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Xml.Linq;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests

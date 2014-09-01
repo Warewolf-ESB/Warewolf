@@ -1,4 +1,4 @@
-﻿using Dev2.Common;
+﻿using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.DataList.Contract;
 
 namespace Dev2.Data.TO

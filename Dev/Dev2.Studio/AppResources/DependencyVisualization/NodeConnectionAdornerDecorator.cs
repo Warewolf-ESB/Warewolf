@@ -1,6 +1,6 @@
-﻿using Dev2.AppResources.DependencyVisualization;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Documents;
+using Dev2.AppResources.DependencyVisualization;
 
 // ReSharper disable once CheckNamespace
 namespace CircularDependencyTool

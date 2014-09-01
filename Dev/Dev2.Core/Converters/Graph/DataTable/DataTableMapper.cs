@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using Dev2.Common;
-using Unlimited.Framework.Converters.Graph.Interfaces;
-
+using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Dev2.Converters.Graph.DataTable
 {

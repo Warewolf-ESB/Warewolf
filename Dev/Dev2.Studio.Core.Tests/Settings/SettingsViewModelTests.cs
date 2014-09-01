@@ -1,6 +1,8 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
@@ -8,7 +10,6 @@ using Dev2.Providers.Events;
 using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Security;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Dev2.Threading;

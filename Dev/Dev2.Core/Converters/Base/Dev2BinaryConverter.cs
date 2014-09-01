@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Text.RegularExpressions;
+using Dev2.Common.Interfaces.Core.Convertors.Base;
 using Dev2.DynamicServices;
 
 namespace Dev2.Converters

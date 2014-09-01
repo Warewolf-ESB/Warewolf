@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text;
 using System.Xml;
+using Dev2.Common.Interfaces.Data;
 
 // ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming

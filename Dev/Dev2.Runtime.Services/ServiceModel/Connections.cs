@@ -15,7 +15,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
-using Connection = Dev2.Data.ServiceModel.Connection;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.ServiceModel
@@ -50,9 +49,9 @@ namespace Dev2.Runtime.ServiceModel
         #region Get
 
         // POST: Service/Connections/Get
-        public Connection Get(string resourceID, Guid workspaceID, Guid dataListID)
+        public Dev2.Data.ServiceModel.Connection Get(string resourceID, Guid workspaceID, Guid dataListID)
         {
-            var result = new Connection { ResourceID = Guid.Empty, ResourceType = ResourceType.Server, WebServerPort = Connection.DefaultWebServerPort };
+            var result = new Dev2.Data.ServiceModel.Connection { ResourceID = Guid.Empty, ResourceType = ResourceType.Server, WebServerPort = Dev2.Data.ServiceModel.Connection.DefaultWebServerPort };
             try
             {
 
@@ -60,7 +59,7 @@ namespace Dev2.Runtime.ServiceModel
                 if(contents != null && contents.Length > 0)
                 {
                     var xml = contents.ToXElement();
-                    result = new Connection(xml);
+                    result = new Dev2.Data.ServiceModel.Connection(xml);
                 }
             }
             catch(Exception ex)
@@ -79,7 +78,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             try
             {
-                var connection = JsonConvert.DeserializeObject<Connection>(args);
+                var connection = JsonConvert.DeserializeObject<Dev2.Data.ServiceModel.Connection>(args);
 
                 Uri actualUri;
 
@@ -140,7 +139,7 @@ namespace Dev2.Runtime.ServiceModel
 
             try
             {
-                var connection = JsonConvert.DeserializeObject<Connection>(args);
+                var connection = JsonConvert.DeserializeObject<Dev2.Data.ServiceModel.Connection>(args);
                 switch(connection.ResourceType)
                 {
                     case ResourceType.Server:
@@ -158,7 +157,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        ValidationResult CanConnectToServer(Connection connection)
+        ValidationResult CanConnectToServer(Dev2.Data.ServiceModel.Connection connection)
         {
             var result = new ValidationResult
             {
@@ -217,7 +216,7 @@ namespace Dev2.Runtime.ServiceModel
             return result;
         }
 
-        protected virtual string ConnectToServer(Connection connection)
+        protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
         {
             // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
             var principle = System.Threading.Thread.CurrentPrincipal;

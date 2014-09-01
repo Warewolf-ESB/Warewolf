@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.Hosting;
-using System.Linq;
+
 namespace Dev2.Runtime.ESB.WF
 {
     public sealed class WfApplicationUtils
@@ -159,7 +162,7 @@ namespace Dev2.Runtime.ESB.WF
                   : String.Format("[[{0}(){1}]]", value.RecordSetName, String.IsNullOrEmpty(value.Name) ? String.Empty : "." + value.Name);
         }
 
-        void AddDebugItem(DebugOutputBase parameters, DebugItem debugItem)
+        void AddDebugItem(DebugOutputBase parameters, IDebugItem debugItem)
         {
             var debugItemResults = parameters.GetDebugItemResult();
             debugItem.AddRange(debugItemResults);

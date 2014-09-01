@@ -1,17 +1,15 @@
 ﻿#region
 
 using System.Activities.Presentation.Model;
-using System.ComponentModel.Composition;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.SystemTemplates;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Services.Events;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Studio.Webs;
 using Dev2.Webs;
 using Dev2.Webs.Callbacks;
 using Newtonsoft.Json;
@@ -19,13 +17,29 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 #endregion
 
-// ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Controller
 // ReSharper restore CheckNamespace
 {
+    public interface IFlowController
+    {
+        void ConfigureSwitchExpression(ConfigureSwitchExpressionMessage args);
+
+        void ConfigureSwitchCaseExpression(ConfigureCaseExpressionMessage args);
+
+        void EditSwitchCaseExpression(EditCaseExpressionMessage args);
+
+        void Handle(ConfigureDecisionExpressionMessage message);
+
+        void Handle(ConfigureSwitchExpressionMessage message);
+
+        void Handle(ConfigureCaseExpressionMessage message);
+
+        void Handle(EditCaseExpressionMessage message);
+    }
+
     public class FlowController : IHandle<ConfigureDecisionExpressionMessage>, IHandle<ConfigureSwitchExpressionMessage>,
-                                  IHandle<ConfigureCaseExpressionMessage>, IHandle<EditCaseExpressionMessage>
+                                  IHandle<ConfigureCaseExpressionMessage>, IHandle<EditCaseExpressionMessage>, IFlowController
     {
 
         #region Fields
@@ -37,8 +51,7 @@ namespace Dev2.Studio.Controller
 
         #region ctor
 
-        [ImportingConstructor]
-        public FlowController([Import] IPopupController popupController)
+        public FlowController(IPopupController popupController)
         {
             _popupController = popupController;
             EventPublishers.Aggregator.Subscribe(this);

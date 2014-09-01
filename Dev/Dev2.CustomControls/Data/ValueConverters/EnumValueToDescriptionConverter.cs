@@ -1,4 +1,5 @@
 // Copyright (C) Josh Smith - August 2006
+
 using System;
 using System.ComponentModel;
 using System.Globalization;

@@ -1,10 +1,10 @@
+using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Views.ResourceManagement;
-using System;
-using System.Collections.Generic;
 
 namespace Dev2.Utils
 {

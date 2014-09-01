@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Dev2.Common.Interfaces;
 using Dev2.Data.MathOperations;
 
 namespace Dev2.MathOperations {

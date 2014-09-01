@@ -1,4 +1,4 @@
-﻿using Dev2.Data.Interfaces;
+﻿using Dev2.Common.Interfaces.Data;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.Interfaces

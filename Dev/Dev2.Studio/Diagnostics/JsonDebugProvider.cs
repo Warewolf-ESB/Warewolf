@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics.Debug;
 using Newtonsoft.Json;
 
@@ -16,5 +17,14 @@ namespace Dev2.Diagnostics
             var datalistJson = webclient.UploadString(address, string.Empty);
             return JsonConvert.DeserializeObject<IList<DebugState>>(datalistJson);
         }
+
+        #region Implementation of IDebugProvider
+
+        public IEnumerable<IDebugState> GetDebugStates(string serverWebUri, IDirectoryPath directory, IFilePath path)
+        {
+            yield break;
+        }
+
+        #endregion
     }
 }

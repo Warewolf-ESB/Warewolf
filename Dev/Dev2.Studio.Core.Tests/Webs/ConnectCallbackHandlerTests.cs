@@ -1,10 +1,8 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
-using Dev2.Composition;
-using Dev2.Providers.Events;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
-using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Util;
 using Dev2.Webs.Callbacks;
@@ -12,8 +10,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Core.Tests.Webs
@@ -40,20 +36,12 @@ namespace Dev2.Core.Tests.Webs
             "\",\"ResourcePath\":\"TEST\",\"ResourceType\":\"Server\",\"Address\":\"" + ConnectionAddress +
             "\",\"AuthenticationType\":\"Windows\",\"UserName\":\"\",\"Password\":\"\",\"WebServerPort\":" + ConnectionWebServerPort + "}";
 
-        static ImportServiceContext _importContext;
 
         #region Class/TestInitialize
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
         {
-            _importContext = new ImportServiceContext();
-            ImportService.CurrentContext = _importContext;
-
-            ImportService.Initialize(new List<ComposablePartCatalog>
-            {
-                new FullTestAggregateCatalog()
-            });
         }
 
         [TestInitialize]
@@ -61,7 +49,6 @@ namespace Dev2.Core.Tests.Webs
         {
             EventPublishers.Aggregator = null;
             AppSettings.LocalHost = "https://localhost:3143";
-            ImportService.CurrentContext = _importContext;
         }
 
         #endregion
@@ -88,7 +75,7 @@ namespace Dev2.Core.Tests.Webs
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var env = new EnvironmentModel( Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+            var env = new EnvironmentModel(Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(c => c.ActiveEnvironment).Returns(env);
@@ -112,7 +99,7 @@ namespace Dev2.Core.Tests.Webs
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var enviro = new EnvironmentModel( Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+            var enviro = new EnvironmentModel(Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();
@@ -154,7 +141,7 @@ namespace Dev2.Core.Tests.Webs
             var mockConnection = new Mock<IEnvironmentConnection>();
             mockConnection.Setup(connection => connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             var mockResourceRepo = new Mock<IResourceRepository>();
-            var enviro = new EnvironmentModel( Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
+            var enviro = new EnvironmentModel(Guid.NewGuid(), mockConnection.Object, mockResourceRepo.Object, new Mock<IStudioResourceRepository>().Object);
 
             var currentRepository = new Mock<IEnvironmentRepository>();
             currentRepository.Setup(e => e.Save(It.IsAny<IEnvironmentModel>())).Verifiable();

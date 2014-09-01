@@ -7,6 +7,8 @@
 //                  Data consumers are applications that leverage the Dynamic Service Engine
 #endregion
 
+using System;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices.Objects.Base;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -14,8 +16,8 @@ using Newtonsoft.Json.Converters;
 namespace Dev2.DynamicServices
 {
     #region Using Directives
-    using System;
 
+    
 
     #endregion
 

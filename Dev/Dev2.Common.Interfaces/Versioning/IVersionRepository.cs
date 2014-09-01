@@ -1,7 +1,7 @@
-﻿using System.Text;
-using Dev2.Common.Interfaces.Explorer;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using Dev2.Common.Interfaces.Explorer;
 
 namespace Dev2.Common.Interfaces.Versioning
 {

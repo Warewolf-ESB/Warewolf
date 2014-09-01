@@ -6,7 +6,6 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Data.ServiceModel;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;

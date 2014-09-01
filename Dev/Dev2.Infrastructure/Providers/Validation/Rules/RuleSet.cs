@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dev2.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 
 namespace Dev2.Providers.Validation.Rules
 {
@@ -9,14 +10,14 @@ namespace Dev2.Providers.Validation.Rules
     {
         public RuleSet(IEnumerable<RuleBase> rules = null)
         {
-            Rules = new List<RuleBase>();
+            Rules = new List<IRuleBase>();
             if(rules != null)
             {
                 Rules.AddRange(rules.Where(r => r != null));
             }
         }
 
-        public void Add(RuleBase rule)
+        public void Add(IRuleBase rule)
         {
             if(rule == null)
             {
@@ -25,7 +26,7 @@ namespace Dev2.Providers.Validation.Rules
             Rules.Add(rule);
         }
 
-        public List<RuleBase> Rules { get; set; }
+        public List<IRuleBase> Rules { get; set; }
 
         public List<IActionableErrorInfo> ValidateRules()
         {

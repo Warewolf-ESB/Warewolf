@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 
 namespace Dev2.Activities.Debug
@@ -66,10 +67,10 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        public override List<DebugItemResult> GetDebugItemResult()
+        public override List<IDebugItemResult> GetDebugItemResult()
         {
 
-            var debugItemsResults = new List<DebugItemResult>{
+            var debugItemsResults = new List<IDebugItemResult>{
                  new DebugItemResult
                     {
                         Type = Type, 

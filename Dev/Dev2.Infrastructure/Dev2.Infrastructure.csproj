@@ -109,31 +109,19 @@
     <Compile Include="Communication\FutureReceipt.cs" />
     <Compile Include="Communication\PermissionsModifiedMemo.cs" />
     <Compile Include="Communication\Receipt.cs" />
-    <Compile Include="Hosting\ExecStatus.cs" />
-    <Compile Include="Interfaces\IExplorerRepositorySync.cs" />
-    <Compile Include="Interfaces\IExplorerResourceRepository.cs" />
-    <Compile Include="Interfaces\IExplorerServerResourceRepository.cs" />
     <Compile Include="Communication\ResultsCache.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Communication\Envelope.cs" />
-    <Compile Include="Communication\IMemo.cs" />
-    <Compile Include="Communication\ISerializer.cs" />
     <Compile Include="Communication\Dev2JsonSerializer.cs" />
     <Compile Include="Impersonator.cs" />
-    <Compile Include="Collections\IObservableReadOnlyList.cs" />
     <Compile Include="Collections\ConcurrentDictionarySafe.cs" />
     <Compile Include="ObservablePair.cs" />
     <Compile Include="Collections\ObservableReadOnlyList.cs" />
     <Compile Include="Providers\Errors\ActionableErrorInfo.cs" />
     <Compile Include="Providers\Errors\ErrorInfo.cs" />
-    <Compile Include="Providers\Errors\IActionableErrorInfo.cs" />
     <Compile Include="Providers\Events\EventPublisher.cs" />
-    <Compile Include="Hosting\IHostContext.cs" />
     <Compile Include="Providers\Logs\CustomTraceListener.cs" />
     <Compile Include="Providers\Logs\Logger.cs" />
-    <Compile Include="Providers\Validation\IErrorsSource.cs" />
-    <Compile Include="Providers\Validation\IValidator.cs" />
-    <Compile Include="Providers\Validation\IPerformsValidation.cs" />
     <Compile Include="Providers\Validation\Rules\ComposableRule.cs" />
     <Compile Include="Providers\Validation\Rules\HasNoDuplicateEntriesRule.cs" />
     <Compile Include="Providers\Validation\Rules\HasNoIndexsInRecordsetsRule.cs" />
@@ -141,7 +129,6 @@
     <Compile Include="Providers\Validation\Rules\IsValidXpathRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsRequiredWhenOtherIsNotEmptyRule.cs" />
     <Compile Include="Providers\Validation\Rules\HasAtLeastOneRule.cs" />
-    <Compile Include="Providers\Validation\Rules\IRuleSet.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidCollectionRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidEmailAddressRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsNumericRule.cs" />
@@ -164,7 +151,6 @@
     <Compile Include="Communication\Memo.cs" />
     <Compile Include="Services\ISubscriptionService.cs" />
     <Compile Include="Services\PushService.cs" />
-    <Compile Include="Providers\Events\IEventPublisher.cs" />
     <Compile Include="Communication\DesignValidationMemo.cs" />
     <Compile Include="DisposableObject.cs" />
     <Compile Include="Services\Security\AuthorizationContext.cs" />
@@ -190,7 +176,6 @@
     <Compile Include="Services\SubscriptionService.cs" />
     <Compile Include="Shared Models\CompileMessageList.cs" />
     <Compile Include="Shared Models\CompileMessageTO.cs" />
-    <Compile Include="Shared Models\CompileMessageType.cs" />
     <Compile Include="Shared Models\DbColumn.cs" />
     <Compile Include="Shared Models\DbColumnList.cs" />
     <Compile Include="Shared Models\DbTable.cs" />
@@ -230,7 +215,10 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Hosting\" />
+    <Folder Include="Interfaces\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

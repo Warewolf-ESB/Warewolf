@@ -1,5 +1,5 @@
-﻿using Dev2.Interfaces;
-using System;
+﻿using System;
+using Dev2.Interfaces;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace

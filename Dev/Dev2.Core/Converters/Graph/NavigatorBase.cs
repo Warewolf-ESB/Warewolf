@@ -1,9 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Interfaces.Core.Graph;
 using Unlimited.Framework.Converters.Graph;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Converters.Graph
 {

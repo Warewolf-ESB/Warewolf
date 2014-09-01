@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Dev2.Data.Interfaces;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;

@@ -1,6 +1,7 @@
-﻿using Dev2.Interfaces;
+﻿using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Interfaces;
 using Dev2.Providers.Validation.Rules;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Util;
 
 namespace Dev2.TO
@@ -9,12 +10,12 @@ namespace Dev2.TO
     {
         int _indexNumber;
         string _inputColumn;
-        DbColumn _outputColumn;
+        IDbColumn _outputColumn;
 
         [FindMissing]
         public string InputColumn { get { return _inputColumn; } set { OnPropertyChanged(ref _inputColumn, value); } }
 
-        public DbColumn OutputColumn { get { return _outputColumn; } set { OnPropertyChanged(ref _outputColumn, value); } }
+        public IDbColumn OutputColumn { get { return _outputColumn; } set { OnPropertyChanged(ref _outputColumn, value); } }
 
         #region Implementation of IDev2TOFn
 

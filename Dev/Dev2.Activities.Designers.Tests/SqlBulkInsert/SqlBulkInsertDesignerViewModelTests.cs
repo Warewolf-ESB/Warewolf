@@ -10,13 +10,14 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
 using Dev2.Activities.Designers2.SqlBulkInsert;
 using Dev2.Common.Common;
-using Dev2.DynamicServices;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Threading;
 using Dev2.TO;
+using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -1003,7 +1004,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             }
         }
 
-        static void VerifyColumns(List<DbColumn> expected, List<DbColumn> actual)
+        static void VerifyColumns(List<IDbColumn> expected, List<IDbColumn> actual)
         {
             for(var j = 0; j < expected.Count; j++)
             {
@@ -1110,7 +1111,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                 var tables = new List<DbTable>();
                 for(var j = 0; j < 10; j++)
                 {
-                    var columns = new List<DbColumn>();
+                    var columns = new List<IDbColumn>();
                     var colCount = ((j % 4) + 1) * (i + 1);
                     for(var k = 0; k < colCount; k++)
                     {

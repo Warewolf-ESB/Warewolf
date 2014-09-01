@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Dialogs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,7 +17,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
         public void SetAndGetDontShowAgainOptionExpectedSameOptionReturnedOnGetAsWasSet()
         {
             Mock<IFilePersistenceProvider> filePersistenceProvider = new Mock<IFilePersistenceProvider>();
-            ImportService.CurrentContext = CompositionInitializer.InitializeIFilePersistenceProvider(filePersistenceProvider);
+            CustomContainer.Register(filePersistenceProvider.Object);
 
             Dev2MessageBoxViewModel.ResetAllDontShowAgainOptions();
 
@@ -33,7 +32,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
         public void SetAndGetDontShowAgainOptionWhereOptionAlreadyExistsExpectedSameOptionReturnedOnGetAsWasLastSet()
         {
             Mock<IFilePersistenceProvider> filePersistenceProvider = new Mock<IFilePersistenceProvider>();
-            ImportService.CurrentContext = CompositionInitializer.InitializeIFilePersistenceProvider(filePersistenceProvider);
+            CustomContainer.Register(filePersistenceProvider.Object);
 
             Dev2MessageBoxViewModel.ResetAllDontShowAgainOptions();
 
@@ -49,7 +48,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
         public void GetDontShowAgainOptionWhereKeyDoesntExistExpectedFalseReturnedOnGet()
         {
             Mock<IFilePersistenceProvider> filePersistenceProvider = new Mock<IFilePersistenceProvider>();
-            ImportService.CurrentContext = CompositionInitializer.InitializeIFilePersistenceProvider(filePersistenceProvider);
+            CustomContainer.Register(filePersistenceProvider.Object);
 
             Dev2MessageBoxViewModel.ResetAllDontShowAgainOptions();
 
@@ -62,7 +61,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
         public void ResetDontShowAgainOptionExpectedFalseReturnedOnGetAndOtherOptionsAreIntact()
         {
             Mock<IFilePersistenceProvider> filePersistenceProvider = new Mock<IFilePersistenceProvider>();
-            ImportService.CurrentContext = CompositionInitializer.InitializeIFilePersistenceProvider(filePersistenceProvider);
+            CustomContainer.Register(filePersistenceProvider.Object);
 
             Dev2MessageBoxViewModel.ResetAllDontShowAgainOptions();
 
@@ -81,7 +80,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
         public void ResetAllDontShowAgainOptionExpectedAllOptionsCleared()
         {
             Mock<IFilePersistenceProvider> filePersistenceProvider = new Mock<IFilePersistenceProvider>();
-            ImportService.CurrentContext = CompositionInitializer.InitializeIFilePersistenceProvider(filePersistenceProvider);
+            CustomContainer.Register(filePersistenceProvider.Object);
 
             Dev2MessageBoxViewModel.ResetAllDontShowAgainOptions();
 
@@ -96,9 +95,10 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
         }
 
         [TestMethod]
+        // ReSharper disable InconsistentNaming
         public void SetDontShowAgainOptionExpectedPersistedToXML()
         {
-            string expected = @"<root>
+            const string expected = @"<root>
   <Option Key=""1"" Value=""OK"" />
 </root>";
             string actual = null;
@@ -110,7 +110,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
                 });
 
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeIFilePersistenceProvider(filePersistenceProvider);
+            CustomContainer.Register(filePersistenceProvider.Object);
 
             Dev2MessageBoxViewModel.ResetAllDontShowAgainOptions();
 
@@ -122,14 +122,14 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
         [TestMethod]
         public void GetDontShowAgainOptionExpectedPersistedToXML()
         {
-            string data = @"<root>
+            const string data = @"<root>
   <Option Key=""1"" Value=""OK"" />
 </root>";
 
             Mock<IFilePersistenceProvider> filePersistenceProvider = new Mock<IFilePersistenceProvider>();
             filePersistenceProvider.Setup(p => p.Read(It.IsAny<string>())).Returns(() => data);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeIFilePersistenceProvider(filePersistenceProvider);
+            CustomContainer.Register(filePersistenceProvider.Object);
 
             Dev2MessageBoxViewModel.ResetAllDontShowAgainOptions();
 

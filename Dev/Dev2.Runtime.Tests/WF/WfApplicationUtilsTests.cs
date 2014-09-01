@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
-using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ESB.WF;
 using Dev2.UnitTestUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -23,16 +22,16 @@ namespace Dev2.Tests.Runtime.WF
         {
             //------------Setup for test--------------------------
             var wfUtils = new WfApplicationUtils();
-            var mockDispatcher = new Mock<IDebugDispatcher>();
+            var mockDispatcher = new Mock<Common.Interfaces.Diagnostics.Debug.IDebugDispatcher>();
             wfUtils.GetDebugDispatcher = () => mockDispatcher.Object;
             var mockDataObject = new Mock<IDSFDataObject>();
             mockDataObject.Setup(d => d.IsDebugMode()).Returns(false);
             mockDataObject.Setup(d => d.IsFromWebServer).Returns(false);
             mockDataObject.Setup(d => d.RunWorkflowAsync).Returns(true);
-            mockDispatcher.Setup(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()))
+            mockDispatcher.Setup(m => m.Write(It.IsAny<Common.Interfaces.Diagnostics.Debug.IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<Common.Interfaces.Diagnostics.Debug.IDebugState>>()))
                 .Verifiable();
             var dataObject = mockDataObject.Object;
-            const StateType StateType = StateType.All;
+            const Common.Interfaces.Diagnostics.Debug.StateType StateType = Common.Interfaces.Diagnostics.Debug.StateType.All;
             // ReSharper disable RedundantAssignment
             ErrorResultTO errors = new ErrorResultTO();
             // ReSharper restore RedundantAssignment
@@ -40,7 +39,7 @@ namespace Dev2.Tests.Runtime.WF
             //------------Execute Test---------------------------
             wfUtils.DispatchDebugState(dataObject, StateType, false, string.Empty, out errors, workflowStartTime);
             //------------Assert Results-------------------------
-            mockDispatcher.Verify(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()), Times.Once());
+            mockDispatcher.Verify(m => m.Write(It.IsAny<Common.Interfaces.Diagnostics.Debug.IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<Common.Interfaces.Diagnostics.Debug.IDebugState>>()), Times.Once());
             Assert.IsFalse(errors.HasErrors());
         }
 
@@ -51,16 +50,16 @@ namespace Dev2.Tests.Runtime.WF
         {
             //------------Setup for test--------------------------
             var wfUtils = new WfApplicationUtils();
-            var mockDispatcher = new Mock<IDebugDispatcher>();
+            var mockDispatcher = new Mock<Common.Interfaces.Diagnostics.Debug.IDebugDispatcher>();
             wfUtils.GetDebugDispatcher = () => mockDispatcher.Object;
             var mockDataObject = new Mock<IDSFDataObject>();
             mockDataObject.Setup(d => d.IsDebugMode()).Returns(false);
             mockDataObject.Setup(d => d.IsFromWebServer).Returns(false);
             mockDataObject.Setup(d => d.RunWorkflowAsync).Returns(false);
-            mockDispatcher.Setup(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()))
+            mockDispatcher.Setup(m => m.Write(It.IsAny<Common.Interfaces.Diagnostics.Debug.IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<Common.Interfaces.Diagnostics.Debug.IDebugState>>()))
                 .Verifiable();
             var dataObject = mockDataObject.Object;
-            const StateType StateType = StateType.All;
+            const Common.Interfaces.Diagnostics.Debug.StateType StateType = Common.Interfaces.Diagnostics.Debug.StateType.All;
             // ReSharper disable RedundantAssignment
             ErrorResultTO errors = new ErrorResultTO();
             // ReSharper restore RedundantAssignment
@@ -68,7 +67,7 @@ namespace Dev2.Tests.Runtime.WF
             //------------Execute Test---------------------------
             wfUtils.DispatchDebugState(dataObject, StateType, false, string.Empty, out errors, workflowStartTime);
             //------------Assert Results-------------------------
-            mockDispatcher.Verify(m => m.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()), Times.Never());
+            mockDispatcher.Verify(m => m.Write(It.IsAny<Common.Interfaces.Diagnostics.Debug.IDebugState>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<Common.Interfaces.Diagnostics.Debug.IDebugState>>()), Times.Never());
             Assert.IsFalse(errors.HasErrors());
         }
 

@@ -1,7 +1,7 @@
-﻿using Dev2.DataList.Contract;
+﻿using System;
+using Dev2.DataList.Contract;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
 
 namespace Dev2.Data.SystemTemplates.Models
 {

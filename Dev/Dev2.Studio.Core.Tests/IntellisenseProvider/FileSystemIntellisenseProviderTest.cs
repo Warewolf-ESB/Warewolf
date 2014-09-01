@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Threading;
-using Dev2.Composition;
 using Dev2.Intellisense.Helper;
 using Dev2.Intellisense.Provider;
 using Dev2.Studio.Core;
@@ -30,7 +29,6 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         {
             Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
 

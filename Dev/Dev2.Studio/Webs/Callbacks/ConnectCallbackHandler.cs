@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using Dev2.Data.ServiceModel;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
@@ -7,7 +8,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Newtonsoft.Json;
-using System;
 
 namespace Dev2.Webs.Callbacks
 {

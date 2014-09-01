@@ -1,13 +1,13 @@
-﻿using Dev2.Collections;
-using Dev2.Common.Interfaces.Infrastructure;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Dev2.Common.Interfaces.Core.Collections;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Interfaces

@@ -1,9 +1,9 @@
 ﻿#region
 
-using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interactivity;
+using Dev2.Studio.Core.AppResources.ExtensionMethods;
 
 #endregion
 

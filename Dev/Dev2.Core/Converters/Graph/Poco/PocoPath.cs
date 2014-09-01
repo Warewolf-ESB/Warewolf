@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Dev2;
-using Unlimited.Framework.Converters.Graph.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph.Poco
 {

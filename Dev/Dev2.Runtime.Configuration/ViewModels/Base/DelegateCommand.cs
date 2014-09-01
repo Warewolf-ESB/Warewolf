@@ -1,6 +1,6 @@
-﻿
-using System;
+﻿using System;
 using System.Windows.Input;
+
 namespace Dev2.Runtime.Configuration.ViewModels.Base
 {
     public class DelegateCommand : ICommand

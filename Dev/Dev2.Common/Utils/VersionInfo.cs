@@ -2,7 +2,7 @@
 using System.Reflection;
 using Vestris.ResourceLib;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Utils
 {
     public static class VersionInfo

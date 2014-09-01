@@ -54,11 +54,11 @@ namespace Dev2.Core.Tests.Utils
         [TestMethod]
         public void CanFormatDsfActivityFieldHandleSpecialCharsWithNoException()
         {
-           WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
+            WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
 
-           IList<string> result = wdu.FormatDsfActivityField(TestResourceStringsTest.SpecialChars);
+            IList<string> result = wdu.FormatDsfActivityField(TestResourceStringsTest.SpecialChars);
 
-           Assert.AreEqual(0, result.Count, "Strange behaviors parsing special chars, I got results when I should not?!");
+            Assert.AreEqual(0, result.Count, "Strange behaviors parsing special chars, I got results when I should not?!");
         }
 
         [TestMethod]
@@ -96,8 +96,8 @@ namespace Dev2.Core.Tests.Utils
             //------------Assert Results-------------------------
             Assert.IsTrue(handleMessages.WorkSurfaceMessageCalled);
             Assert.IsFalse(handleMessages.EditResourceMessageCalled);
-        }        
-        
+        }
+
         [TestMethod]
         public void EditResource_UnitTest_EditResourceWhereService_ExpectShowEditResourceWizardMessageHandled()
         {
@@ -112,7 +112,7 @@ namespace Dev2.Core.Tests.Utils
             //------------Assert Results-------------------------
             Assert.IsTrue(handleMessages.EditResourceMessageCalled);
             Assert.IsFalse(handleMessages.WorkSurfaceMessageCalled);
-        }          
+        }
 
         [TestMethod]
         public void EditResource_UnitTest_EditResourceWhereSource_ExpectShowEditResourceWizardMessageHandled()
@@ -128,7 +128,7 @@ namespace Dev2.Core.Tests.Utils
             //------------Assert Results-------------------------
             Assert.IsTrue(handleMessages.EditResourceMessageCalled);
             Assert.IsFalse(handleMessages.WorkSurfaceMessageCalled);
-        }       
+        }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -150,7 +150,6 @@ namespace Dev2.Core.Tests.Utils
         [TestCategory("WorkflowDesignerUtils_OnClick")]
         public void WorkflowDesignerUtils_ShowExampleWorkflow_DsfMultiAssignExampleResourceNotFound_MultiAssignExampleShown()
         {
-            CompositionInitializer.DefaultInitialize();
 
             var mockedResourceRepo = new Mock<IResourceRepository>();
             var mockedEnvironment = new Mock<IEnvironmentModel>();
@@ -171,7 +170,6 @@ namespace Dev2.Core.Tests.Utils
         public void WorkflowDesignerUtils_ShowExampleWorkflow_DsfMultiAssign_MultiAssignExampleShown()
         {
             const string expectedResourceName = "Example - MultiAssign";
-            CompositionInitializer.DefaultInitialize();
             var aggregator = new Mock<EventAggregator>();
             IResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>
@@ -202,7 +200,6 @@ namespace Dev2.Core.Tests.Utils
         public void WorkflowDesignerUtils_ShowExampleWorkflow_DsfDateTime_DateTimeExampleShown()
         {
             const string expectedResourceName = "Example - DateTime";
-            CompositionInitializer.DefaultInitialize();
             var aggregator = new Mock<EventAggregator>();
             IResourceModel actualResourceInvoked = null;
             aggregator.Setup(a => a.Publish(It.IsAny<AddWorkSurfaceMessage>())).Callback<object>(msg =>

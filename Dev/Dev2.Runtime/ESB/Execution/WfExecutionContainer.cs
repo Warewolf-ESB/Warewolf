@@ -3,6 +3,8 @@ using System.Activities;
 using System.Collections.Generic;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -157,7 +159,7 @@ namespace Dev2.Runtime.ESB.Execution
                   ? String.Format("[[{0}]]", value.Name)
                   : String.Format("[[{0}]]", value.RecordSetName);
         }
-        void AddDebugItem(DebugOutputBase parameters, DebugItem debugItem)
+        void AddDebugItem(DebugOutputBase parameters, IDebugItem debugItem)
         {
             var debugItemResults = parameters.GetDebugItemResult();
             debugItem.AddRange(debugItemResults);

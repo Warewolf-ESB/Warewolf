@@ -5,7 +5,7 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.DataList.Contract;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Data.ServiceModel.Helper
 {

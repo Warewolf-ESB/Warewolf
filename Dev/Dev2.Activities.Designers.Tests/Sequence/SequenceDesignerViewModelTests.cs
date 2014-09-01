@@ -1,4 +1,10 @@
-﻿using Dev2.Activities.Designers2.Core;
+﻿using System;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Windows;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Common;
 using Dev2.Core.Tests.Environments;
@@ -10,12 +16,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Windows;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 // ReSharper disable InconsistentNaming

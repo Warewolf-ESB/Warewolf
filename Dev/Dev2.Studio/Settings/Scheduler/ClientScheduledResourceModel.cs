@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Scheduler.Interfaces;
 using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Settings.Scheduler

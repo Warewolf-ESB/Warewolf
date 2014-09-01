@@ -1,7 +1,7 @@
-﻿using Dev2.Providers.Errors;
-using System;
+﻿using System;
 using System.Xml;
 using System.Xml.XPath;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 namespace Dev2.Providers.Validation.Rules
 {

@@ -1,4 +1,4 @@
-﻿using Dev2.Interfaces;
+﻿using Dev2.Common.Interfaces.Core.Convertors.Case;
 
 namespace Dev2
 {

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Unlimited.Framework.Converters.Graph.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {

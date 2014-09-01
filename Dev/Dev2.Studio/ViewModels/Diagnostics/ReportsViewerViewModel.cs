@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Net;
 using System.Windows;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics;
-using Dev2.Diagnostics.Debug;
 using Dev2.Services.Events;
 using Dev2.Studio.AppResources.ExtensionMethods;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.InterfaceImplementors;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.WorkSurface;
@@ -169,7 +168,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// </value>
         /// <author>Jurie.smit</author>
         /// <date>2013/05/24</date>
-        [Import(typeof(IPopupController))]
         public IPopupController PopupController { get; set; }
 
         /// <summary>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Data;
-using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Converters

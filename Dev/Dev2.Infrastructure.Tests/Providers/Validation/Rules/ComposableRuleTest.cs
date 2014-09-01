@@ -1,5 +1,6 @@
 ﻿
 using System;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

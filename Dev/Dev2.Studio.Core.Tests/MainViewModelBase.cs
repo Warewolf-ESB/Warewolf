@@ -1,16 +1,16 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
-using Dev2.Composition;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
 using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
+using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -26,7 +26,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition.Primitives;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -38,10 +37,10 @@ namespace Dev2.Core.Tests
     {
         #region Variables
 
-        protected readonly Guid FirstResourceID = Guid.NewGuid();
-        protected readonly Guid SecondResourceID = Guid.NewGuid();
-        protected readonly Guid ServerID = Guid.NewGuid();
-        protected readonly Guid WorkspaceID = Guid.NewGuid();
+        protected readonly Guid FirstResourceId = Guid.NewGuid();
+        protected readonly Guid SecondResourceId = Guid.NewGuid();
+        protected readonly Guid ServerId = Guid.NewGuid();
+        protected readonly Guid WorkspaceId = Guid.NewGuid();
         protected const string DisplayName = "test2";
         protected Mock<IEnvironmentConnection> EnvironmentConnection;
         protected Mock<IEnvironmentModel> EnvironmentModel;
@@ -105,6 +104,7 @@ namespace Dev2.Core.Tests
             FeedbackInvoker = new Mock<IFeedbackInvoker>();
             WebController = new Mock<IWebController>();
             WindowManager = new Mock<IWindowManager>();
+            BrowserPopupController = new Mock<IBrowserPopupController>();
             MockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             SetupDefaultMef(FeedbackInvoker);
             Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
@@ -115,7 +115,7 @@ namespace Dev2.Core.Tests
             FindCefSharpWpfDll();//Ashley: Load Xaml references manually...
             Mock<IConnectControlViewModel> mockConnectControlViewModel = new Mock<IConnectControlViewModel>();
             MainViewModel = new MainViewModel(EventAggregator.Object, asyncWorker.Object, environmentRepo,
-                new Mock<IVersionChecker>().Object, false, null, PopupController.Object
+                new Mock<IVersionChecker>().Object, false, BrowserPopupController.Object, PopupController.Object
                 , WindowManager.Object, WebController.Object, FeedbackInvoker.Object, MockStudioResourceRepository.Object, new Mock<IConnectControlSingleton>().Object, mockConnectControlViewModel.Object);
             ActiveEnvironment = new Mock<IEnvironmentModel>();
             AuthorizationService = new Mock<IAuthorizationService>();
@@ -123,6 +123,8 @@ namespace Dev2.Core.Tests
 
             MainViewModel.ActiveEnvironment = ActiveEnvironment.Object;
         }
+
+        protected Mock<IBrowserPopupController> BrowserPopupController;
 
         static void FindCefSharpWpfDll()
         {
@@ -142,8 +144,8 @@ namespace Dev2.Core.Tests
             result.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(ServiceDefinition));
             result.Setup(c => c.Category).Returns("Testing");
             result.Setup(c => c.Environment).Returns(EnvironmentModel.Object);
-            result.Setup(c => c.ServerID).Returns(ServerID);
-            result.Setup(c => c.ID).Returns(FirstResourceID);
+            result.Setup(c => c.ServerID).Returns(ServerId);
+            result.Setup(c => c.ID).Returns(FirstResourceId);
             result.Setup(c => c.UserPermissions).Returns(Permissions.Contribute);
 
             return result;
@@ -179,8 +181,8 @@ namespace Dev2.Core.Tests
         {
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(c => c.ServerID).Returns(Guid.NewGuid());
-            connection.SetupGet(c => c.WorkspaceID).Returns(WorkspaceID);
-            connection.SetupGet(c => c.ServerID).Returns(ServerID);
+            connection.SetupGet(c => c.WorkspaceID).Returns(WorkspaceId);
+            connection.SetupGet(c => c.ServerID).Returns(ServerId);
             connection.Setup(c => c.AppServerUri)
                 .Returns(new Uri(string.Format("http://127.0.0.{0}:{1}/dsf", rand.Next(1, 100), rand.Next(1, 100))));
             connection.Setup(c => c.WebServerUri)
@@ -211,7 +213,7 @@ namespace Dev2.Core.Tests
             var env = new Mock<IEnvironmentModel>();
             env.Setup(e => e.Connection).Returns(connection.Object);
             env.Setup(e => e.IsConnected).Returns(true);
-            env.Setup(e => e.ID).Returns(ServerID);
+            env.Setup(e => e.ID).Returns(ServerId);
             env.Setup(e => e.Name).Returns(string.Format("Server_{0}", rand.Next(1, 100)));
             return env;
         }
@@ -221,11 +223,11 @@ namespace Dev2.Core.Tests
             MockWorkspaceRepo = new Mock<IWorkspaceItemRepository>();
             var list = new List<IWorkspaceItem>();
             var item = new Mock<IWorkspaceItem>();
-            item.SetupGet(i => i.WorkspaceID).Returns(WorkspaceID);
-            item.SetupGet(i => i.ServerID).Returns(ServerID);
-            item.SetupGet(i => i.EnvironmentID).Returns(ServerID);
+            item.SetupGet(i => i.WorkspaceID).Returns(WorkspaceId);
+            item.SetupGet(i => i.ServerID).Returns(ServerId);
+            item.SetupGet(i => i.EnvironmentID).Returns(ServerId);
             item.SetupGet(i => i.ServiceName).Returns(ResourceName);
-            item.SetupGet(i => i.ID).Returns(FirstResourceID);
+            item.SetupGet(i => i.ID).Returns(FirstResourceId);
             list.Add(item.Object);
             MockWorkspaceRepo.SetupGet(c => c.WorkspaceItems).Returns(list);
             MockWorkspaceRepo.Setup(c => c.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
@@ -241,8 +243,8 @@ namespace Dev2.Core.Tests
             SecondResource.Setup(c => c.WorkflowXaml).Returns(new StringBuilder());
             SecondResource.Setup(c => c.Category).Returns("Testing2");
             SecondResource.Setup(c => c.Environment).Returns(EnvironmentModel.Object);
-            SecondResource.Setup(c => c.ServerID).Returns(ServerID);
-            SecondResource.Setup(c => c.ID).Returns(SecondResourceID);
+            SecondResource.Setup(c => c.ServerID).Returns(ServerId);
+            SecondResource.Setup(c => c.ID).Returns(SecondResourceId);
             SecondResource.Setup(c => c.UserPermissions).Returns(Permissions.Contribute);
             var msg = new AddWorkSurfaceMessage(SecondResource.Object);
             MainViewModel.Handle(msg);
@@ -303,12 +305,10 @@ namespace Dev2.Core.Tests
 
         protected static void SetupDefaultMef(Mock<IFeedbackInvoker> feedbackInvoker)
         {
-            ImportService.CurrentContext = new ImportServiceContext();
-            ImportService.Initialize(new List<ComposablePartCatalog>());
-            ImportService.AddExportedValueToContainer(new Mock<IPopupController>().Object);
-            ImportService.AddExportedValueToContainer(feedbackInvoker.Object);
-            ImportService.AddExportedValueToContainer<IFeedBackRecorder>(new FeedbackRecorder());
-            ImportService.AddExportedValueToContainer(new Mock<IWindowManager>().Object);
+            CustomContainer.Register<IPopupController>(new Mock<IPopupController>().Object);
+            CustomContainer.Register<IFeedbackInvoker>(feedbackInvoker.Object);
+            CustomContainer.Register<IFeedBackRecorder>(new FeedbackRecorder());
+            CustomContainer.Register<IWindowManager>(new Mock<IWindowManager>().Object);
         }
 
         #endregion Methods used by tests

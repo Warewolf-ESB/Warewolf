@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Dev2.Annotations;
-using Dev2.Runtime.Configuration.ViewModels.Base;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Annotations;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 
 namespace Dev2.Settings
 {

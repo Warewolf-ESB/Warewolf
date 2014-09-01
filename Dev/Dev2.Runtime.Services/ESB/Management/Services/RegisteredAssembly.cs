@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Reflection;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;

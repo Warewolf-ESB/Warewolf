@@ -1,5 +1,6 @@
 using System.Text;
 using System.Xml;
+using Dev2.Common.Interfaces.DB;
 
 namespace Dev2.Common.DB
 {

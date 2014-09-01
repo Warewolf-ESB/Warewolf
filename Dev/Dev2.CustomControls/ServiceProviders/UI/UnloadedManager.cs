@@ -1,4 +1,5 @@
 // Copyright (C) Josh Smith - October 2006
+
 using System.Windows;
 
 namespace WPF.JoshSmith.ServiceProviders.UI

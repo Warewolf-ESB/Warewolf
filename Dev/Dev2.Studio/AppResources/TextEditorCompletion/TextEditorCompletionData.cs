@@ -1,5 +1,5 @@
-﻿using ICSharpCode.AvalonEdit.CodeCompletion;
-using System;
+﻿using System;
+using ICSharpCode.AvalonEdit.CodeCompletion;
 
 // ReSharper disable once CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio

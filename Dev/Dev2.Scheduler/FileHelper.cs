@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using Dev2.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Scheduler
 {

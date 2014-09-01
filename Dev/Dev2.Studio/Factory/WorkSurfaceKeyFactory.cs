@@ -1,9 +1,9 @@
-﻿using Dev2.Diagnostics.Debug;
+﻿using System;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using System;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Factory

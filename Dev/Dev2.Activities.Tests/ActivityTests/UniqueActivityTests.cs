@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using ActivityUnitTests;
 using Dev2.Activities;
+using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Windows;
-using Dev2.Composition;
-using Dev2.Studio.Core.Controller;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.Feedback;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -13,9 +12,11 @@ namespace Dev2.Core.Tests.Feedback
     [ExcludeFromCodeCoverage]
     public class FeedbackInvokerTests
     {
-        #region Class Members
-
-        #endregion Class Members
+        [TestInitialize]
+        public void TestSetup()
+        {
+            CustomContainer.Clear();
+        }
 
         #region Properties
 
@@ -30,9 +31,8 @@ namespace Dev2.Core.Tests.Feedback
         #region Test Methods
 
         [TestMethod]
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         public void InvokeFeedback_Where_ActionCanProvideFeedback_Expected_StartFeedbackInvokedAndCurrentActionSet()
-
         {
             Mock<IFeedbackAction> feedbackAction = new Mock<IFeedbackAction>();
             feedbackAction.Setup(f => f.CanProvideFeedback).Returns(true);
@@ -40,10 +40,8 @@ namespace Dev2.Core.Tests.Feedback
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
 
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
-            ImportService.SatisfyImports(feedbackInvoker);
 
             feedbackInvoker.InvokeFeedback(feedbackAction.Object);
 
@@ -61,10 +59,10 @@ namespace Dev2.Core.Tests.Feedback
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
+            CustomContainer.Register<IPopupController>(popup.Object);
+            CustomContainer.Register<IFeedbackAction>(feedbackAction.Object);
 
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
-            ImportService.SatisfyImports(feedbackInvoker);
 
             feedbackInvoker.InvokeFeedback(feedbackAction.Object);
 
@@ -78,11 +76,8 @@ namespace Dev2.Core.Tests.Feedback
         public void InvokeFeedback_Where_ActionIsNull_Expected_ArgumentNullException()
         {
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
-
+            CustomContainer.Register<IPopupController>(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
-            ImportService.SatisfyImports(feedbackInvoker);
 
             feedbackInvoker.InvokeFeedback(null);
         }
@@ -101,11 +96,8 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
-
+            CustomContainer.Register<IPopupController>(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
-            ImportService.SatisfyImports(feedbackInvoker);
 
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object, feedbackAction2.Object);
 
@@ -123,32 +115,26 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction.Setup(f => f.CanProvideFeedback).Returns(true);
             feedbackAction.Setup(f => f.Priority).Returns(2);
             feedbackAction.Setup(f => f.StartFeedback()).Verifiable();
-            FeedbackInvoker theInvoker = new FeedbackInvoker();
-            theInvoker.CurrentAction = feedbackAction.Object;
+
+
 
             Mock<IPopupController> yesPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
             Mock<IPopupController> noPopup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
 
+            CustomContainer.Register<IPopupController>(yesPopup.Object);
+            FeedbackInvoker theInvoker = new FeedbackInvoker { CurrentAction = feedbackAction.Object };
             // If it's already recording, display a box to confirm if the user wants to stop the recording, and click Yes
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(yesPopup);
-            ImportService.SatisfyImports(theInvoker);
             theInvoker.InvokeFeedback(feedbackAction.Object, feedbackAction.Object);
 
             // If it's already recording, display a box to confirm if the user wants to stop the recording, and click No
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(noPopup);
-            ImportService.SatisfyImports(theInvoker);
             theInvoker.InvokeFeedback(feedbackAction.Object, feedbackAction.Object);
 
             // If it's not recording, display the information box, and click Yes
+            theInvoker.Popup = noPopup.Object;
             theInvoker.CurrentAction = null;
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(yesPopup);
-            ImportService.SatisfyImports(theInvoker);
             theInvoker.InvokeFeedback(feedbackAction.Object, feedbackAction.Object);
-
             // If it's not recording, display the information box, and click No
             theInvoker.CurrentAction = null;
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(noPopup);
-            ImportService.SatisfyImports(theInvoker);
             theInvoker.InvokeFeedback(feedbackAction.Object, feedbackAction.Object);
 
             // Check all popups showed the correct amount of times
@@ -170,11 +156,8 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
-
+            CustomContainer.Register<IPopupController>(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
-            ImportService.SatisfyImports(feedbackInvoker);
 
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object, feedbackAction2.Object);
 
@@ -198,11 +181,8 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
-
+            CustomContainer.Register<IPopupController>(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
-            ImportService.SatisfyImports(feedbackInvoker);
 
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object, feedbackAction2.Object);
 
@@ -222,11 +202,8 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction2.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
-
+            CustomContainer.Register<IPopupController>(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
-            ImportService.SatisfyImports(feedbackInvoker);
 
             feedbackInvoker.InvokeFeedback(null, feedbackAction2.Object);
         }
@@ -241,11 +218,8 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction1.Setup(f => f.StartFeedback()).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Cancel);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
-
+            CustomContainer.Register<IPopupController>(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
-            ImportService.SatisfyImports(feedbackInvoker);
 
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object, null);
         }
@@ -259,10 +233,7 @@ namespace Dev2.Core.Tests.Feedback
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
-
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
-            ImportService.SatisfyImports(feedbackInvoker);
 
             feedbackInvoker.InvokeFeedback(feedbackAction.Object);
 
@@ -284,11 +255,8 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction1.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
-
+            CustomContainer.Register<IPopupController>(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
-            ImportService.SatisfyImports(feedbackInvoker);
 
             feedbackInvoker.InvokeFeedback(feedbackAction.Object);
             feedbackInvoker.InvokeFeedback(feedbackAction1.Object);
@@ -308,11 +276,8 @@ namespace Dev2.Core.Tests.Feedback
             feedbackAction.Setup(f => f.StartFeedback(It.IsAny<Action<Exception>>())).Verifiable();
 
             Mock<IPopupController> popup = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackInvokerTests(popup);
-
+            CustomContainer.Register<IPopupController>(popup.Object);
             FeedbackInvoker feedbackInvoker = new FeedbackInvoker();
-            ImportService.SatisfyImports(feedbackInvoker);
 
             feedbackInvoker.InvokeFeedback(feedbackAction.Object);
 

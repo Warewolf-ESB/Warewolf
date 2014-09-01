@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Threading;
+using Dev2.Common.Interfaces.Core.Collections;
 
 namespace Dev2.Collections
 {

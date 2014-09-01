@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Dev2.Common;
+using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -1676,7 +1677,7 @@ namespace Dev2.Data.Tests.BinaryDataList
                 entry.TryDeleteRows("1", out error);
             }
 
-            var res = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+            var res = entry.Clone(DataList.Contract.enTranslationDepth.Data, Guid.NewGuid(), out error);
 
             var cloneMinIndex = res.FetchRecordsetIndexes().FetchNextIndex();
             var entryMinIndex = entry.FetchRecordsetIndexes().FetchNextIndex();
@@ -1714,7 +1715,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             IList<Dev2Column> cols = new List<Dev2Column>();
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
-            var cloned = entry.Clone(enTranslationDepth.Data, Guid.NewGuid(), out error);
+            var cloned = entry.Clone(DataList.Contract.enTranslationDepth.Data, Guid.NewGuid(), out error);
             Assert.AreNotEqual(cloned.GetHashCode(), entry.GetHashCode());
             Assert.AreEqual(cloned.FetchScalar().TheValue, entry.FetchScalar().TheValue);
             Assert.AreEqual(cloned.FetchScalar().FieldName, entry.FetchScalar().FieldName);
@@ -1741,7 +1742,7 @@ namespace Dev2.Data.Tests.BinaryDataList
                 entry.TryDeleteRows("1", out error);
             }
 
-            var res = entry.Clone(enTranslationDepth.Shape, Guid.NewGuid(), out error);
+            var res = entry.Clone(DataList.Contract.enTranslationDepth.Shape, Guid.NewGuid(), out error);
 
             var cloneMinIndex = res.FetchRecordsetIndexes().FetchNextIndex();
             var entryMinIndex = entry.FetchRecordsetIndexes().FetchNextIndex();
@@ -1779,7 +1780,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             IList<Dev2Column> cols = new List<Dev2Column>();
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f1"));
             cols.Add(Dev2BinaryDataListFactory.CreateColumn("f2"));
-            var cloned = entry.Clone(enTranslationDepth.Data, dl0.UID, out error);
+            var cloned = entry.Clone(DataList.Contract.enTranslationDepth.Data, dl0.UID, out error);
 
             var internalSbc = new PrivateObject(cloned, new PrivateType(typeof(BinaryDataListEntry))).GetField("_internalObj") is SBinaryDataListEntry ? (SBinaryDataListEntry)new PrivateObject(cloned, new PrivateType(typeof(BinaryDataListEntry))).GetField("_internalObj") : new SBinaryDataListEntry();
             var internalSbe = new PrivateObject(entry, new PrivateType(typeof(BinaryDataListEntry))).GetField("_internalObj") is SBinaryDataListEntry ? (SBinaryDataListEntry)new PrivateObject(entry, new PrivateType(typeof(BinaryDataListEntry))).GetField("_internalObj") : new SBinaryDataListEntry();

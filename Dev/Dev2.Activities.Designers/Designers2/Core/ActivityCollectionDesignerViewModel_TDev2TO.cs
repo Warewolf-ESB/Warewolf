@@ -1,13 +1,14 @@
-﻿using Dev2.Interfaces;
-using Dev2.Providers.Errors;
-using Dev2.Providers.Validation;
-using Dev2.Studio.Core.Activities.Utils;
-using System;
+﻿using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
+using Dev2.Interfaces;
+using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+    //using Dev2.Interfaces;
 
 namespace Dev2.Activities.Designers2.Core
 {

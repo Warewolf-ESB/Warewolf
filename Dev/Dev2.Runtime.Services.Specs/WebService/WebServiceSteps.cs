@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -14,7 +15,6 @@ using Dev2.Tests.Activities.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TechTalk.SpecFlow;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.Services.Specs.WebService

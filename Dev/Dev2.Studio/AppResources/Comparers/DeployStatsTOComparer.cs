@@ -1,5 +1,5 @@
-﻿using Dev2.Studio.TO;
-using System.Collections;
+﻿using System.Collections;
+using Dev2.Studio.TO;
 
 namespace Dev2.Studio.AppResources.Comparers
 {

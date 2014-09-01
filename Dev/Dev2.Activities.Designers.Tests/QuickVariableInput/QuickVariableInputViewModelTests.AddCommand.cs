@@ -1,14 +1,14 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.QuickVariableInput;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Dev2.Activities.Designers.Tests.QuickVariableInput
 {

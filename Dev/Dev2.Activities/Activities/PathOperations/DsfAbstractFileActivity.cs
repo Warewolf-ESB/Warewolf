@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Dev2;
 using Dev2.Activities.Debug;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.PathOperations;
 using Dev2.Data.Factories;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract;

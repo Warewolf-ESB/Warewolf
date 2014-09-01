@@ -3,6 +3,8 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
+using Dev2.Common.Interfaces.Core.Convertors.Case;
+using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

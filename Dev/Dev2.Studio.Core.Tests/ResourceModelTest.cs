@@ -7,6 +7,8 @@ using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.Providers.Errors;
@@ -38,8 +40,6 @@ namespace Dev2.Core.Tests
 
         void Setup()
         {
-            //   ImportService.CurrentContext = CompositionInitializer.DefaultInitialize();
-
             var environmentModel = CreateMockEnvironment(new Mock<IEventPublisher>().Object);
 
 
@@ -1077,7 +1077,7 @@ namespace Dev2.Core.Tests
             var memo = new DesignValidationMemo
             {
                 InstanceID = environmentID,
-                Errors = new List<ErrorInfo>
+                Errors = new List<IErrorInfo>
                 {
                     err
                 }

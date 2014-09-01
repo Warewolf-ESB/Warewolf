@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using Dev2.Activities.Designers2.Core;
-using Dev2.Common;
+using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Data.Enums;
 
 namespace Dev2.Activities.Designers2.Foreach

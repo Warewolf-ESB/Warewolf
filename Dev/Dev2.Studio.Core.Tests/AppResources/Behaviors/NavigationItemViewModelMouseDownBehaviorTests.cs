@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;

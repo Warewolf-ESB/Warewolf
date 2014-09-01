@@ -1,10 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
-using Dev2.Runtime.Configuration.ComponentModel;
-using System;
 using System.Xml.Linq;
+using Dev2.Common.Interfaces.ComponentModel;
+using Dev2.Common.Interfaces.Runtime.Configuration.Settings;
+using Dev2.Runtime.Configuration.ComponentModel;
 
 namespace Dev2.Runtime.Configuration.Settings
 {

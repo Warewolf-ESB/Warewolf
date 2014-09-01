@@ -5,7 +5,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Xml;
 using Dev2.Common;
-using Unlimited.Framework.Converters.Graph.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
+using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Unlimited.Framework.Converters.Graph.Output
 {
@@ -101,7 +102,7 @@ namespace Unlimited.Framework.Converters.Graph.Output
             Type outputDescriptionType = typeof(IOutputDescription);
             Type dataSourceShapeType = typeof(IDataSourceShape);
 
-            List<Type> knownTypes = typeof(IOutputDescription).Assembly.GetTypes()
+            List<Type> knownTypes = typeof(OutputDescription).Assembly.GetTypes()
                 .Where(t => (pathType.IsAssignableFrom(t) && t != pathType) ||
                     (outputDescriptionType.IsAssignableFrom(t) && t != outputDescriptionType) ||
                     (dataSourceShapeType.IsAssignableFrom(t) && t != dataSourceShapeType)).ToList();

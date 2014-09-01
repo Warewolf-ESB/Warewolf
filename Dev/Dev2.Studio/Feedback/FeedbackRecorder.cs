@@ -19,20 +19,18 @@
 // /output            :Store output of record session in given path.
 // /stopevent        :Event to signal after output files are generated.
 
-using Dev2.Studio.AppResources.Exceptions;
-using Dev2.Studio.Controller;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using Dev2.Studio.AppResources.Exceptions;
+using Dev2.Studio.Controller;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Feedback
 {
-    [Export(typeof(IFeedBackRecorder))]
     public class FeedbackRecorder : IFeedBackRecorder
     {
         #region Class Members

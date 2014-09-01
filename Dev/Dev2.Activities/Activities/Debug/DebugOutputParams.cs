@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
 
 namespace Dev2.Activities.Debug
 {
@@ -59,9 +59,9 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        public override List<DebugItemResult> GetDebugItemResult()
+        public override List<IDebugItemResult> GetDebugItemResult()
         {
-            List<DebugItemResult> debugItemsResults = CreateDebugItemsFromString(Expression, Value, DlId, IndexToUpsertTo, LabelText, enDev2ArgumentType.Output);
+            List<IDebugItemResult> debugItemsResults = CreateDebugItemsFromString(Expression, Value, DlId, IndexToUpsertTo, LabelText, enDev2ArgumentType.Output);
             return debugItemsResults;
         }
     }

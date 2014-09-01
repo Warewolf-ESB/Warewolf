@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using Dev2.Common.Enums;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Builders;
-using Dev2.Diagnostics;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract

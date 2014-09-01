@@ -1,11 +1,23 @@
-﻿using Dev2.Common;
+﻿using System;
+using System.Collections;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Hosting;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Wrappers;
-using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
@@ -16,16 +28,6 @@ using Dev2.Runtime.ESB.Management;
 using Dev2.Runtime.Security;
 using Dev2.Runtime.ServiceModel.Data;
 using ServiceStack.Common.Extensions;
-using System;
-using System.Collections;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Runtime.Hosting
@@ -702,7 +704,7 @@ namespace Dev2.Runtime.Hosting
             {
                 File.Delete(resource.FilePath);
             }
-            var messages = new List<CompileMessageTO>
+            var messages = new List<ICompileMessageTO>
                 {
                     new CompileMessageTO
                         {
@@ -1152,7 +1154,7 @@ namespace Dev2.Runtime.Hosting
 
         void SavedResourceCompileMessage(Guid workspaceID, IResource resource, string saveMessage)
         {
-            var savedResourceCompileMessage = new List<CompileMessageTO>
+            var savedResourceCompileMessage = new List<ICompileMessageTO>
             {
                 new CompileMessageTO
                 {
@@ -1185,9 +1187,9 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        static IList<CompileMessageTO> GetCompileMessages(IResource resource, StringBuilder contents, ServiceAction beforeAction, ServiceModelCompiler smc)
+        static IList<ICompileMessageTO> GetCompileMessages(IResource resource, StringBuilder contents, ServiceAction beforeAction, ServiceModelCompiler smc)
         {
-            List<CompileMessageTO> messages = new List<CompileMessageTO>();
+            List<ICompileMessageTO> messages = new List<ICompileMessageTO>();
             switch(beforeAction.ActionType)
             {
                 case enActionType.InvokeStoredProc:
@@ -1212,10 +1214,10 @@ namespace Dev2.Runtime.Hosting
         }
 
         //Sends the messages for effected resources
-        void UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<CompileMessageTO> messages)
+        void UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<ICompileMessageTO> messages)
         {
             var dependants = Instance.GetDependentsAsResourceForTrees(workspaceID, resource.ResourceID);
-            var dependsMessageList = new List<CompileMessageTO>();
+            var dependsMessageList = new List<ICompileMessageTO>();
             foreach(var dependant in dependants)
             {
                 var affectedResource = GetResource(workspaceID, dependant.ResourceID);
@@ -1232,7 +1234,7 @@ namespace Dev2.Runtime.Hosting
             CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
         }
 
-        void UpdateResourceXml(Guid workspaceID, IResource effectedResource, IList<CompileMessageTO> compileMessagesTO)
+        void UpdateResourceXml(Guid workspaceID, IResource effectedResource, IList<ICompileMessageTO> compileMessagesTO)
         {
             var resourceContents = GetResourceContents(workspaceID, effectedResource.ResourceID);
             UpdateXmlToDisk(effectedResource, compileMessagesTO, resourceContents);
@@ -1244,7 +1246,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        void UpdateXmlToDisk(IResource resource, IList<CompileMessageTO> compileMessagesTO, StringBuilder resourceContents)
+        void UpdateXmlToDisk(IResource resource, IList<ICompileMessageTO> compileMessagesTO, StringBuilder resourceContents)
         {
 
             var resourceElement = resourceContents.ToXElement();
@@ -1263,7 +1265,7 @@ namespace Dev2.Runtime.Hosting
 
         }
 
-        void SetErrors(XElement resourceElement, IList<CompileMessageTO> compileMessagesTO)
+        void SetErrors(XElement resourceElement, IList<ICompileMessageTO> compileMessagesTO)
         {
             if(compileMessagesTO == null || compileMessagesTO.Count == 0)
             {

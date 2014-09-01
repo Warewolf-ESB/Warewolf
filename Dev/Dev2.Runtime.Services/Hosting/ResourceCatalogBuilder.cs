@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -32,9 +33,17 @@ namespace Dev2.Runtime.Hosting
     {
         private readonly List<IResource> _resources = new List<IResource>();
         private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
-
+        private readonly IResourceUpgrader _resourceUpgrader;
         private readonly object _addLock = new object();
 
+        public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader)
+        {
+            _resourceUpgrader = resourceUpgrader;
+        }
+        public ResourceCatalogBuilder()
+        {
+            _resourceUpgrader = ResourceUpgraderFactory.GetUpgrader();
+        }
         public IList<IResource> ResourceList { get { return _resources; } }
 
 
@@ -117,7 +126,12 @@ namespace Dev2.Runtime.Hosting
                             resource.ResourcePath = string.Empty;
                             // DON'T FORCE A SAVE HERE - EVER!!!!
                         }
-
+                        xml = _resourceUpgrader.UpgradeResource(xml, Assembly.GetExecutingAssembly().GetName().Version, (a =>
+                        {
+                            StringBuilder updateXml = a.ToStringBuilder();
+                            var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
+                            signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8);
+                        }));
                         if(resource.IsUpgraded)
                         {
                             // Must close the source stream first and then add a new target stream 

@@ -1,13 +1,11 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.ServiceProcess;
 using System.Threading;
 using Dev2.Common;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Services
 {
-    [Export(typeof(IWindowsServiceManager))]
     public class WindowsServiceManager : IWindowsServiceManager
     {
         #region Methods

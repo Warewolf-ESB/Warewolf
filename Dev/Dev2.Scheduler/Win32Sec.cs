@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Security.Principal;
 using Dev2.Common;
-using Dev2.Scheduler.Interfaces;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Services.Security;
 using LSA_HANDLE = System.IntPtr;
 

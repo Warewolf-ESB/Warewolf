@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,10 +7,9 @@ using Caliburn.Micro;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Infragistics.Windows.DockManager;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.AppResources.WindowManagers
 {
-    [Export(typeof(IDockAwareWindowManager))]
     public class XamDockManagerDockAwareWindowManager : WindowManager, IDockAwareWindowManager
     {
         private readonly Window _window;

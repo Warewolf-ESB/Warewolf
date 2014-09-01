@@ -1,4 +1,12 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows;
+using Caliburn.Micro;
 using Dev2.Data.Enums;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -9,14 +17,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
 using Dev2.Studio.Core.Messages;
 using Dev2.UI;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Windows;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.InterfaceImplementors

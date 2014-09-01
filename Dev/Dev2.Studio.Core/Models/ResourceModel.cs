@@ -1,8 +1,18 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using System.Xml;
+using System.Xml.Linq;
+using Caliburn.Micro;
 using Dev2.Collections;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Core.Collections;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
@@ -13,16 +23,6 @@ using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.AppResources.ExtensionMethods;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Xml;
-using System.Xml.Linq;
-using Action = System.Action;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models
@@ -428,7 +428,7 @@ namespace Dev2.Studio.Core.Models
         }
 
         public event Action<IContextualResourceModel> OnResourceSaved;
-        public event Action OnDataListChanged;
+        public event System.Action OnDataListChanged;
 
         #endregion Properties
 

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Infrastructure.Communication;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
-using Dev2.Data.ServiceModel.Messages;
-using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Services
@@ -18,7 +19,7 @@ namespace Dev2.Services
         /// <param name="workspaceID">The workspace unique identifier.</param>
         /// <param name="directory">The directory.</param>
         /// <returns></returns>
-        ExecuteMessage ClearLog(Guid workspaceID, string directory);
+        IExecuteMessage ClearLog(Guid workspaceID, string directory);
 
         /// <summary>
         /// Fetches the compile messages.
@@ -27,14 +28,14 @@ namespace Dev2.Services
         /// <param name="serviceID">The service unique identifier.</param>
         /// <param name="filterList">The filter list.</param>
         /// <returns></returns>
-        CompileMessageList FetchCompileMessages(Guid workspaceID, Guid serviceID, string filterList);
+        ICompileMessageList FetchCompileMessages(Guid workspaceID, Guid serviceID, string filterList);
 
         /// <summary>
         /// Fetches the current server log.
         /// </summary>
         /// <param name="workspaceID">The workspace unique identifier.</param>
         /// <returns></returns>
-        ExecuteMessage FetchCurrentServerLog(Guid workspaceID);
+        IExecuteMessage FetchCurrentServerLog(Guid workspaceID);
 
         /// <summary>
         /// Fetches the dependent compile messages.
@@ -43,7 +44,7 @@ namespace Dev2.Services
         /// <param name="serviceID">The service unique identifier.</param>
         /// <param name="filterList">The filter list.</param>
         /// <returns></returns>
-        CompileMessageList FetchDependantCompileMessages(Guid workspaceID, Guid serviceID, string filterList);
+        ICompileMessageList FetchDependantCompileMessages(Guid workspaceID, Guid serviceID, string filterList);
 
         /// <summary>
         /// Fetches the dependent compile messages.
@@ -51,7 +52,7 @@ namespace Dev2.Services
         /// <param name="workspaceID">The workspace unique identifier.</param>
         /// <param name="invokerID">The invoker unique identifier.</param>
         /// <returns></returns>
-        IList<DebugState> FetchDependantCompileMessages(Guid workspaceID, Guid invokerID);
+        IList<IDebugState> FetchDependantCompileMessages(Guid workspaceID, Guid invokerID);
 
         /// <summary>
         /// Gets the database columns for table.

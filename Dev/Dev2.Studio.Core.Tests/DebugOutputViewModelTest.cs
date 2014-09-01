@@ -5,21 +5,17 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Diagnostics;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Diagnostics.Debug;
-using Dev2.Providers.Events;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Workspaces;
 using Dev2.Studio.Diagnostics;
-using Dev2.Studio.Feedback;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.ViewModels.Diagnostics;
-using Dev2.Webs;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -39,14 +35,10 @@ namespace Dev2.Core.Tests
         const string _resourceName = "TestResource";
         const string _displayName = "test2";
         const string _serviceDefinition = "<x/>";
-        private static ImportServiceContext _importServiceContext;
         private static readonly Guid _serverID = Guid.NewGuid();
         private static readonly Guid _workspaceID = Guid.NewGuid();
         private static readonly Guid _firstResourceID = Guid.NewGuid();
         public static Mock<IPopupController> _popupController;
-        private static Mock<IFeedbackInvoker> _feedbackInvoker;
-        private static Mock<IWebController> _webController;
-        private static Mock<IWindowManager> _windowManager;
 
         [ClassInitialize]
         public static void ClassInitialize(TestContext testContext)
@@ -57,7 +49,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_OpenNullLineItemDoesntStartProcess()
         {
-            ImportService.CurrentContext = _importServiceContext;
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository());
             vm.OpenMoreLink(null);
             Assert.IsNull(vm.ProcessController);
@@ -66,7 +57,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_OpenEmptyMoreLinkDoesntStartProcess()
         {
-            ImportService.CurrentContext = _importServiceContext;
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository());
 
             var lineItem = new Mock<IDebugLineItem>();
@@ -79,7 +69,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_CanOpenNonNullOrEmptyMoreLinkLineItem()
         {
-            ImportService.CurrentContext = _importServiceContext;
 
             var lineItem = new Mock<IDebugLineItem>();
             lineItem.SetupGet(l => l.MoreLink).Returns("More");
@@ -92,7 +81,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_CantOpenEmptyMoreLinkLineItem()
         {
-            ImportService.CurrentContext = _importServiceContext;
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository());
 
             var lineItem = new Mock<IDebugLineItem>();
@@ -103,7 +91,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_CantOpenNullMoreLinkLineItem()
         {
-            ImportService.CurrentContext = _importServiceContext;
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository());
 
             Assert.IsTrue(vm.CanOpenMoreLink(null).Equals(false));
@@ -113,7 +100,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_AppendErrorExpectErrorMessageAppended()
         {
-            ImportService.CurrentContext = _importServiceContext;
 
             var mock1 = new Mock<IDebugState>();
             var mock2 = new Mock<IDebugState>();
@@ -148,7 +134,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_AppendNestedDebugstatesExpectNestedInRootItems()
         {
-            ImportService.CurrentContext = _importServiceContext;
 
             var mock1 = new Mock<IDebugState>();
             var mock2 = new Mock<IDebugState>();
@@ -181,7 +166,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_AppendWhenDebugStateStoppedShouldNotWriteItems()
         {
-            ImportService.CurrentContext = _importServiceContext;
 
             var mock1 = new Mock<IDebugState>();
             var mock2 = new Mock<IDebugState>();
@@ -202,7 +186,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_AppendWhenDebugStateFinishedShouldNotWriteItems()
         {
-            ImportService.CurrentContext = _importServiceContext;
 
             var mock1 = new Mock<IDebugState>();
             var mock2 = new Mock<IDebugState>();
@@ -226,7 +209,6 @@ namespace Dev2.Core.Tests
         [Owner("Jurie Smit")]
         public void DebugOutputViewModel_AppendWhenDebugStateFinishedShouldNotWriteItems_ItemIsMessage()
         {
-            ImportService.CurrentContext = _importServiceContext;
 
             var mock1 = new Mock<IDebugState>();
             var mock2 = new Mock<IDebugState>();
@@ -259,7 +241,6 @@ namespace Dev2.Core.Tests
         [Owner("Trevor Williams-Ros")]
         public void DebugOutputViewModel_OpenItemWithRemoteEnvironment_OpensResourceFromRemoteEnvironment()
         {
-            ImportService.CurrentContext = _importServiceContext;
 
             const string ResourceName = "TestResource";
             var environmentID = Guid.NewGuid();
@@ -312,7 +293,6 @@ namespace Dev2.Core.Tests
         public void DebugOutputViewModel_AppendItemFinalStep_DebugStatusFinished()
         {
             //*********************Setup********************
-            ImportService.CurrentContext = _importServiceContext;
             var mock1 = new Mock<IDebugState>();
             mock1.Setup(m => m.IsFinalStep()).Returns(true);
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository());
@@ -333,7 +313,6 @@ namespace Dev2.Core.Tests
         public void DebugOutputViewModel_AppendItemNotFinalStep_DebugStatusUnchanced()
         {
             //*********************Setup********************
-            ImportService.CurrentContext = _importServiceContext;
             var mock1 = new Mock<IDebugState>();
             mock1.Setup(m => m.IsFinalStep()).Returns(false);
             var vm = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, GetEnvironmentRepository()) { DebugStatus = DebugStatus.Ready };
@@ -351,7 +330,6 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DebugOutputViewModel_PendingQueueExpectedQueuesMessagesAndFlushesWhenFinishedProcessing()
         {
-            ImportService.CurrentContext = _importServiceContext;
 
             var envRepo = GetEnvironmentRepository();
 
@@ -379,7 +357,6 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_WhenDebugIsInFinishedState_MessageIsAddedBeforeAndAfterLastItem()
         {
-            ImportService.CurrentContext = _importServiceContext;
 
             var envRepo = GetEnvironmentRepository();
 
@@ -407,7 +384,6 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_WhenDebugIsInStoppingState_ZeroItemsAddedToTree()
         {
-            ImportService.CurrentContext = _importServiceContext;
 
             var envRepo = GetEnvironmentRepository();
 
@@ -428,22 +404,7 @@ namespace Dev2.Core.Tests
             CreateEnvironmentModel();
             _environmentRepo = GetEnvironmentRepository();
             _popupController = new Mock<IPopupController>();
-            _feedbackInvoker = new Mock<IFeedbackInvoker>();
-            _webController = new Mock<IWebController>();
-            _windowManager = new Mock<IWindowManager>();
 
-            Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
-
-            _importServiceContext =
-                CompositionInitializer.InitializeMockedMainViewModel(environmentRepo: _environmentRepo,
-                                                                         workspaceItemRepository: mockWorkspaceItemRepository.Object,
-                //aggregator: _eventAggregator,
-                                                                     popupController: _popupController,
-                                                                     feedbackInvoker: _feedbackInvoker,
-                                                                     webController: _webController,
-                                                                     windowManager: _windowManager);
-
-            ImportService.CurrentContext = _importServiceContext;
         }
 
         public static Mock<IContextualResourceModel> CreateResource(ResourceType resourceType)

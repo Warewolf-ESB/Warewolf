@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.DataList.Contract;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.TO;
@@ -19,18 +21,18 @@ namespace Dev2.Activities.Debug
         readonly IDictionary<string, string> _rsCachedValues = new Dictionary<string, string>();
         public abstract string LabelText { get; }
 
-        public abstract List<DebugItemResult> GetDebugItemResult();
+        public abstract List<IDebugItemResult> GetDebugItemResult();
 
         protected ErrorResultTO ErrorsTo;
 
-        public List<DebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, int indexToUse = -1)
+        public List<IDebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, int indexToUse = -1)
         {
             return CreateDebugItemsFromEntry(expression, dlEntry, dlId, argumentType, "", indexToUse);
         }
 
-        public List<DebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, string labelText, int indexToUse = -1)
+        public List<IDebugItemResult> CreateDebugItemsFromEntry(string expression, IBinaryDataListEntry dlEntry, Guid dlId, enDev2ArgumentType argumentType, string labelText, int indexToUse = -1)
         {
-            var results = new List<DebugItemResult>();
+            var results = new List<IDebugItemResult>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out ErrorsTo);
 
@@ -72,7 +74,7 @@ namespace Dev2.Activities.Debug
                     // Added IsEmpty check for Bug 9263 ;)
                     if(!dlEntry.IsEmpty())
                     {
-                        IList<DebugItemResult> collection = CreateRecordsetDebugItems(expression, dlEntry, string.Empty,
+                        IList<IDebugItemResult> collection = CreateRecordsetDebugItems(expression, dlEntry, string.Empty,
                                                                                       -1, labelText);
                         if(collection.Count < 2 && collection.Count > 0)
                         {
@@ -216,9 +218,9 @@ namespace Dev2.Activities.Debug
             return results;
         }
 
-        public List<DebugItemResult> CreateDebugItemForOutput(DebugTO debugTo, string labelText, List<string> regions)
+        public List<IDebugItemResult> CreateDebugItemForOutput(DebugTO debugTo, string labelText, List<string> regions)
         {
-            var results = new List<DebugItemResult>();
+            var results = new List<IDebugItemResult>();
             if(debugTo.TargetEntry != null)
             {
                 GetValue(debugTo.TargetEntry, debugTo, labelText, regions, results);
@@ -228,7 +230,7 @@ namespace Dev2.Activities.Debug
             return results;
         }
 
-        static void GetValue(IBinaryDataListEntry entry, DebugTO debugTo, string labelText, List<string> regions, List<DebugItemResult> results)
+        static void GetValue(IBinaryDataListEntry entry, DebugTO debugTo, string labelText, List<string> regions, List<IDebugItemResult> results)
         {
             ComplexExpressionAuditor auditor = entry.ComplexExpressionAuditor;
             if(auditor != null)
@@ -318,9 +320,9 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        public List<DebugItemResult> CreateDebugItemForInput(DebugTO debugTo, string labelText, string leftLabel, string rightLabel, List<string> regions)
+        public List<IDebugItemResult> CreateDebugItemForInput(DebugTO debugTo, string labelText, string leftLabel, string rightLabel, List<string> regions)
         {
-            var results = new List<DebugItemResult>();
+            var results = new List<IDebugItemResult>();
             if(debugTo.LeftEntry != null)
             {
                 GetValue(debugTo.LeftEntry, debugTo, leftLabel, regions, results);
@@ -335,15 +337,15 @@ namespace Dev2.Activities.Debug
             return results;
         }
 
-        public List<DebugItemResult> CreateDebugItemsFromString(string expression, string value, Guid dlId, int iterationNumber, enDev2ArgumentType argumentType)
+        public List<IDebugItemResult> CreateDebugItemsFromString(string expression, string value, Guid dlId, int iterationNumber, enDev2ArgumentType argumentType)
         {
             return CreateDebugItemsFromString(expression, value, dlId, iterationNumber, "", argumentType);
         }
 
-        public List<DebugItemResult> CreateDebugItemsFromString(string expression, string value, Guid dlId, int iterationNumber, string labelText, enDev2ArgumentType argumentType)
+        public List<IDebugItemResult> CreateDebugItemsFromString(string expression, string value, Guid dlId, int iterationNumber, string labelText, enDev2ArgumentType argumentType)
         {
             ErrorResultTO errors;
-            IList<DebugItemResult> resultsToPush = new List<DebugItemResult>();
+            IList<IDebugItemResult> resultsToPush = new List<IDebugItemResult>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IBinaryDataList dataList = compiler.FetchBinaryDataList(dlId, out errors);
             if(DataListUtil.IsValueRecordset(expression))
@@ -406,11 +408,11 @@ namespace Dev2.Activities.Debug
             return resultsToPush.ToList();
         }
 
-        IList<DebugItemResult> CreateScalarDebugItems(string expression, string value, string label, IList<DebugItemResult> results = null, string groupName = null, int groupIndex = 0)
+        IList<IDebugItemResult> CreateScalarDebugItems(string expression, string value, string label, IList<IDebugItemResult> results = null, string groupName = null, int groupIndex = 0)
         {
             if(results == null)
             {
-                results = new List<DebugItemResult>();
+                results = new List<IDebugItemResult>();
             }
 
             results.Add(new DebugItemResult
@@ -427,9 +429,9 @@ namespace Dev2.Activities.Debug
             return results;
         }
 
-        IList<DebugItemResult> CreateRecordsetDebugItems(string expression, IBinaryDataListEntry dlEntry, string value, int iterCnt, string labelText)
+        IList<IDebugItemResult> CreateRecordsetDebugItems(string expression, IBinaryDataListEntry dlEntry, string value, int iterCnt, string labelText)
         {
-            var results = new List<DebugItemResult>();
+            var results = new List<IDebugItemResult>();
             if(dlEntry.ComplexExpressionAuditor == null)
             {
                 string initExpression = expression;
@@ -483,7 +485,7 @@ namespace Dev2.Activities.Debug
             return results;
         }
 
-        void GetValues(IBinaryDataListEntry dlEntry, string value, int iterCnt, IIndexIterator idxItr, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, string labelText, string fieldName = null)
+        void GetValues(IBinaryDataListEntry dlEntry, string value, int iterCnt, IIndexIterator idxItr, enRecordsetIndexType indexType, IList<IDebugItemResult> results, string initExpression, string labelText, string fieldName = null)
         {
             string error;
             int index = idxItr.FetchNextIndex();
@@ -515,7 +517,7 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        void GetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, bool ignoreCompare, string labelText)
+        void GetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<IDebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, bool ignoreCompare, string labelText)
         {
             if(!ignoreCompare)
             {
@@ -538,7 +540,7 @@ namespace Dev2.Activities.Debug
         /// <param name="recordField">The record field.</param>
         /// <param name="index">The index.</param>
         /// <param name="labelText"></param>
-        void NewGetValue(IBinaryDataListEntry dlEntry, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, string labelText)
+        void NewGetValue(IBinaryDataListEntry dlEntry, enRecordsetIndexType indexType, IList<IDebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, string labelText)
         {
             string injectVal = string.Empty;
             ComplexExpressionAuditor auditorObj = dlEntry.ComplexExpressionAuditor;
@@ -595,7 +597,7 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        void OldGetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<DebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, string labelText)
+        void OldGetValue(IBinaryDataListEntry dlEntry, string value, int iterCnt, string fieldName, enRecordsetIndexType indexType, IList<IDebugItemResult> results, string initExpression, IBinaryDataListItem recordField, int index, string labelText)
         {
             if((string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase)))
             {

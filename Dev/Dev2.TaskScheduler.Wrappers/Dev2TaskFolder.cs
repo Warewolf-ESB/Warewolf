@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using Dev2.TaskScheduler.Wrappers.Interfaces;
+using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.TaskScheduler.Wrappers

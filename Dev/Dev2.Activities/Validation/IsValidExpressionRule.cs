@@ -1,12 +1,12 @@
-﻿using Dev2.Common.Interfaces.Infrastructure;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Linq;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.Enums;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
-using System;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Dev2.Validation
 {

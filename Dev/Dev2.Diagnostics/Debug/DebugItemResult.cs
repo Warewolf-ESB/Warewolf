@@ -2,12 +2,12 @@ using System;
 using System.Globalization;
 using System.Xml;
 using System.Xml.Schema;
-using System.Xml.Serialization;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Diagnostics
 {
     [Serializable]
-    public class DebugItemResult : IDebugItemResult, IXmlSerializable
+    public class DebugItemResult : IDebugItemResult
     {
         public DebugItemResultType Type { get; set; }
         public string Label { get; set; }
@@ -17,7 +17,7 @@ namespace Dev2.Diagnostics
         public string GroupName { get; set; }
         public int GroupIndex { get; set; }
         public string MoreLink { get; set; }
-
+  
         #region IXmlSerializable
 
         public XmlSchema GetSchema()

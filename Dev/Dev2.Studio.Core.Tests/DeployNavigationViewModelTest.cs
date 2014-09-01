@@ -1,11 +1,10 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Communication;
-using Dev2.Composition;
 using Dev2.Core.Tests.Utils;
-using Dev2.Interfaces;
 using Dev2.Models;
-using Dev2.Providers.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -18,7 +17,6 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.Composition.Primitives;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading;
@@ -354,7 +352,6 @@ namespace Dev2.Core.Tests
             IList<IEnvironmentModel> models = new List<IEnvironmentModel>();
             repo.Setup(l => l.All()).Returns(models);
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeNavigationViewModelTests(repo);
 
             Mock<IContextualResourceModel> mockResourceModel11 = null;
 
@@ -417,10 +414,6 @@ namespace Dev2.Core.Tests
 
         DeployNavigationViewModel CreateViewModel(Mock<IResourceRepository> mockResourceRepository)
         {
-            var importServiceContext = new ImportServiceContext();
-            ImportService.CurrentContext = importServiceContext;
-
-            ImportService.Initialize(new List<ComposablePartCatalog>());
 
             return CreateViewModel(EnvironmentRepository.Instance, mockResourceRepository);
         }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;

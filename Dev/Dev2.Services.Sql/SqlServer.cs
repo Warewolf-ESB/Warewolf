@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Services.Sql;
 
 namespace Dev2.Services.Sql
 {

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.ComponentModel;
-using Dev2.DataList.Contract;
-using Dev2.Scheduler.Interfaces;
 using System.Linq;
+using Dev2.Common.Interfaces.Data.TO;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
+using Dev2.DataList.Contract;
+
 namespace Dev2.Scheduler
 {
     public class ScheduledResource : IScheduledResource, INotifyPropertyChanged
@@ -19,7 +21,7 @@ namespace Dev2.Scheduler
         private string _userName;
         private string _password;
         string _oldName;
-        private ErrorResultTO _errors;
+        private IErrorResultTO _errors;
         DateTime _nextRunDate;
 
         public ScheduledResource(string name, SchedulerStatus status, DateTime nextRunDate, IScheduleTrigger trigger, string workflowName)
@@ -183,7 +185,7 @@ namespace Dev2.Scheduler
             }
         }
 
-        public ErrorResultTO Errors
+        public IErrorResultTO Errors
         {
             get
             {

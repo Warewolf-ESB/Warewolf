@@ -1,6 +1,12 @@
-﻿using Dev2;
+﻿using System;
+using System.Activities;
+using System.Collections.Generic;
+using System.Linq;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Common.Interfaces.DataList.Contract;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -10,10 +16,6 @@ using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Microsoft.CSharp.Activities;
 using Newtonsoft.Json;
-using System;
-using System.Activities;
-using System.Collections.Generic;
-using System.Linq;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -133,7 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            var result = new List<DebugItem>();
+            List<DebugItem> result = new List<DebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var allErrors = new ErrorResultTO();
 
@@ -148,11 +150,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 foreach(Dev2Decision dev2Decision in dds.TheStack)
                 {
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col1, out  error);
+                    AddInputDebugItemResultsAfterEvaluate(result.Select(a=>(IDebugItem)a).ToList(), ref userModel, dataList, dds.Mode, dev2Decision.Col1, out  error);
                     allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col2, out error);
+                    AddInputDebugItemResultsAfterEvaluate(result.Select(a => (IDebugItem)a).ToList(), ref userModel, dataList, dds.Mode, dev2Decision.Col2, out error);
                     allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col3, out error);
+                    AddInputDebugItemResultsAfterEvaluate(result.Select(a => (IDebugItem)a).ToList(), ref userModel, dataList, dds.Mode, dev2Decision.Col3, out error);
                     allErrors.MergeErrors(error);
                 }
 
@@ -199,7 +201,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return result;
         }
 
-        void AddInputDebugItemResultsAfterEvaluate(List<DebugItem> result, ref string userModel, IBinaryDataList dataList, Dev2DecisionMode decisionMode, string expression, out ErrorResultTO error, DebugItem parent = null)
+        void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IBinaryDataList dataList, Dev2DecisionMode decisionMode, string expression, out ErrorResultTO error, DebugItem parent = null)
         {
             error = new ErrorResultTO();
             if(expression != null && DataListUtil.IsEvaluated(expression))
@@ -221,7 +223,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var itemResults = debugResult.GetDebugItemResult();
 
-                List<DebugItemResult> allReadyAdded = new List<DebugItemResult>();
+                var allReadyAdded = new List<IDebugItemResult>();
 
                 itemResults.ForEach(a =>
                     {

@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Converters.Graph;
 using Newtonsoft.Json.Linq;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {

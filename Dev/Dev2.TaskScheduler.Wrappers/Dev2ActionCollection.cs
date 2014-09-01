@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Dev2.TaskScheduler.Wrappers.Interfaces;
+using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
-using Action = Microsoft.Win32.TaskScheduler.Action;
 
 namespace Dev2.TaskScheduler.Wrappers
 {
@@ -38,7 +37,7 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public IEnumerator<IAction> GetEnumerator()
         {
-            IEnumerator<Action> en = Instance.GetEnumerator();
+            IEnumerator<Microsoft.Win32.TaskScheduler.Action> en = Instance.GetEnumerator();
             while (en.MoveNext())
             {
                 yield return _taskServiceConvertorFactory.CreateAction(en.Current);

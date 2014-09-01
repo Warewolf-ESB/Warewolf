@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data.TO;
 
 namespace Dev2.DataList.Contract
 {
     [Serializable]
-    public class ErrorResultTO
+    public class ErrorResultTO : IErrorResultTO
     {
 
         private readonly IList<string> _errorList = new List<string>();
@@ -61,7 +62,7 @@ namespace Dev2.DataList.Contract
         /// Merges the errors.
         /// </summary>
         /// <param name="toMerge">To merge.</param>
-        public void MergeErrors(ErrorResultTO toMerge)
+        public void MergeErrors(IErrorResultTO toMerge)
         {
             if(toMerge != null && toMerge.HasErrors())
             {
@@ -74,7 +75,23 @@ namespace Dev2.DataList.Contract
                 toMerge.ClearErrors();
             }
         }
+        /// <summary>
+        /// Merges the errors.
+        /// </summary>
+        /// <param name="toMerge">To merge.</param>
+        public void MergeErrors(ErrorResultTO toMerge)
+        {
+            if (toMerge != null && toMerge.HasErrors())
+            {
+                // Flipping Union does not appear to work
+                foreach (string wtf in toMerge.FetchErrors())
+                {
+                    _errorList.Add(wtf);
+                }
 
+                toMerge.ClearErrors();
+            }
+        }
         public void ClearErrors()
         {
             _errorList.Clear();

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Converters.DateAndTime;
-using Dev2.Converters.DateAndTime.Interfaces;
 using System.Globalization;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.DateTimeTests

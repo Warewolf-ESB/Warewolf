@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
-using Dev2.Common.Wrappers.Interfaces;
 
 namespace Dev2.Intellisense.Helper
 {

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.ComponentModel.Composition;
 using System.Runtime.InteropServices;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Services.System
 {
     /// <summary>
@@ -11,7 +10,6 @@ namespace Dev2.Studio.Core.Services.System
     /// </summary>
     /// <author>Jurie.smit</author>
     /// <datetime>2013/01/14-09:08 AM</datetime>
-    [Export(typeof(ISystemInfoService))]
     public class SystemInfoService : ISystemInfoService
     {
         #region OSBITS

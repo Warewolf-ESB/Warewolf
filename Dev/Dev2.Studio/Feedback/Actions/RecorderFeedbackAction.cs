@@ -1,23 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.IO;
 using System.Windows;
-using Dev2.Composition;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.AppResources.Exceptions;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Utils;
 
-
-// ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Feedback.Actions
 // ReSharper restore CheckNamespace
 {
-    [Export(typeof(IFeedbackAction))]
-    [Export(typeof(IAsyncFeedbackAction))]
     public class RecorderFeedbackAction : IAsyncFeedbackAction
     {
         #region Class Members
@@ -31,9 +25,9 @@ namespace Dev2.Studio.Feedback.Actions
         public RecorderFeedbackAction()
         {
 
-            FeedBackInvoker = ImportService.GetExportValue<IFeedbackInvoker>();
-            FeedBackRecorder = ImportService.GetExportValue<IFeedBackRecorder>();
-            Popup = ImportService.GetExportValue<IPopupController>();
+            FeedBackInvoker = CustomContainer.Get<IFeedbackInvoker>();
+            FeedBackRecorder = CustomContainer.Get<IFeedBackRecorder>();
+            Popup = CustomContainer.Get<IPopupController>();
         }
         #endregion
 
@@ -182,15 +176,13 @@ namespace Dev2.Studio.Feedback.Actions
                 return;
             }
 
-            var attachedFiles = new Dictionary<string, string>();
-            attachedFiles.Add("RecordingLog", _outputPath);
+            var attachedFiles = new Dictionary<string, string> { { "RecordingLog", _outputPath } };
             if(environmentModel != null)
             {
                 attachedFiles.Add("ServerLog", environmentModel.ResourceRepository.GetServerLogTempPath(environmentModel));
             }
             attachedFiles.Add("StudioLog", FileHelper.GetStudioLogTempPath());
             IFeedbackAction emailFeedbackAction = new EmailFeedbackAction(attachedFiles, environmentModel);
-            //ImportService.SatisfyImports(emailFeedbackAction);
 
             if(_onCompleted != null)
             {

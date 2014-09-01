@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Threading;
-using Dev2.Composition;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
@@ -24,8 +23,6 @@ namespace Dev2.Core.Tests.Webs
         public void Init()
         {
             Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
-
-            ImportService.CurrentContext = CompositionInitializer.InitializeForMeflessBaseViewModel();
 
             var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
 
@@ -88,7 +85,7 @@ namespace Dev2.Core.Tests.Webs
             Assert.IsNotNull(results);
             Assert.AreEqual("[]", results);
         }
-        
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("WebsiteCallbackHandler_GetJsonIntellisenseResults")]

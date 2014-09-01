@@ -1,4 +1,6 @@
-﻿using Dev2.AppResources.Repositories;
+﻿using System;
+using System.Network;
+using Dev2.AppResources.Repositories;
 using Dev2.Communication;
 using Dev2.Providers.Logs;
 using Dev2.Security;
@@ -6,8 +8,6 @@ using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Workspaces;
-using System;
-using System.Network;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Models

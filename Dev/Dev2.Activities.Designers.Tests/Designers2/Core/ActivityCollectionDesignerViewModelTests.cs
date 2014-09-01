@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Data;
 using Dev2.Activities.Designers.Tests.Designers2.Core.Stubs;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

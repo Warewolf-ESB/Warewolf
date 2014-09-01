@@ -15,9 +15,9 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Common.ExtMethods;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.InterfaceImplementors;
 
@@ -1406,7 +1406,8 @@ namespace Dev2.UI
                     if(selectedItem is IDataListVerifyPart)
                     // ReSharper restore CanBeReplacedWithTryCastAndCheckForNull
                     {
-                        appendText = ((IDataListVerifyPart)selectedItem).DisplayValue;
+                        var part = selectedItem as IDataListVerifyPart;
+                        appendText = part.DisplayValue;
                     }
                     else
                     {
@@ -1537,7 +1538,8 @@ namespace Dev2.UI
                         if(selectedItem is IDataListVerifyPart)
                         // ReSharper restore CanBeReplacedWithTryCastAndCheckForNull
                         {
-                            appendText = ((IDataListVerifyPart)selectedItem).DisplayValue;
+                            var part = selectedItem as IDataListVerifyPart;
+                            appendText = part.DisplayValue;
                         }
                         else if(_listBox.SelectedItem is IntellisenseProviderResult)
                         {

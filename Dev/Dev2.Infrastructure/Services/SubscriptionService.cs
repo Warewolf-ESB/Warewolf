@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Windows.Threading;
-using Dev2.Providers.Events;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 
 namespace Dev2.Services
 {

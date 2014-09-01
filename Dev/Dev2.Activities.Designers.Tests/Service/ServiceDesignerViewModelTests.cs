@@ -11,9 +11,9 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Communication;
-using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
@@ -21,7 +21,6 @@ using Dev2.Providers.Events;
 using Dev2.Simulation;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
-using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -32,7 +31,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Action = System.Action;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2.Activities.Designers.Tests.Service
@@ -455,7 +453,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
                 foreach(var error in m.Errors)
                 {
-                    ErrorInfo currentError = error;
+                    IErrorInfo currentError = error;
                     var modelError = model.DesignValidationErrors.FirstOrDefault(me => me.ErrorType == currentError.ErrorType && me.Message == currentError.Message);
                     Assert.AreSame(error, modelError);
                 }
@@ -502,7 +500,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
             environment.Setup(a => a.HasLoadedResources).Returns(true);
-            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
+            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
             //------------Execute Test---------------------------
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
             //------------Assert Results-------------------------
@@ -530,7 +528,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
 
-            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
+            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
             //------------Execute Test---------------------------
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
             //------------Assert Results-------------------------
@@ -554,7 +552,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true)).Returns(resourceModel.Object);
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
             environment.Setup(a => a.HasLoadedResources).Returns(true);
-            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
+            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
             //------------Execute Test---------------------------
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
             //------------Assert Results-------------------------
@@ -581,7 +579,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.ResourceRepository).Returns(mockRepo.Object);
             environment.Setup(a => a.HasLoadedResources).Returns(true);
 
-            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(ResourceType.Service);
+            resourceModel.Setup(contextualResourceModel => contextualResourceModel.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
             var model = CreateServiceDesignerViewModel(instanceID, false, new Mock<IEventAggregator>().Object, null, resourceModel);
             //------------Assert Preconditions--------------------
             Assert.AreEqual(1, model.DesignValidationErrors.Count);
@@ -1284,7 +1282,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>())).Verifiable();
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
             //------------Execute Test---------------------------
             // ReSharper disable UnusedVariable
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker.Object);
@@ -1294,7 +1292,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Raise((a => a.ResourcesLoaded += null), new ResourcesLoadedEventArgs { Model = environment.Object });
 
             //------------Assert Results-------------------------
-            worker.Verify(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>()));
+            worker.Verify(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()));
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -1360,9 +1358,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>())).Callback(
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
                 (
-                    Action a, Action b) =>
+                    System.Action a, System.Action b) =>
                 {
                     a.Invoke();
                     b.Invoke();
@@ -1454,9 +1452,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>())).Callback(
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
                 (
-                    Action a, Action b) =>
+                    System.Action a, System.Action b) =>
                 {
                     a.Invoke();
                     b.Invoke();
@@ -1549,9 +1547,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>())).Callback(
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
                 (
-                    Action a, Action b) =>
+                    System.Action a, System.Action b) =>
                 {
                     a.Invoke();
                     b.Invoke();
@@ -1642,9 +1640,9 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>())).Callback(
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
                 (
-                    Action a, Action b) =>
+                    System.Action a, System.Action b) =>
                 {
                     a.Invoke();
                     b.Invoke();
@@ -1727,8 +1725,8 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            worker.Setup(a => a.Start(It.IsAny<Action>(), It.IsAny<Action>()))
-                .Callback((Action a, Action b) =>
+            worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()))
+                .Callback((System.Action a, System.Action b) =>
                         {
                             a.Invoke();
                             b.Invoke();
@@ -1911,7 +1909,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resourceID = Guid.NewGuid();
 
             var resourceModel = CreateResourceModel(Guid.Empty, false);
-            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.Service);
+            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.Service);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -2048,9 +2046,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         static ServiceDesignerViewModel CreateServiceDesignerViewModelWithEmptyResourceID(Guid instanceID, params IErrorInfo[] resourceErrors)
         {
             var rootModel = CreateResourceModel(Guid.NewGuid(), false, resourceErrors);
-            rootModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
+            rootModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             var resourceModel = CreateResourceModel(Guid.Empty, false);
-            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
+            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
             resourceModel.Setup(model => model.ResourceName).Returns("TestResource");
 
@@ -2085,9 +2083,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         static ServiceDesignerViewModel CreateServiceDesignerViewModel(Guid instanceID, bool resourceRepositoryReturnsNull, IEventAggregator eventPublisher, ModelProperty[] modelProperties, params IErrorInfo[] resourceErrors)
         {
             var rootModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull, resourceErrors);
-            rootModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
+            rootModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             var resourceModel = CreateResourceModel(Guid.NewGuid(), resourceRepositoryReturnsNull);
-            resourceModel.Setup(model => model.ResourceType).Returns(ResourceType.WorkflowService);
+            resourceModel.Setup(model => model.ResourceType).Returns(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var dataListViewModel = new DataListViewModel();

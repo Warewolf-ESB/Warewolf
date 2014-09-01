@@ -1,9 +1,9 @@
-﻿using Dev2.Common.ExtMethods;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using Dev2.Common.ExtMethods;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.ViewModels.Dialogs

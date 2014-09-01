@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
-using Unlimited.Framework.Converters.Graph.Interfaces;
+using Dev2.Common.Interfaces.Core.Graph;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Framework.Converters.Graph.String.Xml

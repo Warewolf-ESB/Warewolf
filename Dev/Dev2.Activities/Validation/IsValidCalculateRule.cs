@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Parsing.Intellisense;
 using Dev2.Calculate;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Data.Util;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;

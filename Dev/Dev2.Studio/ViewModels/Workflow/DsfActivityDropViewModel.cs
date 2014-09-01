@@ -1,5 +1,6 @@
-﻿using Dev2.Common.Interfaces.Data;
-using Dev2.Data.ServiceModel;
+﻿using System;
+using System.Windows.Input;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -7,8 +8,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Enums;
 using Dev2.Studio.ViewModels.Navigation;
-using System;
-using System.Windows.Input;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Workflow

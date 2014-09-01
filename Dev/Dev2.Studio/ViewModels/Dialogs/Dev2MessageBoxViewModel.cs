@@ -1,16 +1,14 @@
-﻿
-using Caliburn.Micro;
-using Dev2.Composition;
-using Dev2.Studio.Core.Interfaces;
-using Dev2.ViewModels.Dialogs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Xml.Linq;
+using Caliburn.Micro;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.ViewModels.Dialogs;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Dialogs
 {
     public class Dev2MessageBoxViewModel : Screen
@@ -234,7 +232,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
         {
             try
             {
-                IFilePersistenceProvider filePersistenceProviderInst = ImportService.GetExportValue<IFilePersistenceProvider>();
+                IFilePersistenceProvider filePersistenceProviderInst = CustomContainer.Get<IFilePersistenceProvider>();
                 string data = filePersistenceProviderInst.Read(GetDontShowAgainPersistencePath());
                 _dontShowAgainOptions = new Dictionary<string, MessageBoxResult>();
 
@@ -267,7 +265,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
                     root = new XElement("root");
                 }
 
-                IFilePersistenceProvider filePersistenceProviderInst = ImportService.GetExportValue<IFilePersistenceProvider>();
+                IFilePersistenceProvider filePersistenceProviderInst = CustomContainer.Get<IFilePersistenceProvider>();
                 filePersistenceProviderInst.Write(GetDontShowAgainPersistencePath(), root.ToString());
             }
             // ReSharper disable EmptyGeneralCatchClause
@@ -416,7 +414,7 @@ namespace Dev2.Studio.ViewModels.Dialogs
 
             // Construct and show the message box
             Dev2MessageBoxViewModel dev2MessageBoxViewModel = new Dev2MessageBoxViewModel(messageBoxText, caption, button, icon, defaultResult, dontShowAgainKey);
-            IWindowManager windowManager = ImportService.GetExportValue<IWindowManager>();
+            IWindowManager windowManager = CustomContainer.Get<IWindowManager>();
 
             if(windowManager == null)
             {

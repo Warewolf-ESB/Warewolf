@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
-using Dev2.DynamicServices.Interfaces;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 
 namespace Dev2.DynamicServices.Objects.Base
 {

@@ -1,21 +1,21 @@
-﻿using System.Windows.Automation;
+﻿using System;
+using System.Activities.Presentation;
+using System.Activities.Presentation.View;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using Dev2.Activities.Designers2.Core.Adorners;
 using Dev2.Activities.Designers2.Core.Errors;
 using Dev2.Activities.Designers2.Core.Help;
 using Dev2.Activities.Designers2.Sequence;
 using Dev2.Studio.Core.Activities.Services;
 using Dev2.Utilities;
-using System;
-using System.Activities.Presentation;
-using System.Activities.Presentation.View;
-using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Shapes;
 
 namespace Dev2.Activities.Designers2.Core
 {

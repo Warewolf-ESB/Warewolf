@@ -1,11 +1,11 @@
-﻿using Caliburn.Micro;
+﻿using System.Windows;
+using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.AppResources.DependencyVisualization;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Utils;
-using System.Windows;
-using System.Windows.Input;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.DependencyVisualization

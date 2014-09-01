@@ -26,7 +26,6 @@ using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
 using Dev2.Workspaces;
-using SettingsProvider = Dev2.Runtime.Configuration.SettingsProvider;
 
 // ReSharper disable InconsistentNaming
 namespace Dev2
@@ -1758,7 +1757,7 @@ namespace Dev2
         {
             Write("Loading settings provider...  ");
             // First call to instance loads the provider.
-            SettingsProvider.WebServerUri = EnvironmentVariables.WebServerUri;
+            Runtime.Configuration.SettingsProvider.WebServerUri = EnvironmentVariables.WebServerUri;
             //            var instance = SettingsProvider.Instance;
             //            instance.Start();
             WriteLine("done.");
@@ -1785,10 +1784,10 @@ namespace Dev2
                 Write("Configure logging...  ");
 
                 // First call to instance loads the provider.
-                var instance = SettingsProvider.Instance;
+                var instance = Runtime.Configuration.SettingsProvider.Instance;
                 var settings = instance.Configuration;
                 ServerLogger.LoggingSettings = settings.Logging;
-                ServerLogger.WebserverUri = SettingsProvider.WebServerUri;
+                ServerLogger.WebserverUri = Runtime.Configuration.SettingsProvider.WebServerUri;
                 WriteLine("done.");
                 return true;
             }

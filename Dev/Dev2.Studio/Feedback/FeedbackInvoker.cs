@@ -1,16 +1,21 @@
-﻿using Dev2.Studio.AppResources.ExtensionMethods;
-using Dev2.Studio.Core.Controller;
-using System;
+﻿using System;
 using System.ComponentModel;
-using System.ComponentModel.Composition;
 using System.Windows;
+using Dev2.Common.Interfaces.Studio.Controller;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Feedback
 {
-    [Export(typeof(IFeedbackInvoker))]
     public class FeedbackInvoker : IFeedbackInvoker, INotifyPropertyChanged
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        public FeedbackInvoker()
+        {
+            Popup = CustomContainer.Get<IPopupController>();
+        }
+
         #region INotifyPropertyChanged Implementation
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -33,7 +38,6 @@ namespace Dev2.Studio.Feedback
 
         #region Properties
 
-        [Import]
         public IPopupController Popup { get; set; }
 
         public IFeedbackAction CurrentAction
@@ -85,7 +89,7 @@ namespace Dev2.Studio.Feedback
                 if(asyncFeedback != null) // If a recording session is already in progress, ask the user if he wants to stop it.
                 {
 
-                    MessageBoxResult result = Popup.Show("Another feedback session is in progress - Would you like to stop it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Question,null);
+                    MessageBoxResult result = Popup.Show("Another feedback session is in progress - Would you like to stop it?", "Feedback in Progress", MessageBoxButton.YesNo, MessageBoxImage.Question, null);
                     if(result == MessageBoxResult.Yes)
                     {
                         asyncFeedback.FinishFeedBack();

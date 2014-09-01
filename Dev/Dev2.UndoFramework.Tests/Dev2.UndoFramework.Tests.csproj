@@ -82,6 +82,10 @@
     <Compile Include="ActionManagerTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.UndoFramework\Dev2.UndoFramework.csproj">
       <Project>{632E4898-1B1B-474C-A028-D13A5C914F11}</Project>
       <Name>Dev2.UndoFramework</Name>

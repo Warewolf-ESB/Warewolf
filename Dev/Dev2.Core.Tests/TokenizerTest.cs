@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
-using Dev2.Common.StringTokenizer.Interfaces;
+using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Tests.Properties;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

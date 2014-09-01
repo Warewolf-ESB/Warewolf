@@ -4,7 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows;
 using Caliburn.Micro;
-using Dev2.Composition;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Services.System;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -32,7 +31,14 @@ namespace Dev2.Core.Tests.Feedback.Actions
             };
         }
 
+        [TestInitialize]
+        public void TestSetup()
+        {
+            CustomContainer.Clear();
+        }
+
         [TestMethod]
+        // ReSharper disable InconsistentNaming
         public void StartFeedBack_Expected_ShowMethodCalledOnWindowManager()
         {
             var mockSysInfo = new Mock<ISystemInfoService>();
@@ -41,7 +47,8 @@ namespace Dev2.Core.Tests.Feedback.Actions
             var mockWindowManager = new Mock<IWindowManager>();
             mockWindowManager.Setup(w => w.ShowWindow(It.IsAny<BaseViewModel>(), null, null)).Verifiable();
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeWithWindowManagerTest(mockSysInfo, mockWindowManager);
+            CustomContainer.Register(mockSysInfo.Object);
+            CustomContainer.Register(mockWindowManager.Object);
 
             var connection = new Mock<IEnvironmentConnection>();
             var environment = new Mock<IEnvironmentModel>();
@@ -71,12 +78,17 @@ namespace Dev2.Core.Tests.Feedback.Actions
                 actual = (vm is FeedbackViewModel) ? (vm as FeedbackViewModel).ServerLogAttachmentPath : null;
             });
 
-            ImportService.CurrentContext = CompositionInitializer.InitializeForFeedbackActionTests(Dev2MockFactory.CreateIPopup(MessageBoxResult.OK), new Mock<IFeedBackRecorder>(), new Mock<IFeedbackInvoker>(), windowManager);
+            CustomContainer.Register(Dev2MockFactory.CreateIPopup(MessageBoxResult.OK).Object);
+            CustomContainer.Register(new Mock<IFeedbackInvoker>().Object);
+            CustomContainer.Register(windowManager.Object);
+            var mockSysInfoService = new Mock<ISystemInfoService>();
+            mockSysInfoService.Setup(service => service.GetSystemInfo()).Returns(new SystemInfoTO());
+            CustomContainer.Register(mockSysInfoService.Object);
+
             var connection = new Mock<IEnvironmentConnection>();
             var environment = new Mock<IEnvironmentModel>();
             environment.Setup(env => env.Connection).Returns(connection.Object);
             var emailFeedbackAction = new EmailFeedbackAction(expected, environment.Object);
-            ImportService.SatisfyImports(emailFeedbackAction);
 
             //------------Execute Test---------------------------
             emailFeedbackAction.DisplayFeedbackWindow();

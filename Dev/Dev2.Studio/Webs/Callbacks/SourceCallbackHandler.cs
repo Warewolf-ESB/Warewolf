@@ -1,9 +1,9 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
-using System;
 
 namespace Dev2.Webs.Callbacks
 {

@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using Dev2.Common.Interfaces.Data.TO;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics.Debug;
-using Dev2.Scheduler.Interfaces;
 using Dev2.Settings.Scheduler;
 using Dev2.Studio.Core.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -231,7 +232,7 @@ namespace Dev2.Core.Tests.Settings
         public bool AllowMultipleIstances { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-        public ErrorResultTO Errors { get; set; }
+        public IErrorResultTO Errors { get; set; }
         public bool IsNew { get; set; }
 
         #endregion

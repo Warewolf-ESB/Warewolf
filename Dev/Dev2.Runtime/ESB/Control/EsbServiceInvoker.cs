@@ -11,16 +11,15 @@
 using System;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
-using enActionType = Dev2.DynamicServices.enActionType;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ESB
@@ -130,8 +129,8 @@ namespace Dev2.Runtime.ESB
                             #region Execute ESB container
 
                             var theStart = theService.Actions.FirstOrDefault();
-                            if(theStart != null && ((theStart.ActionType != enActionType.InvokeManagementDynamicService &&
-                                                     theStart.ActionType != enActionType.Workflow) && dataObject.IsFromWebServer))
+                            if(theStart != null && ((theStart.ActionType != Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService &&
+                                                     theStart.ActionType != Common.Interfaces.Core.DynamicServices.enActionType.Workflow) && dataObject.IsFromWebServer))
                             {
                                 throw new Exception("Can only execute workflows from web browser");
                             }
@@ -207,7 +206,7 @@ namespace Dev2.Runtime.ESB
             }
             // we need a remote container ;)
             // TODO : Set Output description for shaping ;)
-            return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
+            return GenerateContainer(new ServiceAction { ActionType = Common.Interfaces.Core.DynamicServices.enActionType.RemoteService }, dataObject, null);
         }
 
         /// <summary>
@@ -239,7 +238,7 @@ namespace Dev2.Runtime.ESB
             }
             // we need a remote container ;)
             // TODO : Set Output description for shaping ;)
-            return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
+            return GenerateContainer(new ServiceAction { ActionType = Common.Interfaces.Core.DynamicServices.enActionType.RemoteService }, dataObject, null);
         }
 
         DynamicService GetService(string serviceName, Guid resourceId, ServiceLocator sl)
@@ -267,26 +266,26 @@ namespace Dev2.Runtime.ESB
 
             switch(serviceAction.ActionType)
             {
-                case enActionType.InvokeManagementDynamicService:
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService:
                     result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request);
                     break;
 
-                case enActionType.InvokeStoredProc:
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeStoredProc:
                     result = new DatabaseServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
                     break;
-                case enActionType.InvokeWebService:
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeWebService:
                     result = new WebServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
                     break;
 
-                case enActionType.Plugin:
+                case Common.Interfaces.Core.DynamicServices.enActionType.Plugin:
                     result = new PluginServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
                     break;
 
-                case enActionType.Workflow:
+                case Common.Interfaces.Core.DynamicServices.enActionType.Workflow:
                     result = new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
                     break;
 
-                case enActionType.RemoteService:
+                case Common.Interfaces.Core.DynamicServices.enActionType.RemoteService:
                     result = new RemoteWorkflowExecutionContainer(serviceAction, dataObj, null, _esbChannel);
                     break;
             }

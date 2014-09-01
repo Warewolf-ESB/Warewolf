@@ -1,9 +1,12 @@
 ﻿using System.Text.RegularExpressions;
 using Caliburn.Micro;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Diagnostics
 {
-    public class DirectoryPath : PropertyChangedBase
+
+
+    public class DirectoryPath : PropertyChangedBase, IDirectoryPath
     {
         private string _path;
         private string _pathToSerialize;

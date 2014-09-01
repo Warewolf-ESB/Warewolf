@@ -1,12 +1,13 @@
 ﻿using System.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Hosting;
+using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Runtime;
 using Dev2.Common.Interfaces.Security;
-using Dev2.Common.Wrappers.Interfaces;
+using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Explorer;
-using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;

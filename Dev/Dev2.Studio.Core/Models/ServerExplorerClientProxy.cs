@@ -1,11 +1,11 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
+using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Controller;
-using Dev2.Interfaces;
 using Dev2.Studio.Core.Interfaces;
-using System;
 
 namespace Dev2.Models
 {

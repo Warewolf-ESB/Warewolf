@@ -1,8 +1,7 @@
 ﻿using System;
 using Caliburn.Micro;
-using Dev2.Composition;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.ViewModels.Base
 {
     public class BaseConductor<T> : Conductor<T>.Collection.OneActive, IDisposable
@@ -16,8 +15,6 @@ namespace Dev2.Studio.Core.ViewModels.Base
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             EventPublisher = eventPublisher;
             EventPublisher.Subscribe(this);
-
-            ImportService.TrySatisfyImports(this);
         }
 
         protected virtual void Dispose(bool disposing)

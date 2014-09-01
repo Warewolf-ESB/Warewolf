@@ -1,7 +1,7 @@
-﻿using Dev2.Runtime.ServiceModel.Data;
-using System;
+﻿using System;
 using System.Globalization;
 using System.Windows.Data;
+using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Studio.AppResources.Converters
 {

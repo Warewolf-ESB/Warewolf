@@ -1,14 +1,12 @@
-﻿using System.ComponentModel.Composition;
-using System.IO;
+﻿using System.IO;
 using System.Net;
 using System.Text;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core
 {
-    [Export(typeof(IWebCommunication))]
     public class WebCommunication : IWebCommunication
     {
 

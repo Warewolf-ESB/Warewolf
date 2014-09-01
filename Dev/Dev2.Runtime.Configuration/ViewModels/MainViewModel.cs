@@ -10,7 +10,6 @@ using Caliburn.Micro;
 using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.Services;
 using Dev2.Runtime.Configuration.ViewModels.Base;
-using Action = System.Action;
 
 namespace Dev2.Runtime.Configuration.ViewModels
 {
@@ -34,7 +33,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         #region Constructor
 
-        public MainViewModel(XElement configurationXML, Func<XElement, XElement> saveCallback, Action cancelCallback, Action settingChangedCallback)
+        public MainViewModel(XElement configurationXML, Func<XElement, XElement> saveCallback, System.Action cancelCallback, System.Action settingChangedCallback)
         {
             Errors = new ObservableCollection<string>();
             ClearErrors();
@@ -209,9 +208,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
         #region Private Properties
 
         private Func<XElement, XElement> SaveCallback { get; set; }
-        private Action CancelCallback { get; set; }
+        private System.Action CancelCallback { get; set; }
         // ReSharper disable UnusedAutoPropertyAccessor.Local
-        private Action SettingChangedCallback { get; set; }
+        private System.Action SettingChangedCallback { get; set; }
         // ReSharper restore UnusedAutoPropertyAccessor.Local
 
         #endregion

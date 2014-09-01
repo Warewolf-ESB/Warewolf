@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Authentication;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Storage;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -15,7 +18,6 @@ using Dev2.Diagnostics;
 using Dev2.Enums;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
-using enActionType = Dev2.DataList.Contract.enActionType;
 
 // ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
@@ -528,14 +530,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             IDev2LanguageParser parser = DataListFactory.CreateInputParser();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            return GetDebugInputs(dataList, compiler, parser);
+            return GetDebugInputs(dataList, compiler, parser).Select(a => (DebugItem)a).ToList();
 
         }
-        public List<DebugItem> GetDebugInputs(IBinaryDataList dataList, IDataListCompiler compiler, IDev2LanguageParser parser)
+        public List<IDebugItem> GetDebugInputs(IBinaryDataList dataList, IDataListCompiler compiler, IDev2LanguageParser parser)
         {
             IList<IDev2Definition> inputs = parser.Parse(InputMapping);
 
-            var results = new List<DebugItem>();
+            var results = new List<IDebugItem>();
             foreach(IDev2Definition dev2Definition in inputs)
             {
                 ErrorResultTO errors;

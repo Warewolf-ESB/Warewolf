@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using Dev2.Common.Interfaces.Patterns;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Common

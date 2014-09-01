@@ -1,5 +1,5 @@
-﻿using Dev2.Common.Interfaces.Infrastructure;
-using System;
+﻿using System;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
 namespace Dev2.Providers.Errors
 {

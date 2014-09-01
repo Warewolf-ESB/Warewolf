@@ -1,5 +1,5 @@
-﻿using Dev2.Dialogs;
-using System.Windows;
+﻿using System.Windows;
+using Dev2.Dialogs;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Views.Workflow

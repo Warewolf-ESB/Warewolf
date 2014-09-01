@@ -1,4 +1,4 @@
-﻿using Dev2.DynamicServices;
+﻿using Dev2.Common.Interfaces.Core.DynamicServices;
 
 namespace Dev2.Activities.Utils
 {

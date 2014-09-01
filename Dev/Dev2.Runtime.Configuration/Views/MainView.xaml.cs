@@ -1,6 +1,6 @@
-﻿using Dev2.Runtime.Configuration.ComponentModel;
+﻿using System.Windows;
+using Dev2.Runtime.Configuration.ComponentModel;
 using Dev2.Runtime.Configuration.ViewModels;
-using System.Windows;
 
 namespace Dev2.Runtime.Configuration.Views
 {

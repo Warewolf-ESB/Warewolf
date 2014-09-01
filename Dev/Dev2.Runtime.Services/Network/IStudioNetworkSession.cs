@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Network;
-using Dev2.Hosting;
+using Dev2.Common.Interfaces.Hosting;
 
 namespace Dev2.DynamicServices
 {

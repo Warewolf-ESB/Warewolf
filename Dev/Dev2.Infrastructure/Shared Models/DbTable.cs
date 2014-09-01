@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
@@ -22,7 +23,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return string.Format("{0}.{1}", Schema, TableName);
             }
         }
-        public List<DbColumn> Columns { get; set; }
+        public List<IDbColumn> Columns { get; set; }
 
         #region Overrides of Object
 

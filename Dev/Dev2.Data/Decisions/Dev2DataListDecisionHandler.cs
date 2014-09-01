@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using Dev2.Common;
+using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Data.Util;

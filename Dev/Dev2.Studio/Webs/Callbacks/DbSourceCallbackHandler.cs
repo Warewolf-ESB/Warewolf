@@ -4,7 +4,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 
-
 namespace Dev2.Webs.Callbacks
 {
     public class DbSourceCallbackHandler : WebsiteCallbackHandler

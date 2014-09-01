@@ -170,13 +170,13 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Dev2.Composition\Dev2.Composition.csproj">
-      <Project>{B91813C8-499C-4D65-A0D4-57C7FA5F5413}</Project>
-      <Name>Dev2.Composition</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007C1F1-CE38-474A-A88C-0C05A77BC415}</Project>

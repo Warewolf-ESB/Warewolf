@@ -1,5 +1,4 @@
 ﻿using Caliburn.Micro;
-using Dev2.Composition;
 
 // ReSharper disable once CheckNamespace
 // ReSharper disable CheckNamespace
@@ -19,9 +18,9 @@ namespace Dev2.Studio.Core.ViewModels.Base
     /// </summary>
     public abstract class BaseViewModel : SimpleBaseViewModel
     {
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         readonly protected IEventAggregator _eventPublisher;
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
 
         #region Constructor
 
@@ -32,9 +31,9 @@ namespace Dev2.Studio.Core.ViewModels.Base
             _eventPublisher.Subscribe(this);
 
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             SatisfyImports();
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         public IEventAggregator EventPublisher
@@ -57,8 +56,6 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         protected virtual void SatisfyImports()
         {
-            //For testing scenarios - ability to fail silently when everythings not imported
-            ImportService.TrySatisfyImports(this);
         }
 
         #endregion Protected Virtual Methods

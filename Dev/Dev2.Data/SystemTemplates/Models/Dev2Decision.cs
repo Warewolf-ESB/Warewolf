@@ -1,10 +1,10 @@
-﻿using Dev2.Data.Decisions.Operations;
+﻿using System;
+using System.Text;
+using Dev2.Data.Decisions.Operations;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System;
-using System.Text;
 
 namespace Dev2.Data.SystemTemplates.Models
 {

@@ -8,11 +8,12 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Properties;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
-using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
@@ -21,8 +22,8 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
-using Dev2.Threading;
 using Dev2.TO;
+using Dev2.Threading;
 
 namespace Dev2.Activities.Designers2.SqlBulkInsert
 {
@@ -426,7 +427,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             return tables ?? EmptyDbTables;
         }
 
-        DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable)
+        IDbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable)
         {
             var columns = _environmentModel.ResourceRepository.GetDatabaseTableColumns(dbSource, dbTable);
             return columns ?? EmptyDbColumns;

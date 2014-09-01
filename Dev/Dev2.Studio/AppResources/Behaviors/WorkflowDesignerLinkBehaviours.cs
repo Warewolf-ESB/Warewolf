@@ -1,10 +1,10 @@
-﻿using Dev2.Studio.AppResources.ExtensionMethods;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using Dev2.Studio.AppResources.ExtensionMethods;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {

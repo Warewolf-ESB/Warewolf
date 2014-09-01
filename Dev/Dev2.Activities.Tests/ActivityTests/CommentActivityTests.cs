@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using ActivityUnitTests;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -57,7 +58,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(0, inRes.Count);
             Assert.AreEqual(1, outRes.Count);
-            IList<DebugItemResult> debugOutput = outRes[0].FetchResultsList();
+            IList<IDebugItemResult> debugOutput = outRes[0].FetchResultsList();
             Assert.AreEqual(1, debugOutput.Count);
             Assert.AreEqual("SomeText", debugOutput[0].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutput[0].Type);

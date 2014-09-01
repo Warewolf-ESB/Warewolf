@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
+using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Diagnostics.CodeAnalysis;
 using Unlimited.Framework.Converters.Graph;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String.Json;

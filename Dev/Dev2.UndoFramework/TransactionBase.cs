@@ -1,4 +1,6 @@
-﻿namespace Dev2.UndoFramework
+﻿using Dev2.Common.Interfaces.UndoFramework;
+
+namespace Dev2.UndoFramework
 {
 
     internal class TransactionBase : ITransaction

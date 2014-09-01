@@ -402,10 +402,6 @@
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Composition\Dev2.Composition.csproj">
-      <Project>{b91813c8-499c-4d65-a0d4-57c7fa5f5413}</Project>
-      <Name>Dev2.Composition</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
       <Name>Dev2.Core</Name>

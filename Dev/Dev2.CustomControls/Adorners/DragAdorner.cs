@@ -1,4 +1,5 @@
 // Copyright (C) Josh Smith - January 2007
+
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;

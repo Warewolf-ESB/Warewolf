@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
+using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.Win32.TaskScheduler;
-using Action = Microsoft.Win32.TaskScheduler.Action;
 
 namespace Dev2.TaskScheduler.Wrappers
 {
@@ -58,7 +58,7 @@ namespace Dev2.TaskScheduler.Wrappers
             return new Dev2RepetitionPattern(repetitionPattern);
         }
 
-        public IAction CreateAction(Action action)
+        public IAction CreateAction(Microsoft.Win32.TaskScheduler.Action action)
         {
             return new Dev2Action(action);
         }

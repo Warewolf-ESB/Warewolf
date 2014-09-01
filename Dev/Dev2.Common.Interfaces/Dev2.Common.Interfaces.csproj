@@ -52,34 +52,181 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Caliburn.Micro">
+      <HintPath>..\Binaries\Caliburn.Micro.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.1.0.26050, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Win32.TaskScheduler.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Win32.TaskSchedulerEditor, Version=2.1.0.26659, Culture=neutral, PublicKeyToken=7be0d908c369d1a5, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.Win32.TaskSchedulerEditor.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Weave">
+      <HintPath>..\Binaries\Weave.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activity\IWorkflowActivityMessage.cs" />
+    <Compile Include="Communication\IMemo.cs" />
+    <Compile Include="Communication\ISerializer.cs" />
+    <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
+    <Compile Include="Core\Collections\IObservableReadOnlyList.cs" />
+    <Compile Include="Core\Convertors\Base\IBaseConversionBroker.cs" />
+    <Compile Include="Core\Convertors\Base\IBaseConverter.cs" />
+    <Compile Include="Core\Convertors\Case\ICaseConverter.cs" />
+    <Compile Include="Core\Convertors\Case\ICaseConvertTO.cs" />
+    <Compile Include="Core\Convertors\DateAndTime\IDateTimeComparer.cs" />
+    <Compile Include="Core\Convertors\DateAndTime\IDateTimeDiffTO.cs" />
+    <Compile Include="Core\Convertors\DateAndTime\IDateTimeFormatPartOptionTO.cs" />
+    <Compile Include="Core\Convertors\DateAndTime\IDateTimeFormatPartTO.cs" />
+    <Compile Include="Core\Convertors\DateAndTime\IDateTimeFormatter.cs" />
+    <Compile Include="Core\Convertors\DateAndTime\IDateTimeOperationTO.cs" />
+    <Compile Include="Core\Convertors\DateAndTime\IDateTimeParser.cs" />
+    <Compile Include="Core\Convertors\DateAndTime\IDateTimeResultTO.cs" />
+    <Compile Include="Core\Convertors\DateAndTime\ITimeZoneTO.cs" />
+    <Compile Include="Core\DynamicServices\Globals.cs" />
+    <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />
+    <Compile Include="Core\Globals.cs" />
+    <Compile Include="Core\Graph\IDataBrowser.cs" />
+    <Compile Include="Core\Graph\IDataSourceShape.cs" />
+    <Compile Include="Core\Graph\IInterrogator.cs" />
+    <Compile Include="Core\Graph\IMapper.cs" />
+    <Compile Include="Core\Graph\INavigator.cs" />
+    <Compile Include="Core\Graph\IOutputDescription.cs" />
+    <Compile Include="Core\Graph\IOutputDescriptionSerializationService.cs" />
+    <Compile Include="Core\Graph\IOutputFormatter.cs" />
+    <Compile Include="Core\Graph\IPath.cs" />
+    <Compile Include="Core\Graph\IPathSegment.cs" />
+    <Compile Include="Core\Graph\OutputFormats.cs" />
+    <Compile Include="DataList\Contract\enTranslationDepth.cs" />
+    <Compile Include="DataList\Contract\IBinaryDataListItem.cs" />
+    <Compile Include="Data\IDev2Definition.cs" />
+    <Compile Include="Data\IInputOutputViewModel.cs" />
     <Compile Include="Data\IResource.cs" />
     <Compile Include="Data\IResourceForTree.cs" />
+    <Compile Include="Data\IResourceUpgrade.cs" />
+    <Compile Include="Data\IResourceUpgrader.cs" />
+    <Compile Include="Data\IUpgradePath.cs" />
     <Compile Include="Data\ResourceType.cs" />
+    <Compile Include="Data\TO\IErrorResultTO.cs" />
+    <Compile Include="DB\IDataProviderSanitizer.cs" />
+    <Compile Include="DB\IDBHelper.cs" />
+    <Compile Include="Diagnostics\Debug\Enums.cs" />
+    <Compile Include="Diagnostics\Debug\IDebugDispatcher.cs" />
+    <Compile Include="Diagnostics\Debug\IDebugItem.cs" />
+    <Compile Include="Diagnostics\Debug\IDebugItemResult.cs" />
+    <Compile Include="Diagnostics\Debug\IDebugProvider.cs" />
+    <Compile Include="Diagnostics\Debug\IDebugState.cs" />
+    <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />
+    <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
+    <Compile Include="Enums\enRandomType.cs" />
+    <Compile Include="Enums\enScriptType.cs" />
+    <Compile Include="Enums\PopulateOptions.cs" />
     <Compile Include="Explorer\IExplorerItem.cs" />
-    <Compile Include="Infrastructure\ErrorType.cs" />
-    <Compile Include="Infrastructure\FixType.cs" />
-    <Compile Include="Infrastructure\IErrorInfo.cs" />
+    <Compile Include="Hosting\ExecStatus.cs" />
+    <Compile Include="Hosting\IHostContext.cs" />
+    <Compile Include="IFrameworkRepository.cs" />
+    <Compile Include="Infrastructure\Communication\IExecuteMessage.cs" />
+    <Compile Include="Infrastructure\Events\IEventPublisher.cs" />
+    <Compile Include="Infrastructure\IExplorerRepositorySync.cs" />
+    <Compile Include="Infrastructure\IExplorerResourceRepository.cs" />
+    <Compile Include="Infrastructure\IExplorerServerResourceRepository.cs" />
+    <Compile Include="Infrastructure\Providers\Errors\ErrorType.cs" />
+    <Compile Include="Infrastructure\Providers\Errors\FixType.cs" />
+    <Compile Include="Infrastructure\Providers\Errors\IActionableErrorInfo.cs" />
+    <Compile Include="Infrastructure\Providers\Errors\IErrorInfo.cs" />
+    <Compile Include="Infrastructure\Providers\Validation\IErrorsSource.cs" />
+    <Compile Include="Infrastructure\Providers\Validation\IPerformsValidation.cs" />
+    <Compile Include="Infrastructure\Providers\Validation\IRuleBase.cs" />
+    <Compile Include="Infrastructure\Providers\Validation\IRuleSet.cs" />
+    <Compile Include="Infrastructure\Providers\Validation\IValidator.cs" />
+    <Compile Include="Infrastructure\SharedModels\CompileMessageType.cs" />
+    <Compile Include="Infrastructure\SharedModels\ICompileMessageList.cs" />
+    <Compile Include="Infrastructure\SharedModels\ICompileMessageTO.cs" />
+    <Compile Include="Infrastructure\SharedModels\IDbColumn.cs" />
+    <Compile Include="Infrastructure\SharedModels\IDbColumnList.cs" />
+    <Compile Include="Interfaces\IDev2TOFn.cs" />
     <Compile Include="IVersionStrategy.cs" />
+    <Compile Include="PathOperations\IResult.cs" />
+    <Compile Include="Patterns\ISpookyLoadable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runtime\Configuration\Settings\ILoggingSettings.cs" />
+    <Compile Include="Runtime\IExplorerItemFactory.cs" />
+    <Compile Include="Scheduler\Interfaces\IClientSchedulerFactory.cs" />
+    <Compile Include="Scheduler\Interfaces\IDirectoryHelper.cs" />
+    <Compile Include="Scheduler\Interfaces\IEventInfo.cs" />
+    <Compile Include="Scheduler\Interfaces\IFileHelper.cs" />
+    <Compile Include="Scheduler\Interfaces\IResourceHistory.cs" />
+    <Compile Include="Scheduler\Interfaces\IScheduledResource.cs" />
+    <Compile Include="Scheduler\Interfaces\IScheduledResourceModel.cs" />
+    <Compile Include="Scheduler\Interfaces\IScheduleTrigger.cs" />
+    <Compile Include="Scheduler\Interfaces\ISecurityWrapper.cs" />
+    <Compile Include="Scheduler\Interfaces\IServerSchedulerFactory.cs" />
+    <Compile Include="Scheduler\Interfaces\IWorkflowExecutor.cs" />
+    <Compile Include="Scheduler\Interfaces\SchedulerStatus.cs" />
+    <Compile Include="Scheduler\Interfaces\ScheduleRunStatus.cs" />
+    <Compile Include="Scripting\IScriptingContext.cs" />
     <Compile Include="Security\Permissions.cs" />
+    <Compile Include="Services\Sql\IDbFactory.cs" />
+    <Compile Include="Services\Sql\IDbServer.cs" />
+    <Compile Include="StringTokenizer\Interfaces\IDev2Tokenizer.cs" />
+    <Compile Include="StringTokenizer\Interfaces\IDev2TokenOp.cs" />
+    <Compile Include="Studio\Controller\IPopUp.cs" />
+    <Compile Include="Studio\Core\Activities\IServiceXmlTranslator.cs" />
+    <Compile Include="Studio\Core\IAutoMappingOutputAction.cs" />
+    <Compile Include="UndoFramework\IAction.cs" />
+    <Compile Include="UndoFramework\IActionHistory.cs" />
+    <Compile Include="UndoFramework\IMultiAction.cs" />
+    <Compile Include="UndoFramework\ITransaction.cs" />
+    <Compile Include="UndoFramework\SimpleHistoryNode.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\IAction.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\IActionCollection.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\IDev2Task.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\IDev2TaskDefinition.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\IDev2TaskService.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\IExecAction.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\IRepetitionPattern.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\ITaskCollection.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\ITaskEvent.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\ITaskEventLog.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\ITaskFolder.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\ITaskServiceConvertorFactory.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\ITaskSettings.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\ITrigger.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\ITriggerCollection.cs" />
+    <Compile Include="WindowsTaskScheduler\Wrappers\IWrappedObject.cs" />
+    <Compile Include="Utils\ICryptoProvider.cs" />
     <Compile Include="Versioning\IRollbackResult.cs" />
     <Compile Include="Versioning\IServerVersionRepository.cs" />
     <Compile Include="Versioning\IVersionInfo.cs" />
     <Compile Include="Versioning\IVersionRepository.cs" />
+    <Compile Include="Wrappers\IDirectory.cs" />
+    <Compile Include="Wrappers\IDirectoryEntry.cs" />
+    <Compile Include="Wrappers\IDirectoryEntryFactory.cs" />
+    <Compile Include="Wrappers\IFile.cs" />
+    <Compile Include="Wrappers\IWrappedObject.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Core\Convertors\DateTime\" />
+    <Folder Include="Core\Data\" />
+    <Folder Include="Infrastructure\Services\" />
+    <Folder Include="Studio\Core\AppResources\Enums\" />
+    <Folder Include="Studio\Core\DataList\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,16 +1,18 @@
-﻿using Dev2.Communication;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using System.Runtime.Serialization;
+using System.Text;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
+using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Runtime.Serialization;
-using System.Text;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -104,7 +106,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                             dbTable = new DbTable();
                             dbTable.Schema = schema;
                             dbTable.TableName = tableName;
-                            dbTable.Columns = new List<DbColumn>();
+                            dbTable.Columns = new List<IDbColumn>();
                             tables.Items.Add(dbTable);
                         }
                     }

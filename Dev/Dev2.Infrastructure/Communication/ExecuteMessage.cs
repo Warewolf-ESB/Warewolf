@@ -1,8 +1,9 @@
 ﻿using System.Text;
+using Dev2.Common.Interfaces.Infrastructure.Communication;
 
 namespace Dev2.Communication
 {
-    public class ExecuteMessage
+    public class ExecuteMessage : IExecuteMessage
     {
         public bool HasError { get; set; }
 

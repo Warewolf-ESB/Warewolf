@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.ProperMoqs;
 using Dev2.Core.Tests.Utils;
@@ -7,7 +8,6 @@ using Dev2.CustomControls.Connections;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.AppResources.Enums;
-using Dev2.Studio.Core.Controller;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.ViewModels;

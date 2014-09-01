@@ -1,5 +1,5 @@
-﻿using Dev2.Common;
-using Dev2.Common.Enums;
+﻿using Dev2.Common.Interfaces.Enums;
+using Dev2.Common.Interfaces.Scripting;
 using Jurassic;
 
 namespace Dev2.Development.Languages.Scripting

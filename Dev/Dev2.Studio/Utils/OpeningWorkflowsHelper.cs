@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Dev2.Studio.AppResources.Comparers;
 
 namespace Dev2.Utils

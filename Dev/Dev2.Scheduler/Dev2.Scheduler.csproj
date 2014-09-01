@@ -82,25 +82,12 @@
     <Compile Include="EventInfo.cs" />
     <Compile Include="ClientSchedulerFactory.cs" />
     <Compile Include="FileHelper.cs" />
-    <Compile Include="Interfaces\ISecurityWrapper.cs" />
-    <Compile Include="Interfaces\IDirectoryHelper.cs" />
-    <Compile Include="Interfaces\IFileHelper.cs" />
-    <Compile Include="Interfaces\IClientSchedulerFactory.cs" />
-    <Compile Include="Interfaces\IEventInfo.cs" />
-    <Compile Include="Interfaces\IResourceHistory.cs" />
-    <Compile Include="Interfaces\IScheduledResource.cs" />
-    <Compile Include="Interfaces\IScheduledResourceModel.cs" />
-    <Compile Include="Interfaces\IServerSchedulerFactory.cs" />
-    <Compile Include="Interfaces\IScheduleTrigger.cs" />
-    <Compile Include="Interfaces\IWorkflowExecutor.cs" />
-    <Compile Include="Interfaces\ScheduleRunStatus.cs" />
     <Compile Include="ResourceHistory.cs" />
     <Compile Include="ServerSchedulerFactory.cs" />
     <Compile Include="ScheduledResource.cs" />
     <Compile Include="InvalidScheduleException.cs" />
     <Compile Include="ScheduleTrigger.cs" />
     <Compile Include="ScheduledResourceModel.cs" />
-    <Compile Include="Interfaces\SchedulerStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32Sec.cs" />
   </ItemGroup>
@@ -108,6 +95,10 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using Dev2.Common.Common;
-using Dev2.DynamicServices;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data

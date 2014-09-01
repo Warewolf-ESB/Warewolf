@@ -1,10 +1,10 @@
-using Dev2.Common.Interfaces.Infrastructure;
-using Dev2.DataList.Contract;
-using Dev2.Providers.Errors;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.DataList.Contract;
+using Dev2.Providers.Errors;
 
 namespace Dev2.Validation
 {

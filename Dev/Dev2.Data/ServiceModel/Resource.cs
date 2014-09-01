@@ -2,20 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
-using Dev2.Common.Interfaces.Infrastructure;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Versioning;
-using Dev2.Data.Enums;
-using Dev2.DynamicServices;
 using Dev2.Providers.Errors;
-
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using Exception = System.Exception;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ServiceModel.Data
@@ -48,11 +47,10 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
 
         }
-
+        public Version Version { get; set; }
         public Resource(IResource copy)
         {
             ResourceID = copy.ResourceID;
-      //      VersionInfo = copy.VersionInfo;
             ResourceName = copy.ResourceName;
             ResourceType = copy.ResourceType;
             ResourcePath = copy.ResourcePath;
@@ -492,7 +490,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 versionInfo.SetAttributeValue("VersionId", resource.VersionInfo.VersionId);
                 xml.Add(versionInfo);
             }
-
+            xml.SetAttributeValue("ServerVersion", Assembly.GetExecutingAssembly().GetName().Version.ToString());
             if (!xml.Descendants("VersionInfo").Any() && resource.VersionInfo == null)
             {
                 var versionInfo = new XElement("VersionInfo");

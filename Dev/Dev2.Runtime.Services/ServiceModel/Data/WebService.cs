@@ -3,15 +3,15 @@ using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.Util;
-using Dev2.DynamicServices;
 using Dev2.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Linq;
 using Unlimited.Framework.Converters.Graph;
-using Unlimited.Framework.Converters.Graph.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {

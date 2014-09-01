@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Common.Common;
-using Dev2.DynamicServices;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {

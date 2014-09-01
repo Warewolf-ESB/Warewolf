@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;

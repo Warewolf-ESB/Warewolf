@@ -1,6 +1,12 @@
+using Dev2.Common.Interfaces.DB;
+
 namespace Dev2.Common.DB
 {
-    public class DBConnectionString
+
+
+// ReSharper disable InconsistentNaming
+    public class DBConnectionString : IDBConnectionString
+// ReSharper restore InconsistentNaming
     {
         private readonly string _val;
 

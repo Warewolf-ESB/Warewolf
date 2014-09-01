@@ -1,14 +1,11 @@
-﻿using Caliburn.Micro;
-using Dev2.Composition;
+﻿using System.Collections.Generic;
+using Caliburn.Micro;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.ViewModels.Help;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Feedback.Actions
 {
-    [Export(typeof(IFeedbackAction))]
     public class EmailFeedbackAction : IFeedbackAction
     {
         readonly Dictionary<string, string> _attachmentPath;
@@ -17,7 +14,7 @@ namespace Dev2.Studio.Feedback.Actions
         public EmailFeedbackAction(Dictionary<string, string> attachedFiles, IEnvironmentModel activeEnvironment)
         {
             VerifyArgument.IsNotNull("activeEnvironment", activeEnvironment);
-            WindowManager = ImportService.GetExportValue<IWindowManager>();
+            WindowManager = CustomContainer.Get<IWindowManager>();
             _attachmentPath = attachedFiles;
             _environmentModel = activeEnvironment;
         }

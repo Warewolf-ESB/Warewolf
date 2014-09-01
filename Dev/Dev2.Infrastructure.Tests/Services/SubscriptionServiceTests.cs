@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Providers.Events;
 using Dev2.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,5 +1,5 @@
-﻿using Dev2.DataList.Contract;
-using System;
+﻿using System;
+using Dev2.DataList.Contract;
 
 namespace Dev2.Data.SystemTemplates.Models
 {

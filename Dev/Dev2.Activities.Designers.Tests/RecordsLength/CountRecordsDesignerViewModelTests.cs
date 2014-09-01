@@ -1,7 +1,7 @@
-﻿using Dev2.Studio.Core.Activities.Utils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Activities.Presentation.Model;
+﻿using System.Activities.Presentation.Model;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Studio.Core.Activities.Utils;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.RecordsLength

@@ -4,11 +4,11 @@
 // </copyright>
 // -----------------------------------------------------------------------
 
+using System.Collections.Generic;
+using System.Diagnostics;
+
 namespace Dev2
 {
-    using System.Collections.Generic;
-    using System.Diagnostics;
-
     /// <summary>
     /// Provides useful mechanisms for performance testing.
     /// </summary>

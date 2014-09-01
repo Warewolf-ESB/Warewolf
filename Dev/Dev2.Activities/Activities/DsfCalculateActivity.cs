@@ -5,6 +5,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;

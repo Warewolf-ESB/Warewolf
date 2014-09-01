@@ -1,8 +1,8 @@
-﻿using Dev2.Services.Security;
-using Dev2.Studio.Core.Interfaces;
-using System;
+﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using Dev2.Services.Security;
+using Dev2.Studio.Core.Interfaces;
 
 namespace Dev2.Security
 {

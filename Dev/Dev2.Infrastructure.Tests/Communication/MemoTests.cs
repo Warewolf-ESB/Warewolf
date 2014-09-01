@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.Interfaces.Communication;
 using Dev2.Communication;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

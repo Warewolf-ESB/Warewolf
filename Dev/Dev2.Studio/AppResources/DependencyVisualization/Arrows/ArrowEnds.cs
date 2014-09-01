@@ -1,6 +1,7 @@
 //------------------------------------------
 // ArrowEnds.cs (c) 2007 by Charles Petzold
 //------------------------------------------
+
 using System;
 
 namespace Petzold.Media2D

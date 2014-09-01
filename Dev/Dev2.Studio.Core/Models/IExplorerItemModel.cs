@@ -1,13 +1,13 @@
+using System;
+using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Input;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
 using Dev2.Threading;
-using System;
-using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Windows.Input;
 
 namespace Dev2.Models
 {

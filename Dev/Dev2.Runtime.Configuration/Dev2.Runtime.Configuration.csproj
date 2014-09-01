@@ -99,7 +99,6 @@
       <Link>Converters\NullToVisibilityConverter.cs</Link>
     </Compile>
     <Compile Include="ComponentModel\DataListVariable.cs" />
-    <Compile Include="ComponentModel\IWorkflowDescriptor.cs" />
     <Compile Include="ComponentModel\SettingsObject.cs" />
     <Compile Include="ComponentModel\SettingsObjectAttribute.cs" />
     <Compile Include="ComponentModel\WorkflowDescriptor.cs" />
@@ -146,7 +145,6 @@
     <Compile Include="Services\ICommunicationService.cs" />
     <Compile Include="Services\WebCommunicationService.cs" />
     <Compile Include="Settings\BackupSettings.cs" />
-    <Compile Include="Settings\ILoggingSettings.cs" />
     <Compile Include="Settings\LoggingSettings.cs" />
     <Compile Include="Settings\SecuritySettings.cs" />
     <Compile Include="Settings\Configuration.cs" />
@@ -206,6 +204,10 @@
     <Resource Include="Images\Refresh-32.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
+      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Name>Dev2.Common.Interfaces</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.CustomControls\Dev2.CustomControls.csproj">
       <Project>{f5162bdb-d3db-480e-92e4-fd732904a247}</Project>
       <Name>Dev2.CustomControls</Name>

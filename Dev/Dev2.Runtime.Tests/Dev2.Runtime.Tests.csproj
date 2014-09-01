@@ -143,10 +143,14 @@
     <Compile Include="ESB\Plugin\PluginRuntimeHandlerTest.cs" />
     <Compile Include="ESB\Plugin\PluginServiceExecutionFactoryTest.cs" />
     <Compile Include="Hosting\ExplorerItemFactoryTests.cs" />
+    <Compile Include="Hosting\ResourceUpgraderTests.cs" />
+    <Compile Include="Hosting\ResourceUpgradeTest.cs" />
     <Compile Include="Hosting\ServerExplorerRepositoryTests.cs" />
     <Compile Include="Hosting\ServerVersionRepositoryTests.cs" />
+    <Compile Include="Hosting\UpgradePathTests.cs" />
     <Compile Include="Hosting\VersionStrategyTests.cs" />
     <Compile Include="Plugins\DllExtractor.cs" />
+    <Compile Include="ResourceUpgraders\BaseUpgradeConvertorTests.cs" />
     <Compile Include="Services\CreateFolderTest.cs" />
     <Compile Include="Services\DeleteItemsTest.cs" />
     <Compile Include="Security\SecurityConfigFetcher.cs" />
@@ -524,6 +528,7 @@
   <ItemGroup>
     <EmbeddedResource Include="XML\10543.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

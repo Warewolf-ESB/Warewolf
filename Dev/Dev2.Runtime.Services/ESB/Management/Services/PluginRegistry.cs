@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Reflection;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;

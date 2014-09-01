@@ -1,4 +1,5 @@
-﻿using Caliburn.Micro;
+﻿using System;
+using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.ConnectionHelpers;
@@ -12,7 +13,6 @@ using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.Views.Workflow;
 using Dev2.Threading;
-using System;
 
 namespace Dev2.Dialogs
 {
