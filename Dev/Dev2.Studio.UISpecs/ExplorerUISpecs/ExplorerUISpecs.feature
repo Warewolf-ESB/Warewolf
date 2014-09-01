@@ -51,4 +51,10 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 	And I close Studio
 	And I close Server
 
-	
+Scenario: Searching a Workflow in Explorer by using Filter and Executing
+	Given I have Warewolf running
+	And I send "11330_Integration tests" to "EXPLORER,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID"
+	And I double click "EXPLORER,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_SPINT 7_AutoID,UI_11330_Integration tests_AutoID"
+	And "WORKFLOWDESIGNER,Gather System Information (2)(GatherSystemInformationDesigner)" is visible within "7" seconds
+	And I send "{F6}" to ""
+	And "DEBUGOUTPUT,Gather System Information" is visible within "15" seconds	

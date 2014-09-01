@@ -2413,24 +2413,33 @@ Examples:
       #| 11 | [[rec(@).a]]           |
       #| 12 | [[rec"()".a]]          |
       #| 13 | [[rec([[[[b]]]]).a]]   |
-#
+
+
 #Scenario Outline: Testing Random Numbers with two variables in Result
 #      Given I have a workflow "Workflowforrandom123"
 #	  And "Workflowforrandom123" contains an Assign "Values" as
 #	  | variable | value |
 #	  | [[a]]    | 1     |
-#	  | [[b]]    | 2     |
+#	  | [[b]]    | 10     |
 #	  And "Workflowforrandom123" contains Random "Randoms" as
 #	  | Type    | From | To | Result       |
 #	  | Numbers | 1    | 10 | '<Variable>' |
 #	  When "Workflowforrandom123" is executed  	  
 #	  Then the workflow execution has "AN" error
+#	   And the 'Values' in WorkFlow 'Workflowforrandom123' debug inputs as
+#	  | # | Variable | New Value |
+#	  | 1 | [[a]] =  | 1         |
+#	  | 2 | [[b]] =  | 10        |
+#	  And the 'Values' in Workflow 'Workflowforrandom123' debug outputs as    
+#	  | # |             |
+#	  | 1 | [[a]] =  1  |
+#	  | 2 | [[b]] =  10 |
 #	  And the 'Randoms' in WorkFlow 'Workflowforrandom123' debug inputs as 
-#	  | Random  | From | To |
-#	  | Numbers | 1    | 10 |
+#	    | Random  | From | To |
+#	    | Numbers | 1    | 10  |
 #      And the 'Randoms' in Workflow 'Workflowforrandom123' debug outputs as
-#	  |                |
-#	  | '<Variable>' = |
+#	  |              |
+#	  | '<Variable>' |
 #Examples: 
 #      | No | Variable               |
 #      | 1  | [[a]][[Result]]        |
@@ -2448,28 +2457,29 @@ Examples:
 #      | 13 | [[rec([[[[b]]]]).a]]   |
 #	  							
 #
+#	 
 #Scenario Outline: Testing Date and Time with two variables in Result field
 #      Given I have a workflow "WorkflowforDT"
-#      And "WorkflowforDT" contains an Assign "Rec To Convert" as
+#      And "WorkflowforDT" contains an Assign "Convert2" as
 #	  | variable    | value      |
 #	  | [[rec().a]] | 12/01/2001 |
-#	  And "WorkflowforDT" contains Date and Time "AddDate" as
+#	  And "WorkflowforDT" contains Date and Time "AddDates" as
 #      | Input       | Input Format | Add Time | Output Format | Result       |
 #      | [[rec().a]] | dd/mm/yyyy   | 1        | dd/mm/yyyy    | '<Variable>' |	
 #	  When "WorkflowforDT" is executed  	  
 #	  Then the workflow execution has "AN" error	
-#      And the 'Rec To Convert' in WorkFlow 'WorkflowforDT' debug inputs as
+#      And the 'Convert2' in WorkFlow 'WorkflowforDT' debug inputs as
 #	  | # | Variable      | New Value  |
 #	  | 1 | [[rec().a]] = | 12/01/2001 |
-#	  And the 'Rec To Convert' in Workflow 'WorkflowforDT' debug outputs as    
+#	  And the 'Convert2' in Workflow 'WorkflowforDT' debug outputs as    
 #	  | # |                           |
 #	  | 1 | [[rec(1).a]] = 12/01/2001 |
-#	  And the 'AddDate' in WorkFlow 'WorkflowforDT' debug inputs as
+#	  And the 'AddDates' in WorkFlow 'WorkflowforDT' debug inputs as
 #	   | Input                     | Input Format | Add Time |   | Output Format |
 #	   | [[rec(1).a]] = 12/01/2001 | dd/mm/yyyy   | Years    | 1 | dd/mm/yyyy    |	
-#	  And the 'AddDate' in Workflow 'WorkflowforDT' debug outputs as   
-#	   |                |
-#	   | '<Variable>' = |
+#	  And the 'AddDates' in Workflow 'WorkflowforDT' debug outputs as   
+#	   |              |
+#	   | '<Variable>' |
 #Examples: 
 #      | No | Variable               |
 #      | 1  | [[a]][[Result]]        |
@@ -2485,48 +2495,48 @@ Examples:
 #      | 11 | [[rec(@).a]]           |
 #      | 12 | [[rec"()".a]]          |
 #      | 13 | [[rec([[[[b]]]]).a]]   |
-#
-#
-#   
-#Scenario Outline: Testing Date Time Diff with two variables in Result field
-#      Given I have a workflow "WorkflowforDateTimeDiff"
-#      And "WorkflowforDateTimeDiff" contains an Assign "Values" as
-#	  | variable    | value      |
-#	  | [[rec().a]] | 01/01/2001 |
-#	  | [[rec().a]] | 01/01/2010 |
-#	  And "WorkflowforDateTimeDiff" contains Date and Time Difference "DateAndTime" as	
-#	  | Input1       | Input2       | Input Format | Output In | Result               |
-#	  | [[rec(1).a]] | [[rec(2).a]] | dd/mm/yyyy   | Years     | '<Variable>' |	   
-#	  When "WorkflowforDateTimeDiff" is executed  	  
-#	  Then the workflow execution has "AN" error	
-#      And the 'Values' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
-#	  | # | Variable      | New Value  |
-#	  | 1 | [[rec().a]] = | 01/01/2001 |
-#	  | 2 | [[rec().a]] = | 01/01/2010 |
-#	  And the 'Values' in Workflow 'WorkflowforDateTimeDiff' debug outputs as    
-#	  | # |                           |
-#	  | 1 | [[rec(1).a]] = 01/01/2001 |
-#	  | 2 | [[rec(2).a]] = 01/01/2010 |
-#	  And the 'DateAndTime' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
-#	  | Input 1                   | Input 2                   | Input Format | Output In |
-#	  | [[rec(1).a]] = 01/01/2001 | [[rec(2).a]] = 01/01/2010 | dd/mm/yyyy   | Years     |
-#	  And the 'DateAndTime' in Workflow 'WorkflowforDateTimeDiff' debug outputs as 
-#	  |  |
-#Examples: 
-#      | No | Variable               |
-#      | 1  | [[a]][[Result]]        |
-#      | 2  | [[a]]*]]               |
-#      | 3  | [[var@]]               |
-#      | 4  | [[var]]00]]            |
-#      | 5  | [[(1var)]]             |
-#      | 6  | [[var[[a]]]]           |
-#      | 7  | [[var.a]]              |
-#      | 8  | [[@var]]               |
-#      | 9  | [[var 1]]              |
-#      | 10 | [[rec(1).[[rec().1]]]] |
-#      | 11 | [[rec(@).a]]           |
-#      | 12 | [[rec"()".a]]          |
-#      | 13 | [[rec([[[[b]]]]).a]]   |
+
+
+   
+Scenario Outline: Testing Date Time Diff with two variables in Result field
+      Given I have a workflow "WorkflowforDateTimeDiff"
+      And "WorkflowforDateTimeDiff" contains an Assign "Values" as
+	  | variable    | value      |
+	  | [[rec().a]] | 01/01/2001 |
+	  | [[rec().a]] | 01/01/2010 |
+	  And "WorkflowforDateTimeDiff" contains Date and Time Difference "DateAndTime" as	
+	  | Input1       | Input2       | Input Format | Output In | Result               |
+	  | [[rec(1).a]] | [[rec(2).a]] | dd/mm/yyyy   | Years     | '<Variable>' |	   
+	  When "WorkflowforDateTimeDiff" is executed  	  
+	  Then the workflow execution has "AN" error	
+      And the 'Values' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
+	  | # | Variable      | New Value  |
+	  | 1 | [[rec().a]] = | 01/01/2001 |
+	  | 2 | [[rec().a]] = | 01/01/2010 |
+	  And the 'Values' in Workflow 'WorkflowforDateTimeDiff' debug outputs as    
+	  | # |                           |
+	  | 1 | [[rec(1).a]] = 01/01/2001 |
+	  | 2 | [[rec(2).a]] = 01/01/2010 |
+	  And the 'DateAndTime' in WorkFlow 'WorkflowforDateTimeDiff' debug inputs as
+	  | Input 1                   | Input 2                   | Input Format | Output In |
+	  | [[rec(1).a]] = 01/01/2001 | [[rec(2).a]] = 01/01/2010 | dd/mm/yyyy   | Years     |
+	  And the 'DateAndTime' in Workflow 'WorkflowforDateTimeDiff' debug outputs as 
+	  |  |
+Examples: 
+      | No | Variable               |
+      | 1  | [[a]][[Result]]        |
+      | 2  | [[a]]*]]               |
+      | 3  | [[var@]]               |
+      | 4  | [[var]]00]]            |
+      | 5  | [[(1var)]]             |
+      | 6  | [[var[[a]]]]           |
+      | 7  | [[var.a]]              |
+      | 8  | [[@var]]               |
+      | 9  | [[var 1]]              |
+      | 10 | [[rec(1).[[rec().1]]]] |
+      | 11 | [[rec(@).a]]           |
+      | 12 | [[rec"()".a]]          |
+      | 13 | [[rec([[[[b]]]]).a]]   |
 
 
 Scenario: Workflow with Assign and Sort Forward to test gaps

@@ -84,6 +84,21 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Data-Assign.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Data-Base Conversion.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Data-Base Conversion.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Recordset-SQL Bulk Insert.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Recordset-SQL Bulk Insert.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Resource-Workflow.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource-Workflow.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Utility-Comment.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -108,11 +123,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ToolsTestUISpecs.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Workflow.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Workflow.feature</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -157,13 +167,21 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Data-Assign.feature.cs</LastGenOutput>
     </None>
+    <None Include="Tools\Data-Base Conversion.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Data-Base Conversion.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Recordset-SQL Bulk Insert.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Recordset-SQL Bulk Insert.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Resource-Workflow.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Resource-Workflow.feature.cs</LastGenOutput>
+    </None>
     <None Include="Tools\Utility-Comment.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Utility-Comment.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Workflow.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Workflow.feature.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

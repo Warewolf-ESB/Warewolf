@@ -185,7 +185,62 @@ Scenario: TshepoDragandDropExample
 	#Given I type "Shaka" in "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID"
 	#Given "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID" has text "[[Shaka]]"
 	#Given "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID" contains text "Tshepo"
-	Given "SETTINGSTAB,UI_Errors_AutoID" contains text "Michael Jackson"
+	#Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set server"
 
+	#   Given I click "SECURITYSERVERHELP"
+	#   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set server"
+	#   And I click "SECURITYRESOURCEHELP"
+	#   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set server"
+	#
+#	   Given I click "RIBBONDEPLOY"
+#       Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_TestingPermisions"
+#       Given "DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployToText_AutoID" is not visible
+#       Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_TestingPermisions"
+#	   Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is not visible	
+#
 
-	
+	   	 #  Given I click "RIBBONDEPLOY"
+      ## Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_TestingPermisions"
+      # #Given "DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployToText_AutoID" is visible
+      # Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_TestingPermisions"
+      # Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is visible	
+	    Given all tabs are closed
+	   Given I click "EXPLORER,UI_localhost_AutoID" 
+	   #Open Settings Tab
+	   And I click "RIBBONSETTINGS" 
+	   #SetUp Server Permissions View for "UI Testing Group" Specific Group
+	   Given I click "SETTINGSRESOURCEROW1,UI_AddRemovebtn_AutoID"
+	   And I click "SECURITYSAVE"
+	   #SetUp Resource Permissions Contribute for "UI Testing Group" Specific Group
+	    Given I click "SETTINGSRESOURECESELECT"
+       And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "UI Testing Group" to ""
+       And I click "SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID"
+       And I click "SECURITYSAVE"
+	   #Checking Resource Icon in Explorer 
+	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	   Then I double click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	   And "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" is visible within "7" seconds
+	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+	   #Opening Remote Server Resource From Explorer 
+	   Then I double click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	   And "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "7" seconds
+	   # Ribbon Icons
+	   Then "RIBBONSETTINGS" is disabled
+	   Then "RIBBONNEWDATABASECONNECTOR" is disabled
+	   Then "RIBBONSCHEDULE" is disabled		
+	   Then "RIBBONNEWPLUGINCONNECTOR" is disabled
+	   Then "RIBBONNEWWEBCONNECTOR" is disabled
+	   Then "RIBBONSAVE" is visible
+	   Then "RIBBONDEPLOY" is visible
+	   Then "RIBBONDEBUG" is visible
+	   #Checking Deploy Permissions "UnAuthorized"
+	    Given I click "RIBBONDEPLOY"
+       Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_TestingPermisions"
+       Given "DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployToText_AutoID" is visible
+       Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_TestingPermisions"
+       Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is visible		

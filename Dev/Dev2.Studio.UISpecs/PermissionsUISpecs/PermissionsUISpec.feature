@@ -2,22 +2,22 @@
 	In order to be able to use warewolf
 	As a warewolf user
 	I want to be able to setup permissions for my server
-#	
-#Background: 
-#	   Given I click "EXPLORER,UI_localhost_AutoID"
-#	   Given I click "RIBBONSETTINGS"   
-#	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
-#	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
-#	   And "SECURITYPUBLICADMINISTRATOR" is unchecked  
-#       And "SECURITYPUBLICVIEW" is unchecked
-#       And "SECURITYPUBLICEXECUTE" is unchecked
-#       And "SECURITYPUBLICDEPLOYTO" is unchecked
-#       And "SECURITYPUBLICDEPLOYFROM" is unchecked       
-#	   And "SECURITYPUBLICCONTRIBUTE" is unchecked
-#       And I click "SECURITYSAVE" 
-#	   Given all tabs are closed
+	
+Background: 
+	   Given I click "EXPLORER,UI_localhost_AutoID"
+	   Given I click "RIBBONSETTINGS"   
+	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
+	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
+	   And "SECURITYPUBLICADMINISTRATOR" is unchecked  
+       And "SECURITYPUBLICVIEW" is unchecked
+       And "SECURITYPUBLICEXECUTE" is unchecked
+       And "SECURITYPUBLICDEPLOYTO" is unchecked
+       And "SECURITYPUBLICDEPLOYFROM" is unchecked       
+	   And "SECURITYPUBLICCONTRIBUTE" is unchecked
+       And I click "SECURITYSAVE" 
+	   Given all tabs are closed
 
-Scenario: Set server permission View
+Scenario: Testing Different Server Permissions For Public
        Given all tabs are closed
        And I click "EXPLORER,UI_localhost_AutoID" 
 #Test -1 Setup Public Server Permissions View
@@ -252,7 +252,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   #Checking Deploy Permissions "Authorized"
 	   Given I click "RIBBONDEPLOY"
        Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_TestingPermisions"
-       Given "DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployFrom_AutoID" is not visible
+       Given "DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployToText_AutoID" is not visible
        Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_TestingPermisions"
 	   Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is not visible	
 #End Test - 2
@@ -261,7 +261,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   Given I click "EXPLORER,UI_localhost_AutoID" 
 	   #Open Settings Tab
 	   And I click "RIBBONSETTINGS" 
-	   #SetUp Server Permissions View for "UI Testing Group" Specific Group
+	   #SetUp Server Permissions Blank
+	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
 	   Given I click "SETTINGSRESOURCEROW1,UI_AddRemovebtn_AutoID"
 	   And I click "SECURITYSAVE"
 	   #SetUp Resource Permissions Contribute for "UI Testing Group" Specific Group
@@ -300,7 +301,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 #End Test - 3
  
 
- Scenario: Testing Setiings Tab Scro
+ Scenario: Testing Setiings Tab Duplicate Resource Permissions HelP Text
         #SecuritySettingsUiTestsAdd10ResourcesMakeSureScrollBarIsThere
         #SecuritySettingsUiTestsAddResourcesAndRelatedPriviledgesResourcesAreAddedSuccessfullyAndSaveButtonDisabled
         #SecuritySettingsUiTestsOpenHelpAdornersHelpAdornersOpenedAndClosedSuccessfully
@@ -386,12 +387,13 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   #Saving 
        And I click "SECURITYSAVE"
 	   #Checking Validation Message Of Duplicate Permissions
-
-	   #Deleting Duplicate Row
+	   Given "SETTINGSTAB,UI_Errors_AutoID" contains text "To set server"
+	   #Deleting Duplicate Row and Checking ScrollBar
        Given I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_0_AutoID,UI_AddRemovebtn_AutoID"
 	   And I click "SECURITYSAVE"
-	   #Checking Help Text
+	   #Checking Help Text for Server Permissions and Resource Permissions
 	   Given I click "SECURITYSERVERHELP"
-	   Given "UI_DocManager_AutoID, UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_SettingsView_AutoID" contains text "To set server permissions"
+	   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set server"
 	   And I click "SECURITYRESOURCEHELP"
-	  
+	   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set server"
+	   
