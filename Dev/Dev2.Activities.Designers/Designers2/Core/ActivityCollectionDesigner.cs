@@ -1,5 +1,6 @@
 ﻿using System.Collections.Specialized;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 
 namespace Dev2.Activities.Designers2.Core
@@ -62,9 +63,11 @@ namespace Dev2.Activities.Designers2.Core
         void InitializeContextMenu()
         {
             _insertRowMenuItem = new MenuItem { Header = "Insert Row" };
+            _insertRowMenuItem.SetValue(AutomationProperties.AutomationIdProperty, "UI_InsertRowMenuItem_AutoID");
             _insertRowMenuItem.Click += InsertDataGridRow;
 
             _deleteRowMenuItem = new MenuItem { Header = "Delete Row" };
+            _deleteRowMenuItem.SetValue(AutomationProperties.AutomationIdProperty, "UI_DeleteRowMenuItem_AutoID");
             _deleteRowMenuItem.Click += DeleteDataGridRow;
 
             ContextMenu.Items.Add(_insertRowMenuItem);
