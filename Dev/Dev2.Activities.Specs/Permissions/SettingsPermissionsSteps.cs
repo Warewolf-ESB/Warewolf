@@ -258,11 +258,22 @@ namespace Dev2.Activities.Specs.Permissions
             {
                 environmentModel.Connect();
             }
+            var waitCounter = 0;
+            while(!environmentModel.IsConnected && waitCounter < 10)
+            {
+                Thread.Sleep(1000);
+                waitCounter++;
+            }
+            if(waitCounter > 10)
+            {
+                throw new Exception("The environment did not connect. " + environmentModel.DisplayName);
+            }
             var resourceRepository = environmentModel.ResourceRepository;
             var settings = resourceRepository.ReadSettings(environmentModel);
             environmentModel.ForceLoadResources();
 
             var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
+            Assert.IsNotNull(resourceModel, "Did not find: " + resourceName);
             SecPermissions resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourceRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach(var permissionsString in permissionsStrings)

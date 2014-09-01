@@ -27,7 +27,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // The expression text is only evaluated and converted to an expression tree when CacheMetadata() is called.
         readonly CSharpValue<TResult> _expression; // BUG 9304 - 2013.05.08 - TWR - Changed type to CSharpValue
         TResult _theResult;
-        Guid _dataListID;
+        Guid _dataListId;
         IDSFDataObject _dataObject;
 
         #region Ctor
@@ -86,7 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _dataObject = context.GetExtension<IDSFDataObject>();
             DataListFactory.CreateDataListCompiler();
-            _dataListID = _dataObject.DataListID;
+            _dataListId = _dataObject.DataListID;
             InitializeDebug(_dataObject);
 
             if(_dataObject.IsDebugMode())
@@ -135,7 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // Travis.Frisinger - 28.01.2013 : Amended for Debug
         public override List<DebugItem> GetDebugInputs(IBinaryDataList dataList)
         {
-            List<DebugItem> result = new List<DebugItem>();
+            List<IDebugItem> result = new List<IDebugItem>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var allErrors = new ErrorResultTO();
 
@@ -150,11 +150,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 foreach(Dev2Decision dev2Decision in dds.TheStack)
                 {
-                    AddInputDebugItemResultsAfterEvaluate(result.Select(a=>(IDebugItem)a).ToList(), ref userModel, dataList, dds.Mode, dev2Decision.Col1, out  error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col1, out  error);
                     allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result.Select(a => (IDebugItem)a).ToList(), ref userModel, dataList, dds.Mode, dev2Decision.Col2, out error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col2, out error);
                     allErrors.MergeErrors(error);
-                    AddInputDebugItemResultsAfterEvaluate(result.Select(a => (IDebugItem)a).ToList(), ref userModel, dataList, dds.Mode, dev2Decision.Col3, out error);
+                    AddInputDebugItemResultsAfterEvaluate(result, ref userModel, dataList, dds.Mode, dev2Decision.Col3, out error);
                     allErrors.MergeErrors(error);
                 }
 
@@ -194,11 +194,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var serviceName = GetType().Name;
                     DisplayAndWriteError(serviceName, allErrors);
                     ErrorResultTO error;
-                    compiler.UpsertSystemTag(_dataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out error);
+                    compiler.UpsertSystemTag(_dataListId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out error);
                 }
             }
 
-            return result;
+            return result.Select(a => a as DebugItem).ToList();
         }
 
         void AddInputDebugItemResultsAfterEvaluate(List<IDebugItem> result, ref string userModel, IBinaryDataList dataList, Dev2DecisionMode decisionMode, string expression, out ErrorResultTO error, DebugItem parent = null)

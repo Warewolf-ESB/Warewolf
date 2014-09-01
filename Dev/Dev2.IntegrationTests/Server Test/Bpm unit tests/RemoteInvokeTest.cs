@@ -2,7 +2,7 @@
 using Dev2.Integration.Tests.Helpers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 // ReSharper disable InconsistentNaming
 namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 {

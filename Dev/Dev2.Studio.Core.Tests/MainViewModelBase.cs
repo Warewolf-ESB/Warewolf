@@ -104,6 +104,7 @@ namespace Dev2.Core.Tests
             FeedbackInvoker = new Mock<IFeedbackInvoker>();
             WebController = new Mock<IWebController>();
             WindowManager = new Mock<IWindowManager>();
+            CustomContainer.Register(WindowManager.Object);
             BrowserPopupController = new Mock<IBrowserPopupController>();
             MockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             SetupDefaultMef(FeedbackInvoker);

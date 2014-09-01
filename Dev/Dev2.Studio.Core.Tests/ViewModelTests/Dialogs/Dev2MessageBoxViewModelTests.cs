@@ -102,7 +102,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
   <Option Key=""1"" Value=""OK"" />
 </root>";
             string actual = null;
-
+            CustomContainer.DeRegister<IFilePersistenceProvider>();
             Mock<IFilePersistenceProvider> filePersistenceProvider = new Mock<IFilePersistenceProvider>();
             filePersistenceProvider.Setup(p => p.Write(It.IsAny<string>(), It.IsAny<string>())).Callback((string p1, string p2) =>
                 {
@@ -125,7 +125,7 @@ namespace Dev2.Core.Tests.ViewModelTests.Dialogs
             const string data = @"<root>
   <Option Key=""1"" Value=""OK"" />
 </root>";
-
+            CustomContainer.DeRegister<IFilePersistenceProvider>();
             Mock<IFilePersistenceProvider> filePersistenceProvider = new Mock<IFilePersistenceProvider>();
             filePersistenceProvider.Setup(p => p.Read(It.IsAny<string>())).Returns(() => data);
 

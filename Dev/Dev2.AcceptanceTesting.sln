@@ -201,6 +201,9 @@ Global
 		SccProjectName36 = Dev2.Explorer.Specs
 		SccLocalPath36 = Dev2.Explorer.Specs
 	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 5a0c3994-6f1d-461d-8c94-696b3470e61c
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms

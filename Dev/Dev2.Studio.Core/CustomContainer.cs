@@ -24,7 +24,7 @@ namespace Dev2
         {
             if(RegisterdTypes.ContainsKey(typeof(T)))
             {
-                return;
+                DeRegister<T>();
             }
             RegisterdTypes.Add(typeof(T), concrete);
         }
