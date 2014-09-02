@@ -13,6 +13,8 @@ using Dev2.Common.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Diagnostics.Debug;
 using Dev2.Instrumentation;
+
+// ReSharper disable RedundantUsingDirective
 using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.Diagnostics;
@@ -20,7 +22,6 @@ using Dev2.Studio.ViewModels;
 using Dev2.Util;
 using Dev2.Views.Dialogs;
 
-// ReSharper disable RedundantUsingDirective
 
 // ReSharper restore RedundantUsingDirective
 
@@ -95,7 +96,7 @@ namespace Dev2.Studio
 
             Browser.Startup();
 
-    
+            new Bootstrapper().Start();
 
             base.OnStartup(e);
 
