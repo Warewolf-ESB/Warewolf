@@ -268,38 +268,6 @@ namespace Dev2.Studio.UI.Tests
         [TestMethod]
         [TestCategory("UITest")]
         [Owner("Tshepo Ntlhokoa")]
-        public void DragAMultiAssignIntoAndOutOfAForEach_NoDrillDown()
-        {
-            // Create the workflow
-            RibbonUIMap.CreateNewWorkflow();
-
-            // Get some variables
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-            UITestControl theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Point workflowPoint1 = new Point(theStartButton.BoundingRectangle.X,
-                                             theStartButton.BoundingRectangle.Y + 200);
-
-            Point requiredPoint = WorkflowDesignerUIMap.GetPointUnderStartNode(theTab);
-            requiredPoint.Offset(20, 50);
-
-            // Drag a ForEach onto the Workflow
-            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.ForEach, workflowPoint1, "For Each");
-
-            // Get a multiassign, and drag it onto the "Drop Activity Here" part of the ForEach box
-            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Assign,
-                                                       new Point(workflowPoint1.X + 25, workflowPoint1.Y + 25));
-
-            // pause for drill down...
-            Playback.Wait(2000);
-
-            // after pause check if start node is visible
-            theStartButton = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "Start");
-            Assert.IsTrue(theStartButton.Exists, "Dropping a multiassign onto a foreach drilled down");
-        }
-
-        [TestMethod]
-        [TestCategory("UITest")]
-        [Owner("Tshepo Ntlhokoa")]
         public void DragAStartNodeOntoATool_HoverOverAToolForAWhile_NoDrillDownShouldHappen()
         {
             // Create the workflow

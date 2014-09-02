@@ -113,17 +113,13 @@
     <Compile Include="AllToolsUITests.cs" />
     <Compile Include="Enums\ActionType.cs" />
     <Compile Include="Enums\ToolType.cs" />
-    <Compile Include="Tests\Activities\DsfCommentTests.cs" />
-    <Compile Include="Tests\Activities\DsfDataMergeActivityTests.cs" />
     <Compile Include="Tests\Activities\DsfForEachActivityTests.cs" />
     <Compile Include="Tests\Activities\DsfSequenceActivityTests.cs" />
     <Compile Include="Tests\Activities\DsfXPathActivityTests.cs" />
     <Compile Include="Tests\Activities\DbServiceTests.cs" />
     <Compile Include="Tests\Activities\DsfFindRecordsActivityTests.cs" />
-    <Compile Include="Tests\Activities\DsfMultiAssignActivityTests.cs" />
     <Compile Include="Tests\Activities\PluginServiceTests.cs" />
     <Compile Include="Tests\Activities\WebServiceTests.cs" />
-    <Compile Include="Tests\ResourcePicker\ResourcePickerTests.cs" />
     <Compile Include="Tests\Scheduler\SchedulerUiTests.cs" />
     <Compile Include="Tests\TabManager\TabManagerTests.cs" />
     <Compile Include="Enums\Dev2MappingType.cs" />
@@ -147,7 +143,6 @@
     <Compile Include="UIMaps\Activities\DsfActivityUiMap.cs" />
     <Compile Include="Enums\ServiceType.cs" />
     <Compile Include="Utils\Extensions\BaseEnumExtensions.cs" />
-    <Compile Include="Tests\Settings\SecuritySettingsUiTests.cs" />
     <Compile Include="Tests\Debug\DebugUITests.cs" />
     <Compile Include="DeployUITests.cs" />
     <Compile Include="SqlBulkInsertUITests.cs" />
@@ -355,6 +350,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Binaries\" />
+    <Folder Include="Tests\ResourcePicker\" />
+    <Folder Include="Tests\Settings\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
