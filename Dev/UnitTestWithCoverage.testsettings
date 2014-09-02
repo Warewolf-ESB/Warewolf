@@ -15,7 +15,7 @@
   <NamingScheme baseName="UT" />
   <Execution>
     <Buckets size="500" />
-    <Timeouts testTimeout="30000" />
+    <Timeouts testTimeout="60000" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>
