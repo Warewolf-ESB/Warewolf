@@ -44,17 +44,19 @@ namespace Dev2.Studio.UI.Specs
         static readonly string VariableRecordset = "UI_DocManager_AutoID,Variables,UI_DataListView_AutoID,UI_VariableTreeView_AutoID,UI_Recordset_AutoID";
 
         //Tools
+        //Control Flow
         static readonly string ToolDecision = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowDecision";
         static readonly string ToolSwitch = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowSwitch`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]";
         static readonly string ToolSequence = Toolbox + ",PART_Tools,Control Flow,Dev2.Activities.DsfSequenceActivity";
-
+        //Loop Constructs
         static readonly string ToolForEach = Toolbox + ",PART_Tools,Loop Constructs,Unlimited.Applications.BusinessDesignStudio.Activities.DsfForEachActivity";
-
+        //Recordset
         static readonly string ToolCount = Toolbox + ",PART_Tools,Recordset,Unlimited.Applications.BusinessDesignStudio.Activities.DsfCountRecordsetActivity";
         static readonly string ToolLength = Toolbox + ",PART_Tools,Recordset,Unlimited.Applications.BusinessDesignStudio.Activities.DsfRecordsetLengthActivity";
         static readonly string ToolDelete = Toolbox + ",PART_Tools,Recordset,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDeleteRecordActivity";
         static readonly string ToolFind = Toolbox + ",PART_Tools,Recordset,Unlimited.Applications.BusinessDesignStudio.Activities.DsfFindRecordsMultipleCriteriaActivity";
-        
+        //Data
+        static readonly string ToolAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
         static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolBaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfBaseConvertActivity";
         static readonly string ToolCaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
