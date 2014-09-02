@@ -64,6 +64,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DesignerUISpecs.feature</DependentUpon>
     </Compile>
+    <Compile Include="DesignerUISpecs\QuickVariableInput.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuickVariableInput.feature</DependentUpon>
+    </Compile>
     <Compile Include="DevToolKit.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -146,6 +151,10 @@
     <None Include="DesignerUISpecs\DesignerUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DesignerUISpecs.feature.cs</LastGenOutput>
+    </None>
+    <None Include="DesignerUISpecs\QuickVariableInput.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>QuickVariableInput.feature.cs</LastGenOutput>
     </None>
     <None Include="ExplorerUISpecs\ExplorerUISpecs.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

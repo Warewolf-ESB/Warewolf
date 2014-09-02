@@ -19,19 +19,19 @@ namespace Dev2.Studio.UI.Specs.DesignerUISpecs
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "1.9.0.77")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
-    public partial class QvuikVariableInputFeature
+    public partial class QuikcVariableInputFeature
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-#line 1 "QvuikVariableInput.feature"
+#line 1 "QuickVariableInput.feature"
 #line hidden
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
         public static void FeatureSetup(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "QvuikVariableInput", "In order to avoid silly mistakes\r\nAs a math idiot\r\nI want to be told the sum of t" +
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "QuikcVariableInput", "In order to avoid silly mistakes\r\nAs a math idiot\r\nI want to be told the sum of t" +
                     "wo numbers", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
@@ -47,9 +47,9 @@ namespace Dev2.Studio.UI.Specs.DesignerUISpecs
         public virtual void TestInitialize()
         {
             if (((TechTalk.SpecFlow.FeatureContext.Current != null) 
-                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "QvuikVariableInput")))
+                        && (TechTalk.SpecFlow.FeatureContext.Current.FeatureInfo.Title != "QuikcVariableInput")))
             {
-                Dev2.Studio.UI.Specs.DesignerUISpecs.QvuikVariableInputFeature.FeatureSetup(null);
+                Dev2.Studio.UI.Specs.DesignerUISpecs.QuikcVariableInputFeature.FeatureSetup(null);
             }
         }
         
@@ -71,7 +71,7 @@ namespace Dev2.Studio.UI.Specs.DesignerUISpecs
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("QVIAddToMoreThanOneAndReplace")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "QvuikVariableInput")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "QuikcVariableInput")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("QVI")]
         public virtual void QVIAddToMoreThanOneAndReplace()
         {
