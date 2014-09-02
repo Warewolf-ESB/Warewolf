@@ -117,7 +117,6 @@
     <Compile Include="Tests\Activities\DsfSequenceActivityTests.cs" />
     <Compile Include="Tests\Activities\DsfXPathActivityTests.cs" />
     <Compile Include="Tests\Activities\DbServiceTests.cs" />
-    <Compile Include="Tests\Activities\DsfFindRecordsActivityTests.cs" />
     <Compile Include="Tests\Activities\PluginServiceTests.cs" />
     <Compile Include="Tests\Activities\WebServiceTests.cs" />
     <Compile Include="Tests\Scheduler\SchedulerUiTests.cs" />
