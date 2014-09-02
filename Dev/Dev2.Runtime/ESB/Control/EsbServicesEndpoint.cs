@@ -254,7 +254,14 @@ namespace Dev2.Runtime.ESB.Control
                 // clean up after the request has executed ;)
                 if(dataObject.IsDebug && !_doNotWipeDataList)
                 {
-                    DataListRegistar.ClearDataList();
+                    //DataListRegistar.ClearDataList();
+
+                    foreach(var thread in dataObject.ThreadsToDispose)
+                    {
+                        DataListRegistar.DisposeScope(thread.Key, resultID);
+                    }
+
+                    DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, resultID);
                 }
                 else
                 {

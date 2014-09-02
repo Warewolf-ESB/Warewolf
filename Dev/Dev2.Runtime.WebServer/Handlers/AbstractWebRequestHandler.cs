@@ -214,7 +214,14 @@ namespace Dev2.Runtime.WebServer.Handlers
                 compiler.ForceDeleteDataListByID(executionDlid);
                 if(dataObject.IsDebug && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
                 {
-                    DataListRegistar.ClearDataList();
+                    //DataListRegistar.ClearDataList();
+
+                    foreach(var thread in dataObject.ThreadsToDispose)
+                    {
+                        DataListRegistar.DisposeScope(thread.Key, executionDlid);
+                    }
+
+                    DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, executionDlid);
                 }
                 else
                 {
