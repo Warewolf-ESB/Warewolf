@@ -10,7 +10,7 @@ Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDr
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
 	And I send "Assign" to ""
-	And I drag "TOOLMULTIASSIGN" onto "WORKSURFACE,StartSymbol"
+	And I drag "TOOLASSIGN" onto "WORKSURFACE,StartSymbol"
 	And "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID" is visible within "1" seconds
 	#CheckVariableAdd
 	And I type "myvar" in "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID"
@@ -27,8 +27,8 @@ Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDr
 	When I double click point "5,5" on "WORKSURFACE,Assign (2)(MultiAssignDesigner)"
 	#ValidationError
 	When I click "WORKSURFACE,Assign (2)(MultiAssignDesigner),DoneButton"
-	Then "WORKSURFACE,UI_ErrorsTextBlock_AutoID" is visible
-	When I click point "20,30" on "WORKSURFACE,UI_ErrorsTextBlock_AutoID"
+	Then "WORKSURFACE,UI_Error0_AutoID" is visible
+	When I click point "-40,35" on "WORKSURFACE,UI_CloseHelp_AutoID"
 	And I send "{DELETE}{DELETE}{DELETE}{DELETE}{DELETE}" to ""
 	And I send "newvar{TAB}" to ""
 	And I send "{DELETE}{DELETE}{DELETE}{DELETE}{DELETE}" to ""
