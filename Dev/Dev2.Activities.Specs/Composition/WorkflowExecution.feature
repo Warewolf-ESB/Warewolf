@@ -1762,75 +1762,75 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  | # |                    |
 	  | 1 | [[rec(1).a]] = 123 |	  		
 		
-  Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only Large Execution
-      Given I have a workflow "WFForEachInsideforEachLargeTenFifty"
-	  And "WFForEachInsideforEachLargeTenFifty" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "10"
-	  And "ForEachTest1" contains a Foreach "ForEachTest2" as "NumOfExecution" executions "50"
-	  And "ForEachTest2" contains an Assign "Testingoutput" as
-	  | variable    | value         |
-	  | [[rec().a]] | 123asda       |
-	  | [[rec().b]] | aaaaa         |
-	  | [[rec().c]] | rrrrrrr       |
-	  | [[rec().d]] | 123asda       |
-	  | [[rec().e]] | sdfsdrf45456  |
-	  | [[rec().f]] | cvbcb1123     |
-	  | [[rec().g]] | aasdww2323    |
-	  | [[rec().h]] | oooooo9999    |
-	  | [[rec().i]] | sdfsdf3434    |
-	  | [[rec().j]] | asda123123    |
-	  | [[rec().k]] | sssdff444     |
-	  | [[rec().l]] | asdvvvbbg3333 |
-	  | [[rec().m]] | aasdasd       |
-	  | [[rec().n]] | aasdd222      |
-	  | [[rec().o]] | 22323asda     |
-	  And I get the server memory
-	  When "WFForEachInsideforEachLargeTenFifty" is executed
-	  Then the workflow execution has "NO" error
-	  And the server CPU usage is less than 10%
-	  And the server memory difference is less than 100 mb
-	  And the 'ForEachTest1' in WorkFlow 'WFForEachInsideforEachLargeTenFifty' debug inputs as 
-	  |                 | Number |
-	  | No. of Executes | 10      |
-	  And the 'ForEachTest1' in WorkFlow 'WFForEachInsideforEachLargeTenFifty' has  "10" nested children
-      And the 'ForEachTest2' in step 1 for 'ForEachTest1' debug inputs as 
-	  |                 | Number |
-	  | No. of Executes | 50      |
-      And the 'ForEachTest2' in WorkFlow 'ForEachTest1' has  "50" nested children	 
-	  And the 'Testingoutput' in step 50 for 'ForEachTest2' debug inputs as
-	  | #  | Variable      | New Value     |
-	  | 1  | [[rec().a]] = | 123asda       |
-	  | 2  | [[rec().b]] = | aaaaa         |
-	  | 3  | [[rec().c]] = | rrrrrrr       |
-	  | 4  | [[rec().d]] = | 123asda       |
-	  | 5  | [[rec().e]] = | sdfsdrf45456  |
-	  | 6  | [[rec().f]] = | cvbcb1123     |
-	  | 7  | [[rec().g]] = | aasdww2323    |
-	  | 8  | [[rec().h]] = | oooooo9999    |
-	  | 9  | [[rec().i]] = | sdfsdf3434    |
-	  | 10 | [[rec().j]] = | asda123123    |
-	  | 11 | [[rec().k]] = | sssdff444     |
-	  | 12 | [[rec().l]] = | asdvvvbbg3333 |
-	  | 13 | [[rec().m]] = | aasdasd       |
-	  | 14 | [[rec().n]] = | aasdd222      |
-	  | 15 | [[rec().o]] = | 22323asda     |
-	  And the 'Testingoutput' in step 50 for 'ForEachTest2' debug outputs as
-	  | #  |                                |
-	  | 1  | [[rec(50).a]] = 123asda       |
-	  | 2  | [[rec(50).b]] = aaaaa         |
-	  | 3  | [[rec(50).c]] = rrrrrrr       |
-	  | 4  | [[rec(50).d]] = 123asda       |
-	  | 5  | [[rec(50).e]] = sdfsdrf45456  |
-	  | 6  | [[rec(50).f]] = cvbcb1123     |
-	  | 7  | [[rec(50).g]] = aasdww2323    |
-	  | 8  | [[rec(50).h]] = oooooo9999    |
-	  | 9  | [[rec(50).i]] = sdfsdf3434    |
-	  | 10 | [[rec(50).j]] = asda123123    |
-	  | 11 | [[rec(50).k]] = sssdff444     |
-	  | 12 | [[rec(50).l]] = asdvvvbbg3333 |
-	  | 13 | [[rec(50).m]] = aasdasd       |
-	  | 14 | [[rec(50).n]] = aasdd222      |
-	  | 15 | [[rec(50).o]] = 22323asda     |
-	  
+  #Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only Large Execution
+  #    Given I have a workflow "WFForEachInsideforEachLargeTenFifty"
+	 # And "WFForEachInsideforEachLargeTenFifty" contains a Foreach "ForEachTest1" as "NumOfExecution" executions "10"
+	 # And "ForEachTest1" contains a Foreach "ForEachTest2" as "NumOfExecution" executions "50"
+	 # And "ForEachTest2" contains an Assign "Testingoutput" as
+	 # | variable    | value         |
+	 # | [[rec().a]] | 123asda       |
+	 # | [[rec().b]] | aaaaa         |
+	 # | [[rec().c]] | rrrrrrr       |
+	 # | [[rec().d]] | 123asda       |
+	 # | [[rec().e]] | sdfsdrf45456  |
+	 # | [[rec().f]] | cvbcb1123     |
+	 # | [[rec().g]] | aasdww2323    |
+	 # | [[rec().h]] | oooooo9999    |
+	 # | [[rec().i]] | sdfsdf3434    |
+	 # | [[rec().j]] | asda123123    |
+	 # | [[rec().k]] | sssdff444     |
+	 # | [[rec().l]] | asdvvvbbg3333 |
+	 # | [[rec().m]] | aasdasd       |
+	 # | [[rec().n]] | aasdd222      |
+	 # | [[rec().o]] | 22323asda     |
+	 # And I get the server memory
+	 # When "WFForEachInsideforEachLargeTenFifty" is executed
+	 # Then the workflow execution has "NO" error
+	 # And the server CPU usage is less than 10%
+	 # And the server memory difference is less than 100 mb
+	 # And the 'ForEachTest1' in WorkFlow 'WFForEachInsideforEachLargeTenFifty' debug inputs as 
+	 # |                 | Number |
+	 # | No. of Executes | 10      |
+	 # And the 'ForEachTest1' in WorkFlow 'WFForEachInsideforEachLargeTenFifty' has  "10" nested children
+  #    And the 'ForEachTest2' in step 1 for 'ForEachTest1' debug inputs as 
+	 # |                 | Number |
+	 # | No. of Executes | 50      |
+  #    And the 'ForEachTest2' in WorkFlow 'ForEachTest1' has  "50" nested children	 
+	 # And the 'Testingoutput' in step 50 for 'ForEachTest2' debug inputs as
+	 # | #  | Variable      | New Value     |
+	 # | 1  | [[rec().a]] = | 123asda       |
+	 # | 2  | [[rec().b]] = | aaaaa         |
+	 # | 3  | [[rec().c]] = | rrrrrrr       |
+	 # | 4  | [[rec().d]] = | 123asda       |
+	 # | 5  | [[rec().e]] = | sdfsdrf45456  |
+	 # | 6  | [[rec().f]] = | cvbcb1123     |
+	 # | 7  | [[rec().g]] = | aasdww2323    |
+	 # | 8  | [[rec().h]] = | oooooo9999    |
+	 # | 9  | [[rec().i]] = | sdfsdf3434    |
+	 # | 10 | [[rec().j]] = | asda123123    |
+	 # | 11 | [[rec().k]] = | sssdff444     |
+	 # | 12 | [[rec().l]] = | asdvvvbbg3333 |
+	 # | 13 | [[rec().m]] = | aasdasd       |
+	 # | 14 | [[rec().n]] = | aasdd222      |
+	 # | 15 | [[rec().o]] = | 22323asda     |
+	 # And the 'Testingoutput' in step 50 for 'ForEachTest2' debug outputs as
+	 # | #  |                                |
+	 # | 1  | [[rec(50).a]] = 123asda       |
+	 # | 2  | [[rec(50).b]] = aaaaa         |
+	 # | 3  | [[rec(50).c]] = rrrrrrr       |
+	 # | 4  | [[rec(50).d]] = 123asda       |
+	 # | 5  | [[rec(50).e]] = sdfsdrf45456  |
+	 # | 6  | [[rec(50).f]] = cvbcb1123     |
+	 # | 7  | [[rec(50).g]] = aasdww2323    |
+	 # | 8  | [[rec(50).h]] = oooooo9999    |
+	 # | 9  | [[rec(50).i]] = sdfsdf3434    |
+	 # | 10 | [[rec(50).j]] = asda123123    |
+	 # | 11 | [[rec(50).k]] = sssdff444     |
+	 # | 12 | [[rec(50).l]] = asdvvvbbg3333 |
+	 # | 13 | [[rec(50).m]] = aasdasd       |
+	 # | 14 | [[rec(50).n]] = aasdd222      |
+	 # | 15 | [[rec(50).o]] = 22323asda     |
+	 # 
 		
   
   #Bug 12159

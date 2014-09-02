@@ -252,7 +252,7 @@ namespace Dev2.Runtime.ESB.Control
             finally
             {
                 // clean up after the request has executed ;)
-                if(dataObject.IsDebug && !_doNotWipeDataList)
+                if(dataObject.IsDebug && !_doNotWipeDataList && !dataObject.IsRemoteInvoke)
                 {
                     //DataListRegistar.ClearDataList();
 
