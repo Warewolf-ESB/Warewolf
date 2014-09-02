@@ -6,8 +6,8 @@
                          xmlns:adorners="clr-namespace:Dev2.Activities.Designers2.Core.Adorners"
                          xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                          xmlns:errors="clr-namespace:Dev2.Providers.Errors;assembly=Dev2.Infrastructure"
-    xmlns:errors2="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"
-    mc:Ignorable="d"
+                         xmlns:errors2="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"
+                         mc:Ignorable="d"
                          d:DesignHeight="300"
                          d:DesignWidth="300"
                          d:DataContext="{d:DesignInstance core:ActivityDesignerViewModel}">
@@ -21,21 +21,23 @@
             Background="#FFFFCAD5"
             Padding="4">
 
-        <Grid x:Name="ErrorsGrid">
+        <Grid x:Name="ErrorsGrid"
+              Loaded="ErrorsGrid_Loaded">
             <Grid.Resources>
                 <DataTemplate x:Key="ErrorDisplayTemplate"
                               DataType="errors2:IActionableErrorInfo">
-                    <StackPanel Margin="0,5,0,5" AutomationProperties.AutomationId="ErrorsPanel">
+                    <StackPanel Margin="0,5,0,5">
                         <TextBlock TextWrapping="Wrap"
-                                   VerticalAlignment="Top">
+                                   VerticalAlignment="Top"
+                                   Loaded="ErrorTextBlock_Loaded">
                                 <Hyperlink Command="{Binding Path=DataContext.OpenErrorsLinkCommand, ElementName=ErrorsGrid}"
                                            CommandParameter="{Binding}">
-                                    <Run Text="{Binding Message}"></Run>
+                                    <Run Text="{Binding Message}"/>
                                 </Hyperlink>
                         </TextBlock>
                         <TextBlock TextWrapping="Wrap"
                                    VerticalAlignment="Top"
-                                   Text="{Binding FixData}"></TextBlock>
+                                   Text="{Binding FixData}"/>
                     </StackPanel>
                 </DataTemplate>
             </Grid.Resources>
@@ -48,16 +50,14 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Text="Errors"
-                       FontWeight="Bold"
-                       AutomationProperties.AutomationId="UI_ErrorsTextBlock_AutoID"></TextBlock>
+                       FontWeight="Bold"/>
             <Button Grid.Row="0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top"
                     Command="{Binding ShowErrorsToggleCommand}"
                     ToolTip="Close Errors"
                     Style="{StaticResource CloseButtonStyle}"
-                    AutomationProperties.AutomationId="UI_CloseHelp_AutoID">
-            </Button>
+                    AutomationProperties.AutomationId="UI_CloseHelp_AutoID"/>
             <ItemsControl Grid.Row="1"
                           Margin="0,5,0,0"
                           VerticalAlignment="Top"
