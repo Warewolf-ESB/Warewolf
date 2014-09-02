@@ -17,8 +17,9 @@ using Dev2.Studio.Core.AppResources.Browsers;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
-    // ReSharper disable RedundantUsingDirective
-
+// ReSharper disable RedundantUsingDirective
+using Dev2.Studio.Core.Helpers;
+using Dev2.Views.Dialogs;
 // ReSharper restore RedundantUsingDirective
 
 // ReSharper disable CheckNamespace
