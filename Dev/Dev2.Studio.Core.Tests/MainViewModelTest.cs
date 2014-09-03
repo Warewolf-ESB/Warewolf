@@ -1130,39 +1130,39 @@ namespace Dev2.Core.Tests
         #endregion
 
         #region Delete
-
-        [TestMethod]
-        public void DeleteServerResourceOnLocalHostAlsoDeletesFromEnvironmentRepoAndExplorerTree()
-        {
-            //---------Setup------
-            var mock = SetupForDeleteServer();
-            EnvironmentModel.Setup(s => s.IsLocalHost).Returns(true);
-            //---------Execute------
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object }, "", false);
-            MainViewModel.Handle(msg);
-
-            //---------Verify------
-            mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Once());
-            EventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Once());
-        }
-
-        [TestMethod]
-        public void DeleteServerResourceOnOtherServerDoesntDeleteFromEnvironmentRepoAndExplorerTree()
-        {
-            //---------Setup------
-            var mock = SetupForDeleteServer();
-            EnvironmentConnection.Setup(c => c.DisplayName).Returns("NotLocalHost");
-            EventAggregator = new Mock<IEventAggregator>();
-            EventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>())).Verifiable();
-
-            //---------Execute------
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object }, "", false);
-            MainViewModel.Handle(msg);
-
-            //---------Verify------
-            mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Never());
-            EventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
-        }
+        //
+        //        [TestMethod]
+        //        public void DeleteServerResourceOnLocalHostAlsoDeletesFromEnvironmentRepoAndExplorerTree()
+        //        {
+        //            //---------Setup------
+        //            var mock = SetupForDeleteServer();
+        //            EnvironmentModel.Setup(s => s.IsLocalHost).Returns(true);
+        //            //---------Execute------
+        //            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object }, "", false);
+        //            MainViewModel.Handle(msg);
+        //
+        //            //---------Verify------
+        //            mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Once());
+        //            EventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Once());
+        //        }
+        //
+        //        [TestMethod]
+        //        public void DeleteServerResourceOnOtherServerDoesntDeleteFromEnvironmentRepoAndExplorerTree()
+        //        {
+        //            //---------Setup------
+        //            var mock = SetupForDeleteServer();
+        //            EnvironmentConnection.Setup(c => c.DisplayName).Returns("NotLocalHost");
+        //            EventAggregator = new Mock<IEventAggregator>();
+        //            EventAggregator.Setup(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>())).Verifiable();
+        //
+        //            //---------Execute------
+        //            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object }, "", false);
+        //            MainViewModel.Handle(msg);
+        //
+        //            //---------Verify------
+        //            mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Never());
+        //            EventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
+        //        }
 
         [TestMethod]
         public void DeleteResourceConfirmedExpectContextRemoved()
@@ -1292,24 +1292,24 @@ namespace Dev2.Core.Tests
             //Assert resource deleted from repository
             repo.Verify(repository => repository.DeleteResource(unassignedResource.Object), Times.Once(), "Deleting an unassigned resource does not delete from resource repository");
         }
-
-        [TestMethod]
-        [Owner("Ashley Lewis")]
-        [TestCategory("MainViewmodel_HandleDeleteResourceMessage")]
-        public void MainViewmodel_HandleDeleteResourceMessage_NullModelInList_NoUnhandledExeptions()
-        {
-            //---------Setup------
-            var mock = SetupForDeleteServer();
-            EnvironmentModel.Setup(s => s.IsLocalHost).Returns(true);
-
-            //---------Execute------
-            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { null }, "", false);
-            MainViewModel.Handle(msg);
-
-            //---------Verify------
-            mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Never());
-            EventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
-        }
+        //
+        //        [TestMethod]
+        //        [Owner("Ashley Lewis")]
+        //        [TestCategory("MainViewmodel_HandleDeleteResourceMessage")]
+        //        public void MainViewmodel_HandleDeleteResourceMessage_NullModelInList_NoUnhandledExeptions()
+        //        {
+        //            //---------Setup------
+        //            var mock = SetupForDeleteServer();
+        //            EnvironmentModel.Setup(s => s.IsLocalHost).Returns(true);
+        //
+        //            //---------Execute------
+        //            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { null }, "", false);
+        //            MainViewModel.Handle(msg);
+        //
+        //            //---------Verify------
+        //            mock.Verify(s => s.Remove(It.IsAny<IEnvironmentModel>()), Times.Never());
+        //            EventAggregator.Verify(e => e.Publish(It.IsAny<EnvironmentDeletedMessage>()), Times.Never());
+        //        }
 
         #endregion delete
 

@@ -62,6 +62,38 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
+        [Given(@"All environments disconnected")]
+        public void GivenAllEnvironmentsDisconnected()
+        {
+            IEnvironmentModel environmentModel;
+            TryGetValue("environment", out environmentModel);
+            if(environmentModel != null && environmentModel.IsConnected)
+            {
+                environmentModel.Disconnect();
+            }
+        }
+
+        [Given(@"Debug states are cleared")]
+        public void GivenDebugStatesAreCleared()
+        {
+            List<IDebugState> debugStates;
+            TryGetValue("debugStates", out debugStates);
+            if(debugStates != null)
+            {
+                debugStates.Clear();
+            }
+        }
+
+        [Given(@"Debug events are reset")]
+        public void GivenDebugEventsAreReset()
+        {
+            if(_debugWriterSubscriptionService != null)
+            {
+                _debugWriterSubscriptionService.Unsubscribe();
+                _debugWriterSubscriptionService.Dispose();
+            }
+        }
+
         [Then(@"the workflow execution has ""(.*)"" error")]
         public void ThenTheWorkflowExecutionHasError(string hasError)
         {

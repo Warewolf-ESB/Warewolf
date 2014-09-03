@@ -614,10 +614,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             VerifyArgument.IsNotNull("resourceModel", resourceModel);
             var debugInfoModel = ServiceDebugInfoModelFactory.CreateServiceDebugInfoModel(resourceModel, string.Empty, debugMode);
 
-            var result = new WorkflowInputDataViewModel(debugInfoModel, sessionId)
+            var result = new WorkflowInputDataViewModel(debugInfoModel, sessionId);
+            if(resourceModel != null && resourceModel.Environment != null && resourceModel.Environment.AuthorizationService != null)
             {
-                CanDebug = resourceModel.UserPermissions.CanDebug()
-            };
+                result.CanDebug = resourceModel.Environment.AuthorizationService.GetResourcePermissions(resourceModel.ID).CanDebug();
+            }
+
             return result;
         }
     }

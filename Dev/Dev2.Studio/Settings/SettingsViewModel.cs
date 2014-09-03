@@ -399,7 +399,6 @@ namespace Dev2.Settings
                     Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.SaveClicked);
                     // Need to reset sub view models so that selecting something in them fires our OnIsDirtyPropertyChanged()
 
-                    ResetIsDirtyForChildren();
                     ClearErrors();
                     if(SecurityViewModel.HasDuplicateResourcePermissions())
                     {
@@ -421,6 +420,7 @@ namespace Dev2.Settings
                     var isWritten = WriteSettings();
                     if(isWritten)
                     {
+                        ResetIsDirtyForChildren();
                         IsSaved = true;
                         IsDirty = false;
                         ClearErrors();

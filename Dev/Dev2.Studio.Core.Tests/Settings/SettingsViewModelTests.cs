@@ -6,7 +6,6 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
-using Dev2.Providers.Events;
 using Dev2.Services.Security;
 using Dev2.Settings;
 using Dev2.Settings.Security;
@@ -254,7 +253,7 @@ namespace Dev2.Core.Tests.Settings
             viewModel.SaveCommand.Execute(null);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(viewModel.SecurityViewModel.IsDirty);
+            Assert.IsTrue(viewModel.SecurityViewModel.IsDirty);
             Assert.IsTrue(viewModel.IsDirty);
             Assert.IsFalse(viewModel.IsSaved);
             Assert.IsTrue(viewModel.HasErrors);
@@ -422,7 +421,7 @@ You need Administrator permission.", viewModel.Errors);
             viewModel.SaveCommand.Execute(null);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(viewModel.SecurityViewModel.IsDirty);
+            Assert.IsTrue(viewModel.SecurityViewModel.IsDirty);
             Assert.IsTrue(viewModel.IsDirty);
             Assert.IsFalse(viewModel.IsSaved);
             Assert.IsTrue(viewModel.HasErrors);

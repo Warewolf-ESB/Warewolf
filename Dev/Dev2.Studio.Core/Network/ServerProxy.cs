@@ -38,7 +38,7 @@ namespace Dev2.Network
 {
     public class ServerProxy : IDisposable, IEnvironmentConnection
     {
-        System.Timers.Timer _reconnectHeartbeat;
+        Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
         readonly IAsyncWorker _asyncWorker;
 
@@ -97,12 +97,13 @@ namespace Dev2.Network
                 }
                 if(!String.IsNullOrEmpty(userName))
                 {
-                    NTAccount acct = new NTAccount(domainName, userName);
+                    NTAccount acct;
                     UserPrincipal userPrincipal = null;
                     SecurityIdentifier id;
                     PrincipalContext context;
                     try
                     {
+                        acct = new NTAccount(domainName, userName);
                         id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
                         context = new PrincipalContext(domainName.ToLower() == Environment.MachineName.ToLower() ? ContextType.Machine : ContextType.Domain);
                         userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
@@ -115,11 +116,12 @@ namespace Dev2.Network
                     {
                         if(userPrincipal == null)
                         {
-                            acct = new NTAccount(Environment.UserDomainName, userName);
+                            domainName = Environment.UserDomainName;
+                            acct = new NTAccount(domainName, userName);
                             id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
                             context = new PrincipalContext(domainName.ToLower() == Environment.MachineName.ToLower() ? ContextType.Machine : ContextType.Domain);
                             userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
-        }
+                        }
 
                         if(userPrincipal != null)
                         {
@@ -342,7 +344,7 @@ namespace Dev2.Network
             {
                 if(_reconnectHeartbeat == null)
                 {
-                    _reconnectHeartbeat = new System.Timers.Timer();
+                    _reconnectHeartbeat = new Timer();
                     _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
                     _reconnectHeartbeat.Interval = 3000;
                     _reconnectHeartbeat.AutoReset = true;
@@ -446,7 +448,7 @@ namespace Dev2.Network
         {
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
-            Logger.TraceInfo("PERMISSIONS MEMO OBJECT [ " + objString + " ]");
+            Logger.TraceInfo("PERMISSIONS MEMO OBJECT SERVER: " + DisplayName + " [ " + objString + " ]");
             var obj = JsonConvert.DeserializeObject<PermissionsModifiedMemo>(objString);
             try
             {
@@ -480,7 +482,6 @@ namespace Dev2.Network
             {
                 ItemItemDeletedMessageAction(serverExplorerItem);
             }
-            //Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
         }
 
         public Action<IExplorerItem> ItemItemUpdatedMessageAction { get; set; }
@@ -491,7 +492,6 @@ namespace Dev2.Network
             {
                 ItemItemUpdatedMessageAction(serverExplorerItem);
             }
-            //Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
         }
 
         public Guid ServerID { get; protected set; }

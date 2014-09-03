@@ -216,9 +216,9 @@ namespace Dev2.Models
         public void SetDisplay(string display)
         {
             _displayName = display;
-// ReSharper disable ExplicitCallerInfoArgument
+            // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("DisplayName");
-// ReSharper restore ExplicitCallerInfoArgument
+            // ReSharper restore ExplicitCallerInfoArgument
         }
 
         public Guid ResourceId { get; set; }
@@ -256,7 +256,7 @@ namespace Dev2.Models
                     if(_permissions != value)
                     {
                         _permissions = value;
-                        IsAuthorized = _permissions != Permissions.None;
+                        IsAuthorized = (_permissions != Permissions.None) && this.Descendants().Any(model => model.Permissions != Permissions.None);
 
                         OnPropertyChanged();
                         // ReSharper disable ExplicitCallerInfoArgument
@@ -1022,7 +1022,7 @@ namespace Dev2.Models
             int total = 0;
             foreach(ExplorerItemModel explorerItemModel in Children)
             {
-                if(explorerItemModel.ResourceType != ResourceType.Version && 
+                if(explorerItemModel.ResourceType != ResourceType.Version &&
                    explorerItemModel.ResourceType != ResourceType.Message)
                 {
                     if(explorerItemModel.ResourceType == ResourceType.Folder)
@@ -1300,7 +1300,7 @@ namespace Dev2.Models
             {
                 return;
             }
-            
+
             if(ResourceType == ResourceType.Version)
             {
                 var workflowXaml = _studioResourceRepository.GetVersion(VersionInfo, EnvironmentId);
@@ -1336,7 +1336,7 @@ namespace Dev2.Models
             }
         }
 
-  
+
 
         /// <summary>
         /// Deploys this instance.

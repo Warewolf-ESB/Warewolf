@@ -1119,6 +1119,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 if(_environmentModel.AuthorizationService != null)
                 {
+                    _environmentModel.AuthorizationService.PermissionsModified -= AuthorizationServiceOnPermissionsModified;
                     _environmentModel.AuthorizationService.PermissionsModified += AuthorizationServiceOnPermissionsModified;
                 }
             };

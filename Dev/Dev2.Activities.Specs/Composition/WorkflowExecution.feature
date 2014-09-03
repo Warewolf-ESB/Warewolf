@@ -4,6 +4,11 @@ Feature: WorkflowExecution
 	As a Warewolf user
 	I want to be able to build workflows and execute them against the server
 
+Background: Setup for workflow execution
+			Given Debug events are reset
+			And All environments disconnected
+			And Debug states are cleared
+
 Scenario: Simple workflow executing against the server
 	 Given I have a workflow "WorkflowWithAssign"
 	 And "WorkflowWithAssign" contains an Assign "Rec To Convert" as

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Models;
@@ -45,9 +46,18 @@ namespace Dev2.ViewModels.Deploy
                         AuthorizationService = _environment.AuthorizationService;
                     };
                 }
+                if(AuthorizationService != null)
+                {
+                    AuthorizationService.PermissionsChanged -= AuthorizationServiceOnPermissionsModified;
+                    AuthorizationService.PermissionsChanged += AuthorizationServiceOnPermissionsModified;
+                }
             }
         }
 
+        void AuthorizationServiceOnPermissionsModified(object sender, EventArgs eventArgs)
+        {
+            FilterEnvironments(_environment);
+        }
 
         public IExplorerItemModel FindChild(IContextualResourceModel resource)
         {
@@ -133,6 +143,16 @@ namespace Dev2.ViewModels.Deploy
         {
             if(connection != null)
             {
+                if(Application.Current != null && Application.Current.Dispatcher != null)
+                {
+                    Application.Current.Dispatcher.Invoke(() => ExplorerItemModels.Clear());
+
+                }
+                else
+                {
+                    ExplorerItemModels.Clear();
+                }
+
                 var isAuthorizedDeployTo = AuthorizationService != null && AuthorizationService.IsAuthorized(AuthorizationContext.DeployTo, Guid.Empty.ToString());
                 if(isAuthorizedDeployTo && _target)
                 {
@@ -141,7 +161,6 @@ namespace Dev2.ViewModels.Deploy
                             StudioResourceRepository.FindItem(env => env.EnvironmentId == connection.ID)
                         };
 
-                    ExplorerItemModels.Clear();
                     ExplorerItemModels = explorerItemModels;
 
                     if(ExplorerItemModels != null && ExplorerItemModels.Count == 1 && ExplorerItemModels[0] != null)
@@ -159,7 +178,6 @@ namespace Dev2.ViewModels.Deploy
                                 StudioResourceRepository.FindItem(env => env.EnvironmentId == connection.ID)
                             };
 
-                        ExplorerItemModels.Clear();
                         ExplorerItemModels = explorerItemModels;
 
                         if(ExplorerItemModels != null && ExplorerItemModels.Count == 1 && ExplorerItemModels[0] != null)
