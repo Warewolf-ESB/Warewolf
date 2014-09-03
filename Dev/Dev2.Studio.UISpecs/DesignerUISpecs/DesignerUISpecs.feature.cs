@@ -68,20 +68,6 @@ namespace Dev2.Studio.UI.Specs.DesignerUISpecs
         {
             testRunner.CollectScenarioErrors();
         }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("ChangeWorkflowMappingsAlertsAffectedOnSave")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Designer")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DesignerUISpecs")]
-        public virtual void ChangeWorkflowMappingsAlertsAffectedOnSave()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ChangeWorkflowMappingsAlertsAffectedOnSave", new string[] {
-                        "DesignerUISpecs"});
-#line 7
-this.ScenarioSetup(scenarioInfo);
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore

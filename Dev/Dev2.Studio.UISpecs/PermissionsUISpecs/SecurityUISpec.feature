@@ -293,11 +293,11 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   Then "RIBBONDEPLOY" is visible
 	   Then "RIBBONDEBUG" is visible
 	   #Checking Deploy Permissions "UnAuthorized"
-	    Given I click "RIBBONDEPLOY"
-       Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_TestingPermisions"
-       Given "DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployToText_AutoID" is visible
-       Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_TestingPermisions"
-       Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is visible		
+	   #Given I click "RIBBONDEPLOY"
+    #   Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_TestingPermisions"
+    #   Given "DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployToText_AutoID" is visible
+    #   Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_TestingPermisions"
+    #   Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is visible
 #End Test - 3
  
 

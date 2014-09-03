@@ -58,3 +58,6 @@ Scenario: Searching a Workflow in Explorer by using Filter and Executing
 	And "WORKFLOWDESIGNER,Gather System Information (2)(GatherSystemInformationDesigner)" is visible within "7" seconds
 	And I send "{F6}" to ""
 	And "DEBUGOUTPUT,Gather System Information" is visible within "15" seconds	
+
+
+	

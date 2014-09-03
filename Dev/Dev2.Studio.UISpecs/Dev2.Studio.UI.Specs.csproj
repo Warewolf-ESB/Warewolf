@@ -127,10 +127,10 @@
     </Compile>
     <Compile Include="Connect Control\ConnectControlSteps.cs" />
     <Compile Include="ContextForTests.cs" />
-    <Compile Include="PermissionsUISpecs\PermissionsUISpec.feature.cs">
+    <Compile Include="PermissionsUISpecs\SecurityUISpec.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>PermissionsUISpec.feature</DependentUpon>
+      <DependentUpon>SecurityUISpec.feature</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools Large ViewUISpecs\ToolsTestUISpecs.cs" />
@@ -166,9 +166,9 @@
       <LastGenOutput>ExplorerUISpecs.feature.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
-    <None Include="PermissionsUISpecs\PermissionsUISpec.feature">
+    <None Include="PermissionsUISpecs\SecurityUISpec.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>PermissionsUISpec.feature.cs</LastGenOutput>
+      <LastGenOutput>SecurityUISpec.feature.cs</LastGenOutput>
     </None>
     <None Include="DevToolKit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
