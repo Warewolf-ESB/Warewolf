@@ -30,16 +30,16 @@ Scenario: Testing Different Server Permissions For Public
        And I click "SECURITYPUBLICVIEW"
        And I click "SECURITYSAVE"
 	   #Creating New Remote Connection
-       Given I create a new remote connection "SVR003" as
+       Given I create a new remote connection "REM" as
        | Address               | AuthType | UserName | Password |
        | http://localhost:3142 | Public   |          |          |
 	   #Checking Explorer Icons
-       Then I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID"   
-       Given I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
-       Then "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
-       Then "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+       Then I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID"   
+       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
 	   #Opening Resouurce from Explorer
-       Given I double click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"      
+       Given I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"      
        Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "3" seconds
 	   #Checking Ribbon Icons
        Then "RIBBONDEBUG" is visible
@@ -61,17 +61,16 @@ Scenario: Testing Different Server Permissions For Public
        And I click "SECURITYPUBLICEXECUTE"
        And I click "SECURITYSAVE"
 	   #Checking Explorer Icons
-	   Given I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID" 
-       And I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
-       Then "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is not visible
-       And "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
-       When I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"	          
-	   #Checking Debug Window Buttons
-	   Then I wait for "2" seconds
-	   Given "WINDOWDEBUG" is visible within "3" seconds
-       Then "WINDOWDEBUGBUTTON" is disabled
-       Then "WINDOWVIEWINBROWSER" is visible
-       Then I click "WINDOWCANCEL"
+	   Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
+       And I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is not visible
+       And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+       ##Given I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID"	          
+#	   #Checking Debug Window Buttons
+	   ###Given "WINDOWDEBUG" is visible within "25" seconds
+       ###Then "WINDOWDEBUGBUTTON" is disabled
+       ##Then "WINDOWVIEWINBROWSER" is visible within "25" seconds
+       ##Then I click "WINDOWCANCEL"
 	   #Checking Ribbon Icons
        Then "RIBBONNEWDATABASECONNECTOR" is disabled
        Then "RIBBONSCHEDULE" is disabled
@@ -79,6 +78,7 @@ Scenario: Testing Different Server Permissions For Public
        Then "RIBBONNEWWEBCONNECTOR" is disabled
        Then "RIBBONNEWENDPOINT" is disabled
  #Test-3 Set server permission Contribute
+       Given all tabs are closed
        Given I click "EXPLORER,UI_localhost_AutoID" 
        And I click "RIBBONSETTINGS"   
        And I click "SECURITYPUBLICADMINISTRATOR"  
@@ -89,11 +89,11 @@ Scenario: Testing Different Server Permissions For Public
        And I click "SECURITYPUBLICCONTRIBUTE"
        And I click "SECURITYSAVE"
        #Checking Explorer Icons
-	   Given I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID" 
-	   Then I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"       
-       Then "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
-       Then "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
-       When I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	   Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
+	   Then I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"       
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+       When I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	   #Ribbon Icons
        Then "RIBBONDEBUG" is visible
        Then "RIBBONNEWDATABASECONNECTOR" is visible
@@ -103,6 +103,7 @@ Scenario: Testing Different Server Permissions For Public
        Then "RIBBONNEWENDPOINT" is visible
        Then "RIBBONSCHEDULE" is disabled
  #Test-4 Set server permission Deploy To
+        Given all tabs are closed
        Given I click "EXPLORER,UI_localhost_AutoID" 
        And I click "RIBBONSETTINGS"   
        And I click "SECURITYPUBLICADMINISTRATOR"  
@@ -113,10 +114,10 @@ Scenario: Testing Different Server Permissions For Public
        And I click "SECURITYPUBLICDEPLOYTO"
        And I click "SECURITYSAVE"
 	   #Checking Explorer Icons
-       Given I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
-       And "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible      
-       Given I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID" 
-	   And I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible      
+       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
+	   And I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	   #Ribbon Icons
        Then "RIBBONNEWENDPOINT" is disabled
        Then "RIBBONSETTINGS" is disabled
@@ -127,9 +128,10 @@ Scenario: Testing Different Server Permissions For Public
        Then "RIBBONDEPLOY" is visible
 	   #Checking Deploy UnAuthorized
        Then I click "RIBBONDEPLOY"
-       Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_SVR003"
-       Then "DEPLOYSOURCE,UI_SourceServer_SVR003 (http://localhost:3142/)_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
+       Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_REM"
+       Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
  #Test-4 Set server permission Deploy From
+      Given all tabs are closed
        And I click "EXPLORER,UI_localhost_AutoID" 
        And I click "RIBBONSETTINGS"   
        And I click "SECURITYPUBLICADMINISTRATOR"  
@@ -140,10 +142,10 @@ Scenario: Testing Different Server Permissions For Public
        And I click "SECURITYPUBLICDEPLOYFROM"
        And I click "SECURITYSAVE" 
 	   #Exploer Icons
-       And I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
-       Then "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
-       Given "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is disabled
-       Given I click "EXPLORER,UI_SVR003 (http://localhost:3142/)_AutoID" 
+       And I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
+       Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
+       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
 	   #Ribbon Icons
        Then "RIBBONNEWENDPOINT" is disabled
        Then "RIBBONSETTINGS" is disabled
@@ -154,11 +156,11 @@ Scenario: Testing Different Server Permissions For Public
        Then "RIBBONDEPLOY" is visible
 	   #Checking Deploy UnAuthorized
        Then I click "RIBBONDEPLOY"
-       Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_SVR003"
-       Then "DEPLOYDESTINATION,SVR003*,UI_Unautherized_DeployToText_AutoID" is visible
+       Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_REM"
+       Then "DEPLOYDESTINATION,REM*,UI_Unautherized_DeployToText_AutoID" is visible
 	
 
-
+	# Before Running this Test make sure IntegrationTester account is not ADMIN on your Box
 Scenario: Testing Server Permission And Resource permission for Specific Group
  #Test-1 Set up Public Remote Server permissions View and Resource selected with Execute right only   
        Given all tabs are closed
@@ -378,16 +380,16 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I send "Testing" to ""
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_9_AutoID,UI__ContributePermissionCheckBox_AutoID"
 	   #Adding Resource Permissions Row11
-	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_10_AutoID,UI__AddResourceButton_AutoID"
+	   Given I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_10_AutoID,UI__AddResourceButton_AutoID"
 	   And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
-	   And I send "Testing" to ""
+	   And I send "UI Testing Group" to ""
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_10_AutoID,UI__ContributePermissionCheckBox_AutoID"
 	   #Saving 
        And I click "SECURITYSAVE"
 	   #Checking Validation Message Of Duplicate Permissions
-	   Given "SETTINGSTAB,UI_Errors_AutoID" contains text "To set server"
+	   Given "SETTINGSTAB,UI_Errors_AutoID" contains text "There are duplicate permissions"
 	   #Deleting Duplicate Row and Checking ScrollBar
        Given I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_0_AutoID,UI_AddRemovebtn_AutoID"
 	   And I click "SECURITYSAVE"
@@ -395,5 +397,5 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   Given I click "SECURITYSERVERHELP"
 	   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set server"
 	   And I click "SECURITYRESOURCEHELP"
-	   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set server"
+	   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set specific"
 	   

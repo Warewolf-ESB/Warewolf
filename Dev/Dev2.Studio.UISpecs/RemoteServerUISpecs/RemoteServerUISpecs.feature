@@ -3,6 +3,16 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
+Background: 
+	   Given I click "EXPLORER,UI_localhost_AutoID"
+	   Given I click "RIBBONSETTINGS"   
+	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
+	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
+	   And I click "SECURITYPUBLICADMINISTRATOR"  
+       And I click "SECURITYSAVE" 
+	   Given all tabs are closed
+
+
 @RemtoeServer
 Scenario: Testing Remote Server Connection Creating Remote Workflow and Executing
 	Given I have Warewolf running
@@ -18,14 +28,14 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 	#Opening Remote Resouurce from Explorer
 	Given I double click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "5" seconds
-	## 12490 Opening and Debug A Remote Workflow When LocalWorkflow With SameName IsOpen Workflow is Executed
-	#Given I click "EXPLORER,UI_localhost_AutoID"   
-	#Given I click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
-	#Given I double click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
-	#Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "5" seconds
-	#And I send "{F6}" to ""
-	#Given "DEBUGOUTPUT,Assign" is visible within "15" seconds	
-	## Creating A Workflow On Remote Server
+	# 12490 Opening and Debug A Remote Workflow When LocalWorkflow With SameName IsOpen Workflow is Executed
+	Given I click "EXPLORER,UI_localhost_AutoID"   
+	Given I click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Given I double click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "5" seconds
+	And I send "{F6}" to ""
+	Given "DEBUGOUTPUT,Assign" is visible within "15" seconds	
+	# Creating A Workflow On Remote Server
 	Given I click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID"   
 	And I click "RIBBONNEWENDPOINT"
 	Given I send "Assign" to "TOOLBOX,PART_SearchBox"
