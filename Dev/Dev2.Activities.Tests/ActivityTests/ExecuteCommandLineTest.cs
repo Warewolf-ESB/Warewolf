@@ -465,36 +465,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void OnExecuteWhereInputFromRecordWithSpecificIndexWithConsoleOutputsExpectOutputForResultInsertsToRecordsets()
-        {
-            //------------Setup for test--------------------------
-            var activity = new DsfExecuteCommandLineActivity();
-            var toolPath = TestContext.DeploymentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            if(!File.Exists(toolPath))
-            {
-                toolPath = Environment.CurrentDirectory + "\\ConsoleAppToTestExecuteCommandLineActivity.exe";
-            }
-            var randomString = "\"" + toolPath + "\" output";
-            activity.CommandFileName = "[[recset1(1).rec1]]";
-            activity.CommandResult = "[[recset1(1).field1]]";
-            var testData = "<root><recset1><field1></field1><rec1>" + randomString + "</rec1></recset1></root>";
-            SetUpForExecution(activity, testData, "<ADL><recset1><field1></field1><rec1></rec1></recset1></ADL>");
-            var expected = new List<string> { "This is output from the user" };
-            string error;
-            //------------Execute Test---------------------------
-            var result = ExecuteProcess();
-            //------------Assert Results-------------------------
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
-            // remove test datalist ;)
-            DataListRemoval(result.DataListID);
-
-            var actualArray = actual.ToArray();
-            actual.Clear();
-            actual.AddRange(actualArray.Select(s => s.Trim()));
-            CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
-        }
-
-        [TestMethod]
         public void OnExecuteWhereMultipleInputFromRecordSetWithOutputToRecordSetExpectOutputResultsToMultipleRowsInRecordSet()
         {
             //------------Setup for test--------------------------

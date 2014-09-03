@@ -155,14 +155,19 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {
 
     self.save = function () {
         var isWindowClosedOnSave = $dialogContainerID ? false : true;
-        self.saveViewModel.showDialog(isWindowClosedOnSave, function (result) {
-            if (!isWindowClosedOnSave) {
-                $dialogContainerID.dialog("close");
-                if (self.onSaveCompleted != null) {
-                    self.onSaveCompleted(result);
-                }
-            };
-        });
+        if (self.data.resourceID() == "00000000-0000-0000-0000-000000000000") {
+            self.saveViewModel.showDialog(isWindowClosedOnSave, function (result) {
+                if (!isWindowClosedOnSave) {
+                    $dialogContainerID.dialog("close");
+                    if (self.onSaveCompleted != null) {
+                        self.onSaveCompleted(result);
+                    }
+                };
+            });
+        } else {
+            self.saveViewModel.IsDialogLess = true;
+            self.saveViewModel.save();
+        }
     };
      
     self.viewInBrowser = function () {
