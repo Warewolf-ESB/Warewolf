@@ -76,28 +76,28 @@ namespace Dev2.Core.Tests.Diagnostics
         }
 
 
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("AppExceptionHandler_Handle")]
-        public void AppExceptionHandlerHandle_WithOneException_ExpectedHandledLogsException()
-        {
-            //------------Setup for test--------------------------
-            var testTraceListner = new TestTraceListner(new StringBuilder());
-            Trace.Listeners.Add(testTraceListner);
-            var e = GetException();
-            var mockHandler = new Mock<AppExceptionHandlerAbstract>();
-            var popupController = new Mock<IAppExceptionPopupController>();
-            mockHandler.Protected().Setup<IAppExceptionPopupController>("CreatePopupController").Returns(popupController.Object);
-            //------------Execute Test---------------------------
-            var actual = mockHandler.Object.Handle(e);
-            //------------Assert Results-------------------------
-            Thread.Sleep(500);
-            Assert.IsTrue(actual, "AppExceptionHandlerAbstract failed to handle valid exception");
-            StringAssert.Contains(testTraceListner.CurrentlyLogged, ":: ERROR -> AppExceptionHandlerAbstractProxy Handle : {\"ClassName\":\"System.Exception\",\"Message\":\"Test Exception\",\"Data\":null,\"InnerException\":{\"ClassName\":\"System.Exception\",\"Message\":\"Test inner Exception\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null},\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}"
-                + "\r\n" +
-                "{\"ClassName\":\"System.Exception\",\"Message\":\"Test inner Exception\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}");
+        //[TestMethod]
+        //[Owner("Hagashen Naidu")]
+        //[TestCategory("AppExceptionHandler_Handle")]
+        //public void AppExceptionHandlerHandle_WithOneException_ExpectedHandledLogsException()
+        //{
+        //    //------------Setup for test--------------------------
+        //    var testTraceListner = new TestTraceListner(new StringBuilder());
+        //    Trace.Listeners.Add(testTraceListner);
+        //    var e = GetException();
+        //    var mockHandler = new Mock<AppExceptionHandlerAbstract>();
+        //    var popupController = new Mock<IAppExceptionPopupController>();
+        //    mockHandler.Protected().Setup<IAppExceptionPopupController>("CreatePopupController").Returns(popupController.Object);
+        //    //------------Execute Test---------------------------
+        //    var actual = mockHandler.Object.Handle(e);
+        //    //------------Assert Results-------------------------
+        //    Thread.Sleep(500);
+        //    Assert.IsTrue(actual, "AppExceptionHandlerAbstract failed to handle valid exception");
+        //    StringAssert.Contains(testTraceListner.CurrentlyLogged, ":: ERROR -> AppExceptionHandlerAbstractProxy Handle : {\"ClassName\":\"System.Exception\",\"Message\":\"Test Exception\",\"Data\":null,\"InnerException\":{\"ClassName\":\"System.Exception\",\"Message\":\"Test inner Exception\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null},\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}"
+        //        + "\r\n" +
+        //        "{\"ClassName\":\"System.Exception\",\"Message\":\"Test inner Exception\",\"Data\":null,\"InnerException\":null,\"HelpURL\":null,\"StackTraceString\":null,\"RemoteStackTraceString\":null,\"RemoteStackIndex\":0,\"ExceptionMethod\":null,\"HResult\":-2146233088,\"Source\":null,\"WatsonBuckets\":null}");
 
-        }
+        //}
 
         [TestMethod]
         public void AppExceptionHandlerHandleWithSameExceptionTwiceExpectedHandledAndAppRestarted()

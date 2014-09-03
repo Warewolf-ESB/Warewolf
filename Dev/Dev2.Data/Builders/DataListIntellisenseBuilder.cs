@@ -12,7 +12,7 @@ namespace Dev2.DataList.Contract
     /// </summary>
     internal class DataListIntellisenseBuilder
     {
-        const string _descAttribute = "Description";
+        const string DescAttribute = "Description";
 
         public string DataList { set; private get; }
 
@@ -65,7 +65,7 @@ namespace Dev2.DataList.Contract
                 }
                 catch(Exception ex)
                 {
-                    this.LogError(ex);
+                    Dev2Logger.Log.Error(ex);
                 }
 
                 if(tmpRootNl != null)
@@ -81,10 +81,10 @@ namespace Dev2.DataList.Contract
                             string recordsetName = tmpNode.Name;
                             IList<IDev2DataLanguageIntellisensePart> children = new List<IDev2DataLanguageIntellisensePart>();
                             // now extract child node defs
-                            XmlNodeList childNL = tmpNode.ChildNodes;
-                            for(int q = 0; q < childNL.Count; q++)
+                            XmlNodeList childNl = tmpNode.ChildNodes;
+                            for(int q = 0; q < childNl.Count; q++)
                             {
-                                children.Add(DataListFactory.CreateIntellisensePart(childNL[q].Name, ExtractDescription(childNL[q])));
+                                children.Add(DataListFactory.CreateIntellisensePart(childNl[q].Name, ExtractDescription(childNl[q])));
                             }
                             if(FilterTO.FilterType == enIntellisensePartType.All)
                             {
@@ -158,7 +158,7 @@ namespace Dev2.DataList.Contract
             {
                 if(node.Attributes != null)
                 {
-                    XmlAttribute attribute = node.Attributes[_descAttribute];
+                    XmlAttribute attribute = node.Attributes[DescAttribute];
                     if(attribute != null)
                     {
                         result = attribute.Value;
@@ -167,7 +167,7 @@ namespace Dev2.DataList.Contract
             }
             catch(Exception ex)
             {
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
             }
 
             return result;

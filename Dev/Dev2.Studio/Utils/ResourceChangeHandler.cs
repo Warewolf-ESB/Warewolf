@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -69,7 +70,7 @@ namespace Dev2.Utils
                 }
                 else
                 {
-                    this.TraceInfo("Publish message of type - " + typeof(ShowReverseDependencyVisualizer));
+                    Dev2Logger.Log.Info("Publish message of type - " + typeof(ShowReverseDependencyVisualizer));
                     _eventPublisher.Publish(new ShowReverseDependencyVisualizer(resource));
                 }
             }

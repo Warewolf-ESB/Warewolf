@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Security;
@@ -23,16 +24,17 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+           
             var serializer = new Dev2JsonSerializer();
-            var itemToRename = serializer.Deserialize<ServerExplorerItem>(values["itemToAdd"]);
-            itemToRename.Permissions = Permissions.Contribute;
-
-            if(itemToRename.ResourcePath.ToLower().StartsWith("root\\"))
+            var itemToAdd = serializer.Deserialize<ServerExplorerItem>(values["itemToAdd"]);
+            Dev2Logger.Log.Info("Add Folder Service." +itemToAdd);
+            itemToAdd.Permissions = Permissions.Contribute;
+            if(itemToAdd.ResourcePath.ToLower().StartsWith("root\\"))
             {
-                itemToRename.ResourcePath = itemToRename.ResourcePath.Remove(0, 5);
+                itemToAdd.ResourcePath = itemToAdd.ResourcePath.Remove(0, 5);
             }
 
-            var item = ServerExplorerRepo.AddItem(itemToRename, theWorkspace.ID);
+            var item = ServerExplorerRepo.AddItem(itemToAdd, theWorkspace.ID);
             return serializer.SerializeToBuilder(item);
         }
 

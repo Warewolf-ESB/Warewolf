@@ -68,7 +68,7 @@ namespace Dev2.MathOperations
                 }
                 catch(InvalidOperationException ioex)
                 {
-                    this.LogError(ioex);
+                    Dev2Logger.Log.Error(ioex);
                     IFunction func = MathOpsFactory.CreateFunction();
                     return func;
                 }

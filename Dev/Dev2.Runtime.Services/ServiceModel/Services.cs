@@ -3,6 +3,7 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -123,7 +124,8 @@ namespace Dev2.Runtime.ServiceModel
                 try
                 {
                     // TODO : Extract IsForceUpdate flag
-                    var source = JsonConvert.DeserializeObject<DbSource>(args);
+                    Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+                    var source = serialiser.Deserialize<DbSource>(args);
                     source = _resourceCatalog.GetResource<DbSource>(workspaceId, source.ResourceID);
                     var serviceMethods = FetchMethods(source);
                     result.AddRange(serviceMethods);

@@ -206,7 +206,7 @@ namespace Dev2.Diagnostics.Debug
                 {
                     if(debugState != null)
                     {
-                        ServerLogger.LogDebug(debugState);
+                        Dev2Logger.Log.Debug(debugState);
                         IDebugWriter writer;
                         if((writer = Instance.Get(debugState.WorkspaceID)) != null)
                         {

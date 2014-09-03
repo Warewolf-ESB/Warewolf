@@ -1,5 +1,6 @@
 ﻿using System;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Messages;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
@@ -42,7 +43,7 @@ namespace Dev2.Webs.Callbacks
             {
                 Exception e1 = new Exception("There was a problem saving. Please try again.", e);
 
-                Logger.TraceInfo(e.Message + Environment.NewLine + " Stacktrace : " + e.StackTrace + Environment.NewLine + " jsonObj: " + jsonObj.ToString());
+                Dev2Logger.Log.Info(e.Message + Environment.NewLine + " Stacktrace : " + e.StackTrace + Environment.NewLine + " jsonObj: " + jsonObj.ToString());
 
                 throw e1;
             }

@@ -12,11 +12,11 @@ namespace Dev2.Data.Storage
     /// </summary>
     public static class StorageSettingManager
     {
-        const double _pressureFactor = 0.8;
+        const double PressureFactor = 0.8;
 
-        const double _lowPhysicalMemoryPressure = 0.3;
+        const double LowPhysicalMemoryPressure = 0.3;
 
-        const long _lowPhysicalMemoryLimit = 3221225472;
+        const long LowPhysicalMemoryLimit = 3221225472;
 
         public static Func<ulong> TotalFreeMemory { get; set; }
 
@@ -111,23 +111,23 @@ namespace Dev2.Data.Storage
 
             var totalFreeMemory = TotalFreeMemory();
 
-            ServerLogger.LogMessage("*** Total Free Memory [ " + ((totalFreeMemory / 1024) / 1024) + " MB ]");
-            ServerLogger.LogMessage("*** Total Required Memory [ " + ((totalRequiredMemory / 1024) / 1024) + " MB]");
+            Dev2Logger.Log.Info("*** Total Free Memory [ " + ((totalFreeMemory / 1024) / 1024) + " MB ]");
+            Dev2Logger.Log.Info("*** Total Required Memory [ " + ((totalRequiredMemory / 1024) / 1024) + " MB]");
 
             // we need to adjust, shoot ;(
             if(totalRequiredMemory >= totalFreeMemory)
             {
-                ServerLogger.LogMessage("Memory Pressure...");
+                Dev2Logger.Log.Info("Memory Pressure...");
 
                 var totalMemory = TotalPhysicalMemory();
 
-                var factor = _pressureFactor;
+                var factor = PressureFactor;
 
                 // 3 GB is our boundary for stepping down to 1/3 of free ;)
-                if(totalMemory <= _lowPhysicalMemoryLimit)
+                if(totalMemory <= LowPhysicalMemoryLimit)
                 {
-                    ServerLogger.LogMessage("** Low Physical Memory **");
-                    factor = _lowPhysicalMemoryPressure;
+                    Dev2Logger.Log.Info("** Low Physical Memory **");
+                    factor = LowPhysicalMemoryPressure;
                     totalSegments = 2; // set low number of segments in this case ;)
                     StorageLayerSegments = () => "1";
                 }
@@ -136,13 +136,13 @@ namespace Dev2.Data.Storage
 
                 int result = (int)(usableMemeory / totalSegments);
 
-                ServerLogger.LogMessage("*** Slab Size Is [ " + ((result / 1024) / 1024) + " ]");
+                Dev2Logger.Log.Info("*** Slab Size Is [ " + ((result / 1024) / 1024) + " ]");
 
                 if(result < GlobalConstants.DefaultStorageSegmentSize)
                 {
                     const string Msg = "Too little memory to start server, at least 8 MB / slab should be free.";
                     var ex = new Exception(Msg);
-                    ServerLogger.LogError("StorageSettingManager", ex);
+                    Dev2Logger.Log.Error("StorageSettingManager", ex);
                     throw ex;
                 }
 

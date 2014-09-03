@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices;
@@ -19,6 +20,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             StringBuilder result = new StringBuilder();
+            Dev2Logger.Log.Info("Find Network Computers");
             string json = "[";
             try
             {
@@ -33,6 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
+                Dev2Logger.Log.Error(ex);
                 result.Append(ex.Message);
             }
 
@@ -41,15 +44,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService findNetworkComputersService = new DynamicService();
-            findNetworkComputersService.Name = HandlesType();
-            findNetworkComputersService.DataListSpecification = "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            DynamicService findNetworkComputersService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
-            ServiceAction findNetworkComputersAction = new ServiceAction();
-            findNetworkComputersAction.Name = HandlesType();
-            findNetworkComputersAction.ActionType = enActionType.InvokeManagementDynamicService;
-            findNetworkComputersAction.SourceMethod = HandlesType();
-            
+            ServiceAction findNetworkComputersAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
             findNetworkComputersService.Actions.Add(findNetworkComputersAction);
 

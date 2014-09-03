@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Diagnostics;
 using System.IO;
+using Dev2.Common;
 
 namespace Dev2.Providers.Logs
 {
@@ -11,27 +12,12 @@ namespace Dev2.Providers.Logs
     /// </summary>
     public class CustomTextWriter : TraceListener
     {
-        const int DefaultMaxFileSize = 1048576;
-        static string FileName;
-        StreamWriter _traceWriter;
-        readonly AppSettingsReader _appSettingsReader;
-        bool _streamClosed;
-
-        public CustomTextWriter(string fileName)
-        {
-            FileName = fileName;
-            _appSettingsReader = new AppSettingsReader();
-        }
-
         public static string LoggingFileName
         {
             get
             {
-                if(String.IsNullOrEmpty(FileName))
-                {
-                    FileName = "Warewolf Studio.log";
-                }
-                return Path.Combine(StudioLogPath, FileName);
+
+                return Path.Combine(StudioLogPath, "Warewolf Studio.log");
             }
         }
 
@@ -66,10 +52,7 @@ namespace Dev2.Providers.Logs
         {
             try
             {
-                EnsureStream();
-                CheckRollover();
-                _traceWriter.Write(value);
-                _traceWriter.Flush();
+                Dev2Logger.Log.Info(value);
             }
             catch(ObjectDisposedException)
             {
@@ -81,10 +64,9 @@ namespace Dev2.Providers.Logs
         {
             try
             {
-                EnsureStream();
-                CheckRollover();
-                _traceWriter.WriteLine(value);
-                _traceWriter.Flush();
+
+                Dev2Logger.Log.Info(value);
+
             }
             catch(ObjectDisposedException)
             {
@@ -92,71 +74,13 @@ namespace Dev2.Providers.Logs
             }
         }
 
-        void EnsureStream()
-        {
-            if(_traceWriter == null)
-            {
-                _traceWriter = new StreamWriter(LoggingFileName, true);
-            }
-        }
+     
 
-        void CheckRollover()
-        {
-            var maxFileSize = GetMaxFileSize();
-
-            if(maxFileSize > 0)
-            {
-                try
-                {
-                    if(_traceWriter.BaseStream.Length > maxFileSize && !_streamClosed)
-                    {
-                        var fileName = FileName;
-                        CloseTraceWriter();
-                        FileName = fileName;
-                        _traceWriter = new StreamWriter(LoggingFileName, false);
-                        _streamClosed = false;
-                    }
-                }
-                catch(ObjectDisposedException)
-                {
-                    //ignore this exception
-                }
-            }
-        }
-
-        int GetMaxFileSize()
-        {
-            try
-            {
-                int maxFileSize = int.Parse(_appSettingsReader.GetValue("MaxLogFileSizeBytes", typeof(int)).ToString());
-                return maxFileSize;
-            }
-            // ReSharper disable EmptyGeneralCatchClause
-            catch(Exception)
-            // ReSharper restore EmptyGeneralCatchClause
-            {
-                //Could not read setttings. Use default.
-            }
-            return DefaultMaxFileSize;
-        }
-
-        public void CloseTraceWriter()
-        {
-            if(_traceWriter != null)
-            {
-                _traceWriter.Close();
-                _traceWriter.Dispose();
-            }
-            _streamClosed = true;
-            FileName = null;
-        }
+  
 
         protected override void Dispose(bool disposing)
         {
-            if(disposing)
-            {
-                CloseTraceWriter();
-            }
+      
         }
     }
 }

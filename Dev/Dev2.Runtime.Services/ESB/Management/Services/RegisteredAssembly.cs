@@ -20,6 +20,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             SortedSet<string> gacList = new SortedSet<string>();
 
             StringBuilder result = new StringBuilder();
+            Dev2Logger.Log.Info("Registered Assembly");
             try
             {
                 IAssemblyName assemblyName;
@@ -33,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     catch (Exception e)
                     {
-                        this.LogError(e.Message);
+                        Dev2Logger.Log.Error(e.Message);
                     }
                 }
 
@@ -52,6 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
+                Dev2Logger.Log.Error(ex);
                 result.Append(ex.Message);
             }
             

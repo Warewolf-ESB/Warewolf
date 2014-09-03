@@ -12,6 +12,7 @@ using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Utils;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -19,7 +20,6 @@ using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services;
 using Dev2.Services.Events;
@@ -630,7 +630,7 @@ namespace Dev2.Activities.Designers2.Service
                     }
                     catch(XmlException xe)
                     {
-                        this.LogError(xe);
+                        Dev2Logger.Log.Error(xe);
                         // invalid xml, we need to extract the sourceID another way ;)
                         srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
                     }
@@ -1014,7 +1014,7 @@ namespace Dev2.Activities.Designers2.Service
                 }
                 catch(Exception e)
                 {
-                    this.LogError(e);
+                    Dev2Logger.Log.Error(e);
                 }
             }
 
@@ -1063,7 +1063,7 @@ namespace Dev2.Activities.Designers2.Service
             }
             catch(Exception e)
             {
-                this.LogError(e);
+                Dev2Logger.Log.Error(e);
             }
 
             return new List<IInputOutputViewModel>();

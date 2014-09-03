@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Threading;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common;
 using Dev2.Models;
 using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
@@ -126,7 +127,7 @@ namespace Dev2.ViewModels.Deploy
                     }
                     catch(Exception ex)
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                     }
                     finally
                     {

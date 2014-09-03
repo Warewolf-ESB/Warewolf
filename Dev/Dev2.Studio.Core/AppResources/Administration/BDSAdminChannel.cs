@@ -1,6 +1,6 @@
-﻿using Dev2.Common.Interfaces.Activity;
+﻿using Dev2.Common;
+using Dev2.Common.Interfaces.Activity;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Providers.Logs;
 
 // ReSharper disable once CheckNamespace
 namespace Dev2.Studio.Core.AppResources.Administration
@@ -12,7 +12,7 @@ namespace Dev2.Studio.Core.AppResources.Administration
         public void CallbackNotification(string message)
         {
             SendMessage(message);
-            this.TraceInfo(message);
+            Dev2Logger.Log.Info(message);
         }
 
         #endregion

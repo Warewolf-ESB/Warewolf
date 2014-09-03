@@ -15,6 +15,7 @@ using System.Xml.Linq;
 using CommandLine;
 using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Reflection;
 using Dev2.Data;
 using Dev2.Data.Storage;
@@ -73,88 +74,88 @@ namespace Dev2
                 }
 
                 bool commandLineParameterProcessed = false;
-                ServerLogger.EnableInfoOutput = true;
+                Dev2Logger.EnableInfoOutput = true;
                 if(options.Install)
                 {
-                    ServerLogger.LogMessage("Starting Install");
+                    Dev2Logger.Log.Info("Starting Install");
                     commandLineParameterProcessed = true;
 
                     if(!EnsureRunningAsAdministrator(arguments))
                     {
-                        ServerLogger.LogMessage("Cannot install because the server is not running as an admin user");
+                        Dev2Logger.Log.Info("Cannot install because the server is not running as an admin user");
                         return result;
                     }
 
                     if(!WindowsServiceManager.Install())
                     {
                         result = 81;
-                        ServerLogger.LogMessage("Install Success Result is 81");
+                        Dev2Logger.Log.Info("Install Success Result is 81");
                     }
                 }
 
                 if(options.StartService)
                 {
-                    ServerLogger.LogMessage("Starting Service");
+                    Dev2Logger.Log.Info("Starting Service");
                     commandLineParameterProcessed = true;
 
                     if(!EnsureRunningAsAdministrator(arguments))
                     {
-                        ServerLogger.LogMessage("Cannot start because the server is not running as an admin user");
+                        Dev2Logger.Log.Info("Cannot start because the server is not running as an admin user");
                         return result;
                     }
 
                     if(!WindowsServiceManager.StartService(null))
                     {
-                        ServerLogger.LogMessage("Starting Service success. result 83");
+                        Dev2Logger.Log.Info("Starting Service success. result 83");
                         result = 83;
                     }
                 }
 
                 if(options.StopService)
                 {
-                    ServerLogger.LogMessage("Stopping Service");
+                    Dev2Logger.Log.Info("Stopping Service");
                     commandLineParameterProcessed = true;
 
                     if(!EnsureRunningAsAdministrator(arguments))
                     {
-                        ServerLogger.LogMessage("Cannot stop because the server is not running as an admin user");
+                        Dev2Logger.Log.Info("Cannot stop because the server is not running as an admin user");
                         return result;
                     }
 
                     if(!WindowsServiceManager.StopService(null))
                     {
-                        ServerLogger.LogMessage("Stopping Service success. result 84");
+                        Dev2Logger.Log.Info("Stopping Service success. result 84");
                         result = 84;
                     }
                 }
 
                 if(options.Uninstall)
                 {
-                    ServerLogger.LogMessage("Uninstall Service");
+                    Dev2Logger.Log.Info("Uninstall Service");
                     commandLineParameterProcessed = true;
 
                     if(!EnsureRunningAsAdministrator(arguments))
                     {
-                        ServerLogger.LogMessage("Cannot uninstall because the server is not running as an admin user");
+                        Dev2Logger.Log.Info("Cannot uninstall because the server is not running as an admin user");
                         return result;
                     }
 
                     if(!WindowsServiceManager.Uninstall())
                     {
-                        ServerLogger.LogMessage("Uninstall Service success. result 92");
+                        Dev2Logger.Log.Info("Uninstall Service success. result 92");
                         result = 82;
                     }
                 }
 
                 if(commandLineParameterProcessed)
                 {
-                    ServerLogger.LogMessage("Command line processed. Returning");
+                    Dev2Logger.Log.Info("Command line processed. Returning");
                     return result;
                 }
 
                 if(Environment.UserInteractive || options.IntegrationTestMode)
                 {
-                    ServerLogger.LogMessage("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
+                    Dev2Logger.Log.Info("** Starting In Interactive Mode ( " + options.IntegrationTestMode + " ) **");
                     using(_singleton = new ServerLifecycleManager(arguments))
                     {
                         result = _singleton.Run(true);
@@ -164,7 +165,7 @@ namespace Dev2
                 }
                 else
                 {
-                    ServerLogger.LogMessage("** Starting In Service Mode **");
+                    Dev2Logger.Log.Info("** Starting In Service Mode **");
                     // running as service
                     using(var service = new ServerLifecycleManagerService())
                     {
@@ -174,9 +175,9 @@ namespace Dev2
             }
             catch(Exception err)
             {
-                ServerLogger.LogError("Error Starting Server", err);
+                Dev2Logger.Log.Error("Error Starting Server", err);
 // ReSharper disable InvokeAsExtensionMethod
-                ServerLogger.LogError("Error Starting Server. Stack trace", err.StackTrace);
+                Dev2Logger.Log.Error("Error Starting Server. Stack trace", err);
 // ReSharper restore InvokeAsExtensionMethod
                 throw;
             }
@@ -197,14 +198,14 @@ namespace Dev2
 
             protected override void OnStart(string[] args)
             {
-                ServerLogger.LogMessage("** Service Started **");
+                Dev2Logger.Log.Info("** Service Started **");
                 _singleton = new ServerLifecycleManager(null);
                 _singleton.Run(false);
             }
 
             protected override void OnStop()
             {
-                ServerLogger.LogMessage("** Service Stopped **");
+                Dev2Logger.Log.Info("** Service Stopped **");
                 _singleton.Stop(false, 0);
                 _singleton = null;
             }
@@ -235,6 +236,7 @@ namespace Dev2
         ThreadStart _gcmThreadStart;
         Timer _timer;
         IDisposable _owinServer;
+        readonly IPulseLogger _pulseLogger;
 
         // END OF GC MANAGEMENT
 
@@ -265,6 +267,8 @@ namespace Dev2
         /// </summary>
         ServerLifecycleManager(string[] arguments)
         {
+            _pulseLogger = new PulseLogger(60000);
+            _pulseLogger.Start();
             _arguments = arguments ?? new string[0];
             _configFile = DefaultConfigFileName;
             _externalDependencies = AssemblyReference.EmptyReferences;
@@ -355,6 +359,7 @@ namespace Dev2
                 didBreak = true;
             }
 
+
             // PBI 5389 - Resources Assigned and Allocated to Server
             if(!didBreak && !LoadServerWorkspace())
             {
@@ -387,6 +392,7 @@ namespace Dev2
                 // set background timer to query network computer name list every 15 minutes ;)
                 _timer = new Timer(RefreshComputerList, null, 10000, GlobalConstants.NetworkComputerNameQueryFreq);
                 result = ServerLoop(interactiveMode);
+                StartPulseLogger();
             }
             else
             {
@@ -394,6 +400,11 @@ namespace Dev2
             }
 
             return result;
+        }
+
+        void StartPulseLogger()
+        {
+            _pulseLogger.Start();
         }
 
         void RefreshComputerList(object state)
@@ -779,7 +790,7 @@ namespace Dev2
 
                             if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
-                                ServerLogger.EnableDebugOutput = result;
+                                Dev2Logger.EnableDebugOutput = result;
                             }
                             else
                             {
@@ -799,7 +810,7 @@ namespace Dev2
 
                             if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
-                                ServerLogger.EnableTraceOutput = result;
+                                Dev2Logger.EnableTraceOutput = result;
                             }
                             else
                             {
@@ -819,7 +830,7 @@ namespace Dev2
 
                             if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
-                                ServerLogger.EnableErrorOutput = result;
+                                Dev2Logger.EnableErrorOutput = result;
                             }
                             else
                             {
@@ -839,7 +850,7 @@ namespace Dev2
 
                             if(Boolean.TryParse(attr["Enabled"].Value, out result))
                             {
-                                ServerLogger.EnableInfoOutput = result;
+                                Dev2Logger.EnableInfoOutput = result;
                             }
                             else
                             {
@@ -1744,7 +1755,7 @@ namespace Dev2
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError("Dev2.ServerLifecycleManager - Error Migrating", ex);
+                Dev2Logger.Log.Error("Dev2.ServerLifecycleManager - Error Migrating", ex);
             }
         }
 
@@ -1786,8 +1797,8 @@ namespace Dev2
                 // First call to instance loads the provider.
                 var instance = Runtime.Configuration.SettingsProvider.Instance;
                 var settings = instance.Configuration;
-                ServerLogger.LoggingSettings = settings.Logging;
-                ServerLogger.WebserverUri = Runtime.Configuration.SettingsProvider.WebServerUri;
+                Dev2Logger.LoggingSettings = settings.Logging;
+               
                 WriteLine("done.");
                 return true;
             }
@@ -1886,11 +1897,11 @@ namespace Dev2
             if(Environment.UserInteractive)
             {
                 Console.WriteLine(message);
-                ServerLogger.LogMessage(message);
+                Dev2Logger.Log.Info(message);
             }
             else
             {
-                ServerLogger.LogMessage(message);
+                Dev2Logger.Log.Info(message);
             }
 
         }
@@ -1900,11 +1911,11 @@ namespace Dev2
             if(Environment.UserInteractive)
             {
                 Console.Write(message);
-                ServerLogger.LogMessage(message);
+                Dev2Logger.Log.Info(message);
             }
             else
             {
-                ServerLogger.LogMessage(message);
+                Dev2Logger.Log.Info(message);
             }
         }
 
@@ -1912,9 +1923,8 @@ namespace Dev2
 
         static void LogException(Exception ex)
         {
-            ServerLogger.LogError("Dev2.ServerLifecycleManager", ex);
+            Dev2Logger.Log.Error("Dev2.ServerLifecycleManager", ex);
         }
     }
-
 }
 

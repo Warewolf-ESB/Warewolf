@@ -161,7 +161,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch(Exception e)
                 {
-                    this.LogError(e);
+                    Dev2Logger.Log.Error(e);
                     result = e.Message;
                 }
             }
@@ -179,7 +179,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     catch(Exception e)
                     {
-                        this.LogError(e);
+                        Dev2Logger.Log.Error(e);
                         result = e.Message;
                     }
                 }
@@ -317,7 +317,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch(Exception e)
                 {
-                    this.LogError(e.Message);
+                    Dev2Logger.Log.Error(e.Message);
                 }
             }
             else
@@ -338,7 +338,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     catch(Exception e)
                     {
-                        this.LogError(e);
+                        Dev2Logger.Log.Error(e);
                     }
                 }
                 try
@@ -351,7 +351,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch(Exception e)
                 {
-                    this.LogError(e);
+                    Dev2Logger.Log.Error(e);
                 }
             }
             return false;

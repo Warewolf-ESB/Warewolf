@@ -22,7 +22,9 @@ using System.Xml;
 using System.Xml.Linq;
 using Dev2.Common;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.DynamicServices
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Used to persist data to the file system for Workflow Persistence
@@ -70,7 +72,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                this.LogError(exception);
+                Dev2Logger.Log.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
             return isExistingInstance;
@@ -106,7 +108,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                this.LogError(exception);
+                Dev2Logger.Log.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
         }
@@ -204,7 +206,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                this.LogError(exception);
+                Dev2Logger.Log.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
 
@@ -293,7 +295,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                this.LogError(exception);
+                Dev2Logger.Log.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
         }
@@ -320,7 +322,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                this.LogError(exception);
+                Dev2Logger.Log.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
             return instanceId;
@@ -341,7 +343,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception exception)
             {
-                this.LogError(exception);
+                Dev2Logger.Log.Error(exception);
                 throw new InstancePersistenceException(exception.Message, exception);
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
@@ -32,18 +33,18 @@ namespace Dev2.Webs
 
         public void Handle(ShowWebpartWizardMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
         }
 
         public void Handle(CloseWizardMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             CloseWizard();
         }
 
         public void Handle(SetActivePageMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
         }
         #endregion IHandle
 

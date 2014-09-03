@@ -4,7 +4,9 @@ using System.IO;
 using System.Linq;
 using Dev2.Common;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.DynamicServices
+// ReSharper restore CheckNamespace
 {
     public class StudioFileSystem
     {
@@ -66,7 +68,7 @@ namespace Dev2.DynamicServices
                 }
                 catch(Exception ex)
                 {
-                    this.LogError(ex);
+                    Dev2Logger.Log.Error(ex);
                     currentDir = null;
                 }
 
@@ -78,7 +80,7 @@ namespace Dev2.DynamicServices
                     }
                     catch(Exception ex)
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                         currentDir = null;
                     }
                     if(currentDir != null) actualEnsuredDirectories.Add(currentDir);
@@ -114,7 +116,7 @@ namespace Dev2.DynamicServices
                     }
                     catch(Exception ex)
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                         fileName = null;
                     }
 
@@ -127,7 +129,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception ex)
             {
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
                 tempPath = relativePath;
             }
 
@@ -168,7 +170,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception ex)
             {
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
                 return null;
             }
 
@@ -192,7 +194,7 @@ namespace Dev2.DynamicServices
             }
             catch(Exception ex)
             {
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
                 path = null;
             }
 

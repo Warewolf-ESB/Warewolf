@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using Dev2.Common;
-using Dev2.Data;
-using Dev2.Data.DataListCache;
+using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 
-namespace Dev2.DataList.Contract.Persistence {
+namespace Dev2.Data.DataListCache {
 
     /// <summary>
     /// Basic in memory provider for client and test
     /// </summary>
     public class DataListTemporalProvider : IDataListPersistenceProvider {
 
-        private static readonly ConcurrentDictionary<Guid, IBinaryDataList> _repo = new ConcurrentDictionary<Guid, IBinaryDataList>();
+        private static readonly ConcurrentDictionary<Guid, IBinaryDataList> Repo = new ConcurrentDictionary<Guid, IBinaryDataList>();
 
         public bool WriteDataList(Guid datalistID, IBinaryDataList datalist, ErrorResultTO errors) {
             bool result = false;
 
             if (datalistID != GlobalConstants.NullDataListID)
             {
-                _repo[datalistID] = datalist;
+                Repo[datalistID] = datalist;
                 result = true;
             }
 
@@ -35,7 +34,7 @@ namespace Dev2.DataList.Contract.Persistence {
         public IBinaryDataList ReadDatalist(Guid datalistID, ErrorResultTO errors) {
 
             IBinaryDataList result;
-            _repo.TryGetValue(datalistID, out result);
+            Repo.TryGetValue(datalistID, out result);
             return result;
         }
 
@@ -45,7 +44,7 @@ namespace Dev2.DataList.Contract.Persistence {
             try
             {
                 IBinaryDataList tmp;
-                if (_repo.TryRemove(id, out tmp)) // cache miss, check persisted DL cache?
+                if (Repo.TryRemove(id, out tmp)) // cache miss, check persisted DL cache?
                 {
                         result = true;
                 }
@@ -55,7 +54,7 @@ namespace Dev2.DataList.Contract.Persistence {
             }
             catch (Exception ex)
             {
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
                 /* Fail safe */
             }
 

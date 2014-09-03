@@ -155,19 +155,19 @@ namespace Dev2.Services.Security
             if(principal.Identity != null)
             // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
-                this.LogError("PERM DUMP FOR [ " + principal.Identity.Name + " ]");
+                Dev2Logger.Log.Error("PERM DUMP FOR [ " + principal.Identity.Name + " ]");
             }
             else
             // ReSharper disable HeuristicUnreachableCode
             {
-                this.LogError("PERM DUMP FOR [ NULL USER ]");
+                Dev2Logger.Log.Error("PERM DUMP FOR [ NULL USER ]");
             }
             // ReSharper restore HeuristicUnreachableCode
 
             foreach(var perm in _securityService.Permissions)
             {
-                this.LogError("SERVER PERM -> " + perm.WindowsGroup);
-                this.LogError("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]");
+                Dev2Logger.Log.Error("SERVER PERM -> " + perm.WindowsGroup);
+                Dev2Logger.Log.Error("IS USER IN IT [ " + principal.IsInRole(perm.WindowsGroup) + " ]");
             }
         }
 

@@ -36,3 +36,4 @@ using System.Runtime.InteropServices;
 
 [assembly: InternalsVisibleTo("Dev2.Studio.Core.Tests")]
 [assembly: InternalsVisibleTo("Dev2.Activities.Specs")]
+

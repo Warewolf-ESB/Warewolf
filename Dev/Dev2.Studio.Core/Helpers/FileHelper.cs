@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using Dev2.Common;
 using Dev2.Providers.Logs;
 using Ionic.Zip;
 
@@ -40,28 +41,28 @@ namespace Dev2.Studio.Core.Helpers
         /// <date>2013/01/15</date>
         public static void CreateTextFile(string outputTxt, string outputPath)
         {
-            Logger.TraceInfo();
+            Dev2Logger.Log.Info("");
             EnsurePathIsvalid(outputPath, ".txt");
             var fs = File.Open(outputPath,
                                       FileMode.OpenOrCreate,
                                       FileAccess.Write);
             using(var writer = new StreamWriter(fs, Encoding.UTF8))
             {
-                Logger.TraceInfo("Writing a text file");
+                Dev2Logger.Log.Info("Writing a text file");
                 writer.Write(outputTxt);
             }
         }
 
         public static void CreateTextFile(StringBuilder outputTxt, string outputPath)
         {
-            Logger.TraceInfo();
+            Dev2Logger.Log.Info("");
             EnsurePathIsvalid(outputPath, ".txt");
             var fs = File.Open(outputPath,
                                       FileMode.OpenOrCreate,
                                       FileAccess.Write);
             using(var writer = new StreamWriter(fs, Encoding.UTF8))
             {
-                Logger.TraceInfo("Writing a text file");
+                Dev2Logger.Log.Info("Writing a text file");
                 writer.Write(outputTxt);
             }
         }
@@ -190,11 +191,11 @@ namespace Dev2.Studio.Core.Helpers
 
         public static string GetDebugItemTempFilePath(string uri)
         {
-            Logger.TraceInfo();
+            Dev2Logger.Log.Info("");
 
             if(String.IsNullOrEmpty(uri))
             {
-                Logger.TraceInfo("Uri is empty, an exception is thrown");
+                Dev2Logger.Log.Info("Uri is empty, an exception is thrown");
                 throw new ArgumentNullException("uri", @"Cannot pass null or empty uri");
             }
 

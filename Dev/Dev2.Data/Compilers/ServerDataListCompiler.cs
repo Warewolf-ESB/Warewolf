@@ -444,7 +444,7 @@ namespace Dev2.Server.Datalist
             Guid result = Guid.Empty;
             errors = new ErrorResultTO();
 
-            ServerLogger.LogMessage("PRE-" + typeOf.ToString().ToUpper() + " SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb() + " MBs ]");
+            Dev2Logger.Log.Info("PRE-" + typeOf.ToString().ToUpper() + " SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb() + " MBs ]");
 
             switch(typeOf)
             {
@@ -458,7 +458,7 @@ namespace Dev2.Server.Datalist
                     break;
             }
 
-            ServerLogger.LogMessage("POST-" + typeOf.ToString().ToUpper() + " SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb() + " MBs ]");
+            Dev2Logger.Log.Info("POST-" + typeOf.ToString().ToUpper() + " SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb() + " MBs ]");
 
             return result;
 

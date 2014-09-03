@@ -5,6 +5,7 @@ using System.Globalization;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
@@ -247,6 +248,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error("DSFForEach", e);
                 allErrors.AddError(e.Message);
             }
             finally

@@ -82,6 +82,8 @@ namespace Dev2.Runtime.ESB.Execution
 
         public override Guid Execute(out ErrorResultTO errors)
         {
+            Dev2Logger.Log.Info(String.Format("Started Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
+
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
             var serviceName = DataObject.ServiceName;
 
@@ -109,7 +111,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch(Exception e)
             {
-                this.LogError(e);
+                Dev2Logger.Log.Error(e);
                 errors.AddError(e.Message);
             }
 
@@ -125,6 +127,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 return mergeOp;
             }
+            Dev2Logger.Log.Info(String.Format("Completed Remote Execution. Service Name:{0} Resource Id:{1} Mode:{2}", DataObject.ServiceName, DataObject.ResourceID, DataObject.IsDebug ? "Debug" : "Execute"));
 
             return Guid.Empty;
         }

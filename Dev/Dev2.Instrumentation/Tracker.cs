@@ -114,12 +114,12 @@ namespace Dev2.Instrumentation
         /// <param name="ex">The handled exception.</param>
         public static void TrackException(string className, string methodName, Exception ex)
         {
-#if ! DEBUG
+
             var idx = className.LastIndexOf('.');
             var newClassName = className.Substring(idx + 1);
             newClassName = newClassName.Replace("`", "").Replace("1", "");
             TrackEvent(TrackerEventGroup.Exception, string.Format("{0}.{1}", newClassName, methodName));
-#endif
+
         }
 
         static void Perform(Func<GenericReturn> action, bool async = false)

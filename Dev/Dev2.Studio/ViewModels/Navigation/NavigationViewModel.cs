@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.ConnectionHelpers;
 using Dev2.Models;
@@ -442,7 +443,7 @@ namespace Dev2.Studio.ViewModels.Navigation
             if(localhostItem != null)
             {
                 localhostItem.IsExplorerSelected = true;
-                this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
+                Dev2Logger.Log.Debug("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                 var localHost = EnvironmentRepository.FindSingle(model => model.ID == localhostItem.EnvironmentId);
                 _eventPublisher.Publish(new SetActiveEnvironmentMessage(localHost));
             }

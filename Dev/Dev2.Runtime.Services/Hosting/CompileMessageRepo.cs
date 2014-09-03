@@ -132,13 +132,13 @@ namespace Dev2.Runtime.Hosting
                                         }
                                         else
                                         {
-                                            this.LogError("Failed to parse message ID");
+                                            Dev2Logger.Log.Error("Failed to parse message ID");
                                         }
                                     }
                                 }
                                 catch(Exception e)
                                 {
-                                    this.LogError(e);
+                                    Dev2Logger.Log.Error(e);
                                 }
                             }
                         }
@@ -146,7 +146,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 catch(Exception e)
                 {
-                    this.LogError(e);
+                    Dev2Logger.Log.Error(e);
                 }
             }
         }
@@ -202,7 +202,7 @@ namespace Dev2.Runtime.Hosting
                     }
                     catch(Exception e)
                     {
-                        this.LogError(e);
+                        Dev2Logger.Log.Error(e);
                     }
                 }
             }
@@ -377,7 +377,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 catch(Exception e)
                 {
-                    this.LogError(e);
+                    Dev2Logger.Log.Error(e);
                 }
             }
         }

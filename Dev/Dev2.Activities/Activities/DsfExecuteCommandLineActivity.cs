@@ -9,6 +9,7 @@ using System.Management;
 using System.Text;
 using System.Threading;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
@@ -42,7 +43,9 @@ namespace Dev2.Activities
         /// </summary>  
         [Inputs("CommandFileName")]
         [FindMissing]
+// ReSharper disable ConvertToAutoProperty
         public string CommandFileName
+// ReSharper restore ConvertToAutoProperty
         {
             get
             {
@@ -59,7 +62,9 @@ namespace Dev2.Activities
 
         [Outputs("CommandResult")]
         [FindMissing]
+// ReSharper disable ConvertToAutoProperty
         public string CommandResult
+// ReSharper restore ConvertToAutoProperty
         {
             get
             {
@@ -157,6 +162,7 @@ namespace Dev2.Activities
                                 }
                                 catch(Exception e)
                                 {
+                                    Dev2Logger.Log.Error("DSFExecuteCommandLine", e);
                                     allErrors.AddError(e.Message);
                                 }
                             }
@@ -183,6 +189,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error("DSFCommandLine", e);
                 allErrors.AddError(e.Message);
             }
             finally

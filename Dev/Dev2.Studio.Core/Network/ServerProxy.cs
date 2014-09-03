@@ -1,6 +1,17 @@
-﻿using System.DirectoryServices.AccountManagement;
+﻿using System;
+using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
+using System.Net;
+using System.Net.Http;
+using System.Net.Security;
+using System.Network;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -13,7 +24,6 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
 using Dev2.ExtMethods;
 using Dev2.Messages;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
@@ -21,24 +31,12 @@ using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Newtonsoft.Json;
 using ServiceStack.Messaging.Rcon;
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Net.Security;
-using System.Network;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
-using Timer = System.Timers.Timer;
 
 namespace Dev2.Network
 {
     public class ServerProxy : IDisposable, IEnvironmentConnection
     {
-        Timer _reconnectHeartbeat;
+        System.Timers.Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
         readonly IAsyncWorker _asyncWorker;
 
@@ -66,7 +64,7 @@ namespace Dev2.Network
             WebServerUri = new Uri(uriString.Replace("/dsf", ""));
 
 
-            this.LogTrace("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + CredentialCache.DefaultNetworkCredentials.UserName);
+            Dev2Logger.Log.Debug("***** Attempting Server Hub : " + uriString + " -> " + CredentialCache.DefaultNetworkCredentials.Domain + @"\" + CredentialCache.DefaultNetworkCredentials.UserName);
             HubConnection = new HubConnection(uriString) { Credentials = credentials };
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
@@ -110,7 +108,7 @@ namespace Dev2.Network
                     }
                     catch(Exception e)
                     {
-                        Logger.LogError("Getting NTAccount", e);
+                        Dev2Logger.Log.Error("Getting NTAccount", e);
                     }
                     try
                     {
@@ -121,7 +119,7 @@ namespace Dev2.Network
                             id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
                             context = new PrincipalContext(domainName.ToLower() == Environment.MachineName.ToLower() ? ContextType.Machine : ContextType.Domain);
                             userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
-                        }
+        }
 
                         if(userPrincipal != null)
                         {
@@ -145,7 +143,7 @@ namespace Dev2.Network
                     }
                     catch(Exception e)
                     {
-                        Logger.LogError("Getting NTAccount", e);
+                        Dev2Logger.Log.Error("Getting NTAccount", e);
                     }
                 }
             }
@@ -188,7 +186,7 @@ namespace Dev2.Network
 
         void HasDisconnected()
         {
-            this.LogTrace("*********** Hub connection down");
+            Dev2Logger.Log.Debug("*********** Hub connection down");
             IsConnected = false;
             if(IsShuttingDown)
             {
@@ -216,7 +214,7 @@ namespace Dev2.Network
             {
                 TypeNameHandling = TypeNameHandling.Objects
             });
-            Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
+           Dev2Logger.Log.Info(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });
         }
 
@@ -274,7 +272,7 @@ namespace Dev2.Network
                 aex.Flatten();
                 aex.Handle(ex =>
                 {
-                    Logger.LogError(this, aex);
+                    Dev2Logger.Log.Error(this, aex);
                     var hex = ex as HttpClientException;
                     if(hex != null)
                     {
@@ -334,7 +332,7 @@ namespace Dev2.Network
 
         void HandleConnectError(Exception e)
         {
-            Logger.LogError(this, e);
+            Dev2Logger.Log.Error(this, e);
             StartReconnectTimer();
         }
 
@@ -344,7 +342,7 @@ namespace Dev2.Network
             {
                 if(_reconnectHeartbeat == null)
                 {
-                    _reconnectHeartbeat = new Timer();
+                    _reconnectHeartbeat = new System.Timers.Timer();
                     _reconnectHeartbeat.Elapsed += OnReconnectHeartbeatElapsed;
                     _reconnectHeartbeat.Interval = 3000;
                     _reconnectHeartbeat.AutoReset = true;
@@ -355,7 +353,7 @@ namespace Dev2.Network
 
         public virtual void StopReconnectHeartbeat()
         {
-            this.TraceInfo();
+            Dev2Logger.Log.Info("");
             if(_reconnectHeartbeat != null)
             {
                 _reconnectHeartbeat.Stop();
@@ -367,7 +365,7 @@ namespace Dev2.Network
 
         void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
         {
-            this.TraceInfo();
+            Dev2Logger.Log.Info("");
             Connect();
             if(IsConnected)
             {
@@ -387,7 +385,7 @@ namespace Dev2.Network
             }
             catch(Exception e)
             {
-                Logger.LogError(this, e);
+                Dev2Logger.Log.Error(this, e);
             }
         }
 
@@ -432,14 +430,14 @@ namespace Dev2.Network
 
         void OnHubConnectionError(Exception exception)
         {
-            Logger.LogError(this, exception);
+            Dev2Logger.Log.Error(this, exception);
         }
 
         void OnMemoReceived(string objString)
         {
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
-            this.LogTrace("Memo Received [ " + objString + " ]");
+            Dev2Logger.Log.Info("Memo Received [ " + objString + " ]");
             var obj = JsonConvert.DeserializeObject<DesignValidationMemo>(objString);
             ServerEvents.PublishObject(obj);
         }
@@ -448,7 +446,7 @@ namespace Dev2.Network
         {
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
-            Logger.TraceInfo("PERMISSIONS MEMO OBJECT SERVER: " + DisplayName + " [ " + objString + " ]");
+            Dev2Logger.Log.Info("PERMISSIONS MEMO OBJECT [ " + objString + " ]");
             var obj = JsonConvert.DeserializeObject<PermissionsModifiedMemo>(objString);
             try
             {
@@ -458,7 +456,7 @@ namespace Dev2.Network
             }
             catch(Exception e)
             {
-                Logger.LogError(this, e);
+                Dev2Logger.Log.Error(this, e);
             }
             RaisePermissionsChanged();
         }
@@ -482,6 +480,7 @@ namespace Dev2.Network
             {
                 ItemItemDeletedMessageAction(serverExplorerItem);
             }
+            //Logger.TraceInfo(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
         }
 
         public Action<IExplorerItem> ItemItemUpdatedMessageAction { get; set; }
@@ -527,7 +526,7 @@ namespace Dev2.Network
 
         void UpdateIsAuthorized(bool isAuthorized)
         {
-            this.LogTrace("UpdateIsAuthorized [ " + isAuthorized + " ]");
+            Dev2Logger.Log.Debug("UpdateIsAuthorized [ " + isAuthorized + " ]");
             if(IsAuthorized != isAuthorized)
             {
                 IsAuthorized = isAuthorized;
@@ -551,7 +550,7 @@ namespace Dev2.Network
                 throw new ArgumentNullException("payload");
             }
 
-            this.LogTrace("Execute Command Payload [ " + payload + " ]");
+            Dev2Logger.Log.Debug("Execute Command Payload [ " + payload + " ]");
 
             // build up payload 
             var length = payload.Length;
@@ -651,21 +650,21 @@ namespace Dev2.Network
                     var ioex = ex as InvalidOperationException;
                     if(ioex != null && ioex.Message.Contains(@"Connection started reconnecting before invocation result was received"))
                     {
-                        this.LogTrace("Connection is reconnecting");
+                        Dev2Logger.Log.Debug("Connection is reconnecting");
                         return true; // This we know how to handle this
                     }
                     // handle 403 errors when permissions have been removed ;)
                     var hce = ex as HttpClientException;
                     if(hce != null && hce.Message.Contains("StatusCode: 403"))
                     {
-                        this.LogTrace("Forbidden - Most Likely Permissions Changed.");
+                        Dev2Logger.Log.Debug("Forbidden - Most Likely Permissions Changed.");
                         // Signal not-authorized anymore ;)
                         UpdateIsAuthorized(false);
                         return true;
                     }
 
                     // handle generic errors ;)                   
-                    Logger.LogError(this, ex);
+                    Dev2Logger.Log.Error(this, ex);
                     return true; // Let anything else stop the application.
                 });
                 if(hasDisconnected)

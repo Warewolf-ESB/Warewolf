@@ -21,6 +21,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+
+            Dev2Logger.Log.Info("Find Directory");
             string username = string.Empty;
             string domain = string.Empty;
             string password = string.Empty;
@@ -57,9 +59,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             IntPtr accessToken = IntPtr.Zero;
             // ReSharper disable once InconsistentNaming
+// ReSharper disable InconsistentNaming
             const int LOGON32_PROVIDER_DEFAULT = 0;
+// ReSharper restore InconsistentNaming
             // ReSharper disable once InconsistentNaming
+// ReSharper disable InconsistentNaming
             const int LOGON32_LOGON_INTERACTIVE = 2;
+// ReSharper restore InconsistentNaming
 
             StringBuilder result = new StringBuilder();
 
@@ -133,6 +139,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
+                Dev2Logger.Log.Error(ex);
                 result.AppendFormat("Error: {0}", ex.Message);
             }
 
@@ -179,14 +186,14 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <returns></returns>
         private string GetDirectoryInfoAsJson(DirectoryInfo directory)
         {
+           
             int count = 0;
-            string name;
             string json = "[";
             try
             {
                 foreach(DirectoryInfo d in directory.GetDirectories())
                 {
-                    name = Regex.Replace(d.Name, @"\\", @"\\");
+                    string name = Regex.Replace(d.Name, @"\\", @"\\");
                     json += @"{""title"":""" + name + @""", ""isFolder"": true, ""key"":""" +
                             name.Replace(" ", "_").Replace("(", "40").Replace(")", "41") + @""", ""isLazy"": true}";
                     if(count < (directory.GetDirectories().Length + directory.GetFiles().Length - 1))
@@ -209,7 +216,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
             }
             json += "]";
             return json;

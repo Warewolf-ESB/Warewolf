@@ -61,7 +61,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             catch(Exception e)
             {
                 // ReSharper disable InvokeAsExtensionMethod
-                ServerLogger.LogError(this, e);
+                Dev2Logger.Log.Error(this, e);
                 // ReSharper restore InvokeAsExtensionMethod
             }
         }
@@ -117,7 +117,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 catch(Exception e)
                 {
-                    this.LogError(e);
+                    Dev2Logger.Log.Error(e.Message,e);
                 }
 
 

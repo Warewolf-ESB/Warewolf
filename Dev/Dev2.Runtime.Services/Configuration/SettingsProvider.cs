@@ -146,7 +146,7 @@ namespace Dev2.Runtime.Configuration
                 // ReSharper restore EmptyGeneralCatchClause
                 {
                     // error occurred so ignore and load empty
-                    this.LogError(ex);
+                    Dev2Logger.Log.Error(ex);
                 }
             }
             return new Settings.Configuration(WebServerUri);

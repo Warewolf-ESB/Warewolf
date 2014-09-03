@@ -76,6 +76,9 @@
     <Reference Include="Dev2.Common.Interfaces">
       <HintPath>..\Dev2.Common.Interfaces\bin\x86\Debug\Dev2.Common.Interfaces.dll</HintPath>
     </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\Dev2.Studio\bin\Debug\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Win32.TaskScheduler, Version=2.1.0.26050, Culture=neutral, PublicKeyToken=0d013ddd5178a2ae, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

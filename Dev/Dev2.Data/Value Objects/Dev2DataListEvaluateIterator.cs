@@ -55,7 +55,7 @@ namespace Dev2.DataList.Contract.Value_Objects
                 }
                 catch(Exception ex)
                 {
-                    this.LogError(ex);
+                    Dev2Logger.Log.Error(ex);
                     // We trap because we want the result if successful else default to empty list
                 }
                 _iterIdx++;

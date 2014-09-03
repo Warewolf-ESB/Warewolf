@@ -82,7 +82,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch(Exception e)
                 {
-                    ServerLogger.LogError("SecurityRead", e);
+                    Dev2Logger.Log.Error("SecurityRead", e);
                 }
             }
 

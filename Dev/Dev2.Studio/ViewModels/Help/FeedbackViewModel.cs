@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Input;
+using Dev2.Common;
 using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core;
@@ -439,7 +440,7 @@ namespace Dev2.Studio.ViewModels.Help
         {
             try
             {
-                Logger.TraceInfo();
+                Dev2Logger.Log.Info("");
                 Type type = Type.GetTypeFromCLSID(new Guid("0006F03A-0000-0000-C000-000000000046"));
                 if(type == null)
                 {
@@ -451,7 +452,7 @@ namespace Dev2.Studio.ViewModels.Help
             }
             catch(COMException)
             {
-                Logger.TraceInfo("Outlook not installed on machine");
+                Dev2Logger.Log.Info("Outlook not installed on machine");
                 return false;
             }
         };
@@ -473,7 +474,7 @@ namespace Dev2.Studio.ViewModels.Help
         /// <exception cref="System.NullReferenceException">ICommService of type EmailCommMessage</exception>
         public void Send(ICommService<EmailCommMessage> commService)
         {
-            this.TraceInfo();
+            Dev2Logger.Log.Debug("");
             if(commService == null) throw new NullReferenceException("ICommService<EmailCommMessage>");
 
             var message = new EmailCommMessage

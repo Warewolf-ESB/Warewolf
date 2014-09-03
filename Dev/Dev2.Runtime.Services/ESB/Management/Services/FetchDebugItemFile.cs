@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
@@ -16,11 +17,17 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+
+            Dev2Logger.Log.Info("Fetch Debug Item File Started");
+            try
+            {
+
+        
             var result = new ExecuteMessage { HasError = false };
 
             if(values == null)
             {
-                ServerLogger.LogTrace("values are missing");
+                Dev2Logger.Log.Debug("values are missing");
                 throw new InvalidDataContractException("values are missing");
             }
 
@@ -28,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             values.TryGetValue("DebugItemFilePath", out tmp);
             if(tmp == null || tmp.Length == 0)
             {
-                ServerLogger.LogTrace("DebugItemFilePath is missing");
+                Dev2Logger.Log.Debug("DebugItemFilePath is missing");
                 throw new InvalidDataContractException("DebugItemFilePath is missing");
             }
 
@@ -36,7 +43,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(File.Exists(debugItemFilePath))
             {
-                ServerLogger.LogTrace("DebugItemFilePath found");
+                Dev2Logger.Log.Debug("DebugItemFilePath found");
 
                 var lines = File.ReadLines(debugItemFilePath);
                 foreach(var line in lines)
@@ -47,9 +54,15 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2JsonSerializer serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(result);
             }
-
-            ServerLogger.LogTrace("DebugItemFilePath not found, throwing an exception");
+            Dev2Logger.Log.Debug("DebugItemFilePath not found, throwing an exception");
             throw new InvalidDataContractException(string.Format("DebugItemFilePath {0} not found", debugItemFilePath));
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Log.Error(e);
+                throw;
+            }
+
         }
 
         public DynamicService CreateServiceEntry()

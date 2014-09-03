@@ -56,7 +56,7 @@ namespace Dev2.Data.Binary_Objects
                 }
                 else
                 {
-                    ServerLogger.LogTrace("REGESTIRATION - Transactional scope ID = " + transactionScopeId);
+                    Dev2Logger.Log.Debug("REGESTIRATION - Transactional scope ID = " + transactionScopeId);
                     // its new, add it ;)
                     RegistrationRoster[keyId] = new List<Guid> { dataListId };
                 }
@@ -74,7 +74,7 @@ namespace Dev2.Data.Binary_Objects
             Task.Run(() =>
             {
 
-                ServerLogger.LogTrace("DISPOSING - Transactional scope ID = " + transactionScopeId);
+                Dev2Logger.Log.Debug("DISPOSING - Transactional scope ID = " + transactionScopeId);
                 try
                 {
                     lock(Lock)
@@ -104,7 +104,7 @@ namespace Dev2.Data.Binary_Objects
                 }
                 catch(Exception e)
                 {
-                    ServerLogger.LogError("DataListRegistar", e);
+                    Dev2Logger.Log.Error("DataListRegistar", e);
                 }
                 finally
                 {

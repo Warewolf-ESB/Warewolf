@@ -7,7 +7,9 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Newtonsoft.Json.Linq;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Framework.Converters.Graph.String.Json
+// ReSharper restore CheckNamespace
 {
     [Serializable]
     public class JsonMapper : IMapper
@@ -67,7 +69,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     }
                     catch(Exception ex)
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                         propertyData = null;
                     }
 
@@ -87,7 +89,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     }
                     catch(Exception ex)
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }

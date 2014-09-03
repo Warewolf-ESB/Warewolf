@@ -61,7 +61,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             // now process headers ;)
             if(headers != null)
             {
-                ServerLogger.LogTrace("Remote Invoke");
+                Dev2Logger.Log.Debug("Remote Invoke");
 
                 var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
                 var remoteId = headers.Get(HttpRequestHeader.From.ToString());
@@ -129,7 +129,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             // Build EsbExecutionRequest - Internal Services Require This ;)
             EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
 
-            ServerLogger.LogTrace("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
+            Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
 
             var executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
             allErrors.MergeErrors(errors);
@@ -206,7 +206,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
 
 
-            ServerLogger.LogTrace("Execution Result [ " + executePayload + " ]");
+            Dev2Logger.Log.Debug("Execution Result [ " + executePayload + " ]");
 
             // Clean up the datalist from the server
             if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
@@ -366,7 +366,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError("AbstractWebRequestHandler", ex);
+                        Dev2Logger.Log.Error("AbstractWebRequestHandler", ex);
                     }
                 }
             }
@@ -392,7 +392,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 bdl.TryCreateScalarTemplate(string.Empty, key, string.Empty, true, out error);
                 if(!string.IsNullOrEmpty(error))
                 {
-                    "AbstractWebRequestHandler".LogError(error);
+                    Dev2Logger.Log.Error(error);
                 }
 
                 IBinaryDataListEntry entry;
@@ -402,12 +402,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                     entry.TryPutScalar(item, out error);
                     if(!string.IsNullOrEmpty(error))
                     {
-                        "AbstractWebRequestHandler".LogError(error);
+                        Dev2Logger.Log.Error(error);
                     }
                 }
                 else
                 {
-                    "AbstractWebRequestHandler".LogError(error);
+                    Dev2Logger.Log.Error(error);
                 }
             }
 
@@ -420,13 +420,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var result = compiler.ConvertFrom(pushedId, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
                 if(errors.HasErrors())
                 {
-                    "AbstractWebRequestHandler".LogError(errors.MakeDisplayReady());
+                    Dev2Logger.Log.Error(errors.MakeDisplayReady());
                 }
 
                 return result;
             }
 
-            "AbstractWebRequestHandler".LogError(errors.MakeDisplayReady());
+            Dev2Logger.Log.Error(errors.MakeDisplayReady());
 
             return string.Empty;
         }

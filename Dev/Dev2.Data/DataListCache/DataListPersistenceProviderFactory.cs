@@ -1,11 +1,9 @@
-﻿using Dev2.DataList.Contract.Persistence;
-
-namespace Dev2.Data.DataListCache
+﻿namespace Dev2.Data.DataListCache
 {
     public class DataListPersistenceProviderFactory
     {
         private static volatile IDataListPersistenceProvider _memoryProvider;
-        private static readonly object _memoryProviderGuard = new object();
+        private static readonly object MemoryProviderGuard = new object();
 
         /// <summary>
         /// Creates the memory provider.
@@ -15,7 +13,7 @@ namespace Dev2.Data.DataListCache
         {
             if(_memoryProvider == null)
             {
-                lock(_memoryProviderGuard)
+                lock(MemoryProviderGuard)
                 {
                     if(_memoryProvider == null)
                     {

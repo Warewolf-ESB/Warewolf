@@ -37,7 +37,7 @@ namespace Dev2.Data.Decisions.Operations
                     }
                     catch(Exception ex)
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                         // Best effort ;)
                     }
                 }

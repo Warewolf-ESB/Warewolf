@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -42,10 +43,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentException("newPath value not supplied.");
                 }
+                Dev2Logger.Log.Info(String.Format("Reanme Folder. Path:{0} NewPath:{1}",path,newPath));
                 item = ServerExplorerRepository.Instance.RenameFolder(path.ToString(), newPath.ToString(), theWorkspace.ID);
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error(e);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             var serializer = new Dev2JsonSerializer();

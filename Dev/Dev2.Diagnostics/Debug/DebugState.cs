@@ -538,7 +538,7 @@ namespace Dev2.Diagnostics.Debug
             }
             //-----------------------------
 
-            var settings = ServerLogger.LoggingSettings;
+            var settings = Dev2Logger.LoggingSettings;
 
             //Version
             if(settings.IsVersionLogged && !string.IsNullOrWhiteSpace(Version))

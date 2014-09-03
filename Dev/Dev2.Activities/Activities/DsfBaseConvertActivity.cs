@@ -179,6 +179,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     }
                                     catch(Exception e)
                                     {
+                                        Dev2Logger.Log.Error("DSFBaseConvert", e);
                                         allErrors.AddError(e.Message);
                                     }
                                 }
@@ -195,6 +196,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
+                        Dev2Logger.Log.Error("DSFBaseConvert",e);
                         allErrors.AddError(e.Message);
                     }
                 }
@@ -219,6 +221,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error("DSFBaseConvert", e);
                 allErrors.AddError(e.Message);
             }
             finally

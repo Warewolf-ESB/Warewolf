@@ -59,7 +59,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentNullException("No resourceId was found in the incoming data");
 // ReSharper restore NotResolvedInText
                 }
+               
                 var version = serializer.Deserialize<IVersionInfo>(values["versionInfo"]);
+                Dev2Logger.Log.Info("Get Version. " + version);
                 var result = ServerVersionRepo.GetVersion(version);
                 var resource = Resources.GetResource(theWorkspace.ID, version.ResourceId);
                 if (resource != null && resource.ResourceType == ResourceType.DbSource)
@@ -123,6 +125,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
+                Dev2Logger.Log.Error(e);
                 IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
                 return serializer.SerializeToBuilder(error);
             }

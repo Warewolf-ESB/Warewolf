@@ -39,10 +39,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentException("itemToDelete value not supplied.");
                 }
                 var itemToDelete = serializer.Deserialize<ServerExplorerItem>(itemBeingDeleted);
+                Dev2Logger.Log.Info("Delete Item Service."+itemToDelete);
                 item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error("Delete Item Error" ,e);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             return serializer.SerializeToBuilder(item);

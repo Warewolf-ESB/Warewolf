@@ -196,6 +196,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error("DSFRandomActivity", e);
                 allErrors.AddError(e.Message);
             }
             finally

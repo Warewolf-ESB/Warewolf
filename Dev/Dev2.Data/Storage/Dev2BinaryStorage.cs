@@ -195,9 +195,10 @@ namespace Dev2.Data.Storage
                                 f.Delete();
                             }
                             // ReSharper disable EmptyGeneralCatchClause
-                            catch
+                            catch(Exception err)
                             // ReSharper restore EmptyGeneralCatchClause
                             {
+                                Dev2Logger.Log.Debug("Delete error",err);
                                 // Best effort ;)
                             }
                         }
@@ -296,7 +297,7 @@ namespace Dev2.Data.Storage
                 }
                 catch(Exception e)
                 {
-                    this.LogError(e);
+                    Dev2Logger.Log.Error(e);
                 }
 
                 return null;
@@ -357,7 +358,7 @@ namespace Dev2.Data.Storage
                 return;
             }
 
-            ServerLogger.LogTrace("Compacting, things should be even slower now! [ " + DateTime.Now + " ]");
+            Dev2Logger.Log.Debug("Compacting, things should be even slower now! [ " + DateTime.Now + " ]");
 
             // Get tmp file path
             string directory = Path.GetDirectoryName(_completeFilename);
@@ -441,7 +442,7 @@ namespace Dev2.Data.Storage
             _hasBeenRemoveSinceLastCompact = false;
 
 
-            ServerLogger.LogTrace("Compacting finished! [ " + DateTime.Now + " ]");
+            Dev2Logger.Log.Debug("Compacting finished! [ " + DateTime.Now + " ]");
 
         }
 
@@ -581,7 +582,7 @@ namespace Dev2.Data.Storage
                 }
                 catch(Exception e)
                 {
-                    this.LogError(e);
+                    Dev2Logger.Log.Error(e);
                 }
 
             }
@@ -713,7 +714,7 @@ namespace Dev2.Data.Storage
                 return;
             }
 
-            ServerLogger.LogTrace("There where [ " + _itemCnt + " ] items in this cache [ " + SavePath + " ]");
+            Dev2Logger.Log.Debug("There where [ " + _itemCnt + " ] items in this cache [ " + SavePath + " ]");
 
             _file.Close();
             _file.Dispose();
@@ -725,7 +726,7 @@ namespace Dev2.Data.Storage
             }
             catch(Exception ex)
             {
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
             }
         }
 

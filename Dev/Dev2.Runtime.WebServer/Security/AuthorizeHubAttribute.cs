@@ -33,7 +33,7 @@ namespace Dev2.Runtime.WebServer.Security
             if(request.User.Identity != null)
             // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
-                ServerLogger.LogTrace("AuthorizeHubConnection For [ " + request.User.Identity.Name + " ]");
+                Dev2Logger.Log.Debug("AuthorizeHubConnection For [ " + request.User.Identity.Name + " ]");
             }
 
             return result;

@@ -10,7 +10,6 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.PathOperations.Enums;
 using Dev2.PathOperations;
-using Dev2.Providers.Logs;
 using Renci.SshNet;
 
 namespace Dev2.Data.PathOperations
@@ -50,13 +49,13 @@ namespace Dev2.Data.PathOperations
                 }
                 else
                 {
-                    ServerLogger.LogDebug(String.Format("SFTP_GET:{0}", path.Path));
+                    Dev2Logger.Log.Debug(String.Format("SFTP_GET:{0}", path.Path));
                     ReadFromSftp(path, ref result, filesToCleanup);
                 }
             }
             catch(Exception ex)
             {
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
                 var message = string.Format("{0} ,  [{1}]", ex.Message, path.Path);
                 throw new Exception(message, ex);
             }
@@ -161,9 +160,9 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception e)
             {
-                ServerLogger.LogDebug("Exception Creating SFTP Client");
-                ServerLogger.LogDebug(e.Message);
-                ServerLogger.LogDebug(e.StackTrace);
+                Dev2Logger.Log.Debug("Exception Creating SFTP Client");
+                Dev2Logger.Log.Debug(e.Message);
+                Dev2Logger.Log.Debug(e.StackTrace);
                 {
 
                 }
@@ -225,7 +224,7 @@ namespace Dev2.Data.PathOperations
                 }
                 catch(Exception ex)
                 {
-                    Logger.LogError(this, ex);
+                    Dev2Logger.Log.Error(this, ex);
                     ok = true;
                 }
             }
@@ -238,11 +237,11 @@ namespace Dev2.Data.PathOperations
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogDebug("Exception in Put command");
-                    ServerLogger.LogDebug(ex.Message);
-                    ServerLogger.LogDebug(ex.StackTrace);
+                    Dev2Logger.Log.Debug("Exception in Put command");
+                    Dev2Logger.Log.Debug(ex.Message);
+                    Dev2Logger.Log.Debug(ex.StackTrace);
 
-                    Logger.LogError(this, ex);
+                    Dev2Logger.Log.Error(this, ex);
                     throw;
                 }
             }
@@ -314,9 +313,9 @@ namespace Dev2.Data.PathOperations
                         catch(Exception e)
                         {
 
-                            ServerLogger.LogDebug("Exception WriteToSFTP");
-                            ServerLogger.LogDebug(e.Message);
-                            ServerLogger.LogDebug(e.StackTrace);
+                            Dev2Logger.Log.Debug("Exception WriteToSFTP");
+                            Dev2Logger.Log.Debug(e.Message);
+                            Dev2Logger.Log.Debug(e.StackTrace);
                             sftp.Disconnect();
                             sftp.Dispose();
                             throw new Exception("File was not created");
@@ -348,7 +347,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
                 throw new Exception(ex.Message, ex);
             }
 
@@ -420,7 +419,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
                 throw;
             }
             finally
@@ -463,7 +462,7 @@ namespace Dev2.Data.PathOperations
             }
             //catch(Exception ex)
             //{
-            //    Logger.LogError(this, ex);
+            //    Dev2Logger.Log.Error(this, ex);
             //    throw;
             //}
             finally
@@ -534,7 +533,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
             }
             finally
             {
@@ -559,7 +558,7 @@ namespace Dev2.Data.PathOperations
             catch(Exception ex)
             {
                 result = false;
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
             }
             finally
             {
@@ -618,7 +617,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
                 string message = string.Format("{0} : [{1}]", ex.Message, src.Path);
                 throw new Exception(message, ex);
             }
@@ -640,7 +639,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
                 string message = string.Format("{0} : [{1}]", ex.Message, src.Path);
                 throw new Exception(message, ex);
             }
@@ -771,7 +770,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
                 throw;
             }
             finally
@@ -808,7 +807,7 @@ namespace Dev2.Data.PathOperations
             catch(Exception ex)
             {
                 sftp.Dispose();
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
                 throw new Exception(string.Format("Path not found {0}. Please ensure that it exists", path));
             }
             return result.ToString();
@@ -1040,12 +1039,12 @@ namespace Dev2.Data.PathOperations
             }
             catch(WebException wex)
             {
-                Logger.LogError(this, wex);
+                Dev2Logger.Log.Error(this, wex);
                 isAlive = false;
             }
             catch(Exception ex)
             {
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
                 throw;
             }
             finally
@@ -1072,7 +1071,7 @@ namespace Dev2.Data.PathOperations
             }
             catch(Exception ex)
             {
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
                 isAlive = false;
             }
             return isAlive;
@@ -1133,12 +1132,12 @@ namespace Dev2.Data.PathOperations
             }
             catch(WebException wex)
             {
-                Logger.LogError(this, wex);
+                Dev2Logger.Log.Error(this, wex);
                 isAlive = false;
             }
             catch(Exception ex)
             {
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
                 throw;
             }
             finally
@@ -1167,7 +1166,7 @@ namespace Dev2.Data.PathOperations
             catch(Exception ex)
             {
                 isAlive = false;
-                Logger.LogError(this, ex);
+                Dev2Logger.Log.Error(this, ex);
             }
             finally
             {

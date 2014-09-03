@@ -3,7 +3,9 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Common
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// Environment Variables to be used in the Server
@@ -34,7 +36,7 @@ namespace Dev2.Common
                     }
                     catch (Exception e)
                     {
-                        ServerLogger.LogMessage("ApplicationPath Error -> " + e.Message);
+                        Dev2Logger.Log.Info("ApplicationPath Error -> " + e.Message);
                         _appPath = Directory.GetCurrentDirectory(); // fail safe ;)
                     }
 
@@ -93,12 +95,7 @@ namespace Dev2.Common
         {
             get
             {
-                if (_rootPath == null)
-                {
-                    _rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Warewolf");
-                }
-
-                return _rootPath;
+                return _rootPath ?? (_rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Warewolf"));
             }
         }
 

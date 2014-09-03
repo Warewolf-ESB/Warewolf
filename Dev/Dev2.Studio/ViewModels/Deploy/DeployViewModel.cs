@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.AppResources.Repositories;
+using Dev2.Common;
 using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
 using Dev2.Models;
@@ -858,13 +859,13 @@ namespace Dev2.Studio.ViewModels.Deploy
 
         public void Handle(UpdateDeployMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             RefreshEnvironments();
         }
 
         public void Handle(SelectItemInDeployMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             _initialItemResourceID = message.ResourceID;
             _initialItemEnvironmentID = message.EnvironmentID;
             SelectSourceServerFromInitialValue();

@@ -4,7 +4,9 @@ using Dev2.Common;
 using Infragistics.Calculations;
 using Infragistics.Calculations.CalcManager;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.MathOperations
+// ReSharper restore CheckNamespace
 {
 
     // PBI 1214: This class is used to create a dev2 function used by the Calculate Tool
@@ -135,7 +137,7 @@ namespace Dev2.MathOperations
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError("Function", ex);
+                Dev2Logger.Log.Error("Function", ex);
                 custCalculation = null;
                 isSucessfullyCreated = false;
             }

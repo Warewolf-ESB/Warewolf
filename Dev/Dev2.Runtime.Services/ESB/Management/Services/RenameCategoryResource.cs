@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -18,6 +19,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+
+            
             string oldCategory = null;
             string newCategory = null;
             string resourceType = null;
@@ -44,6 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(oldCategory == null)
             {
+                
                 throw new InvalidDataContractException("No value provided for OldCategory parameter.");
             }
             if(String.IsNullOrEmpty(newCategory))
@@ -54,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("No value provided for ResourceType parameter.");
             }
-
+            Dev2Logger.Log.Info(String.Format( "Rename Category. Old {0} New {1} Type{2}",oldCategory,newCategory,resourceType));
             var saveResult = ResourceCatalog.Instance.RenameCategory(Guid.Empty, oldCategory, newCategory);
 
             ExecuteMessage msg = new ExecuteMessage { HasError = false };

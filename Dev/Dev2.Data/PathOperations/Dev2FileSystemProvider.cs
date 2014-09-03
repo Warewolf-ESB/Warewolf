@@ -111,7 +111,7 @@ namespace Dev2.PathOperations
                 }
                 catch(Exception ex)
                 {
-                    this.LogError(ex);
+                    Dev2Logger.Log.Error(ex);
                     throw new Exception(ex.Message, ex);
                 }
 
@@ -296,7 +296,7 @@ namespace Dev2.PathOperations
                 }
                 catch(Exception ex)
                 {
-                    this.LogError(ex);
+                    Dev2Logger.Log.Error(ex);
                     throw;
                 }
             }
@@ -362,7 +362,7 @@ namespace Dev2.PathOperations
                     }
                     catch(Exception ex)
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                         throw;
                     }
                 }
@@ -410,7 +410,7 @@ namespace Dev2.PathOperations
                     }
                     catch(Exception ex)
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                         throw;
                     }
                 }
@@ -669,7 +669,7 @@ namespace Dev2.PathOperations
                 }
                 catch(Exception ex)
                 {
-                    this.LogError(ex);
+                    Dev2Logger.Log.Error(ex);
                     throw;
                 }
 

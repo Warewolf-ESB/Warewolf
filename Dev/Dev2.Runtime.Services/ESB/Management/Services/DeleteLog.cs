@@ -18,7 +18,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             string filePath = null;
             string directory = null;
 
-            ExecuteMessage msg = new ExecuteMessage() { HasError = false };
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
 
             StringBuilder tmp;
             values.TryGetValue("FilePath", out tmp);
@@ -36,19 +36,19 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage("Can't delete a file if no filename is passed.", filePath, directory));
-                ServerLogger.LogMessage(msg.Message.ToString());
+                Dev2Logger.Log.Info(msg.Message.ToString());
             }
             else if(String.IsNullOrWhiteSpace(directory))
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage("Can't delete a file if no directory is passed.", filePath, directory));
-                ServerLogger.LogMessage(msg.Message.ToString());
+                Dev2Logger.Log.Info(msg.Message.ToString());
             }
             else if(!Directory.Exists(directory))
             {
                 msg.HasError = true;
                 msg.SetMessage(FormatMessage("No such directory exists on the server.", filePath, directory));
-                ServerLogger.LogMessage(msg.Message.ToString());
+                Dev2Logger.Log.Info(msg.Message.ToString());
             }
             else
             {
@@ -58,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     msg.HasError = true;
                     msg.SetMessage(FormatMessage("No such file exists on the server.", filePath, directory));
-                    ServerLogger.LogMessage(msg.Message.ToString());
+                    Dev2Logger.Log.Info(msg.Message.ToString());
                 }
                 else
                 {
@@ -71,7 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         msg.HasError = true;
                         msg.SetMessage(FormatMessage(ex.Message, filePath, directory));
-                        ServerLogger.LogMessage(msg.Message + "\n" + ex.StackTrace);
+                        Dev2Logger.Log.Error(ex);
                     }
                 }
             }
@@ -84,10 +84,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             DynamicService findDirectoryService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><Directory ColumnIODirection=\"Input\"/><FilePath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
-            ServiceAction findDirectoryServiceAction = new ServiceAction();
-            findDirectoryServiceAction.Name = HandlesType();
-            findDirectoryServiceAction.ActionType = enActionType.InvokeManagementDynamicService;
-            findDirectoryServiceAction.SourceMethod = HandlesType();
+            ServiceAction findDirectoryServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
             findDirectoryService.Actions.Add(findDirectoryServiceAction);
 

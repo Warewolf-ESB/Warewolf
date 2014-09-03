@@ -114,13 +114,13 @@ namespace Dev2.Runtime.Security
         protected override void LogStart([CallerMemberName]string methodName = null)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            ServerLogger.LogDebugStart("SecurityService", methodName);
+            Dev2Logger.Log.Info("SecurityService"+ methodName);
         }
 
         protected override void LogEnd([CallerMemberName]string methodName = null)
         {
             // ReSharper disable once ExplicitCallerInfoArgument
-            ServerLogger.LogDebugEnd("SecurityService", methodName);
+            Dev2Logger.Log.Info("SecurityService"+ methodName);
         }
     }
 }

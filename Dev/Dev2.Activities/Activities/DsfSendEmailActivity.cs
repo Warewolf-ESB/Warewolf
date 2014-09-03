@@ -225,6 +225,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error("DSFEmail", e);
                 allErrors.AddError(e.Message);
             }
 
@@ -258,14 +259,7 @@ namespace Dev2.Activities
                 return;
             }
 
-            if(DataListUtil.IsEvaluated(value))
-            {
-                AddDebugInputItem(new DebugItemStaticDataParams("", value, label));
-            }
-            else
-            {
-                AddDebugInputItem(new DebugItemStaticDataParams(value, label));
-            }
+            AddDebugInputItem(DataListUtil.IsEvaluated(value) ? new DebugItemStaticDataParams("", value, label) : new DebugItemStaticDataParams(value, label));
         }
 
         private int UpsertResult(int indexToUpsertTo, IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result)

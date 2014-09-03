@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
 using System.Text.RegularExpressions;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -23,7 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             string domain = string.Empty;
             string password = string.Empty;
             StringBuilder tmp;
-
+            Dev2Logger.Log.Info("Find Drive");
             values.TryGetValue("Username", out tmp);
             if(tmp != null)
             {
@@ -41,8 +42,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             IntPtr accessToken = IntPtr.Zero;
+// ReSharper disable InconsistentNaming
             const int LOGON32_PROVIDER_DEFAULT = 0;
+// ReSharper restore InconsistentNaming
+// ReSharper disable InconsistentNaming
             const int LOGON32_LOGON_INTERACTIVE = 2;
+// ReSharper restore InconsistentNaming
 
             StringBuilder result = new StringBuilder();
 
@@ -80,6 +85,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
+                Dev2Logger.Log.Error(ex);
                 result.Append(ex.Message);
             }
 
@@ -118,7 +124,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword,
                                              int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
 
+// ReSharper disable InconsistentNaming
         private static string GetDriveInfoAsJSON(IEnumerable<DriveInfo> drives)
+// ReSharper restore InconsistentNaming
         {
             string json = "[";
             // ReSharper disable LoopCanBeConvertedToQuery

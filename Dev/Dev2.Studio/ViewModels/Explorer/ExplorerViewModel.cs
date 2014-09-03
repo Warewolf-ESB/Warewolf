@@ -2,6 +2,7 @@
 using System.Linq;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common;
 using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
 using Dev2.Interfaces;
@@ -135,13 +136,13 @@ namespace Dev2.Studio.ViewModels.Explorer
 
         public void Handle(RemoveEnvironmentMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             RemoveEnvironment(message.EnvironmentModel);
         }
 
         public void Handle(EnvironmentDeletedMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             RemoveEnvironment(message.EnvironmentModel);
         }
 

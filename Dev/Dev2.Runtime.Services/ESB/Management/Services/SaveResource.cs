@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
@@ -22,6 +23,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            try
+            {
+
+            Dev2Logger.Log.Info("Save Resource Service");
             StringBuilder resourceDefinition;
             string workspaceIDString = string.Empty;
 
@@ -66,8 +71,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     res.SetMessage(Resources.CompilerMessage_BuildFailed + " " + DateTime.Now);
                 }
             }
-            catch(Exception)
+            catch(Exception err)
             {
+                Dev2Logger.Log.Error(err);
                 CompileMessageRepo.Instance.AddMessage(workspaceID, new List<ICompileMessageTO>
                 {
                     new CompileMessageTO
@@ -89,6 +95,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(res);
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Log.Error(err);
+                throw;
+            }
         }
 
         public DynamicService CreateServiceEntry()

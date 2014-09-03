@@ -207,7 +207,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             catch(JsonException je)
             {
-                this.LogError(je);
+                Dev2Logger.Log.Error(je);
             }
         }
 

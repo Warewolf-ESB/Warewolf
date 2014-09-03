@@ -91,7 +91,8 @@ namespace Dev2.Runtime.ESB
         {
             var result = GlobalConstants.NullDataListID;
             var compiler = DataListFactory.CreateDataListCompiler();
-
+            var time = new System.Diagnostics.Stopwatch();
+            time.Start();
             errors = new ErrorResultTO();
 
             // BUG 9706 - 2013.06.22 - TWR : added pre debug dispatch
@@ -165,13 +166,16 @@ namespace Dev2.Runtime.ESB
 
                         if(errors.HasErrors())
                         {
-                            this.LogError(errors.MakeDisplayReady());
+                            Dev2Logger.Log.Error(errors.MakeDisplayReady());
                         }
                     }
                 }
             }
             finally
             {
+                time.Stop();
+                Common.Interfaces.ServerStats.IncrementTotalRequests();
+                Common.Interfaces.ServerStats.IncrementTotalTime(time.ElapsedMilliseconds);
                 // BUG 9706 - 2013.06.22 - TWR : added
                 DispatchDebugErrors(errors, dataObject, StateType.End);
             }

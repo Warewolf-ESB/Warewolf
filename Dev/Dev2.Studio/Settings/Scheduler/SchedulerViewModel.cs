@@ -12,6 +12,7 @@ using Caliburn.Micro;
 using CubicOrange.Windows.Forms.ActiveDirectory;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.Help;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -772,6 +773,7 @@ namespace Dev2.Settings.Scheduler
                         ShowError(errorMessage);
                         return false;
                     }
+                    Dev2Logger.Log.Info(String.Format("Save Schedule. Environment: {0} Name:{1} ", CurrentEnvironment.Name,SelectedTask!=null ?SelectedTask.Name:""));
                     if(SelectedTask != null)
                     {
                         SelectedTask.Errors.ClearErrors();
@@ -798,6 +800,10 @@ You need Administrator permission.");
 
         public void CreateNewTask()
         {
+            if(CurrentEnvironment != null)
+            {
+                Dev2Logger.Log.Info(String.Format("Delete Schedule Environment: {0} ",CurrentEnvironment.Name));
+            }
             var dev2DailyTrigger = new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger());
             var scheduleTrigger = _schedulerFactory.CreateTrigger(TaskState.Ready, dev2DailyTrigger);
             ScheduledResource scheduledResource = new ScheduledResource(NewTaskName + _newTaskCounter, SchedulerStatus.Enabled, scheduleTrigger.Trigger.Instance.StartBoundary, scheduleTrigger, string.Empty) { IsDirty = true };
@@ -824,6 +830,8 @@ You need Administrator permission.");
                             int indexInFilteredList = TaskList.IndexOf(SelectedTask);
                             if(index != -1)
                             {
+                                Dev2Logger.Log.Info(String.Format("Delete Schedule Name: {0} Resource:{1} Env:{2}",SelectedTask.Name,SelectedTask.ResourceId,CurrentEnvironment.Name));
+
                                 ScheduledResourceModel.DeleteSchedule(SelectedTask);
                                 //if delete is successfull then do the code below
                                 ScheduledResourceModel.ScheduledResources.RemoveAt(index);

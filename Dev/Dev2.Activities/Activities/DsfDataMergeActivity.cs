@@ -288,6 +288,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error("DSFDataMerge", e);
                 allErrors.AddError(e.Message);
             }
             finally

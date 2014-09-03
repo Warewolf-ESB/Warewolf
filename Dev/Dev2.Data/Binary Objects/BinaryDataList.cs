@@ -445,7 +445,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             // Have to register with Thread ID, thread ID cha
             DataListRegistar.RegisterDataListInScope(Thread.CurrentThread.ManagedThreadId, UID);
 
-            ServerLogger.LogTrace("CREATED DATALIST [ " + UID + " ] / MEMORY USAGE NOW AT [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb() + " MBs ]");
+            Dev2Logger.Log.Debug("CREATED DATALIST [ " + UID + " ] / MEMORY USAGE NOW AT [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb() + " MBs ]");
 
         }
 
@@ -776,11 +776,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 {
                     int remainingEntryCnt = cleanEntry.DisposeCache();
 
-                    this.LogTrace("There are [ " + remainingEntryCnt + " ] entries left for [ " + UID + " ]");
+                    Dev2Logger.Log.Debug("There are [ " + remainingEntryCnt + " ] entries left for [ " + UID + " ]");
                 }
                 else
                 {
-                    this.LogError("Null removal entry for [ " + UID + " ]");
+                    Dev2Logger.Log.Error("Null removal entry for [ " + UID + " ]");
                 }
             }
         }

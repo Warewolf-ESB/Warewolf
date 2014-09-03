@@ -77,7 +77,7 @@ namespace Dev2.Data.Util
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError("Scrubber", ex);
+                Dev2Logger.Log.Error("Scrubber", ex);
             }
 
             return result;

@@ -130,15 +130,7 @@ namespace Dev2.DynamicServices.Objects.Base
         {
             string objectName = GetType().Name;
 
-            if(string.IsNullOrEmpty(Name))
-            {
-
-                traceMsg = string.Format(traceMsg, objectName, objectName);
-            }
-            else
-            {
-                traceMsg = string.Format(traceMsg, objectName, Name);
-            }
+            traceMsg = string.Format(traceMsg, objectName, string.IsNullOrEmpty(Name) ? objectName : Name);
             CompilerErrors.Add(traceMsg);
 
             WriteOutput(traceMsg);
@@ -175,7 +167,7 @@ namespace Dev2.DynamicServices.Objects.Base
         #region Private Methods
         private void WriteOutput(string traceMsg)
         {
-            ServerLogger.LogMessage(traceMsg);
+            Dev2Logger.Log.Info(traceMsg);
             Console.WriteLine(traceMsg);
         }
         #endregion

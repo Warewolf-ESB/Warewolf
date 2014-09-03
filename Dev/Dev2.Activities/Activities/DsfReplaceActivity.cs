@@ -6,6 +6,7 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Interfaces;
@@ -185,6 +186,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // ReSharper disable EmptyGeneralCatchClause
             catch(Exception ex)
             {
+                Dev2Logger.Log.Error("DSFReplace", ex);
                 allErrors.AddError(ex.Message);
             }
             finally

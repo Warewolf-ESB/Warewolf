@@ -154,7 +154,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                this.LogError(e);
+                Dev2Logger.Log.Error(e);
                 allErrors.AddError(e.Message);
             }
             finally

@@ -43,11 +43,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentException("newName value not supplied.");
                 }
+                
                 var itemToRename = serializer.Deserialize<ServerExplorerItem>(itemToBeRenamed);
+                Dev2Logger.Log.Info(String.Format("Rename Item. Path:{0} NewPath:{1}", itemToBeRenamed, newName));
                 item = ServerExplorerRepo.RenameItem(itemToRename, newName.ToString(), GlobalConstants.ServerWorkspaceID);
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error(e);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             return serializer.SerializeToBuilder(item);

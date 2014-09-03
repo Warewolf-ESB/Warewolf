@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -127,7 +128,7 @@ namespace Dev2.Studio.ViewModels.Help
         
         public void Handle(TabClosedMessage message)
         {   
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             if(!message.Context.Equals(this)) return;
 
             EventPublisher.Unsubscribe(this);

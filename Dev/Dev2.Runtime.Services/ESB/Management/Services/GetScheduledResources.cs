@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
 using Dev2.Common;
@@ -25,18 +26,28 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ObservableCollection<IScheduledResource> resources;
-            using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
+            try
             {
-                resources = model.GetScheduledResources();
-            }
 
-            var sb = new StringBuilder(JsonConvert.SerializeObject(resources, Formatting.Indented, new JsonSerializerSettings
+                Dev2Logger.Log.Info("Get Scheduled Resources");
+                ObservableCollection<IScheduledResource> resources;
+                using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
+                {
+                    resources = model.GetScheduledResources();
+                }
+
+                var sb = new StringBuilder(JsonConvert.SerializeObject(resources, Formatting.Indented, new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Objects,
+                    TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
+                }));
+                return sb;
+            }
+            catch (Exception err)
             {
-                TypeNameHandling = TypeNameHandling.Objects,
-                TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
-            }));
-            return sb;
+                Dev2Logger.Log.Error(err);
+                throw;
+            }
         }
 
         public IServerSchedulerFactory SchedulerFactory

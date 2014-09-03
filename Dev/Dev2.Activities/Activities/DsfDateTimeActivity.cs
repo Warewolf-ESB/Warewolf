@@ -110,7 +110,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
             Guid executionId = DataListExecutionID.Get(context);
-            string error;
             InitializeDebug(dataObject);
             // Process if no errors
             try
@@ -176,8 +175,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                 }
 
-                string expression;
-
                 if(!allErrors.HasErrors())
                 {
                     while(colItr.HasMoreData())
@@ -192,9 +189,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         //Create a DateTimeFomatter using the DateTimeConverterFactory.DONE
                         IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
                         string result;
+                        string error;
                         if(format.TryFormat(transObj, out result, out error))
                         {
-                            expression = Result;
+                            string expression = Result;
                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                        
                                 toUpsert.Add(expression, result);
@@ -220,6 +218,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error("DSFDateTime", e);
                 allErrors.AddError(e.Message);
             }
             finally

@@ -249,6 +249,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error("DSFDataSplit", e);
                 allErrors.AddError(e.Message);
             }
             finally

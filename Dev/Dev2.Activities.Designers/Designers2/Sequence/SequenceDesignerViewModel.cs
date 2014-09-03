@@ -8,7 +8,6 @@ using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Models;
-using Dev2.Providers.Logs;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
@@ -119,7 +118,7 @@ namespace Dev2.Activities.Designers2.Sequence
                 }
                 catch(RuntimeBinderException e)
                 {
-                    this.LogError(e);
+                    Dev2Logger.Log.Error(e);
                 }
             }
             return false;

@@ -24,6 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            Dev2Logger.Log.Info("Fetch Explorer Items");
 
             var serializer = new Dev2JsonSerializer();
             try
@@ -37,6 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Info("Fetch Explorer Items Error",e);
                 IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
                 return serializer.SerializeToBuilder(error);
             }

@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Interactivity;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -152,7 +153,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
             catch(Exception)
             {
-                this.TraceInfo("Invalid user interface layout file encountered, reverting to default layout.");
+                Dev2Logger.Log.Info("Invalid user interface layout file encountered, reverting to default layout.");
             }
         }
 
@@ -202,7 +203,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         public void Handle(IResetLayoutMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             if(!AssociatedObject.Equals(message.Context))
             {
                 return;

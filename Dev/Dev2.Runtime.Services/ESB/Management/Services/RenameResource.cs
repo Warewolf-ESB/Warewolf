@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
@@ -19,57 +20,68 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            try
+            {
 
-            var res = new ExecuteMessage {HasError = false};
 
-            string resourceID = null;
-            string newName = null;
-            if(values == null)
-            {
-                throw new InvalidDataContractException("No parameter values provided.");
-            }
+                var res = new ExecuteMessage {HasError = false};
 
-            StringBuilder tmp;
-            values.TryGetValue("ResourceID", out tmp);
-            if (tmp != null)
-            {
-                resourceID = tmp.ToString();
-            }
-            values.TryGetValue("NewName", out tmp);
-            if(tmp != null)
-            {
-                newName = tmp.ToString();
-            }
-
-            if(resourceID == null)
-            {
-                throw new InvalidDataContractException("No value provided for ResourceID parameter.");
-            }
-            if(String.IsNullOrEmpty(newName))
-            {
-                throw new InvalidDataContractException("No value provided for NewName parameter.");
-            }
-
-            Guid id;
-            Guid.TryParse(resourceID, out id);
-            var saveToWorkSpaceResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID, id, newName);
-            if (saveToWorkSpaceResult.Status == ExecStatus.Success)
-            {
-                var saveToLocalServerResult = ResourceCatalog.Instance.RenameResource(Guid.Empty, id, newName);
-                if (saveToLocalServerResult.Status == ExecStatus.Success)
+                string resourceID = null;
+                string newName = null;
+                if(values == null)
                 {
-                    res.SetMessage(saveToLocalServerResult.Message);
+                    throw new InvalidDataContractException("No parameter values provided.");
                 }
+
+                StringBuilder tmp;
+                values.TryGetValue("ResourceID", out tmp);
+                if (tmp != null)
+                {
+                    resourceID = tmp.ToString();
+                }
+                values.TryGetValue("NewName", out tmp);
+                if(tmp != null)
+                {
+                    newName = tmp.ToString();
+                }
+
+                if(resourceID == null)
+                {
+                    throw new InvalidDataContractException("No value provided for ResourceID parameter.");
+                }
+                if(String.IsNullOrEmpty(newName))
+                {
+                    throw new InvalidDataContractException("No value provided for NewName parameter.");
+                }
+
+                Guid id;
+                Guid.TryParse(resourceID, out id);
+                Dev2Logger.Log.Info(String.Format( "Rename Resource. ResourceId:{0} NewName:{1}",resourceID,newName));
+                var saveToWorkSpaceResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID, id, newName);
+                if (saveToWorkSpaceResult.Status == ExecStatus.Success)
+                {
+                    var saveToLocalServerResult = ResourceCatalog.Instance.RenameResource(Guid.Empty, id, newName);
+                    if (saveToLocalServerResult.Status == ExecStatus.Success)
+                    {
+                        res.SetMessage(saveToLocalServerResult.Message);
+                    }
+                }
+                else
+                {
+                    res.HasError = true;
+                }
+
+                res.SetMessage(saveToWorkSpaceResult.Message);
+
+                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                return serializer.SerializeToBuilder(res);
+
             }
-            else
+            catch (Exception err)
             {
-                res.HasError = true;
+                Dev2Logger.Log.Error(err);
+                throw;
             }
-
-            res.SetMessage(saveToWorkSpaceResult.Message);
-
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(res);
         }
 
         public DynamicService CreateServiceEntry()

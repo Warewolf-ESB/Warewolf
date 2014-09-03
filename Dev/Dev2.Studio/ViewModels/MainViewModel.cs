@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -438,7 +439,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(ShowReverseDependencyVisualizer message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Debug(message.GetType().Name);
             if(message.Model != null)
             {
                 AddReverseDependencyVisualizerWorkSurface(message.Model);
@@ -447,14 +448,14 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(SaveAllOpenTabsMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Debug(message.GetType().Name);
             PersistTabs();
         }
 
 
         public void Handle(AddWorkSurfaceMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             AddWorkSurface(message.WorkSurfaceObject);
 
             if(message.ShowDebugWindowOnLoad)
@@ -468,13 +469,13 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(DeleteResourcesMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             DeleteResources(message.ResourceModels, message.FolderName, message.ShowDialog, message.ActionToDoOnDelete);
         }
 
         public void Handle(DeleteFolderMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             var result = PopupProvider;
             if(ShowDeleteDialogForFolder(message.FolderName, result))
             {
@@ -488,7 +489,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(SetActiveEnvironmentMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             var activeEnvironment = message.EnvironmentModel;
             SetActiveEnvironment(activeEnvironment);
             ExplorerViewModel.UpdateActiveEnvironment(ActiveEnvironment, message.SetFromConnectControl);
@@ -503,7 +504,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(ShowDependenciesMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             var model = message.ResourceModel;
             if(model == null)
             {
@@ -522,19 +523,19 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(ShowEditResourceWizardMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Debug(message.GetType().Name);
             ShowEditResourceWizard(message.ResourceModel);
         }
 
         public void Handle(ShowHelpTabMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Debug(message.GetType().Name);
             AddHelpTabWorkSurface(message.HelpLink);
         }
 
         public void Handle(RemoveResourceAndCloseTabMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Debug(message.GetType().Name);
             if(message.ResourceToRemove == null)
             {
                 return;
@@ -556,7 +557,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(DeployResourcesMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Debug(message.GetType().Name);
             var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DeployResources);
 
             var exist = ActivateWorkSurfaceIfPresent(key);
@@ -577,7 +578,7 @@ namespace Dev2.Studio.ViewModels
                 }
                 else
                 {
-                    this.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
+                    Dev2Logger.Log.Info("Publish message of type - " + typeof(SelectItemInDeployMessage));
                     EventPublisher.Publish(new SelectItemInDeployMessage(message.ViewModel.ResourceId, message.ViewModel.EnvironmentId));
                 }
             }
@@ -587,7 +588,7 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(ShowNewResourceWizard message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             ShowNewResourceWizard(message.ResourceType, message.ResourcePath);
         }
 
@@ -595,7 +596,7 @@ namespace Dev2.Studio.ViewModels
         {
             if(ActiveItem != null && ActiveItem.Environment != null)
             {
-                this.TraceInfo("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
+                Dev2Logger.Log.Debug("Publish message of type - " + typeof(SetActiveEnvironmentMessage));
                 EventPublisher.Publish(new SetActiveEnvironmentMessage(ActiveItem.Environment));
             }
         }
@@ -651,7 +652,7 @@ namespace Dev2.Studio.ViewModels
             {
                 case MessageBoxResult.Yes:
                     workflowVm.ResourceModel.Commit();
-                    this.TraceInfo("Publish message of type - " + typeof(SaveResourceMessage));
+                    Dev2Logger.Log.Info("Publish message of type - " + typeof(SaveResourceMessage));
                     EventPublisher.Publish(new SaveResourceMessage(workflowVm.ResourceModel, false, false));
                     return true;
                 case MessageBoxResult.No:
@@ -670,7 +671,7 @@ namespace Dev2.Studio.ViewModels
                     }
                     catch(Exception e)
                     {
-                        this.TraceInfo("Some clever chicken threw this exception : " + e.Message);
+                        Dev2Logger.Log.Info("Some clever chicken threw this exception : " + e.Message);
                     }
 
                     NewWorkflowNames.Instance.Remove(workflowVm.ResourceModel.ResourceName);
@@ -1085,7 +1086,7 @@ namespace Dev2.Studio.ViewModels
 
                             if(environment != null)
                             {
-                                this.TraceInfo("Publish message of type - " + typeof(EnvironmentDeletedMessage));
+                                Dev2Logger.Log.Debug("Publish message of type - " + typeof(EnvironmentDeletedMessage));
                                 EventPublisher.Publish(new EnvironmentDeletedMessage(environment));
                                 EnvironmentRepository.Remove(environment);
                             }
@@ -1133,12 +1134,12 @@ namespace Dev2.Studio.ViewModels
                 // Get the environment for the workspace item
                 //
                 IWorkspaceItem item = GetWorkspaceItemRepository().WorkspaceItems[i];
-                this.TraceInfo(string.Format("Start Proccessing WorkspaceItem: {0}", item.ServiceName));
+                Dev2Logger.Log.Info(string.Format("Start Proccessing WorkspaceItem: {0}", item.ServiceName));
                 IEnvironmentModel environment = EnvironmentRepository.All().Where(env => env.IsConnected).TakeWhile(env => env.Connection != null).FirstOrDefault(env => env.ID == item.EnvironmentID);
 
                 if(environment == null || environment.ResourceRepository == null)
                 {
-                    this.TraceInfo("Environment Not Found");
+                    Dev2Logger.Log.Info("Environment Not Found");
                     if(environment != null && item.EnvironmentID == environment.ID)
                     {
                         workspaceItemsToRemove.Add(item);
@@ -1146,7 +1147,7 @@ namespace Dev2.Studio.ViewModels
                 }
                 if(environment != null)
                 {
-                    this.TraceInfo(string.Format("Proccessing WorkspaceItem: {0} for Environment: {1}", item.ServiceName, environment.DisplayName));
+                    Dev2Logger.Log.Info(string.Format("Proccessing WorkspaceItem: {0} for Environment: {1}", item.ServiceName, environment.DisplayName));
                     if(environment.ResourceRepository != null)
                     {
                         environment.ResourceRepository.LoadResourceFromWorkspace(item.ID, item.WorkspaceID);
@@ -1166,7 +1167,7 @@ namespace Dev2.Studio.ViewModels
                         }
                         else
                         {
-                            this.TraceInfo(string.Format("Got Resource Model: {0} ", resource.DisplayName));
+                            Dev2Logger.Log.Info(string.Format("Got Resource Model: {0} ", resource.DisplayName));
                             var fetchResourceDefinition = environment.ResourceRepository.FetchResourceDefinition(environment, item.WorkspaceID, resource.ID);
                             resource.WorkflowXaml = fetchResourceDefinition.Message;
                             resource.IsWorkflowSaved = item.IsWorkflowSaved;
@@ -1200,7 +1201,7 @@ namespace Dev2.Studio.ViewModels
             {
                 if(input is IContextualResourceModel)
                 {
-                    this.TraceInfo("Publish message of type - " + typeof(SelectItemInDeployMessage));
+                    Dev2Logger.Log.Info("Publish message of type - " + typeof(SelectItemInDeployMessage));
                     EventPublisher.Publish(
                         new SelectItemInDeployMessage((input as IContextualResourceModel).ID,
                             (input as IContextualResourceModel).Environment.ID));
@@ -1459,7 +1460,7 @@ namespace Dev2.Studio.ViewModels
                                     RemoveWorkspaceItem(workflowVm);
                                     Items.Remove(context);
                                     workflowVm.Dispose();
-                                    this.TraceInfo("Publish message of type - " + typeof(TabClosedMessage));
+                                    Dev2Logger.Log.Info("Publish message of type - " + typeof(TabClosedMessage));
                                     EventPublisher.Publish(new TabClosedMessage(context));
                                     if(e != null)
                                     {

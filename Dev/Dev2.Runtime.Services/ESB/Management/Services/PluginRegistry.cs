@@ -23,6 +23,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public string Execute(IDictionary<string, string> values, IWorkspace theWorkspace)
         {
+            try
+            {
+
+        
             string asmLoc;
             string protectionLevel;
             string nameSpace;
@@ -58,15 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 baseLocation = @"Plugins\";
 
-                if(asmLoc == string.Empty)
-                {
-                    // now interrogate the file system and build up a list of plugins and data
-                    plugins = Directory.EnumerateFiles(pluginDomain.BaseDirectory);
-                }
-                else
-                {
-                    plugins = new[] { pluginDomain.BaseDirectory + asmLoc.Replace("/", @"\") };
-                }
+                plugins = asmLoc == string.Empty ? Directory.EnumerateFiles(pluginDomain.BaseDirectory) : new[] { pluginDomain.BaseDirectory + asmLoc.Replace("/", @"\") };
             }
             else
             {
@@ -84,7 +80,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
 
-            bool includePublic = true;
+            const bool IncludePublic = true;
             bool includePrivate = true;
 
             // default to all if no params
@@ -116,7 +112,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                                 // only include matching references
                                 InterogatePluginAssembly(pluginData, asm, shortName, baseLocation + shortName,
-                                                         includePublic, includePrivate, methodName, nameSpace);
+                                                         IncludePublic, includePrivate, methodName, nameSpace);
 
                                 // remove the plugin
                                 try
@@ -125,12 +121,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                                 }
                                 catch(Exception ex)
                                 {
-                                    this.LogError(ex);
+                                    Dev2Logger.Log.Error(ex);
                                 }
                             }
                             catch(Exception ex)
                             {
-                                this.LogError(ex);
+                                Dev2Logger.Log.Error(ex);
                                 pluginData.Append("<Dev2Plugin><Dev2PluginName>" + shortName + "</Dev2PluginName>");
                                 pluginData.Append(
                                     "<Dev2PluginStatus>Error</Dev2PluginStatus><Dev2PluginStatusMessage>");
@@ -157,12 +153,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     try
                     {
                         Assembly asm = Assembly.Load(gacName.ToString());
-                        InterogatePluginAssembly(pluginData, asm, gacName.Name, baseLocation + gacName, includePublic,
+                        InterogatePluginAssembly(pluginData, asm, gacName.Name, baseLocation + gacName, IncludePublic,
                                                  includePrivate, methodName, nameSpace);
                     }
                     catch(Exception ex)
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                         pluginData.Append("<Dev2Plugin><Dev2PluginName>" + gacName.Name + "</Dev2PluginName>");
                         pluginData.Append("<Dev2PluginStatus>Error</Dev2PluginStatus><Dev2PluginStatusMessage>");
                         pluginData.Append(ex.Message + "</Dev2PluginStatusMessage>");
@@ -180,18 +176,19 @@ namespace Dev2.Runtime.ESB.Management.Services
             string theResult = "<Dev2PluginRegistration>" + pluginData + "</Dev2PluginRegistration>";
 
             return theResult;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Log.Error(e);
+                throw;
+            }
         }
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService pluginMetaDataService = new DynamicService();
-            pluginMetaDataService.Name = HandlesType();
-            pluginMetaDataService.DataListSpecification = "<DataList><AssemblyLocation ColumnIODirection=\"Input\"/><ProtectionLevel ColumnIODirection=\"Input\"/><NameSpace ColumnIODirection=\"Input\"/><MethodName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            DynamicService pluginMetaDataService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><AssemblyLocation ColumnIODirection=\"Input\"/><ProtectionLevel ColumnIODirection=\"Input\"/><NameSpace ColumnIODirection=\"Input\"/><MethodName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
-            ServiceAction pluginMetaDataAction = new ServiceAction();
-            pluginMetaDataAction.Name = HandlesType();
-            pluginMetaDataAction.SourceMethod = HandlesType();
-            pluginMetaDataAction.ActionType = enActionType.InvokeManagementDynamicService;
+            ServiceAction pluginMetaDataAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
 
             pluginMetaDataService.Actions.Add(pluginMetaDataAction);
 
@@ -212,12 +209,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             int pos = 0;
             bool found = false;
-            bool defaultNameSpace = false;
+            bool defaultNameSpace = nameSpace == string.Empty;
             // take all namespaces 
-            if(nameSpace == string.Empty)
-            {
-                defaultNameSpace = true;
-            }
 
             while(pos < types.Length && !found)
             {
@@ -225,9 +218,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string classString = t.FullName;
                 // ensure no funny xml fragments are present
 
-                if(classString.IndexOf("<") < 0 && (defaultNameSpace || (classString == nameSpace)))
+                if(classString.IndexOf("<", StringComparison.Ordinal) < 0 && (defaultNameSpace || (classString == nameSpace)))
                 {
-                    var exposedMethodsXML = new StringBuilder();
+                    var exposedMethodsXml = new StringBuilder();
 
                     MethodInfo[] methods = t.GetMethods();
 
@@ -238,8 +231,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     while(pos1 < methods.Length && !found)
                     {
                         MethodInfo m = methods[pos1];
-
-                        ParameterInfo[] p = m.GetParameters();
 
                         if(m.IsPublic && includePublic)
                         {
@@ -271,20 +262,20 @@ namespace Dev2.Runtime.ESB.Management.Services
                         pos1++;
                     }
 
-                    exposedMethods.ToList().Sort((x, y) => x.ToLower().CompareTo(y.ToLower()));
+                    exposedMethods.ToList().Sort((x, y) => String.Compare(x.ToLower(), y.ToLower(), StringComparison.Ordinal));
 
                     foreach(string m in exposedMethods)
                     {
-                        exposedMethodsXML = exposedMethodsXML.Append("<Dev2PluginExposedMethod>");
-                        exposedMethodsXML = exposedMethodsXML.Append(m);
-                        exposedMethodsXML = exposedMethodsXML.Append("</Dev2PluginExposedMethod>");
+                        exposedMethodsXml = exposedMethodsXml.Append("<Dev2PluginExposedMethod>");
+                        exposedMethodsXml = exposedMethodsXml.Append(m);
+                        exposedMethodsXml = exposedMethodsXml.Append("</Dev2PluginExposedMethod>");
                     }
 
-                    var methodSigsXML = new StringBuilder();
+                    var methodSigsXml = new StringBuilder();
 
                     foreach(string ms in methodSignatures)
                     {
-                        methodSigsXML.Append(ms);
+                        methodSigsXml.Append(ms);
                     }
 
                     if(!classString.Contains("+"))
@@ -293,11 +284,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                         pluginData.Append("<Dev2PluginStatus>Registered</Dev2PluginStatus>");
                         pluginData.Append("<Dev2PluginSourceNameSpace>" + classString + "</Dev2PluginSourceNameSpace>");
                         pluginData.Append("<Dev2PluginSourceLocation>" + sourceLocation + "</Dev2PluginSourceLocation>");
-                        pluginData.Append(exposedMethodsXML);
+                        pluginData.Append(exposedMethodsXml);
                         pluginData.Append("<Dev2PluginSourceExposedMethodSignatures>");
                         if(methodSignatures.Count > 0)
                         {
-                            pluginData.Append(methodSigsXML);
+                            pluginData.Append(methodSigsXml);
                         }
                         pluginData.Append("</Dev2PluginSourceExposedMethodSignatures>");
                         pluginData.Append("</Dev2Plugin>");
@@ -314,7 +305,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <param name="args">The args.</param>
         /// <param name="methodName">Name of the method.</param>
         /// <returns></returns>
+// ReSharper disable ParameterTypeCanBeEnumerable.Local
         private string BuildMethodSignature(ParameterInfo[] args, string methodName)
+// ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             // add method signature as well ;)
             var toAdd = new StringBuilder();
@@ -328,7 +321,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 string t = p.ParameterType.Name;
                 string name = p.Name;
                 toAdd.Append("<Dev2PluginArg>");
-                if(t != null && !t.Contains("<"))
+                if(!t.Contains("<"))
                 {
                     t = t.Replace("`", "");
                     var r = new Regex("(?<!\\.[0-9a-z]*)[0-9]");

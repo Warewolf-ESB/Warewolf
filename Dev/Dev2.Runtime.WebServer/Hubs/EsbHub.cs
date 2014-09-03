@@ -62,7 +62,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public async Task AddDebugWriter(Guid workspaceId)
         {
-            this.LogTrace("Added Debug Writer For Workspace [ " + workspaceId + " ]");
+            Dev2Logger.Log.Debug("Added Debug Writer For Workspace [ " + workspaceId + " ]");
             var task = new Task(() => DebugDispatcher.Instance.Add(workspaceId, this));
             task.Start();
             await task;
@@ -163,7 +163,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             catch(Exception e)
             {
                 // ReSharper disable InvokeAsExtensionMethod
-                ServerLogger.LogError(this, e);
+                Dev2Logger.Log.Error(this, e);
                 // ReSharper restore InvokeAsExtensionMethod
             }
 
@@ -210,7 +210,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                                 user = Context.User.Identity.Name;
                                 // set correct principle ;)
                                 System.Threading.Thread.CurrentPrincipal = Context.User;
-                                this.LogTrace("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
+                                Dev2Logger.Log.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
                             }
 
                             var processRequest = internalServiceRequestHandler.ProcessRequest(request, workspaceId, dataListId, Context.ConnectionId);
@@ -239,7 +239,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
                                 if(!ResultsCache.Instance.AddResult(future, value))
                                 {
-                                    this.LogError(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
+                                    Dev2Logger.Log.Error(new Exception("Failed to build future receipt for [ " + Context.ConnectionId + " ] Value [ " + value + " ]"));
                                 }
 
                                 startIdx += len;
@@ -252,7 +252,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     }
                     catch(Exception e)
                     {
-                        this.LogError(e);
+                        Dev2Logger.Log.Error(e);
                     }
                     return null;
                 });
@@ -261,7 +261,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             }
             catch(Exception e)
             {
-                this.LogError(e);
+                Dev2Logger.Log.Error(e);
             }
             return null;
         }
@@ -299,7 +299,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             var serializedMemo = JsonConvert.SerializeObject(memo);
             var hubCallerConnectionContext = Clients;
 
-            this.LogTrace("Send Memo [ " + serializedMemo + " ]");
+            Dev2Logger.Log.Debug("Send Memo [ " + serializedMemo + " ]");
 
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
 
@@ -318,7 +318,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
             var hubCallerConnectionContext = Clients;
 
-            this.LogError("Send Debug State For [ " + Context.User.Identity.Name + " ]");
+            Dev2Logger.Log.Error("Send Debug State For [ " + Context.User.Identity.Name + " ]");
 
             var user = hubCallerConnectionContext.All;
             user.SendDebugState(debugSerializated);
@@ -347,7 +347,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
             var memo = new TMemo { ServerID = HostSecurityProvider.Instance.ServerID };
 
-            this.LogTrace("Write Event Provider Client Message [ " + memo.ServerID + " ]");
+            Dev2Logger.Log.Debug("Write Event Provider Client Message [ " + memo.ServerID + " ]");
 
             foreach(var grouping in groupings)
             {
@@ -382,7 +382,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// <param name="debugState">The state to be written.</param>
         public void Write(IDebugState debugState)
         {
-            this.LogTrace("Write DebugState Message [ " + debugState.Message + " ] Name [ " + debugState.Name + " ] ServerID [ " + debugState.Server + " ]");
+            Dev2Logger.Log.Debug("Write DebugState Message [ " + debugState.Message + " ] Name [ " + debugState.Name + " ] ServerID [ " + debugState.Server + " ]");
             SendDebugState(debugState as DebugState);
         }
 

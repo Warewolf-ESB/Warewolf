@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using Dev2.Common;
 using Dev2.Helpers;
 using Dev2.Providers.Logs;
 
@@ -53,7 +54,7 @@ namespace Dev2.Studio.Core.Helpers
                 }
                 catch(Exception ex)
                 {
-                    this.TraceInfo(string.Format("Get lastest version of '{0}' failed: {1}", uri, ex.Message));
+                    Dev2Logger.Log.Info(string.Format("Get lastest version of '{0}' failed: {1}", uri, ex.Message));
                 }
             }
             RaiseInvoked();

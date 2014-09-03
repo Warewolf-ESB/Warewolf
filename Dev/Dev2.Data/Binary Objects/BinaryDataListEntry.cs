@@ -837,7 +837,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                             {
                                 // Very naughty thing have happened....
                                 error = "Invalid format for sorting on field [ " + field + " ] ";
-                                this.LogError(ex);
+                                Dev2Logger.Log.Error(ex);
                             }
                         }
                     }

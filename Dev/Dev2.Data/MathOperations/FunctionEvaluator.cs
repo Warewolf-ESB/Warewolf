@@ -4,12 +4,15 @@ using System.Globalization;
 using System.Linq;
 using System.Parsing.Intellisense;
 using System.Text;
+using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.MathOperations
+// ReSharper restore CheckNamespace
 {
     public class FunctionEvaluator : IFunctionEvaluator
     {
@@ -348,6 +351,7 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
+                    Dev2Logger.Log.Error("Function evaluation Error", ex);
                     error = ex.Message;
                     isSuccessfulEvaluation = false;
                 }
@@ -407,6 +411,7 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
+                    Dev2Logger.Log.Error("Function evaluation Error",ex);
                     error = ex.Message;
                     evaluationState = false;
                 }
@@ -454,6 +459,7 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
+                    Dev2Logger.Log.Error("Function evaluation Error", ex);
                     error = ex.Message;
                     evaluationState = false;
                 }
@@ -486,6 +492,7 @@ namespace Dev2.MathOperations
                 }
                 catch(Exception ex)
                 {
+                    Dev2Logger.Log.Error("Function evaluation Error", ex);
                     error = ex.Message;
                     evaluationState = false;
                 }

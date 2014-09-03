@@ -186,7 +186,7 @@ namespace Dev2.PathOperations
                     catch(Exception ex)
                     // ReSharper restore EmptyGeneralCatchClause
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                     }
                 }
             }

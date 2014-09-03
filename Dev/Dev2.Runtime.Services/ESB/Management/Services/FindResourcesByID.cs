@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
@@ -18,6 +20,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            try
+            {
+
+
             string guidCsv = string.Empty;
             string type = null;
 
@@ -32,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 type = tmp.ToString();
             }
-
+            Dev2Logger.Log.Info("Find Resource By Id. "+guidCsv);
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, guidCsv, type);
 
@@ -40,6 +46,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(resourceList);
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Log.Error(err);
+                throw;
+            }
         }
 
         public DynamicService CreateServiceEntry()

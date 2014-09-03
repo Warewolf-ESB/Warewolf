@@ -50,7 +50,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             // Set Service Name
             DataObject.ServiceName = ServiceAction.ServiceName;
-
+           
             // Set server ID, only if not set yet - original server;
             if(DataObject.ServerID == Guid.Empty)
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Execution
             // Set original instance ID, only if not set yet - original resource;
             if(DataObject.OriginalInstanceID == Guid.Empty)
                 DataObject.OriginalInstanceID = DataObject.DataListID;
-
+            Dev2Logger.Log.Info(String.Format("Started Execution for Service Name:{0} Resource Id:{1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
             //Set execution origin
             if(!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
@@ -97,29 +97,25 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch(InvalidWorkflowException iwe)
             {
+                Dev2Logger.Log.Error(iwe);
                 var msg = iwe.Message;
 
                 int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
 
                 // trap the no start node error so we can replace it with something nicer ;)
-                if(start > 0)
-                {
-                    errors.AddError(GlobalConstants.NoStartNodeError);
-                }
-                else
-                {
-                    errors.AddError(iwe.Message);
-                }
+                errors.AddError(start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message);
             }
             catch(Exception ex)
             {
+                Dev2Logger.Log.Error(ex);
                 errors.AddError(ex.Message);
             }
             finally
             {
                 ServiceAction.PushActivity(activity);
             }
-
+            Dev2Logger.Log.Info(String.Format("Completed Execution for Service Name:{0} Resource Id: {1} Mode:{2}",DataObject.ServiceName,DataObject.ResourceID,DataObject.IsDebug?"Debug":"Execute"));
+      
             return result;
         }
 

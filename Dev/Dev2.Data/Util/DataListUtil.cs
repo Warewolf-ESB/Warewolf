@@ -458,7 +458,7 @@ namespace Dev2.Data.Util
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError("DataListUtil", ex);
+                Dev2Logger.Log.Error("DataListUtil", ex);
                 //TODO, EMPTY CATCH, Please add reasoning
             }
 
@@ -598,7 +598,7 @@ namespace Dev2.Data.Util
                     }
                     catch(Exception ex)
                     {
-                        ServerLogger.LogError("DataListUtil", ex);
+                        Dev2Logger.Log.Error("DataListUtil", ex);
                         result = true;
                     }
                 }
@@ -637,7 +637,7 @@ namespace Dev2.Data.Util
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError("DataListUtil", ex);
+                    Dev2Logger.Log.Error("DataListUtil", ex);
                     result = true;
                 }
             }
@@ -806,37 +806,15 @@ namespace Dev2.Data.Util
                         {
                             tmp = rsMap[d.RecordSetName];
                         }
-                        string name;
-                        if(d.Name.Contains("."))
-                        {
-                            name = d.Name.Split('.')[1];
-                        }
-                        else
-                        {
-                            name = d.Name;
-                        }
-                        if(withData)
-                        {
-                            tmp = string.Concat(tmp, Environment.NewLine, "<", name, ">", d.RawValue, "</", name, ">");
-                        }
-                        else
-                        {
-                            tmp = string.Concat(tmp, Environment.NewLine, "<", name, "/>");
-                        }
+                        string name = d.Name.Contains(".") ? d.Name.Split('.')[1] : d.Name;
+                        tmp = withData ? string.Concat(tmp, Environment.NewLine, "<", name, ">", d.RawValue, "</", name, ">") : string.Concat(tmp, Environment.NewLine, "<", name, "/>");
 
 
                         rsMap[d.RecordSetName] = tmp;
                     }
                     else
                     {
-                        if(withData)
-                        {
-                            result.Append(string.Concat("<", d.Name, ">", d.RawValue, "</", d.Name, ">"));
-                        }
-                        else
-                        {
-                            result.Append(string.Concat("<", d.Name, "/>"));
-                        }
+                        result.Append(withData ? string.Concat("<", d.Name, ">", d.RawValue, "</", d.Name, ">") : string.Concat("<", d.Name, "/>"));
                     }
 
                 });
@@ -1175,15 +1153,7 @@ namespace Dev2.Data.Util
             if(!value.Contains(ClosingSquareBrackets))
             {
                 // missing both
-                if(!value.Contains(OpeningSquareBrackets))
-                {
-                    result = string.Concat(OpeningSquareBrackets, value, ClosingSquareBrackets);
-                }
-                else
-                {
-                    // only ending brackets ;)
-                    result = string.Concat(value, ClosingSquareBrackets);
-                }
+                result = !value.Contains(OpeningSquareBrackets) ? string.Concat(OpeningSquareBrackets, value, ClosingSquareBrackets) : string.Concat(value, ClosingSquareBrackets);
             }
             else
             {
@@ -1381,7 +1351,7 @@ namespace Dev2.Data.Util
                 }
                 catch(Exception ex)
                 {
-                    ServerLogger.LogError("DataListUtil", ex);
+                    Dev2Logger.Log.Error("DataListUtil", ex);
                 }
             }
 
@@ -1477,7 +1447,7 @@ namespace Dev2.Data.Util
             }
             catch(FormatException fex)
             {
-                ServerLogger.LogError("DataListUtil", fex);
+                Dev2Logger.Log.Error("DataListUtil", fex);
                 return false;
             }
         }
@@ -1544,7 +1514,7 @@ namespace Dev2.Data.Util
                         }
                         catch(Exception ex)
                         {
-                            ServerLogger.LogError("DataListUtil", ex);
+                            Dev2Logger.Log.Error("DataListUtil", ex);
                             tr.Close();
                             reader.Close();
                             isFragment = false;
@@ -1846,15 +1816,7 @@ namespace Dev2.Data.Util
         public static string GetValueAtIndex(IBinaryDataListEntry entry, int index, out string error)
         {
             error = string.Empty;
-            string result;
-            if(entry.IsRecordset)
-            {
-                result = entry.TryFetchIndexedRecordsetUpsertPayload(index, out error).TheValue;
-            }
-            else
-            {
-                result = entry.FetchScalar().TheValue;
-            }
+            string result = entry.IsRecordset ? entry.TryFetchIndexedRecordsetUpsertPayload(index, out error).TheValue : entry.FetchScalar().TheValue;
             return result;
         }
 

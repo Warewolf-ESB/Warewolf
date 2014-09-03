@@ -22,7 +22,7 @@ namespace Dev2.Runtime.Diagnostics
         protected void RaiseError(Exception ex)
         {
             RaiseError(ex.Message);
-            ServerLogger.LogMessage(ex.Message + " Stacktrace : " + ex.Message);
+            Dev2Logger.Log.Info(ex.Message + " Stacktrace : " + ex.Message);
         }
 
         protected void RaiseError(string error)
@@ -30,7 +30,7 @@ namespace Dev2.Runtime.Diagnostics
             HasErrors = true;
             Error = error;
 
-            ServerLogger.LogMessage(error);
+            Dev2Logger.Log.Info(error);
         }
     }
 }

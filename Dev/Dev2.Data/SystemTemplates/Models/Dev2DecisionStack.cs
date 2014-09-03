@@ -160,7 +160,7 @@ namespace Dev2.Data.SystemTemplates.Models
             }
             catch(Exception ex)
             {
-                ServerLogger.LogError("Dev2DecisionStack", ex);
+                Dev2Logger.Log.Error("Dev2DecisionStack", ex);
                 // Best effort ;)
             }
 

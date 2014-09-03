@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Network;
 using Dev2.AppResources.Repositories;
+using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Providers.Logs;
 using Dev2.Security;
@@ -161,7 +162,7 @@ namespace Dev2.Studio.Core.Models
                 throw new ArgumentException(string.Format(StringResources.Error_Connect_Failed, StringResources.Error_DSF_Name_Not_Provided));
             }
 
-            this.TraceInfo("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
+            Dev2Logger.Log.Debug("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
             Connection.Connect();
         }
 

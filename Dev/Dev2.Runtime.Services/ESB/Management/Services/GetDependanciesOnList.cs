@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -34,6 +35,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <returns></returns>
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+
+            try
+            {
+
+         
             List<string> dependancyNames = new List<string>();
 
             bool dependsOnMe = false;
@@ -52,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             List<string> resourceNames = JsonConvert.DeserializeObject<List<string>>(resourceNamesString);
-
+            Dev2Logger.Log.Info("Get Dependencies On List. "+resourceNamesString);
             if(!string.IsNullOrEmpty(dependsOnMeString))
             {
                 if(!bool.TryParse(dependsOnMeString, out dependsOnMe))
@@ -78,6 +84,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(dependancyNames);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Log.Error(e);
+                throw;
+            }
         }
 
         /// <summary>

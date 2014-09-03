@@ -137,6 +137,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error("DSFWebGetRequest", e);
                 var expression = GetExpression(1);
                 PushResultsToDataList(expression, toUpsert, "", dataObject, executionId, compiler, allErrors);
                 allErrors.AddError(e.Message);

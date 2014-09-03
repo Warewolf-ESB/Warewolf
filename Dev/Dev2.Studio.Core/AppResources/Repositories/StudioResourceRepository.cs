@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Threading;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -196,6 +197,7 @@ namespace Dev2.AppResources.Repositories
 
         public void DeleteItem(Guid environmentId, Guid resourceId)
         {
+            Dev2Logger.Log.Info(String.Format("Delete Item Resource: {0} Id:{1}", resourceId, environmentId));
             var environment = ExplorerItemModels.FirstOrDefault(env => env.EnvironmentId == environmentId);
 
             if(environment == null)
@@ -215,6 +217,7 @@ namespace Dev2.AppResources.Repositories
 
         public void DeleteFolder(IExplorerItemModel item)
         {
+            Dev2Logger.Log.Info(String.Format("Delete Folder Resource: {0} Id:{1}", item.DisplayName,item.EnvironmentId));
             VerifyArgument.IsNotNull("item", item);
             IExplorerItemModel parentItem = item.Parent;
             if(parentItem != null && parentItem.Children.Remove(item))
@@ -289,7 +292,7 @@ namespace Dev2.AppResources.Repositories
         {
             VerifyArgument.IsNotNull("item", item);
             VerifyArgument.IsNotNullOrWhitespace("newName", newName);
-
+            Dev2Logger.Log.Info(String.Format("Rename Item Resource: {0} New name :{1} Id:{2}", item.DisplayName, newName, item.EnvironmentId));
             if(item.DisplayName == newName)
             {
                 return;
@@ -314,9 +317,10 @@ namespace Dev2.AppResources.Repositories
 
         public void RenameFolder(IExplorerItemModel item, string newName)
         {
+            
             VerifyArgument.IsNotNull("item", item);
             VerifyArgument.IsNotNullOrWhitespace("newName", newName);
-
+            Dev2Logger.Log.Info(String.Format("Rename Folder Resource: {0} New name :{1} Id:{2}", item.DisplayName, newName, item.EnvironmentId));
             if(item.DisplayName == newName)
             {
                 return;
@@ -344,9 +348,10 @@ namespace Dev2.AppResources.Repositories
 
         public void AddItem(IExplorerItemModel item)
         {
+            
             VerifyArgument.IsNotNull("item", item);
             VerifyArgument.IsNotNull("parent", item.Parent);
-
+            Dev2Logger.Log.Info(String.Format("AddItem Name: {0} Type:{1}", item.DisplayName, item.ResourceType));
             var explorerItem = MapData(item);
 
             if(explorerItem != null)
@@ -695,7 +700,9 @@ namespace Dev2.AppResources.Repositories
 
         public void RollbackTo(IVersionInfo versionInfo, Guid environmentId)
         {
+      
             VerifyArgument.IsNotNull("versionInfo", versionInfo);
+            Dev2Logger.Log.Info(String.Format("Rollback Version Resource: {0} Version:{1}", versionInfo.ResourceId, versionInfo.VersionNumber));
             var resourceId = versionInfo.ResourceId;
             var versionProxy = GetVersionProxy(environmentId);
             IRollbackResult rollbackResult = versionProxy.RollbackTo(resourceId, versionInfo.VersionNumber);
@@ -713,7 +720,9 @@ namespace Dev2.AppResources.Repositories
 
         public void DeleteVersion(IVersionInfo versionInfo, Guid environmentId)
         {
+          
             VerifyArgument.IsNotNull("versionInfo", versionInfo);
+            Dev2Logger.Log.Info(String.Format("Delete Version. Resource: {0} Version:{1}", versionInfo.ResourceId, versionInfo.VersionNumber));
             var resourceId = versionInfo.ResourceId;
             var versionProxy = GetVersionProxy(environmentId);
             var versions = versionProxy.DeleteVersion(resourceId, versionInfo.VersionNumber);

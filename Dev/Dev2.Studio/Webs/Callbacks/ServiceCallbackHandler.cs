@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
 using Caliburn.Micro;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Providers.Logs;
 using Dev2.Services.Events;
@@ -64,7 +65,7 @@ namespace Dev2.Webs.Callbacks
             }
             catch(Exception e)
             {
-                this.LogError(e);
+                Dev2Logger.Log.Error(e);
             }
         }
 

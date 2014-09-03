@@ -7,7 +7,9 @@ using Dev2;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Framework.Converters.Graph.Poco
+// ReSharper restore CheckNamespace
 {
     [Serializable]
     public class PocoMapper : IMapper
@@ -61,7 +63,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     }
                     catch(Exception ex)
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }
@@ -82,7 +84,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     }
                     catch(Exception ex)
                     {
-                        this.LogError(ex);
+                        Dev2Logger.Log.Error(ex);
                         propertyData = null;
                         //TODO When an exception is encountered stop discovery for this path and write to log
                     }

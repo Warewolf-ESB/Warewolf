@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
@@ -18,6 +19,11 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            try
+            {
+
+         
+            Dev2Logger.Log.Info("Fetch Remote Debug Messages");
             string invokerID = null;
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
@@ -45,17 +51,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return new StringBuilder();
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Log.Error("Fetch Remote Debug Messages Error", err);
+                throw;
+            }
         }
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService();
-            newDs.Name = HandlesType();
-            newDs.DataListSpecification = "<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
-            ServiceAction sa = new ServiceAction();
-            sa.Name = HandlesType();
-            sa.ActionType = enActionType.InvokeManagementDynamicService;
-            sa.SourceMethod = HandlesType();
+            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
             return newDs;

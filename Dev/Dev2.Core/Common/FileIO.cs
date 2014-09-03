@@ -41,9 +41,13 @@ namespace Dev2
     public class FileIO
     {
 
+// ReSharper disable InconsistentNaming
         const int LOGON32_PROVIDER_DEFAULT = 0;
+// ReSharper restore InconsistentNaming
         //This parameter causes LogonUser to create a primary token. 
+// ReSharper disable InconsistentNaming
         const int LOGON32_LOGON_INTERACTIVE = 2;
+// ReSharper restore InconsistentNaming
 
 
         #region Permissions
@@ -139,7 +143,7 @@ namespace Dev2
             }
             catch (Exception ex)
             {
-                ServerLogger.LogError("FileIO", ex);
+                Dev2Logger.Log.Error("FileIO", ex);
                 throw;
             }
             return result;

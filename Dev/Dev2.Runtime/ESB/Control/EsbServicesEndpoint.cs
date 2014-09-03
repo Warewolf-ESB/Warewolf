@@ -147,7 +147,7 @@ namespace Dev2.Runtime.ESB.Control
             }
             catch(Exception ex)
             {
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
                 _users.Remove(userName);
             }
         }
@@ -168,7 +168,7 @@ namespace Dev2.Runtime.ESB.Control
             }
             catch(Exception ex)
             {
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
                 throw;
             }
         }
@@ -191,14 +191,14 @@ namespace Dev2.Runtime.ESB.Control
         /// <returns></returns>
         public Guid ExecuteRequest(IDSFDataObject dataObject, EsbExecuteRequest request, Guid workspaceId, out ErrorResultTO errors)
         {
-            ServerLogger.LogMessage("START MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
+            Dev2Logger.Log.Info("START MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
             var resultID = GlobalConstants.NullDataListID;
             errors = new ErrorResultTO();
             var theWorkspace = WorkspaceRepository.Instance.Get(workspaceId);
             var compiler = DataListFactory.CreateDataListCompiler();
 
             var principle = Thread.CurrentPrincipal;
-            ServerLogger.LogMessage("EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE [ " + dataObject.ServiceName + " ]");
+            Dev2Logger.Log.Info("EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE [ " + dataObject.ServiceName + " ]");
 
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
@@ -211,7 +211,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 catch(Exception ex)
                 {
-                    this.LogError(ex);
+                    Dev2Logger.Log.Error(ex);
                     errors.AddError(string.Format("Service [ {0} ] not found.", dataObject.ServiceName));
                     return resultID;
                 }
@@ -277,7 +277,7 @@ namespace Dev2.Runtime.ESB.Control
             {
                 logMemoryValue = "0.0";
             }
-            ServerLogger.LogMessage("FINAL MEMORY USAGE AFTER DISPOSE [ " + logMemoryValue + " MBs ]");
+            Dev2Logger.Log.Info("FINAL MEMORY USAGE AFTER DISPOSE [ " + logMemoryValue + " MBs ]");
 
             return resultID;
         }
@@ -313,7 +313,7 @@ namespace Dev2.Runtime.ESB.Control
             var isLocal = !dataObject.IsRemoteWorkflow();
 
             var principle = Thread.CurrentPrincipal;
-            ServerLogger.LogMessage("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
+            Dev2Logger.Log.Info("SUB-EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE  [ " + dataObject.ServiceName + " ]");
 
             var result = dataObject.DataListID;
             _doNotWipeDataList = false;
@@ -412,7 +412,7 @@ namespace Dev2.Runtime.ESB.Control
                 {
                     var task = Task.Factory.StartNew(() =>
                     {
-                        ServerLogger.LogMessage("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]");
+                        Dev2Logger.Log.Info("ASYNC EXECUTION USER CONTEXT IS [ " + Thread.CurrentPrincipal.Identity.Name + " ]");
                         ErrorResultTO error;
                         clonedDataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dl1, shapeOfData, out error);
                         executionContainer.Execute(out error);
@@ -743,7 +743,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 catch(Exception e)
                 {
-                    this.LogError(e);
+                    Dev2Logger.Log.Error(e);
                     errors.AddError(e.Message);
                 }
             }
@@ -764,7 +764,7 @@ namespace Dev2.Runtime.ESB.Control
                 }
                 catch(Exception e)
                 {
-                    this.LogError(e);
+                    Dev2Logger.Log.Error(e);
                 }
             }
 

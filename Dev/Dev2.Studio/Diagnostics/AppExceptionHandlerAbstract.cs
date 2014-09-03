@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Dev2.Common;
 using Dev2.Providers.Logs;
 
 // ReSharper disable once CheckNamespace
@@ -25,9 +26,10 @@ namespace Dev2.Studio.Diagnostics
             }
             try
             {
+                Dev2Logger.Log.Error("Unhandled Exception" ,e);
                 _exception = e;
                 _busy = true;                
-                this.LogError(_exception);
+                Dev2Logger.Log.Error(_exception);
                 var popupController = CreatePopupController();
                 var exceptionString = ToErrorString(_exception);
                 var lastExceptionSignature = _lastExceptionSignature;

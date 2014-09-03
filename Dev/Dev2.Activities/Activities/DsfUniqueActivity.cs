@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
 using Dev2.Data.Util;
@@ -260,6 +261,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error("DSFUnique", e);
                 allErrors.AddError(e.Message);
             }
             finally

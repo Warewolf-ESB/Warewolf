@@ -286,7 +286,7 @@ namespace Dev2.Workspaces
                         catch(Exception ex)
                         // ReSharper restore EmptyGeneralCatchClause
                         {
-                            this.LogError(ex);
+                            Dev2Logger.Log.Error(ex);
                             // Deserialization failed so overwrite with new one.
                         }
                     }
@@ -366,7 +366,7 @@ namespace Dev2.Workspaces
                         catch(Exception ex)
                         // ReSharper restore EmptyGeneralCatchClause
                         {
-                            ServerLogger.LogError("WorkspaceRepository", ex);
+                            Dev2Logger.Log.Error("WorkspaceRepository", ex);
                             // Deserialization failed so overwrite with new one.
                         }
                     }

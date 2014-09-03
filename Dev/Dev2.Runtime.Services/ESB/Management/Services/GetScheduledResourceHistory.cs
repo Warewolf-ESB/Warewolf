@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -18,23 +19,33 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, Workspaces.IWorkspace theWorkspace)
         {
-            StringBuilder tmp;
-            values.TryGetValue("Resource", out tmp);
-            var serializer = new Dev2JsonSerializer();
-
-            if(tmp != null)
+            try
             {
-                var res = serializer.Deserialize<IScheduledResource>(tmp);
 
-                IList<IResourceHistory> resources;
-                using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
+
+                StringBuilder tmp;
+                values.TryGetValue("Resource", out tmp);
+                var serializer = new Dev2JsonSerializer();
+
+                if (tmp != null)
                 {
-                    resources = model.CreateHistory(res);
+                    var res = serializer.Deserialize<IScheduledResource>(tmp);
+                    Dev2Logger.Log.Info("Get Scheduled History. " +tmp);
+                    IList<IResourceHistory> resources;
+                    using (var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
+                    {
+                        resources = model.CreateHistory(res);
+                    }
+                    return serializer.SerializeToBuilder(resources);
                 }
-                return serializer.SerializeToBuilder(resources);
+                Dev2Logger.Log.Debug("No resource Provided");
+                return serializer.SerializeToBuilder(new List<IResourceHistory>());
             }
-
-            return serializer.SerializeToBuilder(new List<IResourceHistory>());
+            catch (Exception e)
+            {
+                Dev2Logger.Log.Error(e);
+                throw;
+            }
         }
 
         public DynamicService CreateServiceEntry()

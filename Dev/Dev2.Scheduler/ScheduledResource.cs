@@ -213,7 +213,10 @@ namespace Dev2.Scheduler
 
         #endregion INotifyPropertyChanged
 
-
+        public override string ToString()
+        {
+            return String.Format("Name:{0} ResourceId:{1}", Name, ResourceId);
+        }
         public Guid ResourceId { get; set; }
     }
 }

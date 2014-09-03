@@ -41,7 +41,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 if(userPrinciple != null)
                 {
                     System.Threading.Thread.CurrentPrincipal = userPrinciple;
-                    ServerLogger.LogMessage("WEB EXECUTION USER CONTEXT [ " + userPrinciple.Identity.Name + " ]");
+                    Dev2Logger.Log.Info("WEB EXECUTION USER CONTEXT [ " + userPrinciple.Identity.Name + " ]");
                 }
 
                 result = _serviceInvoker.Invoke(className, methodName, args, workspaceGuid, dataListGuid);

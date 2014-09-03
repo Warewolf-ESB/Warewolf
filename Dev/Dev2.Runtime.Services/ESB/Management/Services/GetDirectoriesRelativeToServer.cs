@@ -39,6 +39,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <returns></returns>
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            try
+            {
+
+          
             string directory = null;
             StringBuilder result = new StringBuilder();
             if(values == null)
@@ -55,6 +59,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 throw new InvalidDataContractException("No value provided for Directory parameter.");
             }
+            Dev2Logger.Log.Info("Get Directories Relative to Server. "+directory);
             result.Append("<JSON>");
             var explorerItem = ServerExplorerRepo.Load(ResourceType.Folder, string.Empty);
             var jsonTreeNode = new JsonTreeNode(explorerItem);
@@ -63,6 +68,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             result.Append(directoryInfoAsJson);
             result.Append("</JSON>");
             return result;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Log.Error(e);
+                throw;
+            }
         }
 
         public IExplorerServerResourceRepository ServerExplorerRepo

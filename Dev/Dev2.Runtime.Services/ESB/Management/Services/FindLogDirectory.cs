@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Dev2.Common;
@@ -20,11 +19,12 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            var result = new ExecuteMessage() { HasError = false };
+            var result = new ExecuteMessage { HasError = false };
 
+            Dev2Logger.Log.Info("Find Log Directory");
             try
             {
-                var logdir = ServerLogger.GetDirectoryPath(SettingsProvider.Instance.Configuration.Logging);
+                var logdir = Dev2Logger.GetDirectoryPath(SettingsProvider.Instance.Configuration.Logging);
                 var cleanedDir = CleanUp(logdir);
                 result.Message.Append("<JSON>");
                 result.Message.Append(@"{""PathToSerialize"":""");
@@ -34,6 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
+                Dev2Logger.Log.Error(ex);
                 result.Message.Append(ex.Message);
                 result.HasError = true;
             }
@@ -44,14 +45,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService findDirectoryService = new DynamicService();
-            findDirectoryService.Name = HandlesType();
-            findDirectoryService.DataListSpecification = "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            DynamicService findDirectoryService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
-            ServiceAction findDirectoryServiceAction = new ServiceAction();
-            findDirectoryServiceAction.Name = HandlesType();
-            findDirectoryServiceAction.ActionType = enActionType.InvokeManagementDynamicService;
-            findDirectoryServiceAction.SourceMethod = HandlesType();
+            ServiceAction findDirectoryServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
             findDirectoryService.Actions.Add(findDirectoryServiceAction);
 
@@ -71,11 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         //We use the following to impersonate a user in the current execution environment
-        [DllImport("advapi32.dll", SetLastError = true)]
-        private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword,
-                                             int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
 
-    
         #endregion
     }
 }

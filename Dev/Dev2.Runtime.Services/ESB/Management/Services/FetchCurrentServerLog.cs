@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Dev2.Common;
@@ -15,7 +16,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         readonly string _serverLogPath;
 
         public FetchCurrentServerLog()
-            : this(Path.Combine(EnvironmentVariables.ApplicationPath, "ServerLog.txt"))
+            : this(Path.Combine(EnvironmentVariables.ApplicationPath, "WareWolf-Server.log"))
         {
         }
 
@@ -28,6 +29,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            try
+            {
+
+            Dev2Logger.Log.Info("Fetch Server Log Started");
             var result = new ExecuteMessage { HasError = false };
             if(File.Exists(_serverLogPath))
             {
@@ -43,6 +48,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(result);
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Log.Error("Fetch Server Log Error",err);
+                throw;
+            }
         }
 
         public DynamicService CreateServiceEntry()

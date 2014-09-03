@@ -83,7 +83,7 @@ namespace Dev2.DataList.Contract
                     if(DataListUtil.IsEvaluated(dataListRegion))
                     {
                         Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-                        var allParts = parser.MakeParts(dataListRegion, false);
+                        var allParts = parser.MakeParts(dataListRegion);
                         foreach(var part in allParts)
                         {
                             var parseTO = part.Child;
@@ -100,7 +100,7 @@ namespace Dev2.DataList.Contract
                 catch(Exception)
                 {
                     //Do Something usefull like log
-                    ServerLogger.LogMessage("Error parsing");
+                    Dev2Logger.Log.Info("Error parsing");
                 }
             }
             return allValidRegions;

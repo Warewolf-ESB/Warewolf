@@ -22,6 +22,11 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            try
+            {
+
+     
+            Dev2Logger.Log.Info("Find Dependencies");
             var result = new ExecuteMessage { HasError = false };
 
             string resourceName = null;
@@ -65,6 +70,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(result);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Log.Error(e);
+                throw;
+            }
         }
 
         StringBuilder FindWhatDependsOnMe(string resourceName, Guid workspaceId)

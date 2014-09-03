@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
@@ -512,25 +513,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             if(item == null)
             {
-                this.TraceInfo("Debug line item is null, did not proceed");
+                Dev2Logger.Log.Debug("Debug line item is null, did not proceed");
                 return;
             }
 
             if(string.IsNullOrEmpty(item.MoreLink))
             {
-                this.TraceInfo("Link is empty");
+                Dev2Logger.Log.Debug("Link is empty");
             }
             else
             {
                 try
                 {
                     string debugItemTempFilePath = FileHelper.GetDebugItemTempFilePath(item.MoreLink);
-                    this.TraceInfo(string.Format("Debug file path is [{0}]", debugItemTempFilePath));
+                    Dev2Logger.Log.Debug(string.Format("Debug file path is [{0}]", debugItemTempFilePath));
                     ProcessController = new ProcessController(Process.Start(new ProcessStartInfo(debugItemTempFilePath)));
                 }
                 catch(Exception ex)
                 {
-                    this.LogError(ex);
+                    Dev2Logger.Log.Error(ex);
                     throw;
                 }
             }
@@ -750,7 +751,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 return;
             }
-            Logger.TraceInfo(string.Format("Debug content to be added ID: {0}" + Environment.NewLine + "Parent ID: {1}" + Environment.NewLine + "Name: {2}", content.ID, content.ParentID, content.DisplayName));
+            Dev2Logger.Log.Debug(string.Format("Debug content to be added ID: {0}" + Environment.NewLine + "Parent ID: {1}" + Environment.NewLine + "Name: {2}", content.ID, content.ParentID, content.DisplayName));
             if(_lastStep != null && DebugStatus == DebugStatus.Finished && content.StateType == StateType.Message)
             {
                 var lastDebugStateProcessed = _lastStep;

@@ -45,7 +45,7 @@ namespace Dev2.Services.Execution
                 var connected = SqlServer.Connect(Source.ConnectionString, CommandType.StoredProcedure, String.IsNullOrEmpty(Service.Method.ExecuteAction) ? Service.Method.Name : Service.Method.ExecuteAction);
                 if(!connected)
                 {
-                    this.LogError(string.Format("Failed to connect with the following connection string: '{0}'", Source.ConnectionString));
+                    Dev2Logger.Log.Error(string.Format("Failed to connect with the following connection string: '{0}'", Source.ConnectionString));
                 }
             }
             catch(SqlException sex)
@@ -61,13 +61,13 @@ namespace Dev2.Services.Execution
                                          "Procedure: " + sex.Errors[i].Procedure + Environment.NewLine);
                 }
                 errors.AddError(errorMessages.ToString());
-                this.LogError(errorMessages.ToString());
+                Dev2Logger.Log.Error(errorMessages.ToString());
             }
             catch(Exception ex)
             {
                 // 2013.06.24 - TWR - added errors logging
                 errors.AddError(string.Format("{0}{1}{2}", ex.Message, Environment.NewLine, ex.StackTrace));
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
             }
         }
 

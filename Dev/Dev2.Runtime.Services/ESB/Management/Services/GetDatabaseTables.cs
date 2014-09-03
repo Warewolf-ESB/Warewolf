@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Runtime.Serialization;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
@@ -55,6 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(string.IsNullOrEmpty(database))
             {
                 var res = new DbTableList("No database set.");
+                Dev2Logger.Log.Debug("No database set.");
                 return serializer.SerializeToBuilder(res);
             }
 
@@ -71,22 +73,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error(e);
                 var res = new DbTableList("Invalid JSON data for Database parameter. Exception: {0}", e.Message);
                 return serializer.SerializeToBuilder(res);
             }
             if(runtimeDbSource == null)
             {
                 var res = new DbTableList("Invalid Database source");
+                Dev2Logger.Log.Debug("Invalid Database source");
                 return serializer.SerializeToBuilder(res);
             }
             if(string.IsNullOrEmpty(runtimeDbSource.DatabaseName) || string.IsNullOrEmpty(runtimeDbSource.Server))
             {
                 var res = new DbTableList("Invalid database sent {0}.", database);
+                Dev2Logger.Log.Debug(String.Format("Invalid database sent {0}.", database));
                 return serializer.SerializeToBuilder(res);
             }
 
             try
             {
+                Dev2Logger.Log.Info("Get Database Tables. " + dbSource.DatabaseName );
                 var tables = new DbTableList();
                 DataTable columnInfo;
                 using(var connection = new SqlConnection(dbSource.ConnectionString))
@@ -103,10 +109,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         var dbTable = tables.Items.Find(table => table.TableName == tableName && table.Schema == schema);
                         if(dbTable == null)
                         {
-                            dbTable = new DbTable();
-                            dbTable.Schema = schema;
-                            dbTable.TableName = tableName;
-                            dbTable.Columns = new List<IDbColumn>();
+                            dbTable = new DbTable { Schema = schema, TableName = tableName, Columns = new List<IDbColumn>() };
                             tables.Items.Add(dbTable);
                         }
                     }

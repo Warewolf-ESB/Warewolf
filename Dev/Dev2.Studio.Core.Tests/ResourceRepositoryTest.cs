@@ -3,7 +3,6 @@ using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Explorer;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
@@ -12,7 +11,6 @@ using Dev2.Core.Tests;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.XML;
 using Dev2.Data.ServiceModel;
-using Dev2.DynamicServices;
 using Dev2.Models;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
@@ -2291,86 +2289,7 @@ namespace BusinessDesignStudio.Unit.Tests
             repo.DeployResource(null);
         }
 
-        //// BUG 9703 - 2013.06.21 - TWR - added
-        //[TestMethod]
-        //public void ResourceRepositoryDeployResourceWithNewResourceExpectedCreatesAndAddsNewResourceWithRepositoryEnvironment()
-        //{
-        //    var repoConn = new Mock<IEnvironmentConnection>();
-        //    repoConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-        //    repoConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
-        //    repoConn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("<XmlData></XmlData>");
 
-        //    // DO NOT USE Mock EnvironmentModel's - otherwise EnvironmentModel.IEquatable will fail!
-        //    //new Mock<IWizardEngine>().Object
-        //    var repoEnv = new EnvironmentModel(Guid.NewGuid(), repoConn.Object, false);
-
-        //    var resourceConn = new Mock<IEnvironmentConnection>();
-        //    resourceConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-        //    resourceConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
-        //    //, new Mock<IWizardEngine>().Object
-        //    var resourceEnv = new EnvironmentModel(Guid.NewGuid(), resourceConn.Object, false);
-
-        //    var newResource = new ResourceModel(resourceEnv)
-        //    {
-        //        ID = Guid.NewGuid(),
-        //        Category = "Test",
-        //        ResourceName = "TestResource"
-        //    };
-
-        //    repoEnv.ResourceRepository.DeployResource(newResource);
-
-        //    var actual = repoEnv.ResourceRepository.FindSingle(r => r.ID == newResource.ID) as IContextualResourceModel;
-
-        //    Assert.IsNotNull(actual);
-        //    Assert.AreNotSame(newResource, actual);
-        //    Assert.AreSame(repoEnv, actual.Environment);
-        //}
-
-        //// BUG 9703 - 2013.06.21 - TWR - added
-        //[TestMethod]
-        //public void ResourceRepositoryDeployResourceWithExistingResourceExpectedCreatesAndAddsNewResourceWithRepositoryEnvironment()
-        //{
-        //    var repoConn = new Mock<IEnvironmentConnection>();
-        //    repoConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-        //    repoConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
-        //    repoConn.Setup(c => c.ExecuteCommand(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("<XmlData></XmlData>");
-
-        //    // DO NOT USE Mock EnvironmentModel's - otherwise EnvironmentModel.IEquatable will fail!
-        //    //, new Mock<IWizardEngine>().Object
-        //    var repoEnv = new EnvironmentModel(Guid.NewGuid(), repoConn.Object, false);
-
-        //    //var repo = new Mock<IResourceRepository>();
-        //    //repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IEnvironmentModel>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("resource xaml");
-
-        //    var resourceConn = new Mock<IEnvironmentConnection>();
-        //    resourceConn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
-        //    resourceConn.Setup(c => c.SecurityContext).Returns(new Mock<IFrameworkSecurityContext>().Object);
-        //    //, new Mock<IWizardEngine>().Object
-        //    var resourceEnv = new EnvironmentModel(Guid.NewGuid(), resourceConn.Object, false);
-
-        //    var oldResource = new ResourceModel(repoEnv)
-        //    {
-        //        ID = Guid.NewGuid(),
-        //        Category = "Test",
-        //        ResourceName = "TestResource"
-        //    };
-        //    repoEnv.ResourceRepository.Add(oldResource);
-
-        //    var newResource = new ResourceModel(resourceEnv)
-        //    {
-        //        ID = oldResource.ID,
-        //        Category = "Test",
-        //        ResourceName = oldResource.ResourceName
-        //    };
-
-        //    repoEnv.ResourceRepository.DeployResource(newResource);
-
-        //    var actual = repoEnv.ResourceRepository.FindSingle(r => r.ID == newResource.ID) as IContextualResourceModel;
-
-        //    Assert.IsNotNull(actual);
-        //    Assert.AreNotSame(newResource, actual);
-        //    Assert.AreSame(repoEnv, actual.Environment);
-        //}
 
         #endregion
 

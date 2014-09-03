@@ -71,7 +71,7 @@ namespace Dev2.Runtime.WebServer.Security
             }
             catch(Exception e)
             {
-                this.LogError(e);
+                Dev2Logger.Log.Error(e);
             }
 
             return authorizationRequest;

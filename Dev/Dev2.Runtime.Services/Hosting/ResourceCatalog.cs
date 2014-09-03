@@ -530,7 +530,11 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string userRoles = null, string reason = "", string user = "")
         {
-          
+
+            try
+            {
+
+     
             if(resourceXml == null || resourceXml.Length == 0)
             {
                 throw new ArgumentNullException("resourceXml");
@@ -542,6 +546,7 @@ namespace Dev2.Runtime.Hosting
                 var xml = resourceXml.ToXElement();
 
                 var resource = new Resource(xml);
+                Dev2Logger.Log.Info("Save Resource."+ resource);
                 _versioningRepository.StoreVersion(resource, user, reason,workspaceID);
 
                 resource.UpgradeXml(xml, resource);
@@ -549,6 +554,12 @@ namespace Dev2.Runtime.Hosting
                 StringBuilder result = xml.ToStringBuilder();
 
                 return CompileAndSave(workspaceID, resource, result);
+            }
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Log.Error("Save Error",err);
+                throw;
             }
         }
 
@@ -655,6 +666,10 @@ namespace Dev2.Runtime.Hosting
 
         public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, string userRoles = null, bool deleteVersions = true)
         {
+            try
+            {
+
+       
             var workspaceLock = GetWorkspaceLock(workspaceID);
             lock(workspaceLock)
             {
@@ -689,6 +704,12 @@ namespace Dev2.Runtime.Hosting
                             Message = string.Format("<Result>Multiple matches found for {0} '{1}'.</Result>", type, resourceID)
                         };
                 }
+            }
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Log.Error("Delete Error",err);
+                throw;
             }
         }
 
@@ -1409,7 +1430,7 @@ namespace Dev2.Runtime.Hosting
                 }
                 else
                 {
-                    this.LogTrace(string.Format("{0} -> Resource Catalog Cache HIT", resource.ResourceName));
+                    Dev2Logger.Log.Debug(string.Format("{0} -> Resource Catalog Cache HIT", resource.ResourceName));
                 }
                 if(objects != null)
                 {
@@ -1514,8 +1535,9 @@ namespace Dev2.Runtime.Hosting
                     };
                 }
             }
-            catch(Exception)
+            catch(Exception err)
             {
+                Dev2Logger.Log.Error(err);
                 return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Fail,
@@ -1705,8 +1727,9 @@ namespace Dev2.Runtime.Hosting
                 };
                 return hasError ? failureResult : successResult;
             }
-            catch(Exception)
+            catch(Exception err)
             {
+                Dev2Logger.Log.Error("Rename Category error", err);
                 return new ResourceCatalogResult
                 {
                     Status = ExecStatus.Fail,

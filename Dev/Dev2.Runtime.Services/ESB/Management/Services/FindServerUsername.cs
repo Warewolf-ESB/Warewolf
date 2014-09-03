@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
@@ -15,21 +16,24 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            return new StringBuilder(Environment.UserDomainName + "\\" + Environment.UserName);
+            try
+            {
+                Dev2Logger.Log.Info("Find Server User Name");
+         
+                return new StringBuilder(Environment.UserDomainName + "\\" + Environment.UserName);
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Log.Error(err);
+                throw;
+            }
         }
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService findServerUsernameService = new DynamicService();
-            findServerUsernameService.Name = HandlesType();
-            findServerUsernameService.DataListSpecification = "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
-            
+            DynamicService findServerUsernameService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
-            ServiceAction findServerUsernameServiceAction = new ServiceAction();
-            findServerUsernameServiceAction.Name = HandlesType();
-            findServerUsernameServiceAction.ActionType = enActionType.InvokeManagementDynamicService;
-            findServerUsernameServiceAction.SourceName = HandlesType();
-            findServerUsernameServiceAction.SourceMethod = HandlesType();
+            ServiceAction findServerUsernameServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceName = HandlesType(), SourceMethod = HandlesType() };
 
             findServerUsernameService.Actions.Add(findServerUsernameServiceAction);
 

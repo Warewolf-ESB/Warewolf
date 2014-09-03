@@ -262,7 +262,7 @@ namespace Dev2.Runtime.ServiceModel
 #pragma warning restore 168
                         hub.Start().Wait();
 
-                        ServerLogger.LogTrace("Hub State : " + hub.State);
+                        Dev2Logger.Log.Debug("Hub State : " + hub.State);
 
                         return "Success";
                     }

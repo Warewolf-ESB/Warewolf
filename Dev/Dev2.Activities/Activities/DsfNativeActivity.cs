@@ -139,6 +139,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         // 4423 : TWR - sealed so that this cannot be overridden
         protected override sealed void Execute(NativeActivityContext context)
         {
+            Dev2Logger.Log.Debug(String.Format("Start {0}", GetType().Name));
             _tmpErrors = new ErrorResultTO();
             _isOnDemandSimulation = false;
             var dataObject = context.GetExtension<IDSFDataObject>();
@@ -182,6 +183,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception ex)
             {
+
+                Dev2Logger.Log.Error("OnExecute",ex);
                 var errorString = ex.Message;
                 var errorResultTO = new ErrorResultTO();
                 errorResultTO.AddError(errorString);
@@ -201,6 +204,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         DoErrorHandling(context, compiler, dataObject);
                     }
                 }
+
             }
         }
 
@@ -469,7 +473,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch(DebugCopyException err)
                 {
-
+                    Dev2Logger.Log.Error("DispatchDebugState", err);
                     _debugState.ErrorMessage = err.Message;
                     _debugState.HasError = true;
                     _debugState.Inputs.Add(err.Item);
@@ -522,6 +526,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
+                        Dev2Logger.Log.Error("Debug Dispatch Error",e);
                         _debugState.ErrorMessage = e.Message;
                         _debugState.HasError = true;
                     }
@@ -640,7 +645,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 errorBuilder.AppendLine(string.Format("--[ Execution Exception ]--\r\nService Name = {0}\r\nError Message = {1} \r\n--[ End Execution Exception ]--", serviceName, e));
             }
-            ServerLogger.LogError("DsfNativeActivity", new Exception(errorBuilder.ToString()));
+            Dev2Logger.Log.Error("DsfNativeActivity", new Exception(errorBuilder.ToString()));
         }
 
         #endregion

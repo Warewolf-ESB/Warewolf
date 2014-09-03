@@ -36,15 +36,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 if( !values.ContainsKey("resourceId"))
                 {
+// ReSharper disable NotResolvedInText
                     throw new ArgumentNullException("No resourceId was found in the incoming data");
+// ReSharper restore NotResolvedInText
                 }
                 var id = Guid.Parse( values["resourceId"].ToString());
-
+                Dev2Logger.Log.Info("Get Versions. " + id);
                 var item = ServerVersionRepo.GetVersions(id);
                 return serializer.SerializeToBuilder(item);
             }
             catch (Exception e)
             {
+                Dev2Logger.Log.Error(e);
                 IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
                 return serializer.SerializeToBuilder(error);
             }

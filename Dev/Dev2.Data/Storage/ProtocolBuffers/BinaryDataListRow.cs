@@ -143,8 +143,8 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                 catch(Exception ae)
                 {
                     // we may have a flipping huge issue ;)
-                    this.LogError("**** Row Data Has Problems. Has caused an overflow [ " + charSize + " ] Used Storage [ " + _usedStorage + " ] StorageCapacity [ " + _storageCapacity + " ] Column Count [ " + _colCnt + " ] TOTAL ROW BYTES [ " + packedRowBytesLen + " ]");
-                    this.LogError(ae);
+                    Dev2Logger.Log.Error("**** Row Data Has Problems. Has caused an overflow [ " + charSize + " ] Used Storage [ " + _usedStorage + " ] StorageCapacity [ " + _storageCapacity + " ] Column Count [ " + _colCnt + " ] TOTAL ROW BYTES [ " + packedRowBytesLen + " ]");
+                    Dev2Logger.Log.Error(ae);
                 }
 
                 // unpack _startIdx
@@ -384,7 +384,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
 
             if(_rowData.Length >= GlobalConstants.MAX_BUFFER_SIZE || _usedStorage >= GlobalConstants.MAX_BUFFER_SIZE || tmp.Length >= GlobalConstants.MAX_BUFFER_SIZE)
             {
-                ServerLogger.LogMessage("*** Row Data Size Warning [ " + _rowData.Length + " ], New Data Size [ " + tmp.Length + " ],  Used Storage Size [ " + _usedStorage + " ]");
+                Dev2Logger.Log.Info("*** Row Data Size Warning [ " + _rowData.Length + " ], New Data Size [ " + tmp.Length + " ],  Used Storage Size [ " + _usedStorage + " ]");
             }
 
             Array.Copy(_rowData, tmp, _usedStorage);
@@ -413,14 +413,7 @@ namespace Dev2.Data.Storage.ProtocolBuffers
             _startIdx = new int[columnCnt];
             _columnLen = new int[columnCnt];
 
-            if(columnCnt < DataListConstants.MinRowSize)
-            {
-                _storageCapacity = DataListConstants.MinRowSize;
-            }
-            else
-            {
-                _storageCapacity = columnCnt;
-            }
+            _storageCapacity = columnCnt < DataListConstants.MinRowSize ? DataListConstants.MinRowSize : columnCnt;
 
             _rowData = new char[_storageCapacity]; // est a single char per column
 

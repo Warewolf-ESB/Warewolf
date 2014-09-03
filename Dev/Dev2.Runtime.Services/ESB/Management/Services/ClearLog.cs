@@ -50,7 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 catch(Exception ex)
                 {
                     AppendError(msg, directory, ex.Message);
-                    ServerLogger.LogMessage(ex.StackTrace);
+                    Dev2Logger.Log.Info(ex.StackTrace);
                 }
             }
 
@@ -71,14 +71,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService findDirectoryService = new DynamicService();
-            findDirectoryService.Name = HandlesType();
-            findDirectoryService.DataListSpecification = "<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
+            DynamicService findDirectoryService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
 
-            ServiceAction findDirectoryServiceAction = new ServiceAction();
-            findDirectoryServiceAction.Name = HandlesType();
-            findDirectoryServiceAction.ActionType = enActionType.InvokeManagementDynamicService;
-            findDirectoryServiceAction.SourceMethod = HandlesType();
+            ServiceAction findDirectoryServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
             findDirectoryService.Actions.Add(findDirectoryServiceAction);
 

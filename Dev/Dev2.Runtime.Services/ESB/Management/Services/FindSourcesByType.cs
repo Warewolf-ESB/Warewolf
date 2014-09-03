@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -17,6 +18,10 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            try
+            {
+
+            
             string type = null;
             StringBuilder tmp;
             values.TryGetValue("Type", out tmp);
@@ -31,7 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new ArgumentNullException("type");
                 // ReSharper restore NotResolvedInText
             }
-
+            Dev2Logger.Log.Info("Find Sources By Type. "+type);
             enSourceType sourceType;
             if(Enum.TryParse(type, true, out sourceType))
             {
@@ -48,6 +53,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
 
             return new StringBuilder();
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Log.Error(err);
+                throw;
+            }
         }
 
         public DynamicService CreateServiceEntry()

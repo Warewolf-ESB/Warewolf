@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Studio.Controller;
@@ -249,7 +250,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(DebugResourceMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Debug(message.GetType().Name);
             IContextualResourceModel contextualResourceModel = message.Resource;
             if(contextualResourceModel != null && ContextualResourceModel != null && contextualResourceModel.ID == ContextualResourceModel.ID)
             {
@@ -259,7 +260,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(DebugOutputMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             if(WorkSurfaceKey.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
             {
                 DebugOutputViewModel.Clear();
@@ -275,13 +276,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(ExecuteResourceMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             Debug(message.Resource, false);
         }
 
         public void Handle(SaveResourceMessage message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             if(ContextualResourceModel != null)
             {
                 if(ContextualResourceModel.ID == message.Resource.ID)
@@ -301,7 +302,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(UpdateWorksurfaceDisplayName message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             if(ContextualResourceModel != null && ContextualResourceModel.ID == message.WorksurfaceResourceID)
             {
                 //tab title
@@ -312,7 +313,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Handle(UpdateWorksurfaceFlowNodeDisplayName message)
         {
-            this.TraceInfo(message.GetType().Name);
+            Dev2Logger.Log.Info(message.GetType().Name);
             NotifyOfPropertyChange("ContextualResourceModel");
         }
 
@@ -352,7 +353,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                        (_editResourceCommand =
                            new AuthorizeCommand(AuthorizationContext.Contribute, param =>
                            {
-                               this.TraceInfo("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
+                               Dev2Logger.Log.Debug("Publish message of type - " + typeof(ShowEditResourceWizardMessage));
                                EventPublisher.Publish(new ShowEditResourceWizardMessage(ContextualResourceModel));
                            }
                             , param => CanExecute()));
@@ -524,7 +525,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         public void ViewInBrowser()
         {
             FindMissing();
-            this.TraceInfo("Publish message of type - " + typeof(SaveAllOpenTabsMessage));
+            Dev2Logger.Log.Debug("Publish message of type - " + typeof(SaveAllOpenTabsMessage));
             EventPublisher.Publish(new SaveAllOpenTabsMessage());
 
             if(ContextualResourceModel == null || ContextualResourceModel.Environment == null ||
@@ -684,7 +685,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 resource.IsWorkflowSaved = true;
             }
             StudioResourceRepository.RefreshVersionHistory(resource.Environment.ID, resource.ID);
-            this.TraceInfo("Publish message of type - " + typeof(UpdateDeployMessage));
+            Dev2Logger.Log.Info("Publish message of type - " + typeof(UpdateDeployMessage));
             EventPublisher.Publish(new UpdateDeployMessage());
             return true;
         }

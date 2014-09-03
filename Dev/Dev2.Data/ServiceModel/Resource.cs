@@ -760,6 +760,8 @@ namespace Dev2.Runtime.ServiceModel.Data
                 _versionInfo = value;
             }
         }
+
+        
     }
 
     public class VersionInfo : IVersionInfo
@@ -809,6 +811,11 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string VersionNumber { get; set; }
         public Guid ResourceId { get; set; }
         public Guid VersionId { get; set; }
+
+        public override string ToString()
+        {
+            return String.Format("ResourceId:{0} Version:{1} ",ResourceId,VersionId);
+        }
 
         #endregion
     }

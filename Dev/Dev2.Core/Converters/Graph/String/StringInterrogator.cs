@@ -8,7 +8,9 @@ using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Framework.Converters.Graph.String
+// ReSharper restore CheckNamespace
 {
     [Serializable]
     public class StringInterrogator : IInterrogator
@@ -79,7 +81,7 @@ namespace Unlimited.Framework.Converters.Graph.String
             }
             catch(Exception ex)
             {
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
                 result = false;
             }
 
@@ -96,7 +98,7 @@ namespace Unlimited.Framework.Converters.Graph.String
             }
             catch(Exception ex)
             {
-                this.LogError(ex);
+                Dev2Logger.Log.Error(ex);
                 result = false;
             }
 

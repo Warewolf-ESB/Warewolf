@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
 
                     var res = serializer.Deserialize<IScheduledResource>(tmp);
-
+                    Dev2Logger.Log.Info("Save Scheduled Resource. Scheduled Resource:" +res);
                     using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                     {
                         StringBuilder userName;
@@ -69,6 +69,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception e)
             {
+                Dev2Logger.Log.Error(e);
                 result.Message.Append(string.Format("Error while saving: {0}", e.Message.Remove(e.Message.IndexOf('.'))));
                 result.HasError = true;
             }
