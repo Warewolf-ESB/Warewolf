@@ -319,10 +319,10 @@ namespace Gui
         {
             try
             {
-                var process = Process.GetProcessesByName("Warewolf Server");
-                foreach (var process1 in process)
+                var processes = Process.GetProcessesByName("Warewolf Server");
+                foreach (var process in processes)
                 {
-                    process1.Kill();
+                    process.Kill();
                 }
             }
 // ReSharper disable EmptyGeneralCatchClause
