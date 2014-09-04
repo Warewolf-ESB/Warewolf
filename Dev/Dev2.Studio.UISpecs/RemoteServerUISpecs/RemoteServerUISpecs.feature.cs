@@ -72,6 +72,22 @@ namespace Dev2.Studio.UI.Specs.RemoteServerUISpecs
         public virtual void FeatureBackground()
         {
 #line 6
+#line 7
+    testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 8
+    testRunner.Given("I click \"RIBBONSETTINGS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 9
+    testRunner.And("I clear table \"ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermiss" +
+                    "ionsDataGrid\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 10
+    testRunner.And("I clear table \"ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermi" +
+                    "ssionsDataGrid\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
+    testRunner.And("I click \"SECURITYPUBLICADMINISTRATOR\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 12
+       testRunner.And("I click \"SECURITYSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 13
+    testRunner.Given("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         
@@ -83,74 +99,121 @@ namespace Dev2.Studio.UI.Specs.RemoteServerUISpecs
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testing Remote Server Connection Creating Remote Workflow and Executing", new string[] {
                         "RemtoeServer"});
-#line 17
+#line 18
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
+#line 18
+ testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 19
+ testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Address",
+                        "AuthType",
+                        "UserName",
+                        "Password"});
+            table1.AddRow(new string[] {
+                        "http://localhost:3142",
+                        "Public",
+                        "",
+                        ""});
+#line 20
+    testRunner.Given("I create a new remote connection \"Test\" as", ((string)(null)), table1, "Given ");
+#line 24
+    testRunner.Given("I click \"EXPLORER,UI_Test (http://localhost:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 25
+ testRunner.Given("I click \"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Dec" +
+                    "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 26
+    testRunner.Then("\"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Te" +
+                    "sting_AutoID,UI_CanEdit_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 27
+    testRunner.Then("\"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Te" +
+                    "sting_AutoID,UI_CanExecute_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 29
+ testRunner.Given("I double click \"EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID" +
+                    ",UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 30
+ testRunner.Given("\"WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)\" is visible within \"5\" seco" +
+                    "nds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 32
+ testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 33
+ testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" +
+                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 34
+ testRunner.Given("I double click \"EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_Decision Testing" +
+                    "_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 35
+ testRunner.Given("\"WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)\" is visible within \"5\" seco" +
+                    "nds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 36
+ testRunner.And("I send \"{F6}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 37
+ testRunner.And("I send \"{F6}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 38
  testRunner.Given("\"DEBUGOUTPUT,Assign\" is visible within \"15\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 39
- testRunner.Given("I click \"EXPLORER,UI_Test (http://localhost:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 40
- testRunner.And("I click \"RIBBONNEWENDPOINT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I click \"EXPLORER,UI_Test (http://localhost:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 41
+ testRunner.And("I click \"RIBBONNEWENDPOINT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
  testRunner.Given("I send \"Assign\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 43
- testRunner.And("I drag \"TOOLASSIGN\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 44
+ testRunner.And("I drag \"TOOLASSIGN\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 45
  testRunner.Given("I type \"rec().a\" in \"TOOLASSIGNSMALLVIEWGRID,UI_ActivityGrid_Row_0_AutoID,UI__Row" +
                     "1_FieldName_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 45
- testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 46
- testRunner.And("I send \"Warewolf\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
  testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 47
+ testRunner.And("I send \"Warewolf\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
- testRunner.And("I send \"rec().a{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
- testRunner.And("I send \"TestRemote{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I send \"rec().a{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
- testRunner.When("I double click point \"5,5\" on \"WORKSURFACE,Assign (2)(MultiAssignDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And("I send \"TestRemote{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
- testRunner.When("I click \"WORKSURFACE,Assign (2)(MultiAssignDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I double click point \"5,5\" on \"WORKSURFACE,Assign (2)(MultiAssignDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 52
+ testRunner.When("I click \"WORKSURFACE,Assign (2)(MultiAssignDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 53
  testRunner.Then("\"WORKSURFACE,Assign (2)(MultiAssignDesigner),SmallViewContent\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 54
-    testRunner.Given("I double click \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 55
-    testRunner.Given("I send \"{Delete}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I double click \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 56
- testRunner.Given("I send \"Data Merge\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I send \"{Delete}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 57
-    testRunner.Given("I drag \"TOOLDATAMERGE\" onto \"WORKSURFACE,Assign (2)(MultiAssignDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I send \"Data Merge\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 58
+    testRunner.Given("I drag \"TOOLDATAMERGE\" onto \"WORKSURFACE,Assign (2)(MultiAssignDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 59
  testRunner.Given("I type \"[[rec(1).a]]\" in \"TOOLDATAMERGESMALLVIEWGRID,UI__Row1_InputVariable_AutoI" +
                     "D\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 59
- testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 60
- testRunner.And("I send \"8\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 61
- testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 62
- testRunner.And("I send \"[[rec(2).a]]\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 63
  testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
+ testRunner.And("I send \"8\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 62
+ testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 63
+ testRunner.And("I send \"[[rec(2).a]]\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 64
- testRunner.And("I send \"10\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 65
+ testRunner.And("I send \"10\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
  testRunner.Given("I type \"[[result]]\" in \"WORKSURFACE,Data Merge (2)(DataMergeDesigner),SmallViewCo" +
                     "ntent,UI__Resulttxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 66
- testRunner.And("I send \"{F6}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 67
- testRunner.Given("\"DEBUGOUTPUT,Assign\" is visible within \"10\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("I send \"{F6}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 68
- testRunner.And("\"DEBUGOUTPUT,Assign\" is visible \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 70
+ testRunner.Given("\"DEBUGOUTPUT,Assign\" is visible within \"10\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 69
  testRunner.Given("I click \"RIBBONSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 71
+#line 70
  testRunner.And("I send \"{TAB}{TAB}{TAB}{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 72
  testRunner.And("I send \"Remote1\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -211,9 +274,9 @@ this.FeatureBackground();
                         "Public",
                         "",
                         ""});
-#line 92
+#line 91
     testRunner.Given("I create a new remote connection \"TestService\" as", ((string)(null)), table1, "Given ");
-#line 95
+#line 94
     testRunner.Given("I click \"EXPLORER,UI_TestService (http://localhost:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 96
  testRunner.Given("I click \"EXPLORER,UI_TestService (http://localhost:3142/)_AutoID,UI_REMOTEUITESTS" +

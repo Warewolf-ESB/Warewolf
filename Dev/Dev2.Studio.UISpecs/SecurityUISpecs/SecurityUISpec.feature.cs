@@ -636,6 +636,19 @@ this.FeatureBackground();
     testRunner.Then("\"RIBBONDEPLOY\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 296
     testRunner.Then("\"RIBBONDEBUG\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 298
+    testRunner.Given("I click \"RIBBONDEPLOY\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 299
+       testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_Destinat" +
+                    "ionServercbx_AutoID_TestingPermisions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 300
+       testRunner.Given("\"DEPLOYDESTINATION,TestingPermisions*,UI_Unautherized_DeployToText_AutoID\" is vis" +
+                    "ible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 301
+       testRunner.Then("I click \"ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServerc" +
+                    "bx_AutoID_TestingPermisions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 302
+       testRunner.Then("\"DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }

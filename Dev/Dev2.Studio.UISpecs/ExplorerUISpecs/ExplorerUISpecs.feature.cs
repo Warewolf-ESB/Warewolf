@@ -183,28 +183,37 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Searching a Workflow in Explorer by using Filter and Executing")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete A Resource In Explorer By Mouse Right Click And Check Its Dependency Error" +
+            " Message")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ExplorerUISpecs")]
-        public virtual void SearchingAWorkflowInExplorerByUsingFilterAndExecuting()
+        public virtual void DeleteAResourceInExplorerByMouseRightClickAndCheckItsDependencyErrorMessage()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Searching a Workflow in Explorer by using Filter and Executing", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete A Resource In Explorer By Mouse Right Click And Check Its Dependency Error" +
+                    " Message", ((string[])(null)));
 #line 54
 this.ScenarioSetup(scenarioInfo);
 #line 55
  testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 56
- testRunner.And("I send \"11330_Integration tests\" to \"EXPLORER,UI_DatalistFilterTextBox_AutoID,UI_" +
-                    "TextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 57
- testRunner.And("I double click \"EXPLORER,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_SPINT 7_Au" +
-                    "toID,UI_11330_Integration tests_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click \"EXPLORER,UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 58
- testRunner.And("\"WORKFLOWDESIGNER,Gather System Information (2)(GatherSystemInformationDesigner)\"" +
-                    " is visible within \"7\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I send \"GetCategoryTable\" to \"EXPLORER,UI_DatalistFilterTextBox_AutoID,UI_TextBox" +
+                    "_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 59
- testRunner.And("I send \"{F6}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 60
- testRunner.And("\"DEBUGOUTPUT,Gather System Information\" is visible within \"15\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click \"EXPLORER,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_Sample Project_Au" +
+                    "toID,UI_GetCategoryTable_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 61
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_Sample Project_AutoID,UI_GetCategoryTable_AutoI" +
+                    "D\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 62
+ testRunner.And("I click \"UI_DeleteContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 64
+ testRunner.Then("\"UI_DeleteResourceText_AutoID\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 65
+ testRunner.And("I click \"UI_DeleteResourceShowDependenciesBtn_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 66
+ testRunner.Given("\"UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,myScrollViewer,[De" +
+                    "pendencyGraph_Sample Project\\GetCategoryTable_IsCircular_False]\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }

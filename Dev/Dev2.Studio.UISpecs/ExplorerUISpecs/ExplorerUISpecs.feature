@@ -51,13 +51,18 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 	And I close Studio
 	And I close Server
 
-Scenario: Searching a Workflow in Explorer by using Filter and Executing
+Scenario: Delete A Resource In Explorer By Mouse Right Click And Check Its Dependency Error Message
 	Given I have Warewolf running
-	And I send "11330_Integration tests" to "EXPLORER,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID"
-	And I double click "EXPLORER,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_SPINT 7_AutoID,UI_11330_Integration tests_AutoID"
-	And "WORKFLOWDESIGNER,Gather System Information (2)(GatherSystemInformationDesigner)" is visible within "7" seconds
-	And I send "{F6}" to ""
-	And "DEBUGOUTPUT,Gather System Information" is visible within "15" seconds	
-
+	#Filtering Resource
+	And I click "EXPLORER,UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID"
+	And I send "GetCategoryTable" to "EXPLORER,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID"
+	And I click "EXPLORER,UI_ExplorerTree_AutoID,UI_localhost_AutoID,UI_Sample Project_AutoID,UI_GetCategoryTable_AutoID"
+	#Deleting Resource By Using Mouse Right Click
+	And I right click "EXPLORERFOLDERS,UI_Sample Project_AutoID,UI_GetCategoryTable_AutoID"
+	And I click "UI_DeleteContextMenuItem_AutoID"
+	#Checking Dependency Error Popup 
+	Then "UI_DeleteResourceText_AutoID" is visible within "2" seconds
+	And I click "UI_DeleteResourceShowDependenciesBtn_AutoID"
+	Given "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,myScrollViewer,[DependencyGraph_Sample Project\GetCategoryTable_IsCircular_False]" is visible
 
 	
