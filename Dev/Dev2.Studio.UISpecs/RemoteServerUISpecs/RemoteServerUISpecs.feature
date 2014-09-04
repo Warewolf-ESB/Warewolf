@@ -88,7 +88,7 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 
 
 Scenario: TestingRemoteServerUITests_EditRemoteDbService_DbServiceIsEdited1
-   Given I have Warewolf running
+    Given I have Warewolf running
 	And all tabs are closed
     Given I create a new remote connection "TestService" as
        | Address               | AuthType | UserName | Password |
