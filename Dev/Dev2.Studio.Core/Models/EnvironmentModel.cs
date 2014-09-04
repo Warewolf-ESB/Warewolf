@@ -16,7 +16,6 @@ namespace Dev2.Studio.Core.Models
 
     public class EnvironmentModel : ObservableObject, IEnvironmentModel
     {
-        IStudioResourceRepository _studioResourceRepo;
         IAuthorizationService _authorizationService;
 
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
@@ -55,7 +54,6 @@ namespace Dev2.Studio.Core.Models
         {
             VerifyArgument.IsNotNull("environmentConnection", environmentConnection);
             VerifyArgument.IsNotNull("studioResourceRepository", studioResourceRepository);
-            _studioResourceRepo = studioResourceRepository;
             CanStudioExecute = true;
 
             ID = id; // The resource ID
@@ -70,19 +68,10 @@ namespace Dev2.Studio.Core.Models
             PermissionsModifiedService = new PermissionsModifiedService(Connection.ServerEvents);
 
             // MUST subscribe to Guid.Empty as memo.InstanceID is NOT set by server!
-            PermissionsModifiedService.Subscribe(Guid.Empty, ReceivePermissionsModified);
             ResourceRepository = resourceRepository ?? new ResourceRepository(this);
         }
 
-        void ReceivePermissionsModified(PermissionsModifiedMemo memo)
-        {
-            if(memo.ServerID == Connection.ServerID && !Name.Contains("localhost"))
-            {
-                var resourcePermissions = AuthorizationService.GetResourcePermissions(Guid.Empty);
 
-                _studioResourceRepo.UpdateRootAndFoldersPermissions(resourcePermissions, ID);
-            }
-        }
 
         #endregion
 

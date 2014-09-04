@@ -688,7 +688,7 @@ namespace Dev2.Core.Tests.Environments
             connection.Setup(a => a.DisplayName).Returns("bob");
             //------------Execute Test---------------------------
             eventPublisher.Publish(pubMemo);
-            srepo.Verify(a => a.UpdateRootAndFoldersPermissions(It.IsAny<Permissions>(), It.IsAny<Guid>(), true), Times.Once());
+            srepo.Verify(a => a.UpdateRootAndFoldersPermissions(It.IsAny<Permissions>(), It.IsAny<Guid>(), true), Times.Never());
         }
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         [TestCategory("EnvironmentTreeViewModel_CTOR")]

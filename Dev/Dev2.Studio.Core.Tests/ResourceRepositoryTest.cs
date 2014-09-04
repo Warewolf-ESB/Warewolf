@@ -2621,7 +2621,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             // expect that the resource repository gets an update
             stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(1));
-            stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false), Times.Never());
+            stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false), Times.Exactly(1));
 
         }
         [TestMethod]
@@ -2667,7 +2667,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             // expect that the resource repository gets an update
             stud.Verify(a => a.UpdateItem(testResources.First().ID, It.IsAny<Action<IExplorerItemModel>>(), It.IsAny<Guid>()), Times.Exactly(1));
-            stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false), Times.Never());
+            stud.Verify(a => a.UpdateRootAndFoldersPermissions(Permissions.Administrator, Guid.Empty, false), Times.Exactly(1));
 
         }
 

@@ -256,7 +256,7 @@ namespace Dev2.Models
                     if(_permissions != value)
                     {
                         _permissions = value;
-                        IsAuthorized = (_permissions != Permissions.None) && this.Descendants().Any(model => model.Permissions != Permissions.None);
+                        IsAuthorized = !((_permissions == Permissions.None) && this.Descendants().All(model => model.Permissions == Permissions.None));
 
                         OnPropertyChanged();
                         // ReSharper disable ExplicitCallerInfoArgument
@@ -629,6 +629,7 @@ namespace Dev2.Models
             set
             {
                 _isAuthorized = value;
+                OnPropertyChanged();
             }
         }
 
