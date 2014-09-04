@@ -76,7 +76,7 @@ namespace Dev2.Explorer.Specs
                 var eim = new ExplorerItemModel
                 {
                     DisplayName = childName,
-                    Children = new ObservableCollection<IExplorerItemModel>( ),
+                    Children = new ObservableCollection<IExplorerItemModel>(),
                     ResourceType = resourceType
                 };
 
@@ -90,9 +90,9 @@ namespace Dev2.Explorer.Specs
 
             var itemModel = ScenarioContext.Current.Get<IExplorerItem>(serverName);
             Assert.AreEqual(itemModel.DisplayName, Environment.MachineName);
-            Assert.AreEqual(itemModel.Children[0].DisplayName,allItems[0].Children[0].DisplayName  );
+            Assert.AreEqual(itemModel.Children[0].DisplayName, allItems[0].Children[0].DisplayName);
             Assert.AreEqual(itemModel.Children[0].Children.Count, allItems[0].Children[0].Children.Count);
-              // assert that the test directory exists
+            // assert that the test directory exists
             foreach(var explorerItemModel in itemModel.Children[0].Children)
             {
                 Assert.IsTrue(allItems[0].Children[0].Children.Count(a => a.ResourceType == explorerItemModel.ResourceType && a.DisplayName == explorerItemModel.DisplayName) == 1);
@@ -104,7 +104,7 @@ namespace Dev2.Explorer.Specs
         public void ThenTheExplorerTreeForWillHave(string p0, Table table)
         {
             var allItems = new List<ExplorerItemModel>();
-            foreach (var tableRow in table.Rows)
+            foreach(var tableRow in table.Rows)
             {
                 var parentName = tableRow["Parent"];
                 var childName = tableRow["Child"];
@@ -120,14 +120,14 @@ namespace Dev2.Explorer.Specs
                 };
 
                 var explorerItemModel = allItems.FirstOrDefault(model => model.DisplayName == parentName);
-                if (explorerItemModel != null)
+                if(explorerItemModel != null)
                 {
                     explorerItemModel.Children.Add(eim);
                 }
                 allItems.Add(eim);
             }
-            var folderName = ScenarioContext.Current.Get<string>("folderName"); 
-          
+            var folderName = ScenarioContext.Current.Get<string>("folderName");
+
 
             var itemModel = ScenarioContext.Current.Get<IExplorerItem>("localhost");
             var folder = itemModel.Children.FirstOrDefault(a => a.DisplayName == folderName);
@@ -136,7 +136,7 @@ namespace Dev2.Explorer.Specs
             Assert.AreEqual(folder.DisplayName, allItems[0].Children[0].DisplayName);
             Assert.AreEqual(folder.Children.Count, allItems[0].Children[0].Children.Count);
             // assert that the test directory exists
-            foreach (var explorerItemModel in folder.Children)
+            foreach(var explorerItemModel in folder.Children)
             {
                 Assert.IsTrue(allItems[0].Children[0].Children.Count(a => a.ResourceType == explorerItemModel.ResourceType && a.DisplayName == explorerItemModel.DisplayName) == 1);
             }
@@ -152,10 +152,10 @@ namespace Dev2.Explorer.Specs
         {
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Name == "localhost");
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
-            var item =repository.Load(Guid.Empty)
+            var item = repository.Load(Guid.Empty)
                                 .Children.First(a => a.DisplayName == "ExplorerSpecsRenameItem")
                       .Children.First();
-           
+
 
             var result = repository.RenameItem(item, "BobAndDora", Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
@@ -171,7 +171,7 @@ namespace Dev2.Explorer.Specs
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
             var item = repository.Load(Guid.Empty).Children.First(a => a.DisplayName == "ExplorerSpecsDeleteItem")
                       .Children.First();
-    
+
 
             var result = repository.DeleteItem(item, Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
@@ -201,13 +201,13 @@ namespace Dev2.Explorer.Specs
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.Name == "localhost");
             var repository = new ServerExplorerClientProxy(environmentModel.Connection);
 
-            Assert.AreEqual(0,repository.Load(Guid.Empty).Children.Count(a=>a.DisplayName==folderName));
+            Assert.AreEqual(0, repository.Load(Guid.Empty).Children.Count(a => a.DisplayName == folderName));
 
             var result = repository.AddItem(new ServerExplorerItem(folderName, Guid.NewGuid(), Common.Interfaces.Data.ResourceType.Folder, null, Permissions.Administrator, ""), Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
             var explorerItemModel = repository.Load(Guid.Empty);
 
-            ScenarioContext.Current.Add("explorerItemModel",explorerItemModel);
+            ScenarioContext.Current.Add("explorerItemModel", explorerItemModel);
             ScenarioContext.Current.Add("folderName", folderName);
         }
 
@@ -221,7 +221,7 @@ namespace Dev2.Explorer.Specs
             var folder = item.Children.FirstOrDefault(a => a.DisplayName == folderName);
             Assert.IsNotNull(folder);
             Assert.AreEqual(folder.ResourceType, Common.Interfaces.Data.ResourceType.Folder);
-            Assert.AreEqual(folder.Children.Count,0);
+            Assert.AreEqual(folder.Children.Count, 0);
 
         }
 
@@ -250,7 +250,7 @@ namespace Dev2.Explorer.Specs
             var result = repository.DeleteItem(new ServerExplorerItem(folderToDelete, Guid.NewGuid(), Common.Interfaces.Data.ResourceType.Folder, null, Permissions.Administrator, ""), Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
             var explorerItemModel = repository.Load(Guid.Empty);
-            Assert.IsFalse(0==explorerItemModel.Children.Count(a=>a.DisplayName==folderToDelete));
+            Assert.IsFalse(0 == explorerItemModel.Children.Count(a => a.DisplayName == folderToDelete));
             ScenarioContext.Current.Add("localhost", explorerItemModel);
             ScenarioContext.Current.Add("newName", explorerItemModel);
         }
@@ -261,10 +261,10 @@ namespace Dev2.Explorer.Specs
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
             var item = repository.Load(Guid.Empty)
                                 .Children.First(a => a.DisplayName == "ExplorerSpecsRenameItem")
-                      .Children.FirstOrDefault(a=>a.DisplayName == itemToRename);
+                      .Children.FirstOrDefault(a => a.DisplayName == itemToRename);
             item.DisplayName = p1;
 
-            var result = repository.RenameItem(item, p1,Guid.Empty);
+            var result = repository.RenameItem(item, p1, Guid.Empty);
             Assert.AreEqual(result.Status, ExecStatus.Success);
             var explorerItemModel = repository.Load(Guid.Empty);
             ScenarioContext.Current.Add("localhost", explorerItemModel);
@@ -279,7 +279,7 @@ namespace Dev2.Explorer.Specs
             ServerExplorerClientProxy repository = new ServerExplorerClientProxy(environmentModel.Connection);
             var result = repository.RenameItem(new ServerExplorerItem(folderToRename, Guid.NewGuid(), Common.Interfaces.Data.ResourceType.Folder, null, Permissions.Administrator, ""), newName, Guid.Empty);
 
-            Assert.AreEqual(result.Status, ExecStatus.Success);
+            Assert.AreEqual(ExecStatus.Success, result.Status, "Rename failed: " + result.Message);
             var explorerItemModel = repository.Load(Guid.Empty);
             ScenarioContext.Current.Add("localhost", explorerItemModel);
             ScenarioContext.Current.Add("newName", explorerItemModel);
@@ -289,12 +289,9 @@ namespace Dev2.Explorer.Specs
         [Then(@"the explorer tree for ""(.*)"" will not have """"(.*)""""")]
         public void ThenTheExplorerTreeForWillNotHave(string p0, string p1, Table table)
         {
-
-
             var folderName = ScenarioContext.Current.Get<string>("folderName");
             var itemModel = ScenarioContext.Current.Get<IExplorerItem>("localhost");
-            Assert.AreEqual(0,itemModel.Children.Count(a=>a.DisplayName==folderName));
-
+            Assert.AreEqual(0, itemModel.Children.Count(a => a.DisplayName == folderName));
         }
 
     }
