@@ -368,7 +368,7 @@ namespace Dev2.Studio.UI.Specs
         {
             var correctedAutoIds = GetCorrect(automationIds).Split(',');
             var startControl = GetStartUiTestControl(ref correctedAutoIds);
-            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false, correctedAutoIds);
+            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false,false, correctedAutoIds);
             if(!string.IsNullOrEmpty(automationIds))
             {
                 controlToSendData.Click();
@@ -503,15 +503,15 @@ namespace Dev2.Studio.UI.Specs
         {
             var automationIDs = GetCorrect(automationIds).Split(',');
             var startControl = GetStartUiTestControl(ref automationIDs);
-            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false, automationIDs);
+            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false,false, automationIDs);
             return controlToClick;
         }
 
-        UITestControl GetAControlRelaxed(string automationIds)
+        UITestControl GetAControlRelaxed(string automationIds,bool throwIfMultiple=false)
         {
             var automationIDs = GetCorrect(automationIds).Split(',');
             var startControl = GetStartUiTestControl(ref automationIDs);
-            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, true, automationIDs);
+            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, true, throwIfMultiple, automationIDs);
             return controlToClick;
         }
 
@@ -582,7 +582,7 @@ namespace Dev2.Studio.UI.Specs
         [Then(@"I click point ""(.*)"" on ""(.*)""")]
         public void GivenIClickPointOn(string points, string automationIds)
         {
-            var control = GetAControlRelaxed(automationIds);
+            var control = GetAControlRelaxed(automationIds,false);
             var pointsToClick = GetPoints(points);
             pointsToClick.ForEach(control.Click);
         }
@@ -707,8 +707,8 @@ namespace Dev2.Studio.UI.Specs
             var correctedDragDestinationAutoIds = GetCorrect(dragDestinationAutoIds).Split(',');
             var startControlDragDestination = GetStartUiTestControl(ref correctedDragDestinationAutoIds);
 
-            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem, false, correcteddDragItemAutoIds);
-            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination, false, correctedDragDestinationAutoIds);
+            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem, false,false, correcteddDragItemAutoIds);
+            var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination, false, false, correctedDragDestinationAutoIds);
 
             itemToDrag.Click();
             var clickablePoint = itemToDrag.GetClickablePoint();
@@ -744,7 +744,7 @@ namespace Dev2.Studio.UI.Specs
         {
             var correcteddItemToDoubleClickAutoIds = GetCorrect(itemToDoubleClickAutoIds).Split(',');
             var startControl = GetStartUiTestControl(ref correcteddItemToDoubleClickAutoIds);
-            var itemToDoubleClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false, correcteddItemToDoubleClickAutoIds);
+            var itemToDoubleClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false, false, correcteddItemToDoubleClickAutoIds);
             itemToDoubleClick.DoubleClick();
         }
 
@@ -783,6 +783,40 @@ namespace Dev2.Studio.UI.Specs
                 Assert.Fail(message);
             }
         }
+
+        [Given(@"""(.*)"" is visible ""(.*)"" time")]
+        public void GivenIsVisibleTime(string itemToFindAutoIds, int p1)
+        {
+
+            bool once = true;
+            try
+            {
+                var control = GetAControlRelaxed(itemToFindAutoIds, true);
+                if (control != null)
+                {
+                    if (control.State.HasFlag(ControlStates.Offscreen))
+                    {
+                        control.EnsureClickable();
+                    }
+
+                    var isInvisible = control.State.HasFlag(ControlStates.Invisible);
+
+
+                }
+            }
+            catch(Exception)
+            {
+                once = false;
+                
+            }
+
+               Assert.IsTrue(once);
+      
+            }
+
+    
+        
+
 
         [Given(@"""(.*)"" is invisible within ""(.*)"" seconds")]
         [Then(@"""(.*)"" is invisible within ""(.*)"" seconds")]
@@ -892,7 +926,7 @@ namespace Dev2.Studio.UI.Specs
         public void ThenIsVisible(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, false, correctedditemToFindAutoIds);
             var message = string.Format("Control with Auto ID : {0} is not visible", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
             Assert.IsNotNull(itemFound, message);
 
@@ -908,7 +942,7 @@ namespace Dev2.Studio.UI.Specs
         public void ThenIsNotVisible(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, false, correctedditemToFindAutoIds);
             var message = string.Format("Control with Auto ID : {0} is visible", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
             if(itemFound != null)
             {
@@ -925,7 +959,7 @@ namespace Dev2.Studio.UI.Specs
         public void ThenIsEnabled(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, false, correctedditemToFindAutoIds);
             Assert.IsNotNull(itemFound);
             var message = string.Format("Control with Auto ID : {0} is not enabled", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
             Assert.IsTrue(itemFound.IsEnabled(), message);
@@ -937,7 +971,7 @@ namespace Dev2.Studio.UI.Specs
         public void ThenIsDisabled(string itemToFindAutoIds)
         {
             var correctedditemToFindAutoIds = GetCorrect(itemToFindAutoIds).Split(',');
-            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, correctedditemToFindAutoIds);
+            var itemFound = VisualTreeWalker.GetControlFromRoot(true, 0, null, false, false, correctedditemToFindAutoIds);
             Assert.IsNotNull(itemFound);
             var message = string.Format("Control with Auto ID : {0} is not disabled", correctedditemToFindAutoIds[correctedditemToFindAutoIds.Length - 1]);
             Assert.IsFalse(itemFound.IsEnabled(), message);

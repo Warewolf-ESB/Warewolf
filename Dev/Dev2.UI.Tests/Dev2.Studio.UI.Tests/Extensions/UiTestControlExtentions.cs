@@ -35,7 +35,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
             return control;
         }
 
-        public static UITestControl FindByAutomationId(this UITestControl container, string automationId, bool returnNullIfNotFound)
+        public static UITestControl FindByAutomationId(this UITestControl container, string automationId, bool returnNullIfNotFound, bool throwIfMultiple = false)
         {
             if (container == null)
             {
@@ -54,7 +54,8 @@ namespace Dev2.Studio.UI.Tests.Extensions
                                                             .ToList();
 
             var control = parentCollection.FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
-
+            if (throwIfMultiple && parentCollection.Count(b => ((WpfControl)b).AutomationId.Equals(automationId))>1)
+                throw new Exception("Multiple AutoIds Found");
             if(control != null)
             {
                 return control;
@@ -71,7 +72,8 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
                 control = collectionToSearch
                     .FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
-
+                if (throwIfMultiple && collectionToSearch.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
+                    throw new Exception("Multiple AutoIds Found");
                 if(control == null)
                 {
                     parentCollection = collectionToSearch;
