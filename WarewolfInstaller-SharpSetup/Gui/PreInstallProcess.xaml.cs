@@ -319,7 +319,7 @@ namespace Gui
         {
             try
             {
-                var process = Process.GetProcessesByName("Warewolf Server.exe");
+                var process = Process.GetProcessesByName("Warewolf Server");
                 foreach (var process1 in process)
                 {
                     process1.Kill();
