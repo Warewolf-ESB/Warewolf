@@ -61,7 +61,7 @@ namespace Dev2
             CustomContainer.Register<IPopupController>(new PopupController());
             CustomContainer.Register<IFeedbackInvoker>(new FeedbackInvoker());
             CustomContainer.Register<IMainViewModel>(new MainViewModel());
-
+            CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
             ClassRoutedEventHandlers.RegisterEvents();
         }
 
