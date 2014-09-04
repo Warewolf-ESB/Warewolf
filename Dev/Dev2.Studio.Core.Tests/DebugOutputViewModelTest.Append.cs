@@ -21,7 +21,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object);
 
             //------------Execute Test---------------------------
             viewModel.Append(null);
@@ -75,7 +75,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo) { SearchText = searchText };
+            var filterStrat = new Mock<IDebugOutputFilterStrategy>();
+            filterStrat.Setup(e => e.Filter(It.IsAny<Object>(), It.IsAny<String>())).Returns(searchText == contentText);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, filterStrat.Object) { SearchText = searchText };
 
             var content = new DebugState { DisplayName = contentText, ID = Guid.NewGuid(), StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
 
@@ -107,7 +109,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object);
 
             var content = new DebugState { DisplayName = "Content", ID = Guid.NewGuid(), StateType = stateType, ActivityType = ActivityType.Step, Message = "The message", SessionID = viewModel.SessionID };
 
@@ -159,7 +161,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object);
             var content = new DebugState { DisplayName = "Content", ID = id, ParentID = id, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
             viewModel.Append(content);
             var content2 = new DebugState { DisplayName = "Content2", ID = id, ParentID = id, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
@@ -169,17 +171,17 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(2, viewModel.RootItems.Count);
             var child = viewModel.RootItems[0] as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(child);
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if(child != null)
-// ReSharper restore ConditionIsAlwaysTrueOrFalse
+            // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 Assert.AreEqual("Content", child.Content.DisplayName);
             }
             var child2 = viewModel.RootItems[1] as DebugStateTreeViewItemViewModel;
             Assert.IsNotNull(child2);
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if(child2 != null)
-// ReSharper restore ConditionIsAlwaysTrueOrFalse
+            // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 Assert.AreEqual("Content2", child2.Content.DisplayName);
             }
@@ -189,7 +191,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object);
 
             var content = new DebugState { DisplayName = displayName, ID = contentID, ParentID = contentParentID, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
 
@@ -228,7 +230,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object);
 
             var parentContent = new DebugState { HasError = parentContentHasErrors, DisplayName = "Content", ID = Guid.NewGuid(), ParentID = Guid.Empty, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
             var childContent = new DebugState { HasError = childContentHasErrors, DisplayName = "Content", ID = Guid.NewGuid(), ParentID = parentContent.ID, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
@@ -253,7 +255,7 @@ namespace Dev2.Core.Tests
         public void DebugOutputViewModel_Append_TypeIsStartAndNotFirstStep_NothingAppended()
         {
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object);
             var content = new DebugState { DisplayName = "Content", ID = Guid.NewGuid(), ParentID = Guid.Empty, StateType = StateType.Start, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
 
             //------------Execute Test---------------------------
@@ -269,7 +271,7 @@ namespace Dev2.Core.Tests
         public void DebugOutputViewModel_Append_TypeIsEndAndNotLastStep_NothingAppended()
         {
             var envRepo = GetEnvironmentRepository();
-            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object);
             var content = new DebugState { DisplayName = "Content", ID = Guid.NewGuid(), ParentID = Guid.Empty, StateType = StateType.End, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
 
             //------------Execute Test---------------------------

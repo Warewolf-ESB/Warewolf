@@ -82,7 +82,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         {
             get
             {
-                return _debugOutput ?? (_debugOutput = new DebugOutputViewModel(EventPublishers.Studio, EnvironmentRepository.Instance) { ShowDebugStatus = false });
+                return _debugOutput ?? (_debugOutput = new DebugOutputViewModel(EventPublishers.Studio, EnvironmentRepository.Instance, new DebugOutputFilterStrategy()) { ShowDebugStatus = false });
             }
         }
 

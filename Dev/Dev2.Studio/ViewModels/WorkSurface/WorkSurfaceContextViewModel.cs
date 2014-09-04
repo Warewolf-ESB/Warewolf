@@ -37,6 +37,7 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utils;
 using Dev2.Webs;
 using Dev2.Workspaces;
+using Dev2.Diagnostics;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface
@@ -216,7 +217,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 if(_environmentModel != null)
                 {
                     // MUST use connection server event publisher - debug events are published from the server!
-                    DebugOutputViewModel = new DebugOutputViewModel(_environmentModel.Connection.ServerEvents, EnvironmentRepository.Instance);
+                    DebugOutputViewModel = new DebugOutputViewModel(_environmentModel.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
                     _environmentModel.IsConnectedChanged += EnvironmentModelOnIsConnectedChanged();
                 }
             }
@@ -225,7 +226,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             {
                 if(DebugOutputViewModel == null)
                 {
-                    DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance);
+                    DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
                 }
             }
             _popupController = popupController;

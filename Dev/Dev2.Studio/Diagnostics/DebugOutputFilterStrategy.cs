@@ -6,7 +6,7 @@ using Dev2.Studio.Core.AppResources.Converters;
 
 namespace Dev2.Diagnostics
 {
-    public class DebugOutputFilterStrategy
+    public class DebugOutputFilterStrategy : IDebugOutputFilterStrategy
     {
         #region Class Members
 

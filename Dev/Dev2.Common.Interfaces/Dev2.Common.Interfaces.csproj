@@ -129,6 +129,7 @@
     <Compile Include="Diagnostics\Debug\IDebugDispatcher.cs" />
     <Compile Include="Diagnostics\Debug\IDebugItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugItemResult.cs" />
+    <Compile Include="Diagnostics\Debug\IDebugOutputFilterStrategy.cs" />
     <Compile Include="Diagnostics\Debug\IDebugProvider.cs" />
     <Compile Include="Diagnostics\Debug\IDebugState.cs" />
     <Compile Include="Diagnostics\Debug\IDebugSubItem.cs" />

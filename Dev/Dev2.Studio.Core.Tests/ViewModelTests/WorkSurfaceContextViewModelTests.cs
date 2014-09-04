@@ -1304,7 +1304,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         // ReSharper disable UnusedParameter.Local
         public DebugVM(IEventPublisher serverEventPublisher, IEnvironmentRepository environmentRepository)
             // ReSharper restore UnusedParameter.Local
-            : base(new Mock<IEventPublisher>().Object, new Mock<IEnvironmentRepository>().Object)
+            : base(new Mock<IEventPublisher>().Object, new Mock<IEnvironmentRepository>().Object, new Mock<IDebugOutputFilterStrategy>().Object)
         {
         }
 

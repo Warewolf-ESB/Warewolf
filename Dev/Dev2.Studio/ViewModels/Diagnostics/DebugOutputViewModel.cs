@@ -43,7 +43,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         readonly List<IDebugState> _pendingItems = new List<IDebugState>();
         readonly List<IDebugState> _contentItems;
         readonly Dictionary<Guid, IDebugTreeViewItemViewModel> _contentItemMap;
-        readonly DebugOutputFilterStrategy _debugOutputFilterStrategy;
+        readonly IDebugOutputFilterStrategy _debugOutputFilterStrategy;
         readonly SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
         readonly IEnvironmentRepository _environmentRepository;
 
@@ -81,15 +81,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #region Ctor
 
-        public DebugOutputViewModel(IEventPublisher serverEventPublisher, IEnvironmentRepository environmentRepository)
+        public DebugOutputViewModel(IEventPublisher serverEventPublisher, IEnvironmentRepository environmentRepository, IDebugOutputFilterStrategy debugOutputFilterStrategy)
         {
             VerifyArgument.IsNotNull("serverEventPublisher", serverEventPublisher);
             VerifyArgument.IsNotNull("environmentRepository", environmentRepository);
+            VerifyArgument.IsNotNull("debugOutputFilterStrategy", debugOutputFilterStrategy);
             _environmentRepository = environmentRepository;
+            _debugOutputFilterStrategy = debugOutputFilterStrategy;
 
             _contentItems = new List<IDebugState>();
             _contentItemMap = new Dictionary<Guid, IDebugTreeViewItemViewModel>();
-            _debugOutputFilterStrategy = new DebugOutputFilterStrategy();
 
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(serverEventPublisher);
             _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));

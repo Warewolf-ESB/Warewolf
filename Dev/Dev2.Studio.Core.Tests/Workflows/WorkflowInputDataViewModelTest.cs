@@ -16,6 +16,7 @@ using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.Studio.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 //ReSharper disable InconsistentNaming
 namespace Dev2.Core.Tests.Workflows
@@ -598,7 +599,7 @@ namespace Dev2.Core.Tests.Workflows
             envRepo.Setup(s => s.IsLoaded).Returns(true);
             envRepo.Setup(repository => repository.Source).Returns(new Mock<IEnvironmentModel>().Object);
 
-            return new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo.Object);
+            return new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object);
         }
 
     }
