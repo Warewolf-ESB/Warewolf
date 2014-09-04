@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration.Install;
+using System.Diagnostics;
 using System.ServiceProcess;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -33,11 +34,25 @@ namespace Gui
 
             DataContext = new InfoStepDataContext(stepNumber, listOfStepNames);
         }
-
+        static void KillProcess()
+        {
+            try
+            {
+                var processes = Process.GetProcessesByName("Warewolf Server");
+                foreach (var process in processes)
+                {
+                    process.Kill();
+                }
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch { }
+            // ReSharper restore EmptyGeneralCatchClause
+        }
         public bool Rollback()
         {
             try
             {
+                KillProcess();
                 ServiceController sc = new ServiceController(InstallVariables.ServerService);
 
                 if(sc.Status == ServiceControllerStatus.Running)
