@@ -18,8 +18,8 @@ namespace Dev2.Studio.UI.Tests.Utils
     {
         private const bool EnableLocalRestart = false;
 
-        private const string ServerProcName = "Warewolf Server";
-        private const string StudioProcName = "Warewolf Studio";
+        public const string ServerProcName = "Warewolf Server";
+        public const string StudioProcName = "Warewolf Studio";
         private const string ServerExeName = ServerProcName + ".exe";
         private const int ServerTimeOut = 3000;
         private const int StudioTimeOut = 12000;
@@ -337,7 +337,7 @@ namespace Dev2.Studio.UI.Tests.Utils
             Teardown();
         }
 
-        private static ManagementObjectCollection TryGetProcess(string procName)
+        public static ManagementObjectCollection TryGetProcess(string procName)
         {
             var processName = procName;
             var query = new SelectQuery(@"SELECT * FROM Win32_Process where Name LIKE '%" + processName + ".exe'");

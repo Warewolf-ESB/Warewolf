@@ -368,7 +368,7 @@ namespace Dev2.Studio.UI.Specs
         {
             var correctedAutoIds = GetCorrect(automationIds).Split(',');
             var startControl = GetStartUiTestControl(ref correctedAutoIds);
-            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false,false, correctedAutoIds);
+            var controlToSendData = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false, false, correctedAutoIds);
             if(!string.IsNullOrEmpty(automationIds))
             {
                 controlToSendData.Click();
@@ -503,11 +503,11 @@ namespace Dev2.Studio.UI.Specs
         {
             var automationIDs = GetCorrect(automationIds).Split(',');
             var startControl = GetStartUiTestControl(ref automationIDs);
-            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false,false, automationIDs);
+            var controlToClick = VisualTreeWalker.GetControlFromRoot(true, 0, startControl, false, false, automationIDs);
             return controlToClick;
         }
 
-        UITestControl GetAControlRelaxed(string automationIds,bool throwIfMultiple=false)
+        UITestControl GetAControlRelaxed(string automationIds, bool throwIfMultiple = false)
         {
             var automationIDs = GetCorrect(automationIds).Split(',');
             var startControl = GetStartUiTestControl(ref automationIDs);
@@ -582,7 +582,7 @@ namespace Dev2.Studio.UI.Specs
         [Then(@"I click point ""(.*)"" on ""(.*)""")]
         public void GivenIClickPointOn(string points, string automationIds)
         {
-            var control = GetAControlRelaxed(automationIds,false);
+            var control = GetAControlRelaxed(automationIds, false);
             var pointsToClick = GetPoints(points);
             pointsToClick.ForEach(control.Click);
         }
@@ -707,7 +707,7 @@ namespace Dev2.Studio.UI.Specs
             var correctedDragDestinationAutoIds = GetCorrect(dragDestinationAutoIds).Split(',');
             var startControlDragDestination = GetStartUiTestControl(ref correctedDragDestinationAutoIds);
 
-            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem, false,false, correcteddDragItemAutoIds);
+            var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem, false, false, correcteddDragItemAutoIds);
             var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination, false, false, correctedDragDestinationAutoIds);
 
             itemToDrag.Click();
@@ -731,7 +731,7 @@ namespace Dev2.Studio.UI.Specs
             //SETUP SOURCE
             var controlToDrag = GetAControlStrict(dragItemAutoIds);
             //DRAG
-            Mouse.StartDragging(controlToDrag, new Point(5,5));
+            Mouse.StartDragging(controlToDrag, new Point(5, 5));
             Mouse.StopDragging(dragStopPoint);
             Playback.Wait(100);
         }
@@ -792,9 +792,9 @@ namespace Dev2.Studio.UI.Specs
             try
             {
                 var control = GetAControlRelaxed(itemToFindAutoIds, true);
-                if (control != null)
+                if(control != null)
                 {
-                    if (control.State.HasFlag(ControlStates.Offscreen))
+                    if(control.State.HasFlag(ControlStates.Offscreen))
                     {
                         control.EnsureClickable();
                     }
@@ -814,9 +814,9 @@ namespace Dev2.Studio.UI.Specs
       
             }
 
-
     
         
+
 
 
         [Given(@"""(.*)"" is invisible within ""(.*)"" seconds")]
@@ -1060,5 +1060,11 @@ namespace Dev2.Studio.UI.Specs
             }
         }
 
+        [Given(@"I have Warewolf running")]
+        public void GivenIHaveWarewolfRunning()
+        {
+            Assert.IsNotNull(Bootstrap.TryGetProcess(Bootstrap.StudioProcName), "Studio not running.");
+            Assert.IsNotNull(Bootstrap.TryGetProcess(Bootstrap.ServerProcName), "Server not running.");
+        }
     }
 }
