@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Dependants Detected" Height="157" Width="362"
         Icon="pack://application:,,,/Warewolf Studio;component/Images/PopupNotSavedWarning-32.png"
-        WindowStartupLocation="CenterOwner" WindowStyle="ThreeDBorderWindow" ShowInTaskbar="False" MinHeight="100" MinWidth="350" ResizeMode="NoResize">
+        WindowStartupLocation="CenterOwner" WindowStyle="ThreeDBorderWindow" ShowInTaskbar="False" MinHeight="100" MinWidth="350" ResizeMode="NoResize"
+        AutomationProperties.AutomationId="UI_RenameResourcesDialog_AutoID">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>

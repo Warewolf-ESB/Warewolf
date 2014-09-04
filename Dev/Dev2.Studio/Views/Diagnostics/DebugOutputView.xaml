@@ -455,7 +455,7 @@
                       VirtualizingStackPanel.IsVirtualizing="True"
                       VirtualizingStackPanel.VirtualizationMode="Recycling"
                       BorderBrush="Transparent"
-                          x:Name="DebugOutputTree">                   
+                      x:Name="DebugOutputTree">
                      <TreeView.InputBindings>
                         <KeyBinding Gesture="CTRL+A"
                                     Command="{Binding SelectAllCommand}" />                       

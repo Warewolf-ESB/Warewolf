@@ -26,6 +26,7 @@
 
                 <!-- Cancel Button -->
                 <Button Name="Button_Cancel" MinWidth="88" MaxWidth="160" Height="26" Margin="5,0" HorizontalAlignment="Right" Visibility="Collapsed" IsCancel="True"
+                        AutomationProperties.AutomationId="UI_CancelButton_AutoID"
                         DockPanel.Dock="Right" Click="ButtonCancelClick">
                     <Label Name="Label_Cancel" Padding="0" Margin="10,0">_Cancel</Label>
                 </Button>
@@ -33,6 +34,7 @@
 
                 <!-- No Button -->
                 <Button Name="Button_No" MinWidth="88" MaxWidth="160" Height="26" Margin="5,0" HorizontalAlignment="Right" Visibility="Collapsed"
+                        AutomationProperties.AutomationId="UI_NoButton_AutoID"
                         DockPanel.Dock="Right" Click="ButtonNoClick">
                     <Label Name="Label_No" Padding="0" Margin="10,0">_No</Label>
                 </Button>
@@ -40,6 +42,7 @@
 
                 <!-- Yes Button -->
                 <Button Name="Button_Yes" MinWidth="88" MaxWidth="160" Height="26" Margin="35,0,5,0" HorizontalAlignment="Right" Visibility="Collapsed"
+                        AutomationProperties.AutomationId="UI_YesButton_AutoID"
                         DockPanel.Dock="Right" Click="ButtonYesClick">
                     <Label Name="Label_Yes" Padding="0" Margin="10,0">_Yes</Label>
                 </Button>
@@ -47,6 +50,7 @@
 
                 <!-- OK Button -->
                 <Button Name="Button_OK" MinWidth="88" MaxWidth="160" Margin="35,0,5,0" HorizontalAlignment="Right" Height="26"
+                        AutomationProperties.AutomationId="UI_OKButton_AutoID"
                         Click="ButtonOkClick">
                     <Label Name="Label_Ok" Padding="0" Margin="10,0">_OK</Label>
                 </Button>

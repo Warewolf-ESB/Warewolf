@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Automation;
 using Dev2.Studio.Core.Interfaces;
 
 // ReSharper disable once CheckNamespace
@@ -28,11 +29,13 @@ namespace Dev2.Studio.Views.ResourceManagement
             {
                 tbDisplay.Text = String.Format("{0} is used by another workflow. That instance needs to be updated.", model.ResourceName);
                 button3.Content = "Open Affected Workflow";
+                button3.SetValue(AutomationProperties.AutomationIdProperty, "UI_ShowAffectedWorkflowsButton_AutoID");
             }
             else
             {
                 tbDisplay.Text = String.Format("{0} is used in {1} instances. Those instances need to be updated.", model.ResourceName, numOfDependances);
                 button3.Content = "Show Affected Workflows";
+                button3.SetValue(AutomationProperties.AutomationIdProperty, "UI_ShowAffectedWorkflowsButton_AutoID");
             }
         }
 

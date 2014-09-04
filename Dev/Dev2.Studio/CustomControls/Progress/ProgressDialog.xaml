@@ -9,7 +9,8 @@
         ResizeMode="NoResize"
         WindowStyle="SingleBorderWindow"
         WindowStartupLocation="CenterScreen"
-        Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico">
+        Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
+        AutomationProperties.AutomationId="UI_ProgressDialog_AutoID">
     <Grid>
         <DockPanel Margin="10">
 		<Grid DockPanel.Dock="Bottom">
@@ -17,8 +18,8 @@
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="Auto" />
 			</Grid.ColumnDefinitions>
-			<ProgressBar Grid.Column="0" IsIndeterminate="False" Height="22" Value="{Binding ProgressValue}"/>
-			<Button Grid.Column="1" Margin="3,0,0,0" Width="70" Height="22" Content="Cancel" Visibility="Visible" HorizontalAlignment="Right" Command="{Binding CancelCommand}" />
+			<ProgressBar Grid.Column="0" IsIndeterminate="False" Height="22" Value="{Binding ProgressValue}" AutomationProperties.AutomationId="UI_ProgressBar_AutoID"/>
+			<Button Grid.Column="1" Margin="3,0,0,0" Width="70" Height="22" Content="Cancel" Visibility="Visible" HorizontalAlignment="Right" Command="{Binding CancelCommand}" AutomationProperties.AutomationId="UI_CancelButton_AutoID" />
 		</Grid>
 		<TextBlock Text="{Binding Label}" TextTrimming="CharacterEllipsis" DockPanel.Dock="Top" />
 		<TextBlock Text="{Binding SubLabel}" FontStyle="Italic" Visibility="Visible" Margin="0,5,0,5" TextWrapping="Wrap" TextTrimming="CharacterEllipsis" />

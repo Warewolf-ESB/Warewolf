@@ -11,7 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}"
 	ProjectSection(SolutionItems) = preProject
+		TestSettings\UI\CI Test Environment 1 (TST7X64-CIUI1).testsettings = TestSettings\UI\CI Test Environment 1 (TST7X64-CIUI1).testsettings
 		Dev2.UI.Tests.vsmdi = Dev2.UI.Tests.vsmdi
+		TestSettings\UI\Local.testsettings = TestSettings\UI\Local.testsettings
+		TestSettings\UI\Sandbox.testsettings = TestSettings\UI\Sandbox.testsettings
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestSettings", "TestSettings", "{F6BA6701-359E-4521-9978-4298A7302A5A}"

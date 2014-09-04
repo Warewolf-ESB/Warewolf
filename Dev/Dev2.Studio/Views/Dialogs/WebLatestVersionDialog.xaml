@@ -8,7 +8,8 @@
     Width="480"
     BorderThickness="0"
     ResizeMode="NoResize"
-    ScrollViewer.VerticalScrollBarVisibility="Hidden">
+    ScrollViewer.VerticalScrollBarVisibility="Hidden"
+    AutomationProperties.AutomationId="UI_DownloadLatest_AutoID">
     <Grid>
         <WebBrowser Name="Browser" LoadCompleted="wb_LoadCompleted">
         </WebBrowser>

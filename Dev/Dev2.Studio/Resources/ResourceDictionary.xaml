@@ -421,6 +421,8 @@
 
     <Style x:Key="DebugTreeStyle"
            TargetType="{x:Type TreeViewItem}">
+        <Setter Property="AutomationProperties.AutomationId" 
+                Value="UI_DebugItem_AutoID" />
         <Setter Property="HorizontalContentAlignment"
                 Value="Center" />
         <Setter Property="Template">

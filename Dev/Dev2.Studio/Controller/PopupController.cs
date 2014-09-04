@@ -7,7 +7,6 @@ using Dev2.Studio.ViewModels.Dialogs;
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Controller
 {
-
     public class PopupController : IPopupController
     {
         public PopupController(string headerText, string discriptionText, MessageBoxImage imageType, MessageBoxButton buttons)
