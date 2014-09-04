@@ -82,17 +82,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 8
     testRunner.Given("I click \"RIBBONDEPLOY\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
-    testRunner.Given("\"UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl," +
-                    "UI_DeploySelectTB_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("\"DEPLOYERROR\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 12
-    testRunner.Given("\"UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl," +
-                    "UI_Deploybtn_AutoID\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("\"DEPLOYBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
     testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_BARNEY_AutoID_AutoID,UI_SourceServer_UI_" +
                     "Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 15
-    testRunner.Given("\"UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl," +
-                    "UI_Deploybtn_AutoID\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("\"DEPLOYBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
     testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_BARNEY_AutoID_AutoID,Expander\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 18
@@ -105,8 +102,7 @@ this.ScenarioSetup(scenarioInfo);
     testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_BARNEY_AutoID_AutoID,UI_SourceServer_UI_" +
                     "Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
-       testRunner.Given("\"UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl," +
-                    "UI_Deploybtn_AutoID\" is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("\"DEPLOYBUTTON\" is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }
