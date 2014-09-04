@@ -99,6 +99,8 @@ namespace Dev2.Studio.UI.Specs
         //Deploy Tab
         static readonly string DeploySource = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,SourceNavigationView,UI_ExplorerTree_AutoID";
         static readonly string DeployDestination = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,TargetNavigationView,UI_ExplorerTree_AutoID";
+        static readonly string DeployButton = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,UI_Deploybtn_AutoID";
+        static readonly string DeployError = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,UI_DeploySelectTB_AutoID";
 
         static readonly string SecuritySave = "ACTIVETAB,UI_SettingsView_AutoID,UI_SaveSettingsbtn_AutoID";
         static readonly string SecurityDelete = SettingsTab + ",UI_AddRemovebtn_AutoID";
@@ -814,10 +816,9 @@ namespace Dev2.Studio.UI.Specs
       
             }
 
+
     
         
-
-
 
         [Given(@"""(.*)"" is invisible within ""(.*)"" seconds")]
         [Then(@"""(.*)"" is invisible within ""(.*)"" seconds")]

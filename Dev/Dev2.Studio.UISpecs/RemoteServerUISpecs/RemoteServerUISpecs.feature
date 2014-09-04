@@ -90,16 +90,16 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 Scenario: TestingRemoteServerUITests_EditRemoteDbService_DbServiceIsEdited1
     Given I have Warewolf running
 	And all tabs are closed
-    Given I create a new remote connection "TestService" as
+    And I create a new remote connection "TestService" as
        | Address               | AuthType | UserName | Password |
        | http://localhost:3142 | Public   |          |          |
-    Given I click "EXPLORER,UI_TestService (http://localhost:3142/)_AutoID"   
-	Given I click "EXPLORER,UI_TestService (http://localhost:3142/)_AutoID,UI_REMOTEUITESTS_AutoID,UI_RemoteDBService_AutoID"
-	Given I double click "EXPLORER,UI_TestService (http://localhost:3142/)_AutoID,UI_REMOTEUITESTS_AutoID,UI_RemoteDBService_AutoID"
-	Given I click point "200,104" on "WebBrowserWindow"
+    And I click "EXPLORER,UI_TestService (http://localhost:3142/)_AutoID"   
+	And I click "EXPLORER,UI_TestService (http://localhost:3142/)_AutoID,UI_REMOTEUITESTS_AutoID,UI_RemoteDBService_AutoID"
+	And I double click "EXPLORER,UI_TestService (http://localhost:3142/)_AutoID,UI_REMOTEUITESTS_AutoID,UI_RemoteDBService_AutoID"
+	And I click point "200,104" on "WebBrowserWindow"
 	And I send "testingDBSrc{ENTER}" to ""
-	Given I click point "241,250" on "WebBrowserWindow"
-	Given I click point "891,118" on "WebBrowserWindow"
+	And I click point "241,250" on "WebBrowserWindow"
+	And I click point "891,118" on "WebBrowserWindow"
 	And I send "{TAB}{TAB}{TAB}{TAB}{TAB}" to ""
 	And I send "{ENTER}" to ""
 	#Given "dbo.FetchForEachMinMaxRunTimes" is Selected in "WebBrowserWindow"
