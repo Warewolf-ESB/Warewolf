@@ -199,8 +199,11 @@
             <Component Id="cmp55DF0D784BE4DAD3FF259BC20051D262" Directory="dirServerRoot" Guid="{9F081D38-E69F-4027-8618-7FE1BA42ABF5}">
                 <File Id="filBB2B385DE35BB1D317B12C560E7E5572" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Core.dll" />
             </Component>
-          <Component Id="cmp68D647FAC36F42DD85AE085BCD190EF7" Directory="dirServerRoot" Guid="{47900955-F0E2-4CDF-A9B8-74A18954A6AE}">
-            <File Id="fil8F6304C8AB574A4BBFDEC950EF9C58E8" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Common.Interfaces" />
+          <Component Id="cmp4E3FB4A0CC8A4A408E87A57A66964A31" Directory="dirServerRoot" Guid="{47900955-F0E2-4CDF-A9B8-74A18954A6AE}">
+            <File Id="fil5E79D50602C34AF98F3EB86F898DB8A9" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Common.Interfaces.dll" />
+          </Component>
+          <Component Id="cmp732C2B54C09D4C0CAF44AC9AACFD6267" Directory="dirServerRoot" Guid="{7D60785C-A803-4329-9445-2ED92E1416BD}">
+            <File Id="fil9B5BB96DD4FB475F8D42FC9FFA9687AF" KeyPath="yes" Source="..\ProductBuild\Server\log4net.dll" />
           </Component>
             <Component Id="cmp60F753FE0780E8B708E5A665E1C9309D" Directory="dirServerRoot" Guid="{34A8080C-0D02-4F44-9673-73520DC26ACD}">
                 <File Id="fil094215BD5B122918EFA5D63E7C773F7C" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.CustomControls.dll" />
@@ -698,8 +701,11 @@
             <Component Id="cmpC5CCA527CC5E1F8070A942D59C38F4BB_Studio" Directory="dirStudioRoot" Guid="{F65ECD79-71E0-4405-88BA-4D6872615CD7}">
                 <File Id="fil8D8B2B137D03621CF9EE76A4B1229829_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\d3dx9_43.dll" />
             </Component>
-          <Component Id="cmp68D647FAC36F42DD85AE085BCD190EF3_Studio" Directory="dirServerRoot" Guid="{CD61937E-F1DE-4A20-BF9A-DC604C8DD5BB}">
-            <File Id="fil8F6304C8AB574A4BBFDEC950EF9C58E5_Studio" KeyPath="yes" Source="..\ProductBuild\Server\Dev2.Common.Interfaces" />
+          <Component Id="cmp68D647FAC36F42DD85AE085BCD190EF3_Studio" Directory="dirStudioRoot" Guid="{CD61937E-F1DE-4A20-BF9A-DC604C8DD5BB}">
+            <File Id="fil8F6304C8AB574A4BBFDEC950EF9C58E5_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Common.Interfaces.dll" />
+          </Component>
+          <Component Id="cmp732C2B54C09D4C0CAF44AC9AACFD6267_Studio" Directory="dirStudioRoot" Guid="{21A5B071-EFCE-4D45-8CD9-E0EC47B270D5}">
+            <File Id="fil9B5BB96DD4FB475F8D42FC9FFA9687AF_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\log4net.dll" />
           </Component>
             <Component Id="cmpEA37E6F9106B4056E67DF48C77F3191E_Studio" Directory="dirStudioRoot" Guid="{394E9CA6-0EF0-4211-BCCA-5E716DF8FBDE}">
                 <File Id="filFAA247EB448473B725E0DF137D5705E4_Studio" KeyPath="yes" Source="..\ProductBuild\Studio\Dev2.Activities.Designers.dll" />
