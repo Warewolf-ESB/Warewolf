@@ -268,7 +268,7 @@ namespace Gui
             // Start Service
             try
             {
-
+                KillProcess();
                 ServiceController sc = new ServiceController(InstallVariables.ServerService);
                 if(sc.Status == ServiceControllerStatus.Running)
                 {
@@ -313,6 +313,21 @@ namespace Gui
                 SetSuccessMessasge("Scan for server service complete");
             }
 
+        }
+
+        static void KillProcess()
+        {
+            try
+            {
+                var process = Process.GetProcessesByName("Warewolf Server.exe");
+                foreach (var process1 in process)
+                {
+                    process1.Kill();
+                }
+            }
+// ReSharper disable EmptyGeneralCatchClause
+            catch { }
+// ReSharper restore EmptyGeneralCatchClause
         }
 
         private void OnCancel(object sender, ChangeStepRoutedEventArgs changeStepRoutedEventArgs)
