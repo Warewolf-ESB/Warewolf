@@ -15,7 +15,6 @@ using Dev2.Communication;
 using Dev2.Factory;
 using Dev2.Messages;
 using Dev2.Providers.Events;
-using Dev2.Providers.Logs;
 using Dev2.Security;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -700,7 +699,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
             var compileMessageList = StudioCompileMessageRepoFactory.Create().GetCompileMessagesFromServer(resource);
 
-            if(compileMessageList.Count == 0)
+            if(compileMessageList == null || compileMessageList.Count == 0)
             {
                 return;
             }

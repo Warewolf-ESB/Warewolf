@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text;
+using System.Windows;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.Studio.Core.Interfaces;
 
@@ -28,18 +30,18 @@ namespace Dev2.Controller
         /// Executes the command.
         /// </summary>
         /// <param name="connection">The connection.</param>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <returns></returns>
-        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceID);
+        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId);
 
         /// <summary>
         /// Executes the command.
         /// </summary>
         /// <param name="connection">The connection.</param>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
-        /// <param name="dataListID">The data list unique identifier.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
+        /// <param name="dataListId">The data list unique identifier.</param>
         /// <returns></returns>
-        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceID, Guid dataListID);
+        T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId, Guid dataListId);
     }
 
     public class CommunicationController : ICommunicationController
@@ -77,41 +79,53 @@ namespace Dev2.Controller
         /// Executes the command.
         /// </summary>
         /// <param name="connection">The connection.</param>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <returns></returns>
-        public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceID)
+        public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId)
         {
-            return ExecuteCommand<T>(connection, workspaceID, Guid.Empty);
+            return ExecuteCommand<T>(connection, workspaceId, Guid.Empty);
         }
 
         /// <summary>
         /// Executes the command.
         /// </summary>
         /// <param name="connection">The connection.</param>
-        /// <param name="workspaceID">The workspace unique identifier.</param>
-        /// <param name="dataListID">The data list unique identifier.</param>
+        /// <param name="workspaceId">The workspace unique identifier.</param>
+        /// <param name="dataListId">The data list unique identifier.</param>
         /// <returns></returns>
-        public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceID, Guid dataListID)
+        public T ExecuteCommand<T>(IEnvironmentConnection connection, Guid workspaceId, Guid dataListId)
         {
             // build the service request payload ;)
             var serializer = new Dev2JsonSerializer();
 
             if(connection == null || !connection.IsConnected)
             {
-                throw new Exception("No connected environment found to perform operation on.");
+                if(connection != null)
+                {
+                    var popupController = CustomContainer.Get<IPopupController>();
+                    if(popupController != null)
+                    {
+                        popupController.Show(string.Format("Server: {0} has disconnected.", connection.DisplayName) + Environment.NewLine +
+                                                                     "Please reconnect before performing any actions", "Disconnected Server", MessageBoxButton.OK, MessageBoxImage.Information, "");
+                    }
+                }
             }
-
-            // now bundle it up into a nice string builder ;)
-            if (ServicePayload == null)
+            else
             {
-                ServicePayload = new EsbExecuteRequest();
+
+                // now bundle it up into a nice string builder ;)
+                if(ServicePayload == null)
+                {
+                    ServicePayload = new EsbExecuteRequest();
+                }
+
+                ServicePayload.ServiceName = ServiceName;
+                StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
+                var payload = connection.ExecuteCommand(toSend, workspaceId, dataListId);
+
+                return serializer.Deserialize<T>(payload);
             }
-
-            ServicePayload.ServiceName = ServiceName;
-            StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-            var payload = connection.ExecuteCommand(toSend, workspaceID, dataListID);
-
-            return serializer.Deserialize<T>(payload);
+            return default(T);
         }
 
     }

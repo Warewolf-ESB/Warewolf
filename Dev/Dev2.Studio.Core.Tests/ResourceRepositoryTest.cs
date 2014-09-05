@@ -2751,19 +2751,9 @@ namespace BusinessDesignStudio.Unit.Tests
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new StringBuilder(exePayload));
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
-            try
-            {
-                _repo.SaveToServer(_resourceModel.Object);
-
-                Assert.Fail("Should always have thrown an exception");
-            }
-            //Assert
-            catch(Exception iex)
-            {
-                PrivateObject p = new PrivateObject(_repo);
-                Assert.AreEqual(1, ((List<IResourceModel>)p.GetField("ResourceModels")).Count);
-                Assert.AreEqual("No connected environment found to perform operation on.", iex.Message);
-            }
+            _repo.SaveToServer(_resourceModel.Object);
+            PrivateObject p = new PrivateObject(_repo);
+            Assert.AreEqual(1, ((List<IResourceModel>)p.GetField("ResourceModels")).Count);
 
         }
 

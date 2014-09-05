@@ -459,19 +459,8 @@ namespace Dev2.Core.Tests.ViewModelTests
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
             PrivateObject pvt = new PrivateObject(workSurfaceContextViewModel);
             pvt.SetField("_hasMappingChange", true);
-            bool attempted = false;
             //------------Execute Test---------------------------
-            try
-            {
-                workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
-            }
-            catch(Exception e)
-            {
-
-                if("No connected environment found to perform operation on." == e.Message) attempted = true;
-            }
-            Assert.IsTrue(attempted);
-
+            workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
         }
 
 
@@ -589,6 +578,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Debug_CallsBindToModelOnWorkSurfaceViewModel()
         {
             //------------Setup for test--------------------------
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -655,6 +645,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Handle_DebugResourceMessage_CallsBindModelAndSave()
         {
             //------------Setup for test--------------------------
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -687,6 +678,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         public void WorkSurfaceContextViewModel_Handle_ExecuteResourceMessage_CallsBindModelAndSave()
         {
             //------------Setup for test--------------------------
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
@@ -1042,12 +1034,14 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestCategory("WorkSurfaceContextViewModel_DebugCommand")]
         public void WorkSurfaceContextViewModel_DebugCommand_UserHasContributePermissions_SaveIsInvoked()
         {
+
             Verify_DebugCommand_SaveIsInvoked(Permissions.Contribute, 1);
         }
 
         void Verify_DebugCommand_SaveIsInvoked(Permissions userPermissions, int saveHitCount)
         {
             //------------Setup for test--------------------------
+            CustomContainer.Register(new Mock<IWindowManager>().Object);
             var expected = saveHitCount;
             var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel(userPermissions);
 
