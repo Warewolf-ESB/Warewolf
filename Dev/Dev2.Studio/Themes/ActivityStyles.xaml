@@ -62,12 +62,12 @@
     </Style>
 
     <Style x:Key="ActivityGridRowStyle"
-            TargetType="{x:Type DataGridRow}">
+           TargetType="{x:Type DataGridRow}">
         <Setter Property="AutomationProperties.AutomationId">
             <Setter.Value>
-            <MultiBinding StringFormat="UI_ActivityGrid_Row_{0}_AutoID">
-                <Binding Path="Tag" RelativeSource="{RelativeSource Mode=Self}" />
-            </MultiBinding>
+                <MultiBinding StringFormat="UI_ActivityGridRow_{0}_AutoID">
+                    <Binding Path="Tag" RelativeSource="{RelativeSource Mode=Self}" />
+                </MultiBinding>
             </Setter.Value>
         </Setter>
     </Style>
@@ -178,13 +178,6 @@
                     <Setter Property="IsTabStop" Value="False"/>
                     <Setter Property="Height" Value="25"/>
                     <Setter Property="BorderBrush" Value="{StaticResource BrushMouseOver}"/>
-                    <Setter Property="AutomationProperties.AutomationId">
-                        <Setter.Value>
-                            <MultiBinding StringFormat="UI_ActivityGridCell_{0}_AutoID">
-                                <Binding Path="ColumnIndex" RelativeSource="{RelativeSource Mode=Self}" />
-                            </MultiBinding>
-                        </Setter.Value>
-                    </Setter>
                 </Style>
             </Setter.Value>
         </Setter>
