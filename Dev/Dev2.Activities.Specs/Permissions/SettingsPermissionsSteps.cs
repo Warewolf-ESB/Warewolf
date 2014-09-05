@@ -319,9 +319,10 @@ namespace Dev2.Activities.Specs.Permissions
         [AfterScenario("Security")]
         public void DoCleanUp()
         {
-            var currentEnvironment = ScenarioContext.Current.Get<IEnvironmentModel>("currentEnvironment");
-            var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
-
+            IEnvironmentModel currentEnvironment;
+            ScenarioContext.Current.TryGetValue("currentEnvironment", out currentEnvironment);
+            IEnvironmentModel environmentModel;
+            ScenarioContext.Current.TryGetValue("environment", out environmentModel);
             if(currentEnvironment != null)
             {
                 currentEnvironment.Disconnect();
