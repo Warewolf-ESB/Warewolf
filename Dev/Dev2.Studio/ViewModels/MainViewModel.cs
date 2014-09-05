@@ -17,7 +17,6 @@ using Dev2.Factory;
 using Dev2.Helpers;
 using Dev2.Instrumentation;
 using Dev2.Interfaces;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Security;
 using Dev2.Services.Events;

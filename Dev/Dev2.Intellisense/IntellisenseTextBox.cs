@@ -14,11 +14,14 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using Caliburn.Micro;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract;
+using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.InterfaceImplementors;
 
 // ReSharper disable CheckNamespace
@@ -29,7 +32,7 @@ namespace Dev2.UI
     /// PBI 1214
     /// IntellisenseTextBox
     /// </summary>
-    public class IntellisenseTextBox : TextBox, INotifyPropertyChanged
+    public class IntellisenseTextBox : TextBox, INotifyPropertyChanged, IHandle<UpdateAllIntellisenseMessage>
     {
         public bool IsEventFree { get; set; }
 
@@ -646,7 +649,7 @@ namespace Dev2.UI
             DefaultStyleKey = typeof(IntellisenseTextBox);
             Mouse.AddPreviewMouseDownOutsideCapturedElementHandler(this, OnMouseDownOutsideCapturedElement);
             Unloaded += OnUnloaded;
-
+            EventPublishers.Aggregator.Subscribe(this);
             DataObject.AddPastingHandler(this, OnPaste);
 
             //08.04.2013: Ashley Lewis - To test for Bug 9238 Moved this from OnInitialized() to allow for a more contextless initialization
@@ -697,6 +700,12 @@ namespace Dev2.UI
 
         }
 
+        public void ClearIntellisenseErrors()
+        {
+
+            EnsureIntellisenseResults(Text,true,IntellisenseDesiredResultSet.Default);
+            LostFocusImpl();
+        }
         #endregion Unloaded Handeling
 
         #region Template Handling
@@ -1319,6 +1328,11 @@ namespace Dev2.UI
         {
             base.OnLostKeyboardFocus(e);
 
+            LostFocusImpl();
+        }
+
+        void LostFocusImpl()
+        {
             ExecWrapBrackets();
 
             CloseDropDown(true);
@@ -1747,5 +1761,11 @@ namespace Dev2.UI
             }
         }
         #endregion
+
+
+        public void Handle(UpdateAllIntellisenseMessage message)
+        {
+            ClearIntellisenseErrors();
+        }
     }
 }

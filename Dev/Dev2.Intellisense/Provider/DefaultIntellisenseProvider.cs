@@ -84,6 +84,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 TextBox.UpdateErrorState();
             }
         }
+
         #endregion
 
         #region Datalist Handling
@@ -253,14 +254,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
                     if(DataListUtil.IsValueRecordset(input))
                     {
-                        if(DataListUtil.IsStarIndex(name))
-                        {
-                            updatedInputText = substitude;
-                        }
-                        else
-                        {
-                            updatedInputText = substitude.Insert(inputText.IndexOf(recordsetIndex, StringComparison.Ordinal), recordsetIndex);
-                        }
+                        updatedInputText = DataListUtil.IsStarIndex(name) ? substitude : substitude.Insert(inputText.IndexOf(recordsetIndex, StringComparison.Ordinal), recordsetIndex);
 
                         context.CaretPosition = caretPosition + (updatedInputText.Length - inputText.Length);
                         return updatedInputText;

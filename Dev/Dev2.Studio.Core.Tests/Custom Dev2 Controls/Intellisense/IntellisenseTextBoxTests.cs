@@ -8,6 +8,7 @@ using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Interfaces.DataList;
+using Dev2.Studio.Core.Messages;
 using Dev2.Studio.ViewModels.DataList;
 using Dev2.UI;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -33,7 +34,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             mockDataListViewModel.Setup(model => model.Resource).Returns(new Mock<IResourceModel>().Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
-            CustomContainer.Register<IPopupController>(new Mock<IPopupController>().Object);
+            CustomContainer.Register(new Mock<IPopupController>().Object);
         }
 
         [TestCleanup]
@@ -196,6 +197,18 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         {
             var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
             textBox.EnsureIntellisenseResults("[[var]]", false, IntellisenseDesiredResultSet.Default);
+            Assert.IsTrue(textBox.HasError);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("IntellisenseTextBoxTests_Handle")]
+        public void IntellisenseTextBoxTests_HandlePasteMessageCallsEnsureIntellisenseResults()
+        {
+            var textBox = new IntellisenseTextBox { FilterType = enIntellisensePartType.RecordsetFields };
+            Assert.IsFalse(textBox.HasError);
+            textBox.Text = "[[var]]";
+            textBox.Handle(new UpdateAllIntellisenseMessage());
             Assert.IsTrue(textBox.HasError);
         }
 

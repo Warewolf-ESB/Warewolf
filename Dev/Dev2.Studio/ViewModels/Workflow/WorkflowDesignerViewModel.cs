@@ -15,6 +15,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -45,7 +47,6 @@ using Dev2.Factory;
 using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Models;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Services.Security;
@@ -294,6 +295,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
+               
                 return _wd.View;
             }
         }
@@ -1093,6 +1095,8 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+       
+
         void SubscribeToDebugSelectionChanged()
         {
             _virtualizedContainerService = _wd.Context.Services.GetService<VirtualizedContainerService>();
@@ -1760,6 +1764,20 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+            }
+            if (e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
+            {
+
+                new Task(() =>
+                {
+                    Thread.Sleep(2000);
+                    BuildWorkflowFields();
+                    EventPublisher.Publish(new UpdateAllIntellisenseMessage());
+                }).Start();
+
+                
+               
+                
             }
         }
 
