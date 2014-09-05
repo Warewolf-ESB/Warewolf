@@ -1043,13 +1043,15 @@ namespace Dev2.Studio.UI.Specs
             return replace;
         }
 
-        [When(@"close the Studio and Server")]
-        [Then(@"close the Studio and Server")]
-        public void WhenCloseTheStudioAndServer()
+        [When(@"restart the Studio and Server")]
+        [Then(@"restart the Studio and Server")]
+        public void WhenRestartTheStudioAndServer()
         {
             TabManagerUIMap.CloseAllTabs();
             Bootstrap.Teardown();
             Playback.Cleanup();
+            Bootstrap.Init();
+            Playback.Initialize();
         }
 
         [Given(@"""(.*)"" is Highlighted")]
