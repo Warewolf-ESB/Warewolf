@@ -75,6 +75,8 @@ namespace Dev2.Network
 
         }
 
+
+
         void SetupPrincipal()
         {
             var networkCredential = HubConnection.Credentials as NetworkCredential;
@@ -119,7 +121,7 @@ namespace Dev2.Network
                             id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
                             context = new PrincipalContext(domainName.ToLower() == Environment.MachineName.ToLower() ? ContextType.Machine : ContextType.Domain);
                             userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
-        }
+                        }
 
                         if(userPrincipal != null)
                         {
@@ -214,7 +216,7 @@ namespace Dev2.Network
             {
                 TypeNameHandling = TypeNameHandling.Objects
             });
-           Dev2Logger.Log.Info(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
+            Dev2Logger.Log.Info(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });
         }
 
@@ -381,7 +383,28 @@ namespace Dev2.Network
             try
             {
                 IsShuttingDown = true;
-                HubConnection.Stop(new TimeSpan(0, 0, 1));
+                IsConnected = false;
+                Task.Run(() => HubConnection.Stop(new TimeSpan(0, 0, 1))).RunSynchronously();
+            }
+            catch(AggregateException aex)
+            {
+                aex.Flatten();
+                aex.Handle(ex =>
+                {
+                    Dev2Logger.Log.Error(this, aex);
+                    var hex = ex as HttpClientException;
+                    if(hex != null)
+                    {
+                        switch(hex.Response.StatusCode)
+                        {
+                            case HttpStatusCode.Unauthorized:
+                            case HttpStatusCode.Forbidden:
+                                UpdateIsAuthorized(false);
+                                throw new NotConnectedException();
+                        }
+                    }
+                    throw new NotConnectedException();
+                });
             }
             catch(Exception e)
             {

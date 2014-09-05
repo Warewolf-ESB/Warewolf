@@ -66,9 +66,18 @@ namespace Dev2.Webs.Callbacks
                 //
                 connection = new ServerProxy(newConnection.WebAddress, newConnection.UserName, newConnection.Password);
             }
-            var newEnvironment = new EnvironmentModel(resourceId, connection) { Name = newConnection.ResourceName, Category = newConnection.ResourcePath };
-
-            CurrentEnvironmentRepository.Save(newEnvironment);            
+            var environmentModel = CurrentEnvironmentRepository.Get(resourceId);
+            if(environmentModel == null)
+            {
+                var newEnvironment = new EnvironmentModel(resourceId, connection) { Name = newConnection.ResourceName, Category = newConnection.ResourcePath };
+                CurrentEnvironmentRepository.Save(newEnvironment);
+            }
+            else
+            {
+                environmentModel.Connection = connection;
+                environmentModel.Name = newConnection.ResourceName;
+                environmentModel.Category = newConnection.ResourcePath;
+            }
         }
 
         #endregion

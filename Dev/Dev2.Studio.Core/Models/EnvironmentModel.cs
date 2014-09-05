@@ -2,8 +2,6 @@
 using System.Network;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
-using Dev2.Communication;
-using Dev2.Providers.Logs;
 using Dev2.Security;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Repositories;
@@ -17,6 +15,8 @@ namespace Dev2.Studio.Core.Models
     public class EnvironmentModel : ObservableObject, IEnvironmentModel
     {
         IAuthorizationService _authorizationService;
+        IStudioResourceRepository _studioRepo;
+        IEnvironmentConnection _connection;
 
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
         public event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
@@ -55,18 +55,10 @@ namespace Dev2.Studio.Core.Models
             VerifyArgument.IsNotNull("environmentConnection", environmentConnection);
             VerifyArgument.IsNotNull("studioResourceRepository", studioResourceRepository);
             CanStudioExecute = true;
-
+            _studioRepo = studioResourceRepository;
             ID = id; // The resource ID
             Connection = environmentConnection;
-
-            // MUST set Connection before creating new ResourceRepository!!
-
-
-
-            Connection.NetworkStateChanged += OnNetworkStateChanged;
-
             PermissionsModifiedService = new PermissionsModifiedService(Connection.ServerEvents);
-
             // MUST subscribe to Guid.Empty as memo.InstanceID is NOT set by server!
             ResourceRepository = resourceRepository ?? new ResourceRepository(this);
         }
@@ -104,7 +96,25 @@ namespace Dev2.Studio.Core.Models
         public bool IsLocalHost { get { return IsLocalHostCheck(); } }
         public bool HasLoadedResources { get; private set; }
 
-        public IEnvironmentConnection Connection { get; private set; }
+        public IEnvironmentConnection Connection
+        {
+            get
+            {
+                return _connection;
+            }
+            set
+            {
+                if(_connection != null)
+                {
+                    _connection.NetworkStateChanged -= OnNetworkStateChanged;
+                }
+                _connection = value;
+                if(_connection != null)
+                {
+                    _connection.NetworkStateChanged += OnNetworkStateChanged;
+                }
+            }
+        }
 
         public string Name { get { return Connection.DisplayName; } set { Connection.DisplayName = value; } }
 
@@ -242,11 +252,18 @@ namespace Dev2.Studio.Core.Models
         void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
             RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
+            if(e.ToState == NetworkState.Connecting || e.ToState == NetworkState.Offline)
+            {
+                _studioRepo.Disconnect(ID);
+            }
             if(e.ToState == NetworkState.Online)
             {
-                AuthorizationService = CreateAuthorizationService(Connection);
-                AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
-                OnAuthorizationServicePermissionsChanged(this, EventArgs.Empty);
+                if(AuthorizationService == null)
+                {
+                    AuthorizationService = CreateAuthorizationService(Connection);
+                    AuthorizationService.PermissionsChanged += OnAuthorizationServicePermissionsChanged;
+                    OnAuthorizationServicePermissionsChanged(null, new EventArgs());
+                }
             }
         }
 
@@ -255,7 +272,10 @@ namespace Dev2.Studio.Core.Models
 
             RaiseIsConnectedChanged(isOnline);
             if(!isOnline)
+            {
                 HasLoadedResources = false;
+
+            }
         }
 
         #endregion

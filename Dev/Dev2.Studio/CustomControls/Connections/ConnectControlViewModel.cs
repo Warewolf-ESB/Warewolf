@@ -321,7 +321,9 @@ namespace Dev2.CustomControls.Connections
                 else
                 {
                     SelectedServer = selectedServer;
-                    _callbackHandler(selectedServer.EnvironmentModel);
+                    var environmentModel = EnvironmentRepository.Instance.Get(selectedServer.EnvironmentModel.ID);
+                    //_callbackHandler(selectedServer.EnvironmentModel);
+                    _callbackHandler(environmentModel);
                 }
                 OnPropertyChanged();
             }

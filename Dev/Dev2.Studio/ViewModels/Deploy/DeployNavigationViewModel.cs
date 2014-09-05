@@ -16,8 +16,25 @@ namespace Dev2.ViewModels.Deploy
     {
         IEnvironmentModel _environment;
         private readonly bool _target;
-        public IAuthorizationService AuthorizationService { get; private set; }
+        public IAuthorizationService AuthorizationService
+        {
+            get
+            {
+                return _authorizationService;
+            }
+            private set
+            {
+                _authorizationService = value;
+                if(_authorizationService != null)
+                {
+                    _authorizationService.PermissionsChanged -= AuthorizationServiceOnPermissionsModified;
+                    _authorizationService.PermissionsChanged += AuthorizationServiceOnPermissionsModified;
+                }
+            }
+        }
         ObservableCollection<IExplorerItemModel> _explorerItemModels;
+        IAuthorizationService _authorizationService;
+
         public DeployNavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, bool target)
             : base(eventPublisher, asyncWorker, environmentRepository, studioResourceRepository)
         {
@@ -44,12 +61,8 @@ namespace Dev2.ViewModels.Deploy
                     _environment.AuthorizationServiceSet += (sender, args) =>
                     {
                         AuthorizationService = _environment.AuthorizationService;
+
                     };
-                }
-                if(AuthorizationService != null)
-                {
-                    AuthorizationService.PermissionsChanged -= AuthorizationServiceOnPermissionsModified;
-                    AuthorizationService.PermissionsChanged += AuthorizationServiceOnPermissionsModified;
                 }
             }
         }

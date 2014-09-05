@@ -15,10 +15,10 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
+using Dev2.ConnectionHelpers;
 using Dev2.Controller;
 using Dev2.Data.ServiceModel;
 using Dev2.Explorer;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
@@ -43,7 +43,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         protected List<IResourceModel> ResourceModels;
         bool _isLoaded;
         readonly IDeployService _deployService = new DeployService();
-
+        readonly object _updatingPermissions = new object();
         bool _isDisposed;
         public event EventHandler ItemAdded;
 
@@ -354,8 +354,8 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void DeployResource(IResourceModel resource)
         {
 
-          
-            if (resource == null)
+
+            if(resource == null)
             {
                 throw new ArgumentNullException("resource");
             }
@@ -416,7 +416,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public ExecuteMessage DeleteResource(IResourceModel resource)
         {
-            Dev2Logger.Log.Info(String.Format("DeleteResource Resource: {0}  Environment:{1}", resource.DisplayName, this._environmentModel.Name));
+            Dev2Logger.Log.Info(String.Format("DeleteResource Resource: {0}  Environment:{1}", resource.DisplayName, _environmentModel.Name));
             IResourceModel res = ResourceModels.FirstOrDefault(c => c.ID == resource.ID);
 
             if(res == null)
@@ -744,6 +744,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         #region Add/RemoveEnvironment
 
         public Func<string, ICommunicationController> GetCommunicationController = serviveName => new CommunicationController { ServiceName = serviveName };
+
 
         public ExecuteMessage SaveResource(IEnvironmentModel targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId)
         {
@@ -1123,7 +1124,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 if(_environmentModel.AuthorizationService != null)
                 {
-                    _environmentModel.AuthorizationService.PermissionsModified -= AuthorizationServiceOnPermissionsModified;
                     _environmentModel.AuthorizationService.PermissionsModified += AuthorizationServiceOnPermissionsModified;
                 }
             };
@@ -1135,47 +1135,52 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         void AuthorizationServiceOnPermissionsModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
         {
-            ReceivePermissionsModified(permissionsModifiedEventArgs.ModifiedWindowsGroupPermissions);
+            lock(_updatingPermissions)
+            {
+                ReceivePermissionsModified(permissionsModifiedEventArgs.ModifiedWindowsGroupPermissions);
+            }
         }
 
         void ReceivePermissionsModified(IEnumerable<WindowsGroupPermission> modifiedPermissions)
         {
             var windowsGroupPermissions = modifiedPermissions as IList<WindowsGroupPermission> ?? modifiedPermissions.ToList();
             var exclusionResourceIds = _environmentModel.AuthorizationService.SecurityService.Permissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer).Select(permission => permission.ResourceID);
-                var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
+            var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
             UpdateServerBasedOnPermissions(windowsGroupPermissions, exclusionResourceIds, serverPermissions);
             UpdateResourcesBasedOnPermissions(windowsGroupPermissions);
 
             RefreshServer(serverPermissions);
-                        }
+        }
 
         void RefreshServer(Permissions serverPermissions)
-                        {
-                StudioResourceRepository.UpdateRootAndFoldersPermissions(serverPermissions, _environmentModel.ID, false);
-                StudioResourceRepository.UpdateItem(Guid.Empty, (x =>
+        {
+            StudioResourceRepository.UpdateRootAndFoldersPermissions(serverPermissions, _environmentModel.ID, false);
+            StudioResourceRepository.UpdateItem(Guid.Empty, (x =>
+            {
+                if(serverPermissions != Permissions.None && x.Children.Count == 0 && !x.IsRefreshing)
                 {
-                    if(serverPermissions != Permissions.None && x.Children.Count == 0 && !x.IsRefreshing)
-                    {
-                        // This code is meant for auto update should the permissions change on the server.
-                        // It is however better to use the ConnectControlSingleton as it will raise events an notify to subscribers i.e. Connect(x.EnvironmentId).
+                    // This code is meant for auto update should the permissions change on the server.
+                    // It is however better to use the ConnectControlSingleton as it will raise events an notify to subscribers i.e. Connect(x.EnvironmentId).
                     //                    
                     //                    if(_environmentModel.HasLoadedResources)
                     //                    {
                     //                        StudioResourceRepository.Load(x.EnvironmentId, x.AsyncWorker);
                     //                    }
-                    }
+                }
                 else
                 {
                     var allResources = x.Descendants().Where(z => z.ResourceType != ResourceType.Server).All(a => a.Permissions == Permissions.None);
                     var allPermissions = _environmentModel.AuthorizationService.SecurityService.Permissions.Where(permission => !permission.IsBuiltInAdministrators).All(permission => permission.Permissions == Permissions.None);
                     if((allResources && serverPermissions == Permissions.None) && allPermissions)
                     {
-                        _environmentModel.Disconnect();
+                        StudioResourceRepository.Disconnect(_environmentModel.ID);
+                        ConnectControlSingleton.Instance.SetConnectionState(_environmentModel.ID, ConnectionEnumerations.ConnectedState.Disconnected);
+
                     }
                 }
-                    x.Permissions = serverPermissions;
-                }), _environmentModel.ID);
-            }
+                x.Permissions = serverPermissions;
+            }), _environmentModel.ID);
+        }
 
         // ReSharper disable ParameterTypeCanBeEnumerable.Local
         void UpdateResourcesBasedOnPermissions(IList<WindowsGroupPermission> windowsGroupPermissions)

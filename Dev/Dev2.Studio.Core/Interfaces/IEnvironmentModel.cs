@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.Interfaces
         bool IsAuthorizedDeployTo { get; }
         bool IsLocalHost { get; }
         bool HasLoadedResources { get; }
-        IEnvironmentConnection Connection { get; }
+        IEnvironmentConnection Connection { get; set; }
         IResourceRepository ResourceRepository { get; }
 
         void Connect();
