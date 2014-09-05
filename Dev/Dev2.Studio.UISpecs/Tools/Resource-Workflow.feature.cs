@@ -68,54 +68,6 @@ namespace Dev2.Studio.UI.Specs.Tools
         {
             testRunner.CollectScenarioErrors();
         }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Drag Workflow to design surface and checking services are not showing in workflow" +
-            " resource picker")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Resource-Workflow")]
-        public virtual void DragWorkflowToDesignSurfaceAndCheckingServicesAreNotShowingInWorkflowResourcePicker()
-        {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Drag Workflow to design surface and checking services are not showing in workflow" +
-                    " resource picker", ((string[])(null)));
-#line 6
-this.ScenarioSetup(scenarioInfo);
-#line 7
-    testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 8
- testRunner.Given("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
- testRunner.And("I send \"Workflow\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
- testRunner.And("I drag \"TOOLWORKFLOW\" onto \"ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,sc" +
-                    "rollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
- testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" +
-                    "\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
- testRunner.And("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
- testRunner.And("I drag \"TOOLBOX,PART_Tools,Unlimited.Applications.BusinessDesignStudio.Activities" +
-                    ".DsfWorkflowActivity\" onto \"ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,s" +
-                    "crollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
-    testRunner.And("I send \"Control\" to \"UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_A" +
-                    "utoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
- testRunner.Then("\"RESOURCEPICKERFOLDERS,UI_EXAMPLES_AutoID,UI_Control Flow - Decision_AutoID\" is v" +
-                    "isible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 16
- testRunner.And("I click \"UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_Dat" +
-                    "alistFilterTextBox_AutoID,UI_FilterButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
- testRunner.And("I click \"RESOURCEPICKERFOLDERS,UI_DBSERVICES_AutoID,Expander\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
- testRunner.And("\"RESOURCEPICKERFOLDERS,UI_DBSERVICES_AutoID,UI_MapLocations_AutoID\" is not visibl" +
-                    "e", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
- testRunner.And("close the Studio and Server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            this.ScenarioCleanup();
-        }
     }
 }
 #pragma warning restore

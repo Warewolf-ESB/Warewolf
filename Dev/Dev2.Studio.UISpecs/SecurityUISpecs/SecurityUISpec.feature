@@ -18,6 +18,7 @@ Background:
 	   Given all tabs are closed
 
 Scenario: Testing Different Server Permissions For Public
+   
        Given all tabs are closed
        And I click "EXPLORER,UI_localhost_AutoID" 
 #Test -1 Setup Public Server Permissions View
@@ -130,7 +131,7 @@ Scenario: Testing Different Server Permissions For Public
        Then I click "RIBBONDEPLOY"
        Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_REM"
        Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
- #Test-4 Set server permission Deploy From
+ #Test-5 Set server permission Deploy From
       Given all tabs are closed
        And I click "EXPLORER,UI_localhost_AutoID" 
        And I click "RIBBONSETTINGS"   
@@ -294,6 +295,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   Then "RIBBONSAVE" is visible
 	   Then "RIBBONDEPLOY" is visible
 	   Then "RIBBONDEBUG" is visible
+	   Given all tabs are closed
 	   #Checking Deploy Permissions "UnAuthorized"
 	   Given I click "RIBBONDEPLOY"
        Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_TestingPermisions"
@@ -386,7 +388,7 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I send "{TAB}" to ""
 	   And I send "UI Testing Group" to ""
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_10_AutoID,UI__ContributePermissionCheckBox_AutoID"
-	   #Saving 
+	   #Saving Security Settings
        And I click "SECURITYSAVE"
 	   #Checking Validation Message Of Duplicate Permissions
 	   Given "SETTINGSTAB,UI_Errors_AutoID" contains text "There are duplicate permissions"

@@ -84,30 +84,33 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.And("I click new \"Workflow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
- testRunner.And("I send \"Base\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I double click \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.When("I drag \"TOOLBASECONVERT\" onto \"TABACTIVE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.And("I send \"{DELETE}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.Given("I send \"[[rec().a]]\" to \"ACTIVETAB,ActivityTypeDesigner,WorkflowItemPresenter,Uns" +
-                    "aved 1(FlowchartDesigner),Base Conversion (1)(BaseConvertDesigner),SmallViewCont" +
-                    "ent,SmallDataGrid,UI__Row1_FromExpressiontxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("I send \"Base\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.Given("I click \"TOOLDESIGNER,Base Conversion (1)(BaseConvertDesigner),SmallViewContent,S" +
-                    "mallDataGrid,UI__Row1_SearchType_AutoID,UI_ComboBoxItem_Base 64_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.When("I drag \"TOOLBASECONVERT\" onto \"TABACTIVE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 14
- testRunner.Given("I click \"TOOLDESIGNER,Base Conversion (1)(BaseConvertDesigner),SmallViewContent,S" +
-                    "mallDataGrid,UI__Row1_ToTypecbx_AutoID,UI_ComboBoxItem_Hex_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I send \"[[rec().a]]\" to \"TOOLBASECONVERTSMALLVIEWGRID,UI__Row1_FromExpressiontxt_" +
+                    "AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 15
- testRunner.Given("I send \"[[rec().a]]\" to \"ACTIVETAB,ActivityTypeDesigner,WorkflowItemPresenter,Uns" +
-                    "aved 1(FlowchartDesigner),Base Conversion (1)(BaseConvertDesigner),SmallViewCont" +
-                    "ent,SmallDataGrid,UI__Row2_FromExpressiontxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("I click \"TOOLBASECONVERTSMALLVIEWGRID,UI__Row1_SearchType_AutoID,UI_ComboBoxItem_" +
+                    "Base 64_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
+ testRunner.Given("I click \"TOOLBASECONVERTSMALLVIEWGRID,UI__Row1_ToTypecbx_AutoID,UI_ComboBoxItem_H" +
+                    "ex_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 17
+ testRunner.Given("I send \"[[rec().a]]\" to \"TOOLBASECONVERTSMALLVIEWGRID,UI__Row2_FromExpressiontxt_" +
+                    "AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 18
     testRunner.Given("I right click \"TOOLDESIGNER,Base Conversion (2)(BaseConvertDesigner),SmallViewCon" +
                     "tent,SmallDataGrid,UI__Row2_SearchType_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 18
- testRunner.Given("\"ACTIVETAB,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner" +
-                    "),Base Conversion (1)(BaseConvertDesigner),SmallViewContent,SmallDataGrid,UI__Ro" +
-                    "w2_FromExpressiontxt_AutoID\" contains text \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 19
+    testRunner.And("I send \"{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{TAB}{ENTER}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 20
+ testRunner.Given("\"TOOLBASECONVERTSMALLVIEWGRID,UI__Row4_FromExpressiontxt_AutoID\" contains text \"\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }

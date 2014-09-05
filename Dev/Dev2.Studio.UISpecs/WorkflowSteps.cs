@@ -61,13 +61,15 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ToolAssignSmallViewGrid = Worksurface + ",Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid";
         static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolDataMergeSmallViewGrid = Worksurface + ",Data Merge (1)(DataMergeDesigner),SmallViewContent,SmallDataGrid";
-        
-        
-
         static readonly string ToolBaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfBaseConvertActivity";
+        static readonly string ToolBaseConvertSmallviewGrid = "ACTIVETAB,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),Base Conversion (1)(BaseConvertDesigner),SmallViewContent,SmallDataGrid";
         static readonly string ToolCaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolFindIndex = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolReplace = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
+        //Resources
+        static readonly string ToolWorkflow = Toolbox + ",PART_Tools,Resources,Unlimited.Applications.BusinessDesignStudio.Activities.DsfWorkflowActivity";
+        static readonly string ToolWorkflowRisourcePickFilter = "UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
+        //Utility
         static readonly string ToolCalculate = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolFormatnumber = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolRandom = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
@@ -78,7 +80,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ToolXpath = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolComment = Toolbox + ",PART_Tools,Utility,Unlimited.Applications.BusinessDesignStudio.Activities.DsfCommentActivity";
 
-        static readonly string ToolWorkflow = Toolbox + ",PART_Tools,Resources,Unlimited.Applications.BusinessDesignStudio.Activities.DsfWorkflowActivity";
+      
 
         //Settings Tab
         static readonly string SettingsTab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SettingsView_AutoID";
@@ -168,6 +170,7 @@ namespace Dev2.Studio.UI.Specs
 
         int _retryCount;
 #pragma warning restore 414
+
 
         [BeforeTestRun]
         public static void SetupForTest()
