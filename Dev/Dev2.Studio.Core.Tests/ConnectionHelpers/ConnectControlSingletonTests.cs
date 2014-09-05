@@ -3,7 +3,7 @@ using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
-using Dev2.Providers.Events;
+using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -390,6 +390,93 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         }
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ConnectControlSingleton_EditConnection")]
+        public void ConnectControlSingleton_EditConnection_AuthChangedOnTheDialog_StudioResourceRepositoryLoadIsCalled()
+        {
+            var studioResourceRepository = new Mock<IStudioResourceRepository>();
+            studioResourceRepository.Setup(s => s.Load(It.IsAny<Guid>(), It.IsAny<IAsyncWorker>(), It.IsAny<Action<Guid>>()))
+                                    .Verifiable();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
+            var server1 = Guid.NewGuid();
+            var server2 = Guid.NewGuid();
+            var environmentModels = new List<IEnvironmentModel>
+                {
+                    new TestEnvironmentModel(new Mock<IEventAggregator>().Object, server1, CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestEnvironmentModel(new Mock<IEventAggregator>().Object, server2, CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
+                };
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var environments = new List<IEnvironmentModel>
+                {
+                    new TestEnvironmentModel(new Mock<IEventAggregator>().Object, server1, CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Anonymous).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestEnvironmentModel(new Mock<IEventAggregator>().Object, server2, CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false)
+                };
+            environmentRepository.Setup(e => e.All()).Returns(environments);
+            serverProvider.Setup(s => s.Load()).Returns(environmentModels);
+            IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(studioResourceRepository.Object, asyncWorker.Object, serverProvider.Object, environmentRepository.Object);
+            var selectedIndex = -1;
+            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
+            bool actualDoCallback = false;
+            Guid environmentId = Guid.Empty;
+            connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
+            {
+                actualConnectedState = arg.ConnectedStatus;
+                actualDoCallback = arg.DoCallback;
+                environmentId = arg.EnvironmentId;
+            };
+            //------------Execute Test---------------------------
+            connectControlSingleton.EditConnection(1, index =>
+            {
+                selectedIndex = index;
+            });
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(connectControlSingleton);
+            Assert.AreEqual(ConnectionEnumerations.ConnectedState.Busy, actualConnectedState);
+            Assert.IsFalse(actualDoCallback);
+            Assert.AreEqual(server1, environmentId);
+            Assert.AreEqual(1, selectedIndex);
+            studioResourceRepository.Verify(s => s.Load(It.IsAny<Guid>(), It.IsAny<IAsyncWorker>(), It.IsAny<Action<Guid>>()), Times.Once());
+        }
+        
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ConnectControlSingleton_EditConnection")]
+        public void ConnectControlSingleton_EditConnection_AuthNotChangedOnTheDialog_StudioResourceRepositoryLoadIsNotCalled()
+        {
+            var studioResourceRepository = new Mock<IStudioResourceRepository>();
+            studioResourceRepository.Setup(s => s.Load(It.IsAny<Guid>(), It.IsAny<IAsyncWorker>(), It.IsAny<Action<Guid>>()))
+                                    .Verifiable();
+            var asyncWorker = new Mock<IAsyncWorker>();
+            var serverProvider = new Mock<IEnvironmentModelProvider>();
+            var server1 = Guid.NewGuid();
+            var server2 = Guid.NewGuid();
+            var environmentModels = new List<IEnvironmentModel>
+                {
+                    new TestEnvironmentModel(new Mock<IEventAggregator>().Object, server1, CreateConnection(false,new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestEnvironmentModel(new Mock<IEventAggregator>().Object, server2, CreateConnection(false,new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false)
+                };
+            var environmentRepository = new Mock<IEnvironmentRepository>();
+            var environments = new List<IEnvironmentModel>
+                {
+                    new TestEnvironmentModel(new Mock<IEventAggregator>().Object, server1, CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false),
+                    new TestEnvironmentModel(new Mock<IEventAggregator>().Object, server2, CreateConnection(false, new Uri("http://localhost:3142/dsf"),AuthenticationType.Public).Object, new Mock<IResourceRepository>().Object, false)
+                };
+            environmentRepository.Setup(e => e.All()).Returns(environments);
+            serverProvider.Setup(s => s.Load()).Returns(environmentModels);
+            IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(studioResourceRepository.Object, asyncWorker.Object, serverProvider.Object, environmentRepository.Object);
+            connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
+            { };
+            //------------Execute Test---------------------------
+            connectControlSingleton.EditConnection(1, index =>
+            { });
+            //------------Assert Results-------------------------
+        
+            studioResourceRepository.Verify(s => s.Load(It.IsAny<Guid>(), It.IsAny<IAsyncWorker>(), It.IsAny<Action<Guid>>()), Times.Never());
+        }
+
+
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("ConnectControlSingleton_EditConnection")]
         public void ConnectControlSingleton_EditConnection_ServerUriIsChangedWhenItsConnected_StudioResourceRepositoryDisconnectIsCalled()
@@ -748,7 +835,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             return conn;
         }
 
-        static Mock<IEnvironmentConnection> CreateConnection(bool isConnected, Uri uri)
+        static Mock<IEnvironmentConnection> CreateConnection(bool isConnected, Uri uri,AuthenticationType auth = AuthenticationType.Windows)
         {
             var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -756,6 +843,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             conn.Setup(connection => connection.AppServerUri).Returns(uri);
             conn.Setup(c => c.IsConnected).Returns(isConnected);
             conn.Setup(connection => connection.DisplayName).Returns("localhost");
+            conn.Setup(a => a.AuthenticationType).Returns(auth);
             return conn;
         }
     }

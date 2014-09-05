@@ -136,9 +136,10 @@ namespace Dev2.ConnectionHelpers
                 if(environmentModel != null && environmentModel.Connection != null)
                 {
                     var serverUri = environmentModel.Connection.AppServerUri;
+                    var auth = environmentModel.Connection.AuthenticationType;
                     openWizard(selectedIndex);
                     var updatedServer = _environmentRepository.All().FirstOrDefault(e => e.ID == environmentModel.ID);
-                    if(updatedServer != null && !serverUri.Equals(updatedServer.Connection.AppServerUri))
+                    if (updatedServer != null && (!serverUri.Equals(updatedServer.Connection.AppServerUri) || auth != updatedServer.Connection.AuthenticationType))
                     {
                         if(ConnectedStatusChanged != null)
                         {
