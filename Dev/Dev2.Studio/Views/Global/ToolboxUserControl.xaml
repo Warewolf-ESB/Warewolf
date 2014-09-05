@@ -12,7 +12,7 @@
             <sadt:ToolboxControl.ToolTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding Path=BitmapName}" Height="18" Width="18" >
+                        <Image Source="{Binding Path=BitmapName}" Height="18" Width="18" AutomationProperties.AutomationId="UI_Icon_AutoID" >
                         </Image>
                         <Label Content="{Binding Path=DisplayName}" AutomationProperties.AutomationId="{Binding Path=DisplayName}"/>
                     </StackPanel>
