@@ -63,13 +63,6 @@
     </Style>
 
     <Style TargetType="{x:Type DataGridRow}">
-        <Setter Property="AutomationProperties.AutomationId">
-            <Setter.Value>
-                <MultiBinding StringFormat="UI_DataGridRow_{0}_AutoID">
-                    <Binding Path="Tag" RelativeSource="{RelativeSource Mode=Self}" />
-                </MultiBinding>
-            </Setter.Value>
-        </Setter>
         <Setter Property="VerticalAlignment"
                 Value="Stretch" />
         <Setter Property="HorizontalAlignment"
@@ -174,13 +167,6 @@
 
     <Style x:Key="SpacedDataGridRowStyle"
            TargetType="{x:Type DataGridRow}">
-        <Setter Property="AutomationProperties.AutomationId">
-            <Setter.Value>
-                <MultiBinding StringFormat="UI_DataGridRow_{0}_AutoID">
-                    <Binding Path="Tag" RelativeSource="{RelativeSource Mode=Self}" />
-                </MultiBinding>
-            </Setter.Value>
-        </Setter>
         <Setter Property="VerticalAlignment"
                 Value="Stretch" />
         <Setter Property="HorizontalAlignment"
@@ -387,9 +373,8 @@
         </Setter>
     </Style>
 
-    <Style TargetType="{x:Type DataGridCell}">
-        <Setter Property="AutomationProperties.AutomationId" 
-                Value="UI_DataGridCell_AutoID" />
+    <Style  x:Key="DefaultDataGridCellStyle"
+            TargetType="{x:Type DataGridCell}">
         <Setter Property="Background"
                 Value="{StaticResource DataGridBackgroundBrush}" />
         <Setter Property="BorderBrush"
@@ -449,6 +434,10 @@
                         Value="{StaticResource ForegroundBrush}" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style TargetType="{x:Type DataGridCell}"
+           BasedOn="{StaticResource DefaultDataGridCellStyle}">
     </Style>
 
     <Style TargetType="{x:Type DataGridRowHeader}">

@@ -31,8 +31,8 @@
                            ItemsSource="{Binding ModelItem.FieldsCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"                           
                            Style="{StaticResource SpacedActivityDataGridStyle}"                           
                            MinHeight="56"
-                           LoadingRow="DataGrid_LoadingRow"
-                           RowStyle="{StaticResource ActivityGridRowStyle}">
+                           RowStyle="{StaticResource ActivityGridRowStyle}"
+                           LoadingRow="DataGrid_LoadingRow">
         
         <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
         
@@ -71,13 +71,13 @@
                                     d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
                 <DataGridTemplateColumn.CellTemplate>
                     <DataTemplate>
-                        <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}"
+                        <ui:IntellisenseTextBox 
+                                                DefaultText="{Binding WatermarkTextVariable}"
                                                 WrapInBrackets="True"
                                                 Padding="3"
                                                 Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                 IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                                Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                AutomationProperties.AutomationId="UI_TextBox_AutoID">
+                                                Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                             <i:Interaction.Behaviors>
                                 <help:HelpSetter Text="{x:Static help:HelpTextResources.MultiAssignVariableHelpText}"
                                                  DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
@@ -86,6 +86,13 @@
                                                      SourcePropertyValue="{Binding FieldName, UpdateSourceTrigger=PropertyChanged}"
                                                      Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                             </i:Interaction.Behaviors>
+                            <AutomationProperties.AutomationId>
+                                <MultiBinding StringFormat="UI_{0}_Row{1}_FieldName_AutoID">
+                                    <Binding Path="DataContext.ModelItem.AutomationID"
+                                             RelativeSource="{RelativeSource AncestorType=core:ActivityDesignerTemplate}" />
+                                    <Binding Path="IndexNumber" />
+                                </MultiBinding>
+                            </AutomationProperties.AutomationId>
                         </ui:IntellisenseTextBox>
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
