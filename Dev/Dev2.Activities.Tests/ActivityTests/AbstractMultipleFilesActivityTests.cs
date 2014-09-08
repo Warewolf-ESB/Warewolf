@@ -23,7 +23,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public TestContext TestContext { get; set; }
 
 
-      
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("AbstractMultipleFiles_Execute")]
@@ -62,7 +62,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outRes.Count);
             var outputResultList = outRes[0].FetchResultsList();
             Assert.AreEqual(1, outputResultList.Count);
-            Assert.AreEqual("Failure", outputResultList[0].Value);
+            Assert.AreEqual("", outputResultList[0].Value);
         }
 
         [TestMethod]
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outRes.Count);
             var outputResultList = outRes[0].FetchResultsList();
             Assert.AreEqual(1, outputResultList.Count);
-            Assert.AreEqual("Failure", outputResultList[0].Value);
+            Assert.AreEqual("", outputResultList[0].Value);
         }
 
     }

@@ -687,7 +687,16 @@ namespace Dev2.DataList.Contract.Binary_Objects
                         // we have an entry, better check clone for empty
                         if(_templateDict.TryGetValue(key, out thisTmp))
                         {
-                            if(cloned.FetchScalar().TheValue != string.Empty && depth == enTranslationDepth.Data)
+                            string theValue = null;
+                            try
+                            {
+                                theValue = cloned.FetchScalar().TheValue;
+                            }
+                            catch(Exception e)
+                            {
+                                Dev2Logger.Log.Error(e);
+                            }
+                            if(theValue != string.Empty && depth == enTranslationDepth.Data)
                             {
                                 // The clone has data, over write it on the merge ;)
                                 _templateDict[key] = cloned;

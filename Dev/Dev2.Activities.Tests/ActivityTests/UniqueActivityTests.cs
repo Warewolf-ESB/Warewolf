@@ -41,7 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(string.Empty, actual);
+            Assert.AreEqual(null, actual);
         }
 
         [TestMethod]
@@ -199,7 +199,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]],[[recset1().field3]]", "[[recset2().id]],[[recset2().value]]");
-            List<string> expectedID = new List<string> { "1", "2", "5" };
+            List<string> expectedId = new List<string> { "1", "2", "5" };
             List<string> expectedValue = new List<string> { "Test1", "Test2", "Test5" };
 
             IDSFDataObject result = ExecuteProcess();
@@ -212,7 +212,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
-            CollectionAssert.AreEqual(expectedID, actualRet, comparer);
+            CollectionAssert.AreEqual(expectedId, actualRet, comparer);
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
 
             // remove test datalist ;)
@@ -253,7 +253,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]],[[recset1().field3]]", "[[recset2(*).id]],[[recset2(*).value]]");
-            List<string> expectedID = new List<string> { "1", "2", "5" };
+            List<string> expectedId = new List<string> { "1", "2", "5" };
             List<string> expectedValue = new List<string> { "Test1", "Test2", "Test5" };
 
             IDSFDataObject result = ExecuteProcess();
@@ -265,7 +265,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
-            CollectionAssert.AreEqual(expectedID, actualRet, comparer);
+            CollectionAssert.AreEqual(expectedId, actualRet, comparer);
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
 
             // remove test datalist ;)
@@ -301,13 +301,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                                             "<recset1>" +
                                             "<field1>5</field1><field2>c</field2><field3>Test5</field3>" +
                                             "</recset1>" +
-                                            "<recset2><id>99</id></recset2>" +
+                                            "<recset2><id>99</id><value></value></recset2>" +
                                             "<OutVar1/></ADL>";
             SetupArguments("<root>" + DataListWithData + "</root>"
                 , DataList
                 , "[[recset1().field2]]"
                 , "[[recset1().field1]],[[recset1().field3]]", "[[recset2().id]],[[recset2(*).value]]");
-            List<string> expectedID = new List<string> { "99", "1", "2", "5" };
+            List<string> expectedId = new List<string> { "99", "1", "2", "5" };
             List<string> expectedValue = new List<string> { "Test1", "Test2", "Test5", "" };
 
             IDSFDataObject result = ExecuteProcess();
@@ -319,14 +319,24 @@ namespace Dev2.Tests.Activities.ActivityTests
             List<string> actualRet = new List<string>();
             actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
             var comparer = new ActivityUnitTests.Utils.StringComparer();
-            CollectionAssert.AreEqual(expectedID, actualRet, comparer);
+            CollectionAssert.AreEqual(expectedId, actualRet, comparer);
             GetRecordSetFieldValueFromDataList(result.DataListID, "recset2", "value", out actual, out error);
 
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
             actualRet = new List<string>();
-            actual.ToList().ForEach(d => actualRet.Add(d.TheValue));
+            actual.ToList().ForEach(d =>
+            {
+                try
+                {
+                    actualRet.Add(d.TheValue);
+                }
+                catch(Exception)
+                {
+                    actualRet.Add("");
+                }
+            });
             comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expectedValue, actualRet, comparer);
         }
@@ -495,10 +505,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , "[[recset1().field1]],[[recset1().field3]]", "[[recset2(*).id]],[[recset2(*).value]]");
 
 
-            IDSFDataObject result = ExecuteProcess(null,true,null,false,true);
+            IDSFDataObject result = ExecuteProcess(null, true);
             ErrorResultTO errorResult;
             IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
             var outputs = unique.GetDebugOutputs(bdl);
+            Assert.IsTrue(outputs.Count > 0);
             Assert.IsTrue(outputs[0].ResultsList.Count == 7);
             var groups = outputs.SelectMany(a => a.ResultsList).Select(a => a.GroupName).Distinct().ToList();
             Assert.AreEqual(groups.Count(), 3);
@@ -538,7 +549,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , "[[recset1().field1]],[[recset1().field3]]", "[[recset2().id]],[[recset2().value]]");
 
 
-            IDSFDataObject result = ExecuteProcess(null, true, null, false, true);
+            IDSFDataObject result = ExecuteProcess(null, true);
             ErrorResultTO errorResult;
             IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
             var outputs = unique.GetDebugOutputs(bdl);
@@ -580,13 +591,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                 , "[[recset1().field1]],[[recset1().field3]]", "[[bob]]");
 
 
-            IDSFDataObject result = ExecuteProcess(null, true, null, false, true);
+            IDSFDataObject result = ExecuteProcess(null, true);
             ErrorResultTO errorResult;
             IBinaryDataList bdl = Compiler.FetchBinaryDataList(result.DataListID, out errorResult);
             var outputs = unique.GetDebugOutputs(bdl);
             Assert.IsTrue(outputs[0].ResultsList.Count == 2);
             var groups = outputs.SelectMany(a => a.ResultsList).Select(a => a.GroupName).Distinct().ToList();
-            Assert.AreEqual(groups.Count(a=>!String.IsNullOrEmpty(a)), 0);
+            Assert.AreEqual(groups.Count(a => !String.IsNullOrEmpty(a)), 0);
             Assert.AreEqual("[[bob]]", outputs[0].ResultsList[1].Variable);
             Assert.AreEqual("1,2,5", outputs[0].ResultsList[1].Value);
         }

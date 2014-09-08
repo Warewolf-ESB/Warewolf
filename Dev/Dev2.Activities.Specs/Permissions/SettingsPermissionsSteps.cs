@@ -26,7 +26,7 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.Connect();
             while(!environmentModel.IsConnected)
             {
-                environmentModel.Disconnect();
+                environmentModel.Connect();
                 Thread.Sleep(100);
             }
             Data.Settings.Settings settings = new Data.Settings.Settings
@@ -71,8 +71,18 @@ namespace Dev2.Activities.Specs.Permissions
             };
 
             var environmentModel = ScenarioContext.Current.Get<IEnvironmentModel>("environment");
+            EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
             environmentModel.Disconnect();
+        }
+
+        static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel)
+        {
+            while(!environmentModel.IsConnected)
+            {
+                environmentModel.Connect();
+                Thread.Sleep(100);
+            }
         }
 
         [When(@"connected as user part of '(.*)'")]
@@ -261,6 +271,7 @@ namespace Dev2.Activities.Specs.Permissions
             var waitCounter = 0;
             while(!environmentModel.IsConnected && waitCounter < 10)
             {
+                environmentModel.Connect();
                 Thread.Sleep(1000);
                 waitCounter++;
             }

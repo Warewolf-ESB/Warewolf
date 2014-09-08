@@ -3,7 +3,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
@@ -354,6 +353,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            Assert.IsNull(actual);
         }
 
     }

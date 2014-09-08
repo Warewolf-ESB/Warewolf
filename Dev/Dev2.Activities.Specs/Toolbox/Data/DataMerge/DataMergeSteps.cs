@@ -135,7 +135,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.AreEqual(value, actualValue);
+            if(string.IsNullOrEmpty(value))
+            {
+                Assert.IsNull(actualValue);
+            }
+            else
+            {
+                Assert.AreEqual(value, actualValue);
+            }
         }
 
         [Then(@"the merged result is the same as file ""(.*)""")]

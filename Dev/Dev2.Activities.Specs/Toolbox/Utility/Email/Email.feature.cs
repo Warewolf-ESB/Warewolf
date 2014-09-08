@@ -140,7 +140,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 29
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 30
- testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 31
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -160,7 +160,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table4.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 35
  testRunner.And("the debug output as", ((string)(null)), table4, "And ");
 #line hidden
@@ -186,7 +186,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 44
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 45
- testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 46
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -206,7 +206,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table6.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 50
  testRunner.And("the debug output as", ((string)(null)), table6, "And ");
 #line hidden
@@ -232,7 +232,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 59
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 60
- testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 61
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -252,7 +252,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table8.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 65
  testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
@@ -463,7 +463,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 133
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 134
- testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 135
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -483,7 +483,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table18 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table18.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 139
  testRunner.And("the debug output as", ((string)(null)), table18, "And ");
 #line hidden
@@ -505,7 +505,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 146
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 147
- testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 148
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -525,7 +525,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table20.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 152
  testRunner.And("the debug output as", ((string)(null)), table20, "And ");
 #line hidden
@@ -551,7 +551,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 161
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 162
- testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 163
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -571,7 +571,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table22.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 167
  testRunner.And("the debug output as", ((string)(null)), table22, "And ");
 #line hidden
@@ -597,7 +597,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 176
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 177
- testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 178
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -617,7 +617,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table24.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 182
  testRunner.And("the debug output as", ((string)(null)), table24, "And ");
 #line hidden
@@ -643,7 +643,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 191
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 192
- testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 193
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -663,7 +663,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table26.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 197
  testRunner.And("the debug output as", ((string)(null)), table26, "And ");
 #line hidden
@@ -687,7 +687,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 205
  testRunner.When("the email tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 206
- testRunner.Then("the email result will be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the email result will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 207
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -707,7 +707,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table28 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table28.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 211
  testRunner.And("the debug output as", ((string)(null)), table28, "And ");
 #line hidden

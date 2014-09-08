@@ -110,7 +110,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                        out actualValue, out error);
-            Assert.AreEqual(value, actualValue);
+            if(string.IsNullOrEmpty(value))
+            {
+                Assert.IsTrue(string.IsNullOrEmpty(actualValue));
+            }
+            else
+            {
+                Assert.AreEqual(value, actualValue);
+            }
         }
 
         [Then(@"the xpath result for this varibale ""(.*)"" will be")]

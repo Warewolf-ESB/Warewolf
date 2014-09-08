@@ -157,7 +157,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<DataList></DataList>";
             User = new Mock<IPrincipal>().Object;
             Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
             var result = ExecuteProcess(null, true, null, false, true, false, environmentID) as IDSFDataObject;
 
             // ReSharper disable PossibleNullReferenceException
@@ -198,7 +198,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<DataList></DataList>";
             User = new Mock<IPrincipal>().Object;
             Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
             var result = ExecuteProcess(null, true, null, false, true, false, environmentID) as IDSFDataObject;
 
             // ReSharper disable PossibleNullReferenceException
@@ -288,7 +288,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 //       if this is NOT provided which will cause the tests to fail!
                 ServerID = Guid.NewGuid(),
                 IsDebug = true,
-                ForEachNestingLevel = 1 
+                ForEachNestingLevel = 1
             };
 
             DsfActivity act = new DsfActivity();

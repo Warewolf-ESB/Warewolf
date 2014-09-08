@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using ActivityUnitTests;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.PathOperations.Interfaces;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.Diagnostics;
@@ -157,11 +156,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outRes.Count);
             var outputResultList = outRes[0].FetchResultsList();
             Assert.AreEqual(3, outputResultList.Count);
-            Assert.AreEqual("Failure", outputResultList[0].Value);
+            Assert.AreEqual("", outputResultList[0].Value);
             Assert.AreEqual("[[res(1).a]]", outputResultList[0].Variable);
-            Assert.AreEqual("Failure", outputResultList[1].Value);
+            Assert.AreEqual("", outputResultList[1].Value);
             Assert.AreEqual("[[res(1).a]]", outputResultList[1].Variable);
-            Assert.AreEqual("Failure", outputResultList[2].Value);
+            Assert.AreEqual("", outputResultList[2].Value);
             Assert.AreEqual("[[res(1).a]]", outputResultList[2].Variable);
         }
 
@@ -206,11 +205,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(1, outRes.Count);
             var outputResultList = outRes[0].FetchResultsList();
             Assert.AreEqual(3, outputResultList.Count);
-            Assert.AreEqual("Failure", outputResultList[0].Value);
+            Assert.AreEqual("", outputResultList[0].Value);
             Assert.AreEqual("[[res(1).a]]", outputResultList[0].Variable);
-            Assert.AreEqual("Failure", outputResultList[1].Value);
+            Assert.AreEqual("", outputResultList[1].Value);
             Assert.AreEqual("[[res(1).a]]", outputResultList[1].Variable);
-            Assert.AreEqual("Failure", outputResultList[2].Value);
+            Assert.AreEqual("", outputResultList[2].Value);
             Assert.AreEqual("[[res(1).a]]", outputResultList[2].Variable);
         }
 

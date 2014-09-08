@@ -227,6 +227,10 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                 if(idx < _startIdx.Length)
                 {
                     int start = _startIdx[idx];
+                    if(_startIdx[idx] == DataListConstants.EmptyRowStartIdx)
+                    {
+                        return null;
+                    }
                     if(start > DataListConstants.EmptyRowStartIdx)
                     {
                         // we have data cool beans ;)   
@@ -241,7 +245,13 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                                 result.Append(_rowData[i]);
                             }
 
-                            return result.ToString();
+                            var fetchValue = result.ToString();
+                            if(fetchValue.ToCharArray()[0] == Char.MinValue)
+                            {
+                                return null;
+                            }
+                            return fetchValue;
+
                         }
                     }
                 }
@@ -263,83 +273,102 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                     if(start > DataListConstants.EmptyRowStartIdx)
                     {
                         // we have data, cool beans ;)   
-                        int candiateLen = val.Length;
-                        int len = _columnLen[idx];
-
-                        // if candidate is larger then prev value, we need to append to end of storage ;)   
-                        if(candiateLen > len)
+                        //start = FetchStorageStartIdx();
+                        if(val == null)
                         {
-
-                            // do we have space
-                            int requiredSize = (_usedStorage + candiateLen);
-                            if(requiredSize >= _storageCapacity)
-                            {
-                                // Nope, grow array
-                                GrowRow(requiredSize);
-                            }
-
-                            // else yes we have the space, but in either case we need to append to end ;)
-                            start = FetchStorageStartIdx();
-                            int pos = 0;
-                            int iterationLen = (start + candiateLen);
-
-                            for(int i = start; i < iterationLen; i++)
-                            {
-                                _rowData[i] = val[pos];
-                                pos++;
-                            }
-
-                            // finally update the storage location data
-                            _startIdx[idx] = start;
-                            _columnLen[idx] = candiateLen;
-                            _usedStorage += candiateLen;
+                            _startIdx[idx] = DataListConstants.EmptyRowStartIdx;
+                            //                            _rowData[start] = Char.MinValue;
+                            //                            _startIdx[idx] = start;
+                            //                            _columnLen[idx] = 1;
+                            //                            _usedStorage += 1;
                         }
                         else
                         {
-                            // same size or small we can fit it into the same location
+                            int candiateLen = val.Length;
+                            int len = _columnLen[idx];
 
-                            // first update data
-                            int pos = 0;
-                            int overWriteLen = (start + candiateLen);
-                            for(int i = start; i < overWriteLen; i++)
+                            // if candidate is larger then prev value, we need to append to end of storage ;)   
+                            if(candiateLen > len)
                             {
-                                _rowData[i] = val[pos];
-                                pos++;
-                            }
+                                // do we have space
+                                int requiredSize = (_usedStorage + candiateLen);
+                                if(requiredSize >= _storageCapacity)
+                                {
+                                    // Nope, grow array
+                                    GrowRow(requiredSize);
+                                }
 
-                            // finally update length array ;)
-                            _columnLen[idx] = candiateLen;
+                                // else yes we have the space, but in either case we need to append to end ;)
+                                start = FetchStorageStartIdx();
+                                int pos = 0;
+                                int iterationLen = (start + candiateLen);
+                                for(int i = start; i < iterationLen; i++)
+                                {
+                                    _rowData[i] = val[pos];
+                                    pos++;
+                                }
+                                // finally update the storage location data
+                                _startIdx[idx] = start;
+                                _columnLen[idx] = candiateLen;
+                                _usedStorage += candiateLen;
+                            }
+                            else
+                            {
+                                // same size or small we can fit it into the same location
+
+                                // first update data
+                                int pos = 0;
+                                int overWriteLen = (start + candiateLen);
+                                for(int i = start; i < overWriteLen; i++)
+                                {
+                                    _rowData[i] = val[pos];
+                                    pos++;
+                                }
+                                // finally update length array ;)
+                                _columnLen[idx] = candiateLen;
+
+                            }
                         }
                     }
                     else
                     {
                         // It is a new value that needs to be inserted ;)
-
-                        int canidateLen = val.Length;
-                        int storageReq = _usedStorage + canidateLen;
-
-                        if(storageReq >= _storageCapacity)
+                        //start = FetchStorageStartIdx();
+                        if(val == null)
                         {
-                            // sad panda, we need to grow the storage
-                            GrowRow(storageReq);
+                            _startIdx[idx] = DataListConstants.EmptyRowStartIdx;
+                            //                            _rowData[start] = Char.MinValue;
+                            //                            _startIdx[idx] = start;
+                            //                            _columnLen[idx] = 1;
+                            //                            _usedStorage += 1;
                         }
-
-                        // now we have space, it is time to save the value ;)
-                        start = FetchStorageStartIdx();
-                        CharEnumerator itr = val.GetEnumerator();
-                        int iterateLen = (start + canidateLen);
-                        for(int i = start; i < iterateLen; i++)
+                        else
                         {
-                            itr.MoveNext();
-                            _rowData[i] = itr.Current;
+                            int canidateLen = val.Length;
+                            int storageReq = _usedStorage + canidateLen;
+
+                            if(storageReq >= _storageCapacity)
+                            {
+                                // sad panda, we need to grow the storage
+                                GrowRow(storageReq);
+                            }
+
+                            // now we have space, it is time to save the value ;)
+                            start = FetchStorageStartIdx();
+
+                            CharEnumerator itr = val.GetEnumerator();
+                            int iterateLen = (start + canidateLen);
+                            for(int i = start; i < iterateLen; i++)
+                            {
+                                itr.MoveNext();
+                                _rowData[i] = itr.Current;
+                            }
+                            itr.Dispose();
+                            // finally, update the storage data
+                            _startIdx[idx] = start;
+                            _columnLen[idx] = canidateLen;
+                            _usedStorage += canidateLen;
                         }
-
-                        itr.Dispose();
-
-                        // finally, update the storage data
-                        _startIdx[idx] = start;
-                        _columnLen[idx] = canidateLen;
-                        _usedStorage += canidateLen;
                     }
                 }
             }

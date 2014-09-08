@@ -79,7 +79,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch(Exception e)
                 {
-                    outputs[0].OutputStrings.Add("Result");
+                    outputs[0].OutputStrings.Add(null);
                     allErrors.AddError(e.Message);
                 }
 

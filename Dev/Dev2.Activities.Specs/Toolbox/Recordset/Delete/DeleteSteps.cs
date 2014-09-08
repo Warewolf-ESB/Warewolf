@@ -125,6 +125,10 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.Delete
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
+            if(string.IsNullOrEmpty(expectedResult))
+            {
+                expectedResult = null;
+            }
             Assert.AreEqual(expectedResult, actualValue);
         }
 

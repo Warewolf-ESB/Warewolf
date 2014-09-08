@@ -125,7 +125,6 @@
     <Compile Include="BackgroundDispatcher.cs" />
     <Compile Include="Binary Objects\BinaryDataList.cs" />
     <Compile Include="Binary Objects\BinaryDataListEntry.cs" />
-    <Compile Include="Binary Objects\BinaryDataListFileSystemItem.cs" />
     <Compile Include="Binary Objects\BinaryDataListItem.cs" />
     <Compile Include="Binary Objects\DataListRegistar.cs" />
     <Compile Include="Binary Objects\ListOfIndex.cs" />

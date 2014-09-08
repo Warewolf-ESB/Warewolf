@@ -1,4 +1,6 @@
-﻿using Dev2.Common;
+﻿using System;
+using Dev2.Common;
+using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -251,17 +253,30 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             Assert.AreEqual(2, rsEntry.Count);
             Assert.AreEqual("val1", rsEntry[0].FieldName);
             Assert.AreEqual("1", rsEntry[0].TheValue);
-            Assert.AreEqual("val2", rsEntry[1].FieldName);
-            Assert.AreEqual(string.Empty, rsEntry[1].TheValue);
+            DoNullVariableAssertion(rsEntry[1]);
 
             // row 2 validation
             rsEntry = rsEntries[0].FetchRecordAt(2, out error);
             Assert.AreEqual(2, rsEntry.Count);
             Assert.AreEqual("val1", rsEntry[0].FieldName);
             Assert.AreEqual("3", rsEntry[0].TheValue);
-            Assert.AreEqual("val2", rsEntry[1].FieldName);
-            Assert.AreEqual(string.Empty, rsEntry[1].TheValue);
+            DoNullVariableAssertion(rsEntry[1]);
 
         }
+
+
+        static void DoNullVariableAssertion(IBinaryDataListItem binaryDataListItem)
+        {
+            try
+            {
+                var val = binaryDataListItem.TheValue;
+                Assert.IsNull(val);
+            }
+            catch(Exception e)
+            {
+                StringAssert.Contains(e.Message, string.Format("No Value assigned for: [[{0}]]", binaryDataListItem.DisplayValue));
+            }
+        }
+
     }
 }

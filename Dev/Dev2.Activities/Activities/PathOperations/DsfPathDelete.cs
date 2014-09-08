@@ -11,7 +11,9 @@ using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
 
     /// <summary>
@@ -82,7 +84,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch(Exception e)
                 {
-                    outputs[0].OutputStrings.Add("Failure");
+                    outputs[0].OutputStrings.Add(null);
                     allErrors.AddError(e.Message);
                 }
             }

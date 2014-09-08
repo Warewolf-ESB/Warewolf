@@ -121,7 +121,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
             //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
-            actualValue = actualValue.Replace("(GMT+", "(UTC+").Replace("(GMT-", "(UTC-");
+            if(actualValue != null)
+            {
+                actualValue = actualValue.Replace("(GMT+", "(UTC+").Replace("(GMT-", "(UTC-");
+            }
+            if(string.IsNullOrEmpty(expectedResult))
+            {
+                expectedResult = null;
+            }
             Assert.AreEqual(expectedResult, actualValue);
         }
     }

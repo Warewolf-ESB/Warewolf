@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.Audit;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
@@ -186,26 +187,49 @@ namespace Dev2.Data.Compilers
                             {
                                 if(_result == null)
                                 {
-                                    var toReplace = scalar.TheValue;
-                                    CompiledExpression = CompiledExpression.Replace(token, toReplace);
+                                    try
+                                    {
+                                        var toReplace = scalar.TheValue;
+                                        CompiledExpression = CompiledExpression.Replace(token, toReplace);
+                                    }
+                                    catch(NullValueInVariableException)
+                                    {
+                                        CompiledExpression = CompiledExpression.Replace(token, null);
+                                    }
                                 }
                                 else
                                 {
                                     var itr = _result.FetchRecordsetIndexes();
-                                    var replaceVal = scalar.TheValue;
+                                    string replaceVal;
+                                    try
+                                    {
+                                        replaceVal = scalar.TheValue;
+                                    }
+                                    catch(NullValueInVariableException)
+                                    {
+                                        replaceVal = null;
+                                    }
 
                                     while(itr.HasMore())
                                     {
                                         var val = itr.FetchNextIndex();
 
                                         // Fetch the next value from result ;)
-                                        string error;
-                                        var template = _result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField, val, out error).TheValue;
-                                        Errors.AddError(error);
+                                        try
+                                        {
+                                            string error;
+                                            string template = _result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField, val, out error).TheValue;
+                                            Errors.AddError(error);
 
-                                        template = template.Replace(token, replaceVal);
-                                        _result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, _ns, GlobalConstants.EvaluationRsField, val), val, out error);
-                                        Errors.AddError(error);
+                                            template = template.Replace(token, replaceVal);
+                                            _result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, _ns, GlobalConstants.EvaluationRsField, val), val, out error);
+                                            Errors.AddError(error);
+                                        }
+                                        catch(NullValueInVariableException)
+                                        {
+                                            //Do nothing got null
+                                        }
+
                                     }
 
                                     CompiledExpression = CompiledExpression.Replace(token, replaceVal);
@@ -266,50 +290,57 @@ namespace Dev2.Data.Compilers
                             // else iterate across the recordset cuz it had a star ;)
                             while(idxItr.HasMore())
                             {
-                                var val = idxItr.FetchNextIndex();
-
-                                // Fetch the next value from result ;)
-                                var template = _result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField,
-                                                                            expIdx, out error).TheValue;
-                                Errors.AddError(error);
-
-                                var binaryValue = value.TryFetchIndexedRecordsetUpsertPayload(val, out error);
-                                Errors.AddError(error);
-
-                                // now bind this result row with the correct data list data ;)
-                                if(binaryValue != null)
+                                try
                                 {
-                                    var preTemplate = template;
-                                    var toReplace = binaryValue.TheValue;
-                                    template = template.Replace(token, toReplace);
+                                    var val = idxItr.FetchNextIndex();
 
-                                    // In cases when [[[{0}]] is the result, we need to inject the template value
-                                    // In cases when [[rec({0}).a]] we need to replace the template pattern ;)
-                                    var tmp = CompiledExpression.Replace("[", "").Replace("]", "").Replace(token, string.Empty);
-                                    // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-                                    if(tmp.Length > 0)
-                                    // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
-                                    {
-                                        // we have a [[rec({0}.a]] case ;)
-                                        replaceValue = toReplace;
-                                    }
-                                    else
-                                    {
-                                        replaceValue = template;
-                                    }
-
-                                    _result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, _ns, GlobalConstants.EvaluationRsField, expIdx), expIdx, out error);
+                                    // Fetch the next value from result ;)
+                                    var template = _result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField,
+                                        expIdx, out error).TheValue;
                                     Errors.AddError(error);
 
-                                    if(IsDebug)
-                                    {
-                                        var displayValue = DataListUtil.AddBracketsToValueIfNotExist(binaryValue.DisplayValue);
-                                        _result.ComplexExpressionAuditor.AddAuditStep(preTemplate, displayValue, token, idx, template, Expression);
-                                        _result.ComplexExpressionAuditor.SetMaxIndex(expIdx);
-                                    }
-                                }
+                                    var binaryValue = value.TryFetchIndexedRecordsetUpsertPayload(val, out error);
+                                    Errors.AddError(error);
 
-                                expIdx++; // inc result index ;)
+                                    // now bind this result row with the correct data list data ;)
+                                    if(binaryValue != null)
+                                    {
+                                        var preTemplate = template;
+                                        var toReplace = binaryValue.TheValue;
+                                        template = template.Replace(token, toReplace);
+
+                                        // In cases when [[[{0}]] is the result, we need to inject the template value
+                                        // In cases when [[rec({0}).a]] we need to replace the template pattern ;)
+                                        var tmp = CompiledExpression.Replace("[", "").Replace("]", "").Replace(token, string.Empty);
+                                        // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
+                                        if(tmp.Length > 0)
+                                        // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
+                                        {
+                                            // we have a [[rec({0}.a]] case ;)
+                                            replaceValue = toReplace;
+                                        }
+                                        else
+                                        {
+                                            replaceValue = template;
+                                        }
+
+                                        _result.TryPutRecordItemAtIndex(new BinaryDataListItem(template, _ns, GlobalConstants.EvaluationRsField, expIdx), expIdx, out error);
+                                        Errors.AddError(error);
+
+                                        if(IsDebug)
+                                        {
+                                            var displayValue = DataListUtil.AddBracketsToValueIfNotExist(binaryValue.DisplayValue);
+                                            _result.ComplexExpressionAuditor.AddAuditStep(preTemplate, displayValue, token, idx, template, Expression);
+                                            _result.ComplexExpressionAuditor.SetMaxIndex(expIdx);
+                                        }
+                                    }
+
+                                    expIdx++; // inc result index ;)
+                                }
+                                catch(NullValueInVariableException)
+                                {
+                                    //Do Nothing got null value
+                                }
                             }
 
                             replaceValue = DataListUtil.RemoveLanguageBrackets(replaceValue);
@@ -391,40 +422,47 @@ namespace Dev2.Data.Compilers
                 // foreach result to far ;)
                 while(idxItr.HasMore())
                 {
-                    var val = idxItr.FetchNextIndex();
-
-                    // Fetch the next value from result ;)
-                    string error;
-                    var compiledExpression = _result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField, val, out error).TheValue;
-                    Errors.AddError(error);
-
-                    HashSet<string> usedTokens = new HashSet<string>();
-
-                    // now process each token ;)
-                    // ReSharper disable PossibleMultipleEnumeration
-                    foreach(var token in tokens)
-                    // ReSharper restore PossibleMultipleEnumeration
+                    try
                     {
-                        var subToken = token.Option.DisplayValue;
-                        // we may have dups avoid them ;)
-                        if(!usedTokens.Contains(subToken))
+                        var val = idxItr.FetchNextIndex();
+
+                        // Fetch the next value from result ;)
+                        string error;
+                        var compiledExpression = _result.TryFetchRecordsetColumnAtIndex(GlobalConstants.EvaluationRsField, val, out error).TheValue;
+                        Errors.AddError(error);
+
+                        HashSet<string> usedTokens = new HashSet<string>();
+
+                        // now process each token ;)
+                        // ReSharper disable PossibleMultipleEnumeration
+                        foreach(var token in tokens)
+                        // ReSharper restore PossibleMultipleEnumeration
                         {
-                            if(compiledExpression.IndexOf(subToken, StringComparison.Ordinal) >= 0)
+                            var subToken = token.Option.DisplayValue;
+                            // we may have dups avoid them ;)
+                            if(!usedTokens.Contains(subToken))
                             {
-                                usedTokens.Add(subToken);
-                                compiledExpression = compiledExpression.Replace(subToken, BuildSubToken(subVar));
-                                _internalMap[subVar] = token;
-                                subVar++;
-                            }
-                            else
-                            {
-                                Errors.AddError("Could not locate token { " + subToken + " }");
+                                if(compiledExpression.IndexOf(subToken, StringComparison.Ordinal) >= 0)
+                                {
+                                    usedTokens.Add(subToken);
+                                    compiledExpression = compiledExpression.Replace(subToken, BuildSubToken(subVar));
+                                    _internalMap[subVar] = token;
+                                    subVar++;
+                                }
+                                else
+                                {
+                                    Errors.AddError("Could not locate token { " + subToken + " }");
+                                }
                             }
                         }
-                    }
 
-                    _result.TryPutRecordItemAtIndex(new BinaryDataListItem(compiledExpression, _ns, GlobalConstants.EvaluationRsField, val), val, out error);
-                    Errors.AddError(error);
+                        _result.TryPutRecordItemAtIndex(new BinaryDataListItem(compiledExpression, _ns, GlobalConstants.EvaluationRsField, val), val, out error);
+                        Errors.AddError(error);
+                    }
+                    catch(NullValueInVariableException)
+                    {
+                        //Do nothing null value
+                    }
 
                 }
             }

@@ -112,32 +112,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             foreach(IBinaryDataListItem itm in itr.FetchNextRowData())
                             {
-                                IBinaryDataListItem res = converter.TryConvert(item.ConvertType, itm);
-                                string expression = item.Result;
-
-                                // 27.08.2013
-                                // NOTE : The result must remain [ as this is how the fliping studio generates the result when using (*) notation
-                                // There is a proper bug in to fix this issue, but since the studio is spaghetti I will leave this to the experts ;)
-                                // This is a tmp fix to the issue
-                                if(expression == "[" || DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Star)
+                                try
                                 {
-                                    expression = DataListUtil.AddBracketsToValueIfNotExist(res.DisplayValue);
+                                    IBinaryDataListItem res = converter.TryConvert(item.ConvertType, itm);
+                                    string expression = item.Result;
+
+                                    // 27.08.2013
+                                    // NOTE : The result must remain [ as this is how the fliping studio generates the result when using (*) notation
+                                    // There is a proper bug in to fix this issue, but since the studio is spaghetti I will leave this to the experts ;)
+                                    // This is a tmp fix to the issue
+                                    if(expression == "[" || DataListUtil.GetRecordsetIndexType(expression) == enRecordsetIndexType.Star)
+                                    {
+                                        expression = DataListUtil.AddBracketsToValueIfNotExist(res.DisplayValue);
+                                    }
+                                    //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                                    IsSingleValueRule rule = new IsSingleValueRule(() => expression);
+                                    var singleresError = rule.Check();
+                                    if(singleresError != null)
+                                        allErrors.AddError(singleresError.Message);
+                                    else
+                                    {
+                                        toUpsert.Add(expression, res.TheValue);
+                                        // Upsert the entire payload
+                                    }
+                                    allErrors.MergeErrors(errors);
                                 }
-                                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                IsSingleValueRule rule = new IsSingleValueRule(() => expression);
-                                var singleresError = rule.Check();
-                                if(singleresError != null)
-                                    allErrors.AddError(singleresError.Message);
-                                else
+                                catch(Exception e)
                                 {
-
-                                    toUpsert.Add(expression, res.TheValue);
-
-                                    // Upsert the entire payload
+                                    allErrors.AddError(e.Message);
+                                    toUpsert.Add(item.Result, null);
                                 }
-                                allErrors.MergeErrors(errors);
-
-
                             }
                         }
                         compiler.Upsert(executionId, toUpsert, out errors);

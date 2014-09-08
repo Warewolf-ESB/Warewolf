@@ -60,10 +60,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            Guid dlID = dataObject.DataListID;
+            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = dlID;
+            Guid executionId = dlId;
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             // Process if no errors
@@ -72,7 +72,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(!string.IsNullOrWhiteSpace(RecordsetName))
                 {
-                   
+
 
                     IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
                     allErrors.MergeErrors(errors);
@@ -91,26 +91,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     var rule = new IsSingleValueRule(() => RecordsLength);
                     var single = rule.Check();
-                    if (single != null)
+                    if(single != null)
                     {
                         allErrors.AddError(single.Message);
                     }
                     else
                     {
-                        if (recset != null)
+                        if(recset != null)
                         {
-                            if (recset.Columns != null && RecordsLength != string.Empty)
+                            if(recset.Columns != null && RecordsLength != string.Empty)
                             {
-                                if (recset.IsEmpty())
+                                if(recset.IsEmpty())
                                 {
-           
-                                        compiler.Upsert(executionId, RecordsLength, "0", out errors);
-                                        if (dataObject.IsDebugMode())
-                                        {
-                                            AddDebugOutputItem(new DebugOutputParams(RecordsLength, "0", executionId, 0));
-                                        }
-                                        allErrors.MergeErrors(errors);
-                                    
+
+                                    compiler.Upsert(executionId, RecordsLength, "0", out errors);
+                                    if(dataObject.IsDebugMode())
+                                    {
+                                        AddDebugOutputItem(new DebugOutputParams(RecordsLength, "0", executionId, 0));
+                                    }
+                                    allErrors.MergeErrors(errors);
+
                                 }
                                 else
                                 {
@@ -118,11 +118,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
 
-                                    foreach (var region in DataListCleaningUtils.SplitIntoRegions(RecordsLength))
+                                    foreach(var region in DataListCleaningUtils.SplitIntoRegions(RecordsLength))
                                     {
                                         int cnt = recset.FetchAppendRecordsetIndex() - 1;
                                         compiler.Upsert(executionId, region, cnt.ToString(CultureInfo.InvariantCulture), out errors);
-                                        if (dataObject.IsDebugMode())
+                                        if(dataObject.IsDebugMode())
                                         {
                                             AddDebugOutputItem(new DebugOutputParams(region, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
                                         }
@@ -133,11 +133,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 allErrors.MergeErrors(errors);
                             }
-                            else if (recset.Columns == null)
+                            else if(recset.Columns == null)
                             {
                                 allErrors.AddError(RecordsetName + " is not a recordset");
                             }
-                            else if (RecordsLength == string.Empty)
+                            else if(RecordsLength == string.Empty)
                             {
                                 allErrors.AddError("Blank result variable");
                             }
@@ -159,6 +159,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DisplayAndWriteError("DsfRecordsetLengthActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(executionId, RecordsLength, (string)null, out errors);
                 }
                 if(dataObject.IsDebugMode())
                 {

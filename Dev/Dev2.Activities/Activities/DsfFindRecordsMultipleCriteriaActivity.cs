@@ -99,7 +99,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             InitializeDebug(dataObject);
 
-           
+
             int iterationIndex;
             try
             {
@@ -115,9 +115,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 toUpsert.IsDebug = dataObject.IsDebugMode();
                 bool isFirstIteration = true;
-// ReSharper disable ForCanBeConvertedToForeach
+                // ReSharper disable ForCanBeConvertedToForeach
                 for(var i = 0; i < ResultsCollection.Count; i++)
-// ReSharper restore ForCanBeConvertedToForeach
+                // ReSharper restore ForCanBeConvertedToForeach
                 {
                     IEnumerable<string> resultsDuringSearch = new List<string>();
                     var currenSearchResults = new List<string>();
@@ -180,9 +180,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                           itrCollection.FetchNextRow(toItr).TheValue);
                                 ValidateRequiredFields(searchTo, out errorResultTo);
                                 allErrors.MergeErrors(errorResultTo);
-// ReSharper disable ConvertClosureToMethodGroup
+                                // ReSharper disable ConvertClosureToMethodGroup
                                 (RecordsetInterrogator.FindRecords(toSearchList, searchTo, out errorResultTo)).ToList().ForEach(it => iterationResults.Add(it));
-// ReSharper restore ConvertClosureToMethodGroup
+                                // ReSharper restore ConvertClosureToMethodGroup
 
                                 if(RequireAllFieldsToMatch)
                                 {
@@ -226,59 +226,59 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 DataListCleaningUtils.SplitIntoRegions(Result);
-                var rule = new IsSingleValueRule(()=>Result);
+                var rule = new IsSingleValueRule(() => Result);
                 var singleresError = rule.Check();
-                if (singleresError != null)
+                if(singleresError != null)
                     allErrors.AddError(singleresError.Message);
                 else
-               {
-                 
-                        string concatRes = String.Empty;
-                        var allResults = results as IList<string> ?? results.ToList();
-                        // ReSharper restore PossibleMultipleEnumeration
-                        if (allResults.Count == 0)
+                {
+
+                    string concatRes = String.Empty;
+                    var allResults = results as IList<string> ?? results.ToList();
+                    // ReSharper restore PossibleMultipleEnumeration
+                    if(allResults.Count == 0)
+                    {
+                        allResults.Add("-1");
+                    }
+
+                    if(!DataListUtil.IsValueRecordset(Result))
+                    {
+                        // ReSharper disable LoopCanBeConvertedToQuery
+                        foreach(var r in allResults)
+                        // ReSharper restore LoopCanBeConvertedToQuery
                         {
-                            allResults.Add("-1");
+                            concatRes = string.Concat(concatRes, r, ",");
                         }
 
-                        if (!DataListUtil.IsValueRecordset(Result))
+                        if(concatRes.EndsWith(","))
                         {
-// ReSharper disable LoopCanBeConvertedToQuery
-                            foreach (var r in allResults)
-// ReSharper restore LoopCanBeConvertedToQuery
-                            {
-                                concatRes = string.Concat(concatRes, r, ",");
-                            }
+                            concatRes = concatRes.Remove(concatRes.Length - 1);
+                        }
+                        toUpsert.Add(Result, concatRes);
+                        toUpsert.FlushIterationFrame();
+                    }
+                    else
+                    {
+                        iterationIndex = 0;
 
-                            if (concatRes.EndsWith(","))
-                            {
-                                concatRes = concatRes.Remove(concatRes.Length - 1);
-                            }
-                            toUpsert.Add(Result, concatRes);
+                        foreach(var r in allResults)
+                        {
+                            toUpsert.Add(Result, r);
                             toUpsert.FlushIterationFrame();
+                            iterationIndex++;
                         }
-                        else
-                        {
-                            iterationIndex = 0;
+                    }
+                    compiler.Upsert(executionId, toUpsert, out errorResultTo);
+                    allErrors.MergeErrors(errorResultTo);
 
-                            foreach (var r in allResults)
-                            {
-                                toUpsert.Add(Result, r);
-                                toUpsert.FlushIterationFrame();
-                                iterationIndex++;
-                            }
-                        }
-                        compiler.Upsert(executionId, toUpsert, out errorResultTo);
-                        allErrors.MergeErrors(errorResultTo);
-
-                        if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                    if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                    {
+                        foreach(var debugTo in toUpsert.DebugOutputs)
                         {
-                            foreach (var debugTo in toUpsert.DebugOutputs)
-                            {
-                                AddDebugOutputItem(new DebugItemVariableParams(debugTo));
-                            }
+                            AddDebugOutputItem(new DebugItemVariableParams(debugTo));
                         }
-                    
+                    }
+
                 }
             }
             catch(Exception exception)
@@ -293,6 +293,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DisplayAndWriteError("DsfFindRecordsMultipleCriteriaActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTo);
+                    compiler.Upsert(executionId, Result, (string)null, out errorResultTo);
                 }
 
                 if(dataObject.IsDebugMode())
@@ -303,7 +304,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var regions = DataListCleaningUtils.SplitIntoRegions(Result);
                         foreach(var region in regions)
                         {
-                            AddDebugOutputItem(new DebugOutputParams(region, "-1", executionId, iterationIndex));
+                            AddDebugOutputItem(new DebugOutputParams(region, "", executionId, iterationIndex));
                             iterationIndex++;
                         }
                     }
@@ -407,9 +408,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Creates a new instance of the SearchTO object
         /// </summary>
         /// <returns></returns>
-// ReSharper disable InconsistentNaming
+        // ReSharper disable InconsistentNaming
         private IRecsetSearch ConvertToSearchTO(string searchCriteria, string searchType, string startIndex, string from, string to)
-// ReSharper restore InconsistentNaming
+        // ReSharper restore InconsistentNaming
         {
             return DataListFactory.CreateSearchTO(FieldsToSearch, searchType, searchCriteria, startIndex, Result, MatchCase, RequireAllFieldsToMatch, from, to);
         }

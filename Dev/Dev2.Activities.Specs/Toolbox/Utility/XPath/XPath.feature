@@ -211,7 +211,5 @@ Scenario: Use XPath with negative recordset index as output
 	| XML                                                                                                        | # |                                                 |
 	| [[xml]] = <root><number id="1">One</number><number id="2">Two</number><number id="3">Three</number></root> | 1 | [[rec(-1).ids]] = //root/number[@id='2']/text() |
 	And the debug output as 
-	| # |                   |
-	| 1 | [[rec(-1).ids]] = |  
-
+	|        |
 

@@ -107,27 +107,34 @@ namespace Dev2.Activities
 
                 foreach(GatherSystemInformationTO item in SystemInformationCollection)
                 {
-                    indexCounter++;
-
-                    if(dataObject.IsDebugMode())
+                    try
                     {
-                        var inputToAdd = new DebugItem();
-                        AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
-                        AddDebugItem(new DebugItemStaticDataParams("", item.Result, "", "="), inputToAdd);
-                        AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
-                        _debugInputs.Add(inputToAdd);
-                    }
+                        indexCounter++;
 
-                    var hasErrors = allErrors.HasErrors();
-                    if(!hasErrors)
-                    {
-                        string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
-                        string expression = item.Result;
-
-                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                        if(dataObject.IsDebugMode())
                         {
-                            toUpsert.Add(region, val);
+                            var inputToAdd = new DebugItem();
+                            AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
+                            AddDebugItem(new DebugItemStaticDataParams("", item.Result, "", "="), inputToAdd);
+                            AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
+                            _debugInputs.Add(inputToAdd);
                         }
+
+                        var hasErrors = allErrors.HasErrors();
+                        if(!hasErrors)
+                        {
+                            string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
+                            string expression = item.Result;
+
+                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+                            {
+                                toUpsert.Add(region, val);
+                            }
+                        }
+                    }
+                    catch(Exception)
+                    {
+                        toUpsert.Add(item.Result, null);
                     }
                 }
 
@@ -137,11 +144,11 @@ namespace Dev2.Activities
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     int innerCount = 1;
-                    foreach(DebugTO debugOutputTO in toUpsert.DebugOutputs)
+                    foreach(DebugTO debugOutputTo in toUpsert.DebugOutputs)
                     {
                         var itemToAdd = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                        AddDebugItem(new DebugItemVariableParams(debugOutputTO), itemToAdd);
+                        AddDebugItem(new DebugItemVariableParams(debugOutputTo), itemToAdd);
                         _debugOutputs.Add(itemToAdd);
                         innerCount++;
                     }
@@ -166,11 +173,11 @@ namespace Dev2.Activities
                     if(hasErrors)
                     {
                         int innerCount = 1;
-                        foreach(DebugTO debugOutputTO in toUpsert.DebugOutputs)
+                        foreach(DebugTO debugOutputTo in toUpsert.DebugOutputs)
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugItemVariableParams(debugOutputTO), itemToAdd);
+                            AddDebugItem(new DebugItemVariableParams(debugOutputTo), itemToAdd);
                             _debugOutputs.Add(itemToAdd);
                             innerCount++;
                         }
@@ -313,8 +320,8 @@ namespace Dev2.Activities
                     List<GatherSystemInformationTO> listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
                     if(listOfValidRows.Count > 0)
                     {
-                        GatherSystemInformationTO gatherSystemInformationTO = SystemInformationCollection.Last(c => !c.CanRemove());
-                        int startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTO) + 1;
+                        GatherSystemInformationTO gatherSystemInformationTo = SystemInformationCollection.Last(c => !c.CanRemove());
+                        int startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTo) + 1;
                         foreach(string s in listToAdd)
                         {
                             mic.Insert(startIndex, new GatherSystemInformationTO(SystemInformationCollection[startIndex - 1].EnTypeOfSystemInformation, s, startIndex + 1));
@@ -391,7 +398,7 @@ namespace Dev2.Activities
 
         public int GetCollectionCount()
         {
-            return SystemInformationCollection.Count(caseConvertTO => !caseConvertTO.CanRemove());
+            return SystemInformationCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
         }
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)

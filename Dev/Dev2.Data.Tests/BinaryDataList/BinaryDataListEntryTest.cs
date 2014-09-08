@@ -120,8 +120,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(row1[0].TheValue, "a");
             Assert.AreEqual(row1[1].TheValue, "3");
             var row2 = entry.FetchRecordAt(2, out error);
-            Assert.AreEqual(row2[0].TheValue, "");
-            Assert.AreEqual(row2[1].TheValue, "");
+            DoNullVariableAssertion(row2[0]);
+            DoNullVariableAssertion(row2[1]);
             var row3 = entry.FetchRecordAt(3, out error);
             Assert.AreEqual(row3[0].TheValue, "b");
             Assert.AreEqual(row3[1].TheValue, "2");
@@ -166,11 +166,11 @@ namespace Dev2.Data.Tests.BinaryDataList
             dl0.TryGetEntry("recset", out entry, out error);
             entry.Sort("f1", false, out error);
             var row1 = entry.FetchRecordAt(1, out error);
-            Assert.AreEqual(row1[0].TheValue, "");
+            DoNullVariableAssertion(row1[0]);
             Assert.AreEqual(row1[1].TheValue, "2");
             var row2 = entry.FetchRecordAt(2, out error);
-            Assert.AreEqual(row2[0].TheValue, "");
-            Assert.AreEqual(row2[1].TheValue, "");
+            DoNullVariableAssertion(row2[0]);
+            DoNullVariableAssertion(row2[1]);
             var row3 = entry.FetchRecordAt(3, out error);
             Assert.AreEqual(row3[0].TheValue, "a");
             Assert.AreEqual(row3[1].TheValue, "3");
@@ -218,13 +218,13 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(row1[0].TheValue, "30");
             Assert.AreEqual(row1[1].TheValue, "1");
             var row2 = entry.FetchRecordAt(2, out error);
-            Assert.AreEqual(row2[0].TheValue, "");
-            Assert.AreEqual(row2[1].TheValue, "");
+            DoNullVariableAssertion(row2[0]);
+            DoNullVariableAssertion(row2[1]);
             var row3 = entry.FetchRecordAt(3, out error);
             Assert.AreEqual(row3[0].TheValue, "12");
             Assert.AreEqual(row3[1].TheValue, "3");
             var row4 = entry.FetchRecordAt(4, out error);
-            Assert.AreEqual(row4[0].TheValue, "");
+            DoNullVariableAssertion(row4[0]);
             Assert.AreEqual(row4[1].TheValue, "2");
             // adjust the alias mapping data ;)
 
@@ -268,13 +268,13 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(row1[0].TheValue, "30.1");
             Assert.AreEqual(row1[1].TheValue, "1");
             var row2 = entry.FetchRecordAt(2, out error);
-            Assert.AreEqual(row2[0].TheValue, "");
-            Assert.AreEqual(row2[1].TheValue, "");
+            DoNullVariableAssertion(row2[0]);
+            DoNullVariableAssertion(row2[1]);
             var row3 = entry.FetchRecordAt(3, out error);
             Assert.AreEqual(row3[0].TheValue, "12.4");
             Assert.AreEqual(row3[1].TheValue, "3");
             var row4 = entry.FetchRecordAt(4, out error);
-            Assert.AreEqual(row4[0].TheValue, "");
+            DoNullVariableAssertion(row4[0]);
             Assert.AreEqual(row4[1].TheValue, "2");
             // adjust the alias mapping data ;)
 
@@ -318,8 +318,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(row1[0].TheValue, "30.1");
             Assert.AreEqual(row1[1].TheValue, "1");
             var row2 = entry.FetchRecordAt(2, out error);
-            Assert.AreEqual(row2[0].TheValue, "");
-            Assert.AreEqual(row2[1].TheValue, "");
+            DoNullVariableAssertion(row2[0]);
+            DoNullVariableAssertion(row2[1]);
             var row3 = entry.FetchRecordAt(3, out error);
             Assert.AreEqual(row3[0].TheValue, "12.4");
             Assert.AreEqual(row3[1].TheValue, "3");
@@ -368,17 +368,13 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(row1[0].TheValue, new DateTime(2001, 01, 01).ToString(CultureInfo.InvariantCulture));
             Assert.AreEqual(row1[1].TheValue, "1");
             var row2 = entry.FetchRecordAt(2, out error);
-            Assert.AreEqual(row2[0].TheValue, "");
-            Assert.AreEqual(row2[1].TheValue, "");
+            DoNullVariableAssertion(row2[0]);
+            DoNullVariableAssertion(row2[1]);
             var row3 = entry.FetchRecordAt(3, out error);
             Assert.AreEqual(row3[0].TheValue, new DateTime(1999, 01, 01).ToString(CultureInfo.InvariantCulture));
             Assert.AreEqual(row3[1].TheValue, "3");
             var row4 = entry.FetchRecordAt(4, out error);
-            Assert.AreEqual(row4[0].TheValue, "");
-            Assert.AreEqual(row4[1].TheValue, "2");
-            // adjust the alias mapping data ;)
-
-
+            DoNullVariableAssertion(row4[0]);
         }
 
         [TestMethod]
@@ -418,8 +414,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(row1[0].TheValue, new DateTime(2001, 01, 01).ToString(CultureInfo.InvariantCulture));
             Assert.AreEqual(row1[1].TheValue, "1");
             var row2 = entry.FetchRecordAt(2, out error);
-            Assert.AreEqual(row2[0].TheValue, "");
-            Assert.AreEqual(row2[1].TheValue, "");
+            DoNullVariableAssertion(row2[0]);
+            DoNullVariableAssertion(row2[1]);
             var row3 = entry.FetchRecordAt(3, out error);
             Assert.AreEqual(row3[0].TheValue, new DateTime(1999, 01, 01).ToString(CultureInfo.InvariantCulture));
             Assert.AreEqual(row3[1].TheValue, "3");
@@ -466,8 +462,10 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(row1[0].TheValue, "");
             Assert.AreEqual(row1[1].TheValue, "1");
             var row2 = entry.FetchRecordAt(2, out error);
-            Assert.AreEqual(row2[0].TheValue, "");
-            Assert.AreEqual(row2[1].TheValue, "");
+            var binaryDataListItem = row2[0];
+            DoNullVariableAssertion(binaryDataListItem);
+            binaryDataListItem = row2[1];
+            DoNullVariableAssertion(binaryDataListItem);
             var row3 = entry.FetchRecordAt(3, out error);
             Assert.AreEqual(row3[0].TheValue, "");
             Assert.AreEqual(row3[1].TheValue, "2");
@@ -476,6 +474,18 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(row4[1].TheValue, "3");
         }
 
+        static void DoNullVariableAssertion(IBinaryDataListItem binaryDataListItem)
+        {
+            try
+            {
+                var val = binaryDataListItem.TheValue;
+                Assert.IsNull(val);
+            }
+            catch(Exception e)
+            {
+                StringAssert.Contains(e.Message, string.Format("No Value assigned for: [[{0}]]", binaryDataListItem.DisplayValue));
+            }
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -512,8 +522,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(row1[0].TheValue, "a");
             Assert.AreEqual(row1[1].TheValue, "1");
             var row2 = entry.FetchRecordAt(2, out error);
-            Assert.AreEqual(row2[0].TheValue, "");
-            Assert.AreEqual(row2[1].TheValue, "");
+            DoNullVariableAssertion(row2[0]);
+            DoNullVariableAssertion(row2[1]);
             var row3 = entry.FetchRecordAt(3, out error);
             Assert.AreEqual(row3[0].TheValue, "sdsd");
             Assert.AreEqual(row3[1].TheValue, "2");
@@ -548,8 +558,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             dl0.TryGetEntry("recset", out entry, out error);
             entry.BlankRecordSetData("fx");
             var row1 = entry.FetchRecordAt(1, out error);
-            Assert.AreEqual(row1[0].TheValue, "");
-            Assert.AreEqual(row1[1].TheValue, "");
+            DoNullVariableAssertion(row1[0]);
+            DoNullVariableAssertion(row1[1]);
         }
 
 
@@ -579,8 +589,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             dl0.TryGetEntry("recset", out entry, out error);
 
             var row1 = entry.FetchRecordAt(1, out error);
-            Assert.AreEqual(row1[0].TheValue, "");
-            Assert.AreEqual(row1[1].TheValue, "");
+            DoNullVariableAssertion(row1[0]);
+            DoNullVariableAssertion(row1[1]);
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -627,8 +637,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual(row[0].TheValue, "");
             Assert.AreEqual(row[1].TheValue, "");
             row = entry.FetchRecordAt(4, out error);
-            Assert.AreEqual(row[0].TheValue, "");
-            Assert.AreEqual(row[1].TheValue, "");
+            DoNullVariableAssertion(row[0]);
+            DoNullVariableAssertion(row[1]);
             Assert.AreEqual(String.Empty, error);
 
         }

@@ -8,14 +8,12 @@ using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
-using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Data.DataListCache;
 using Dev2.Data.Enums;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
-using Dev2.Diagnostics;
 using Dev2.DynamicServices.Test;
 using Dev2.Server.DataList;
 using Dev2.Server.DataList.Translators;
@@ -854,7 +852,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
         }
 
-        // Travis.Frisinger -  Bug 8608
         [TestMethod]
         public void Evaluate_UserRecordsetLastIndex_Expect_Value()
         {
@@ -872,7 +869,6 @@ namespace Dev2.Data.Tests.BinaryDataList
 
         }
 
-        // Travis.Frisinger - Bug 8608
         [TestMethod]
         public void Evaluate_UserRecordsetWithEvaluatedIndex_Expect_Value()
         {
@@ -1031,7 +1027,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
             string error;
 
-            string myDate = _sdlc.ConvertFrom(null, dlID, DataList.Contract.enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._XML), out errors).FetchAsString();
+            var dataListTranslatedPayloadTo = _sdlc.ConvertFrom(null, dlID, DataList.Contract.enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._XML), out errors);
+            string myDate = dataListTranslatedPayloadTo.FetchAsString();
 
             if(myDate != string.Empty)
             {
@@ -1554,11 +1551,17 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             // Check scalar value
             bdl.TryGetEntry("result", out tmp, out error);
-
-            var res = tmp.FetchScalar().TheValue;
-
-            Assert.AreEqual("", res);
-
+            try
+            {
+#pragma warning disable 168
+                var value = tmp.FetchScalar().TheValue;
+#pragma warning restore 168
+                Assert.Fail("Exception not thrown");
+            }
+            catch(Exception e)
+            {
+                StringAssert.Contains(e.Message, "No Value assigned for: [[result]]");
+            }
         }
 
         [TestMethod]
@@ -2820,6 +2823,87 @@ namespace Dev2.Data.Tests.BinaryDataList
             Assert.AreEqual("=87*87", auditSteps[0].BoundValue);
             Assert.AreEqual("=[[va]]*[[va]]", auditSteps[0].Expression);
             Assert.AreEqual("=[[va]]*[[va]]", auditSteps[0].RawExpression);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenNullValueScalarUpserted()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2><va/></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[va]]", null);
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, result);
+            IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, result, out errors);
+
+            IBinaryDataListEntry tmp;
+            // Check scalar value
+            string error;
+            bdl.TryGetEntry("va", out tmp, out error);
+
+            try
+            {
+#pragma warning disable 168
+                var value = tmp.FetchScalar().TheValue;
+#pragma warning restore 168
+                Assert.Fail("Exception not thrown");
+            }
+            catch(Exception e)
+            {
+                StringAssert.Contains(e.Message, "No Value assigned for: [[va]]");
+            }
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerDataListCompiler_UpsertWithDebug")]
+        public void ServerDataListCompiler_UpsertWithDebug_WhenNullValueRecsetIndexUpserted()
+        {
+            //------------Setup for test--------------------------
+            ErrorResultTO errors;
+            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2><va/></DataList>";
+            const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
+
+            byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+
+            var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
+            payload.IsDebug = true;
+            payload.Add("[[rec(1).a]]", null);
+            //------------Execute Test---------------------------
+            Guid result = _sdlc.Upsert(null, dlID, payload, out errors);
+            //------------Assert---------------------------------
+            Assert.AreNotEqual(Guid.Empty, result);
+            IBinaryDataList bdl = _sdlc.FetchBinaryDataList(null, result, out errors);
+
+            IBinaryDataListEntry tmp;
+            // Check scalar value
+            string error;
+            bdl.TryGetEntry("rec", out tmp, out error);
+
+            try
+            {
+#pragma warning disable 168
+                var row1 = tmp.FetchRecordAt(1, out error);
+                var value = row1[0].TheValue;
+#pragma warning restore 168
+                Assert.Fail("Exception not thrown");
+            }
+            catch(Exception e)
+            {
+                StringAssert.Contains(e.Message, "No Value assigned for: [[rec(1).a]]");
+            }
         }
 
         [TestMethod]

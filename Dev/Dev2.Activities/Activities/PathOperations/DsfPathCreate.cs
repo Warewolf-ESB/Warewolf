@@ -69,7 +69,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             while(colItr.HasMoreData())
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                Dev2CRUDOperationTO opTO = new Dev2CRUDOperationTO(Overwrite);
+                Dev2CRUDOperationTO opTo = new Dev2CRUDOperationTO(Overwrite);
 
                 try
                 {
@@ -79,12 +79,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                                                                 true);
 
                     IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-                    string result = broker.Create(dstEndPoint, opTO, true);
+                    string result = broker.Create(dstEndPoint, opTo, true);
                     outputs.Add(DataListFactory.CreateOutputTO(Result, result));
                 }
                 catch(Exception e)
                 {
-                    outputs.Add(DataListFactory.CreateOutputTO(Result, "Failure"));
+                    outputs.Add(DataListFactory.CreateOutputTO(Result, (string)null));
                     allErrors.AddError(e.Message);
                 }
             }

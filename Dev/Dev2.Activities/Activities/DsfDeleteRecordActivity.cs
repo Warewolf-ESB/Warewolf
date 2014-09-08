@@ -53,8 +53,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugOutputs = new List<DebugItem>();
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid executionID = dataObject.DataListID;
-            
+            Guid executionId = dataObject.DataListID;
+
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
 
@@ -67,7 +67,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(!allErrors.HasErrors())
                 {
                     var tmpRecsetIndex = DataListUtil.ExtractIndexRegionFromRecordset(RecordsetName);
-                    IBinaryDataListEntry indexEntry = compiler.Evaluate(executionID, enActionType.User, tmpRecsetIndex, false, out errors);
+                    IBinaryDataListEntry indexEntry = compiler.Evaluate(executionId, enActionType.User, tmpRecsetIndex, false, out errors);
 
                     IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(indexEntry);
                     IDev2IteratorCollection collection = Dev2ValueObjectFactory.CreateIteratorCollection();
@@ -78,22 +78,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var evaluatedRecordset = RecordsetName.Remove(RecordsetName.IndexOf("(", StringComparison.Ordinal) + 1) + collection.FetchNextRow(itr).TheValue + ")]]";
                         if(dataObject.IsDebugMode())
                         {
-                            IBinaryDataListEntry tmpentry = compiler.Evaluate(executionID, enActionType.User, evaluatedRecordset, false, out errors);
-                            AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Records", tmpentry, executionID));
+                            IBinaryDataListEntry tmpentry = compiler.Evaluate(executionId, enActionType.User, evaluatedRecordset, false, out errors);
+                            AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Records", tmpentry, executionId));
                         }
 
-                        IBinaryDataListEntry entry = compiler.Evaluate(executionID, enActionType.Internal, evaluatedRecordset, false, out errors);
+                        IBinaryDataListEntry entry = compiler.Evaluate(executionId, enActionType.Internal, evaluatedRecordset, false, out errors);
 
                         allErrors.MergeErrors(errors);
-                        compiler.Upsert(executionID, Result, entry.FetchScalar().TheValue, out errors);
+                        compiler.Upsert(executionId, Result, entry.FetchScalar().TheValue, out errors);
 
                         if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                         {
-                            AddDebugOutputItem(new DebugItemVariableParams(Result, "", entry, executionID));
+                            AddDebugOutputItem(new DebugItemVariableParams(Result, "", entry, executionId));
                         }
                         allErrors.MergeErrors(errors);
                     }
                 }
+            }
+            catch(Exception e)
+            {
+                allErrors.AddError(e.Message);
             }
             finally
             {
@@ -101,16 +105,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
                 {
-                    compiler.Upsert(executionID, Result, "Failure", out errors);
                     DisplayAndWriteError("DsfDeleteRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(executionId, Result, (string)null, out errors);
                 }
 
                 if(dataObject.IsDebugMode())
                 {
                     if(hasErrors)
                     {
-                        AddDebugOutputItem(new DebugItemStaticDataParams("Failure", Result, ""));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);

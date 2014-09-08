@@ -57,7 +57,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
-            Guid executionID = DataListExecutionID.Get(context);
+            Guid executionId = DataListExecutionID.Get(context);
 
             InitializeDebug(dataObject);
 
@@ -72,19 +72,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 // Travis.Frisinger : New Stuff....
                 if(!string.IsNullOrEmpty(rawRecsetName))
                 {
-                    IBinaryDataList bdl = compiler.FetchBinaryDataList(executionID, out errors);
+                    IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
                     IBinaryDataListEntry rsData;
                     string error;
                     bdl.TryGetEntry(rawRecsetName, out rsData, out error);
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(SortField, "Sort Field", rsData, executionID);
+                        AddDebugInputItem(SortField, "Sort Field", rsData, executionId);
                     }
 
                     allErrors.AddError(error);
                     IsSingleRecordSetRule rule = new IsSingleRecordSetRule(() => SortField);
                     var single = rule.Check();
-                    if(single!= null)
+                    if(single != null)
                         allErrors.AddError(single.Message);
 
                     // Check for fields
@@ -94,7 +94,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         errors.AddError(error);
 
                         // Push back against the datalist
-                        compiler.PushBinaryDataList(executionID, bdl, out errors);
+                        compiler.PushBinaryDataList(executionId, bdl, out errors);
                         allErrors.MergeErrors(errors);
                         if(dataObject.IsDebugMode())
                         {
@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             {
                                 tmpExpression = tmpExpression.Replace("().", "(*).");
                             }
-                            AddDebugOutputItem(new DebugItemVariableParams(tmpExpression, "", rsData, executionID));
+                            AddDebugOutputItem(new DebugItemVariableParams(tmpExpression, "", rsData, executionId));
                         }
                     }
                 }

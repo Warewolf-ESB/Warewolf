@@ -337,7 +337,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actual);
         }
 
-        // Bug 8467 - Travis.Frisinger
         [TestMethod]
         public void CalculateActivity_MultRecordsetWithStar_Expected_SumOf20()
         {
@@ -347,7 +346,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             CurrentDl = "<ADL><rec><val></val><val2/></rec><sumResult></sumResult></ADL>";
-            TestData = "<root><ADL><rec><val>1</val><val2>10</val2></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
+            TestData = "<root><ADL><rec><val>1</val><val2>10</val2></rec><rec><val>2</val><val2>0</val2></rec><rec><val>3</val><val2>0</val2></rec><rec><val>4</val><val2>0</val2></rec></ADL></root>";
             IDSFDataObject result = ExecuteProcess();
             const string expected = "20";
             string error;
@@ -359,6 +358,32 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void CalculateActivity_MultRecordsetWithStar_WhenMissingValuesError_Expected_SumOf20()
+        {
+            TestStartNode = new FlowStep
+            {
+                Action = new DsfCalculateActivity { Expression = "sum([[rec(*).val]],[[rec(*).val2]])", Result = "[[sumResult]]" }
+            };
+
+            CurrentDl = "<ADL><rec><val></val><val2/></rec><sumResult></sumResult></ADL>";
+            TestData = "<root><ADL><rec><val>1</val><val2>10</val2></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
+            IDSFDataObject result = ExecuteProcess();
+
+            try
+            {
+                string error;
+                string actual;
+                GetScalarValueFromDataList(result.DataListID, "sumResult", out actual, out error);
+            }
+            catch(Exception e)
+            {
+                StringAssert.Contains(e.Message, "No Value assigned for: [[sumResult]]");
+            }
+
+            DataListRemoval(result.DataListID);
         }
 
         [TestMethod]

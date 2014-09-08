@@ -61,13 +61,13 @@ Scenario: Write file with carriage returns
 	Then the output contents from a file 'outfile1WithCarriageReturn.txt'
 	And the execution has "NO" error
 
-Scenario: Write file when contents has varuiables that cannot be evealuated
+Scenario: Write file when contents has variables that cannot be evealuated
 	Given I have a source path '[[path]]' with value 'c:\filetowrite1.txt' 	
 	And source credentials as '' and ''	
 	And Method is 'Overwrite'
 	And the input contents from a file 'filewithvariables.txt'     
 	And result as '[[res]]'
 	When the write file tool is executed	
-	Then the result variable '[[res]]' will be 'Failure'
+	Then the result variable '[[res]]' will be ''
 	And the execution has "AN" error
 	

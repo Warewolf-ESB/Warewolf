@@ -224,7 +224,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string Expected = @"Failure";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
@@ -233,7 +232,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(null, actual);
             Assert.AreEqual(6, recsetData.Count);
 
         }
@@ -265,7 +264,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[res]]", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string Expected = @"Failure";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
@@ -273,7 +271,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(null, actual);
             Assert.AreEqual(6, recsetData.Count);
 
         }
@@ -284,7 +282,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1(8)]]", "[[res]]");
 
             IDSFDataObject result = ExecuteProcess();
-            const string Expected = @"Failure";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
@@ -292,11 +289,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(null, actual);
             Assert.AreEqual(6, recsetData.Count);
 
         }
-        
+
         [TestMethod]
         public void DeleteRecord_When_Index_Is_Negative_Expected_No_Change_Failure()
         {
@@ -304,14 +301,13 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             string actual;
-            const string Expected = @"Failure";
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
             List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(null, actual);
             Assert.AreEqual(6, recsetData.Count);
 
         }
@@ -323,7 +319,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             string actual;
-            const string Expected = @"Failure";
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
             List<string> recsetData = RetrieveAllRecordSetFieldValues(result.DataListID, "recset1", "field1", out error);
@@ -331,7 +326,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(null, actual);
             Assert.AreEqual(6, recsetData.Count);
 
         }
@@ -406,7 +401,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         #endregion
-        
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -539,13 +534,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
             //------------Assert Results-------------------------
-            const string Expected = @"Failure";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(null, actual);
         }
 
         [TestMethod]
@@ -558,13 +552,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
             //------------Assert Results-------------------------
-            const string Expected = @"Failure";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(null, actual);
         }
 
         [TestMethod]
@@ -577,13 +570,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
             //------------Assert Results-------------------------
-            const string Expected = @"Failure";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(null, actual);
         }
 
         [TestMethod]
@@ -596,13 +588,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
             //------------Assert Results-------------------------
-            const string Expected = @"Failure";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(null, actual);
         }
 
         [TestMethod]
@@ -615,13 +606,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Execute Test---------------------------
             IDSFDataObject result = ExecuteProcess();
             //------------Assert Results-------------------------
-            const string Expected = @"Failure";
             string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
-            Assert.AreEqual(Expected, actual);
+            Assert.AreEqual(null, actual);
         }
         #endregion
     }

@@ -112,12 +112,22 @@ namespace Dev2.Tests
 
             //------------Assert Results-------------------------
 
-            var value = res.TheValue;
-
-            Assert.AreEqual(string.Empty, value);
+            DoNullVariableAssertion(res);
 
         }
 
+        static void DoNullVariableAssertion(IBinaryDataListItem binaryDataListItem)
+        {
+            try
+            {
+                var val = binaryDataListItem.TheValue;
+                Assert.IsNull(val);
+            }
+            catch(Exception e)
+            {
+                StringAssert.Contains(e.Message, string.Format("No Value assigned for: [[{0}]]", binaryDataListItem.DisplayValue));
+            }
+        }
         // Created by Michael for Bug 8597
         [TestMethod]
         public void HasErrors_Passed_Empty_GUID_Expected_No_NullReferenceException()

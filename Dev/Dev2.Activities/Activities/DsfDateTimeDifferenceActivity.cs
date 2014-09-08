@@ -117,7 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 toUpsert.IsDebug = dataObject.IsDebugMode();
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
                 var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
-                if (!string.IsNullOrEmpty(datalist))
+                if(!string.IsNullOrEmpty(datalist))
                 {
                     ValidateInput(datalist, allErrors, Input1);
                     ValidateInput(datalist, allErrors, Input2);
@@ -137,7 +137,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2DataListEvaluateIterator ifItr = Dev2ValueObjectFactory.CreateEvaluateIterator(inputFormatEntry);
                 colItr.AddIterator(ifItr);
 
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, "Input 1", input1Entry, executionId);
                     AddDebugInputItem(string.IsNullOrEmpty(Input2) ? GlobalConstants.CalcExpressionNow : Input2, "Input 2", input2Entry, executionId);
@@ -147,9 +147,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 int indexToUpsertTo = 1;
 
-                while (colItr.HasMoreData())
+                while(colItr.HasMoreData())
                 {
-                    IDateTimeDiffTO transObj = ConvertToDateTimeDiffTO(colItr.FetchNextRow(input1Itr).TheValue,
+                    IDateTimeDiffTO transObj = ConvertToDateTimeDiffTo(colItr.FetchNextRow(input1Itr).TheValue,
                                                                        colItr.FetchNextRow(input2Itr).TheValue,
                                                                        colItr.FetchNextRow(ifItr).TheValue,
                                                                        OutputType);
@@ -158,10 +158,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     //Call the TryComparer method on the DateTimeComparer and pass it the IDateTimeDiffTO created from the ConvertToDateTimeDiffTO Method                
                     string result;
                     string error;
-                    if (comparer.TryCompare(transObj, out result, out error))
+                    if(comparer.TryCompare(transObj, out result, out error))
                     {
                         string expression;
-                        if (DataListUtil.IsValueRecordset(Result) &&
+                        if(DataListUtil.IsValueRecordset(Result) &&
                             DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
                             expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
@@ -174,15 +174,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         var rule = new IsSingleValueRule(() => Result);
                         var single = rule.Check();
-                        if (single != null)
+                        if(single != null)
                         {
                             allErrors.AddError(single.Message);
                         }
                         else
                         {
-         
-                                toUpsert.Add(expression, result);
-                            
+
+                            toUpsert.Add(expression, result);
+
                         }
                     }
                     else
@@ -195,15 +195,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
-                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    foreach (var debugOutputTo in toUpsert.DebugOutputs)
+                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
                     {
                         AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                     }
                 }
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Log.Error("DSFDateTime", e);
                 allErrors.AddError(e.Message);
@@ -212,12 +212,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 // Handle Errors
-                if (allErrors.HasErrors())
+                if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfDateTimeDifferenceActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(executionId, Result, (string)null, out errors);
                 }
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
                     DispatchDebugState(context, StateType.Before);
                     DispatchDebugState(context, StateType.After);
@@ -225,7 +226,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void ValidateInput(string datalist, ErrorResultTO allErrors,string input)
+        void ValidateInput(string datalist, ErrorResultTO allErrors, string input)
         {
 
             var splitIntoRegions = DataListCleaningUtils.FindAllLanguagePieces(input);
@@ -237,7 +238,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     LabelText = "Input1"
                 };
                 var errValid = isValidExpr.Check();
-                if (errValid != null)
+                if(errValid != null)
                 {
                     var validationError = new ErrorResultTO();
                     validationError.AddError(errValid.Message);
@@ -270,7 +271,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="evaledInputFormat">The evaled input format.</param>
         /// <param name="outputType">Type of the output.</param>
         /// <returns></returns>
-        private static IDateTimeDiffTO ConvertToDateTimeDiffTO(string input1, string input2, string evaledInputFormat, string outputType)
+        private static IDateTimeDiffTO ConvertToDateTimeDiffTo(string input1, string input2, string evaledInputFormat, string outputType)
         {
             return DateTimeConverterFactory.CreateDateTimeDiffTO(input1, input2, evaledInputFormat, outputType);
         }

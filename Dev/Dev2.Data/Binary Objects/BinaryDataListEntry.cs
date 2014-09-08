@@ -203,7 +203,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
         /// </summary>
         public void AdjustAliasOperationForExternalServicePopulate()
         {
-            if (!_internalObj.IsEmtpy && FetchAlias().Count > 0 && _internalObj.IsRecordset && _internalObj.Keys.Count == 1)
+            if(!_internalObj.IsEmtpy && FetchAlias().Count > 0 && _internalObj.IsRecordset && _internalObj.Keys.Count == 1)
             {
                 _internalObj.IsEmtpy = true;
             }
@@ -463,7 +463,6 @@ namespace Dev2.DataList.Contract.Binary_Objects
                                 clone.Add(itm.Clone());
                             }
                         }
-
                         // now push back clone
                         result._internalObj[next] = clone;
                     }
@@ -754,18 +753,18 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public bool HasColumns(IList<Dev2Column> cols) // why refernce equals??
         {
-            if (null == cols)
+            if(null == cols)
                 return false;
             bool result = true;
-            if (IsRecordset && Columns != null)
+            if(IsRecordset && Columns != null)
             {
 
                 IList<Dev2Column> myCols = Columns;
                 int i = 0;
 
-                while (i < cols.Count && result)
+                while(i < cols.Count && result)
                 {
-                    if (!myCols.Contains(cols[i]))
+                    if(!myCols.Contains(cols[i]))
                     {
                         result = false;
                     }
@@ -810,7 +809,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
                 // Int
                 try
                 {
-                    sortedData = GenericSort(toSort, colIdx, desc,GetIntSortValue);
+                    sortedData = GenericSort(toSort, colIdx, desc, GetIntSortValue);
                 }
                 catch(Exception)
                 {
@@ -819,21 +818,21 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     {
                         sortedData = GenericSort(toSort, colIdx, desc, GetFloatSortValue);
                     }
-                    catch (Exception)
+                    catch(Exception)
                     {
                         // DateTime
                         try
                         {
                             sortedData = GenericSort(toSort, colIdx, desc, GetDateTimeSortValue);
                         }
-                        catch (Exception)
+                        catch(Exception)
                         {
                             // String
                             try
                             {
                                 sortedData = GenericSort(toSort, colIdx, desc, GetStringSortValue);
                             }
-                            catch (Exception ex)
+                            catch(Exception ex)
                             {
                                 // Very naughty thing have happened....
                                 error = "Invalid format for sorting on field [ " + field + " ] ";
@@ -1035,11 +1034,11 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
 
 
-     public  static  IDictionary<int, IList<IBinaryDataListItem>> GenericSort<T>(IDictionary<int, IList<IBinaryDataListItem>> toSort, int colIdx, bool desc,Func<int , KeyValuePair<int, IList<IBinaryDataListItem>>,T> getValue )
+        public static IDictionary<int, IList<IBinaryDataListItem>> GenericSort<T>(IDictionary<int, IList<IBinaryDataListItem>> toSort, int colIdx, bool desc, Func<int, KeyValuePair<int, IList<IBinaryDataListItem>>, T> getValue)
         {
             IDictionary toSwap = new Dictionary<int, IList<IBinaryDataListItem>>();
 
-            if (!desc)
+            if(!desc)
             {
                 var data = toSort.OrderBy(x => getValue(colIdx, x)).ToList();
                 UpdateToSort(data, toSwap, toSort);
@@ -1048,13 +1047,13 @@ namespace Dev2.DataList.Contract.Binary_Objects
             {
                 var data = toSort.OrderByDescending(x => getValue(colIdx, x)).ToList();
  
-                UpdateToSort(data, toSwap,toSort);
+                UpdateToSort(data, toSwap, toSort);
             }
 
             toSort.Clear();
 
             // make the swap
-            foreach (int k in toSwap.Keys)
+            foreach(int k in toSwap.Keys)
             {
                 toSort[k] = (IList<IBinaryDataListItem>)toSwap[k];
             }
@@ -1068,7 +1067,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             int idx = 1;
             foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
             {
-                while (!toSort.Keys.Contains(idx))
+                while(!toSort.Keys.Contains(idx))
                     idx++;
                 toSwap[idx] = tmp.Value;
                 idx++;
@@ -1078,7 +1077,17 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public static long GetIntSortValue(int colIdx, KeyValuePair<int, IList<IBinaryDataListItem>> x)
         {
             long val;
-            string tmpVal = x.Value[colIdx].TheValue;
+            string tmpVal = string.Empty;
+            try
+            {
+                tmpVal = x.Value[colIdx].TheValue;
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+                //There is no value so must be a gap
+            }
             if(string.IsNullOrWhiteSpace(tmpVal))
             {
                 val = long.MinValue;
@@ -1095,14 +1104,24 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public static float GetFloatSortValue(int colIdx, KeyValuePair<int, IList<IBinaryDataListItem>> x)
         {
             float val;
-            string tmpVal = x.Value[colIdx].TheValue;
-            if (string.IsNullOrWhiteSpace(tmpVal))
+            string tmpVal = string.Empty;
+            try
+            {
+                tmpVal = x.Value[colIdx].TheValue;
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+                //There is no value so must be a gap
+            }
+            if(string.IsNullOrWhiteSpace(tmpVal))
             {
                 val = float.NegativeInfinity;
             }
             else
             {
-                if (!float.TryParse(tmpVal, out val))
+                if(!float.TryParse(tmpVal, out val))
                 {
                     throw new Exception();
                 }
@@ -1113,7 +1132,17 @@ namespace Dev2.DataList.Contract.Binary_Objects
         public static DateTime GetDateTimeSortValue(int colIdx, KeyValuePair<int, IList<IBinaryDataListItem>> x)
         {
             DateTime val;
-            string tmpVal = x.Value[colIdx].TheValue;
+            string tmpVal = string.Empty;
+            try
+            {
+                tmpVal = x.Value[colIdx].TheValue;
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+                //There is no value so must be a gap
+            }
             if(string.IsNullOrWhiteSpace(tmpVal))
             {
                 val = DateTime.MinValue;
@@ -1128,11 +1157,21 @@ namespace Dev2.DataList.Contract.Binary_Objects
             return val;
         }
 
-       public  static string GetStringSortValue(int colIdx, KeyValuePair<int, IList<IBinaryDataListItem>> x)
+        public static string GetStringSortValue(int colIdx, KeyValuePair<int, IList<IBinaryDataListItem>> x)
         {
-            string val = x.Value[colIdx].TheValue;
+            string tmpVal = string.Empty;
+            try
+            {
+                tmpVal = x.Value[colIdx].TheValue;
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
+            // ReSharper restore EmptyGeneralCatchClause
+        {
+                //There is no value so must be a gap
+            }
 
-            return val;
+            return tmpVal;
         }
 
         /// <summary>

@@ -28,13 +28,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify
     {
         // Travis.Frisinger - 01.02.2013 : Bug 8579
-        bool _isStandardUpsert = true;
 
         internal string DefferedReadFileContents = string.Empty;
         private string _username;
         private string _password;
 
-        public DsfAbstractFileActivity(string displayName)
+        protected DsfAbstractFileActivity(string displayName)
             : base(displayName)
         {
             Username = string.Empty;
@@ -47,11 +46,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
-            IList<OutputTO> outputs;
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            Guid dlID = dataObject.DataListID;
+            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
 
@@ -71,7 +69,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     //Execute the concrete action for the specified activity
-                    outputs = ExecuteConcreteAction(context, out errors);
+                    IList<OutputTO> outputs = ExecuteConcreteAction(context, out errors);
                     allErrors.MergeErrors(errors);
 
                     if(outputs.Count > 0)
@@ -88,57 +86,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     }
                                     else
                                     {
-                                        if(_isStandardUpsert)
+                                        //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+                                        foreach(var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
                                         {
-                                            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
-                                            {
 
-                                                toUpsert.Add(region, value);
-                                            }
+                                            toUpsert.Add(region, value);
                                         }
                                     }
 
                                 }
 
-                                if(_isStandardUpsert)
-                                {
-                                    toUpsert.FlushIterationFrame();
-                                }
-                                else
-                                {
-                                    // deferred read ;)
-                                    toUpsertDeferred.FlushIterationFrame();
-                                }
+                                toUpsert.FlushIterationFrame();
                             }
                         }
 
-                        if(_isStandardUpsert)
-                        {
-                            compiler.Upsert(dlID, toUpsert, out errors);
-                        }
-                        else
-                        {
-                            // deferred read ;)
-                            compiler.Upsert(dlID, toUpsertDeferred, out errors);
-                        }
+                        compiler.Upsert(dlId, toUpsert, out errors);
                         if(dataObject.IsDebugMode())
                         {
                             if(!String.IsNullOrEmpty(Result))
                             {
-                                if(_isStandardUpsert)
+                                foreach(var debugOutputTo in toUpsert.DebugOutputs)
                                 {
-                                    foreach(var debugOutputTO in toUpsert.DebugOutputs)
-                                    {
-                                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
-                                    }
-                                }
-                                else
-                                {
-                                    foreach(var debugOutputTO in toUpsertDeferred.DebugOutputs)
-                                    {
-                                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
-                                    }
+                                    AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                                 }
                             }
                         }
@@ -231,7 +200,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get;
             set;
         }
-  
+
 
         #endregion Properties
 

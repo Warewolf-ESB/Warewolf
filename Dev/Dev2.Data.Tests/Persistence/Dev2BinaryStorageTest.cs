@@ -5,6 +5,8 @@ using Dev2.Data.Storage;
 using Dev2.Data.Storage.ProtocolBuffers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
+
 namespace Dev2.Data.Tests.Persistence
 {
     /// <summary>
@@ -66,7 +68,59 @@ namespace Dev2.Data.Tests.Persistence
             row2.ToObject(bytes);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual("col1",row2.FetchValue(0, 5));
+            Assert.AreEqual("col1", row2.FetchValue(0, 5));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("binaryDataListRow_ProtoBuff")]
+        public void BinaryDataListRow_ProtoBuffDeserialize_NormalDeserialization_WithNullValue_AllDataHydrated()
+        {
+
+            //------------Setup for test--------------------------
+
+            BinaryDataListRow row1 = new BinaryDataListRow(5);
+            row1.UpdateValue("col1", 0, 5);
+            row1.UpdateValue("col2", 1, 5);
+            row1.UpdateValue(null, 2, 5);
+            row1.UpdateValue("col4", 3, 5);
+            row1.UpdateValue("col5", 4, 5);
+
+            //------------Execute Test---------------------------
+            var bytes = row1.ToByteArray();
+
+            BinaryDataListRow row2 = new BinaryDataListRow(5);
+            row2.ToObject(bytes);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(null, row2.FetchValue(2, 5));
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("binaryDataListRow_ProtoBuff")]
+        public void BinaryDataListRow_ProtoBuffDeserialize_NormalDeserialization_WithEmptyString_AllDataHydrated()
+        {
+
+            //------------Setup for test--------------------------
+
+            BinaryDataListRow row1 = new BinaryDataListRow(5);
+            row1.UpdateValue("col1", 0, 5);
+            row1.UpdateValue("col2", 1, 5);
+            row1.UpdateValue("", 2, 5);
+            row1.UpdateValue("col4", 3, 5);
+            row1.UpdateValue("col5", 4, 5);
+
+            //------------Execute Test---------------------------
+            var bytes = row1.ToByteArray();
+
+            BinaryDataListRow row2 = new BinaryDataListRow(5);
+            row2.ToObject(bytes);
+
+            //------------Assert Results-------------------------
+            var fetchValue = row2.FetchValue(2, 5);
+            Assert.AreEqual("", fetchValue);
+            Assert.IsNotNull(fetchValue);
         }
 
         #endregion
@@ -76,7 +130,7 @@ namespace Dev2.Data.Tests.Persistence
         [TestMethod]
         public void CanAddToFileExpectAddedEntry()
         {
-            Dev2BinaryStorage<BinaryDataListRow> dic = new Dev2BinaryStorage<BinaryDataListRow>(Guid.NewGuid().ToString(),1024);
+            Dev2BinaryStorage<BinaryDataListRow> dic = new Dev2BinaryStorage<BinaryDataListRow>(Guid.NewGuid().ToString(), 1024);
 
             BinaryDataListRow row = new BinaryDataListRow(5);
             row.UpdateValue("col1", 0, 5);
@@ -244,7 +298,7 @@ namespace Dev2.Data.Tests.Persistence
             Assert.AreEqual("col4", fetchedRow3.FetchValue(3, 5));
             Assert.AreEqual("col5", fetchedRow3.FetchValue(4, 5));
 
-   
+
         }
 
         [TestMethod]
@@ -294,13 +348,13 @@ namespace Dev2.Data.Tests.Persistence
             //------------Setup for test--------------------------
             Dev2BinaryStorage<BinaryDataListRow> dic = new Dev2BinaryStorage<BinaryDataListRow>(Guid.NewGuid().ToString(), 4194304); // 4MB buffer ;)
 
-            int cnt = 50000;
+            const int cnt = 50000;
 
             IList<BinaryDataListRow> rows = new List<BinaryDataListRow>(cnt);
             IList<string> keys = new List<string>();
 
 
-            for (int i = 0; i < cnt; i++)
+            for(int i = 0; i < cnt; i++)
             {
                 BinaryDataListRow row = new BinaryDataListRow(5);
                 row.UpdateValue("col1" + Guid.NewGuid() + " " + Guid.NewGuid() + " " + Guid.NewGuid() + " " + Guid.NewGuid(), 0, 5);
@@ -316,12 +370,12 @@ namespace Dev2.Data.Tests.Persistence
             //------------Execute Test---------------------------
 
             // add rows
-            for (int i = 0; i < cnt; i++)
+            for(int i = 0; i < cnt; i++)
             {
                 dic[keys[i]] = rows[i];
 
                 // fake removals ;)
-                if ((i + 1)%100 == 0)
+                if((i + 1) % 100 == 0)
                 {
                     dic.Remove(keys[i]);
                 }
@@ -333,10 +387,10 @@ namespace Dev2.Data.Tests.Persistence
                 //}
             }
 
-            
+
             // check first and 2nd to last row, since last was removed ;)
             BinaryDataListRow fetchedRow1 = dic[keys[0]];
-            BinaryDataListRow fetchedRow2 = dic[keys[cnt-2]];
+            BinaryDataListRow fetchedRow2 = dic[keys[cnt - 2]];
 
             //------------Assert Results-------------------------
             Assert.AreEqual("col2", fetchedRow1.FetchValue(1, 5));
@@ -354,15 +408,13 @@ namespace Dev2.Data.Tests.Persistence
         {
 
             //------------Setup for test--------------------------
-            Dev2BinaryStorage<BinaryDataListRow> dic = new Dev2BinaryStorage<BinaryDataListRow>(Guid.NewGuid().ToString(), 4194304); // 4MB buffer ;)
 
-            int cnt = 10000;
+            const int cnt = 10000;
 
             IList<BinaryDataListRow> rows = new List<BinaryDataListRow>(cnt);
             IList<string> keys = new List<string>();
 
             List<Guid> theList = new List<Guid>();
-            List<int> itemCount = new List<int>();
 
             for(int i = 0; i < cnt; i++)
             {
@@ -375,7 +427,7 @@ namespace Dev2.Data.Tests.Persistence
 
                 rows.Add(row);
                 Guid key = Guid.NewGuid();
-                keys.Add(key.ToString());                
+                keys.Add(key.ToString());
                 theList.Add(key);
             }
 

@@ -78,7 +78,14 @@ namespace Dev2.Data.Translators
                                 result.Append("<");
                                 result.Append(fName);
                                 result.Append(">");
-                                result.Append(tu.FullCleanForEmit(col.TheValue));
+                                try
+                                {
+                                    result.Append(tu.FullCleanForEmit(col.TheValue));
+                                }
+                                catch(Exception e)
+                                {
+                                    Dev2Logger.Log.Error(e);
+                                }
                                 result.Append("</");
                                 result.Append(fName);
                                 result.Append(">");
@@ -99,7 +106,14 @@ namespace Dev2.Data.Translators
                             result.Append("<");
                             result.Append(fName);
                             result.Append(">");
-                            result.Append(tu.FullCleanForEmit(val.TheValue));
+                            try
+                            {
+                                result.Append(tu.FullCleanForEmit(val.TheValue));
+                            }
+                            catch(Exception e)
+                            {
+                                Dev2Logger.Log.Error(e);
+                            }
                             result.Append("</");
                             result.Append(fName);
                             result.Append(">");
@@ -193,15 +207,7 @@ namespace Dev2.Data.Translators
                                             {
                                                 // fetch recordset index
                                                 int fetchIdx;
-                                                int idx; // recset index
-                                                if(indexCache.TryGetValue(c.Name, out fetchIdx))
-                                                {
-                                                    idx = fetchIdx;
-                                                }
-                                                else
-                                                {
-                                                    idx = 1; //re-set idx on cache miss ;)
-                                                }
+                                                int idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
                                                 // process recordset
                                                 XmlNodeList nl = c.ChildNodes;
                                                 foreach(XmlNode subc in nl)
@@ -307,13 +313,13 @@ namespace Dev2.Data.Translators
                 entry.AdjustAliasOperationForExternalServicePopulate();
             }
 
-            var parentID = parentDataList.UID;
+            var parentId = parentDataList.UID;
             if(grandparentDl != null)
             {
-                parentID = grandparentDl.UID;
+                parentId = grandparentDl.UID;
             }
 
-            compiler.SetParentID(targetDl, parentID);
+            compiler.SetParentID(targetDl, parentId);
             Guid result = compiler.Shape(targetDl, enDev2ArgumentType.Output, outputDefinitions, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
@@ -378,7 +384,14 @@ namespace Dev2.Data.Translators
                                     result.Append("<");
                                     result.Append(fName);
                                     result.Append(">");
-                                    result.Append(tu.FullCleanForEmit(col.TheValue));
+                                    try
+                                    {
+                                        result.Append(tu.FullCleanForEmit(col.TheValue));
+                                    }
+                                    catch(Exception e)
+                                    {
+                                        Dev2Logger.Log.Error(e);
+                                    }
                                     result.Append("</");
                                     result.Append(fName);
                                     result.Append(">");
@@ -400,14 +413,7 @@ namespace Dev2.Data.Translators
                             result.Append("<");
                             result.Append(fName);
                             result.Append(">");
-                            if(entry.Namespace != GlobalConstants.ManagementServicePayload)
-                            {
-                                result.Append(tu.FullCleanForEmit(val.TheValue));
-                            }
-                            else
-                            {
-                                result.Append(val.TheValue);
-                            }
+                            result.Append(entry.Namespace != GlobalConstants.ManagementServicePayload ? tu.FullCleanForEmit(val.TheValue) : val.TheValue);
                             result.Append("</");
                             result.Append(fName);
                             result.Append(">");

@@ -1,6 +1,5 @@
 ﻿using ActivityUnitTests;
 using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
@@ -18,45 +17,13 @@ namespace Dev2.Tests.Activities.ActivityTests
     [ExcludeFromCodeCoverage]
     public class FindRecordsMultipleCriteriaActivityTest : BaseActivityUnitTest
     {
-        TestContext testContextInstance;
-
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        public TestContext TestContext
-        {
-            get
-            {
-                return testContextInstance;
-            }
-            set
-            {
-                testContextInstance = value;
-            }
-        }
+        public TestContext TestContext { get; set; }
 
         #region Additional test attributes
-
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
 
         #endregion
 
@@ -75,7 +42,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
-            var data = @"<ADL>
+            const string data = @"<ADL>
   <Recset>
 	<Field1>Mr A</Field1>
 	<Field2>25</Field2>
@@ -149,7 +116,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 }
             };
 
-            var data = @"<ADL>
+            const string data = @"<ADL>
   <Recset>
 	<Field1>Mr A</Field1>
 	<Field2>25</Field2>
@@ -231,7 +198,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 }
             };
 
-            var data = @"<ADL>
+            const string data = @"<ADL>
   <Recset>
 	<Field1>Mr A</Field1>
 	<Field2>25</Field2>

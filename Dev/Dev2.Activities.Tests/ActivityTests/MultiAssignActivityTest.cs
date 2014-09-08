@@ -7,7 +7,6 @@ using System.Linq;
 using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -314,7 +313,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             // two cols at row 100
-            Assert.IsTrue(actual.Count == 2 && actual.First() == string.Empty);
+            Assert.IsTrue(actual.Count == 1 && actual.First() == string.Empty);
         }
 
         [TestMethod]
@@ -394,7 +393,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             // first and row 100
-            Assert.AreEqual(2, actual.Count);
+            Assert.AreEqual(1, actual.Count);
             Assert.AreEqual(string.Empty, actual.First());
             Assert.AreEqual(string.Empty, actual.Last());
         }
@@ -568,7 +567,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
         }
-        
+
         [TestMethod]
         public void MutiAssignWithEditingExistingRecSets_Expected_RecordSetDataOverwritten()
         {
@@ -719,7 +718,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            const string expected = "1";
+            const string expected = "";
             string error;
             string actual;
             GetScalarValueFromDataList(result.DataListID, "scalar", out actual, out error);
@@ -743,11 +742,11 @@ namespace Dev2.Tests.Activities.ActivityTests
     <opt />
   </cRec>
 </root>"
-                                      , @"<root></root>");
+                                      , @"<root><cRec><opt>0</opt></cRec></root>");
 
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "1" };
+            List<string> expected = new List<string> { "0", "1" };
             string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
 
@@ -775,7 +774,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "1" };
+            List<string> expected = new List<string> { "" };
             string error;
             List<string> actual = RetrieveAllRecordSetFieldValues(result.DataListID, "cRec", "opt", out error);
 
@@ -783,6 +782,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             DataListRemoval(result.DataListID);
 
             CollectionAssert.AreEqual(expected, actual, new ActivityUnitTests.Utils.StringComparer());
+            Assert.IsTrue(Compiler.HasErrors(result.DataListID));
         }
 
         //2013.02.08: Ashley Lewis - Bug 8725, Task 8833

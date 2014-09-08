@@ -131,55 +131,55 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugInputItem(new DebugItemVariableParams(s, "In Field(s)", inFieldsEntry, executionId));
                     }
                 }
-                     var rule = new IsSingleValueRule(() => Result);
-                    var single = rule.Check();
-                    if (single != null)
+                var rule = new IsSingleValueRule(() => Result);
+                var single = rule.Check();
+                if(single != null)
+                {
+                    allErrors.AddError(single.Message);
+                }
+                else
+                {
+                    while(iteratorCollection.HasMoreData())
                     {
-                        allErrors.AddError(single.Message);
-                    }
-                    else
-                    {
-                        while (iteratorCollection.HasMoreData())
+                        // now process each field for entire evaluated Where expression....                    
+                        var findValue = iteratorCollection.FetchNextRow(itrFind).TheValue;
+                        var replaceWithValue = iteratorCollection.FetchNextRow(itrReplace).TheValue;
+                        foreach(string s in toSearch)
                         {
-                            // now process each field for entire evaluated Where expression....                    
-                            var findValue = iteratorCollection.FetchNextRow(itrFind).TheValue;
-                            var replaceWithValue = iteratorCollection.FetchNextRow(itrReplace).TheValue;
-                            foreach (string s in toSearch)
+                            if(!DataListUtil.IsEvaluated(s))
                             {
-                                if (!DataListUtil.IsEvaluated(s))
-                                {
-                                    allErrors.AddError("Please insert only variables into Fields To Search");
-                                    return;
-                                }
-                                if (!string.IsNullOrEmpty(findValue))
-                                {
-                                    IBinaryDataListEntry entryToReplaceIn;
-                                    toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue, CaseMatch, toUpsert, out errors, out replacementCount, out entryToReplaceIn);
-                                }
-
-                                replacementTotal += replacementCount;
-
-                                allErrors.MergeErrors(errors);
+                                allErrors.AddError("Please insert only variables into Fields To Search");
+                                return;
                             }
+                            if(!string.IsNullOrEmpty(findValue))
+                            {
+                                IBinaryDataListEntry entryToReplaceIn;
+                                toUpsert = replaceOperation.Replace(executionId, s.Trim(), findValue, replaceWithValue, CaseMatch, toUpsert, out errors, out replacementCount, out entryToReplaceIn);
+                            }
+
+                            replacementTotal += replacementCount;
+
+                            allErrors.MergeErrors(errors);
                         }
                     }
+                }
                 if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(new DebugItemVariableParams(Find, "Find", expressionsEntryFind, executionId));
                     AddDebugInputItem(new DebugItemVariableParams(ReplaceWith, "Replace With", expressionsEntryReplaceWith, executionId));
                 }
-     
-                    toUpsert.Add(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
-                
+
+                toUpsert.Add(Result, replacementTotal.ToString(CultureInfo.InvariantCulture));
+
 
                 // now push the result to the server
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
                     {
-                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                     }
                 }
             }
@@ -199,6 +199,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     DisplayAndWriteError("DsfReplaceActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(executionId, Result, (string)null, out errors);
                 }
 
                 if(dataObject.IsDebugMode())

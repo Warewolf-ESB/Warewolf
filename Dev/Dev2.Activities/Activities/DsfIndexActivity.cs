@@ -145,7 +145,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 expressionsEntry = compiler.Evaluate(executionId, enActionType.User, InField, false, out errors);
 
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(new DebugItemVariableParams(InField, "In Field", expressionsEntry, executionId));
                     AddDebugInputItem(new DebugItemStaticDataParams(Index, "Index"));
@@ -155,7 +155,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var completeResultList = new List<string>();
 
-                while (outerIteratorCollection.HasMoreData())
+                while(outerIteratorCollection.HasMoreData())
                 {
                     allErrors.MergeErrors(errors);
                     errors.ClearErrors();
@@ -163,12 +163,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     innerIteratorCollection.AddIterator(itrInField);
 
                     string chars = outerIteratorCollection.FetchNextRow(itrChar).TheValue;
-                    while (innerIteratorCollection.HasMoreData())
+                    while(innerIteratorCollection.HasMoreData())
                     {
-                        if (!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
+                        if(!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
                         {
                             var val = innerIteratorCollection.FetchNextRow(itrInField);
-                            if (val != null)
+                            if(val != null)
                             {
                                 IEnumerable<int> returedData = indexFinder.FindIndex(val.TheValue, Index, chars, Direction, MatchCase, StartIndex);
                                 completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
@@ -181,7 +181,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 var rule = new IsSingleValueRule(() => Result);
                 var single = rule.Check();
-                if (single != null)
+                if(single != null)
                 {
                     allErrors.AddError(single.Message);
                 }
@@ -190,41 +190,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                     var rsType = DataListUtil.GetRecordsetIndexType(Result);
-                        if (rsType == enRecordsetIndexType.Numeric)
-                        {
+                    if(rsType == enRecordsetIndexType.Numeric)
+                    {
 
-                            toUpsertScalar.Add(Result, string.Join(",", completeResultList));
-                            compiler.Upsert(executionId, toUpsertScalar, out errors);
-                            allErrors.MergeErrors(errors);
-                            if (!allErrors.HasErrors() && dataObject.IsDebugMode())
-                            {
-                                foreach (var debugOutputTO in toUpsertScalar.DebugOutputs)
-                                {
-                                    AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
-                                }
-                                toUpsert.DebugOutputs.Clear();
-                            }
-                        }
-                        else
+                        toUpsertScalar.Add(Result, string.Join(",", completeResultList));
+                        compiler.Upsert(executionId, toUpsertScalar, out errors);
+                        allErrors.MergeErrors(errors);
+                        if(!allErrors.HasErrors() && dataObject.IsDebugMode())
                         {
-                            toUpsert.Add(Result, completeResultList);
-                            compiler.Upsert(executionId, toUpsert, out errors);
-                            allErrors.MergeErrors(errors);
-                            if (!allErrors.HasErrors() && dataObject.IsDebugMode())
+                            foreach(var debugOutputTo in toUpsertScalar.DebugOutputs)
                             {
-                                foreach (var debugOutputTO in toUpsert.DebugOutputs)
-                                {
-                                    AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
-                                }
-                                toUpsert.DebugOutputs.Clear();
+                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                             }
+                            toUpsert.DebugOutputs.Clear();
                         }
                     }
+                    else
+                    {
+                        toUpsert.Add(Result, completeResultList);
+                        compiler.Upsert(executionId, toUpsert, out errors);
+                        allErrors.MergeErrors(errors);
+                        if(!allErrors.HasErrors() && dataObject.IsDebugMode())
+                        {
+                            foreach(var debugOutputTo in toUpsert.DebugOutputs)
+                            {
+                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
+                            }
+                            toUpsert.DebugOutputs.Clear();
+                        }
+                    }
+                }
                 #endregion
-                
+
 
             }
-            catch (Exception e)
+            catch(Exception e)
             {
                 Dev2Logger.Log.Error("DSFFindActivity", e);
                 allErrors.AddError(e.Message);
@@ -233,21 +233,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 #region Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfIndexActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(executionId, Result, (string)null, out errors);
                 }
 
                 #endregion
 
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
-                    if (hasErrors)
+                    if(hasErrors)
                     {
-                        foreach (var debugOutputTO in toUpsert.DebugOutputs)
+                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
                         {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                         }
                     }
                     DispatchDebugState(context, StateType.Before);

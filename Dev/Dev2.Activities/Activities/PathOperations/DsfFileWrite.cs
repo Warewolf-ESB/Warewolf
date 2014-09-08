@@ -85,7 +85,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
                 var writeType = GetCorrectWriteType();
-                Dev2PutRawOperationTO putTO = ActivityIOFactory.CreatePutRawOperationTO(writeType, TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(colItr.FetchNextRow(contentItr).TheValue));
+                Dev2PutRawOperationTO putTo = ActivityIOFactory.CreatePutRawOperationTO(writeType, TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(colItr.FetchNextRow(contentItr).TheValue));
                 IActivityIOPath opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
                                                                                 colItr.FetchNextRow(unameItr).TheValue,
                                                                                 colItr.FetchNextRow(passItr).TheValue,
@@ -96,17 +96,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if(allErrors.HasErrors())
                     {
-                        outputs[0].OutputStrings.Add("Failure");
+                        outputs[0].OutputStrings.Add(null);
                     }
                     else
                     {
-                        string result = broker.PutRaw(endPoint, putTO);
+                        string result = broker.PutRaw(endPoint, putTo);
                         outputs[0].OutputStrings.Add(result);
                     }
                 }
                 catch(Exception e)
                 {
-                    outputs[0].OutputStrings.Add("Failure");
+                    outputs[0].OutputStrings.Add(null);
                     allErrors.AddError(e.Message);
                 }
             }

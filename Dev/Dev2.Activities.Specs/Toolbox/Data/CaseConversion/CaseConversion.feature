@@ -193,7 +193,7 @@ Scenario: Convert an empty recordset * to Upper
 	When the case conversion tool is executed
 	Then the case convert result for this varibale "[[rs().row]]" will be
 	| rs       | row                 |
-	And the execution has "NO" error
+	And the execution has "AN" error
 	And the debug inputs as  
 	| # | Convert         | To    |
 	| 1 | [[rs(1).row]] = | UPPER |

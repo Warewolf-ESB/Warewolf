@@ -43,9 +43,9 @@ namespace Dev2.Activities
         /// </summary>  
         [Inputs("CommandFileName")]
         [FindMissing]
-// ReSharper disable ConvertToAutoProperty
+        // ReSharper disable ConvertToAutoProperty
         public string CommandFileName
-// ReSharper restore ConvertToAutoProperty
+        // ReSharper restore ConvertToAutoProperty
         {
             get
             {
@@ -62,9 +62,9 @@ namespace Dev2.Activities
 
         [Outputs("CommandResult")]
         [FindMissing]
-// ReSharper disable ConvertToAutoProperty
+        // ReSharper disable ConvertToAutoProperty
         public string CommandResult
-// ReSharper restore ConvertToAutoProperty
+        // ReSharper restore ConvertToAutoProperty
         {
             get
             {
@@ -93,7 +93,7 @@ namespace Dev2.Activities
             var dataObject = _nativeActivityContext.GetExtension<IDSFDataObject>();
             var compiler = DataListFactory.CreateDataListCompiler();
 
-            var dlID = dataObject.DataListID;
+            var dlId = dataObject.DataListID;
             var allErrors = new ErrorResultTO();
             ErrorResultTO errors;
 
@@ -102,10 +102,10 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlID, enActionType.User, CommandFileName, false, out errors);
+                IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dlId, enActionType.User, CommandFileName, false, out errors);
                 if(dataObject.IsDebugMode())
                 {
-                    AddDebugInputItem(new DebugItemVariableParams(CommandFileName, "Command", expressionsEntry, dlID));
+                    AddDebugInputItem(new DebugItemVariableParams(CommandFileName, "Command", expressionsEntry, dlId));
                 }
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(expressionsEntry);
@@ -123,7 +123,7 @@ namespace Dev2.Activities
                                 if(toUpsert != null)
                                 {
                                     toUpsert.HasLiveFlushing = true;
-                                    toUpsert.LiveFlushingLocation = dlID;
+                                    toUpsert.LiveFlushingLocation = dlId;
                                 }
                             }
 
@@ -168,7 +168,7 @@ namespace Dev2.Activities
                             }
                             else
                             {
-                                compiler.Upsert(dlID, toUpsert, out errors);
+                                compiler.Upsert(dlId, toUpsert, out errors);
                                 allErrors.MergeErrors(errors);
                             }
                         }
@@ -180,9 +180,9 @@ namespace Dev2.Activities
                         {
                             return;
                         }
-                        foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
                         {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                         }
                     }
                 }
@@ -199,7 +199,8 @@ namespace Dev2.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
-                    compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(dlId, CommandResult, (string)null, out errors);
                 }
                 if(dataObject.IsDebugMode())
                 {

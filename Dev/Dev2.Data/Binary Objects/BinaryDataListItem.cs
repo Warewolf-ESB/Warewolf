@@ -1,5 +1,6 @@
 ﻿using System;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract.Binary_Objects.Structs;
@@ -17,7 +18,25 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         #region Properties
 
-        public string TheValue { get { return _internalObj.TheValue; } set { _internalObj.TheValue = value; } }
+
+        public string TheValue
+        {
+            get
+            {
+                var theValue = _internalObj.TheValue;
+                if(theValue == null)
+                {
+                    var displayValue = String.IsNullOrEmpty(DisplayValue) ? FieldName : DisplayValue;
+                    var variableName = DataListUtil.AddBracketsToValueIfNotExist(displayValue);
+                    throw new NullValueInVariableException(string.Format("No Value assigned for: {0}", variableName), variableName);
+                }
+                return theValue;
+            }
+            set
+            {
+                _internalObj.TheValue = value;
+            }
+        }
 
         public int ItemCollectionIndex { get { return _internalObj.ItemCollectionIndex; } private set { _internalObj.ItemCollectionIndex = value; } }
 
@@ -29,12 +48,12 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             get
             {
-                if (_internalObj.ItemCollectionIndex >= 0)
+                if(_internalObj.ItemCollectionIndex >= 0)
                 {
                     _internalObj.DisplayValue = DataListUtil.ComposeIntoUserVisibleRecordset(_internalObj.Namespace, _internalObj.ItemCollectionIndex, _internalObj.FieldName);
                 }
 
-                if (_internalObj.DisplayValue == null)
+                if(_internalObj.DisplayValue == null)
                 {
                     return "null";
                 }
@@ -55,14 +74,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             _internalObj.Namespace = String.IsNullOrEmpty(ns) ? GlobalConstants.NullEntryNamespace : ns;
             _internalObj.FieldName = field;
             int tmp;
-            if (Int32.TryParse(idx, out tmp))
-            {
-                _internalObj.ItemCollectionIndex = tmp;
-            }
-            else
-            {
-                _internalObj.ItemCollectionIndex = Int32.MinValue;
-            }
+            _internalObj.ItemCollectionIndex = Int32.TryParse(idx, out tmp) ? tmp : Int32.MinValue;
         }
 
         internal BinaryDataListItem(string val, string ns, string field, int idx)
@@ -102,19 +114,19 @@ namespace Dev2.DataList.Contract.Binary_Objects
         {
             IBinaryDataListItem result;
 
-            if (string.IsNullOrEmpty(_internalObj.TheValue) && string.IsNullOrEmpty(_internalObj.Namespace) && string.IsNullOrEmpty(_internalObj.FieldName))
+            try
             {
+                if(string.IsNullOrEmpty(_internalObj.TheValue) && string.IsNullOrEmpty(_internalObj.Namespace) && string.IsNullOrEmpty(_internalObj.FieldName))
+                {
+                    return this;
+                }
+
+                result = _internalObj.ItemCollectionIndex > 0 ? new BinaryDataListItem(_internalObj.TheValue, _internalObj.Namespace, _internalObj.FieldName, _internalObj.ItemCollectionIndex) : new BinaryDataListItem(_internalObj.TheValue, _internalObj.FieldName);
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Log.Error(e);
                 return this;
-            }
-
-            if (_internalObj.ItemCollectionIndex > 0)
-            {
-
-                result = new BinaryDataListItem(_internalObj.TheValue, _internalObj.Namespace, _internalObj.FieldName, _internalObj.ItemCollectionIndex);
-            }
-            else
-            {
-                result = new BinaryDataListItem(_internalObj.TheValue, _internalObj.FieldName);
             }
 
             return result;

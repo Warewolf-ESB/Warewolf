@@ -144,20 +144,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
                     var result = _numberFormatter.Format(formatNumberTo);
 
-                    if (single != null)
+                    if(single != null)
                     {
                         allErrors.AddError(single.Message);
                     }
                     else
-                    UpdateResultRegions(toUpsert, result);
+                        UpdateResultRegions(toUpsert, result);
                 }
                 compiler.Upsert(executionId, toUpsert, out errors);
                 allErrors.MergeErrors(errors);
                 if(!allErrors.HasErrors())
                 {
-                    foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
                     {
-                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                        AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                     }
                 }
             }
@@ -176,6 +176,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     DisplayAndWriteError("DsfNumberFormatActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(executionId, Result, (string)null, out errors);
                 }
 
                 if(dataObject.IsDebugMode())
@@ -188,10 +189,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void UpdateResultRegions(IDev2DataListUpsertPayloadBuilder<string> toUpsert, string result)
         {
-           
-                toUpsert.Add(Result, result);
-                toUpsert.FlushIterationFrame();
-            
+
+            toUpsert.Add(Result, result);
+            toUpsert.FlushIterationFrame();
+
         }
 
         #endregion

@@ -447,12 +447,12 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Write file when contents has varuiables that cannot be evealuated")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Write file when contents has variables that cannot be evealuated")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Write File")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("fileFeature")]
-        public virtual void WriteFileWhenContentsHasVaruiablesThatCannotBeEvealuated()
+        public virtual void WriteFileWhenContentsHasVariablesThatCannotBeEvealuated()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Write file when contents has varuiables that cannot be evealuated", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Write file when contents has variables that cannot be evealuated", ((string[])(null)));
 #line 64
 this.ScenarioSetup(scenarioInfo);
 #line 65
@@ -468,7 +468,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 70
  testRunner.When("the write file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 71
- testRunner.Then("the result variable \'[[res]]\' will be \'Failure\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result variable \'[[res]]\' will be \'\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 72
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden

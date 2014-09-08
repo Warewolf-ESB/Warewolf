@@ -118,7 +118,7 @@ namespace Dev2.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             _dataObject = dataObject;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid dlID = dataObject.DataListID;
+            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors;
             Guid executionId = DataListExecutionID.Get(context);
@@ -131,43 +131,43 @@ namespace Dev2.Activities
             {
                 var colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
 
-                IBinaryDataListEntry fromAccountEntry = compiler.Evaluate(dlID, enActionType.User, FromAccount ?? string.Empty, false, out errors);
+                IBinaryDataListEntry fromAccountEntry = compiler.Evaluate(dlId, enActionType.User, FromAccount ?? string.Empty, false, out errors);
 
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator fromAccountItr = Dev2ValueObjectFactory.CreateEvaluateIterator(fromAccountEntry);
                 colItr.AddIterator(fromAccountItr);
 
-                IBinaryDataListEntry passwordEntry = compiler.Evaluate(dlID, enActionType.User, Password, false, out errors);
+                IBinaryDataListEntry passwordEntry = compiler.Evaluate(dlId, enActionType.User, Password, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator passwordItr = Dev2ValueObjectFactory.CreateEvaluateIterator(passwordEntry);
                 colItr.AddIterator(passwordItr);
 
-                IBinaryDataListEntry toEntry = compiler.Evaluate(dlID, enActionType.User, To, false, out errors);
+                IBinaryDataListEntry toEntry = compiler.Evaluate(dlId, enActionType.User, To, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator toItr = Dev2ValueObjectFactory.CreateEvaluateIterator(toEntry);
                 colItr.AddIterator(toItr);
 
-                IBinaryDataListEntry ccEntry = compiler.Evaluate(dlID, enActionType.User, Cc ?? string.Empty, false, out errors);
+                IBinaryDataListEntry ccEntry = compiler.Evaluate(dlId, enActionType.User, Cc ?? string.Empty, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator ccItr = Dev2ValueObjectFactory.CreateEvaluateIterator(ccEntry);
                 colItr.AddIterator(ccItr);
 
-                IBinaryDataListEntry bccEntry = compiler.Evaluate(dlID, enActionType.User, Bcc ?? string.Empty, false, out errors);
+                IBinaryDataListEntry bccEntry = compiler.Evaluate(dlId, enActionType.User, Bcc ?? string.Empty, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator bccItr = Dev2ValueObjectFactory.CreateEvaluateIterator(bccEntry);
                 colItr.AddIterator(bccItr);
 
-                IBinaryDataListEntry subjectEntry = compiler.Evaluate(dlID, enActionType.User, Subject ?? string.Empty, false, out errors);
+                IBinaryDataListEntry subjectEntry = compiler.Evaluate(dlId, enActionType.User, Subject ?? string.Empty, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator subjectItr = Dev2ValueObjectFactory.CreateEvaluateIterator(subjectEntry);
                 colItr.AddIterator(subjectItr);
 
-                IBinaryDataListEntry bodyEntry = compiler.Evaluate(dlID, enActionType.User, Body ?? string.Empty, false, out errors);
+                IBinaryDataListEntry bodyEntry = compiler.Evaluate(dlId, enActionType.User, Body ?? string.Empty, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator bodyItr = Dev2ValueObjectFactory.CreateEvaluateIterator(bodyEntry);
                 colItr.AddIterator(bodyItr);
 
-                IBinaryDataListEntry attachmentsEntry = compiler.Evaluate(dlID, enActionType.User, Attachments ?? string.Empty, false, out errors);
+                IBinaryDataListEntry attachmentsEntry = compiler.Evaluate(dlId, enActionType.User, Attachments ?? string.Empty, false, out errors);
                 allErrors.MergeErrors(errors);
                 IDev2DataListEvaluateIterator attachmentsItr = Dev2ValueObjectFactory.CreateEvaluateIterator(attachmentsEntry);
                 colItr.AddIterator(attachmentsItr);
@@ -206,9 +206,9 @@ namespace Dev2.Activities
                     allErrors.MergeErrors(errors);
                     if(IsDebug && !allErrors.HasErrors())
                     {
-                        foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
                         {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                         }
                     }
                 }
@@ -235,14 +235,14 @@ namespace Dev2.Activities
 
                 if(allErrors.HasErrors())
                 {
-                    UpsertResult(indexToUpsertTo, toUpsert, "Failure");
+                    UpsertResult(indexToUpsertTo, toUpsert, null);
                     compiler.Upsert(executionId, toUpsert, out errors);
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugOutputItem(new DebugItemStaticDataParams("Failure", Result, ""));
+                        AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DisplayAndWriteError("DsfSendEmailActivity", allErrors);
-                    compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
                 if(dataObject.IsDebugMode())
                 {

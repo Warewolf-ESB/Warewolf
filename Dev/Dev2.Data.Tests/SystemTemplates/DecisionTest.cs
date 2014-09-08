@@ -9,6 +9,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.SystemTemplates
 {
     [TestClass]
@@ -27,7 +28,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
             string result = dlc.ConvertModelToJson(dds);
-            string expected = @"{""TheStack"":[],""TotalDecisions"":0,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":""True"",""FalseArmText"":""False"",""DisplayText"":""Is True""}";
+            const string expected = @"{""TheStack"":[],""TotalDecisions"":0,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":""True"",""FalseArmText"":""False"",""DisplayText"":""Is True""}";
 
             Assert.AreEqual(expected, result);
         }
@@ -38,13 +39,11 @@ namespace Dev2.Data.Tests.SystemTemplates
         [TestMethod]
         public void CanConvertJSON_To_Model_Expect_ValidModel()
         {
-            Dev2DecisionStack dds;
-            IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
+            var dlc = DataListFactory.CreateDataListCompiler();
 
-            string payload = @"{""TheStack"":[],""TotalDecisions"":0,""Version"":""1.0.0"",""ModelName"":""Dev2DecisionStack""}";
+            const string payload = @"{""TheStack"":[],""TotalDecisions"":0,""Version"":""1.0.0"",""ModelName"":""Dev2DecisionStack""}";
 
-
-            dds = dlc.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
+            Dev2DecisionStack dds = dlc.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
 
             Assert.AreEqual(0, dds.TotalDecisions);
 
@@ -115,7 +114,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[MyRec(*).field]]"",""Col2"":""[[Recset(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[MyRec(*).field]]"",""Col2"":""[[Recset(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             //------------Execute Test---------------------------
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
@@ -157,7 +156,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[MyRec(*).field]]"",""Col2"":""[[Recset(*).field]]"",""Col3"":""[[TheRec(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[MyRec(*).field]]"",""Col2"":""[[Recset(*).field]]"",""Col3"":""[[TheRec(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             //------------Execute Test---------------------------
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
@@ -185,7 +184,7 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             string result = dlc.EvaluateSystemEntry(id, enSystemTag.SystemModel, out errors);
 
-            string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
+            const string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
             Assert.AreEqual(expected, result);
         }
@@ -210,7 +209,7 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             string result = dlc.EvaluateSystemEntry(id, enSystemTag.SystemModel, out errors);
 
-            string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""},{""Col1"":""[[B]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNotNumeric""}],""TotalDecisions"":2,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
+            const string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""},{""Col1"":""[[B]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNotNumeric""}],""TotalDecisions"":2,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
             Assert.AreEqual(expected, result);
 
@@ -234,7 +233,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -258,7 +257,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             string result = Dev2DataListDecisionHandler.Instance.FetchSwitchData("[[A]]", new List<string> { bdl.UID.ToString() });
-            string expected = "1";
+            const string expected = "1";
 
             Assert.AreEqual(expected, result);
         }
@@ -281,7 +280,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             string result = Dev2DataListDecisionHandler.Instance.FetchSwitchData("[[A]]", new List<string> { GlobalConstants.NullDataListID.ToString() });
-            string expected = "";
+            const string expected = "";
 
             Assert.AreEqual(expected, result);
         }
@@ -290,9 +289,8 @@ namespace Dev2.Data.Tests.SystemTemplates
         [TestMethod]
         public void CanInvokeDecisionStack_SingleDecision_NullDataListID_Expect_Exception()
         {
-
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             try
             {
@@ -305,7 +303,6 @@ namespace Dev2.Data.Tests.SystemTemplates
                 Assert.AreEqual("Could not evaluate decision data - no DataList ID sent!", e.Message);
             }
         }
-
 
         /// <summary>
         /// Travis.Frisinger - Can it invoke a decision stack with OR condition
@@ -328,7 +325,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":""[[B]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":2,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":""[[B]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":2,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -356,7 +353,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":""[[B]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":2,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":""[[B]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":2,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -382,7 +379,7 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             Assert.AreEqual(0, errors.FetchErrors().Count);
 
-            string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
+            const string expected = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
             Assert.AreEqual(expected, result);
         }
@@ -406,7 +403,7 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             Assert.AreEqual(0, errors.FetchErrors().Count);
 
-            string expected = @"{""TheStack"":[null],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
+            const string expected = @"{""TheStack"":[null],""TotalDecisions"":1,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null,""DisplayText"":null}";
 
             Assert.AreEqual(expected, result);
         }
@@ -420,7 +417,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             string error;
             ErrorResultTO errors;
 
-            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column> {DataListFactory.CreateDev2Column("field","test field")}, true, out error);
+            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column> { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
             bdl.TryCreateRecordsetValue("a", "field", "Recset", 1, out error);
             bdl.TryCreateRecordsetValue("b", "field", "Recset", 2, out error);
             bdl.TryCreateRecordsetValue("c", "field", "Recset", 3, out error);
@@ -432,7 +429,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -467,7 +464,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":""[[Recset2(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":2,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":""[[Recset2(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":2,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -493,7 +490,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -527,7 +524,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":""[[Recset2(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":2,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":""[[Recset2(*).field]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}],""TotalDecisions"":2,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -562,7 +559,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -612,7 +609,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}, {""Col1"":""[[Recset3(*).field]]"",""Col2"":""[[Recset4(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":2,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}, {""Col1"":""[[Recset3(*).field]]"",""Col2"":""[[Recset4(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":2,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -647,7 +644,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset1(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset1(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -698,7 +695,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}, {""Col1"":""[[Recset3(*).field]]"",""Col2"":""[[Recset4(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":2,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}, {""Col1"":""[[Recset3(*).field]]"",""Col2"":""[[Recset4(*).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":2,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -730,12 +727,12 @@ namespace Dev2.Data.Tests.SystemTemplates
             bdl.TryCreateRecordsetValue("5", "field", "Recset2", 6, out error);
 
             bdl.TryCreateRecordsetTemplate("Recset3", "Third test recordset", new List<Dev2Column> { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
-            bdl.TryCreateRecordsetValue("2", "field", "Recset2", 1, out error);
-            bdl.TryCreateRecordsetValue("3", "field", "Recset2", 2, out error);
-            bdl.TryCreateRecordsetValue("4", "field", "Recset2", 3, out error);
-            bdl.TryCreateRecordsetValue("zingzopwowee", "field", "Recset2", 4, out error);
-            bdl.TryCreateRecordsetValue("6", "field", "Recset2", 5, out error);
-            bdl.TryCreateRecordsetValue("7", "field", "Recset2", 6, out error);
+            bdl.TryCreateRecordsetValue("2", "field", "Recset3", 1, out error);
+            bdl.TryCreateRecordsetValue("3", "field", "Recset3", 2, out error);
+            bdl.TryCreateRecordsetValue("4", "field", "Recset3", 3, out error);
+            bdl.TryCreateRecordsetValue("zingzopwowee", "field", "Recset3", 4, out error);
+            bdl.TryCreateRecordsetValue("6", "field", "Recset3", 5, out error);
+            bdl.TryCreateRecordsetValue("7", "field", "Recset3", 6, out error);
 
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
@@ -808,7 +805,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":""[[Recset3(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}, {""Col1"":""[[Recset4(*).field]]"",""Col2"":""[[Recset5(*).field]]"",""Col3"":""[[Recset6(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":2,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":""[[Recset3(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}, {""Col1"":""[[Recset4(*).field]]"",""Col2"":""[[Recset5(*).field]]"",""Col3"":""[[Recset6(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":2,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -850,7 +847,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset1(*).field]]"",""Col3"":""[[Recset2(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[Recset(*).field]]"",""Col2"":""[[Recset1(*).field]]"",""Col3"":""[[Recset2(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":1,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -916,7 +913,7 @@ namespace Dev2.Data.Tests.SystemTemplates
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":""[[Recset3(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}, {""Col1"":""[[Recset4(*).field]]"",""Col2"":""[[Recset5(*).field]]"",""Col3"":""[[Recset6(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":2,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""[[Recset1(*).field]]"",""Col2"":""[[Recset2(*).field]]"",""Col3"":""[[Recset3(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}, {""Col1"":""[[Recset4(*).field]]"",""Col2"":""[[Recset5(*).field]]"",""Col3"":""[[Recset6(*).field]]"",""PopulatedColumnCount"":3,""EvaluationFn"":""IsBetween""}],""TotalDecisions"":2,""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
 
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });
 
@@ -935,16 +932,16 @@ namespace Dev2.Data.Tests.SystemTemplates
             string error;
             ErrorResultTO errors;
 
-            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column> { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);           
+            bdl.TryCreateRecordsetTemplate("Recset", "Test recordset", new List<Dev2Column> { DataListFactory.CreateDev2Column("field", "test field") }, true, out error);
 
             // add data to Recset
-            bdl.TryCreateRecordsetValue(@"C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\TextFile1.txt", "field", "Recset", 1, out error);          
+            bdl.TryCreateRecordsetValue(@"C:\Temp\PathOperationsTestFolder\OldFolder\OldFolderFirstInnerFolder\TextFile1.txt", "field", "Recset", 1, out error);
 
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
             c.PushBinaryDataList(bdl.UID, bdl, out errors);
 
             // ExecuteDecisionStack
-            string payload = @"{""TheStack"":[{""Col1"":""C:\\Temp\\PathOperationsTestFolder\\OldFolder\\OldFolderFirstInnerFolder\\TextFile1.txt"",""Col2"":""[[Recset(1).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
+            const string payload = @"{""TheStack"":[{""Col1"":""C:\\Temp\\PathOperationsTestFolder\\OldFolder\\OldFolderFirstInnerFolder\\TextFile1.txt"",""Col2"":""[[Recset(1).field]]"",""Col3"":"""",""PopulatedColumnCount"":2,""EvaluationFn"":""IsEqual""}],""TotalDecisions"":1,""Mode"":""AND"",""TrueArmText"":null,""FalseArmText"":null}";
 
             //------------Execute Test---------------------------
             bool result = Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(payload, new List<string> { bdl.UID.ToString() });

@@ -683,7 +683,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 194
  testRunner.Then("the case convert result for this varibale \"[[rs().row]]\" will be", ((string)(null)), table30, "Then ");
 #line 196
- testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",

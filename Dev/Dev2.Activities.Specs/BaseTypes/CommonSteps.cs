@@ -248,6 +248,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                 value = value.Replace('"', ' ').Trim();
                 GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(variable),
                                            out actualValue, out error);
+                if(string.IsNullOrEmpty(value))
+                {
+                    actualValue = "";
+                }
                 actualValue = actualValue.Replace('"', ' ').Trim();
                 var type = "";
                 if(value == "String" || value == "Int32" || value == "Guid" || value == "DateTime")

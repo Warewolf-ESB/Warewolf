@@ -578,13 +578,13 @@ Scenario: Workflow with Assign Create and Delete Record tools with incorrect inp
 	  | [[rec(1).a]] = create.txt | True      | Username = | Password = |
 	  And the 'Create1' in Workflow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug outputs as    
 	   |                    |
-	   | [[res1]] = Failure |
+	   | [[res1]] =  |
 	  And the 'Delete' in WorkFlow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug inputs as
 	  | Input Path                | Username | Password |
 	  | [[rec(1).a]] = create.txt |   Username =       |    Password =      |
 	  And the 'Delete' in Workflow 'WorkflowWithAssignCreateDeleteRecordNoneExist1' debug outputs as    
 	  |                    |
-	  | [[res1]] = Failure |
+	  | [[res1]] =  |
 
 Scenario: Workflow with 2 Assign tools executing against the server
 	  Given I have a workflow "WorkflowWith2Assigntools"
@@ -836,7 +836,6 @@ Scenario: Workflow with multiple tools Assign and SQL Bulk Insert with negative 
 	  | 2 | Warewolf@dev2.co.za | Email    | varchar (50) |            |         |                   |                 |               |               |                          |                 |
 	  And the 'BulkInsert' in Workflow 'WorkflowWithAssignAndSQLBulk' debug outputs as
 	  |                      |
-	  | [[result]] = Failure |
 
 Scenario: Simple workflow with Assign and Base Convert(Evaluating scalar variable inside variable)executing against the server
 	 Given I have a workflow "WorkflowWithAssignandBase"
@@ -2026,10 +2025,8 @@ Scenario: Workflow with Assign and Find Record index
 	  And the 'FindRecord' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
 	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
 	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
-	  And the 'FindRecord' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
-	  |            |
-	  | [[a]] = -1 |
-	  | [[b]] = -1 |
+	  And the 'FindRecord' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as
+	  ||   
 #
 
 #Bug 12180, 

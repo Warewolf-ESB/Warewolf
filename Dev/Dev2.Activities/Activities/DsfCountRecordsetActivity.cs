@@ -61,10 +61,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            Guid dlID = dataObject.DataListID;
+            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = dlID;
+            Guid executionId = dlId;
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             // Process if no errors
@@ -75,68 +75,74 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 IBinaryDataList bdl = compiler.FetchBinaryDataList(executionId, out errors);
                 allErrors.MergeErrors(errors);
-                if (!allErrors.HasErrors())
+                if(!allErrors.HasErrors())
                 {
-                    string err;
-                    IBinaryDataListEntry recset;
-
-                    string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
-
-                    bdl.TryGetEntry(rs, out recset, out err);
-                    allErrors.AddError(err);
-
-                    if (dataObject.IsDebugMode())
+                    try
                     {
-                        AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Recordset", recset, executionId));
-                    }
-                    var rule = new IsSingleValueRule(() => CountNumber);
-                    var single = rule.Check();
-                    if (single != null)
-                    {
-                        allErrors.AddError(single.Message);
-                    }
-                    else
-                    {
-                        if (recset != null)
+                        string err;
+                        IBinaryDataListEntry recset;
+
+                        string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
+
+                        bdl.TryGetEntry(rs, out recset, out err);
+                        allErrors.AddError(err);
+
+                        if(dataObject.IsDebugMode())
                         {
-                            if (recset.Columns != null && CountNumber != string.Empty)
+                            AddDebugInputItem(new DebugItemVariableParams(RecordsetName, "Recordset", recset, executionId));
+                        }
+                        var rule = new IsSingleValueRule(() => CountNumber);
+                        var single = rule.Check();
+                        if(single != null)
+                        {
+                            allErrors.AddError(single.Message);
+                        }
+                        else
+                        {
+                            if(recset != null)
                             {
-                                if (recset.IsEmpty())
+                                if(recset.Columns != null && CountNumber != string.Empty)
                                 {
-                                  
+                                    if(recset.IsEmpty())
+                                    {
                                         compiler.Upsert(executionId, CountNumber, "0", out errors);
-                                        if (dataObject.IsDebugMode())
+                                        if(dataObject.IsDebugMode())
                                         {
                                             AddDebugOutputItem(new DebugOutputParams(CountNumber, "0", executionId, 0));
                                         }
                                         allErrors.MergeErrors(errors);
-                                    
-                                }
-                                else
-                                {
+                                    }
+                                    else
+                                    {
                                         int cnt = recset.ItemCollectionSize();
                                         compiler.Upsert(executionId, CountNumber, cnt.ToString(CultureInfo.InvariantCulture), out errors);
-                                        if (dataObject.IsDebugMode())
+                                        if(dataObject.IsDebugMode())
                                         {
                                             AddDebugOutputItem(new DebugOutputParams(CountNumber, cnt.ToString(CultureInfo.InvariantCulture), executionId, 0));
                                         }
                                         allErrors.MergeErrors(errors);
-                                
 
+
+                                    }
+
+                                    allErrors.MergeErrors(errors);
                                 }
-
-                                allErrors.MergeErrors(errors);
+                                else if(recset.Columns == null)
+                                {
+                                    allErrors.AddError(RecordsetName + " is not a recordset");
+                                }
+                                else if(CountNumber == string.Empty)
+                                {
+                                    allErrors.AddError("Blank result variable");
+                                }
                             }
-                            else if (recset.Columns == null)
-                            {
-                                allErrors.AddError(RecordsetName + " is not a recordset");
-                            }
-                            else if (CountNumber == string.Empty)
-                            {
-                                allErrors.AddError("Blank result variable");
-                            }
+                            allErrors.MergeErrors(errors);
                         }
-                        allErrors.MergeErrors(errors);
+                    }
+                    catch(Exception e)
+                    {
+                        allErrors.AddError(e.Message);
+                        compiler.Upsert(executionId, CountNumber, (string)null, out errors);
                     }
                 }
             }
@@ -145,12 +151,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if (hasErrors)
+                if(hasErrors)
                 {
                     DisplayAndWriteError("DsfCountRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
                 }
-                if (dataObject.IsDebugMode())
+                if(dataObject.IsDebugMode())
                 {
 
                     DispatchDebugState(context, StateType.Before);
@@ -158,7 +164,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-        
+
         #region Get Debug Inputs/Outputs
 
         #region GetDebugInputs

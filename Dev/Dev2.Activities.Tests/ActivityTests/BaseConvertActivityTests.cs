@@ -184,12 +184,12 @@ namespace ActivityUnitTests.ActivityTests
 
         }
 
-        // Travis.Frisinger - 24.01.2013 - Bug 7916
         [TestMethod]
-        public void Sclar_To_Base64_Back_To_Text_Expect_Original()
+        [Ignore] // See Bug 12497
+        public void Scalar_To_Base64_Back_To_Text_Expect_Original()
         {
 
-            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[test]]", "Text", "Base64", "[[test]]", 1), new BaseConvertTO("[[test]]", "Base64", "Text", "[[test]]", 2) };
+            IList<BaseConvertTO> convertCollection = new List<BaseConvertTO> { new BaseConvertTO("[[test]]", "Text", "Base 64", "[[test]]", 1), new BaseConvertTO("[[test]]", "Base 64", "Text", "[[test]]", 2) };
             SetupArguments(
                 @"<root><test>data</test></root>"
               , @"<root><test/></root>"

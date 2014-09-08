@@ -69,18 +69,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Service.WebService
             dataObj.Setup(d => d.ParentThreadID).Returns(9);
             dataObj.Setup(d => d.WorkspaceID).Returns(Guid.Empty);
             dataObj.Setup(d => d.IsDebugMode()).Returns(true);
-            //            var serviceExecution = new WebserviceExecution(dataObj.Object, true);
-            //
-            //            var webSource = webService.Source as WebSource;
-            //
-            //            Assert.IsNotNull(webSource);
-            //            serviceExecution.Service = webService;
-            //            serviceExecution.Source = webSource;
-            //            serviceExecution.InstanceOutputDefintions = webService.OutputSpecification;
 
             var webServiceActivity = new DsfWebserviceActivity();
             webServiceActivity.OutputMapping = webService.OutputSpecification;
-            ExecutionID = dataListID;
+            ExecutionId = dataListID;
             CurrentDl = shape;
             TestData = "";
             TestStartNode = new FlowStep

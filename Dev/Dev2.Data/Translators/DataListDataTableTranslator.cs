@@ -73,11 +73,35 @@ namespace Dev2.Data.Translators
                     while(fetchRecordsetIndexes.HasMore())
                     {
                         var binaryDataListItems = entry.FetchRowAt(fetchRecordsetIndexes.FetchNextIndex(), out error);
-                        if(populateOptions == PopulateOptions.IgnoreBlankRows && binaryDataListItems.All(item => String.IsNullOrEmpty(item.TheValue)))
+                        if(populateOptions == PopulateOptions.IgnoreBlankRows && binaryDataListItems.All(item =>
+                        {
+                            string theValue;
+                            try
+                            {
+                                theValue = item.TheValue;
+                            }
+                            catch(Exception)
+                            {
+                                theValue = null;
+                            }
+                            return String.IsNullOrEmpty(theValue);
+                        }))
                         {
                             continue;
                         }
-                        dbData.LoadDataRow(binaryDataListItems.Select(item => item.TheValue as object).ToArray(), LoadOption.OverwriteChanges);
+                        dbData.LoadDataRow(binaryDataListItems.Select(item =>
+                        {
+                            string theValue;
+                            try
+                            {
+                                theValue = item.TheValue;
+                            }
+                            catch(Exception)
+                            {
+                                theValue = null;
+                            }
+                            return theValue as object;
+                        }).ToArray(), LoadOption.OverwriteChanges);
                     }
                 }
             }
@@ -93,7 +117,7 @@ namespace Dev2.Data.Translators
         /// <returns></returns>
         public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
         {
-           throw new NotImplementedException();
+            throw new NotImplementedException();
         }
 
         public Guid Populate(object input, Guid targetDl, string outputDefs, out ErrorResultTO errors)
@@ -109,8 +133,6 @@ namespace Dev2.Data.Translators
 
             if(dbData != null && outputDefs != null)
             {
-                IBinaryDataListEntry entry;
-
                 var defs = DataListFactory.CreateOutputParser().Parse(outputDefs);
                 HashSet<string> processedRecNames = new HashSet<string>();
 
@@ -140,6 +162,7 @@ namespace Dev2.Data.Translators
 
                     // build up the columns ;)
                     string error;
+                    IBinaryDataListEntry entry;
                     if(targetDL.TryGetEntry(rsName, out entry, out error))
                     {
 
@@ -231,7 +254,6 @@ namespace Dev2.Data.Translators
 
         public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
         {
-            string error;
             errors = new ErrorResultTO();
 
             TranslatorUtils tu = new TranslatorUtils();
@@ -259,6 +281,7 @@ namespace Dev2.Data.Translators
                     IBinaryDataListEntry entry;
 
                     // build up the columns ;)
+                    string error;
                     if(targetDL.TryGetEntry(rsName, out entry, out error))
                     {
 
@@ -337,7 +360,9 @@ namespace Dev2.Data.Translators
         /// <param name="dtCols">The dt cols.</param>
         /// <param name="defs">Defs to use</param>
         /// <returns></returns>
+        // ReSharper disable ParameterTypeCanBeEnumerable.Local
         private IDictionary<int, string> BuildColumnNameToIndexMap(IEnumerable<Dev2Column> dlCols, DataColumnCollection dtCols, IList<IDev2Definition> defs)
+        // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             Dictionary<int, string> result = new Dictionary<int, string>();
 

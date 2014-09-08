@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Audit;
@@ -58,7 +59,7 @@ namespace Dev2.Activities.Debug
                               .Replace(GlobalConstants.CalculateTextConvertSuffix, string.Empty);
             }
 
-            if(dlEntry.ComplexExpressionAuditor == null)
+            if(dlEntry != null && dlEntry.ComplexExpressionAuditor == null)
             {
                 int groupIndex = 0;
                 enRecordsetIndexType rsType = DataListUtil.GetRecordsetIndexType(expression);
@@ -130,7 +131,14 @@ namespace Dev2.Activities.Debug
                             if(indx > 0)
                             {
                                 IBinaryDataListItem item = dlEntry.FetchScalar();
-                                CreateScalarDebugItems(expression, item.TheValue, labelText, results, "", groupIndex);
+                                try
+                                {
+                                    CreateScalarDebugItems(expression, item.TheValue, labelText, results, "", groupIndex);
+                                }
+                                catch(NullValueInVariableException)
+                                {
+                                    CreateScalarDebugItems(expression, "", labelText, results, "", groupIndex);
+                                }
                             }
                             else
                             {
@@ -174,33 +182,42 @@ namespace Dev2.Activities.Debug
                     else
                     {
                         IBinaryDataListItem item = dlEntry.FetchScalar();
-                        CreateScalarDebugItems(expression, item.TheValue, labelText, results, "", groupIndex);
+                        try
+                        {
+                            CreateScalarDebugItems(expression, item.TheValue, labelText, results, "", groupIndex);
+                        }
+                        catch(Exception)
+                        {
+                            CreateScalarDebugItems(expression, null, labelText, results, "", groupIndex);
+                        }
                     }
                 }
             }
             else
             {
                 // Complex expressions are handled differently ;)
-                ComplexExpressionAuditor auditor = dlEntry.ComplexExpressionAuditor;
-
-                int idx = 1;
-
-                foreach(ComplexExpressionAuditItem item in auditor.FetchAuditItems())
+                if(dlEntry != null)
                 {
-                    int grpIdx = idx;
-                    string groupName = item.RawExpression;
-                    string displayExpression = item.RawExpression;
-                    if(displayExpression.Contains("()."))
-                    {
-                        displayExpression = displayExpression.Replace("().",
-                                                                      string.Concat("(", auditor.GetMaxIndex(), ")."));
-                    }
-                    if(displayExpression.Contains("(*)."))
-                    {
-                        displayExpression = displayExpression.Replace("(*).", string.Concat("(", idx, ")."));
-                    }
+                    ComplexExpressionAuditor auditor = dlEntry.ComplexExpressionAuditor;
 
-                    results.Add(new DebugItemResult
+                    int idx = 1;
+
+                    foreach(ComplexExpressionAuditItem item in auditor.FetchAuditItems())
+                    {
+                        int grpIdx = idx;
+                        string groupName = item.RawExpression;
+                        string displayExpression = item.RawExpression;
+                        if(displayExpression.Contains("()."))
+                        {
+                            displayExpression = displayExpression.Replace("().",
+                                string.Concat("(", auditor.GetMaxIndex(), ")."));
+                        }
+                        if(displayExpression.Contains("(*)."))
+                        {
+                            displayExpression = displayExpression.Replace("(*).", string.Concat("(", idx, ")."));
+                        }
+
+                        results.Add(new DebugItemResult
                         {
                             Type = DebugItemResultType.Variable,
                             Label = labelText,
@@ -211,7 +228,8 @@ namespace Dev2.Activities.Debug
                             GroupIndex = grpIdx
                         });
 
-                    idx++;
+                        idx++;
+                    }
                 }
             }
 
@@ -601,7 +619,15 @@ namespace Dev2.Activities.Debug
         {
             if((string.IsNullOrEmpty(fieldName) || recordField.FieldName.Equals(fieldName, StringComparison.InvariantCultureIgnoreCase)))
             {
-                string injectVal = recordField.TheValue;
+                string injectVal;
+                try
+                {
+                    injectVal = recordField.TheValue;
+                }
+                catch(Exception)
+                {
+                    injectVal = "";
+                }
                 if(!string.IsNullOrEmpty(value) && recordField.ItemCollectionIndex == (iterCnt + 1))
                 {
                     injectVal = value;

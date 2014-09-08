@@ -104,7 +104,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                                     // Now that this is not happening we need to account for swapped shapes
                                     // This code resolves an issue for certain cases but causes others to fail.
                                     // Need to find a better solution for the case it is trying to solve.
-         
+
 
                                     // FOR : Bug_10247_Outter
                                     // if -1 skip and try next key ;) 
@@ -201,13 +201,27 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                                     // alias update, use row 1
                                     if(parentRow != null)
                                     {
-                                        parentRow.UpdateValue(itm.TheValue, idx, colCnt);
+                                        try
+                                        {
+                                            parentRow.UpdateValue(itm.TheValue, idx, colCnt);
+                                        }
+                                        catch(Exception)
+                                        {
+                                            parentRow.UpdateValue(null, idx, colCnt);
+                                        }
                                     }
                                 }
                                 else
                                 {
                                     // normal update ;)
-                                    childRow.UpdateValue(itm.TheValue, idx, colCnt);
+                                    try
+                                    {
+                                        childRow.UpdateValue(itm.TheValue, idx, colCnt);
+                                    }
+                                    catch(Exception)
+                                    {
+                                        childRow.UpdateValue(null, idx, colCnt);
+                                    }
                                 }
                             }
                         }
@@ -556,7 +570,16 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
                         foreach(IBinaryDataListItem c in cols)
                         {
                             int idx = InternalFetchColumnIndex(c.FieldName);
-                            row.UpdateValue(c.TheValue, idx, colCnt);
+                            string theValue;
+                            try
+                            {
+                                theValue = c.TheValue;
+                            }
+                            catch(Exception)
+                            {
+                                theValue = null;
+                            }
+                            row.UpdateValue(theValue, idx, colCnt);
                         }
 
                         _itemStorage.TrySetValue(sk, colCnt, row);

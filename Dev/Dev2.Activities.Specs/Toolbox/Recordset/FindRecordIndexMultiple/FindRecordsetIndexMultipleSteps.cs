@@ -36,7 +36,7 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
             ScenarioContext.Current.TryGetValue("requireAllTrue", out requireAllTrue);
             bool requireAllFieldsToMatch;
             ScenarioContext.Current.TryGetValue("requireAllFieldsToMatch", out requireAllFieldsToMatch);
-            
+
             var findRecordsMultipleIndex = new DsfFindRecordsMultipleCriteriaActivity
                 {
                     FieldsToSearch = fieldsToSearch,
@@ -223,7 +223,14 @@ namespace Dev2.Activities.Specs.Toolbox.Recordset.FindRecordIndexMultiple
                 expectedResult = expectedResult.Replace('"', ' ').Trim();
                 GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                            out actualValue, out error);
-                Assert.AreEqual(expectedResult, actualValue);
+                if(string.IsNullOrEmpty(expectedResult))
+                {
+                    Assert.IsNull(actualValue);
+                }
+                else
+                {
+                    Assert.AreEqual(expectedResult, actualValue);
+                }
             }
         }
     }

@@ -80,9 +80,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
 
-                IEvaluationFunction evaluationFunctionTO = MathOpsFactory.CreateEvaluationExpressionTO(input);
+                IEvaluationFunction evaluationFunctionTo = MathOpsFactory.CreateEvaluationExpressionTO(input);
 
-                string result = functionEvaluator.EvaluateFunction(evaluationFunctionTO, executionId, out errors);
+                string result = functionEvaluator.EvaluateFunction(evaluationFunctionTo, executionId, out errors);
                 allErrors.MergeErrors(errors);
 
                 compiler.Upsert(executionId, Result, result, out errors);
@@ -95,7 +95,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception ex)
             {
-                Dev2Logger.Log.Error("Calculate Exception",ex);
+
+                Dev2Logger.Log.Error("Calculate Exception", ex);
                 allErrors.AddError(ex.Message);
             }
             finally
@@ -106,6 +107,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DisplayAndWriteError("DsfCalculateActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(executionId, Result, (string)null, out errors);
                 }
                 if(dataObject.IsDebugMode())
                 {

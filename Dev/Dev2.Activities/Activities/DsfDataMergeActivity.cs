@@ -98,7 +98,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             IDev2MergeOperations mergeOperations = new Dev2MergeOperations();
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errorResultTO = new ErrorResultTO();
+            ErrorResultTO errorResultTo = new ErrorResultTO();
             Guid executionId = DataListExecutionID.Get(context);
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
             toUpsert.IsDebug = dataObject.IsDebugMode();
@@ -117,7 +117,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IDev2IteratorCollection iteratorCollection = Dev2ValueObjectFactory.CreateIteratorCollection();
 
 
-                allErrors.MergeErrors(errorResultTO);
+                allErrors.MergeErrors(errorResultTo);
                 Dictionary<int, List<IDev2DataListEvaluateIterator>> listOfIterators = new Dictionary<int, List<IDev2DataListEvaluateIterator>>();
 
                 #region Create a iterator for each row in the data grid in the designer so that the right iteration happen on the data
@@ -125,18 +125,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 int dictionaryKey = 0;
                 foreach(DataMergeDTO row in MergeCollection)
                 {
-                    IBinaryDataListEntry inputVariableExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.InputVariable, false, out errorResultTO);
-                    allErrors.MergeErrors(errorResultTO);
+                    IBinaryDataListEntry inputVariableExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.InputVariable, false, out errorResultTo);
+                    allErrors.MergeErrors(errorResultTo);
 
-                    IBinaryDataListEntry atExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.At, false, out errorResultTO);
-                    allErrors.MergeErrors(errorResultTO);
+                    IBinaryDataListEntry atExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.At, false, out errorResultTo);
+                    allErrors.MergeErrors(errorResultTo);
 
-                    IBinaryDataListEntry paddingExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.Padding, false, out errorResultTO);
-                    allErrors.MergeErrors(errorResultTO);
+                    IBinaryDataListEntry paddingExpressionEntry = compiler.Evaluate(executionId, enActionType.User, row.Padding, false, out errorResultTo);
+                    allErrors.MergeErrors(errorResultTo);
 
                     var fieldName = row.InputVariable;
                     var splitIntoRegions = DataListCleaningUtils.FindAllLanguagePieces(fieldName);
-                    var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errorResultTO);
+                    var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errorResultTo);
                     if(!string.IsNullOrEmpty(datalist))
                     {
                         foreach(var region in splitIntoRegions)
@@ -151,13 +151,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             if(errorInfo != null)
                             {
                                 row.InputVariable = "";
-                                errorResultTO.AddError(errorInfo.Message);
+                                errorResultTo.AddError(errorInfo.Message);
                             }
-                            allErrors.MergeErrors(errorResultTO);
+                            allErrors.MergeErrors(errorResultTo);
                         }
                     }
 
-                    allErrors.MergeErrors(errorResultTO);
+                    allErrors.MergeErrors(errorResultTo);
 
                     if(dataObject.IsDebugMode())
                     {
@@ -252,7 +252,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             var rule = new IsSingleValueRule(() => Result);
                             var single = rule.Check();
-                            if (single != null)
+                            if(single != null)
                             {
                                 allErrors.AddError(single.Message);
                             }
@@ -261,14 +261,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                                 toUpsert.Add(Result, mergeOperations.MergeData.ToString());
                                 toUpsert.FlushIterationFrame();
-                                compiler.Upsert(executionId, toUpsert, out errorResultTO);
-                                allErrors.MergeErrors(errorResultTO);
-                                
-                                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
+                                compiler.Upsert(executionId, toUpsert, out errorResultTo);
+                                allErrors.MergeErrors(errorResultTo);
+
+                                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                                 {
-                                    foreach (var debugOutputTo in toUpsert.DebugOutputs)
+                                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
                                     {
-                                        if (debugOutputTo.LeftEntry != null && debugOutputTo.TargetEntry != null)
+                                        if(debugOutputTo.LeftEntry != null && debugOutputTo.TargetEntry != null)
                                         {
                                             AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                                         }
@@ -281,10 +281,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #endregion Iterate and Merge Data
 
-                #region Add Result to DataList
-                //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-
-                #endregion Add Result to DataList
             }
             catch(Exception e)
             {
@@ -302,7 +298,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugOutputItem(new DebugItemStaticDataParams("", Result, ""));
                     }
                     DisplayAndWriteError("DsfDataMergeActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTO);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTo);
+                    compiler.Upsert(executionId, Result, (string)null, out errorResultTo);
                 }
 
                 if(dataObject.IsDebugMode())
@@ -507,7 +504,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int GetCollectionCount()
         {
-            return MergeCollection.Count(caseConvertTO => !caseConvertTO.CanRemove());
+            return MergeCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
         }
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)

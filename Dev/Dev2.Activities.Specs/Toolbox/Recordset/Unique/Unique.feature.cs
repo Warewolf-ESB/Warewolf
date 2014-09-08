@@ -191,7 +191,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table8.AddRow(new string[] {
                         "",
-                        "[[rec().unique]] ="});
+                        "[[rec(1).unique]] ="});
 #line 42
  testRunner.And("the debug output as", ((string)(null)), table8, "And ");
 #line hidden
@@ -255,7 +255,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table12.AddRow(new string[] {
                         "",
-                        "[[rec().unique]] ="});
+                        "[[rec(1).unique]] ="});
 #line 62
  testRunner.And("the debug output as", ((string)(null)), table12, "And ");
 #line hidden
@@ -319,7 +319,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table16.AddRow(new string[] {
                         "",
-                        "[[rec().unique]] ="});
+                        "[[rec(1).unique]] ="});
 #line 82
  testRunner.And("the debug output as", ((string)(null)), table16, "And ");
 #line hidden
@@ -388,7 +388,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table20.AddRow(new string[] {
                         "",
-                        "[[rec().unique]] ="});
+                        "[[rec(1).unique]] ="});
 #line 103
  testRunner.And("the debug output as", ((string)(null)), table20, "And ");
 #line hidden
@@ -549,7 +549,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table28.AddRow(new string[] {
                         "",
-                        "[[rec().unique]] ="});
+                        "[[rec(1).unique]] ="});
 #line 152
  testRunner.And("the debug output as", ((string)(null)), table28, "And ");
 #line hidden

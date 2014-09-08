@@ -7,7 +7,6 @@ using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Common;
@@ -24,7 +23,7 @@ namespace Dev2.Tests.Runtime
         const int VersionNo = 9999;
 
         const string ServiceName = "Mo\\TestForEachOutput";
-        readonly Guid _serviceID = Guid.NewGuid();
+        readonly Guid _serviceId = Guid.NewGuid();
 
         const string ServiceShape = @"<DataList>
   <inputScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
@@ -57,24 +56,24 @@ namespace Dev2.Tests.Runtime
   </recset>
 </DataList>";
 
-        Guid _workspaceID;
+        Guid _workspaceId;
 
         #region TestInitialize/Cleanup
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _workspaceID = Guid.NewGuid();
+            _workspaceId = Guid.NewGuid();
 
             List<IResource> resources;
-            ResourceCatalogTests.SaveResources(_workspaceID, VersionNo.ToString(CultureInfo.InvariantCulture), true, false,
+            ResourceCatalogTests.SaveResources(_workspaceId, VersionNo.ToString(CultureInfo.InvariantCulture), true, false,
                null,
                new[] { "TestForEachOutput" },
                out resources,
                null,
-               new[] { _serviceID });
+               new[] { _serviceId });
 
-            ResourceCatalog.Instance.LoadWorkspace(_workspaceID);
+            ResourceCatalog.Instance.LoadWorkspace(_workspaceId);
 
         }
         #endregion
@@ -87,13 +86,13 @@ namespace Dev2.Tests.Runtime
         {
             IDataListCompiler comp = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, ServiceShape, out errors);
+            Guid dlId = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, ServiceShape, out errors);
 
-            IDSFDataObject dataObj = new DsfDataObject(string.Empty, dlID) { WorkspaceID = _workspaceID, DataListID = dlID, ServiceName = ServiceName };
+            IDSFDataObject dataObj = new DsfDataObject(string.Empty, dlId) { WorkspaceID = _workspaceId, DataListID = dlId, ServiceName = ServiceName };
             EsbServicesEndpoint endPoint = new EsbServicesEndpoint();
             string result = endPoint.FetchExecutionPayload(dataObj, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), out errors);
 
-            DeleteDataList(dlID);
+            DeleteDataList(dlId);
 
             Assert.IsTrue(result.IndexOf("<inputScalar", StringComparison.Ordinal) < 0, "Output format contains additional tag, <inputScalar>");
             Assert.IsTrue(result.IndexOf("<noneScalar", StringComparison.Ordinal) < 0, "Output format contains additional tag, <noneScalar>");
@@ -138,13 +137,13 @@ namespace Dev2.Tests.Runtime
         {
             IDataListCompiler comp = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, ServiceShape, out errors);
-            var resource = ResourceCatalog.Instance.GetResource(_workspaceID, ServiceName);
-            IDSFDataObject dataObj = new DsfDataObject(string.Empty, dlID) { WorkspaceID = _workspaceID, DataListID = dlID, ServiceName = ServiceName, ResourceID = resource.ResourceID };
+            Guid dlId = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, ServiceShape, out errors);
+            var resource = ResourceCatalog.Instance.GetResource(_workspaceId, ServiceName);
+            IDSFDataObject dataObj = new DsfDataObject(string.Empty, dlId) { WorkspaceID = _workspaceId, DataListID = dlId, ServiceName = ServiceName, ResourceID = resource.ResourceID };
             EsbServicesEndpoint endPoint = new EsbServicesEndpoint();
             string result = endPoint.FetchExecutionPayload(dataObj, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), out errors);
 
-            DeleteDataList(dlID);
+            DeleteDataList(dlId);
 
             Assert.IsTrue(result.IndexOf("<outputScalar", StringComparison.Ordinal) > 0, "Output format missing required tag of <outputScalar>");
             Assert.IsTrue(result.IndexOf("<bothScalar", StringComparison.Ordinal) > 0, "Output format missing required tag of <bothScalar");

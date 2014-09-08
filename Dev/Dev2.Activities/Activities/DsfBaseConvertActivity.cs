@@ -90,100 +90,101 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 CleanArgs();
-    
+
                 toUpsert.IsDebug = dataObject.IsDebugMode();
 
-                foreach(BaseConvertTO item in ConvertCollection)
+                foreach(var item in ConvertCollection)
                 {
-                    _indexCounter++;
-                    // Travis.Frisinger - This needs to be in the ViewModel not here ;)
-                    if(item.ToExpression == string.Empty)
+                    try
                     {
-                        item.ToExpression = item.FromExpression;
-                    }
-                    IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
-                    var fieldName = item.FromExpression;
-                    fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
-                    var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), Dev2.DataList.Contract.enTranslationDepth.Shape, out errors);
-                    if(!string.IsNullOrEmpty(datalist))
-                    {
-                        var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist)
+                        _indexCounter++;
+                        // Travis.Frisinger - This needs to be in the ViewModel not here ;)
+                        if(item.ToExpression == string.Empty)
                         {
-                            LabelText = fieldName
-                        };
+                            item.ToExpression = item.FromExpression;
+                        }
+                        IsSingleValueRule.ApplyIsSingleValueRule(item.FromExpression, allErrors);
+                        var fieldName = item.FromExpression;
+                        fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
+                        var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), Dev2.DataList.Contract.enTranslationDepth.Shape, out errors);
+                        if(!string.IsNullOrEmpty(datalist))
+                        {
+                            var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist)
+                            {
+                                LabelText = fieldName
+                            };
 
-                        var errorInfo = isValidExpr.Check();
-                        if(errorInfo != null)
+                            var errorInfo = isValidExpr.Check();
+                            if(errorInfo != null)
+                            {
+                                item.FromExpression = "";
+                                errors.AddError(errorInfo.Message);
+                            }
+                            allErrors.MergeErrors(errors);
+                        }
+
+                        IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.FromExpression, false, out errors);
+                        if(dataObject.IsDebugMode())
                         {
-                            item.FromExpression = "";
-                            errors.AddError(errorInfo.Message);
+                            AddDebugInputItem(item.FromExpression, tmp, executionId, item.FromType, item.ToType);
                         }
                         allErrors.MergeErrors(errors);
-                    }
-
-
-                    
-                    IBinaryDataListEntry tmp = compiler.Evaluate(executionId, enActionType.User, item.FromExpression, false, out errors);
-                    if(dataObject.IsDebugMode())
-                    {
-                        AddDebugInputItem(item.FromExpression, tmp, executionId, item.FromType, item.ToType);
-                    }
-                    allErrors.MergeErrors(errors);
-                    if(tmp != null)
-                    {
-
-                        IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(tmp);
-
-                        IBaseConverter from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
-                        IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
-                        IBaseConversionBroker broker = _fac.CreateBroker(from, to);
-
-                        // process result information
-                        while(itr.HasMoreRecords())
+                        if(tmp != null)
                         {
 
-                            IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
-                            foreach(IBinaryDataListItem c in cols)
+                            IDev2DataListEvaluateIterator itr = Dev2ValueObjectFactory.CreateEvaluateIterator(tmp);
+
+                            IBaseConverter from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
+                            IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
+                            IBaseConversionBroker broker = _fac.CreateBroker(from, to);
+
+                            // process result information
+                            while(itr.HasMoreRecords())
                             {
-                                // set up live flushing iterator details
-                                if(c.IsDeferredRead)
+
+                                IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
+                                foreach(IBinaryDataListItem c in cols)
                                 {
-                                    if(toUpsert != null)
+                                    // set up live flushing iterator details
+                                    if(c.IsDeferredRead)
                                     {
-                                        toUpsert.HasLiveFlushing = true;
-                                        toUpsert.LiveFlushingLocation = executionId;
+                                        if(toUpsert != null)
+                                        {
+                                            toUpsert.HasLiveFlushing = true;
+                                            toUpsert.LiveFlushingLocation = executionId;
+                                        }
                                     }
-                                }
 
-                                int indexToUpsertTo = c.ItemCollectionIndex;
+                                    int indexToUpsertTo = c.ItemCollectionIndex;
 
-                                string val = string.IsNullOrEmpty(c.TheValue) ? "" : broker.Convert(c.TheValue);
-                                string expression = item.ToExpression;
+                                    string val = string.IsNullOrEmpty(c.TheValue) ? "" : broker.Convert(c.TheValue);
+                                    string expression = item.ToExpression;
 
-                                if(DataListUtil.IsValueRecordset(item.ToExpression) && DataListUtil.GetRecordsetIndexType(item.ToExpression) == enRecordsetIndexType.Star)
-                                {
-                                    expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                }
-
-                                
-                        
-                                toUpsert.Add(expression, val);
-
-
-                                if(toUpsert != null && toUpsert.HasLiveFlushing)
-                                {
-                                    try
+                                    if(DataListUtil.IsValueRecordset(item.ToExpression) && DataListUtil.GetRecordsetIndexType(item.ToExpression) == enRecordsetIndexType.Star)
+                                    {
+                                        expression = item.ToExpression.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                                    }
+                                    toUpsert.Add(expression, val);
+                                    if(toUpsert != null && toUpsert.HasLiveFlushing)
                                     {
                                         toUpsert.FlushIterationFrame();
                                         toUpsert = null;
                                     }
-                                    catch(Exception e)
-                                    {
-                                        Dev2Logger.Log.Error("DSFBaseConvert", e);
-                                        allErrors.AddError(e.Message);
-                                    }
                                 }
                             }
+                        }
+                    }
+                    catch(Exception e)
+                    {
+
+                        Dev2Logger.Log.Error("DSFBaseConvert", e);
+                        allErrors.AddError(e.Message);
+                    }
+                    finally
+                    {
+                        if(allErrors.HasErrors())
+                        {
+                            toUpsert.Add(item.ToExpression, null);
                         }
                     }
                 }
@@ -196,7 +197,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
-                        Dev2Logger.Log.Error("DSFBaseConvert",e);
+                        Dev2Logger.Log.Error("DSFBaseConvert", e);
                         allErrors.AddError(e.Message);
                     }
                 }
@@ -209,11 +210,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if(!allErrors.HasErrors() && toUpsert != null)
                 {
                     var outIndex = 1;
-                    foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                    foreach(var debugOutputTo in toUpsert.DebugOutputs)
                     {
                         var debugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", outIndex.ToString(CultureInfo.InvariantCulture)), debugItem);
-                        AddDebugItem(new DebugItemVariableParams(debugOutputTO), debugItem);
+                        AddDebugItem(new DebugItemVariableParams(debugOutputTo), debugItem);
                         _debugOutputs.Add(debugItem);
                         outIndex++;
                     }
@@ -314,8 +315,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     List<BaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
                     if(listOfValidRows.Count > 0)
                     {
-                        BaseConvertTO baseConvertTO = ConvertCollection.Last(c => !c.CanRemove());
-                        int startIndex = ConvertCollection.IndexOf(baseConvertTO) + 1;
+                        BaseConvertTO baseConvertTo = ConvertCollection.Last(c => !c.CanRemove());
+                        int startIndex = ConvertCollection.IndexOf(baseConvertTo) + 1;
                         foreach(string s in listToAdd)
                         {
                             mic.Insert(startIndex, new BaseConvertTO(s, ConvertCollection[startIndex - 1].FromType, ConvertCollection[startIndex - 1].ToType, string.Empty, startIndex + 1));
@@ -470,7 +471,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int GetCollectionCount()
         {
-            return ConvertCollection.Count(caseConvertTO => !caseConvertTO.CanRemove());
+            return ConvertCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
         }
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)

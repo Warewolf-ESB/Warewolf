@@ -41,6 +41,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromDataList(result.DataListID, "res", out actual, out error);
 
             Assert.IsTrue(Compiler.HasErrors(result.DataListID));
+            Assert.IsNull(actual);
         }
 
 
@@ -413,7 +414,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             const string expected = @"<InnerError>Please insert only variables into Fields To Search</InnerError>";
-            string actual; 
+            string actual;
             string error;
             GetScalarValueFromDataList(result.DataListID, GlobalConstants.ErrorPayload, out actual, out error);
             // remove test datalist ;)

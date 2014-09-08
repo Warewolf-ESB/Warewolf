@@ -73,10 +73,10 @@ namespace Dev2.Activities
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            Guid dlID = dataObject.DataListID;
+            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
-            Guid executionId = dlID;
+            Guid executionId = dlId;
             allErrors.MergeErrors(errors);
 
             IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
@@ -108,7 +108,7 @@ namespace Dev2.Activities
                         AddDebugInputItem(Length, From, To, fromEntry, toEntry, lengthEntry, executionId, RandomType);
                     }
                     Dev2Random dev2Random = new Dev2Random();
-                    while (colItr.HasMoreData())
+                    while(colItr.HasMoreData())
                     {
                         int lengthNum = -1;
                         int fromNum = -1;
@@ -118,14 +118,14 @@ namespace Dev2.Activities
                         string toValue = colItr.FetchNextRow(toItr).TheValue;
                         string lengthValue = colItr.FetchNextRow(lengthItr).TheValue;
 
-                        if (RandomType != enRandomType.Guid)
+                        if(RandomType != enRandomType.Guid)
                         {
-                            if (RandomType == enRandomType.Numbers)
+                            if(RandomType == enRandomType.Numbers)
                             {
                                 #region Getting the From
 
                                 fromNum = GetFromValue(fromValue, out errors);
-                                if (errors.HasErrors())
+                                if(errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -136,7 +136,7 @@ namespace Dev2.Activities
                                 #region Getting the To
 
                                 toNum = GetToValue(toValue, out errors);
-                                if (errors.HasErrors())
+                                if(errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -149,7 +149,7 @@ namespace Dev2.Activities
                                 #region Getting the Length
 
                                 lengthNum = GetLengthValue(lengthValue, out errors);
-                                if (errors.HasErrors())
+                                if(errors.HasErrors())
                                 {
                                     allErrors.MergeErrors(errors);
                                     continue;
@@ -163,16 +163,16 @@ namespace Dev2.Activities
                         //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
                         var rule = new IsSingleValueRule(() => Result);
                         var single = rule.Check();
-                        if (single != null)
+                        if(single != null)
                         {
                             allErrors.AddError(single.Message);
                         }
                         else
                         {
-                           
-                                toUpsert.Add(Result, value);
-                                toUpsert.FlushIterationFrame();
-                            
+
+                            toUpsert.Add(Result, value);
+                            toUpsert.FlushIterationFrame();
+
                         }
                     }
                     compiler.Upsert(executionId, toUpsert, out errors);
@@ -185,9 +185,9 @@ namespace Dev2.Activities
                         }
                         else
                         {
-                            foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                            foreach(var debugOutputTo in toUpsert.DebugOutputs)
                             {
-                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                                AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                             }
                         }
                     }
@@ -207,6 +207,7 @@ namespace Dev2.Activities
                 {
                     DisplayAndWriteError("DsfRandomActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(executionId, Result, (string)null, out errors);
                 }
                 if(dataObject.IsDebugMode())
                 {

@@ -74,7 +74,7 @@ namespace Dev2.Activities
             }
             var dataObject = context.GetExtension<IDSFDataObject>();
             var compiler = DataListFactory.CreateDataListCompiler();
-            var dlID = dataObject.DataListID;
+            var dlId = dataObject.DataListID;
             var allErrors = new ErrorResultTO();
             var executionId = DataListExecutionID.Get(context);
             var toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
@@ -138,8 +138,6 @@ namespace Dev2.Activities
             catch(Exception e)
             {
                 Dev2Logger.Log.Error("DSFWebGetRequest", e);
-                var expression = GetExpression(1);
-                PushResultsToDataList(expression, toUpsert, "", dataObject, executionId, compiler, allErrors);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -147,7 +145,9 @@ namespace Dev2.Activities
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfWebGetRequestActivity", allErrors);
-                    compiler.UpsertSystemTag(dlID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
+                    compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
+                    var expression = GetExpression(1);
+                    PushResultsToDataList(expression, toUpsert, null, dataObject, executionId, compiler, allErrors);
                 }
                 if(dataObject.IsDebugMode())
                 {

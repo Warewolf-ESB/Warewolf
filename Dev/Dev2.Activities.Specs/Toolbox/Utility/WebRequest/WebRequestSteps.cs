@@ -87,7 +87,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.IsTrue(actualValue.Contains(expectedResult));
+            if(string.IsNullOrEmpty(expectedResult))
+            {
+                Assert.IsNull(actualValue);
+            }
+            else
+            {
+                Assert.IsTrue(actualValue.Contains(expectedResult));
+            }
         }
     }
 }

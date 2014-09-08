@@ -79,7 +79,14 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-            Assert.IsTrue(actualValue.Contains(actualValue));
+            if(string.IsNullOrEmpty(expectedResult))
+            {
+                Assert.IsNull(actualValue);
+            }
+            else
+            {
+                Assert.IsTrue(actualValue.Contains(actualValue));
+            }
         }
 
         [Given(@"I have a command variable ""(.*)"" equal to ""(.*)""")]

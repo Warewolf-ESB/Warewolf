@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -62,7 +64,15 @@ namespace Dev2.ViewModels.Workflow
                             singleRes.Recordset = item.Namespace;
                             singleRes.Field = item.FieldName;
                             singleRes.RecordsetIndex = (count + 1).ToString(CultureInfo.InvariantCulture);
-                            singleRes.Value = item.TheValue;
+                            try
+                            {
+                                singleRes.Value = item.TheValue;
+                            }
+                            catch(Exception e)
+                            {
+                                Dev2Logger.Log.Error(e);
+                                singleRes.Value = null;
+                            }
 
                             singleRes.DisplayValue = item.DisplayValue;
                             var desc = dataListEntry.Columns.FirstOrDefault(c => c.ColumnName == item.FieldName);

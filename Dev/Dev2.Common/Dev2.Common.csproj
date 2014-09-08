@@ -91,6 +91,7 @@
     <Compile Include="Common\DirectoryHelper.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />
     <Compile Include="Common\GetComputerNames.cs" />
+    <Compile Include="Common\NullValueInVariableException.cs" />
     <Compile Include="DB Support\DBConnectionProperties.cs" />
     <Compile Include="DB Support\DBConnectionString.cs" />
     <Compile Include="DB Support\DB_Helper\DBHelperFactory.cs" />

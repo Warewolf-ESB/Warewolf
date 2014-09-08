@@ -114,7 +114,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Process if no errors
             try
             {
-                IsSingleValueRule.ApplyIsSingleValueRule(Result,allErrors);
+                IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
                 IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                 toUpsert.IsDebug = (dataObject.IsDebugMode());
                 toUpsert.ResourceID = dataObject.ResourceID;
@@ -179,7 +179,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     while(colItr.HasMoreData())
                     {
-                        IDateTimeOperationTO transObj = ConvertToDateTimeTO(colItr.FetchNextRow(dtItr).TheValue,
+                        IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextRow(dtItr).TheValue,
                                                                                 colItr.FetchNextRow(ifItr).TheValue,
                                                                                 colItr.FetchNextRow(ofItr).TheValue,
                                                                                 TimeModifierType,
@@ -194,9 +194,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             string expression = Result;
                             //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-                       
-                                toUpsert.Add(expression, result);
-                            
+
+                            toUpsert.Add(expression, result);
+
                             toUpsert.FlushIterationFrame();
                         }
                         else
@@ -208,9 +208,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.MergeErrors(errors);
                     if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                     {
-                        foreach(var debugOutputTO in toUpsert.DebugOutputs)
+                        foreach(var debugOutputTo in toUpsert.DebugOutputs)
                         {
-                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTO));
+                            AddDebugOutputItem(new DebugItemVariableParams(debugOutputTo));
                         }
                     }
                     allErrors.MergeErrors(errors);
@@ -230,6 +230,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DisplayAndWriteError("DsfDateTimeActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(executionId, Result, (string)null, out errors);
                 }
                 if(dataObject.IsDebugMode())
                 {
@@ -248,7 +249,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Used for converting the properties of this activity to a DateTimeTO object
         /// </summary>
-        private IDateTimeOperationTO ConvertToDateTimeTO(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
+        private IDateTimeOperationTO ConvertToDateTimeTo(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
         {
             //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
             //Create a DateTimeTO using the DateTimeConverterFactory and send through the properties of this activity.DONE

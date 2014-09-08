@@ -1,7 +1,6 @@
 ﻿using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Activities.Statements;
@@ -78,7 +77,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(string.Empty, actual);
+            Assert.AreEqual(null, actual);
 
         }
 
@@ -96,7 +95,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // remove test datalist ;)
             DataListRemoval(result.DataListID);
 
-            Assert.AreEqual(string.Empty, actual);
+            Assert.AreEqual(null, actual);
         }
 
         [TestMethod]

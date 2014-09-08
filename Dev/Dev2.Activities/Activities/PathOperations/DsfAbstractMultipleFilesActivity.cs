@@ -134,7 +134,7 @@ namespace Dev2.Activities.PathOperations
 
                 if(hasError)
                 {
-                    outputs[0].OutputStrings.Add("Failure");
+                    outputs[0].OutputStrings.Add(null);
                     MoveRemainingIterators();
                     continue;
                 }
@@ -151,10 +151,10 @@ namespace Dev2.Activities.PathOperations
                 catch(Exception e)
                 {
                     allErrors.AddError(e.Message);
-                    outputs[0].OutputStrings.Add("Failure");
+                    outputs[0].OutputStrings.Add(null);
                 }
             }
-               
+
             return outputs;
 
         }

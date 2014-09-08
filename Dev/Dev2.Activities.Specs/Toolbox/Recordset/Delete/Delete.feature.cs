@@ -158,7 +158,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 34
  testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 35
- testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the delete result should be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 36
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -172,7 +172,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table7.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 40
  testRunner.And("the debug output as", ((string)(null)), table7, "And ");
 #line hidden
@@ -390,7 +390,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 115
  testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 116
- testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the delete result should be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -419,7 +419,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table23.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 126
  testRunner.And("the debug output as", ((string)(null)), table23, "And ");
 #line hidden
@@ -454,7 +454,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 137
  testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 138
- testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the delete result should be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -483,7 +483,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table27.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 148
  testRunner.And("the debug output as", ((string)(null)), table27, "And ");
 #line hidden
@@ -509,7 +509,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 156
  testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 157
- testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the delete result should be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table29 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -529,7 +529,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table31 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table31.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 164
  testRunner.And("the debug output as", ((string)(null)), table31, "And ");
 #line hidden
@@ -551,7 +551,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 171
  testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 172
- testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the delete result should be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 173
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
@@ -563,7 +563,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table33.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 176
  testRunner.And("the debug output as", ((string)(null)), table33, "And ");
 #line hidden
@@ -601,7 +601,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 188
  testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 189
- testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the delete result should be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -637,7 +637,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table38.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 201
  testRunner.And("the debug output as", ((string)(null)), table38, "And ");
 #line hidden
@@ -675,7 +675,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 213
  testRunner.When("the delete tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 214
- testRunner.Then("the delete result should be \"Failure\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the delete result should be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
                         "rs",
@@ -705,7 +705,7 @@ this.ScenarioSetup(scenarioInfo);
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table42.AddRow(new string[] {
-                        "[[result]] = Failure"});
+                        "[[result]] ="});
 #line 224
  testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden

@@ -1826,7 +1826,7 @@ namespace Dev2.Server.Datalist
                             indeces.Add(DataListUtil.ExtractIndexRegionFromRecordset(variable));
                             IList<IIntellisenseResult> expressionParts = _parser.ParseExpressionIntoParts(variable, rules.FetchIntellisenseParts());
                             anyHasErrors.Add(expressionParts.Any(c => c.Type == enIntellisenseResultType.Error));
-                        }   
+                        }
                     }
                 }
             }
@@ -1834,12 +1834,12 @@ namespace Dev2.Server.Datalist
             {
                 hasErrors = true;
             }
-           
-            if (anyHasErrors.Any(e => e))
+
+            if(anyHasErrors.Any(e => e))
             {
                 hasErrors = true;
             }
-           
+
             return hasErrors;
         }
 
@@ -2051,513 +2051,7 @@ namespace Dev2.Server.Datalist
                 DebugTO debugTO = new DebugTO();
                 foreach(IDataListPayloadIterationFrame<T> f in payload.FetchFrames())
                 {
-                    IBinaryDataListEntry entryUsed = null;
-                    // iterate per frame fetching frame items
-
-                    while(f.HasData())
-                    {
-                        if(typeof(T) == typeof(RecordsetGroup))
-                        {
-                            ProcessRecordsetGroup(f.FetchNextFrameItem().Value as RecordsetGroup, bdl, out errors);
-                            allErrors.MergeErrors(errors);
-                            continue;
-                        }
-
-                        if(!payload.IsIterativePayload())
-                        {
-                            debugTO = new DebugTO();
-                        }
-                        DataListPayloadFrameTO<T> frameItem = f.FetchNextFrameItem();
-
-                        // find the part to use
-                        IIntellisenseResult part = tc.ParseTokenForMatch(frameItem.Expression, bdl.FetchIntellisenseParts());
-
-                        // recursive eval ;)
-                        if(part == null)
-                        {
-                            EvaluateRuleSet ers = new EvaluateRuleSet { BinaryDataList = bdl, Expression = frameItem.Expression, EvaluateToRootOnly = true, IsDebug = payload.IsDebug };
-
-                            IBinaryDataListEntry tmpItem = InternalDataListEvaluateV2(ers);
-                            allErrors.MergeErrors(ers.Errors);
-                            errors.ClearErrors();
-
-                            // now find the correct token based upon the eval
-                            if(tmpItem != null)
-                            {
-                                part = tc.ParseTokenForMatch(tmpItem.FetchScalar().TheValue, bdl.FetchIntellisenseParts());
-                            }
-                        }
-
-                        // now we have the part, build up the item to push into the entry....
-                        if(part != null)
-                        {
-
-                            string field = part.Option.Field;
-                            string rs = part.Option.Recordset;
-
-                            // Process evaluated values via some Generic magic....
-                            IBinaryDataListEntry evaluatedValue = null;
-                            if(typeof(T) == typeof(string))
-                            {
-                                string itemVal = frameItem.Value.ToString();
-                                evaluatedValue = InternalEvaluate(itemVal, bdl, out errors);
-
-                                if(errors.HasErrors())
-                                {
-                                    allErrors.MergeErrors(errors);
-                                    evaluatedValue = InternalEvaluate(string.Empty, bdl, out errors);
-                                }
-                                else
-                                {
-                                    allErrors.MergeErrors(errors);
-                                }
-                            }
-                            else if(typeof(T) == typeof(IBinaryDataListEntry))
-                            {
-                                evaluatedValue = (IBinaryDataListEntry)frameItem.Value;
-
-                                if(!evaluatedValue.IsRecordset)
-                                {
-                                    IBinaryDataListItem itm = evaluatedValue.FetchScalar();
-                                    if(!itm.IsDeferredRead)
-                                    {
-                                        var val = evaluatedValue.FetchScalar().TheValue;
-                                        IIntellisenseResult res = tc.ParseTokenForMatch(val, bdl.FetchIntellisenseParts());
-                                        if(res != null && res.Type == enIntellisenseResultType.Selectable)
-                                        {
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            else if(typeof(T) == typeof(List<string>))
-                            {
-                                var value = frameItem.Value;
-                                var list = value as List<string>;
-                                if(part.Option.IsScalar)
-                                {
-                                    string csvValue = string.Join(",", list);
-                                    evaluatedValue = InternalEvaluate(csvValue, bdl, out errors);
-                                    allErrors.MergeErrors(errors);
-                                }
-                                else if(part.Option.HasRecordsetIndex && DataListUtil.GetRecordsetIndexType(part.Option.DisplayValue) == enRecordsetIndexType.Numeric)
-                                {
-                                    evaluatedValue = InternalEvaluate(list[list.Count - 1], bdl, out errors);
-                                }
-                                else
-                                {
-                                    string entryNamespace = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
-                                    IBinaryDataListEntry binaryDataListEntry = Dev2BinaryDataListFactory.CreateEntry(entryNamespace, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column(field, field) }, bdl.UID);
-                                    for(int i = 0; i < list.Count; i++)
-                                    {
-                                        IBinaryDataListItem binaryDataListItem = Dev2BinaryDataListFactory.CreateBinaryItem(list[i], entryNamespace, field, i + 1);
-                                        string errString;
-                                        binaryDataListEntry.TryPutRecordItemAtIndex(binaryDataListItem, i + 1, out errString);
-                                        if(!String.IsNullOrEmpty(errString))
-                                        {
-                                            errors.AddError(errString);
-                                        }
-                                    }
-
-                                    evaluatedValue = binaryDataListEntry;
-                                }
-                            }
-
-                            if(payload.IsDebug)
-                            {
-                                IBinaryDataListEntry leftSide;
-                                IBinaryDataListEntry tmpEntry;
-                                if(part.Option.IsScalar)
-                                {
-                                    bdl.TryGetEntry(field, out tmpEntry, out error);
-                                    leftSide = tmpEntry.Clone(Dev2.DataList.Contract.enTranslationDepth.Data, Guid.NewGuid(), out error);
-                                }
-                                else
-                                {
-                                    bdl.TryGetEntry(part.Option.Recordset, out tmpEntry, out error);
-                                    leftSide = tmpEntry.Clone(Dev2.DataList.Contract.enTranslationDepth.Data, Guid.NewGuid(), out error);
-                                }
-                                debugTO.LeftEntry = leftSide;
-                                debugTO.LeftEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
-                                ErrorResultTO invokeError;
-                                ProcessLeftSide(debugTO, frameItem, bdl, out invokeError);
-                                allErrors.MergeErrors(invokeError);
-                            }
-                            allErrors.MergeErrors(errors);
-                            if(payload.IsDebug)
-                            {
-                                if(evaluatedValue == null)
-                                {
-                                    allErrors.AddError("Problems Evaluating Expression [ " + frameItem.Value + " ]");
-                                }
-                                else
-                                {
-                                    debugTO.RightEntry = evaluatedValue;
-                                    debugTO.RightEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
-                                    ErrorResultTO invokeError;
-                                    ProcessRightSide(debugTO, frameItem, bdl, out invokeError);
-                                    allErrors.MergeErrors(invokeError);
-                                }
-                            }
-                            // check entry cache based upon type ;)
-                            IBinaryDataListEntry entry;
-                            if(part.Option.IsScalar)
-                            {
-                                bdl.TryGetEntry(field, out entry, out error);
-                                allErrors.AddError(error);
-
-                                if(payload.IsDebug && entry != null)
-                                {
-                                    debugTO.TargetEntry = entry.Clone(Dev2.DataList.Contract.enTranslationDepth.Data, Guid.NewGuid(), out error);
-                                }
-
-
-                                if(evaluatedValue != null && entry != null)
-                                {
-                                    if(!evaluatedValue.IsRecordset)
-                                    {
-                                        // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                        var scalar = evaluatedValue.FetchScalar();
-                                        IBinaryDataListItem tmpI = scalar.Clone();
-
-                                        tmpI.UpdateField(field);
-                                        entry.TryPutScalar(tmpI, out error);
-                                        allErrors.AddError(error);
-                                        BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
-
-                                    }
-                                    else
-                                    {
-                                        // process it as a recordset to scalar ie last value is placed ;) unless needs to be placed in scalar as CSV :P
-                                        if(payload.RecordSetDataAsCSVToScalar)
-                                        {
-                                            IBinaryDataListItem tmpI = evaluatedValue.TryFetchLastIndexedRecordsetUpsertPayload(out error).Clone();
-                                            tmpI.UpdateField(field);
-                                            string updatedValue = entry.FetchScalar().TheValue + "," + tmpI.TheValue;
-                                            tmpI.UpdateValue(updatedValue.TrimStart(','));
-                                            entry.TryPutScalar(tmpI, out error);
-                                            allErrors.AddError(error);
-
-                                            allErrors.AddError(error);
-                                            BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
-                                        }
-                                        else
-                                        {
-                                            // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                            IBinaryDataListItem tmpI = evaluatedValue.TryFetchLastIndexedRecordsetUpsertPayload(out error).Clone();
-                                            tmpI.UpdateField(field);
-                                            entry.TryPutScalar(tmpI, out error);
-                                            allErrors.AddError(error);
-                                            BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
-                                        }
-                                    }
-                                } // else do nothing
-
-                            }
-                            else
-                            {
-                                bdl.TryGetEntry(part.Option.Recordset, out entry, out error);
-
-                                if(payload.IsDebug && (!payload.IsIterativePayload() || debugTO.TargetEntry == null))
-                                {
-                                    debugTO.TargetEntry = Dev2BinaryDataListFactory.CreateEntry(entry.Namespace, entry.Description, entry.Columns, Guid.NewGuid());
-                                    debugTO.TargetEntry.ComplexExpressionAuditor = entry.ComplexExpressionAuditor;
-                                }
-
-                                allErrors.AddError(error);
-                                if(entry != null)
-                                {
-                                    int idx = rsis.FetchRecordsetIndex(part, entry, payload.IsIterativePayload());
-
-                                    enRecordsetIndexType idxType = DataListUtil.GetRecordsetIndexTypeRaw(part.Option.RecordsetIndex);
-
-                                    if(idx > 0)
-                                    {
-                                        debugIdx = idx;
-
-                                        if(evaluatedValue != null)
-                                        {
-                                            if(!evaluatedValue.IsRecordset)
-                                            {
-                                                IBinaryDataListItem tmpI;
-                                                // we have a scalar to recordset....
-                                                switch(idxType)
-                                                {
-                                                    case enRecordsetIndexType.Star:
-                                                        if(!payload.IsIterativePayload())
-                                                        {
-                                                            // scalar to star
-                                                            IIndexIterator ii = entry.FetchRecordsetIndexes();
-                                                            while(ii.HasMore())
-                                                            {
-                                                                int next = ii.FetchNextIndex();
-                                                                // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                                                var scalar = evaluatedValue.FetchScalar();
-                                                                tmpI = scalar.Clone();
-                                                                tmpI.UpdateField(field);
-                                                                entry.TryPutRecordItemAtIndex(tmpI, next, out error);
-                                                                allErrors.AddError(error);
-                                                                BuildComplexExpressionsForDebug(debugTO, part, tmpI, DataListUtil.ReplaceStarWithFixedIndex(part.Option.DisplayValue, next));
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            // we need to move the iteration overwrite indexs ?
-                                                            // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                                            var scalar = evaluatedValue.FetchScalar();
-                                                            tmpI = scalar.Clone();
-                                                            tmpI.UpdateField(field);
-                                                            tmpI.UpdateRecordset(rs);
-                                                            tmpI.UpdateIndex(idx);
-
-                                                            entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
-
-                                                            allErrors.AddError(error);
-                                                            BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
-                                                        }
-                                                        break;
-
-                                                    case enRecordsetIndexType.Error:
-                                                        //2013.05.29: Ashley Lewis for bug 9379 - throw an error on invalid recordset index
-                                                        allErrors.AddError("Recordset index (" + part.Option.RecordsetIndex + ") contains invalid character(s)");
-                                                        break;
-
-                                                    default:
-                                                        // scalar to index
-                                                        // 01.02.2013 - Travis.Frisinger : Bug 8579 
-
-                                                        var dataListItem = evaluatedValue.FetchScalar();
-                                                        tmpI = dataListItem.Clone();
-                                                        tmpI.UpdateRecordset(rs);
-                                                        tmpI.UpdateField(field);
-                                                        tmpI.UpdateIndex(idx);
-                                                        entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
-                                                        allErrors.AddError(error);
-                                                        BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
-                                                        break;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                int starPopIdxPos = 0;
-
-                                                // field to field move
-                                                if(!string.IsNullOrEmpty(field))
-                                                {
-
-                                                    IIndexIterator idxItr = evaluatedValue.FetchRecordsetIndexes();
-                                                    IIndexIterator starPopIdx = entry.FetchRecordsetIndexes();
-                                                    IList<int> populateIdxs = new List<int> { idx };
-
-                                                    if(idxType == enRecordsetIndexType.Star)
-                                                    {
-
-                                                        starPopIdx = entry.FetchRecordsetIndexes().Clone();
-
-                                                        int gapAdd = 0;
-                                                        if(starPopIdx.Count > 0)
-                                                        {
-                                                            toRemoveFromGap = idx;
-                                                            starPopIdx.AddGap(idx);
-                                                            gapAdd += 1;
-                                                        }
-
-                                                        if(idxItr.Count == 1)
-                                                        {
-                                                            //2013.07.29: Ashley Lewis for bug 9963 - don't add any gap if there is just one populated index
-                                                            if(starPopIdx.Count == 1)
-                                                            {
-                                                                gapAdd = 0;
-                                                            }
-                                                            IIndexIterator newIdxItr = Dev2BinaryDataListFactory.CreateLoopedIndexIterator(idxItr.MinIndex(), (starPopIdx.Count + gapAdd));
-                                                            idxItr = newIdxItr; // swap for the repeat ;)
-                                                        }
-                                                    }
-
-                                                    // now push the Value data into the recordset
-                                                    while(idxItr.HasMore())
-                                                    {
-                                                        int next = idxItr.FetchNextIndex();
-                                                        IList<IBinaryDataListItem> itms = evaluatedValue.FetchRecordAt(next, out error);
-
-                                                        allErrors.AddError(error);
-
-                                                        // TODO : Handle * -> () correctly ;)
-                                                        foreach(int index in populateIdxs)
-                                                        {
-                                                            allErrors.AddError(error);
-                                                            if(itms != null && itms.Count == 1)
-                                                            {
-                                                                // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                                                IBinaryDataListItem tmpI = itms[0].Clone();
-                                                                tmpI.UpdateRecordset(rs);
-                                                                tmpI.UpdateField(field);
-                                                                tmpI.UpdateIndex(index);
-                                                                entry.TryPutRecordItemAtIndex(tmpI, index, out error);
-                                                                allErrors.AddError(error);
-                                                                BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
-                                                            }
-                                                            else if(itms != null && itms.Count > 1)
-                                                            {
-                                                                // all good move it
-                                                                foreach(IBinaryDataListItem i in itms)
-                                                                {
-                                                                    // 01.02.2013 - Travis.Frisinger : Bug 8579 
-                                                                    IBinaryDataListItem tmpI = i.Clone();
-
-                                                                    tmpI.UpdateRecordset(rs);
-                                                                    tmpI.UpdateField(field);
-                                                                    tmpI.UpdateIndex(index);
-
-                                                                    entry.TryPutRecordItemAtIndex(tmpI, index, out error);
-                                                                    allErrors.AddError(error);
-                                                                    BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
-                                                                }
-                                                            }
-                                                        }
-
-                                                        // we need to roll the index to keep the ship moving...
-                                                        if(entry.IsRecordset && idxType == enRecordsetIndexType.Blank && populateIdxs.Count > 0)
-                                                        {
-                                                            populateIdxs[0]++;
-                                                        }
-                                                        else if(idxType == enRecordsetIndexType.Star)
-                                                        {
-                                                            // handle * iteration ;)
-
-                                                            if(starPopIdxPos < starPopIdx.Count)
-                                                            {
-                                                                populateIdxs.Clear();
-                                                                populateIdxs.Add(starPopIdx.FetchNextIndex());
-                                                                starPopIdxPos++;
-                                                            }
-                                                            else
-                                                            {
-                                                                // we might still have data being fed into this, inc 
-                                                                populateIdxs[0]++;
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    // ensure column match on transfer, at least a subset is being moved....
-                                                    if(entry.HasColumns(evaluatedValue.Columns))
-                                                    {
-                                                        IIndexIterator ii = evaluatedValue.FetchRecordsetIndexes();
-                                                        while(ii.HasMore())
-                                                        {
-                                                            int next = ii.FetchNextIndex();
-                                                            IList<IBinaryDataListItem> itms = evaluatedValue.FetchRecordAt(next, out error);
-                                                            allErrors.AddError(error);
-                                                            // all good move it
-                                                            foreach(IBinaryDataListItem i in itms)
-                                                            {
-                                                                entry.TryPutRecordItemAtIndex(i, i.ItemCollectionIndex, out error);
-                                                                BuildComplexExpressionsForDebug(debugTO, part, i, i.DisplayValue);
-                                                                allErrors.AddError(error);
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        allErrors.AddError("Field mis-match on Recordset to Recordset transfer");
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        allErrors.AddError("Invalid Recordset index [ " + idx + " ]");
-                                    }
-
-                                    // Reset the Gaps 
-                                    if(toRemoveFromGap > 0)
-                                    {
-                                        entry.FetchRecordsetIndexes().RemoveGap(toRemoveFromGap);
-                                        toRemoveFromGap = -1;
-                                    }
-                                }
-                            }
-                            if(payload.IsDebug)
-                            {
-                                debugTO.UsedRecordsetIndex = debugIdx;
-
-                                // reset debug index ;)
-                                debugIdx = -1;
-                            }
-                        }
-                        else
-                        {
-
-                            string token = DataListUtil.StripBracketsFromValue(frameItem.Expression);
-
-                            // system expression ;)
-                            if(token.IndexOf(GlobalConstants.SystemTagNamespace, StringComparison.Ordinal) >= 0 || DataListUtil.IsSystemTag(token))
-                            {
-
-                                if(token.IndexOf(GlobalConstants.SystemTagNamespace, StringComparison.Ordinal) < 0)
-                                {
-                                    token = DataListUtil.BuildSystemTagForDataList(token, false);
-                                }
-
-                                IBinaryDataListEntry theEntry;
-                                bdl.TryGetEntry(token, out theEntry, out error);
-                                if(error != string.Empty)
-                                {
-                                    allErrors.AddError(error);
-                                }
-                                else
-                                {
-                                    IBinaryDataListEntry evalautedValue = null;
-                                    if(typeof(T) == typeof(string))
-                                    {
-                                        evalautedValue = Evaluate(ctx, curDLID, enActionType.User, frameItem.Value.ToString(), out errors);
-                                    }
-                                    else if(typeof(T) == typeof(IBinaryDataListEntry))
-                                    {
-                                        evalautedValue = (IBinaryDataListEntry)frameItem.Value;
-                                    }
-
-                                    if(evalautedValue != null)
-                                    {
-                                        theEntry.TryPutScalar(evalautedValue.FetchScalar(), out error);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                allErrors.AddError("Invalid Region " + frameItem.Expression);
-                            }
-                        }
-
-                        if(payload.IsDebug && !payload.IsIterativePayload())
-                        {
-                            var recIndexType = DataListUtil.GetRecordsetIndexType(frameItem.Expression);
-                            switch(recIndexType)
-                            {
-                                case enRecordsetIndexType.Blank:
-                                    debugTO.Expression = frameItem.Expression.Replace("()", "(" + debugTO.UsedRecordsetIndex + ")");
-                                    break;
-                                case enRecordsetIndexType.Star:
-                                    debugTO.Expression = frameItem.Expression.Replace("(*)", "(" + debugTO.UsedRecordsetIndex + ")");
-                                    break;
-                                case enRecordsetIndexType.Numeric:
-                                    debugTO.Expression = frameItem.Expression;
-                                    break;
-                            }
-
-                            payload.DebugOutputs.Add(debugTO);
-                            _debugValues.Add(new KeyValuePair<string, IBinaryDataListEntry>(frameItem.Expression, entryUsed));
-                        }
-                    }
-
-                    // move index values
-                    if(payload.IsIterativePayload())
-                    {
-                        rsis.MoveIndexesToNextPosition();
-                    }
+                    debugTO = ProcessPayloadFrame(ctx, curDLID, payload, ref errors, f, bdl, allErrors, debugTO, tc, rsis, ref debugIdx, ref toRemoveFromGap);
                 }
                 if(payload.IsIterativePayload())
                 {
@@ -2577,6 +2071,635 @@ namespace Dev2.Server.Datalist
             return result;
         }
 
+        DebugTO ProcessPayloadFrame<T>(NetworkContext ctx, Guid curDLID, IDev2DataListUpsertPayloadBuilder<T> payload, ref ErrorResultTO errors, IDataListPayloadIterationFrame<T> f, IBinaryDataList bdl, ErrorResultTO allErrors, DebugTO debugTO, Dev2TokenConverter tc, Dev2RecordsetIndexScope rsis, ref int debugIdx, ref int toRemoveFromGap)
+        {
+            IBinaryDataListEntry entryUsed = null;
+            // iterate per frame fetching frame items
+
+            while(f.HasData())
+            {
+                if(typeof(T) == typeof(RecordsetGroup))
+                {
+                    ProcessRecordsetGroup(f.FetchNextFrameItem().Value as RecordsetGroup, bdl, out errors);
+                    allErrors.MergeErrors(errors);
+                    continue;
+                }
+
+                if(!payload.IsIterativePayload())
+                {
+                    debugTO = new DebugTO();
+                }
+                var frameItem = f.FetchNextFrameItem();
+
+                // find the part to use
+                var part = tc.ParseTokenForMatch(frameItem.Expression, bdl.FetchIntellisenseParts());
+
+                // recursive eval ;)
+                if(part == null)
+                {
+                    EvaluateRuleSet ers = new EvaluateRuleSet { BinaryDataList = bdl, Expression = frameItem.Expression, EvaluateToRootOnly = true, IsDebug = payload.IsDebug };
+
+                    var tmpItem = InternalDataListEvaluateV2(ers);
+                    allErrors.MergeErrors(ers.Errors);
+                    errors.ClearErrors();
+
+                    // now find the correct token based upon the eval
+                    if(tmpItem != null)
+                    {
+                        part = tc.ParseTokenForMatch(tmpItem.FetchScalar().TheValue, bdl.FetchIntellisenseParts());
+                    }
+                }
+
+                // now we have the part, build up the item to push into the entry....
+                if(part != null)
+                {
+                    var field = part.Option.Field;
+                    var rs = part.Option.Recordset;
+
+                    // Process evaluated values via some Generic magic....
+                    IBinaryDataListEntry evaluatedValue = null;
+                    if(typeof(T) == typeof(string))
+                    {
+                        evaluatedValue = ProcessStringItem(bdl, allErrors, frameItem, evaluatedValue);
+                    }
+                    else if(typeof(T) == typeof(IBinaryDataListEntry))
+                    {
+                        if(!ProcessBinaryDataListEntryItem(bdl, tc, frameItem, out evaluatedValue))
+                        {
+                            break;
+                        }
+                    }
+                    else if(typeof(T) == typeof(List<string>))
+                    {
+                        evaluatedValue = ProcessListOfStringItem(bdl, allErrors, frameItem, part, field);
+                    }
+
+                    if(payload.IsDebug)
+                    {
+                        IBinaryDataListEntry leftSide;
+                        IBinaryDataListEntry tmpEntry;
+                        string error;
+                        if(part.Option.IsScalar)
+                        {
+                            bdl.TryGetEntry(field, out tmpEntry, out error);
+                            leftSide = tmpEntry.Clone(Dev2.DataList.Contract.enTranslationDepth.Data, Guid.NewGuid(), out error);
+                        }
+                        else
+                        {
+                            bdl.TryGetEntry(part.Option.Recordset, out tmpEntry, out error);
+                            leftSide = tmpEntry.Clone(Dev2.DataList.Contract.enTranslationDepth.Data, Guid.NewGuid(), out error);
+                        }
+                        debugTO.LeftEntry = leftSide;
+                        debugTO.LeftEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
+                        ErrorResultTO invokeError;
+                        ProcessLeftSide(debugTO, frameItem, bdl, out invokeError);
+                        allErrors.MergeErrors(invokeError);
+
+                        if(evaluatedValue != null)
+                        {
+                            debugTO.RightEntry = evaluatedValue;
+                            debugTO.RightEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
+                            ProcessRightSide(debugTO, frameItem, bdl, out invokeError);
+                            allErrors.MergeErrors(invokeError);
+                        }
+                        else
+                        {
+                            allErrors.AddError("Problems Evaluating Expression [ " + frameItem.Value + " ]");
+                        }
+                    }
+                    allErrors.MergeErrors(errors);
+                    // check entry cache based upon type ;)
+                    if(part.Option.IsScalar)
+                    {
+                        DoScalarAction(payload, bdl, allErrors, debugTO, field, evaluatedValue, part);
+                    }
+                    else
+                    {
+                        DoRecordSetActions(payload, bdl, allErrors, debugTO, rsis, out debugIdx, ref toRemoveFromGap, part, evaluatedValue, field, rs);
+                    }
+                    if(payload.IsDebug)
+                    {
+                        debugTO.UsedRecordsetIndex = debugIdx;
+                        // reset debug index ;)
+                        debugIdx = -1;
+                    }
+                }
+                else
+                {
+                    PartNotFoundAction(ctx, curDLID, bdl, allErrors, frameItem);
+                }
+
+                if(payload.IsDebug && !payload.IsIterativePayload())
+                {
+                    PerformFinalDebugActions(payload, debugTO, frameItem, entryUsed);
+                }
+            }
+
+            // move index values
+            if(payload.IsIterativePayload())
+            {
+                rsis.MoveIndexesToNextPosition();
+            }
+            return debugTO;
+        }
+
+        void PerformFinalDebugActions<T>(IDev2DataListUpsertPayloadBuilder<T> payload, DebugTO debugTO, DataListPayloadFrameTO<T> frameItem, IBinaryDataListEntry entryUsed)
+        {
+            var recIndexType = DataListUtil.GetRecordsetIndexType(frameItem.Expression);
+            switch(recIndexType)
+            {
+                case enRecordsetIndexType.Blank:
+                    debugTO.Expression = frameItem.Expression.Replace("()", "(" + debugTO.UsedRecordsetIndex + ")");
+                    break;
+                case enRecordsetIndexType.Star:
+                    debugTO.Expression = frameItem.Expression.Replace("(*)", "(" + debugTO.UsedRecordsetIndex + ")");
+                    break;
+                case enRecordsetIndexType.Numeric:
+                    debugTO.Expression = frameItem.Expression;
+                    break;
+            }
+            payload.DebugOutputs.Add(debugTO);
+            _debugValues.Add(new KeyValuePair<string, IBinaryDataListEntry>(frameItem.Expression, entryUsed));
+        }
+
+        void PartNotFoundAction<T>(NetworkContext ctx, Guid curDLID, IBinaryDataList bdl, ErrorResultTO allErrors, DataListPayloadFrameTO<T> frameItem)
+        {
+            var token = DataListUtil.StripBracketsFromValue(frameItem.Expression);
+            // system expression ;)
+            if(token.IndexOf(GlobalConstants.SystemTagNamespace, StringComparison.Ordinal) >= 0 || DataListUtil.IsSystemTag(token))
+            {
+                if(token.IndexOf(GlobalConstants.SystemTagNamespace, StringComparison.Ordinal) < 0)
+                {
+                    token = DataListUtil.BuildSystemTagForDataList(token, false);
+                }
+
+                IBinaryDataListEntry theEntry;
+                string error;
+                bdl.TryGetEntry(token, out theEntry, out error);
+                if(error != string.Empty)
+                {
+                    allErrors.AddError(error);
+                }
+                else
+                {
+                    IBinaryDataListEntry evalautedValue = null;
+                    if(typeof(T) == typeof(string))
+                    {
+                        ErrorResultTO errors;
+                        evalautedValue = Evaluate(ctx, curDLID, enActionType.User, frameItem.Value.ToString(), out errors);
+                        allErrors.MergeErrors(errors);
+                    }
+                    else if(typeof(T) == typeof(IBinaryDataListEntry))
+                    {
+                        evalautedValue = (IBinaryDataListEntry)frameItem.Value;
+                    }
+
+                    if(evalautedValue != null)
+                    {
+                        theEntry.TryPutScalar(evalautedValue.FetchScalar(), out error);
+                    }
+                }
+            }
+            else
+            {
+                allErrors.AddError("Invalid Region " + frameItem.Expression);
+            }
+        }
+
+        static void DoRecordSetActions<T>(IDev2DataListUpsertPayloadBuilder<T> payload, IBinaryDataList bdl, ErrorResultTO allErrors, DebugTO debugTO, Dev2RecordsetIndexScope rsis, out int debugIdx, ref int toRemoveFromGap, IIntellisenseResult part, IBinaryDataListEntry evaluatedValue, string field, string rs)
+        {
+            IBinaryDataListEntry entry;
+            string error;
+            bdl.TryGetEntry(part.Option.Recordset, out entry, out error);
+            debugIdx = -1;
+            if(payload.IsDebug && (!payload.IsIterativePayload() || debugTO.TargetEntry == null))
+            {
+                debugTO.TargetEntry = Dev2BinaryDataListFactory.CreateEntry(entry.Namespace, entry.Description, entry.Columns, Guid.NewGuid());
+                debugTO.TargetEntry.ComplexExpressionAuditor = entry.ComplexExpressionAuditor;
+            }
+
+            allErrors.AddError(error);
+            if(entry != null)
+            {
+                var idx = rsis.FetchRecordsetIndex(part, entry, payload.IsIterativePayload());
+
+                var idxType = DataListUtil.GetRecordsetIndexTypeRaw(part.Option.RecordsetIndex);
+
+                if(idx > 0)
+                {
+                    debugIdx = idx;
+                    var nullItem = new BinaryDataListItem(null, field);
+                    if(evaluatedValue == null)
+                    {
+                        IBinaryDataListItem tmpI;
+                        // we have a scalar to recordset....
+                        switch(idxType)
+                        {
+                            case enRecordsetIndexType.Star:
+                                if(!payload.IsIterativePayload())
+                                {
+                                    // scalar to star
+                                    var ii = entry.FetchRecordsetIndexes();
+                                    while(ii.HasMore())
+                                    {
+                                        var next = ii.FetchNextIndex();
+                                        // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                        var scalar = nullItem;
+                                        tmpI = scalar.Clone();
+                                        tmpI.UpdateField(field);
+                                        entry.TryPutRecordItemAtIndex(tmpI, next, out error);
+                                        allErrors.AddError(error);
+                                        BuildComplexExpressionsForDebug(debugTO, part, tmpI, DataListUtil.ReplaceStarWithFixedIndex(part.Option.DisplayValue, next));
+                                    }
+                                }
+                                else
+                                {
+                                    // we need to move the iteration overwrite indexs ?
+                                    // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                    var scalar = nullItem;
+                                    tmpI = scalar.Clone();
+                                    tmpI.UpdateField(field);
+                                    tmpI.UpdateRecordset(rs);
+                                    tmpI.UpdateIndex(idx);
+
+                                    entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
+
+                                    allErrors.AddError(error);
+                                    BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
+                                }
+                                break;
+
+                            case enRecordsetIndexType.Error:
+                                //2013.05.29: Ashley Lewis for bug 9379 - throw an error on invalid recordset index
+                                allErrors.AddError("Recordset index (" + part.Option.RecordsetIndex + ") contains invalid character(s)");
+                                break;
+
+                            default:
+                                // scalar to index
+                                // 01.02.2013 - Travis.Frisinger : Bug 8579 
+
+                                var dataListItem = nullItem;
+                                tmpI = dataListItem.Clone();
+                                tmpI.UpdateRecordset(rs);
+                                tmpI.UpdateField(field);
+                                tmpI.UpdateIndex(idx);
+                                entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
+                                allErrors.AddError(error);
+                                BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
+                                break;
+                        }
+                    }
+                    if(evaluatedValue != null)
+                    {
+                        if(!evaluatedValue.IsRecordset)
+                        {
+                            IBinaryDataListItem tmpI;
+                            // we have a scalar to recordset....
+                            switch(idxType)
+                            {
+                                case enRecordsetIndexType.Star:
+                                    if(!payload.IsIterativePayload())
+                                    {
+                                        // scalar to star
+                                        var ii = entry.FetchRecordsetIndexes();
+                                        while(ii.HasMore())
+                                        {
+                                            var next = ii.FetchNextIndex();
+                                            // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                            var scalar = evaluatedValue.FetchScalar();
+                                            tmpI = scalar.Clone();
+                                            tmpI.UpdateField(field);
+                                            entry.TryPutRecordItemAtIndex(tmpI, next, out error);
+                                            allErrors.AddError(error);
+                                            BuildComplexExpressionsForDebug(debugTO, part, tmpI, DataListUtil.ReplaceStarWithFixedIndex(part.Option.DisplayValue, next));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        // we need to move the iteration overwrite indexs ?
+                                        // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                        var scalar = evaluatedValue.FetchScalar();
+                                        tmpI = scalar.Clone();
+                                        tmpI.UpdateField(field);
+                                        tmpI.UpdateRecordset(rs);
+                                        tmpI.UpdateIndex(idx);
+
+                                        entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
+
+                                        allErrors.AddError(error);
+                                        BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
+                                    }
+                                    break;
+
+                                case enRecordsetIndexType.Error:
+                                    //2013.05.29: Ashley Lewis for bug 9379 - throw an error on invalid recordset index
+                                    allErrors.AddError("Recordset index (" + part.Option.RecordsetIndex + ") contains invalid character(s)");
+                                    break;
+
+                                default:
+                                    // scalar to index
+                                    // 01.02.2013 - Travis.Frisinger : Bug 8579 
+
+                                    var dataListItem = evaluatedValue.FetchScalar();
+                                    tmpI = dataListItem.Clone();
+                                    tmpI.UpdateRecordset(rs);
+                                    tmpI.UpdateField(field);
+                                    tmpI.UpdateIndex(idx);
+                                    entry.TryPutRecordItemAtIndex(tmpI, idx, out error);
+                                    allErrors.AddError(error);
+                                    BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            int starPopIdxPos = 0;
+
+                            // field to field move
+                            if(!string.IsNullOrEmpty(field))
+                            {
+                                var idxItr = evaluatedValue.FetchRecordsetIndexes();
+                                var starPopIdx = entry.FetchRecordsetIndexes();
+                                IList<int> populateIdxs = new List<int> { idx };
+
+                                if(idxType == enRecordsetIndexType.Star)
+                                {
+                                    starPopIdx = entry.FetchRecordsetIndexes().Clone();
+
+                                    int gapAdd = 0;
+                                    if(starPopIdx.Count > 0)
+                                    {
+                                        toRemoveFromGap = idx;
+                                        starPopIdx.AddGap(idx);
+                                        gapAdd += 1;
+                                    }
+
+                                    if(idxItr.Count == 1)
+                                    {
+                                        //2013.07.29: Ashley Lewis for bug 9963 - don't add any gap if there is just one populated index
+                                        if(starPopIdx.Count == 1)
+                                        {
+                                            gapAdd = 0;
+                                        }
+                                        var newIdxItr = Dev2BinaryDataListFactory.CreateLoopedIndexIterator(idxItr.MinIndex(), (starPopIdx.Count + gapAdd));
+                                        idxItr = newIdxItr; // swap for the repeat ;)
+                                    }
+                                }
+
+                                // now push the Value data into the recordset
+                                while(idxItr.HasMore())
+                                {
+                                    var next = idxItr.FetchNextIndex();
+                                    var itms = evaluatedValue.FetchRecordAt(next, out error);
+
+                                    allErrors.AddError(error);
+
+                                    foreach(var index in populateIdxs)
+                                    {
+                                        allErrors.AddError(error);
+                                        if(itms != null && itms.Count == 1)
+                                        {
+                                            // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                            IBinaryDataListItem tmpI = itms[0].Clone();
+                                            tmpI.UpdateRecordset(rs);
+                                            tmpI.UpdateField(field);
+                                            tmpI.UpdateIndex(index);
+                                            entry.TryPutRecordItemAtIndex(tmpI, index, out error);
+                                            allErrors.AddError(error);
+                                            BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
+                                        }
+                                        else if(itms != null && itms.Count > 1)
+                                        {
+                                            // all good move it
+                                            foreach(var i in itms)
+                                            {
+                                                // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                                                var tmpI = i.Clone();
+
+                                                tmpI.UpdateRecordset(rs);
+                                                tmpI.UpdateField(field);
+                                                tmpI.UpdateIndex(index);
+
+                                                entry.TryPutRecordItemAtIndex(tmpI, index, out error);
+                                                allErrors.AddError(error);
+                                                BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
+                                            }
+                                        }
+                                    }
+
+                                    // we need to roll the index to keep the ship moving...
+                                    if(entry.IsRecordset && idxType == enRecordsetIndexType.Blank && populateIdxs.Count > 0)
+                                    {
+                                        populateIdxs[0]++;
+                                    }
+                                    else if(idxType == enRecordsetIndexType.Star)
+                                    {
+                                        // handle * iteration ;)
+                                        if(starPopIdxPos < starPopIdx.Count)
+                                        {
+                                            populateIdxs.Clear();
+                                            populateIdxs.Add(starPopIdx.FetchNextIndex());
+                                            starPopIdxPos++;
+                                        }
+                                        else
+                                        {
+                                            // we might still have data being fed into this, inc 
+                                            populateIdxs[0]++;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                // ensure column match on transfer, at least a subset is being moved....
+                                if(entry.HasColumns(evaluatedValue.Columns))
+                                {
+                                    var ii = evaluatedValue.FetchRecordsetIndexes();
+                                    while(ii.HasMore())
+                                    {
+                                        var next = ii.FetchNextIndex();
+                                        var itms = evaluatedValue.FetchRecordAt(next, out error);
+                                        allErrors.AddError(error);
+                                        // all good move it
+                                        foreach(var i in itms)
+                                        {
+                                            entry.TryPutRecordItemAtIndex(i, i.ItemCollectionIndex, out error);
+                                            BuildComplexExpressionsForDebug(debugTO, part, i, i.DisplayValue);
+                                            allErrors.AddError(error);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    allErrors.AddError("Field mis-match on Recordset to Recordset transfer");
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    allErrors.AddError("Invalid Recordset index [ " + idx + " ]");
+                }
+                // Reset the Gaps 
+                if(toRemoveFromGap > 0)
+                {
+                    entry.FetchRecordsetIndexes().RemoveGap(toRemoveFromGap);
+                    toRemoveFromGap = -1;
+                }
+            }
+        }
+
+        static void DoScalarAction<T>(IDev2DataListUpsertPayloadBuilder<T> payload, IBinaryDataList bdl, ErrorResultTO allErrors, DebugTO debugTO, string field, IBinaryDataListEntry evaluatedValue, IIntellisenseResult part)
+        {
+            IBinaryDataListEntry entry;
+            string error;
+            bdl.TryGetEntry(field, out entry, out error);
+            allErrors.AddError(error);
+
+            if(payload.IsDebug && entry != null)
+            {
+                debugTO.TargetEntry = entry.Clone(Dev2.DataList.Contract.enTranslationDepth.Data, Guid.NewGuid(), out error);
+            }
+
+            if(evaluatedValue == null && entry != null)
+            {
+                var nullItem = new BinaryDataListItem(null, field);
+                entry.TryPutScalar(nullItem, out error);
+            }
+
+            if(evaluatedValue != null && entry != null)
+            {
+                if(!evaluatedValue.IsRecordset)
+                {
+                    // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                    var scalar = evaluatedValue.FetchScalar();
+                    var tmpI = scalar.Clone();
+
+                    tmpI.UpdateField(field);
+                    entry.TryPutScalar(tmpI, out error);
+                    allErrors.AddError(error);
+                    BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
+                }
+                else
+                {
+                    // process it as a recordset to scalar ie last value is placed ;) unless needs to be placed in scalar as CSV :P
+                    if(payload.RecordSetDataAsCSVToScalar)
+                    {
+                        var tmpI = evaluatedValue.TryFetchLastIndexedRecordsetUpsertPayload(out error).Clone();
+                        tmpI.UpdateField(field);
+                        var updatedValue = entry.FetchScalar().TheValue + "," + tmpI.TheValue;
+                        tmpI.UpdateValue(updatedValue.TrimStart(','));
+                        entry.TryPutScalar(tmpI, out error);
+                        allErrors.AddError(error);
+
+                        allErrors.AddError(error);
+                        BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
+                    }
+                    else
+                    {
+                        // 01.02.2013 - Travis.Frisinger : Bug 8579 
+                        var tmpI = evaluatedValue.TryFetchLastIndexedRecordsetUpsertPayload(out error).Clone();
+                        tmpI.UpdateField(field);
+                        entry.TryPutScalar(tmpI, out error);
+                        allErrors.AddError(error);
+                        BuildComplexExpressionsForDebug(debugTO, part, tmpI, tmpI.DisplayValue);
+                    }
+                }
+            } // else do nothing
+        }
+
+        IBinaryDataListEntry ProcessListOfStringItem<T>(IBinaryDataList bdl, ErrorResultTO allErrors, DataListPayloadFrameTO<T> frameItem, IIntellisenseResult part, string field)
+        {
+            var value = frameItem.Value;
+            var list = value as List<string>;
+            IBinaryDataListEntry evaluatedValue = null;
+            if(list != null)
+            {
+                ErrorResultTO errors;
+                if(part.Option.IsScalar)
+                {
+                    var csvValue = string.Join(",", list);
+                    evaluatedValue = InternalEvaluate(csvValue, bdl, out errors);
+
+                    allErrors.MergeErrors(errors);
+                }
+                else if(part.Option.HasRecordsetIndex && DataListUtil.GetRecordsetIndexType(part.Option.DisplayValue) == enRecordsetIndexType.Numeric)
+                {
+                    evaluatedValue = InternalEvaluate(list[list.Count - 1], bdl, out errors);
+                }
+                else
+                {
+                    var entryNamespace = GlobalConstants.NullEntryNamespace + Guid.NewGuid();
+                    var binaryDataListEntry = Dev2BinaryDataListFactory.CreateEntry(entryNamespace, string.Empty, new List<Dev2Column> { DataListFactory.CreateDev2Column(field, field) }, bdl.UID);
+                    for(var i = 0; i < list.Count; i++)
+                    {
+                        var binaryDataListItem = Dev2BinaryDataListFactory.CreateBinaryItem(list[i], entryNamespace, field, i + 1);
+                        string errString;
+                        binaryDataListEntry.TryPutRecordItemAtIndex(binaryDataListItem, i + 1, out errString);
+                        if(!String.IsNullOrEmpty(errString))
+                        {
+                            allErrors.AddError(errString);
+                        }
+                    }
+                    evaluatedValue = binaryDataListEntry;
+                }
+            }
+            return evaluatedValue;
+        }
+
+        static bool ProcessBinaryDataListEntryItem<T>(IBinaryDataList bdl, Dev2TokenConverter tc, DataListPayloadFrameTO<T> frameItem, out IBinaryDataListEntry evaluatedValue)
+        {
+            evaluatedValue = (IBinaryDataListEntry)frameItem.Value;
+            if(evaluatedValue == null)
+            {
+                return true;
+            }
+            if(!evaluatedValue.IsRecordset)
+            {
+                var itm = evaluatedValue.FetchScalar();
+                if(!itm.IsDeferredRead)
+                {
+                    try
+                    {
+                        var val = evaluatedValue.FetchScalar().TheValue;
+                        var res = tc.ParseTokenForMatch(val, bdl.FetchIntellisenseParts());
+                        if(res != null && res.Type == enIntellisenseResultType.Selectable)
+                        {
+                            return false;
+                        }
+                    }
+                    catch(Exception e)
+                    {
+                        Dev2Logger.Log.Error(e);
+                        evaluatedValue = null;
+                        return true;
+                    }
+                }
+            }
+            return true;
+        }
+
+        IBinaryDataListEntry ProcessStringItem<T>(IBinaryDataList bdl, ErrorResultTO allErrors, DataListPayloadFrameTO<T> frameItem, IBinaryDataListEntry evaluatedValue)
+        {
+            if(!Equals(frameItem.Value, default(T)))
+            {
+                var itemVal = frameItem.Value.ToString();
+                ErrorResultTO errors;
+                evaluatedValue = InternalEvaluate(itemVal, bdl, out errors);
+                if(errors.HasErrors())
+                {
+                    allErrors.MergeErrors(errors);
+                    evaluatedValue = InternalEvaluate(string.Empty, bdl, out errors);
+                }
+                else
+                {
+                    allErrors.MergeErrors(errors);
+                }
+            }
+            return evaluatedValue;
+        }
+
         static void BuildComplexExpressionsForDebug(DebugTO debugTO, IIntellisenseResult part, IBinaryDataListItem tmpI, string displayValue)
         {
             if(debugTO.TargetEntry != null)
@@ -2585,7 +2708,14 @@ namespace Dev2.Server.Datalist
                 {
                     debugTO.TargetEntry.ComplexExpressionAuditor = new ComplexExpressionAuditor();
                 }
-                debugTO.TargetEntry.ComplexExpressionAuditor.AddAuditStep(part.Option.DisplayValue, "", "", 1, tmpI.TheValue, DataListUtil.AddBracketsToValueIfNotExist(displayValue));
+                try
+                {
+                    debugTO.TargetEntry.ComplexExpressionAuditor.AddAuditStep(part.Option.DisplayValue, "", "", 1, tmpI.TheValue, DataListUtil.AddBracketsToValueIfNotExist(displayValue));
+                }
+                catch(Exception)
+                {
+                    debugTO.TargetEntry.ComplexExpressionAuditor.AddAuditStep(part.Option.DisplayValue, "", "", 1, "", DataListUtil.AddBracketsToValueIfNotExist(displayValue));
+                }
             }
         }
 
@@ -2636,15 +2766,30 @@ namespace Dev2.Server.Datalist
                     {
                         var stringIndexValue = DataListUtil.ExtractIndexRegionFromRecordset(leftSide);
                         var idx = int.Parse(stringIndexValue);
-                        string error;
-                        leftValue = leftEntry.TryFetchRecordsetColumnAtIndex(DataListUtil.ExtractFieldNameFromValue(leftSide), idx, out error).TheValue;
+                        try
+                        {
+                            string error;
+                            leftValue = leftEntry.TryFetchRecordsetColumnAtIndex(DataListUtil.ExtractFieldNameFromValue(leftSide), idx, out error).TheValue;
+                        }
+                        catch(Exception e)
+                        {
+                            Dev2Logger.Log.Error(e);
+                        }
+
                     }
                     leftEntry.ComplexExpressionAuditor.AddAuditStep(leftSide, "", "", 1, leftValue, leftSide);
                 }
             }
             else
             {
-                leftEntry.ComplexExpressionAuditor.AddAuditStep(leftSide, "", "", 1, leftEntry.FetchScalar().TheValue, leftSide);
+                try
+                {
+                    leftEntry.ComplexExpressionAuditor.AddAuditStep(leftSide, "", "", 1, leftEntry.FetchScalar().TheValue, leftSide);
+                }
+                catch(Exception)
+                {
+                    leftEntry.ComplexExpressionAuditor.AddAuditStep(leftSide, "", "", 1, "", leftSide);
+                }
             }
         }
 
@@ -2724,20 +2869,28 @@ namespace Dev2.Server.Datalist
                 rightEntry.ComplexExpressionAuditor.AddAuditStep(rightSide, "", "", 1, boundValue, rightSide);
             }
         }
-        
-        static void ProcessStarEntry(IBinaryDataListEntry rightEntry, string rightSide)
+
+        static void ProcessStarEntry(IBinaryDataListEntry dataListEntry, string variableName)
         {
-            var rightSideItr = rightEntry.FetchRecordsetIndexes();
+            var rightSideItr = dataListEntry.FetchRecordsetIndexes();
             while(rightSideItr.HasMore())
             {
                 var fetchNextIndex = rightSideItr.FetchNextIndex();
                 string error;
-                var binaryDataListItems = rightEntry.FetchRecordAt(fetchNextIndex, DataListUtil.ExtractFieldNameFromValue(rightSide), out error);
+                var binaryDataListItems = dataListEntry.FetchRecordAt(fetchNextIndex, DataListUtil.ExtractFieldNameFromValue(variableName), out error);
                 if(binaryDataListItems != null && binaryDataListItems.Count > 0)
                 {
                     var singleItem = binaryDataListItems[0];
-                    var displayValue = DataListUtil.ReplaceStarWithFixedIndex(rightSide, fetchNextIndex);
-                    rightEntry.ComplexExpressionAuditor.AddAuditStep(rightSide, "", "", 1, singleItem.TheValue, displayValue);
+                    var displayValue = DataListUtil.ReplaceStarWithFixedIndex(variableName, fetchNextIndex);
+                    try
+                    {
+                        dataListEntry.ComplexExpressionAuditor.AddAuditStep(variableName, "", "", 1, singleItem.TheValue, displayValue);
+                    }
+                    catch(Exception e)
+                    {
+                        Dev2Logger.Log.Error(e);
+                        dataListEntry.ComplexExpressionAuditor.AddAuditStep(variableName, "", "", 1, "", displayValue);
+                    }
                 }
             }
         }

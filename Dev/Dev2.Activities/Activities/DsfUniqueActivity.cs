@@ -272,6 +272,7 @@ namespace Dev2.Activities
                 {
                     DisplayAndWriteError("DsfUniqueActivity", allErrors);
                     compiler.UpsertSystemTag(dlId, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(executionId, Result, (string)null, out errors);
                 }
 
                 if(dataObject.IsDebugMode())

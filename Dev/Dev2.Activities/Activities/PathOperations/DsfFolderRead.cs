@@ -15,7 +15,9 @@ using Dev2.PathOperations;
 using Dev2.Util;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+// ReSharper restore CheckNamespace
 {
 
     /// <summary>
@@ -74,15 +76,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                 IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                IActivityIOPath IOpath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
+                IActivityIOPath ioPath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextRow(inputItr).TheValue,
                                                                                 colItr.FetchNextRow(unameItr).TheValue,
                                                                                 colItr.FetchNextRow(passItr).TheValue,
                                                                                 true);
-                IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(IOpath);
+                IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ioPath);
 
                 try
                 {
-                    IList<IActivityIOPath> ListOfDir = broker.ListDirectory(endPoint, GetReadType());
+                    IList<IActivityIOPath> listOfDir = broker.ListDirectory(endPoint, GetReadType());
                     if(DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
                     {
                         if(DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
@@ -91,22 +93,22 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             string fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
 
                             int indexToUpsertTo = 1;
-                            if(ListOfDir != null)
+                            if(listOfDir != null)
                             {
-                                foreach(IActivityIOPath pa in ListOfDir)
+                                foreach(IActivityIOPath pa in listOfDir)
                                 {
-                                    string FullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                                    string fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
                                         indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                                    outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(FullRecsetName), pa.Path));
+                                    outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), pa.Path));
                                     indexToUpsertTo++;
                                 }
                             }
                         }
                         else if(DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
                         {
-                            if(ListOfDir != null)
+                            if(listOfDir != null)
                             {
-                                foreach(IActivityIOPath pa in ListOfDir)
+                                foreach(IActivityIOPath pa in listOfDir)
                                 {
                                     outputs.Add(DataListFactory.CreateOutputTO(Result, pa.Path));
                                 }
@@ -115,9 +117,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        if(ListOfDir != null)
+                        if(listOfDir != null)
                         {
-                            string xmlList = string.Join(",", ListOfDir.Select(c => c.Path));
+                            string xmlList = string.Join(",", listOfDir.Select(c => c.Path));
                             outputs.Add(DataListFactory.CreateOutputTO(Result));
                             outputs.Last().OutputStrings.Add(xmlList);
                         }
@@ -125,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 catch(Exception e)
                 {
-                    outputs.Add(DataListFactory.CreateOutputTO("Failure"));
+                    outputs.Add(DataListFactory.CreateOutputTO(null));
                     allErrors.AddError(e.Message);
                 }
             }

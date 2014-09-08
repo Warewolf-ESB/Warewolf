@@ -7,8 +7,8 @@ using System.Linq;
 using System.Security.Principal;
 using Dev2;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
-using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Decision;
 using Dev2.DataList.Contract;
@@ -45,7 +45,7 @@ namespace ActivityUnitTests
             };
         }
 
-        public Guid ExecutionID { get; set; }
+        public Guid ExecutionId { get; set; }
 
         public dynamic TestData { get; set; }
 
@@ -123,7 +123,7 @@ namespace ActivityUnitTests
 
         }
 
-        public dynamic ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentID = default(Guid), bool overrideRemote = false)
+        public dynamic ExecuteProcess(IDSFDataObject dataObject = null, bool isDebug = false, IEsbChannel channel = null, bool isRemoteInvoke = false, bool throwException = true, bool isDebugMode = false, Guid currentEnvironmentId = default(Guid), bool overrideRemote = false)
         {
 
             var svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" };
@@ -136,14 +136,14 @@ namespace ActivityUnitTests
             }
 
             var errors = new ErrorResultTO();
-            if(ExecutionID == Guid.Empty)
+            if(ExecutionId == Guid.Empty)
             {
                 Compiler = DataListFactory.CreateDataListCompiler();
 
-                ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+                ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
                 if(dataObject != null)
                 {
-                    dataObject.DataListID = ExecutionID;
+                    dataObject.DataListID = ExecutionId;
                     dataObject.ExecutingUser = User;
                     dataObject.DataList = CurrentDl;
                 }
@@ -163,15 +163,15 @@ namespace ActivityUnitTests
             if(dataObject == null)
             {
 
-                dataObject = new DsfDataObject(CurrentDl, ExecutionID)
+                dataObject = new DsfDataObject(CurrentDl, ExecutionId)
                 {
                     // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
                     //       if this is NOT provided which will cause the tests to fail!
                     ServerID = Guid.NewGuid(),
                     ExecutingUser = User,
                     IsDebug = isDebugMode,
-                    EnvironmentID = currentEnvironmentID,
-                    IsRemoteInvokeOverridden = overrideRemote,                  
+                    EnvironmentID = currentEnvironmentId,
+                    IsRemoteInvokeOverridden = overrideRemote,
                     DataList = CurrentDl
                 };
 
@@ -208,7 +208,7 @@ namespace ActivityUnitTests
         /// We will mock the DSF channel to return something that we expect is shaped.
         /// </summary>
         /// <returns></returns>
-        public Mock<IEsbChannel> ExecuteForEachProcess(out IDSFDataObject dataObject, bool isDebug = false , int nestingLevel =0)
+        public Mock<IEsbChannel> ExecuteForEachProcess(out IDSFDataObject dataObject, bool isDebug = false, int nestingLevel = 0)
         {
             var svc = new ServiceAction { Name = "ForEachTestAction", ServiceName = "UnitTestService" };
             var mockChannel = new Mock<IEsbChannel>();
@@ -221,7 +221,7 @@ namespace ActivityUnitTests
 
             Compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid exID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            Guid exId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
 
 
             if(errors.HasErrors())
@@ -231,19 +231,18 @@ namespace ActivityUnitTests
                 throw new Exception(errorString);
             }
 
-            dataObject = new DsfDataObject(CurrentDl, exID)
+            dataObject = new DsfDataObject(CurrentDl, exId)
             {
                 // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
                 //       if this is NOT provided which will cause the tests to fail!
                 ServerID = Guid.NewGuid(),
-                IsDebug =  isDebug,
-                ForEachNestingLevel = nestingLevel
-
+                IsDebug = isDebug,
+                ForEachNestingLevel = nestingLevel,
+                ParentThreadID = 1
             };
 
 
             // we need to set this now ;)
-            dataObject.ParentThreadID = 1;
 
             mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors)).Verifiable();
 
@@ -274,7 +273,7 @@ namespace ActivityUnitTests
 
             Compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid exID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            Guid exId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
 
 
             if(errors.HasErrors())
@@ -284,7 +283,7 @@ namespace ActivityUnitTests
                 throw new Exception(errorString);
             }
 
-            dataObject = new DsfDataObject(CurrentDl, exID)
+            dataObject = new DsfDataObject(CurrentDl, exId)
             {
                 // NOTE: WorkflowApplicationFactory.InvokeWorkflowImpl() will use HostSecurityProvider.Instance.ServerID 
                 //       if this is NOT provided which will cause the tests to fail!
@@ -318,8 +317,8 @@ namespace ActivityUnitTests
             CurrentDl = dataListShape;
 
             Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
-            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
+            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionId, out errors);
 
             var result = ExecuteProcess(null, true, null, isRemoteInvoke);
             inputResults = activity.GetDebugInputs(dl);
@@ -341,8 +340,8 @@ namespace ActivityUnitTests
             CurrentDl = dataListShape;
             User = user;
             Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionID = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
-            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionID, out errors);
+            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionId, out errors);
             var result = ExecuteProcess(null, true);
             inputResults = activity.GetDebugInputs(dl);
             outputResults = activity.GetDebugOutputs(dl);
@@ -357,13 +356,9 @@ namespace ActivityUnitTests
             const bool Result = false;
 
             dataListShape = "<ADL>";
-            dataListWithData = "<ADL>";
+            dataListWithData = recsetData.Aggregate("<ADL>", (current, rowData) => string.Concat(current, "<", recsetName, ">", "<", fieldName, ">", rowData, "</", fieldName, ">", "</", recsetName, ">"));
             #region Create DataList With Data
 
-            foreach(string rowData in recsetData)
-            {
-                dataListWithData = string.Concat(dataListWithData, "<", recsetName, ">", "<", fieldName, ">", rowData, "</", fieldName, ">", "</", recsetName, ">");
-            }
             dataListWithData = string.Concat(dataListWithData, "<res></res>", "</ADL>");
 
             #endregion
@@ -385,10 +380,7 @@ namespace ActivityUnitTests
 
             for(int i = 0; i < recsetData.Count; i++)
             {
-                foreach(string rowData in recsetData[i])
-                {
-                    dataListWithData = string.Concat(dataListWithData, "<", recsetName[i], ">", "<", fieldName[i], ">", rowData, "</", fieldName[i], ">", "</", recsetName[i], ">");
-                }
+                dataListWithData = recsetData[i].Aggregate(dataListWithData, (current, rowData) => string.Concat(current, "<", recsetName[i], ">", "<", fieldName[i], ">", rowData, "</", fieldName[i], ">", "</", recsetName[i], ">"));
                 dataListShape = string.Concat(dataListShape, "<", recsetName[i], ">", "<", fieldName[i], ">", "</", fieldName[i], ">", "</", recsetName[i], ">");
             }
 
@@ -418,7 +410,14 @@ namespace ActivityUnitTests
             if(entry != null && fine)
             {
                 IBinaryDataListItem item = entry.FetchScalar();
-                result = item.TheValue;
+                try
+                {
+                    result = item.TheValue;
+                }
+                catch(NullValueInVariableException)
+                {
+                    result = null;
+                }
             }
             else
             {
@@ -472,12 +471,22 @@ namespace ActivityUnitTests
             IList<IBinaryDataListItem> dataListItems;
             if(GetRecordSetFieldValueFromDataList(dataListId, recordSetName, fieldToRetrieve, out dataListItems, out error))
             {
-                retVals.AddRange(dataListItems.Select(item => item.TheValue));
+                retVals.AddRange(dataListItems.Select(item =>
+                {
+                    try
+                    {
+                        return item.TheValue;
+                    }
+                    catch(Exception)
+                    {
+                        return "";
+                    }
+                }));
             }
             return retVals;
         }
 
-        protected void DataListRemoval(Guid dlID)
+        protected void DataListRemoval(Guid dlId)
         {
             //dlc.ForceDeleteDataListByID(dlID);
         }

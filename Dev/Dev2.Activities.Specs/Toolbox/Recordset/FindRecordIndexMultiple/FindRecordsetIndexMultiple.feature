@@ -32,14 +32,14 @@ Scenario: Find an index of data in an empty recordset
 	And field to search is "[[rs().value]]"
 	And  is between search the recordset with type "Is Between" and criteria is "16" and "33"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be "-1"
-	And the execution has "NO" error
+	Then the find records index multiple result should be ""
+	And the execution has "AN" error
 	And the debug inputs as
 	| #           |                   | # |            |  |    | And | Require All Fields To Match | Require All Matches To Be True |
 	| In Field(s) | [[rs(1).value]] = | 1 | Is Between |  | 16 | 33  | NO                          | NO                             |
 	And the debug output as
 	|                  |
-	| [[result]] = -1 |	
+	| [[result]] =  |	
 
 Scenario: Find an index of data in a recordset with a blank from
 	Given I have the following recordset to search for multiple criteria
@@ -51,7 +51,7 @@ Scenario: Find an index of data in a recordset with a blank from
 	And field to search is "[[rs().field]]"	
 	And  is between search the recordset with type "Is Between" and criteria is "" and "33"
 	When the find records index multiple tool is executed
-	Then the find records index multiple result should be "-1"
+	Then the find records index multiple result should be ""
 	And the execution has "AN" error
 	And the debug inputs as
 	|  #         |                      | # |            |  |     | And | Require All Fields To Match | Require All Matches To Be True |

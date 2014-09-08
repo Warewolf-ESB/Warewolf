@@ -67,16 +67,16 @@ namespace Dev2.Activities
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            Guid dlID = dataObject.DataListID;
+            Guid dlId = dataObject.DataListID;
             ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errorResultTO = new ErrorResultTO();
-            Guid executionId = dlID;
-            allErrors.MergeErrors(errorResultTO);
+            ErrorResultTO errorResultTo = new ErrorResultTO();
+            Guid executionId = dlId;
+            allErrors.MergeErrors(errorResultTo);
 
 
             try
             {
-                if(!errorResultTO.HasErrors())
+                if(!errorResultTo.HasErrors())
                 {
                     IDev2DataListUpsertPayloadBuilder<string> toUpsert = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
                     IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
@@ -85,8 +85,8 @@ namespace Dev2.Activities
                     {
                         return;
                     }
-                    IBinaryDataListEntry scriptEntry = compiler.Evaluate(executionId, enActionType.User, Script, false, out errorResultTO);
-                    allErrors.MergeErrors(errorResultTO);
+                    IBinaryDataListEntry scriptEntry = compiler.Evaluate(executionId, enActionType.User, Script, false, out errorResultTo);
+                    allErrors.MergeErrors(errorResultTo);
                     if(allErrors.HasErrors())
                     {
                         return;
@@ -121,20 +121,13 @@ namespace Dev2.Activities
                         iterationCounter++;
                     }
 
-                    compiler.Upsert(executionId, toUpsert, out errorResultTO);
-                    allErrors.MergeErrors(errorResultTO);
+                    compiler.Upsert(executionId, toUpsert, out errorResultTo);
+                    allErrors.MergeErrors(errorResultTo);
                 }
             }
             catch(Exception e)
             {
-                if(e.GetType() == typeof(NullReferenceException))
-                {
-                    allErrors.AddError("There was an error when returning a value from the javascript, remember to use the 'Return' keyword when returning the result");
-                }
-                else
-                {
-                    allErrors.AddError(e.Message);
-                }
+                allErrors.AddError(e.GetType() == typeof(NullReferenceException) ? "There was an error when returning a value from the javascript, remember to use the 'Return' keyword when returning the result" : e.Message);
             }
             finally
             {
@@ -143,7 +136,8 @@ namespace Dev2.Activities
                 if(hasErrors)
                 {
                     DisplayAndWriteError("DsfScriptingJavaScriptActivity", allErrors);
-                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTO);
+                    compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorResultTo);
+                    compiler.Upsert(executionId, Result, (string)null, out errorResultTo);
                 }
 
                 if(dataObject.IsDebugMode())

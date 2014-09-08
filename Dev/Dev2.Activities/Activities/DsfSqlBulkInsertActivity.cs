@@ -178,8 +178,6 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                toUpsert.Add(Result, string.Format("Failure"));
-                compiler.Upsert(executionId, toUpsert, out errorsTo);
                 if(addExceptionToErrorList)
                 {
                     allErrors.AddError(e.Message);
@@ -203,6 +201,7 @@ namespace Dev2.Activities
 
                     DisplayAndWriteError("DsfSqlBulkInsertActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errorsTo);
+                    compiler.Upsert(executionId, Result, (string)null, out errorResultTo);
                 }
                 if(toUpsert.IsDebug)
                 {

@@ -16,7 +16,7 @@ namespace Dev2.Runtime.ESB.WF
 {
     public sealed class WfApplicationUtils
     {
-        Action<DebugOutputBase, DebugItem> _add;
+        readonly Action<DebugOutputBase, DebugItem> _add;
 
         public WfApplicationUtils()
         {
@@ -32,13 +32,27 @@ namespace Dev2.Runtime.ESB.WF
             errors = new ErrorResultTO();
             if(dataObject != null)
             {
-                Guid parentInstanceID;
-                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
-
+                Guid parentInstanceId;
+                Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
+                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                bool hasError = compiler.HasErrors(dataObject.DataListID);
+                var errorMessage = String.Empty;
+                if(hasError)
+                {
+                    errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                }
+                if(String.IsNullOrEmpty(existingErrors))
+                {
+                    existingErrors = errorMessage;
+                }
+                else
+                {
+                    existingErrors += Environment.NewLine + errorMessage;
+                }
                 var debugState = new DebugState
                 {
                     ID = dataObject.DataListID,
-                    ParentID = parentInstanceID,
+                    ParentID = parentInstanceId,
                     WorkspaceID = dataObject.WorkspaceID,
                     StateType = stateType,
                     StartTime = workflowStartTime ?? DateTime.Now,
@@ -55,7 +69,7 @@ namespace Dev2.Runtime.ESB.WF
                     EnvironmentID = dataObject.EnvironmentID,
                     ClientID = dataObject.ClientID,
                     Name = GetType().Name,
-                    HasError = hasErrors,
+                    HasError = hasErrors || hasError,
                     ErrorMessage = existingErrors,
 
 
@@ -63,7 +77,7 @@ namespace Dev2.Runtime.ESB.WF
 
                 if(interrogateInputs)
                 {
-                    IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+
                     ErrorResultTO invokeErrors;
                     var com = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
@@ -74,7 +88,6 @@ namespace Dev2.Runtime.ESB.WF
                 }
                 if(interrogateOutputs)
                 {
-                    IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                     ErrorResultTO invokeErrors;
                     var com = compiler.FetchBinaryDataList(dataObject.DataListID, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
@@ -171,13 +184,13 @@ namespace Dev2.Runtime.ESB.WF
         /// <summary>
         /// Finds the service shape.
         /// </summary>
-        /// <param name="workspaceID">The workspace ID.</param>
-        /// <param name="resourceID">The ID of the resource</param>
+        /// <param name="workspaceId">The workspace ID.</param>
+        /// <param name="resourceId">The ID of the resource</param>
         /// <returns></returns>
-        public string FindServiceShape(Guid workspaceID, Guid resourceID)
+        public string FindServiceShape(Guid workspaceId, Guid resourceId)
         {
             var result = "<DataList></DataList>";
-            var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourceID);
+            var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId);
 
             if(resource == null)
             {

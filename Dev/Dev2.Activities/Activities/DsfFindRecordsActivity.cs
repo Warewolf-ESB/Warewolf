@@ -132,16 +132,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
-            Guid executionID = dataObject.DataListID;
-            
+            Guid executionId = dataObject.DataListID;
+
             InitializeDebug(dataObject);
             try
             {
-                IsSingleValueRule.ApplyIsSingleValueRule(Result,allErrors);
+                IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
                 // Fetch all fields to search....
                 IList<string> toSearch = FieldsToSearch.Split(',');
                 // now process each field for entire evaluated Where expression....
-                IBinaryDataListEntry bdle = compiler.Evaluate(executionID, enActionType.User, SearchCriteria, false, out errors);
+                IBinaryDataListEntry bdle = compiler.Evaluate(executionId, enActionType.User, SearchCriteria, false, out errors);
                 if(dataObject.IsDebugMode())
                 {
                     var itemToAdd = new DebugItem();
@@ -159,15 +159,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         idx = 1;
                     }
-                    IBinaryDataList toSearchList = compiler.FetchBinaryDataList(executionID, out errors);
+                    IBinaryDataList toSearchList = compiler.FetchBinaryDataList(executionId, out errors);
                     allErrors.MergeErrors(errors);
                     int iterationIndex = 0;
                     foreach(string s in toSearch)
                     {
                         if(dataObject.IsDebugMode())
                         {
-                            IBinaryDataListEntry tmpEntry = compiler.Evaluate(executionID, enActionType.User, s, false, out errors);
-                            AddDebugInputItem(s, string.Empty, tmpEntry, executionID);
+                            IBinaryDataListEntry tmpEntry = compiler.Evaluate(executionId, enActionType.User, s, false, out errors);
+                            AddDebugInputItem(s, string.Empty, tmpEntry, executionId);
                         }
                         // each entry in the recordset
                         while(itr.HasMoreRecords())
@@ -175,14 +175,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             IList<IBinaryDataListItem> cols = itr.FetchNextRowData();
                             foreach(IBinaryDataListItem c in cols)
                             {
-                                IRecsetSearch searchTO = ConvertToSearchTO(c.TheValue, idx.ToString(CultureInfo.InvariantCulture));
-                                IList<string> results = RecordsetInterrogator.FindRecords(toSearchList, searchTO, out errors);
+                                IRecsetSearch searchTo = ConvertToSearchTo(c.TheValue, idx.ToString(CultureInfo.InvariantCulture));
+                                IList<string> results = RecordsetInterrogator.FindRecords(toSearchList, searchTo, out errors);
                                 allErrors.MergeErrors(errors);
                                 string concatRes = string.Empty;
 
-// ReSharper disable LoopCanBeConvertedToQuery
+                                // ReSharper disable LoopCanBeConvertedToQuery
                                 foreach(string r in results)
-// ReSharper restore LoopCanBeConvertedToQuery
+                                // ReSharper restore LoopCanBeConvertedToQuery
                                 {
                                     concatRes = string.Concat(concatRes, r, ",");
                                 }
@@ -195,31 +195,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 DataListCleaningUtils.SplitIntoRegions(Result);
                                 //2013.06.07: Massimo Guerrera for BUG 9497 - To handle putting out to a scalar as a CSV
 
-                                if (!DataListUtil.IsValueRecordset(Result))
+                                if(!DataListUtil.IsValueRecordset(Result))
+                                {
+                                    toUpsert.Add(Result, concatRes);
+                                    toUpsert.FlushIterationFrame();
+                                    if(dataObject.IsDebugMode())
                                     {
-                                        toUpsert.Add(Result, concatRes);
+                                        AddDebugOutputItem(new DebugOutputParams(Result, concatRes, executionId, iterationIndex));
+                                    }
+                                }
+                                else
+                                {
+                                    iterationIndex = 0;
+
+                                    foreach(string r in results)
+                                    {
+                                        toUpsert.Add(Result, r);
                                         toUpsert.FlushIterationFrame();
                                         if(dataObject.IsDebugMode())
                                         {
-                                            AddDebugOutputItem(new DebugOutputParams(Result, concatRes, executionID, iterationIndex));
+                                            AddDebugOutputItem(new DebugOutputParams(Result, r, executionId, iterationIndex));
                                         }
+
+                                        iterationIndex++;
                                     }
-                                    else
-                                    {
-                                        iterationIndex = 0;
 
-                                        foreach(string r in results)
-                                        {
-                                            toUpsert.Add(Result, r);
-                                            toUpsert.FlushIterationFrame();
-                                            if(dataObject.IsDebugMode())
-                                            {
-                                                AddDebugOutputItem(new DebugOutputParams(Result, r, executionID, iterationIndex));
-                                            }
-
-                                            iterationIndex++;
-                                        }
-                                    
                                 }
                             }
                         }
@@ -227,11 +227,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if(dataObject.IsDebugMode())
                     {
-                        AddDebugInputItem(SearchCriteria, "Where", bdle, executionID);
+                        AddDebugInputItem(SearchCriteria, "Where", bdle, executionId);
                     }
 
                     // now push the result to the server
-                    compiler.Upsert(executionID, toUpsert, out errors);
+                    compiler.Upsert(executionId, toUpsert, out errors);
                     allErrors.MergeErrors(errors);
                 }
             }
@@ -242,6 +242,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DisplayAndWriteError("DsfFindRecordsActivity", allErrors);
                     compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, allErrors.MakeDataListReady(), out errors);
+                    compiler.Upsert(executionId, Result, (string)null, out errors);
                 }
 
                 if(dataObject.IsDebugMode())
@@ -287,7 +288,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// Creates a new instance of the SearchTO object
         /// </summary>
         /// <returns></returns>
-        private IRecsetSearch ConvertToSearchTO(string searchCriteria, string startIndex)
+        private IRecsetSearch ConvertToSearchTo(string searchCriteria, string startIndex)
         {
             return DataListFactory.CreateSearchTO(FieldsToSearch, SearchType, searchCriteria, startIndex, Result, MatchCase);
         }

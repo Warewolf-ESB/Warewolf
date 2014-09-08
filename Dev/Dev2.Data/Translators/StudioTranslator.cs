@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using Dev2.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.Binary_Objects;
@@ -42,7 +43,14 @@ namespace Dev2.Server.DataList.Translators
             result.Append("<");
             result.Append(fName);
             result.Append(">");
-            result.Append(val.TheValue);
+            try
+            {
+                result.Append(val.TheValue);
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Log.Error(e);
+            }
             result.Append("</");
             result.Append(fName);
             result.Append(">");
@@ -78,7 +86,14 @@ namespace Dev2.Server.DataList.Translators
                         result.Append("<");
                         result.Append(fName);
                         result.Append(">");
-                        result.Append(col.TheValue);
+                        try
+                        {
+                            result.Append(col.TheValue);
+                        }
+                        catch(Exception e)
+                        {
+                            Dev2Logger.Log.Error(e);
+                        }
                         result.Append("</");
                         result.Append(fName);
                         result.Append(">");
@@ -223,7 +238,7 @@ namespace Dev2.Server.DataList.Translators
                     foreach(XmlNode c in children)
                     {
                         XmlAttribute descAttribute = null;
-                        XmlAttribute columnIODirection = null;
+                        XmlAttribute columnIoDirection = null;
                         if(!DataListUtil.IsSystemTag(c.Name))
                         {
                             if(c.HasChildNodes)
@@ -241,10 +256,10 @@ namespace Dev2.Server.DataList.Translators
                                         if(subc.Attributes != null)
                                         {
                                             descAttribute = subc.Attributes["Description"];
-                                            columnIODirection = subc.Attributes["ColumnIODirection"];
-                                            if(columnIODirection != null)
+                                            columnIoDirection = subc.Attributes["ColumnIODirection"];
+                                            if(columnIoDirection != null)
                                             {
-                                                Enum.TryParse(columnIODirection.Value, true, out columnDirection);
+                                                Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
                                             }
                                         }
 
@@ -256,7 +271,7 @@ namespace Dev2.Server.DataList.Translators
                                     if(c.Attributes != null)
                                     {
                                         descAttribute = c.Attributes["Description"];
-                                        columnIODirection = c.Attributes["ColumnIODirection"];
+                                        columnIoDirection = c.Attributes["ColumnIODirection"];
                                     }
                                     var descriptionValue = "";
                                     columnDirection = enDev2ColumnArgumentDirection.None;
@@ -264,9 +279,9 @@ namespace Dev2.Server.DataList.Translators
                                     {
                                         descriptionValue = descAttribute.Value;
                                     }
-                                    if(columnIODirection != null)
+                                    if(columnIoDirection != null)
                                     {
-                                        Enum.TryParse(columnIODirection.Value, true, out columnDirection);
+                                        Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
                                     }
                                     if(!result.TryCreateRecordsetTemplate(c.Name, descriptionValue, cols, true, false, columnDirection, out myError))
                                     {
@@ -281,7 +296,7 @@ namespace Dev2.Server.DataList.Translators
                                 if(c.Attributes != null)
                                 {
                                     descAttribute = c.Attributes["Description"];
-                                    columnIODirection = c.Attributes["ColumnIODirection"];
+                                    columnIoDirection = c.Attributes["ColumnIODirection"];
                                 }
                                 string descriptionValue = "";
                                 var columnDirection = enDev2ColumnArgumentDirection.None;
@@ -289,9 +304,9 @@ namespace Dev2.Server.DataList.Translators
                                 {
                                     descriptionValue = descAttribute.Value;
                                 }
-                                if(columnIODirection != null)
+                                if(columnIoDirection != null)
                                 {
-                                    Enum.TryParse(columnIODirection.Value, true, out columnDirection);
+                                    Enum.TryParse(columnIoDirection.Value, true, out columnDirection);
                                 }
                                 result.TryCreateScalarTemplate(String.Empty, c.Name, descriptionValue, true, true, columnDirection, out error);
                             }

@@ -93,7 +93,14 @@ namespace Dev2.Server.DataList.Translators
                                     // Travis.Frisinger 04.02.2013
                                     if(!col.IsDeferredRead)
                                     {
-                                        result.Append(tu.CleanForEmit(col.TheValue));
+                                        try
+                                        {
+                                            result.Append(tu.CleanForEmit(col.TheValue));
+                                        }
+                                        catch(Exception e)
+                                        {
+                                            Dev2Logger.Log.Error(e);
+                                        }
                                     }
                                     else
                                     {
@@ -124,7 +131,15 @@ namespace Dev2.Server.DataList.Translators
                             if(!val.IsDeferredRead)
                             {
                                 // Dev2System.FormView is our html region, pass it by ;)
-                                result.Append(!entry.IsManagmentServicePayload ? tu.CleanForEmit(val.TheValue) : val.TheValue);
+                                try
+                                {
+                                    result.Append(!entry.IsManagmentServicePayload ? tu.CleanForEmit(val.TheValue) : val.TheValue);
+                                }
+                                catch(Exception e)
+                                {
+                                    Dev2Logger.Log.Error(e);
+                                }
+
                             }
                             else
                             {

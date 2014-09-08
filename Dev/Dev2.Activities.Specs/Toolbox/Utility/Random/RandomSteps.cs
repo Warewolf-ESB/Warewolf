@@ -101,11 +101,18 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
-// ReSharper disable AssignNullToNotNullAttribute
+            // ReSharper disable AssignNullToNotNullAttribute
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-// ReSharper restore AssignNullToNotNullAttribute
+            // ReSharper restore AssignNullToNotNullAttribute
             converter.ConvertFrom(actualValue);
-            Assert.AreEqual(length, actualValue.Length);
+            if(length == 0)
+            {
+                Assert.IsNull(actualValue);
+            }
+            else
+            {
+                Assert.AreEqual(length, actualValue.Length);
+            }
         }
 
         [Then(@"the random value will be ""(.*)""")]

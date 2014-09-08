@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.Threading;
 using Dev2.Activities.Specs.BaseTypes;
@@ -112,6 +111,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             var result = ScenarioContext.Current.Get<IDSFDataObject>("result");
             GetScalarValueFromDataList(result.DataListID, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out actualValue, out error);
+            if(string.IsNullOrEmpty(expectedResult))
+            {
+                expectedResult = null;
+            }
             Assert.AreEqual(expectedResult, actualValue);
         }
     }
