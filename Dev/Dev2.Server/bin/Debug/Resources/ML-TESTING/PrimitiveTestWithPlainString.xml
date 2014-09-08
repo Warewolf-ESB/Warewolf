@@ -1,5 +1,5 @@
 
-<Service ID="dea42b69-dbe7-44b1-bbcc-78ab41c9c2e9" Version="1.0" Name="PrimitiveTestWithPlainString" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="dea42b69-dbe7-44b1-bbcc-78ab41c9c2e9" Version="1.0" Name="PrimitiveTestWithPlainString" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="PrimitiveTestWithPlainString" Type="Plugin" SourceID="d04b0566-5614-4b8b-bbf2-abb4b41aa522" SourceName="PrimitivePluginTestSrc" SourceMethod="FetchStringValue" Namespace="Dev2.PrimitiveTestDLL.TestClass">
       <Inputs>
@@ -37,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>izFQ37TGf6z1TLc3FaCyOzJIx3I=</DigestValue>
+        <DigestValue>htjucKFZm4i9aJ152Obb/0dJinQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>dCowtAS46krR2AtEO9aMMV+2CbYJbYLbQiCcSHbMzdQAQxhRr5abAYo3g3geZYcnoPTfJdwpMhL0WBvOfE8SQTYwN6Z5DZjQZmiALO65q3z345oJzGC3qn1XFabet2de1riQtqyZaD98awOMhF/+ZtDpGJhfYNQ1DnQdB/SYzfY=</SignatureValue>
+    <SignatureValue>Ev2YBXFf3UM7+KGhxSjpW28/G6CA3cT6P2D2fFxfbG8zijgt2Rx5ftSM1/NAMyUQ0KYbga37iZhA07384uG26b59tCddF97YQ9++TErGg87d7r9pPvsVP8zD3KU9tESmOrZxM7Hoj7N2fBPhPwdtKzTb/7MODsMLF/nH6DcMThE=</SignatureValue>
   </Signature>
 </Service>

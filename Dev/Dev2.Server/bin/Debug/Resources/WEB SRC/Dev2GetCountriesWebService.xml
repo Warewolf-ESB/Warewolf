@@ -1,5 +1,5 @@
 
-<Source ID="8a5c2119-08f5-4a58-888e-bbc95b996e88" Version="1.0" Name="Dev2GetCountriesWebService" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld/IntegrationTestSite/GetCountries.ashx;DefaultQuery=?extension=json&amp;prefix=a;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="8a5c2119-08f5-4a58-888e-bbc95b996e88" Version="1.0" Name="Dev2GetCountriesWebService" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld/IntegrationTestSite/GetCountries.ashx;DefaultQuery=?extension=json&amp;prefix=a;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <DisplayName>Dev2GetCountriesWebService</DisplayName>
   <Category>WEB SRC\Dev2GetCountriesWebService</Category>
   <AuthorRoles>
@@ -15,9 +15,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ug4k9a3Vpo7R74WAyBu1G67rjvM=</DigestValue>
+        <DigestValue>3p2Dq+KacFgHHMxhUiAOx+hSpCk=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>lko+eJ7Tzqk6T7QFz91DqsPh5TsMDnOgp4zI9Xo5+P3zv9+l14JSxmLmO2YlwIwIldRhn3KjvVh3WZXUGKQQfT60VLOlKVy3+1q4qfvTKwMiwXiH2Pc/rCLlcHpyhZ11ShQF3CUpWGOpeJiDIpSTpKFxTD4hUKj9YnapABTKG8k=</SignatureValue>
+    <SignatureValue>usep1hB81DFnVmYzFiXoNlSrP3/tfCJQ0Ff2xUA+zk0M01mB2PpCFDe9G6X3CqTk0tdS6onBnrEQWxipyfLPtGDP2LJnRPkIyGP3E5xDXsPGdNES/RwDvPLhVEHseERyN71h7Ho54CO1WxNgh9DQpsj56IPy2QEW0EpcwLTAsjw=</SignatureValue>
   </Signature>
 </Source>

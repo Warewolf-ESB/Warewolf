@@ -1,11 +1,11 @@
 
-<Service Name="CaseConversion_Recset_With_NoIndex" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="e5f52ea5-900c-473b-a8d3-1e6c6da27186" Version="1.0" ResourceType="WorkflowService">
+<Service Name="CaseConversion_Recset_With_NoIndex" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="e5f52ea5-900c-473b-a8d3-1e6c6da27186" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="CaseConversion_Recset_With_NoIndex"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:d="clr-namespace:Dev2;assembly=Dev2.Core"
- xmlns:di="clr-namespace:Dev2.Interfaces;assembly=Dev2.Core"
+ xmlns:di="clr-namespace:Dev2.Common.Interfaces.Core.Convertors.Case;assembly=Dev2.Common.Interfaces"
  xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
@@ -184,9 +184,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>BBaEl6OqSTPByDdoQiUegkJ0zh8=</DigestValue>
+        <DigestValue>4SgAHsNeCaCtHkdqbzRcBBYAl84=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Qyv+oSpjT6YpICvFXpX3YrbnExOThF66i8HItRPZf4Xm8tdn/Wy5EWfdSBBxtbjrfW6xwxJeChxvWbNytpyHxVPehC+fKRDJGAzWKnh7c8FLrjK5UM8uGCt2Q6Bora637+qudsoezjX8rOAyVjkNYmpzQ2CMSayHDa81oRA9+IU=</SignatureValue>
+    <SignatureValue>QvarnWTyHS6MJrgJ6qOuyQfRgsRlzUHiXYJdT7s18U0FYHC6YYgjNswpuRSm8Bu+0b1WLcEHXpydM+RXvWqneR+0FWheFKZWzee4emc4Q+oRxSmgk1q2xMc7ay7kJvftH72gJtv3VUSpcPMvchU7FzUdz8nF6TE9hOPH0bRUUGc=</SignatureValue>
   </Signature>
 </Service>

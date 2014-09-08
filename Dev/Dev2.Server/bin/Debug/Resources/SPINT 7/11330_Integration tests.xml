@@ -1,5 +1,5 @@
 
-<Service ID="f06e1a18-2c0f-44da-a2aa-3f7f0c2dd111" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11330_Integration tests" ResourceType="WorkflowService" IsValid="false">
+<Service ID="f06e1a18-2c0f-44da-a2aa-3f7f0c2dd111" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="11330_Integration tests" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>11330_Integration tests</DisplayName>
   <Category>SPINT 7\11330_Integration tests</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -31,9 +31,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>nN9lxz1aiesJMwounrP0oN8oSds=</DigestValue>
+        <DigestValue>YJyfsoSmxqfZwFZXr9lCwfNzdco=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>jcOLTS4VzEH9iL3o88moKjT21BE3FfvXehylKq7dJ0eqzBGQ1QO0GWmHq9vb164KjJz1J9SHyZGPv7hxvgWyuhKcXLwJlgcEavg/iD/Zk6MCbDH9mt8cYyCvF6pR7MkkOEPMTo0fQN3wNnWRZS8X2LsJ3ps6O74LJC2DHaGr6po=</SignatureValue>
+    <SignatureValue>MOO021DYccOzT0PTKc+eCCaojVSQ9AHk/3G2rNi3qhuJsFQ3B8jB148lLnTtIOVrEl7YpH8wJAzoMucz3psugms5elrCfxg/Gaqjfm3LwFxxQ2HVv3VZkEVzVqwc6LWaGnY0Qv8DTPfDT+wERZwyTosNhhR0fRnDK7nQr8Vfj6g=</SignatureValue>
   </Signature>
 </Service>

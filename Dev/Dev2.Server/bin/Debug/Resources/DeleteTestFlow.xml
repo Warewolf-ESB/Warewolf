@@ -1,5 +1,5 @@
 
-<Service ID="f8a67201-b0c0-4bd8-a8b9-6e393399aa4e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteTestFlow" ResourceType="WorkflowService" IsValid="false">
+<Service ID="f8a67201-b0c0-4bd8-a8b9-6e393399aa4e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DeleteTestFlow" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>DeleteTestFlow</DisplayName>
   <Category>DeleteTestFlow</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -29,9 +29,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>u3BQ8tnBHsg4bk6DIZH28QQ81Ys=</DigestValue>
+        <DigestValue>YjqO6M1FV9/PX4ygSEpSAAFG6/s=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>P7irUuorFM+jRxsv4zeprjCHHYReIqR5IMjlCfkEg8HPZHJXSlOxI6HOkHdbH9OiFRXieEItfCdisCMRdQNxbD0wLBUlOeCbypAM5gZbZyoRPON4LYoTw2rN/Jsve0N5cQs/FghY03xusN2R1B8WK74lYktuW+L5lfAhmqTr+vY=</SignatureValue>
+    <SignatureValue>duseDLshKI3sYw63ek7kK+W2aYZxpcqpOXBJ2uWUO3voZrks+Uv6bPNZc4e9EETjNCuypZ8GjNjK7I7yfwhuDbQ6RiEj62rZW+FlnRBjsZitPIS5Y/ivvOd8e//EkhyHNiZNp/MOkPDK1iIekQXWPtf/nF7b/paWfH4bbnuzduM=</SignatureValue>
   </Signature>
 </Service>

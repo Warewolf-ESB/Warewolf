@@ -1,5 +1,5 @@
 
-<Service Name="ReplaceToolUsingRecordsetWithStar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="894d221e-3c74-481b-bd3c-2dcb19294566" Version="1.0" ResourceType="WorkflowService">
+<Service Name="ReplaceToolUsingRecordsetWithStar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="894d221e-3c74-481b-bd3c-2dcb19294566" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="ReplaceToolUsingRecordsetWithStar"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -194,9 +194,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>u0nLDzdzXrL/WVK9OZfaqPRzX7g=</DigestValue>
+        <DigestValue>9YVhAliO2Gbf5+5L+rm5aqQMk2g=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>YPfVJW2SQtc9nBpg8h8aLFRLQGwWOe06L2ku4fKLtSI4ZC4W8QsRQNkwjAkX/ugqWOqhqC3/qA8DYkIH8HsNQDX+yN07CzkZzDnEZ0K33zGFKuNhLIuj0UVMqYleg2TFGVAuQpShSn9gQqguM0baeYoMkOTNNocjcYIrc69MLeI=</SignatureValue>
+    <SignatureValue>NKQtwGgD1TJekThu0/TpCL7QxKBRCGu7zCMS3+YliTB7sCAxXq77LZheQVDLPTCAkO3u7cyBHmaYnHH3Pl9He+N+isvRb9zLvy552PXrgMOVojCGWS31AdhrxWyX1P54UyPF0Qz+2nYqWyuE0xTD0b4t1/QhJwgPcid6+XbovkA=</SignatureValue>
   </Signature>
 </Service>

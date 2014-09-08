@@ -1,5 +1,5 @@
 
-<Service ID="dce65086-6ee8-4c09-bddd-7ef297e0d26e" Version="1.0" Name="Emit ComplexType Service" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="dce65086-6ee8-4c09-bddd-7ef297e0d26e" Version="1.0" Name="Emit ComplexType Service" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="Emit ComplexType Service" Type="Plugin" SourceID="a0663ef3-0254-40c6-a53f-c9a5d24ac70d" SourceName="Anything To Xml Hook Plugin" SourceMethod="EmitComplex" Namespace="Dev2.AnytingToXmlHook.Plugin.AnythignToXmlHookPlugin">
       <Inputs />
@@ -39,9 +39,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>EhzbZRlqAeAAy7sEj1WUMGTKJN8=</DigestValue>
+        <DigestValue>X0fyrndjGd2bS6p79eCfq5GT89g=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>D3v2W7+R07h4rmpQurbE+S19SB0HlGZU3c/aHvX3AHc/Ego2UDslvvJhzDeWwDtiqLCu1Qrv+etSieC9vHpkVn75t9lwwTygvLmiN+ZNLCn3Z2/sEcUeDQ/ACx9vZ5erOOWUGwZr6e6S63kPqziSE7LCBj89r2ca9sj38QKSqx0=</SignatureValue>
+    <SignatureValue>j6fb3+pxlFwyLqcHxtA4Pau04vhGieOEaZeelV3mjoj/juF8udi25Cr05zj/ER49zMccEtMTbiNo0ZRpySgkGCutH90fmmx932fe5bq9ZvEHSQG2fdQrh4lYD7HEbJKD2vLGk3d379au0YwlkQZgwP6lFtBllp5PRTJn1YeLAbc=</SignatureValue>
   </Signature>
 </Service>

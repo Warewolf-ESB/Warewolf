@@ -1,5 +1,5 @@
 
-<Service Name="DataSplitTestWithRecordsetUsingStar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="84778ab2-bb13-4984-bc44-a8074d3247e6" Version="1.0" ResourceType="WorkflowService">
+<Service Name="DataSplitTestWithRecordsetUsingStar" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="84778ab2-bb13-4984-bc44-a8074d3247e6" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DataSplitTestWithRecordsetUsingStar" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -147,9 +147,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>JFIne+IEu5QBivIY9ubqdEuKEIE=</DigestValue>
+        <DigestValue>t5PnalFEv2yND8z6IxVi1bqwJJM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>CZ8Hy9MwIVonW3qMur7XXfLhdyE0pCKWih+t2phLeJKMwwHyuH1H29RgPlW342/1CZNZV9qEdBxvDrrZfl2nzaZ2b/FAVvCrvMCLnG5YgOovi3LaJIjmn6VuTqRcyRjX7ex8sJP4F75QLmtzrD8BMEJPWhgGFkEhloZpVUa9dB4=</SignatureValue>
+    <SignatureValue>DTijHRgK/68cau4zQXtg5NqQQMWFhaFjyEBQe+OW75KJmgDliSs6h+fit/hFUxHcDFTRfYqUJ+8V3R2GjJOIIrIRwVt3QMZErjHyvDeyL6+O4x06eEtrW2c2zXBp3/Q5cZP5OW9hcO/zTeKSBehSWQDPMScmnjQsJ94/cT0ZsXs=</SignatureValue>
   </Signature>
 </Service>

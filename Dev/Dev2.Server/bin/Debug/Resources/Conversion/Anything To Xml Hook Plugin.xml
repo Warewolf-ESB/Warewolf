@@ -1,5 +1,5 @@
 
-<Source Name="Anything To Xml Hook Plugin" Type="Plugin" AssemblyName="Dev2.AnytingToXmlHook.Plugin.AnythignToXmlHookPlugin" AssemblyLocation="Plugins/Dev2.AnytingToXmlHook.Plugin.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="a0663ef3-0254-40c6-a53f-c9a5d24ac70d" Version="1.0" ResourceType="PluginSource">
+<Source Name="Anything To Xml Hook Plugin" Type="Plugin" AssemblyName="Dev2.AnytingToXmlHook.Plugin.AnythignToXmlHookPlugin" AssemblyLocation="Plugins/Dev2.AnytingToXmlHook.Plugin.dll" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="a0663ef3-0254-40c6-a53f-c9a5d24ac70d" Version="1.0" ResourceType="PluginSource" ServerVersion="0.4.2.2">
   <AuthorRoles>Schema Admins,Enterprise Admins,Domain Admins,Domain Users,Windows SBS Remote Web Workplace Users,Windows SBS Fax Users,Windows SBS Fax Administrators,Windows SBS Virtual Private Network Users,All Users,Windows SBS Administrators,Windows SBS SharePoint_OwnersGroup,Windows SBS Link Users,Windows SBS Admin Tools Group,Company Users,Business Design Studio Developers,</AuthorRoles>
   <Comment>.NET Assembly Used as an entry point to the databrowser map functionality and to emit any given string data.</Comment>
   <HelpLink>http://d</HelpLink>
@@ -21,9 +21,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Qr/BWNys/vn0P9jeuYN5mBvhY6U=</DigestValue>
+        <DigestValue>13RkI3ZyT+EfAUahMgqFk1DKCxU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>c/j/wfwmxx1KH+LgtrbPfOnFCZHH1bBfhcTWqhAf5HkivV1HRkOfsPdDFbIwO50yq8uXeryVFtXotj3U83UYI6skXVmPRnp4zNZiBhqbQtAGxo9R3XrGbJvBYCQ2WKmng9bxu9qKwne1W/nRvII+IYGoR98L8fZ7RTFu0m4gjiw=</SignatureValue>
+    <SignatureValue>jfh1J46+Aie1gowXqQMsJqrhmNYX+V31tOZxB4LVEFrrzD7ADI0AoJ9BasB6KdDGhvVrpW0PMqrLtxI2oBUQdug/HnOT+Pw50YMEdveI+GS5TzGySjYiKHp/wP0kbj5LjgbMV5h7AGgn1MPO0t/Ea953ETCcDdGf+rdUc+ipXGA=</SignatureValue>
   </Signature>
 </Source>

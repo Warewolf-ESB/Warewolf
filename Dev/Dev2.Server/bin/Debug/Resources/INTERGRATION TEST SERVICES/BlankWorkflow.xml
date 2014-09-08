@@ -1,5 +1,5 @@
 
-<Service ID="af8990ea-c472-4233-a91e-2ea20c6efe06" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BlankWorkflow" ResourceType="WorkflowService" IsValid="false">
+<Service ID="af8990ea-c472-4233-a91e-2ea20c6efe06" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BlankWorkflow" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>BlankWorkflow</DisplayName>
   <Category>INTERGRATION TEST SERVICES\BlankWorkflow</Category>
   <IsNewWorkflow>true</IsNewWorkflow>
@@ -80,9 +80,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>GGNPB+1y7/24Ry8P8928CoJfg8U=</DigestValue>
+        <DigestValue>zzIkRysrsw6Ro+uhbmzOcyuV3Zs=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>AIolo/wL3WFwa9YI1fkDvjTQDr737W2N2i0vAQFJZUVlEdXreZ5tH+Wv4ZDBdsb7m3vq2hA0GHvULETJZIBPPHGmxIXRfYSNdoDIn6Z8XDF7IVwYXDE4C8WWCPsUAvp7a4O0rxKC/98Ipg2Ynh6JqpnerRrbwAgxdUOpbUUxtgU=</SignatureValue>
+    <SignatureValue>dtQzIYnzhDuk2LpqNCeqz6KjpSXalidDkj0SoNr0oD2trxWjKIlQJnMEsrhu30JXxGUcybNO5JQCf56WchhV0SXU3EUKXzTEmcLcgG1L4AXdYgvfPLEG8/BgD5gI0D9TtWsuGGIB9K9GjTpq4WfeyDn5LxmcXT06p6qBKGXMhaU=</SignatureValue>
   </Signature>
 </Service>

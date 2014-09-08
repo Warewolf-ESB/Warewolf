@@ -1,5 +1,5 @@
 
-<Service Name="CalculateTaxReturns" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="509ad213-5e19-47a1-8569-1fd34028f584" Version="1.0" ResourceType="WorkflowService">
+<Service Name="CalculateTaxReturns" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="509ad213-5e19-47a1-8569-1fd34028f584" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="CalculateTaxReturns"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -126,9 +126,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Gm26SBXMmd7YjYSMZPPwM2X13wo=</DigestValue>
+        <DigestValue>MrBxANlWZiQkDBKd+JSySXpGQxM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>cSHmK8LGlZG21bNKnht+vHLTVXyPXm+P7IPCSjJggFf6nmV5MWQBuNrhUWvLhcDBZ664YAo9OpG4pKUzoS9pJlzyuiHAPhJKUrAyc0UeeJSCk2K+5h3YnvRAtPqBjH+Tj0v6z4K7PYqfWMVbHKgkXxmtmU3ndX4ky2trEa0IqVk=</SignatureValue>
+    <SignatureValue>BVlpXlsYWGVEB5cEM6a9FSqKwAwblpDfv7/WuhlkmtnKkGEeVDJBKWReuYTh9QUQqSb0G4E+fnpUbGcnJU+u6vOG4782t+ZpWi3aK7QOrmbBCufUE+EkBEva22neZ43nO0ubluyd3bss+s7Yi+vYMnu9TDxY59NZdIpS3RJEn8E=</SignatureValue>
   </Signature>
 </Service>

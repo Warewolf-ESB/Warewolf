@@ -1,11 +1,11 @@
 
-<Service Name="TestFlow" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="2561f1f4-7823-4e89-87a5-639b15667ab0" Version="1.0" ResourceType="WorkflowService">
+<Service Name="TestFlow" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="2561f1f4-7823-4e89-87a5-639b15667ab0" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="TestFlow"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:d="clr-namespace:Dev2;assembly=Dev2.Core"
- xmlns:di="clr-namespace:Dev2.Interfaces;assembly=Dev2.Core"
+ xmlns:di="clr-namespace:Dev2.Common.Interfaces.Core.Convertors.Case;assembly=Dev2.Common.Interfaces"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
  xmlns:s="clr-namespace:System;assembly=mscorlib"
@@ -170,9 +170,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>HualYEZ1jos4Pmazw72ez8YXCiM=</DigestValue>
+        <DigestValue>oqC4MehJ3nEGIc0sCGpyDaxvc/A=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>XzgD+T3fWWAvYaJCOO9YxkNhAeUNprT0McA/VT5N2d6JAjE9Zw6kaHsOg6HI2Imr0sWYgM5FUt+BhGDF4B3IwYXszmkoKFaA7oBcB9hN5k459DivezAbqD0n7VbuJUOpQEGOtkBPocCirwtgz8POhqtGflc9bGHs6eXgdeKp4Ls=</SignatureValue>
+    <SignatureValue>OMD9eWMllbl3Uk7bsTLej1u99sIf897MUMzMi5v14nIayBhgK7/a0FAEAMw/83imdZhvbpv8C1eI0HzHy90HU4wXaFmFg87TBEbLX6EqWJ+3POT4k1kl8WngA0Ho0V87q5yUf0H0zRR92Y6t9QVtmFLsTkEI93S0mWuWqccAS3w=</SignatureValue>
   </Signature>
 </Service>

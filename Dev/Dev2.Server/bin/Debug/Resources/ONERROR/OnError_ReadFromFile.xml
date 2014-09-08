@@ -1,5 +1,5 @@
 
-<Service ID="c5a40e19-6e6d-4e23-8a06-3174de7f515a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="OnError_ReadFromFile" ResourceType="WorkflowService" IsValid="false">
+<Service ID="c5a40e19-6e6d-4e23-8a06-3174de7f515a" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="OnError_ReadFromFile" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>OnError_ReadFromFile</DisplayName>
   <Category>ONERROR\OnError_ReadFromFile</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -31,9 +31,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>gk8a+7R4meXpy6473ktczICRVc8=</DigestValue>
+        <DigestValue>sA2DYtW7MXFroAZRLRv5Z+skQb4=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>lj+FnmWcWiDhACyhfF7TbP701ze84m8ac/+q/fqyib2wzTmHiSzObLflh1Fzq8O0bNMUu+RDSaSobkH+dgCHaMcCNdUuOJnZqLrHcnWq9Z3eq08qa6XzPsy+vYdsEx4mYXQLdbZZTXef6wuZibyGrZzOK4RTQ/HM3WXzj2M+2qI=</SignatureValue>
+    <SignatureValue>Mxjgcj6SviE9aBg051WNUE07ocGLlmNo5fp2zCXsk4F8OeGQMvn/bloogrleSLjJGEE4o6O15j76AIoYnVZe6gUQkVAJU48HqFwEcBibpLlss2cuwcthDLNKSme99jAsjIJmOdWv/w1cbMNpvZxV8jrAsaOWShLQzw8kXhI3AYQ=</SignatureValue>
   </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service ID="25c3cfc9-8f3a-4b19-bafa-32a7efa1851e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MultiAssignUsingBlankIntegrationTest" ResourceType="WorkflowService">
+<Service ID="25c3cfc9-8f3a-4b19-bafa-32a7efa1851e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MultiAssignUsingBlankIntegrationTest" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>MultiAssignUsingBlankIntegrationTest</DisplayName>
   <Category>Integration Test Services\MultiAssignUsingBlankIntegrationTest</Category>
   <AuthorRoles>
@@ -23,7 +23,7 @@
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
  xmlns:d="clr-namespace:Dev2;assembly=Dev2.Core"
- xmlns:di="clr-namespace:Dev2.Interfaces;assembly=Dev2.Core"
+ xmlns:di="clr-namespace:Dev2.Common.Interfaces.Core.Convertors.Case;assembly=Dev2.Common.Interfaces"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities"
  xmlns:s="clr-namespace:System;assembly=mscorlib"
@@ -158,9 +158,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>oWrGGhi7dKQh0HYPynKAwdSdDVM=</DigestValue>
+        <DigestValue>0sp1nhIzinvj/0QxNt/bd6nLNAc=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>XTvos2ZWL/ACTtIo3GL05a/kXR8WYx+YlJbSYIMu9NdLfBCpJjsXlMYM5Zn2fAlaU6a8JX+FUEIIlGVNZIVtqEztRRQakbhc/+dop4sK8zNcv4rF5ZIfHrUG7VLJtv+NzQNPQX9MoRYznBc8rxTBhaCbwPAji7yt2LsKhtat1qI=</SignatureValue>
+    <SignatureValue>ZK4OYxymC0NJLrh/ia0tp48QNGc32rg8Gu1yTkXH8xh6OUqVGqR4ZabO0p6KtOH6WC85h5NNFrcPxJrHCgTB81wnbRxhb7BX9apA6f6X3vNDZB09Iyw6+JusC6i7725SYFK0aL2QvLsSeDGAinaq8KDQav1VmZfGV+1L+KXHUMc=</SignatureValue>
   </Signature>
 </Service>

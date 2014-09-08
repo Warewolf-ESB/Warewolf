@@ -1,5 +1,5 @@
 
-<Service ID="18b160e6-5f8b-4f43-bf48-82d555420570" Version="1.0" Name="ForEachLoadTestInsert" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="18b160e6-5f8b-4f43-bf48-82d555420570" Version="1.0" Name="ForEachLoadTestInsert" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_InsertForEachData" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.InsertForEachData">
       <Inputs>
@@ -38,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>mxRZfpv7WvaYK2GAMEdDCA2noj8=</DigestValue>
+        <DigestValue>usqtpMjymki07R5KKCdvJqr/43Y=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>eK4qum7MSBkAyOHgLp36pSROkgOWqqwP26fErVhTforimg5tjrv8o2V15za69N2DNZGPiOwgEv/5QAzUXvwxMuA82tMqY7piFTK8xc1IbE1/6MfeqPREmIZrmaYmZK3iJI4Lh30lnVUKWB99vgbji/DKsWRhb0GeuMx0/jxXLGs=</SignatureValue>
+    <SignatureValue>plDuNYbzQ1TiTHwF6SWaEtGQwiUnPEbQfJqGRAzlorCwYrkVtJnSLJpAYvdLUNS0R20ti1gtMcNGcadrj8TSbhP0RNgW6UsU2KtKQMRpkDgUtzIuRB3y79XwA2FOi1cYefBSVNCQV9rhaEh9wbrqWY3GUQGbDMCt2e165M1Kp7k=</SignatureValue>
   </Signature>
 </Service>

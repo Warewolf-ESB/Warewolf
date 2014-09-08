@@ -1,5 +1,5 @@
 
-<Service Name="LargeFileTesting" ID="789d6c51-00cb-4b84-9a10-88a004162d68" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Version="1.0" ResourceType="WorkflowService">
+<Service Name="LargeFileTesting" ID="789d6c51-00cb-4b84-9a10-88a004162d68" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="LargeFileTesting"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -929,9 +929,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>lv7T3THuUKmwn5HxUwit2dwnW6Q=</DigestValue>
+        <DigestValue>cUSXGhCnpqUjTJ6ORIETjsqUNNY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>PUyW5MX6qCXCuu/3E+Hvp8XhPnVxDZ7IGRW3rf/6+OeYAg7Bz0BAK5ZlLlG4kDL4sTB83q8i1FoAX+/r8V0xxvsmHqefwCvvJ5BbUuiCjTsykcHbO2LKcNFscq/2cSCN5B6kNtm914JRwbBkhwXFzUAQkLx+DwBgCWs6gnI9BUQ=</SignatureValue>
+    <SignatureValue>J7kfwvQ7OtzKGPQSprjmvzzmD9x0+2+UQ56YOsPaNbbKgbXEf34D4viNiPrG/J6x9/tSs5ppKSWZ6fORHibqbmdB2S11jH3UcQT1Ast9SP2dDoSxSLIULX2/9Y49tRYGTl0xA+rbKxEuRZV3OTqYVSoLmEmOOvZ4YpUODl0d0S8=</SignatureValue>
   </Signature>
 </Service>

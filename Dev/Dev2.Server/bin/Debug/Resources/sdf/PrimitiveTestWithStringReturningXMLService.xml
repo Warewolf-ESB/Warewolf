@@ -1,5 +1,5 @@
 
-<Service ID="8c6bfa9c-ecd2-4b16-a0b5-b413edb967c7" Version="1.0" Name="PrimitiveTestWithStringReturningXMLService" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="8c6bfa9c-ecd2-4b16-a0b5-b413edb967c7" Version="1.0" Name="PrimitiveTestWithStringReturningXMLService" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="PrimitiveTestWithStringReturningXMLService" Type="Plugin" SourceID="2a7a78af-826f-4334-a402-b35e910295c9" SourceName="Email Plugin" SourceMethod="DummySent" Namespace="Unlimited.Framework.Plugins.EmailPlugin">
       <Inputs>
@@ -37,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>AhvP9Vv9MOEw2hW7BNYYJHr391Y=</DigestValue>
+        <DigestValue>Yp7aGvJeuUTJL9fLO8a9YE3YLMA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>o1PA8sHC1ShSGRgUc/ztbpR29gdY04ycU0+k77jn58xef9pSh2+5lbqhqv6bs4PqN83Sg8mtD7RsHGUrnIegdnFCidxPsU4OZoC+JePZxlgDYWRkBX3ftcy/svXkpv4o+NzhIvAwwRHnR577iCYPdenWgrTsuyPP5NHV3863B9c=</SignatureValue>
+    <SignatureValue>iuPrIasUSznNpMTS+l8Nm++LsZbnHm2VckuFoScZrwnQDS9JT7G/Vu85mHPLI5RNhuJ5Qr+FjsOEHd1LYD1Z4zG93E18HPqcGWMlI+F5iXYFFcMJYqLvy1Mkx2ubnu7ffi+8QWpBRxIyOk3j1qzbv0PLQ78J839pASSzkHd8HpI=</SignatureValue>
   </Signature>
 </Service>

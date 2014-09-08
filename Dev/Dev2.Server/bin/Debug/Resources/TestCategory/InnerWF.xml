@@ -1,5 +1,5 @@
 
-<Service ID="def46bb8-3636-4230-aa35-0f243412f1f5" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="InnerWF" ResourceType="WorkflowService">
+<Service ID="def46bb8-3636-4230-aa35-0f243412f1f5" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="InnerWF" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>InnerWF</DisplayName>
   <Category>TestCategory\InnerWF</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -33,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>pR9TbXBmI3abL0onJxYShNeMJQs=</DigestValue>
+        <DigestValue>WNtNhPUTPAov0M5gYzHdvXK/Ixk=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>DinUUmDeJ3NZjH8Bh4ohehHfBHKun4V2Cn1GqdIJ4i2sps7WrHg5dTaEH1o3ml0Y4FQOoeN90TyUkpZnsqhh8/bid756K4mf5hHxE2VVGKQXpi362FmTojFGTSAvQoaV0KNe1THP22wdiaBWr41jeqFvRVcLF8Y8O+wNne0uthE=</SignatureValue>
+    <SignatureValue>JJ4xOP3DYwdwQLUEvUsN7y/uc938Tf2qiUp/vuaPZKmJdQONoD9FSZta/6b2Fq4W+egbkRQTFw6yRk0LTFrq74FniwwxWNbSLWqSM+D/3hCWOQ6uuiSCh3k+I5u8lLktLpSei7J36hCbErmPB7RZVFauTnxrt6mmOqGzbBDXsn0=</SignatureValue>
   </Signature>
 </Service>

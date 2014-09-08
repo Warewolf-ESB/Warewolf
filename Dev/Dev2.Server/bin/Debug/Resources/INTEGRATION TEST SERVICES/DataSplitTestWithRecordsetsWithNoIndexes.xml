@@ -1,5 +1,5 @@
 
-<Service Name="DataSplitTestWithRecordsetsWithNoIndexes" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="daf39973-d442-4444-b1bb-bd9de1485143" Version="1.0" ResourceType="WorkflowService">
+<Service Name="DataSplitTestWithRecordsetsWithNoIndexes" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="daf39973-d442-4444-b1bb-bd9de1485143" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap" x:Class="DataSplitTestWithRecordsetsWithNoIndexes" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:dsca="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:uaba="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities" xmlns:uf="clr-namespace:Unlimited.Framework;assembly=Dev2.Core" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"&gt;
   &lt;x:Members&gt;
@@ -118,9 +118,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>25Y3n8+ub9IAozQDQV+teb0fYcI=</DigestValue>
+        <DigestValue>3iqSiQ8zZoukA9ayZG5ivPeBPE0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>q7gkFOAHFhRzsmb/i9eQ25521tYDwVbDqRRDt1YLcaj/8+0ZMbKoS2p8+A3P8ajt1SeQA1JkLlTIYg5nzR7jMsaP/YFSF0vJQL29MywWDJIN69K3yqXAXD1uJmqHfnsdFNq7QmG5NDUdriRl3JmVVC5oU+FkwTk3TCriygijAio=</SignatureValue>
+    <SignatureValue>bUNy7okVtkITpCj+dIsA8olYliGcrI4Hn1OUnWKAnINGhF7XSDmpN7MbdwWvaEkbdqbXnt43ghZVpAhKc62EVCV2BaGdnO958QEMBB1qdokFXtocUmrDyt+cGNYbNeprge6UlPgy9e8ubLUdGOTuTWXAHd4KJFBp2NGp8YaA09c=</SignatureValue>
   </Signature>
 </Service>

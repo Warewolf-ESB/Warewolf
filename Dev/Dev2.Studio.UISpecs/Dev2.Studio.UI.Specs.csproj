@@ -49,7 +49,7 @@
     <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="TechTalk.SpecFlow">
-      <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+      <HintPath>..\Binaries\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
     <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
@@ -187,7 +187,6 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ExplorerUISpecs.feature.cs</LastGenOutput>
     </None>
-    <None Include="packages.config" />
     <None Include="SecurityUISpecs\SecurityUISpec.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SecurityUISpec.feature.cs</LastGenOutput>

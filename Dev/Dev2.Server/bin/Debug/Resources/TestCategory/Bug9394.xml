@@ -1,5 +1,5 @@
 
-<Service ID="50dfd6d3-f09e-4449-aa4f-91aef7bda633" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug9394" ResourceType="WorkflowService" IsValid="false">
+<Service ID="50dfd6d3-f09e-4449-aa4f-91aef7bda633" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Bug9394" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>Bug9394</DisplayName>
   <Category>TestCategory\Bug9394</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Fo4AGBgiVXuQFTPb3dze/DCw3i0=</DigestValue>
+        <DigestValue>Thxk+gxyONCciTBfIKcnu89dRM4=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>JZNdQLjtfhaP03PazRvUmIKf+Ud7o7B61s9a2yAkrCthGXuA1CShIJgpV3DtGTh9+63HMYzSUPKJGbSU8gufc30/x3eoP0OswU3NGXq5wwhiTWpfa2QG6CJItLJKet9UreOYnDRK5wH/xenm6Rn5UJzDnj6YQA57cSbNxp4be7o=</SignatureValue>
+    <SignatureValue>tyJNjkqB9IGi/2XZfhVUaKOYsPctYQtbL+Aw8YptH38qXC+cJ5wADKRPUbXgaZ3VS7uWWmCqi7R+z/2azhuG1qkOjY6kT3gKMNQM+lYt28rPnw6MI23RVE/djWG00CL2swwBVHTj5BPpEPMewli16PhOzrqcckc5hi2S5T2EG5M=</SignatureValue>
   </Signature>
 </Service>

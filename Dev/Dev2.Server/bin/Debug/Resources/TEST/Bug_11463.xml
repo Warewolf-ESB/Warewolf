@@ -1,5 +1,5 @@
 
-<Service ID="61a24a17-f609-4934-8c6f-47c7d7e729c0" Version="1.0" Name="Bug_11463" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="61a24a17-f609-4934-8c6f-47c7d7e729c0" Version="1.0" Name="Bug_11463" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_FetchPeople" Type="InvokeStoredProc" SourceID="6f46efe3-f4a9-464e-b173-9b931418f68b" SourceName="DemoDBSrc" SourceMethod="dbo.FetchPeople">
       <Inputs>
@@ -38,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>gNYlpI1MJRjnQs8amLT2kbdSy+g=</DigestValue>
+        <DigestValue>TICwzR778FgWP73SOvX3M2scoEU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>UQruABCKcrhOOmiY9y/tz88y0QqoiTB5PKAhXJ1A2x6AEc6D9yPVY51bWSjnRfP3xBqcpG2z7F2/eLfmZhVtBSDroTfLH30bl8sUFYFmbWG/UkOcmcl2fvCVp4B/qdlazGvznEx1/3e5iuCi6N1Y8Ye/1sRPcryNatfQmnsgOhg=</SignatureValue>
+    <SignatureValue>TiQ4kDt5Yq1Hh9Mj7Qy3USlGkn+ber/rmwroRu2FTAZ3V92EQoBnjOAzodoomyUC/lNCVdZIqOUT1Xz8vQicSDV7VSzA+5FrCTmGYl22pzhSAgd7mAoyn+tbspXy6YeWxxgjvSWgl51ceTm0Pk0drUaS/cB2CiaU33EnUuEA0Ww=</SignatureValue>
   </Signature>
 </Service>

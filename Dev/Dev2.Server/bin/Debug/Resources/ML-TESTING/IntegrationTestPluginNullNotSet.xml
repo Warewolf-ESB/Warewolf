@@ -1,5 +1,5 @@
 
-<Service ID="61e20de3-7316-466c-a361-bc039ad94cda" Version="1.0" Name="IntegrationTestPluginNullNotSet" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="61e20de3-7316-466c-a361-bc039ad94cda" Version="1.0" Name="IntegrationTestPluginNullNotSet" ResourceType="PluginService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="IntegrationTestPluginNullNotSet" Type="Plugin" SourceID="bf69bfdf-6978-4f24-bd39-be6f38690c85" SourceName="testingPluginSrc" SourceMethod="SampleSend" Namespace="Unlimited.Framework.Plugins.EmailPlugin">
       <Inputs>
@@ -52,9 +52,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>lYDhIjnHR9nEHjUadlZbqG+Jzag=</DigestValue>
+        <DigestValue>Jan8KIhmPs8Ufy1nOPLRdEPTTUs=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>eXzm4Q9cMoN/l/l/eyDk4wL5YLxVRG0F22RVQaQeY28kxYoZjaC2n9ZA8sXrsSroZe5by5423EkyaMM0MXzgThjJrjqza0DzfhnszolhTNEXlwl9SjNcc9PHiL8zlF5BOMaEJoHWEskKn2mqjhLzr9VzNk5Q2rToHYram8sl3gk=</SignatureValue>
+    <SignatureValue>m6ZeW86bbGjlStpTO5VuHNX8DnWJ2KURmTBS73ZCsQ7kvP0gmrKwWVZWZHsnQlNjw69jaz3J4KaVWw5muj01sTX8pJWSfYaed6vMW6927RI2wVJJAh6iesBlK6ZwBB9JPb/KOlhm2udJAYunrR7bWxgSv6ts2hm2biq6cAYgs3g=</SignatureValue>
   </Signature>
 </Service>

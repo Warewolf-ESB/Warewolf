@@ -1,5 +1,5 @@
 
-<Service ID="9fddc6a3-2095-443e-a007-e6f5b8680d16" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="NewForEachNumber" ResourceType="WorkflowService">
+<Service ID="9fddc6a3-2095-443e-a007-e6f5b8680d16" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="NewForEachNumber" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>NewForEachNumber</DisplayName>
   <Category>Integration test services\NewForEachNumber</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -141,9 +141,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>BxHNfhXWrtpQliINhnWB8Hk3nmM=</DigestValue>
+        <DigestValue>teLAXCQmlz+04d6G15E/ZmDS7t4=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>bk8e/gj+JS9wJyLZWH3AssUwkxEpwNRnxN0i8I/nITh1sz0PHyoNhV9WF4SB/3gm+oHGZOTQU/pEND/diGCTY+cD24pB/qwsGA5Jlaz8GbteKklEeOjO3hhfFd2aKVDJIijTZFOjP2fOxt4MiRuoQS4nCTBhVVqv3E3lW5POycg=</SignatureValue>
+    <SignatureValue>ji7QH+NAQqL8SntiBJG6vqzriuujo0dGLVFo9Hwn2HQwJU2jFFEhd3TZi8ntM9SGJ4uFrcRejq8qRZE1bs07ZAj9VyU/XHBvpIYDlI3JfpkRBR0vRsOmOEHWRk0FNLZ2wCMf2AVyzbTXB1sWyDLLJ0We5j6dP5lkREpphT6dSRI=</SignatureValue>
   </Signature>
 </Service>

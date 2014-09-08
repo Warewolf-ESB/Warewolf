@@ -1,5 +1,5 @@
 
-<Service Name="DeleteWorkflowTest4" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="c1eaeac8-0b2b-4285-a50d-ef8733aa37c3" Version="1.0" ResourceType="WorkflowService">
+<Service Name="DeleteWorkflowTest4" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="c1eaeac8-0b2b-4285-a50d-ef8733aa37c3" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sads" x:Class="DeleteWorkflowTest4"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -53,9 +53,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>cNxIOGxDcIiW30DYdwPn4zs6Tis=</DigestValue>
+        <DigestValue>tphsDX5aiudwNQYlA9QmNVfvHLA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Np3bTPvge1TFtNblrmSF+27d0MIsIz0ZOjOBglZLrT3rP5Y/lmV2+oW/kHp15xsPU6eqlbAdx99OBebOrfyIz0kHXpUte4YGJiyOMLo+oKGEaA93j+mJvaovj4hEyCwA0F1zbeHJ78XxnuZXiOzbAjzFkKv/VmE2ac+SaJTeCjg=</SignatureValue>
+    <SignatureValue>KTUy1uRYLInyjxqUqq6fj2hyBIWSoOCESMHHMCZ3Pyclv2nQNMaKyW1AGcS49jQXdKQ4L/aoa/It59zbSEzLTRevP8k9jJzWIEQecvWGIb+fDIKxgUfG/kXic1+mMwbVG/lVti7KJhl++fKouhTZb9E8vRMWxWDH7cQ8NSeIFmE=</SignatureValue>
   </Signature>
 </Service>

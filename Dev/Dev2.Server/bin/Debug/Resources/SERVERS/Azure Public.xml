@@ -1,5 +1,5 @@
 
-<Source ID="774c1be9-17fc-426b-a31c-b53d686038c9" Name="Azure Public" Type="Dev2Server" ConnectionString="AppServerUri=http://dev2-warewolf.cloudapp.net:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Version="1.0" ResourceType="Server" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="774c1be9-17fc-426b-a31c-b53d686038c9" Name="Azure Public" Type="Dev2Server" ConnectionString="AppServerUri=http://dev2-warewolf.cloudapp.net:3142/dsf;WebServerPort=3142;AuthenticationType=Windows" Version="1.0" ResourceType="Server" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <TypeOf>Dev2Server</TypeOf>
   <DisplayName>Azure Public</DisplayName>
   <Category>SERVERS\Azure Public</Category>
@@ -12,9 +12,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>RnGacSxKD/tn48efkoZHXeIIArY=</DigestValue>
+        <DigestValue>XtVfMIyFZdFCXBby0VhV8geoPB8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>gyal2myI/tQ+drG4Gv3qyLNv1sZjKxAC51AmyEnStUrfB+WNDH2Fq6UjYzxHKrr8eHoaCHRXdXVDVZk/9IMGRrKGHSIBy+y6FcbjAEp7T5duzOkJJdNGLekrxFPEm38EB5kg13Omj1+uqvutkiNi2O91M1Ul2wbjMF2x8b5lOW4=</SignatureValue>
+    <SignatureValue>V8CO+eAQf5gU5lgFh0bzr3BDEg5k2uk4u8VQsrxR+B24kEjj0W39ovZr5T3zCVDrhb3KDg/nJTataMcK3mZPrxJq+bt5fMw9TRIny4V7LM7zky2Wx4XuzyQGJgFC/znQdImTiPHV0x5crZ/YqpdBwq20riAPDdVqNhjofteI0rw=</SignatureValue>
   </Signature>
 </Source>

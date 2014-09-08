@@ -1,5 +1,5 @@
 
-<Service Name="DataMergeWithScalarsAndTabMerge" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="581ef7bf-5bc4-4677-bd13-3d417e84eda0" Version="1.0" ResourceType="WorkflowService">
+<Service Name="DataMergeWithScalarsAndTabMerge" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="581ef7bf-5bc4-4677-bd13-3d417e84eda0" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="DataMergeWithScalarsAndTabMerge"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -389,9 +389,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>MJWM2oIFDYpOKmDu+bCU61w4Foc=</DigestValue>
+        <DigestValue>lj+uK5Wpo9VyL8vL98iSuSb/ksU=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>eE0VrmGKjFK5B6W7gXJ8AFxpTN+lU+egzrIKTfA50lvBZbiAZsPuXmW4O6TiEek+TUjeW5VNkE869oqznIGqwNEnVr9YwxnwNu//XrGrovMusJt4p5JnmieRSkn3L/FiLGSICJr/TileA5Vsprkx5DE+m8gn1AoiO7edToXeGR4=</SignatureValue>
+    <SignatureValue>nAXHxfMXFt3MUc+CznEiPCmuboxGk1OGqtEX8FA2UunjSDJ1MmorVZT0haOxkfrpNkvOWZmkSaNDiRq6rwMon6tyRm22/7YRkdq0LA2C34QULftUPcp825bM4DkMpQEmFCeejcHBF8kkMwpFv1ccEjJfx5IynooIuxDBk1Oe0Ec=</SignatureValue>
   </Signature>
 </Service>

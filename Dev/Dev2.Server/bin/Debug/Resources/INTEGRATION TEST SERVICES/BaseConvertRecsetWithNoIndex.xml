@@ -1,5 +1,5 @@
 
-<Service ID="4ba7c3f6-6856-4a59-96fb-243c1095b41c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BaseConvertRecsetWithNoIndex" ResourceType="WorkflowService">
+<Service ID="4ba7c3f6-6856-4a59-96fb-243c1095b41c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BaseConvertRecsetWithNoIndex" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>BaseConvertRecsetWithNoIndex</DisplayName>
   <Category>Integration Test Services\BaseConvertRecsetWithNoIndex</Category>
   <AuthorRoles>
@@ -180,9 +180,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>nIbjAwKd6eSiJyE34/xFCBSK/AE=</DigestValue>
+        <DigestValue>H4iSAy4TkPRgwtzFs+kEoFmV9Co=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>f8lhDsEyfXUD31HHGD4ScZEPl0HiRGrGZmrUq31IQhO/CAt2F0bFmjON9wuOWlef1mya8gIkVKpV8id7I5iF4eR9OtgtIicFHZ3zCV3sZt0tNQpuilhH6UUtB61Fg1zKbh1pSLhCRJacfMmrWLH3hSkfaALSSt9N7usall3B3f8=</SignatureValue>
+    <SignatureValue>LsqHxNyVfGMlCXpDNoW3OKIDtHgKoPbri2s1RymUBv/fB2qnnnf0+Attn4YY/aFEzY4MaeJwMrvGrXyjlEwZaNc+Oa0YjJKsw5+sTgL9U3X5JB0+dEGXi1JMKj5T8Zd50dNb34kq7VmbguJ4RmraCUuZFbWsaw11WYdLdxWUdYg=</SignatureValue>
   </Signature>
 </Service>

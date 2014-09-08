@@ -1,5 +1,5 @@
 
-<Service ID="fdc925ae-8cf5-4211-b23e-3fd7bfb5b3a9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BUG_9966_RemotePlugins" ResourceType="WorkflowService" IsValid="true">
+<Service ID="fdc925ae-8cf5-4211-b23e-3fd7bfb5b3a9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="BUG_9966_RemotePlugins" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>BUG_9966_RemotePlugins</DisplayName>
   <Category>INTEGRATION TEST SERVICES\BUG_9966_RemotePlugins</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -35,9 +35,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>6f3urx44LkYllVGhGWdDw5m3Poc=</DigestValue>
+        <DigestValue>W+7JRU+BkLqx+WO+R1rrusGBwp8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>He7cttnCd0drkqMhGmEG2hAN5QRc8TPLNcBP0yfNU9YCaH9X4wH1U//IVkcxG1g3LiDLY4/iB6mi6GS66m2l6+ytZAmp8cQsXrud8qzLH3XWDz9wr/z1Sjm54um0qFfs4KwJ/WLYsvaMNJo71PSzmLHxhlicSJ1F0Hl5KKZDHL4=</SignatureValue>
+    <SignatureValue>MjnlV1yrihv6oZVzix5lHPk4Ao0Uu//JYLFmpbO/v62lxwrnZbUWNsED1C706ZU6dQeXFh+V2AYl+H0QReZIT8dN5NHqt/t8MnWCgfrNhFaL5qySzGs4KKPuY5LwjLWv3mlZydev8hYtQSdvKwjpyvJq0/nQJKGTocKaOWqmFwI=</SignatureValue>
   </Signature>
 </Service>

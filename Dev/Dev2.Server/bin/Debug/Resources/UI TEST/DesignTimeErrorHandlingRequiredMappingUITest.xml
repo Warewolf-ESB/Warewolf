@@ -1,5 +1,5 @@
 
-<Service ID="9b3faa22-77b9-4abc-b70a-8c857f91bec4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DesignTimeErrorHandlingRequiredMappingUITest" ResourceType="WorkflowService" IsValid="true">
+<Service ID="9b3faa22-77b9-4abc-b70a-8c857f91bec4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DesignTimeErrorHandlingRequiredMappingUITest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>DesignTimeErrorHandlingRequiredMappingUITest</DisplayName>
   <Category>UI TEST\DesignTimeErrorHandlingRequiredMappingUITest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -30,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>HZl+KgTsZXPUOkCVfYeQqSfzdN8=</DigestValue>
+        <DigestValue>piqKbKK9S2SEzrtpWJ6/hHJfB28=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>R3/7gCuwmSGayvRUkWxoBtHdHnM0FD8WPi45KyxY4ELt56cljyNqV75sLSbbqPHU2I0q9pSrjuOa4uh6zk0q1LJYk834PJjEEa+oCdVIl/RbonXTxM+2hL9iB3eIzK8EkB7RPNTapAdhcYIILoEmI0JJyyI2GdqXnZxRI6+I/yo=</SignatureValue>
+    <SignatureValue>JGDo6B8ArTtY4kRKbYBWI7Bgkj/uxF6/yo24kwqdZP06rKREbkYE7i48QBxy9QdrDu1TQNbzvrThpH/6/g6PJlOVM33849jFI53QrISXdNDnmOA3vJeVo+au5kufnQuvdVB9QIFpYyEnPazcBhv7vvz4gu4ZPRpbDsftwVVm5ig=</SignatureValue>
   </Signature>
 </Service>

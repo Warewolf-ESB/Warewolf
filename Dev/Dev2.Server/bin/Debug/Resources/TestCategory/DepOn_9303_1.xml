@@ -1,5 +1,5 @@
 
-<Service ID="d46f8ed0-b885-47c3-8892-902da6b2e761" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DepOn_9303_1" ResourceType="WorkflowService" IsValid="true">
+<Service ID="d46f8ed0-b885-47c3-8892-902da6b2e761" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DepOn_9303_1" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>DepOn_9303_1</DisplayName>
   <Category>TestCategory\DepOn_9303_1</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -29,9 +29,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>ZAWjYmacYvLLgiTk2IX72kZtHh0=</DigestValue>
+        <DigestValue>3sVkU74YKeg0kHDY4SGySkokvBI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>B7eLeAC+AtHlhMpNfB+ZDO65W8gin6exO9O9Npb1ACd6eBxofPul+B3M5+3dNM3m8ogpKMPf4OGM99bzvpy+lc3v2a5a0CsNC2g2nAYgY9ywwC4crvfOQaqPyQk5+StuyvcMzQvGTQI4esjC2JZ7kv8Q+/CyOBSHHKTwTyjEd3s=</SignatureValue>
+    <SignatureValue>mBsKsyh6nVavc1117wMTZqUm14HarnsZhtp6HzP3ad+KlsGrE6VOP+ZMHFTscOlNqGTCVrQruTBtVW9wZQlcpokYd2WkNF/4XZt+RIYOCZXaoKKRfLB1ezaAcOYH0YA7oj13IymOlaClmZKNlZsqjL0LnK3CzT64v6FgWN//vj4=</SignatureValue>
   </Signature>
 </Service>

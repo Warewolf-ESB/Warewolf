@@ -1,5 +1,5 @@
 
-<Service ID="bebb62d1-aab9-4839-8e9d-6babcc90e931" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ErrorFrameworkTestWorkflow" ResourceType="WorkflowService" IsValid="true">
+<Service ID="bebb62d1-aab9-4839-8e9d-6babcc90e931" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ErrorFrameworkTestWorkflow" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>ErrorFrameworkTestWorkflow</DisplayName>
   <Category>UI TEST\ErrorFrameworkTestWorkflow</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -49,9 +49,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>kUoOIrKgpMJnsgZWMObu9PBp7p0=</DigestValue>
+        <DigestValue>PwWGGLuRhCD7/CoeWVOmq+qqCDI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>A93iwjfCvEGMWok120T7PPmA4+U5qw2lU9psmcQiFzxBcuVv4olE8pC9qgY8UXI6njPwPVj4W7Y80ayueiezzLzxZh5YViQ3adPFsS92eDTpKth3b9gqZwGKCmSx2yybHDvh9PIDbERdiV+AIKmGDvTui8SKyT1Bl0yDUF1Ukao=</SignatureValue>
+    <SignatureValue>HGLp5Zq7mvB2N5GupKiEeRQDFTL0nZB2iQyeHqCnE4RYfDAVbw5/nIYxujSZbCDokdvWSQSMS13wSrXFUteL7jLCwkioEnlhyW50WSFUi0uUbiDQlyCOsJBG7mhl0KJu7Vmt/Qhwy6PIKKiPNM/iLIIJuQkYTQGGplc1SKC+lVk=</SignatureValue>
   </Signature>
 </Service>

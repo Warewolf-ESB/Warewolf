@@ -1,5 +1,5 @@
 
-<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://www.webservicex.net.co.za/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=US;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="cb95b41d-b5f8-4507-8f7c-bb718b168dcf" Version="1.0" Name="Dev2 Testing Web Src Faulty" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://www.webservicex.net.co.za/globalweather.asmx;DefaultQuery=/GetCitiesByCountry?CountryName=US;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <DisplayName>Dev2 Testing Web Src Faulty</DisplayName>
   <Category>WEB SRC\Dev2 Testing Web Src Faulty</Category>
   <AuthorRoles>
@@ -15,9 +15,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>xwdcTSMGPjClTAwpCdSIPT8ytqw=</DigestValue>
+        <DigestValue>QSYV3/h6FOm0Tij3zCWcua8aexc=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>uLXO2I5CBboStzIgo2b6J9VCPRNFsg8l+x60JoWwqBCc5xbxtBGCbegYdBbq498bW9DlSfg5Qgi2FC97SjYXtr2mV8i6JCtQj7LiYr0to/OTbggNp8YtcPj+CNY8/vnhxC86EH572xv+phmwcX/625/0QtZ71twSrdVP9NY4Mmg=</SignatureValue>
+    <SignatureValue>T5AB6O8i9wCgHKRlDQ2oCi8syDdTwsmV5r7wx6+mHj4bbxdpjUfjnaN+kBPn5tc7vo7pKQ5DvZBVNZsl+kb742iGku4jQNpD3adr4Rnftrx5r3Qb2eH9E1flaGzFkW0sPYv5xX27PhFalXLqACSB8wn8MBZM6zsaxLvNOz+/6sk=</SignatureValue>
   </Signature>
 </Source>

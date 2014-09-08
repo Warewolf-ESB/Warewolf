@@ -1,5 +1,5 @@
 
-<Service Name="Calculate_ScalarDataListItems_Multiplication" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="cd78f3ba-281a-4a67-a863-1bf615ae7d71" Version="1.0" ResourceType="WorkflowService">
+<Service Name="Calculate_ScalarDataListItems_Multiplication" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ID="cd78f3ba-281a-4a67-a863-1bf615ae7d71" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sap sads" x:Class="Calculate_ScalarDataListItems_Multiplication"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -163,9 +163,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>hQkBIHvozN05L2yDsCaHJeAFE7E=</DigestValue>
+        <DigestValue>KE8DpQsMjZDeExiRNh7DR9qqrSM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>IQ7Ru0/xKU5EnJg9dHq6jGzc9kstOIsczMpdhyHtBbESB0C27cBgCMfgP3vM76k+j3RE0EvC37srs840mN+GctIg1ykdSi5CxHIrFrYKMEobNGkU4fxfrnO7WmtUrs8z0VgbYGMPU3K3upeTo7aeFL00cm8BDhum/GJ89ztsQfg=</SignatureValue>
+    <SignatureValue>ZDAAo58rKfiLpkVa/ynexJ1+KrzZWOVcx6tfmNbjjEFI6eCJzWVQI6GCzgdAIJzQiwKiQ3tTX/Tt0sJaFGKRM5eeYjWrEEprxDmzNUgtmBxOkXwbw+Pw/zlDjR1bgoDsfd3uSmwi2vRFn4VI0iL4uryEmh69xecsb48LG84YZpk=</SignatureValue>
   </Signature>
 </Service>

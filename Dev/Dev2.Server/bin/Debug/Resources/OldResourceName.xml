@@ -1,5 +1,5 @@
 
-<Service ID="0548152b-3f69-454d-a8ff-727f905c0c17" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="OldResourceName" ResourceType="WorkflowService" IsValid="false">
+<Service ID="0548152b-3f69-454d-a8ff-727f905c0c17" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="OldResourceName" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>OldResourceName</DisplayName>
   <Category>OldResourceName</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -30,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>3RqKORypI7MrTh3jQmTV9M4jIO0=</DigestValue>
+        <DigestValue>5dbtx1SdlVUqAETj6Cvbup4FylY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>BNy2JEzKHDsqtivpjr4aQi4HFmh8v3193b6aBLVF9uMRJjaGG5aqfPzJuzbzQSPH3ezIwoQauAFg479YYjxX7AE0LmRhBXxfnjxPAgDpwl8ZHbQA+4U28BUdm//7lTMbMUUnUJYo4+8/gtzj7zn3st7ck5qpFHb8Ja9Vljh+FpU=</SignatureValue>
+    <SignatureValue>fSlrrPeLRLa2QqwjTs2RpKmBeuEAlyxwXNueLWWT9K39fzfi4Wb+/ozRw/Jm2BuDyX8aSuBrEi4/zrhpUPXDPvT/MBAeew+hhSSHePRWq2aY2iyWqY7UnP2qzZVXBaL96BC7KDsvhBXKTMaX3AJPTDCiE6LfG+3tkq3U9YBn+jE=</SignatureValue>
   </Signature>
 </Service>

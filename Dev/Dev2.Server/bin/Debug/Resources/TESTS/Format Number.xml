@@ -1,5 +1,5 @@
 
-<Service ID="d95f474c-581f-4560-b1d3-3160554d6032" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Format Number" ResourceType="WorkflowService">
+<Service ID="d95f474c-581f-4560-b1d3-3160554d6032" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Format Number" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>Format Number</DisplayName>
   <Category>TESTS\Format Number</Category>
   <AuthorRoles>
@@ -114,9 +114,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>jSM3nSk7JUgio1fSK+dIdPBgtDw=</DigestValue>
+        <DigestValue>UG+oww4y7Z6rLb9CQQtz+NqnFwc=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>NR6D1ArfM93ujSb2hOgmlDH+r8291L8TBDDgf44EBzpAjCRe4yv9oTJbF4AERCVBbNfpkT/6jfCbEEDynANvM4VJbs0cNKyZB2JPRxiX12DxxeARc6GbH0dpOlD57uSX/DEolsplxMOAGhkeTfjTKsVd2f6K0N6PTRwGTn9MzIM=</SignatureValue>
+    <SignatureValue>Ys1xV0Uf/Osbfv3IA3NgSKjIjLp0F6e3RtCjOW8ymPEq/HDNhAkp2ocnyQsTF2RR10+uJVFiCrPD+LYvLPgR7G1T+8qEh+eLb/wjhVwqcotYK2YLjKsO0KB9gwjQnrTO2dvoIcl06VswsgPKH+Ej43DHGcsnCtQ7TXs55QyAeP8=</SignatureValue>
   </Signature>
 </Service>

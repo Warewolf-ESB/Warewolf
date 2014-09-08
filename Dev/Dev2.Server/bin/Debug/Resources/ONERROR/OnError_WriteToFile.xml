@@ -1,5 +1,5 @@
 
-<Service ID="0d9080e6-52aa-47a2-a875-7c5b971516b8" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="OnError_WriteToFile" ResourceType="WorkflowService" IsValid="false">
+<Service ID="0d9080e6-52aa-47a2-a875-7c5b971516b8" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="OnError_WriteToFile" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.4.2.2">
   <DisplayName>OnError_WriteToFile</DisplayName>
   <Category>ONERROR\OnError_WriteToFile</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -32,9 +32,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>5H6Hyd8N2i7wXT6MC/lVnp9IsvE=</DigestValue>
+        <DigestValue>4pyeFvFnFJ43RDYhVq1et5Rb0Ws=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>QljH59SPvYUNBCXkT/1y4g6qSnhpCVut2YUu6BlreppZ85P8/HMDrdSBW9bzUEnyoA1kLbgyBkj9MXfeVNynrHWiMLXozloR6k5uCgJJWQWk1VhkNx1InD6f/AB/IMCkDuXAGc6UXHI9A4FURRvE3h+F8s1aPn4oLdjAgMeE6VQ=</SignatureValue>
+    <SignatureValue>NnUISgQAb1IaNX7nPoJBEJUFd0fm4LN0mat1XfIIPRXq6VnxgbN20ZlfxZUgsDkVYOvmFg/IARhnpGzJZzOEjp6Xac1+KdZLPIO+HAwsvk9IqpN1O/E6vlfrIWRRlTPZOxaBWMblQhiGewiIaUwJUkmEFfx9+fsSao98iYLmMOc=</SignatureValue>
   </Signature>
 </Service>

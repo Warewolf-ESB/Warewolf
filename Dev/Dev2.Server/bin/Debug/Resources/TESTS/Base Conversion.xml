@@ -1,5 +1,5 @@
 
-<Service Name="Base Conversion" ID="3c55d640-6ce8-4ce2-b827-7f47bec1ca10" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Version="1.0" ResourceType="WorkflowService">
+<Service Name="Base Conversion" ID="3c55d640-6ce8-4ce2-b827-7f47bec1ca10" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Version="1.0" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <Action Name="InvokeWorkflow" Type="Workflow">
     <XamlDefinition>&lt;Activity mc:Ignorable="sads sap" x:Class="Base Conversion"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
@@ -745,9 +745,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>FOxpbZ5O7j0K0BTi8cYsDwqolVI=</DigestValue>
+        <DigestValue>IagWbawX27oSxSRbmxiEqg8nURQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>mDEBllmHBsVLTO7MmUMlxuVUhKIedT62Xd9G7Ut5YxaYUAFXJO1b41d86o7BQgMTkesnpbNTx0T0VDdZnNf32baE0Pam/Fdjo7NMcl/uLOK4ubDPbzp6N82hnj4XX/pReaKsluveOsOThndiHw1flPczDxQiCEMaeb8aQ53sKgA=</SignatureValue>
+    <SignatureValue>DyZl+9vrTqnXg0hZ1k+HxbJPdgFhD+Aip0DCV49GKYR7ovgGJ11Nvb0H4Dsp7rIgWI+LVKECLBwXYQn1Op65mbb5nCFNaxj/VEDrJItoj7mF6SYjN7qmWOtlZm3dZyEAe0e7uykzwXkDQtBAodWH5He+kacxnRHdwc+mye6utjg=</SignatureValue>
   </Signature>
 </Service>

@@ -1,5 +1,5 @@
 
-<Service ID="b455dd51-65ac-4a93-9772-219efc2d0dad" Version="1.0" Name="FetchCountriesForEachSpeedTest" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="b455dd51-65ac-4a93-9772-219efc2d0dad" Version="1.0" Name="FetchCountriesForEachSpeedTest" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_Pr_CitiesGetCountries" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.Pr_CitiesGetCountries">
       <Inputs>
@@ -38,9 +38,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>J+OuRw1z4VV2G/C7HpfTgyfpqh0=</DigestValue>
+        <DigestValue>ElZZmGixwnJpBZBvN9O1+ebo+Yg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>iGVXqm/f+PJImWb9hNNHi3zG+YtjR5G5G1c95nRYhetsx0pgNSHS/FPAH7xGzl0J15uaKTnEu6q9ejqanFSZMeQFZBKq6kmAre69jKsiZIrHxcqUZvhnqbYe3+3JJ6WgJIVeA+mVNOjF06wjIUlEgrUm0CROKMn1KB225raURH8=</SignatureValue>
+    <SignatureValue>d/e4y1Zqf0VE+wU+OJOfLBV79oARQ6wYho8A8/YnIjG8AoqVGxA67sjsGcMwIzQkLacE6AYhLPm6Gn/wzpt8HfyiHuG3pP8tediwYDNC3G1POXU4rw1Mr1LqV/HFgGQSu5wRGZdksfkYLXzBp9KCP4FL1+z1it08g03FywJ0+uQ=</SignatureValue>
   </Signature>
 </Service>

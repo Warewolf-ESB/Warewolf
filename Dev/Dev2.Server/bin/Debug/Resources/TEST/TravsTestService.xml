@@ -1,5 +1,5 @@
 
-<Service ID="d76e1da0-f4fe-43d7-bb07-475da17ebde9" Version="1.0" Name="TravsTestService" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="d76e1da0-f4fe-43d7-bb07-475da17ebde9" Version="1.0" Name="TravsTestService" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_proc_ReturnsXML" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.proc_ReturnsXML">
       <Inputs />
@@ -34,9 +34,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>5dp5803R+qPjI7NqlkJF9hjOkBE=</DigestValue>
+        <DigestValue>rqr0k2R0eZnYw8FHy2Hk/8GM5sQ=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Qv/lBTlI7XtRymROEZ8FMMtNA2h84dTSsnAdE9d9enpcyhaIzJTtVf7ccla8eRp1ZVWGZqUz0o8reNvIqHUQ46vccTXKzZD++Gct1QjL8dOKecE1xztA6HhF1QPTBCMZmpzGYQXJEryfLf+qgZNShI2L+JkT7O0lnTrd0oY2MUs=</SignatureValue>
+    <SignatureValue>NaeZbinwvD1PfJMi6ARkewz+7eTHPlAekpwiFHnO0IvOgIXhzci/9O2E3KAPCXNhq1+QF8puiRl738BrYiOtCczyz+FswcPOsu/iWMQooxM1k5navYXjFwPRfSdedbDymCjKQPVcmRDFQKbiL82upF3gKMtxoLANFpjgkRiGQaA=</SignatureValue>
   </Signature>
 </Service>

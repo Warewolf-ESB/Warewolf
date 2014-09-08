@@ -1,5 +1,5 @@
 
-<Service ID="c0c64982-bfcf-4476-98b6-197992188759" Version="1.0" Name="InternalCountriesServiceTest" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="c0c64982-bfcf-4476-98b6-197992188759" Version="1.0" Name="InternalCountriesServiceTest" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="InternalCountriesServiceTest" Type="InvokeWebService" SourceID="8543fea8-0b73-45a3-a87a-8f3320d2c56f" SourceName="TestingInternalCountries" SourceMethod="" RequestUrl="GetCountries.ashx?extension=[[extension]]&amp;prefix=[[prefix]]" RequestMethod="Get" JsonPath="">
       <RequestHeaders><![CDATA[]]></RequestHeaders>
@@ -39,9 +39,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>6sgrY7LJM+1hTJg901rae96yweM=</DigestValue>
+        <DigestValue>H3Z6g42iHGOCBCVeZKFsJrcRv/s=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>T5+227Ie8IjPVWfUDDtS1nsxuwbM4CDosx1hAiTU58oBa+CoCEF+N2NTJ+vX8ipDwJ25Es+/v/LcA4Wo5j1zR61V1M4m/J3OusgHyfjktCLlpsbKdhD+ZF/Wj9ogOBIsASZqQVMFH8gTmirk18AEJIlSQ69lMMzBg+EL/eyzoX8=</SignatureValue>
+    <SignatureValue>Cr8WSHbDv86Lq6PRczDlLxaXTO4C/Obc2OStNO2ny9bfLg+ZCNudAimpZNr2JvDaP2H7i64814dlTEAm6pJUaUiflk8xE/pc6/jsgj3Uxlpjhm8fWPsve1zdg7a5f8Vr/3LHcIZfFr/a9rpS5p2ZHUVLhJ1F36kmpCZ3kgTX04A=</SignatureValue>
   </Signature>
 </Service>

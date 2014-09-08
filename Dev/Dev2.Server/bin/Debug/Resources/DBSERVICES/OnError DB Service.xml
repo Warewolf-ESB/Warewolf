@@ -1,5 +1,5 @@
 
-<Service ID="81afc133-0510-48c4-b035-7e2e8659a0ed" Version="1.0" Name="OnError DB Service" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="81afc133-0510-48c4-b035-7e2e8659a0ed" Version="1.0" Name="OnError DB Service" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_Pr_CitiesGetCountries" Type="InvokeStoredProc" SourceID="52ab7a23-69c1-4810-a366-9f49fd44fe0e" SourceName="Dev2 Testing DB Src Faulty" SourceMethod="dbo.Pr_CitiesGetCountries">
       <Inputs>
@@ -36,9 +36,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>3E2tOHybSPR2Kv2KHGx1jgWNIWA=</DigestValue>
+        <DigestValue>4uztt73BX3TYqgyt3rVTiVc+XHs=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>N46t1lhCjQ405mwAHTeNbfzt4KAujf3HwrmT4EuLjjXDGS4bxoJh/2wt98WviEO88wHVmFBoLvjxO6WKoiEDQv5qBcN1tnBx6yW7z0lSW9xacGky4HrV4En3Sl4O8C5cAQ0V3uaG9sGk1ECbsE5WYBYxdfJi2DGJCaam9DWEjfI=</SignatureValue>
+    <SignatureValue>N0RfoNLLxbFfUoMN5dLJPj+I+KKHJivuT7GMN7+/NHggGXCMPRDZfzun81QdclvpAjeuvs+BpYaN0nxBGXNMgnrTYVFG9DTo4IJYFCKwAGP3XGna17AIfyJ7nBcDl83GXyBkYQWQEqV2xQNrUljC33NSF4Eisgw9cMZIAuWswlk=</SignatureValue>
   </Signature>
 </Service>

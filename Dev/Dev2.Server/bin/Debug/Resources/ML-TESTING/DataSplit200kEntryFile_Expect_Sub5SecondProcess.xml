@@ -1,5 +1,5 @@
 
-<Service ID="95d269e9-42f0-4564-9895-24f2ada0ef4c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DataSplit200kEntryFile_Expect_Sub5SecondProcess" ResourceType="WorkflowService">
+<Service ID="95d269e9-42f0-4564-9895-24f2ada0ef4c" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="DataSplit200kEntryFile_Expect_Sub5SecondProcess" ResourceType="WorkflowService" ServerVersion="0.4.2.2">
   <DisplayName>DataSplit200kEntryFile_Expect_Sub5SecondProcess</DisplayName>
   <Category>ML-Testing\DataSplit200kEntryFile_Expect_Sub5SecondProcess</Category>
   <AuthorRoles>
@@ -189,9 +189,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>uB8EcWUprNwAPLDe3HUGKLIuA4E=</DigestValue>
+        <DigestValue>V0r0LBzX+ou1kO3/AyiCJ9OCGig=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>Hx/zV5adDMrk8Cds7FkLSxkNvR8sojbmda5inAShX2XDRoniL/0X69zxpnVoiZYp1yKq8VurN0lRG0BdE9u4NmoHrNcqUXUIvLiJQHu9wo7tkAfH1D+UIElihLVcsdv9YHbiW5Q5OB1UvU+4MNHlE+SDl9oohai3ZnaadpPnZJA=</SignatureValue>
+    <SignatureValue>j9HH099YtPBW369J7Eiu8GqKALO+6Tz3sI642GKXX1OSaIKt5tIGtcgtDHTvTs33oEIl/Bb5lII/3XwPPeI+rMwmS3N8r5Qy+YMuu4iVhX2dP6bf0YzG+aczVFwqP3444url8NfYnUkUoZSvKOUhy9V340RpktG/gjsS9KXncjo=</SignatureValue>
   </Signature>
 </Service>
