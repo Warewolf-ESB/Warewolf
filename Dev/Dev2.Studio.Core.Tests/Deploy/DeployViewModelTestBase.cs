@@ -28,6 +28,7 @@ namespace Dev2.Core.Tests.Deploy
         {
             var source = EnviromentRepositoryTest.CreateMockEnvironment();
             var destination = EnviromentRepositoryTest.CreateMockEnvironment();
+
             source.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             destination.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             var serverProvider = new Mock<IEnvironmentModelProvider>();

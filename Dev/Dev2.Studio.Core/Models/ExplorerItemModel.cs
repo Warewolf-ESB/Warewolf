@@ -1217,6 +1217,11 @@ namespace Dev2.Models
         private void Rename(string newName)
         {
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
+            if (ResourceType == ResourceType.Folder)
+            {
+                _studioResourceRepository.RenameFolder(this, newName);
+            }
+            else
             if(environmentModel != null)
             {
                 var resourceModel = environmentModel.ResourceRepository.FindSingle(a => a.ID == ResourceId) as IContextualResourceModel;

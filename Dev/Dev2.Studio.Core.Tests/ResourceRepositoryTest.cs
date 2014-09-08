@@ -1530,7 +1530,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
             mockStudioResourceRepository.Setup(repository => repository.ItemAddedMessageHandler(It.IsAny<IExplorerItem>())).Verifiable();
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
-
+            mockStudioResourceRepository.Setup(a => a.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ExplorerItemModel());
             //------------Execute Test---------------------------
             var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
             //------------Assert Results-------------------------
@@ -1538,6 +1538,91 @@ namespace BusinessDesignStudio.Unit.Tests
             mockStudioResourceRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Exactly(2));
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceRepository_UpdateResourceRepositoryForDeploy")]
+        public void ResourceRepository_UpdateResourceRepositoryForDeploy_FolderDoesNotExist_ExpectAddFolderAndResource()
+        {
+            //------------Setup for test--------------------------
+
+            AppSettings.LocalHost = "http://localhost:3142/";
+
+
+            Setup();
+            var conn = SetupConnection();
+            var newGuid = Guid.NewGuid();
+
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid });
+
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+
+            int cnt = 0;
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(() =>
+            {
+                if (cnt == 0)
+                {
+                    cnt = 1;
+                    return new StringBuilder(JsonConvert.SerializeObject(msg));
+                }
+
+                return resourceObj;
+            });
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
+            mockStudioResourceRepository.Setup(repository => repository.ItemAddedMessageHandler(It.IsAny<IExplorerItem>())).Verifiable();
+            _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
+
+            //------------Execute Test---------------------------
+            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, reloadedResources.Count);
+            mockStudioResourceRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Exactly(6));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ResourceRepository_UpdateResourceRepositoryForDeploy")]
+        public void ResourceRepository_UpdateResourceRepositoryForDeploy_FolderDoesNotExist_Nested_ExpectAddFolderAndResource()
+        {
+            //------------Setup for test--------------------------
+
+            AppSettings.LocalHost = "http://localhost:3142/";
+
+
+            Setup();
+            var conn = SetupConnection();
+            var newGuid = Guid.NewGuid();
+
+            var resourceObj = BuildResourceObjectFromGuids(new[] { _resourceGuid, newGuid },cat:"bob\\dave\\dora");
+
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+
+            int cnt = 0;
+            conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(() =>
+            {
+                if (cnt == 0)
+                {
+                    cnt = 1;
+                    return new StringBuilder(JsonConvert.SerializeObject(msg));
+                }
+
+                return resourceObj;
+            });
+            _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
+
+            var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
+            mockStudioResourceRepository.Setup(repository => repository.ItemAddedMessageHandler(It.IsAny<IExplorerItem>())).Verifiable();
+            _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
+
+            //------------Execute Test---------------------------
+            var reloadedResources = _repo.ReloadResource(_resourceGuid, ResourceType.WorkflowService, new ResourceModelEqualityComparerForTest(), false);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, reloadedResources.Count);
+            mockStudioResourceRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Exactly(8));
+
+        }
 
         [TestMethod]
         public void ResourceRepositoryReloadResourcesWithValidArgsExpectedSetsProperties()
@@ -1581,6 +1666,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             var mockStudioResourceRepository = new Mock<IStudioResourceRepository>();
+            mockStudioResourceRepository.Setup(a => a.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(new ExplorerItemModel());
             mockStudioResourceRepository.Setup(repository => repository.ItemAddedMessageHandler(It.IsAny<IExplorerItem>())).Verifiable();
             _repo.GetStudioResourceRepository = () => mockStudioResourceRepository.Object;
 
@@ -1603,6 +1689,9 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.AreEqual("SomethingWentWrong", error.StackTrace);
             mockStudioResourceRepository.Verify(m => m.ItemAddedMessageHandler(It.IsAny<IExplorerItem>()), Times.Exactly(1));
         }
+
+
+
 
         [TestMethod]
         public void ResourceRepositoryLoadWorkspaceWithValidArgsExpectedSetsProperties()
@@ -2496,8 +2585,9 @@ namespace BusinessDesignStudio.Unit.Tests
         /// <param name="theType">The type.</param>
         /// <param name="errors"></param>
         /// <param name="isValid"></param>
+        /// <param name="cat"></param>
         /// <returns></returns>
-        private StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, Dev2.Common.Interfaces.Data.ResourceType theType = Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true)
+        private StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, Dev2.Common.Interfaces.Data.ResourceType theType = Dev2.Common.Interfaces.Data.ResourceType.WorkflowService, List<ErrorInfo> errors = null, bool isValid = true, string cat = "Test Category")
         {
             if(errors == null)
             {
@@ -2506,7 +2596,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var theResources = ids.Select(id => new SerializableResource
             {
-                ResourceCategory = "Test Category",
+                ResourceCategory = cat,
                 DataList = "",
                 Errors = errors,
                 IsValid = isValid,

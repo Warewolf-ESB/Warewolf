@@ -490,8 +490,9 @@ namespace Dev2.Studio.ViewModels.Deploy
         /// <summary>
         /// Recalculates
         /// </summary>
-        private void CalculateStats()
+        private void CalculateStats(bool updateSuccess = true)
         {
+            if (updateSuccess)
             DeploySuccessfull = false;
 
             if(Source != null && Source.ExplorerItemModels != null && Source.ExplorerItemModels.Count > 0)
@@ -650,6 +651,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                 {
                     return;
                 }
+
             }
 
             //
@@ -689,6 +691,10 @@ namespace Dev2.Studio.ViewModels.Deploy
                     IsDeploying = false;
                 }
             }
+
+            _source.Update();
+            _target.Update();
+            CalculateStats(false);
         }
 
         static void SetActiveEnvironment(IEnvironmentModel env)

@@ -463,8 +463,8 @@ namespace Dev2.AppResources.Repositories
                     parent.OnChildrenChanged();
                 }
                 else
-                {
-                    var child = Instance.FindItem(i => i.ResourceId == explorerItem.ResourceId && i.Parent.ResourceId == parent.ResourceId);
+                 {
+                    var child = Instance.FindItem(i => i.ResourceId == explorerItem.ResourceId && i.Parent.ResourceId == parent.ResourceId && i.EnvironmentId == parent.EnvironmentId);
                     if(child == null)
                     {
                         parent.Children.Add(explorerItem);

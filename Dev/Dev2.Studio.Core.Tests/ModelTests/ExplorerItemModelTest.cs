@@ -2183,6 +2183,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual("", oldName);
             Assert.AreEqual("", newName);
             Assert.AreEqual(Guid.Empty, resourceGuid);
+            mockResourceRepository.Verify(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false), Times.Never());
         }
 
         [TestMethod]

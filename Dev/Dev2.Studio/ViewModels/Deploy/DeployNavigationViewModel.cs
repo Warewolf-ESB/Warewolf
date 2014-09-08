@@ -96,7 +96,12 @@ namespace Dev2.ViewModels.Deploy
                 explorerItemModel.IsExplorerExpanded = true;
             }
         }
+        public void Update()
+        {
 
+            FilterEnvironments( Environment,false);
+
+        }
         /// <summary>
         /// perform some kind of action on all children of a node
         /// </summary>
@@ -152,7 +157,7 @@ namespace Dev2.ViewModels.Deploy
             }
         }
 
-        private void FilterEnvironments(IEnvironmentModel connection)
+        private void FilterEnvironments(IEnvironmentModel connection, bool clearSelections = true)
         {
             if(connection != null)
             {
@@ -217,8 +222,11 @@ namespace Dev2.ViewModels.Deploy
                         }
                     }
                 }
-                Iterate(model => model.IsChecked = false);
-                Iterate(model => model.IsOverwrite = false);
+                if (clearSelections)
+                {
+                    Iterate(model => model.IsChecked = false);
+                    Iterate(model => model.IsOverwrite = false);
+                }
 
             }
         }
