@@ -736,7 +736,7 @@ namespace Dev2.Settings.Scheduler
 
                 if(authService != null && authService.IsAuthorized(AuthorizationContext.Administrator, null))
                 {
-                    if(SelectedTask != null && SelectedTask.IsDirty)
+                    if(SelectedTask != null && SelectedTask.OldName != null && SelectedTask.IsDirty)
                     {
                         if(HasErrors && !Error.StartsWith(SaveErrorPrefix))
                         {
