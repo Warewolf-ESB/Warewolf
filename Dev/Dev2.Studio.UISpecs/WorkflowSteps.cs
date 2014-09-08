@@ -41,9 +41,11 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ExplorerFilterClearButton = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
         static readonly string ExplorerFolders = Explorer + ",UI_ExplorerTree_AutoID,UI_localhost_AutoID";
         //Variables
-        static readonly string VariableScalar = "UI_DocManager_AutoID,Variables,UI_DataListView_AutoID,UI_VariableTreeView_AutoID,UI_Variable_AutoID";
-        static readonly string VariableRecordset = "UI_DocManager_AutoID,Variables,UI_DataListView_AutoID,UI_VariableTreeView_AutoID,UI_Recordset_AutoID";
-
+        static readonly string Variable = "UI_DocManager_AutoID,Variables,UI_DataListView_AutoID";
+        static readonly string VariableScalar = "VARIABLE,UI_VariableTreeView_AutoID,UI_Variable_AutoID";
+        static readonly string VariableRecordset = "VARIABLE,UI_VariableTreeView_AutoID,UI_Recordset_AutoID";
+        static readonly string VariableFilter = "VARIABLE,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
+        
         //Tools
         //Control Flow
         static readonly string ToolDecision = Toolbox + ",PART_Tools,Control Flow,System.Activities.Statements.FlowDecision";

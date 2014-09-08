@@ -65,6 +65,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DeployUISpec.feature</DependentUpon>
     </Compile>
+    <Compile Include="DesignerUISpecs\StartPage.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>StartPage.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\ControlFlow-Decision.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -161,6 +166,10 @@
     <None Include="DeployUISpecs\DeployUISpec.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeployUISpec.feature.cs</LastGenOutput>
+    </None>
+    <None Include="DesignerUISpecs\StartPage.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>StartPage.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\ControlFlow-Decision.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
