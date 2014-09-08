@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestSettings name="Integration Test Settings" id="e8eace60-accd-4300-bc1d-1c967914da39" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>These are default test settings for a local test run.</Description>
+    <Deployment>
+		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
+		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="StudiobinDebug" />
+        
+            <!--For Build Agents-->
+        <DeploymentItem filename="Server\" outputDirectory="Server" />
+        <DeploymentItem filename="Studio\" outputDirectory="Studio" />
+    </Deployment>
+  <NamingScheme baseName="TestResults" appendTimeStamp="false" />
+  <Scripts setupScript="TestScripts\Integration\Startup.bat" cleanupScript="TestScripts\Integration\Cleanup.bat" />
+  <RemoteController name="rsaklfsvrtfsbld:6901" />
+  <Execution location="Remote" parallelTestCount="0">
+    <Buckets size="1000" />
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+      <WebTestRunConfiguration testTypeId="4e7599fa-5ecb-43e9-a887-cd63cf72d207">
+        <Browser name="Internet Explorer 9.0" MaxConnections="6">
+          <Headers>
+            <Header name="User-Agent" value="Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)" />
+            <Header name="Accept" value="*/*" />
+            <Header name="Accept-Language" value="{{$IEAcceptLanguage}}" />
+            <Header name="Accept-Encoding" value="GZIP" />
+          </Headers>
+        </Browser>
+      </WebTestRunConfiguration>
+    </TestTypeSpecific>
+    <AgentRule name="Run in Integration Testing Environment Pool">
+      <SelectionCriteria>
+        <AgentProperty name="Pool" value="Integration Testing" />
+      </SelectionCriteria>
+	  <DataCollectors>
+	    <DataCollector uri="datacollector://microsoft/SystemInfo/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo.SystemInfoDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="System Information">
+	    </DataCollector>
+	  </DataCollectors>
+    </AgentRule>
+  </Execution>
+</TestSettings>
