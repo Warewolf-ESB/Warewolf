@@ -273,14 +273,9 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                     if(start > DataListConstants.EmptyRowStartIdx)
                     {
                         // we have data, cool beans ;)   
-                        //start = FetchStorageStartIdx();
                         if(val == null)
                         {
                             _startIdx[idx] = DataListConstants.EmptyRowStartIdx;
-                            //                            _rowData[start] = Char.MinValue;
-                            //                            _startIdx[idx] = start;
-                            //                            _columnLen[idx] = 1;
-                            //                            _usedStorage += 1;
                         }
                         else
                         {
@@ -333,14 +328,9 @@ namespace Dev2.Data.Storage.ProtocolBuffers
                     else
                     {
                         // It is a new value that needs to be inserted ;)
-                        //start = FetchStorageStartIdx();
                         if(val == null)
                         {
                             _startIdx[idx] = DataListConstants.EmptyRowStartIdx;
-                            //                            _rowData[start] = Char.MinValue;
-                            //                            _startIdx[idx] = start;
-                            //                            _columnLen[idx] = 1;
-                            //                            _usedStorage += 1;
                         }
                         else
                         {

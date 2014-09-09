@@ -150,6 +150,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     allErrors.AddError("No recordset given");
                 }
             }
+            catch(Exception e)
+            {
+                allErrors.AddError(e.Message);
+            }
             finally
             {
 

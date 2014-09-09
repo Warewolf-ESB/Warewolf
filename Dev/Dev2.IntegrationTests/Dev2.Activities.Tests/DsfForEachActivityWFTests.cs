@@ -56,7 +56,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ForEachNumber()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/NewForEachNumber");
-            const string expected = "<DataList><Rec index=\"1\"><Each>1</Each></Rec><Rec index=\"2\"><Each>2</Each></Rec><Rec index=\"3\"><Each>4</Each></Rec><Rec index=\"4\"><Each>8</Each></Rec><Rec index=\"5\"><Each>16</Each></Rec></DataList>";
+            const string expected = "<DataList><Rec index=\"1\"><Each>1</Each></Rec><Rec index=\"2\"><Each>1</Each></Rec><Rec index=\"3\"><Each>2</Each></Rec><Rec index=\"4\"><Each>4</Each></Rec><Rec index=\"5\"><Each>8</Each></Rec><Rec index=\"6\"><Each>16</Each></Rec></DataList>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
             StringAssert.Contains(expected, ResponseData);
