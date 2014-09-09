@@ -8691,6 +8691,89 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Workflow with 2 Assigns")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void WorkflowWith2Assigns()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Workflow with 2 Assigns", ((string[])(null)));
+#line 3370
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 3371
+      testRunner.Given("I have a workflow \"WFTOTestBlanvValues\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table467 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "variable",
+                        "value"});
+            table467.AddRow(new string[] {
+                        "#",
+                        "[[Value]]",
+                        "Warewolf"});
+#line 3372
+   testRunner.And("\"WFTOTestBlanvValues\" contains an Assign \"Record1\" as", ((string)(null)), table467, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table468 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "variable",
+                        "value"});
+            table468.AddRow(new string[] {
+                        "#",
+                        "[[rec().a]]",
+                        "[[Value1]]"});
+#line 3375
+   testRunner.And("\"WFTOTestBlanvValues\" contains an Assign \"Record2\" as", ((string)(null)), table468, "And ");
+#line 3378
+   testRunner.When("\"WFTOTestBlanvValues\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 3379
+   testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table469 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table469.AddRow(new string[] {
+                        "1",
+                        "[[Value]] =",
+                        "Warewolf"});
+#line 3380
+   testRunner.And("the \'Record1\' in WorkFlow \'WFTOTestBlanvValues\' debug inputs as", ((string)(null)), table469, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table470 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table470.AddRow(new string[] {
+                        "1",
+                        "[[Value]]    =  Warewolf"});
+#line 3383
+   testRunner.And("the \'Record1\' in Workflow \'WFTOTestBlanvValues\' debug outputs as", ((string)(null)), table470, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table471 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table471.AddRow(new string[] {
+                        "1",
+                        "[[rec().a]] =",
+                        "[[Value1]]"});
+#line 3386
+   testRunner.And("the \'Record2\' in WorkFlow \'WFTOTestBlanvValues\' debug inputs as", ((string)(null)), table471, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table472 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table472.AddRow(new string[] {
+                        "1",
+                        "[[rec(1).a]] ="});
+#line 3389
+   testRunner.And("the \'Record2\' in Workflow \'WFTOTestBlanvValues\' debug outputs as", ((string)(null)), table472, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

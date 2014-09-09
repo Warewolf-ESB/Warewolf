@@ -3364,25 +3364,148 @@ Scenario: Executing workflow of different versions
 	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssignExecuted2' debug outputs does not exist|
 
 
+Scenario: Workflow with 2 Assigns 
+      Given I have a workflow "WFTOTestBlanvValues"
+	  And "WFTOTestBlanvValues" contains an Assign "Record1" as
+      | # | variable  | value    |
+      | # | [[Value]] | Warewolf | 
+	  And "WFTOTestBlanvValues" contains an Assign "Record2" as
+      | # | variable    | value      |
+      | # | [[rec().a]] | [[Value1]] |
+	  When "WFTOTestBlanvValues" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
+	  | # | Variable    | New Value |
+	  | 1 | [[Value]] = | Warewolf  | 
+	  And the 'Record1' in Workflow 'WFTOTestBlanvValues' debug outputs as   
+	  | # |                          |
+	  | 1 | [[Value]]    =  Warewolf |
+	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
+	  | # | Variable      | New Value  |
+	  | 1 | [[rec().a]] = | [[Value1]] | 
+	  And the 'Record2' in Workflow 'WFTOTestBlanvValues' debug outputs as   
+	  | # |                |
+	  | 1 | [[rec(1).a]] = |
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#Bug 12050
+#Scenario: Workflow with 2 Assigns testing variable that hasn't been assigned
+#      Given I have a workflow "WFTOTestBlanvValues"
+#	  And "WFTOTestBlanvValues" contains an Assign "Record1" as
+#      | # | variable  | value    |
+#      | # | [[Value]] | Warewolf | 
+#	  And "WFTOTestBlanvValues" contains an Assign "Record2" as
+#      | # | variable    | value      |
+#      | # | [[rec().a]] | [[Value1]] |
+#	  When "WFTOTestBlanvValues" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
+#	  | # | Variable    | New Value |
+#	  | 1 | [[Value]] = | Warewolf  | 
+#	  And the 'Record1' in Workflow 'WFTOTestBlanvValues' debug outputs as   
+#	  | # |                          |
+#	  | 1 | [[Value]]    =  Warewolf |
+#	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
+#	  | # | Variable      | New Value  |
+#	  | 1 | [[rec().a]] = | [[Value1]] | 
+#	  And the 'Record2' in Workflow 'WFTOTestBlanvValues' debug outputs as   
+#	  | # |                |
+#	  | 1 | [[rec(1).a]] = |
+#
+#
+#
+#
+#
+#Scenario: Workflow with Assign Base Convert and Case Convert testing variable that hasn't been assigned
+#	  Given I have a workflow "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues"
+#	  And "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues" contains an Assign "Assign1" as
+#	  | variable    | value |
+#	  | [[res]] | 1    |
+#	  And "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues" contains case convert "Case to Convert" as
+#	  | Variable     | Type  |
+#	  | [[res12]] | UPPER |
+#	  And "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues" contains Base convert "Base to Convert" as
+#	  | Variable  | From | To      |
+#	  | [[res12]] | Text | Base 64 |
+#	  When "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Assign1' in WorkFlow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug inputs as
+#	  | # | Variable  | New Value |
+#	  | 1 | [[res]] = | 1         |
+#	   And the 'Assign1' in Workflow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug outputs as  
+#	  | # |              |
+#	  | 1 | [[res]] =  1 |
+#	  And the 'Case to Convert' in WorkFlow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug inputs as
+#	  | # | Convert    | To    |
+#	  | 1 | [[res12]]= | UPPER |
+#	  And the 'Case to Convert' in Workflow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug outputs as  
+#	  | # |             |
+#	  | 1 | [[res12]] = |
+#	  And the 'Base to Convert' in WorkFlow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug inputs as
+#	  | # | Convert     | From | To      |
+#	  | 1 | [[res12]] = | Text | Base 64 |
+#      And the 'Base to Convert' in Workflow 'WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues' debug outputs as  
+#	  | # |             |
+#	  | 1 | [[res12]] = |
+#
+#
+#Scenario: Workflow with Assigns DataMerge and DataSplit and testing variables that hasn't been assigned
+#      Given I have a workflow "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues"
+#	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues" contains an Assign "Assign To merge" as
+#      | variable | value |
+#      | [[res]]  | Test  |
+#	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues" contains Data Merge "Data Merge" into "[[result]]" as	
+#	  | Variable  | Type  | Using | Padding | Alignment |
+#	  | [[Value]] | Index | 4     |         | Left      |
+#	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues" contains Data Split "Data Split" as
+#	  | String      | Variable    | Type  | At | Include    | Escape |
+#	  | [[Value12]] | [[rec().b]] | Index | 4  | Unselected |        |
+#	  When "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Assign To merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug inputs as 
+#	  | # | Variable  | New Value |
+#	  | 1 | [[res]] = | Test      |
+#	 And the 'Assign To merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as   
+#	  | # |                          |
+#	  | 1 | [[res]]          =  Test |
+#	  And the 'Data Merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug inputs as 
+#	  | # |             | With  | Using | Pad | Align |
+#	  | 1 | [[Value]] = | Index | "4"   | ""  | Left  |
+#	  And the 'Data Merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as  
+#	  |             |
+#	  | [[Value]] = |
+#	  And the 'Data Split' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug inputs as 
+#	  | String to Split | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+#	  | [[Value12]]  =  | Forward           | No              | 1 | [[rec().b]] = | Index | 4     | No      |        |
+#	  And the 'Data Split' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as  
+#	  | # |               |
+#	  | 1 | [[Value12]] = |
+#	  
+#
+#
+#Scenario: Workflow with Assigns Replace and testing variables that hasn't been assigned
+#      Given I have a workflow "workflowithAssignandReplaceTestingUnassignedvariablevalues"
+#       And "workflowithAssignandReplaceTestingUnassignedvariablevalues" contains an Assign "Assign34" as
+#      | variable | value |
+#      | [[Val]]  | test  |
+#	  And "workflowithAssignandReplaceTestingUnassignedvariablevalues" contains Replace "Replacing" into "[[replac]]" as	
+#	  | In Fields  | Find     | Replace With |
+#	  | [[rec()]] | [[Val1]] | [[Val2]]     |
+#	  When "workflowithAssignandReplaceTestingUnassignedvariablevalues" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Assign34' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug inputs as
+#	  | # | Variable  | New Value |
+#	  | 1 | [[Val]] = | test      |
+#	   And the 'Assign34' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug outputs as    
+#	  | # |                |
+#	  | 1 | [[Val]] = test |
+#	  And the 'Replacing' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug inputs as 
+#	  | In Field(s)    | Find     | Replace With |
+#	  | [[rec().a]] = | [[Val1]] | [[Val2]]     |
+#	  And the 'Replacing' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug outputs as
+#	  |              |
+#	  | [[replac]] = |
+#	 
 
 
 
