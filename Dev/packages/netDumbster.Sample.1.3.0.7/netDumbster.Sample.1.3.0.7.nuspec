@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>netDumbster.Sample</id>
+    <version>1.3.0.7</version>
+    <title>netDumbster.Sample</title>
+    <authors>HexaSystems Corporation</authors>
+    <owners>HexaSystems Corporation</owners>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</licenseUrl>
+    <projectUrl>https://github.com/cmendible/netDumbster</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>netDumbster.Sample contains a runnable unit test for evaluate purpoes of the .Net Fake SMTP Server
+	
+	netDumbster is a .Net Fake SMTP Server clone of the popular Dumbster (http://quintanasoft.com/dumbster/)
+	netDumbster is based on the API of nDumbster (http://ndumbster.sourceforge.net/default.html) and the nice C# Email Server (CSES) written by Eric Daugherty.</description>
+    <summary>netDumbster.Sample contains a runnable unit test for evaluate purpoes of the .Net Fake SMTP Server</summary>
+    <releaseNotes />
+    <copyright />
+    <language>en-US</language>
+    <tags>Sample SMTP Tools UnitTest Fake</tags>
+    <dependencies>
+      <dependency id="netDumbster" version="1.3.0.7" />
+      <dependency id="NUnit" version="2.6.1" />
+    </dependencies>
+    <references />
+  </metadata>
+</package>

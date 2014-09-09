@@ -93,7 +93,7 @@
       <HintPath>..\Binaries\Moq.dll</HintPath>
     </Reference>
     <Reference Include="netDumbster">
-      <HintPath>..\Binaries\netDumbster.dll</HintPath>
+      <HintPath>..\packages\netDumbster.1.3.0.7\lib\net40\netDumbster.dll</HintPath>
     </Reference>
     <Reference Include="Nuane.SftpLite, Version=0.8.0.4, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -115,7 +115,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="TechTalk.SpecFlow">
-      <HintPath>..\Binaries\TechTalk.SpecFlow.dll</HintPath>
+      <HintPath>..\packages\SpecFlow.1.9.0\lib\net35\TechTalk.SpecFlow.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
@@ -445,6 +445,7 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Language Parser.feature.cs</LastGenOutput>
     </None>
+    <None Include="packages.config" />
     <None Include="Permissions\Settings Permissions.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Settings Permissions1.feature.cs</LastGenOutput>
