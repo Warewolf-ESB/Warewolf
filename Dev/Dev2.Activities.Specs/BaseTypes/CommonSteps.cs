@@ -540,6 +540,11 @@ namespace Dev2.Activities.Specs.BaseTypes
                     list.Add(debugItemResult);
                 }
             }
+            else
+            {
+                var debugItemResult = new DebugItemResult { Label = columnHeader, Value = null, Type = DebugItemResultType.Value };
+                list.Add(debugItemResult);
+            }
         }
 
         static void AddSingleDebugResult(string rowValue, DebugItemResult debugItemResult)

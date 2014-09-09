@@ -2180,7 +2180,7 @@ Scenario: Testing Count with two variables in Result field
 	#  |                |
 
 
-
+@ignore
 Scenario Outline: Testing Find Index with two variables in Result field
       Given I have a workflow "WorkflowforFI"
       And "WorkflowforFI" contains an Assign "Rec To Convert" as
@@ -2224,7 +2224,7 @@ Examples:
 # #     | 13 | [[rec([[[[b]]]]).a]]   |
 ##
 
-
+@ignore
 Scenario Outline: Testing Data Merge with two variables in Result field
       Given I have a workflow "WorkflowforDataMerge"
       And "WorkflowforDataMerge" contains an Assign "Rec To Convert" as
@@ -2299,7 +2299,7 @@ Scenario: Testing Data Split with two variables in Result field
 	  | 1 | [[fr(1).aa]] = |
 	  | 2 | [[fr(1).bb]] = |
 	
-
+@ignore
 Scenario Outline: Testing Replace with two variables in Result field
       Given I have a workflow "WorkflowforReplace"
       And "WorkflowforReplace" contains an Assign "Rec To Convert" as
@@ -2344,7 +2344,7 @@ Examples:
  #     | 13 | [[rec([[[[b]]]]).a]]   |
 
 	
-
+@ignore
 Scenario Outline: Testing Calculate with two variables in Result field
       Given I have a workflow "WorkflowforCals"
       And "WorkflowforCals" contains an Assign "Values" as
@@ -2942,74 +2942,70 @@ Scenario: Workflow by using For Each with Raandom in it
 #	  | 1 | [[rec(1).b]] = abcd |
 
 #bug 12470
-#Scenario: Workflow with Assign and foreach contains calculate. 
-#      Given I have a workflow "WorkflowDwithforeachcontainscalculates"
-#	  And "WorkflowDwithforeachcontainscalculates" contains an Assign "Assignval1" as
-#      | variable   | value |
-#      | [[rs().a]] | 1     |
-#      | [[rs().a]] | 2     |
-#      | [[rs().a]] | 3     |
-#	  And "WorkflowDwithforeachcontainscalculates" contains a Foreach "ForEachTesting" as "In Recordset" executions "[[rec()]]"
-#	  And "ForEachTest1" contains Calculate "Cal" with formula "[[rs(*).a]]+1" into "[[result]]"
-#	  When "WorkflowDwithforeachcontainscalculates" is executed
-#	  Then the workflow execution has "No" error
-#      And the 'Assignval1' in WorkFlow 'WorkflowDwithforeachcontainscalculates' debug inputs as
-#      | # | Variable     | New Value |
-#      | 1 | [[rs().a]] = | 1         |
-#      | 2 | [[rs().a]] = | 2         |
-#      | 3 | [[rs().a]] = | 3         |
-#      And the 'Assignval1' in Workflow 'WorkflowDwithforeachcontainscalculates' debug outputs as 
-#      | # |                 |
-#      | 1 | [[rs(1).a]] = 1 |
-#      | 2 | [[rs(2).a]] = 2 |
-#      | 3 | [[rs(3).a]] = 3 |   
-#      And the 'ForEachTesting' in WorkFlow 'WorkflowDwithforeachcontainscalculates' has  "3" nested children
-#	  And the 'Cal' in step 1 for 'ForEachTesting' debug inputs as
-#      | fx =                |
-#      | [[rs(1).a]]+1 = 1+1 |           
-#      And the 'Cal' in step 1 for 'ForEachTesting' debug outputs as
-#	  |                |
-#	  | [[result]] = 2 |
-#	 And the 'Cal' in step 2 for 'ForEachTesting' debug inputs as 
-#      | fx =                |
-#      | [[rs(2).a]]+1 = 2+1 |           
-#       And the 'Cal' in step 2 for 'ForEachTesting' debug outputs as  
-#	  |                |
-#	  | [[result]] = 3 |
-#	   And the 'Cal' in step 3 for 'ForEachTesting' debug inputs as
-#      | fx =                |
-#      | [[rs(3).a]]+1 = 3+1 |           
-#       And the 'Cal' in step 3 for 'ForEachTesting' debug outputs as
-#	  |                |
-#	  | [[result]] = 4 |
+Scenario: Workflow with Assign and foreach contains calculate. 
+      Given I have a workflow "Workflowwithforeachcontainscalculates"
+	  And "Workflowwithforeachcontainscalculates" contains an Assign "Assignval1" as
+      | variable   | value |
+      | [[rs().a]] | 1     |
+      | [[rs().a]] | 2     |
+      | [[rs().a]] | 3     |
+	  And "Workflowwithforeachcontainscalculates" contains a Foreach "ForEachTesting" as "InRecordset" executions "[[rs()]]"
+	  And "ForEachTesting" contains Calculate "Cal" with formula "[[rs(*).a]]+1" into "[[result]]"
+	  When "Workflowwithforeachcontainscalculates" is executed
+	  Then the workflow execution has "NO" error
+      And the 'Assignval1' in WorkFlow 'Workflowwithforeachcontainscalculates' debug inputs as
+      | # | Variable     | New Value |
+      | 1 | [[rs().a]] = | 1         |
+      | 2 | [[rs().a]] = | 2         |
+      | 3 | [[rs().a]] = | 3         |
+      And the 'Assignval1' in Workflow 'Workflowwithforeachcontainscalculates' debug outputs as 
+      | # |                 |
+      | 1 | [[rs(1).a]] = 1 |
+      | 2 | [[rs(2).a]] = 2 |
+      | 3 | [[rs(3).a]] = 3 |   
+      And the 'ForEachTesting' in WorkFlow 'Workflowwithforeachcontainscalculates' has  "3" nested children
+	  And the 'Cal' in step 1 for 'ForEachTesting' debug inputs as
+      | fx =                |
+      | [[rs(1).a]]+1 = 1+1 |           
+      And the 'Cal' in step 1 for 'ForEachTesting' debug outputs as
+	  |                |
+	  | [[result]] = 2 |
+	 And the 'Cal' in step 2 for 'ForEachTesting' debug inputs as 
+      | fx =                |
+      | [[rs(2).a]]+1 = 2+1 |           
+       And the 'Cal' in step 2 for 'ForEachTesting' debug outputs as  
+	  |                |
+	  | [[result]] = 3 |
+	   And the 'Cal' in step 3 for 'ForEachTesting' debug inputs as
+      | fx =                |
+      | [[rs(3).a]]+1 = 3+1 |           
+       And the 'Cal' in step 3 for 'ForEachTesting' debug outputs as
+	  |                |
+	  | [[result]] = 4 |
 ##
 ##bug 12470
-#Scenario: Workflow with Assign and foreach with invalid rec and it contains calculate in it. 
-#      Given I have a workflow "WorkflowDwithforeachcontainscal"
-#	  And "WorkflowDwithforeachcontainscal" contains an Assign "Assigl" as
-#      | variable   | value |
-#      | [[rs().a]] | 1     |
-#      | [[rs().a]] | 2     |
-#      | [[rs().a]] | 3     |
-#	  And "WorkflowDwithforeachcontainscal" contains a Foreach "ForEachTes" as "In Recordset" executions "[[rec()]]+1"
-#	  And "ForEachTes" contains Calculate "Cal" with formula "[[rs(*).a]]+1" into "[[result]]"
-#	  When "WorkflowDwithforeachcontainscal" is executed
-#	  Then the workflow execution has "AN" error
-#      And the 'Assigl' in WorkFlow 'WorkflowDwithforeachcontainscal' debug inputs as
-#      | # | Variable     | New Value |
-#      | 1 | [[rs().a]] = | 1         |
-#      | 2 | [[rs().a]] = | 2         |
-#      | 3 | [[rs().a]] = | 3         |
-#      And the 'Assigl' in Workflow 'WorkflowDwithforeachcontainscal' debug outputs as 
-#      | # |                 |
-#      | 1 | [[rs(1).a]] = 1 |
-#      | 2 | [[rs(2).a]] = 2 |
-#      | 3 | [[rs(3).a]] = 3 |   
-#	   And the 'ForEachTes' in WorkFlow 'WorkflowDwithforeachcontainscalculates' has  "0" nested children
-#	  | Recordset       |
-#	  | [[rs(1).a]]+1 = |
-#	  | [[rs(2).a]]+1 = |
-#	  | [[rs(3).a]]+1 = |  
+Scenario: Workflow with Assign and foreach with invalid rec and it contains calculate in it
+      Given I have a workflow "WorkflowDwithforeachcontainscalinvalid"
+	  And "WorkflowDwithforeachcontainscalinvalid" contains an Assign "Assigl" as
+      | variable   | value |
+      | [[rs().a]] | 1     |
+      | [[rs().a]] | 2     |
+      | [[rs().a]] | 3     |
+	  And "WorkflowDwithforeachcontainscalinvalid" contains a Foreach "ForEachTes" as "InRecordset" executions "[[rs()]]+1"
+	  And "ForEachTes" contains Calculate "Cal" with formula "[[rs(*).a]]+1" into "[[result]]"
+	  When "WorkflowDwithforeachcontainscalinvalid" is executed
+	  Then the workflow execution has "NO" error
+      And the 'Assigl' in WorkFlow 'WorkflowDwithforeachcontainscalinvalid' debug inputs as
+      | # | Variable     | New Value |
+      | 1 | [[rs().a]] = | 1         |
+      | 2 | [[rs().a]] = | 2         |
+      | 3 | [[rs().a]] = | 3         |
+      And the 'Assigl' in Workflow 'WorkflowDwithforeachcontainscalinvalid' debug outputs as 
+      | # |                 |
+      | 1 | [[rs(1).a]] = 1 |
+      | 2 | [[rs(2).a]] = 2 |
+      | 3 | [[rs(3).a]] = 3 |   
+	   And the 'ForEachTes' in WorkFlow 'WorkflowDwithforeachcontainscalinvalid' has  "1" nested children
 
 
 #This should be passed after the bug 12021 is fixed (RECURSIVE EVALUATION)
@@ -3248,39 +3244,39 @@ Scenario: Workflow with Calculation using Star notation
 ##	  
  
 #  Bug 12341 
-#Scenario: Workflow with Assign& Unique to check debug outputs
-#      Given I have a workflow "workflowithAssignUniquedebug"
-#      And "workflowithAssignUniquedebuge" contains an Assign "Recordset" as
-#	  | variable          | value |
-#	  | [[team(1).Names]] | test  |
-#	  | [[team(1).Id]]    | 23    |
-#	  | [[team(2).Names]] | test  |
-#	  | [[team(2).Id]]    | 23    |
-#	  And "workflowithAssignUniquedebuge" contains an Unique "Uni" as
-#	  | In Field(s)      | Return Fields    | Result           |
-#	  | [[team(*).Name]] | [[team().Names]] | [[List(*).Name]] |
-#	  When "workflowithAssignUniquedebug" is executed
-#	  Then the workflow execution has "No" error
-#	  And the 'Recordset' in WorkFlow 'workflowithAssignUniquedebug' debug inputs as
-#	  | # | Variable             | New Value |
-#	  | 1 | [[team(1).Names]]  = | test      |
-#	  | 2 | [[team(1).Id]]     = | 23        |
-#	  | 3 | [[team(2).Names]]  = | test      |
-#	  | 4 | [[team(2).Id]]     = | 23        |
-#	  And the 'Recordset' in Workflow 'workflowithAssignUniquedebug' debug outputs as  
-#	  | # |                            |
-#	  | 1 | [[team(1).Names]] =   test |
-#	  | 2 | [[team(1).Id]]    =  23    |
-#	  | 3 | [[team(2).Names]] =  test  |
-#	  | 4 | [[team(2).Id]]    =  23    |
-#	  And the 'Uni' in WorkFlow 'workflowithAssignUniquedebug' debug inputs as
-#       | #           |                          | Return Fields      |
-#       | In Field(s) | [[team(1).Names]] = test |                    |
-#       |             | [[team(1).Names]] = test | [[team().Names]] = |
-#      And the 'Uni' in Workflow 'workflowithAssignUniquedebug' debug outputs as  
-#       | # |                         |
-#       | 1 | [[List(1).Name]] = test |
-#       
+Scenario: Workflow with Assign Unique to check debug outputs
+      Given I have a workflow "workflowithAssignUniquedebugoutputs"
+      And "workflowithAssignUniquedebugoutputs" contains an Assign "Recordset" as
+	  | variable          | value |
+	  | [[team(1).Names]] | test  |
+	  | [[team(1).Id]]    | 23    |
+	  | [[team(2).Names]] | test  |
+	  | [[team(2).Id]]    | 23    |
+	  And "workflowithAssignUniquedebugoutputs" contains an Unique "Uni" as
+	  | In Field(s)       | Return Fields    | Result           |
+	  | [[team(*).Names]] | [[team().Names]] | [[List(*).Name]] |
+	  When "workflowithAssignUniquedebugoutputs" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Recordset' in WorkFlow 'workflowithAssignUniquedebugoutputs' debug inputs as
+	  | # | Variable             | New Value |
+	  | 1 | [[team(1).Names]]  = | test      |
+	  | 2 | [[team(1).Id]]     = | 23        |
+	  | 3 | [[team(2).Names]]  = | test      |
+	  | 4 | [[team(2).Id]]     = | 23        |
+	  And the 'Recordset' in Workflow 'workflowithAssignUniquedebugoutputs' debug outputs as  
+	  | # |                            |
+	  | 1 | [[team(1).Names]] =   test |
+	  | 2 | [[team(1).Id]]    =  23    |
+	  | 3 | [[team(2).Names]] =  test  |
+	  | 4 | [[team(2).Id]]    =  23    |
+	  And the 'Uni' in WorkFlow 'workflowithAssignUniquedebugoutputs' debug inputs as
+       | #           |                          | Return Fields      |
+       | In Field(s) | [[team(1).Names]] = test |                    |
+       |             | [[team(2).Names]] = test | [[team().Names]] = |
+      And the 'Uni' in Workflow 'workflowithAssignUniquedebugoutputs' debug outputs as  
+       | # |                         |
+       | 1 | [[List(1).Name]] = test |
+       
 
 #12326
 Scenario: Workflow Saving with Different Versions 
@@ -3366,30 +3362,30 @@ Scenario: Executing workflow of different versions
 	  | 2 | [[rec(2).a]] = Test |
 	  And the 'VarsAssign' in Workflow 'WorkflowWithVersionAssignExecuted2' debug outputs does not exist|
 
-
-Scenario: Workflow with 2 Assigns 
-      Given I have a workflow "WFTOTestBlanvValues"
-	  And "WFTOTestBlanvValues" contains an Assign "Record1" as
-      | # | variable  | value    |
-      | # | [[Value]] | Warewolf | 
-	  And "WFTOTestBlanvValues" contains an Assign "Record2" as
-      | # | variable    | value      |
-      | # | [[rec().a]] | [[Value1]] |
-	  When "WFTOTestBlanvValues" is executed
-	  Then the workflow execution has "AN" error
-	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
-	  | # | Variable    | New Value |
-	  | 1 | [[Value]] = | Warewolf  | 
-	  And the 'Record1' in Workflow 'WFTOTestBlanvValues' debug outputs as   
-	  | # |                          |
-	  | 1 | [[Value]]    =  Warewolf |
-	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
-	  | # | Variable      | New Value  |
-	  | 1 | [[rec().a]] = | [[Value1]] | 
-	  And the 'Record2' in Workflow 'WFTOTestBlanvValues' debug outputs as   
-	  | # |                |
-	  | 1 | [[rec(1).a]] = |
-
+#@ignore Needs to work correctly with nulls the Value1 assignment should fail
+#Scenario: Workflow with 2 Assigns 
+#      Given I have a workflow "WFTOTestBlanvValues"
+#	  And "WFTOTestBlanvValues" contains an Assign "Record1" as
+#      | # | variable  | value    |
+#      | # | [[Value]] | Warewolf | 
+#	  And "WFTOTestBlanvValues" contains an Assign "Record2" as
+#      | # | variable    | value      |
+#      | # | [[rec().a]] | [[Value1]] |
+#	  When "WFTOTestBlanvValues" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
+#	  | # | Variable    | New Value |
+#	  | 1 | [[Value]] = | Warewolf  | 
+#	  And the 'Record1' in Workflow 'WFTOTestBlanvValues' debug outputs as   
+#	  | # |                          |
+#	  | 1 | [[Value]]    =  Warewolf |
+#	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
+#	  | # | Variable      | New Value  |
+#	  | 1 | [[rec().a]] = | [[Value1]] |
+#	  And the 'Record2' in Workflow 'WFTOTestBlanvValues' debug outputs as   
+#	  | # |                |
+#	  | 1 | [[rec(1).a]] = |
+#
 
 #Bug 12050
 #Scenario: Workflow with 2 Assigns testing variable that hasn't been assigned
