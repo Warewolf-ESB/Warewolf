@@ -39,6 +39,7 @@ namespace Dev2.Studio.UI.Specs
         //Explorer
         static readonly string ExplorerFilter = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
         static readonly string ExplorerFilterClearButton = Explorer + ",UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
+        static readonly string ExplorerFilterRefreshButton = Explorer + ",UI_SourceServerRefreshbtn_AutoID";
         static readonly string ExplorerFolders = Explorer + ",UI_ExplorerTree_AutoID,UI_localhost_AutoID";
         //Variables
         static readonly string Variable = "UI_DocManager_AutoID,Variables,UI_DataListView_AutoID";

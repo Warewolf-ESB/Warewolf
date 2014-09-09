@@ -4,18 +4,18 @@
 	I want to be able to setup permissions for my server
 	
 Background: 
-	   Given I click "EXPLORER,UI_localhost_AutoID"
-	   Given I click "RIBBONSETTINGS"   
-	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
-	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
-	   And "SECURITYPUBLICADMINISTRATOR" is unchecked  
-       And "SECURITYPUBLICVIEW" is unchecked
-       And "SECURITYPUBLICEXECUTE" is unchecked
-       And "SECURITYPUBLICDEPLOYTO" is unchecked
-       And "SECURITYPUBLICDEPLOYFROM" is unchecked       
-	   And "SECURITYPUBLICCONTRIBUTE" is unchecked
-       And I click "SECURITYSAVE" 
-	   Given all tabs are closed
+	   #Given I click "EXPLORER,UI_localhost_AutoID"
+	   #Given I click "RIBBONSETTINGS"   
+	   #And "SECURITYPUBLICDEPLOYTO" is unchecked
+    #   And "SECURITYPUBLICDEPLOYFROM" is unchecked       
+    #   And "SECURITYPUBLICADMINISTRATOR" is unchecked  
+    #   And "SECURITYPUBLICVIEW" is unchecked
+    #   And "SECURITYPUBLICEXECUTE" is unchecked
+	   #And "SECURITYPUBLICCONTRIBUTE" is unchecked
+    #   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
+	   #And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
+	   #And I click "SECURITYSAVE" 
+	   #Given all tabs are closed
 
 Scenario: Testing Different Server Permissions For Public
    
@@ -401,3 +401,32 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I click "SECURITYRESOURCEHELP"
 	   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set specific"
 	   
+
+Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
+		Given I click "EXPLORER,UI_localhost_AutoID" 
+		#Setup permissions for test
+		And I click "RIBBONSETTINGS"   
+		And I click "SECURITYPUBLICVIEW"
+		And I click "SECURITYPUBLICEXECUTE"
+		And I click "SETTINGSRESOURECESELECT"
+		And I send "TestForEachOutput" to "RESOURCEPICKERFILTER"
+		And "RESOURCEPICKERFOLDERS,UI_MO_AutoID,UI_TestForEachOutput_AutoID" is visible within "1" seconds
+		And I click "RESOURCEPICKERFOLDERS,UI_MO_AutoID,UI_TestForEachOutput_AutoID"
+		And I click "RESOURCEPICKEROKBUTTON"
+		And I send "Public" to "SETTINGSRESOURCEROW1,UI_ResourcePermissionsWindowsGroupColumn_Row_0_Cell_AutoID,UI__AddWindowsGroupsTextBox_AutoID"
+		And I click "SECURITYSAVE"
+		#Setup remote connection
+		And I create a new remote connection "REM" as
+		| Address               | AuthType | UserName | Password |
+		| http://localhost:3142 | Public   |          |          |
+		#Open NewForEachNestedForEachTest and check if nested workflow (MO\TestForEachOutput) has proper permissions 
+        And I send "NewForEachNestedForEachTest" to "EXPLORERFILTER"
+		And I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_INTEGRATION TEST SERVICES_AutoID,UI_NewForEachNestedForEachTest_AutoID"
+		And I click point "240,10" on "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,NewForEachNestedForEachTest(FlowchartDesigner),For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Mo\TestForEachOutput(ServiceDesigner)"
+		Then "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,TestForEachOutput(FlowchartDesigner)" is invisible within "3" seconds
+		And I double click "EXPLORERFILTER"
+		And I send "{DELETE}" to ""
+		When I click "EXPLORERFILTERREFRESHBUTTON"
+		And I send "NewForEachNestedForEachTest" to "EXPLORERFILTER"
+	    Then "EXPLORERFOLDERS,UI_INTEGRATION TEST SERVICES_AutoID,UI_NewForEachNestedForEachTest_AutoID" is visible within "1" seconds
+		

@@ -72,32 +72,6 @@ namespace Dev2.Studio.UI.Specs.SecurityUISpecs
         public virtual void FeatureBackground()
         {
 #line 6
-#line 7
-    testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 8
-    testRunner.Given("I click \"RIBBONSETTINGS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
-    testRunner.And("I clear table \"ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermiss" +
-                    "ionsDataGrid\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
-    testRunner.And("I clear table \"ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermi" +
-                    "ssionsDataGrid\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
-    testRunner.And("\"SECURITYPUBLICADMINISTRATOR\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
-       testRunner.And("\"SECURITYPUBLICVIEW\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
-       testRunner.And("\"SECURITYPUBLICEXECUTE\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
-       testRunner.And("\"SECURITYPUBLICDEPLOYTO\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
-       testRunner.And("\"SECURITYPUBLICDEPLOYFROM\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 16
-    testRunner.And("\"SECURITYPUBLICCONTRIBUTE\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
-       testRunner.And("I click \"SECURITYSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
-    testRunner.Given("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         
@@ -849,6 +823,79 @@ this.FeatureBackground();
     testRunner.And("I click \"SECURITYRESOURCEHELP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 402
     testRunner.Given("\"SETTINGSTAB,UI_HelpText_AutoID\" contains text \"To set specific\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("RemoteWorkflowWithDifferentPermissionedItemsInIt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Security")]
+        public virtual void RemoteWorkflowWithDifferentPermissionedItemsInIt()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("RemoteWorkflowWithDifferentPermissionedItemsInIt", ((string[])(null)));
+#line 405
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 406
+  testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 408
+  testRunner.And("I click \"RIBBONSETTINGS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 409
+  testRunner.And("I click \"SECURITYPUBLICVIEW\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 410
+  testRunner.And("I click \"SECURITYPUBLICEXECUTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 411
+  testRunner.And("I click \"SETTINGSRESOURECESELECT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 412
+  testRunner.And("I send \"TestForEachOutput\" to \"RESOURCEPICKERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 413
+  testRunner.And("\"RESOURCEPICKERFOLDERS,UI_MO_AutoID,UI_TestForEachOutput_AutoID\" is visible withi" +
+                    "n \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 414
+  testRunner.And("I click \"RESOURCEPICKERFOLDERS,UI_MO_AutoID,UI_TestForEachOutput_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 415
+  testRunner.And("I click \"RESOURCEPICKEROKBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 416
+  testRunner.And("I send \"Public\" to \"SETTINGSRESOURCEROW1,UI_ResourcePermissionsWindowsGroupColumn" +
+                    "_Row_0_Cell_AutoID,UI__AddWindowsGroupsTextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 417
+  testRunner.And("I click \"SECURITYSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Address",
+                        "AuthType",
+                        "UserName",
+                        "Password"});
+            table3.AddRow(new string[] {
+                        "http://localhost:3142",
+                        "Public",
+                        "",
+                        ""});
+#line 419
+  testRunner.And("I create a new remote connection \"REM\" as", ((string)(null)), table3, "And ");
+#line 423
+        testRunner.And("I send \"NewForEachNestedForEachTest\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 424
+  testRunner.And("I double click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_INTEGRATION TE" +
+                    "ST SERVICES_AutoID,UI_NewForEachNestedForEachTest_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 425
+  testRunner.And(@"I click point ""240,10"" on ""ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,NewForEachNestedForEachTest(FlowchartDesigner),For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Mo\TestForEachOutput(ServiceDesigner)""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 426
+  testRunner.Then("\"ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_Work" +
+                    "flowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItem" +
+                    "Presenter,TestForEachOutput(FlowchartDesigner)\" is invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 427
+  testRunner.And("I double click \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 428
+  testRunner.And("I send \"{DELETE}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 429
+  testRunner.When("I click \"EXPLORERFILTERREFRESHBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 430
+  testRunner.And("I send \"NewForEachNestedForEachTest\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 431
+     testRunner.Then("\"EXPLORERFOLDERS,UI_INTEGRATION TEST SERVICES_AutoID,UI_NewForEachNestedForEachTe" +
+                    "st_AutoID\" is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
