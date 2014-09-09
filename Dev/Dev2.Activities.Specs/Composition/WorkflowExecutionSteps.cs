@@ -165,11 +165,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             AppSettings.LocalHost = "http://localhost:3142";
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
-            environmentModel.Connect();
-            while(!environmentModel.IsConnected)
-            {
-                Thread.Sleep(100);
-            }
+            EnsureEnvironmentConnected(environmentModel);
             var resourceModel = new ResourceModel(environmentModel) { Category = "Acceptance Tests\\" + workflowName, ResourceName = workflowName, ID = Guid.NewGuid(), ResourceType = Studio.Core.AppResources.Enums.ResourceType.WorkflowService };
 
             environmentModel.ResourceRepository.Add(resourceModel);
@@ -181,6 +177,15 @@ namespace Dev2.Activities.Specs.Composition
             Add("environment", environmentModel);
             Add("resourceRepo", environmentModel.ResourceRepository);
             Add("debugStates", new List<IDebugState>());
+        }
+
+        static void EnsureEnvironmentConnected(IEnvironmentModel environmentModel)
+        {
+            while(!environmentModel.IsConnected)
+            {
+                environmentModel.Connect();
+                Thread.Sleep(100);
+            }
         }
 
         void Add(string key, object value)

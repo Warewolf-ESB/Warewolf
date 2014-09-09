@@ -75,20 +75,11 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="Explorer.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Explorer.feature</DependentUpon>
-    </Compile>
     <Compile Include="ExplorerSteps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Explorer.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Explorer.feature.cs</LastGenOutput>
-    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
