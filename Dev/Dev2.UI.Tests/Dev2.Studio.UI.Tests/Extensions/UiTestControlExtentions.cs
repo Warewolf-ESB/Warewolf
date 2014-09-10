@@ -48,19 +48,19 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 string message = string.Format("Control with automation id : [{0}] was not found", automationId);
                 throw new Exception(message);
             }
-
+            
 
             List<UITestControl> parentCollection = container.GetChildren()
                                                             .Where(c => c is WpfControl)
                                                             .ToList();
 
-            UITestControl control = null;
+            UITestControl control=null;
             if(automationId.Contains('[') && automationId.Contains(']'))
             {
                 var index = Convert.ToInt32(automationId.Substring(automationId.IndexOf('[') + 1, automationId.Length - automationId.IndexOf(']')));
                 automationId = automationId.Substring(0, automationId.IndexOf('['));
-                var controls = parentCollection.Where(b => ((WpfControl)b).AutomationId.Equals(automationId)) as IList<UITestControl>;
-                if(controls.Any())
+                var controls = parentCollection.Where(b => ((WpfControl)b).AutomationId.Equals(automationId));
+                if (controls.Any())
                 {
                     control = controls.ElementAt(index);
                 }
@@ -68,9 +68,9 @@ namespace Dev2.Studio.UI.Tests.Extensions
             else
             {
                 control = parentCollection.FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
-            }
-            if(throwIfMultiple && parentCollection.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
+                if (throwIfMultiple && parentCollection.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
                 throw new Exception("Multiple AutoIds Found");
+            }
             if(control != null)
             {
                 return control;
@@ -126,7 +126,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
             List<UITestControl> parentCollection = container.GetChildren()
                                                             .Where(c => !(c is WpfListItem) && c is WpfControl)
                                                             .ToList();
-
+            
             var control = parentCollection.FirstOrDefault(b => b.FriendlyName.Equals(cleanName)
                                                              || b.FriendlyName.StartsWith(cleanName)
                                                              || ((WpfControl)b).AutomationId.Contains(cleanName));
