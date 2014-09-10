@@ -8,6 +8,8 @@ Scenario: Correcting errors on sql bulk insert clicking Done shows small view (u
 	Given I have Warewolf running
 	And all tabs are closed	
 	And I click "RIBBONNEWENDPOINT"
+	Given I double click "TOOLBOX,PART_SearchBox"
+    Given I send "{Delete}" to ""
 	#Searching SQL Tool in ToolBox
 	When I send "Sql" to "TOOLBOX,PART_SearchBox"
 	Then I drag "TOOLBOX,PART_Tools,Recordset,Dev2.Activities.DsfSqlBulkInsertActivity" onto "WORKSURFACE,StartSymbol"

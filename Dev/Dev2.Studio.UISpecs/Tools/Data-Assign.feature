@@ -11,18 +11,18 @@ Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDr
 	And I double click "TOOLBOX,PART_SearchBox"
 	And I send "Assign" to ""
 	And I drag "TOOLASSIGN" onto "WORKSURFACE,StartSymbol"
-	And "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID" is visible within "1" seconds
+	Given "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID,UI_DataGridCell_AutoID[1],UI_TextBox_AutoID" is visible within "2" seconds
 	#CheckVariableAdd
-	And I type "myvar" in "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID"
+	Given I type "myvar" in "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID,UI_DataGridCell_AutoID[1],UI_TextBox_AutoID"
 	And I send "{TAB}" to ""
-	And "VARIABLESCALAR,UI_Variable_myvar_AutoID,UI_NameTextBox_AutoID" is visible within "1" seconds
+	Given "VARIABLESCALAR,UI_Variable_myvar_AutoID,UI_NameTextBox_AutoID" is visible within "2" seconds
 	And I send "=[[rec(1).set]]+1" to ""
 	And I send "{TAB}" to ""
 	And I send "5{TAB}" to ""
 	And I send "[[5]]{TAB}" to ""
 	#BadVariable
 	And "VARIABLESCALAR,UI_Variable_5_AutoID" is invisible within "1" seconds
-	And "VARIABLERECORDSET,UI_RecordSet_rec_AutoID,UI_Field_rec().set_AutoID" is visible within "1" seconds
+	Given "VARIABLERECORDSET,UI_RecordSet_rec_AutoID,UI_NameTextBox_AutoID" is visible within "1" seconds
 	#LargeView
 	When I double click point "5,5" on "WORKSURFACE,Assign (2)(MultiAssignDesigner)"
 	#ValidationError

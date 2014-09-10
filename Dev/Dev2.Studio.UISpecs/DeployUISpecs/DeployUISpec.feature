@@ -5,6 +5,10 @@
 
 @mytag
 Scenario: IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled12
+	  
+	   
+	   Given I have Warewolf running
+	   And all tabs are closed	
 	   Given I click "RIBBONDEPLOY"
 	   ##Checking Validation Message When Source and Destination Servers Are Same
 	   Given "DEPLOYERROR" is visible

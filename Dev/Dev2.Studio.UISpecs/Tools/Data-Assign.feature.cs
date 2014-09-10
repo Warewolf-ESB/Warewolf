@@ -94,17 +94,18 @@ this.ScenarioSetup(scenarioInfo);
 #line 13
  testRunner.And("I drag \"TOOLASSIGN\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
- testRunner.And("\"WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_Ac" +
-                    "tivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID\" is visible within \"1\" seconds" +
-                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("\"WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_Ac" +
+                    "tivityGridRow_0_AutoID,UI_DataGridCell_AutoID[1],UI_TextBox_AutoID\" is visible w" +
+                    "ithin \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
- testRunner.And("I type \"myvar\" in \"WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,S" +
-                    "mallDataGrid,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I type \"myvar\" in \"WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,S" +
+                    "mallDataGrid,UI_ActivityGridRow_0_AutoID,UI_DataGridCell_AutoID[1],UI_TextBox_Au" +
+                    "toID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 17
  testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
- testRunner.And("\"VARIABLESCALAR,UI_Variable_myvar_AutoID,UI_NameTextBox_AutoID\" is visible within" +
-                    " \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("\"VARIABLESCALAR,UI_Variable_myvar_AutoID,UI_NameTextBox_AutoID\" is visible within" +
+                    " \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 19
  testRunner.And("I send \"=[[rec(1).set]]+1\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
@@ -116,8 +117,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 24
  testRunner.And("\"VARIABLESCALAR,UI_Variable_5_AutoID\" is invisible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
- testRunner.And("\"VARIABLERECORDSET,UI_RecordSet_rec_AutoID,UI_Field_rec().set_AutoID\" is visible " +
-                    "within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("\"VARIABLERECORDSET,UI_RecordSet_rec_AutoID,UI_NameTextBox_AutoID\" is visible with" +
+                    "in \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 27
  testRunner.When("I double click point \"5,5\" on \"WORKSURFACE,Assign (2)(MultiAssignDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 29

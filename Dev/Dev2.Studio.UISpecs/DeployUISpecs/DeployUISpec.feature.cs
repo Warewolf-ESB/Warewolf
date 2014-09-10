@@ -79,29 +79,33 @@ namespace Dev2.Studio.UI.Specs.DeployUISpecs
                         "mytag"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
-#line 8
-    testRunner.Given("I click \"RIBBONDEPLOY\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
-    testRunner.Given("\"DEPLOYERROR\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 11
+    testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
-    testRunner.Given("\"DEPLOYBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("I click \"RIBBONDEPLOY\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 14
-    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_BARNEY_AutoID_AutoID,UI_SourceServer_UI_" +
-                    "Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 15
-    testRunner.Given("\"DEPLOYBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("\"DEPLOYERROR\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 16
-    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_BARNEY_AutoID_AutoID,Expander\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+    testRunner.Given("\"DEPLOYBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 18
     testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_BARNEY_AutoID_AutoID,UI_SourceServer_UI_" +
                     "Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 19
-       testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_Destinat" +
-                    "ionServercbx_AutoID_Azure Public\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 21
+    testRunner.Given("\"DEPLOYBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 20
+    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_BARNEY_AutoID_AutoID,Expander\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 22
     testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_BARNEY_AutoID_AutoID,UI_SourceServer_UI_" +
                     "Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 22
+#line 23
+       testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_Destinat" +
+                    "ionServercbx_AutoID_Azure Public\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 25
+    testRunner.Given("I click \"DEPLOYSOURCE,UI_SourceServer_UI_BARNEY_AutoID_AutoID,UI_SourceServer_UI_" +
+                    "Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 26
        testRunner.Given("\"DEPLOYBUTTON\" is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
