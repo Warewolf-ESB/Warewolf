@@ -46,6 +46,7 @@ using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Help;
 using Dev2.Studio.ViewModels.WorkSurface;
+using Dev2.Studio.Views;
 using Dev2.Studio.Views.ResourceManagement;
 using Dev2.Threading;
 using Dev2.Utils;
@@ -729,6 +730,10 @@ namespace Dev2.Studio.ViewModels
             if(resourceType == "Workflow")
             {
                 TempSave(ActiveEnvironment, resourceType, resourcePath);
+                if(View != null)
+                {
+                    View.ClearToolboxSearch();
+                }
             }
             else
             {
@@ -764,6 +769,28 @@ namespace Dev2.Studio.ViewModels
         {
             BrowserPopupController.ShowPopup(StringResources.Uri_Community_HomePage);
         }
+
+        #region Overrides of ViewAware
+
+        protected override void OnViewAttached(object view, object context)
+        {
+            if(View == null)
+            {
+                View = view as MainView;
+            }
+        }
+
+        protected MainView View { get; set; }
+
+        public void ClearToolboxSelection()
+        {
+            if(View != null)
+            {
+                View.ClearToolboxSelection();
+            }
+        }
+
+        #endregion
 
         public bool IsActiveEnvironmentConnected()
         {

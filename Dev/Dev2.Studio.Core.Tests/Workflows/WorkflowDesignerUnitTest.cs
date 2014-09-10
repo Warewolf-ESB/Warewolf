@@ -19,7 +19,6 @@ using Dev2.Activities.Designers2.Foreach;
 using Dev2.AppResources.Repositories;
 using Dev2.Collections;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
@@ -3525,6 +3524,7 @@ namespace Dev2.Core.Tests.Workflows
             resourceRep.Setup(repository => repository.Save(It.IsAny<IResourceModel>())).Verifiable();
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
+            resourceModel.Setup(m => m.Environment.IsConnected).Returns(true);
             resourceModel.Setup(model => model.IsNewWorkflow).Returns(true);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 57");
             var workflowHelper = new Mock<IWorkflowHelper>();

@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views.Workflow
 {
     /// <summary>

@@ -55,7 +55,6 @@ namespace Dev2
         {
             CustomContainer.Register<IWindowManager>(new WindowManager());
             CustomContainer.Register<IDockAwareWindowManager>(new XamDockManagerDockAwareWindowManager());
-            //CustomContainer.Register<IWorkspaceRepository>(WorkspaceRepository.Instance);
             CustomContainer.Register<ISystemInfoService>(new SystemInfoService());
             CustomContainer.Register<IFeedBackRecorder>(new FeedbackRecorder());
             CustomContainer.Register<IPopupController>(new PopupController());

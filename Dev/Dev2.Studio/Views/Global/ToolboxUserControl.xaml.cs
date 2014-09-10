@@ -2,10 +2,12 @@
 using System.Activities.Presentation.Toolbox;
 using System.Activities.Statements;
 using System.Linq;
+using System.Reflection;
+using System.Windows.Controls;
 using Dev2.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Views
 {
     /// <summary>
@@ -19,6 +21,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
         {
             InitializeComponent();
             BuildToolbox();
+        }
+
+        public void ClearSearch()
+        {
+            if(tools != null)
+            {
+                var field = tools.GetType().GetField("searchBox", BindingFlags.NonPublic | BindingFlags.Instance);
+                if(field != null)
+                {
+                    var searchTextBox = field.GetValue(tools) as TextBox;
+                    if(searchTextBox != null)
+                    {
+                        searchTextBox.Text = "";
+                    }
+                }
+            }
+        }
+
+        public void ClearSelection()
+        {
+            if(tools != null)
+            {
+                var field = tools.GetType().GetField("toolsTreeView", BindingFlags.NonPublic | BindingFlags.Instance);
+                if(field != null)
+                {
+                    var treeView = field.GetValue(tools) as TreeView;
+                    if(treeView != null)
+                    {
+                        var setSelectedItem = treeView.GetType().GetMethod("SetSelectedItem", BindingFlags.NonPublic | BindingFlags.Instance);
+                        if(setSelectedItem != null)
+                        {
+                            setSelectedItem.Invoke(treeView, new object[] { null });
+                        }
+                    }
+                }
+            }
         }
 
         public void BuildToolbox()

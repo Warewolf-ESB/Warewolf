@@ -295,7 +295,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-               
+
                 return _wd.View;
             }
         }
@@ -1095,8 +1095,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-       
-
         void SubscribeToDebugSelectionChanged()
         {
             _virtualizedContainerService = _wd.Context.Services.GetService<VirtualizedContainerService>();
@@ -1391,7 +1389,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void DoWorkspaceSave()
         {
-            if(ResourceModel != null && ResourceModel.IsNewWorkflow && !_workspaceSave)
+            if(ResourceModel != null && ResourceModel.IsNewWorkflow && !_workspaceSave && ResourceModel.Environment.IsConnected)
             {
                 AsyncWorker asyncWorker = new AsyncWorker();
                 asyncWorker.Start(() =>
@@ -1594,6 +1592,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 NotifyOfPropertyChange(() => DisplayName);
             }
             _resourcePickerDialog = null;
+
+            var mainViewModel = CustomContainer.Get<IMainViewModel>();
+            if(mainViewModel != null)
+            {
+                mainViewModel.ClearToolboxSelection();
+            }
         }
 
         // BUG 9143 - 2013.07.03 - TWR - added
@@ -1765,7 +1769,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 //2013.06.24: Ashley Lewis for bug 9728 - delete event sends focus to a strange place
                 _wd.View.MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
             }
-            if (e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
+            if(e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
             {
 
                 new Task(() =>
@@ -1775,9 +1779,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                     EventPublisher.Publish(new UpdateAllIntellisenseMessage());
                 }).Start();
 
-                
-               
-                
+
+
+
             }
         }
 

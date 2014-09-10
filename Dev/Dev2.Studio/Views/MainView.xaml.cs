@@ -5,7 +5,7 @@ using System.Windows.Interop;
 using Dev2.Studio.StartupResources;
 using Dev2.Studio.ViewModels;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Views
 {
     public partial class MainView : System.Windows.Forms.IWin32Window
@@ -23,6 +23,22 @@ namespace Dev2.Studio.Views
         void OnLoaded(object sender, RoutedEventArgs e)
         {
             Dev2SplashScreen.Close(TimeSpan.FromSeconds(0.3));
+        }
+
+        public void ClearToolboxSelection()
+        {
+            if(Toolboxcontrol != null)
+            {
+                Toolboxcontrol.ClearSelection();
+            }
+        }
+
+        public void ClearToolboxSearch()
+        {
+            if(Toolboxcontrol != null)
+            {
+                Toolboxcontrol.ClearSearch();
+            }
         }
 
         #region Implementation of IWin32Window
@@ -48,7 +64,7 @@ namespace Dev2.Studio.Views
                     e.Cancel = true;
                 }
 
-                if (mainViewModel.IsDownloading())
+                if(mainViewModel.IsDownloading())
                 {
                     e.Cancel = true;
                 }

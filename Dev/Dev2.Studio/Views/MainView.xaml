@@ -643,7 +643,7 @@
                                                 AllowInDocumentHost="False"
                                                 IsPinned="False"
                                                 AutomationProperties.AutomationId="UI_ToolboxPane_AutoID">
-                                <bdsviews:ToolboxUserControl IsEnabled="{Binding HasActiveConnection}"  AutomationProperties.AutomationId="UI_ToolboxControl_AutoID" />
+                                <bdsviews:ToolboxUserControl x:Name="Toolboxcontrol" IsEnabled="{Binding HasActiveConnection}"  AutomationProperties.AutomationId="UI_ToolboxControl_AutoID" />
                             </igDock:ContentPane>
                             <igDock:ContentPane x:Name="Variables"
                                                 Header="Variables"
