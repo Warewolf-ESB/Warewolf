@@ -3412,9 +3412,6 @@ Scenario: Executing workflow of different versions
 #	  | 1 | [[rec(1).a]] = |
 #
 #
-#
-#
-#
 #Scenario: Workflow with Assign Base Convert and Case Convert testing variable that hasn't been assigned
 #	  Given I have a workflow "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues"
 #	  And "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues" contains an Assign "Assign1" as
@@ -3479,9 +3476,39 @@ Scenario: Executing workflow of different versions
 #	  And the 'Data Split' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as  
 #	  | # |               |
 #	  | 1 | [[Value12]] = |
-#	  
-#
-#
+
+#Scenario: Workflow with Assigns DataMerge DataSplit and testing variables that hasn't been assigned
+#      Given I have a workflow "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues"
+#	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues" contains an Assign "Assign To merge" as
+#      | variable | value |
+#      | [[res]]  | Test  |
+#	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues" contains Data Merge "Data Merge" into "[[result]]" as	
+#	  | Variable  | Type  | Using | Padding | Alignment |
+#	  | [[Value]] | Index | [[a]] |         | Left      |
+#	  And "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues" contains Data Split "Data Split" as
+#	  | String      | Variable    | Type  | At | Include    | Escape |
+#	  | [[Value12]] | [[rec().b]] | Index | [[a]]   | Unselected |        |
+#	  When "WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Assign To merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug inputs as 
+#	  | # | Variable  | New Value |
+#	  | 1 | [[res]] = | Test      |
+#	 And the 'Assign To merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as   
+#	  | # |                   |
+#	  | 1 | [[res]]   =  Test |
+#	  And the 'Data Merge' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug inputs as 
+#	  | # |                 | With  | Using | Pad | Align |
+#	  | 1 | [[res]]  = Test | Index | [[a]] | ""  | Left  |
+#	  And the 'Data Merge' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as  
+#	  |           |
+#	  | [[res]] = |
+#	  And the 'Data Split' in WorkFlow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug inputs as 
+#	  | String to Split   | Process Direction | Skip blank rows | # |               | With  | Using | Include | Escape |
+#	  | [[res]]   =  Test | Forward           | No              | 1 | [[rec().b]] = | Index | [[a]] | No      |        |
+#	  And the 'Data Split' in Workflow 'WorkflowWithMergeAndSlitToTestunAssignrdvaraiblevalues' debug outputs as  
+#	  | # |            |
+#	  | 1 | [[res]]  = |
+
 #Scenario: Workflow with Assigns Replace and testing variables that hasn't been assigned
 #      Given I have a workflow "workflowithAssignandReplaceTestingUnassignedvariablevalues"
 #       And "workflowithAssignandReplaceTestingUnassignedvariablevalues" contains an Assign "Assign34" as
@@ -3632,13 +3659,6 @@ Scenario: Executing workflow of different versions
 #	  |              |
 #	  | [[result]] = |
 #
-
-
-
-
-
-
-
 #Bug 12050
 #Scenario: Workflow with 2 Assigns testing variable that hasn't been assigned
 #      Given I have a workflow "WFTOTestBlanvValues"
@@ -3663,10 +3683,7 @@ Scenario: Executing workflow of different versions
 #	  | # |                |
 #	  | 1 | [[rec(1).a]] = |
 #
-#
-#
-#
-#
+
 #Scenario: Workflow with Assign Base Convert and Case Convert testing variable that hasn't been assigned
 #	  Given I have a workflow "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues"
 #	  And "WorkflowBaseConvertandCaseconvertTestingUnassignedVariablevalues" contains an Assign "Assign1" as
@@ -3758,7 +3775,120 @@ Scenario: Executing workflow of different versions
 #	  | [[replac]] = |
 #	 
 
+#This spec is passing but not working in studio
+#Scenario: Workflow with Assign  Delete and testing variables that hasn't been assigned
+#	  Given I have a workflow "WorkflowWithAssignDelete12"
+#	  And "WorkflowWithAssignDelete12" contains an Assign "DelRec" as
+#	  | variable    | value |
+#	  | [[rec().a]] | 50    |
+#	  And "WorkflowWithAssignDelete12" contains Delete "Delet12" as
+#	  | Variable   | result      |
+#	  | [[Del(1)]] | [[result1]] |
+#	  When "WorkflowWithAssignDelete12" is executed
+#      Then the workflow execution has "AN" error
+#	  And the 'DelRec' in WorkFlow 'WorkflowWithAssignDelete12' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | 50        |
+#	  And the 'DelRec' in Workflow 'WorkflowWithAssignDelete12' debug outputs as  
+#	  | # |                   |
+#	  | 1 | [[rec(1).a]] = 50 |
+#	  And the 'Delet12' in WorkFlow 'WorkflowWithAssignDelete12' debug inputs as
+#	  | Records      |
+#	  | [[Del(1)]] = |
+#	  And the 'Delet12' in Workflow 'WorkflowWithAssignDelete12' debug outputs as  
+#	  |               |
+#	  | [[result1]] = |
+#
 
-
-
-
+#This spec is passing but not working as expected in studio
+#Scenario: Workflow with Assign Sort and testing variables that hasn't been assigned
+#      Given I have a workflow "workflowithAssignandsortrec12"
+#      And "workflowithAssignandsortrec12" contains an Assign "sortval" as
+#	  | variable    | value |
+#	  | [[rs(1).a]] | 10    |
+#	  | [[rs(5).a]] | 20    |
+#	  | [[rs(7).a]] | 30    |
+#	  | [[rs(2).b]] | 6     |
+#	  | [[rs(4).b]] | 4     |
+#	  | [[rs(6).b]] | 2     |
+#	  And "workflowithAssignandsortrec12" contains an Sort "sortRec" as
+#	  | Sort Field  | Sort Order |
+#	  | [[xs(*).a]] | Backwards  |
+#	  When "workflowithAssignandsortrec12" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'sortval' in WorkFlow 'workflowithAssignandsortrec12' debug inputs as
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rs(1).a]] = | 10        |
+#	  | 2 | [[rs(5).a]] = | 20        |
+#	  | 3 | [[rs(7).a]] = | 30        |
+#	  | 4 | [[rs(2).b]] = | 6         |
+#	  | 5 | [[rs(4).b]] = | 4         |
+#	  | 6 | [[rs(6).b]] = | 2         |
+#	  And the 'sortval' in Workflow 'workflowithAssignandsortrec12' debug outputs as    
+#	  | # |                  |
+#	  | 1 | [[rs(1).a]] = 10 |
+#	  | 2 | [[rs(5).a]] = 20 |
+#	  | 3 | [[rs(7).a]] = 30 |
+#	  | 4 | [[rs(2).b]] = 6  |
+#	  | 5 | [[rs(4).b]] = 4  |
+#	  | 6 | [[rs(6).b]] = 2  |
+#	  And the 'sortRec' in WorkFlow 'workflowithAssignandsortrec12' debug inputs as
+#	  | Sort Field   | Sort Order |
+#	  | [[xs(*).a]] = | Backwards  |
+#	  And the 'sortRec' in Workflow 'workflowithAssignandsortrec12' debug outputs as
+#	  |                  |
+#	 
+#
+#Scenario: Workflow with Assign Unique Tool and testing variables that hasn't been assigned
+#      Given I have a workflow "workflowithAssignandUnique12"
+#      And "workflowithAssignandUnique12" contains an Assign "Records1" as
+#	  | variable       | value |
+#	  | [[rs(1).row]]  | 10    |
+#	  | [[rs(1).data]] | 10    |
+#	  And "workflowithAssignandUnique12" contains an Unique "Unrec" as
+#	  | In Field(s)   | Return Fields | Result           |
+#	  | [[new().row]] | [[rs().row]]  | [[rec().unique]] |
+#	  When "workflowithAssignandUnique12" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Records1' in WorkFlow 'workflowithAssignandUnique12' debug inputs as
+#	  | # | Variable         | New Value |
+#	  | 1 | [[rs(1).row]] =  | 10        |
+#	  | 2 | [[rs(1).data]] = | 10        |
+#	  And the 'Records1' in Workflow 'workflowithAssignandUnique12' debug outputs as  
+#	  | # |                      |
+#	  | 1 | [[rs(1).row]] =  10  |
+#	  | 2 | [[rs(1).data]] =  10 |
+#	  And the 'Unrec' in WorkFlow 'workflowithAssignandUnique12' debug inputs as
+#      | #           |  | Return Fields |
+#      | In Field(s) |  |               |
+#      And the 'Unrec' in Workflow 'workflowithAssignandUnique12' debug outputs as  
+#       | # |  |
+#      
+#
+#Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield hasn't been assigned
+#      Given I have a workflow "workflowithAssignUni"
+#      And "workflowithAssignUni" contains an Assign "Records1" as
+#	  | variable       | value |
+#	  | [[rs(1).row]]  | 10    |
+#	  | [[rs(1).data]] | 10    |
+#	  And "workflowithAssignUni" contains an Unique "Unrec" as
+#	  | In Field(s)   | Return Fields | Result           |
+#	  | [[rs(1).row]] | [[new().row]] | [[rec().unique]] |
+#	  When "workflowithAssignUni" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Records1' in WorkFlow 'workflowithAssignUni' debug inputs as
+#	  | # | Variable         | New Value |
+#	  | 1 | [[rs(1).row]] =  | 10        |
+#	  | 2 | [[rs(1).data]] = | 10        |
+#	  And the 'Records1' in Workflow 'workflowithAssignUni' debug outputs as  
+#	  | # |                      |
+#	  | 1 | [[rs(1).row]] =  10  |
+#	  | 2 | [[rs(1).data]] =  10 |
+#	  And the 'Unrec' in WorkFlow 'workflowithAssignUni' debug inputs as
+#      | #           |                    | Return Fields |
+#      | In Field(s) | [[rs(1).row]] = 10 |               |
+#      |             | [[rs(2).row]] = 40 |               |
+#      |             |                    | [[new().row]] |
+#      And the 'Unrec' in Workflow 'workflowithAssignUni' debug outputs as  
+#       | # |  |
+#      
