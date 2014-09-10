@@ -3,15 +3,16 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
+
 Background: 
-	   Given I click "EXPLORER,UI_localhost_AutoID"
-	   Given I click "RIBBONSETTINGS"   
-	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
-	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
-	   And "SECURITYPUBLICADMINISTRATOR" is unchecked 
-	   And I click "SECURITYPUBLICADMINISTRATOR"  
-       And I click "SECURITYSAVE" 
-	   Given all tabs are closed
+	   #Given I click "EXPLORER,UI_localhost_AutoID"
+	   #Given I click "RIBBONSETTINGS"   
+	   #And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
+	   #And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
+	   #And "SECURITYPUBLICADMINISTRATOR" is unchecked 
+	   #And I click "SECURITYPUBLICADMINISTRATOR"  
+    #   And I click "SECURITYSAVE" 
+	   #Given all tabs are closed
 
 
 @RemtoeServer
@@ -35,14 +36,14 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 	Given I double click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "5" seconds
 	And I send "{F6}" to ""
-	Given "DEBUGOUTPUT,Assign" is visible within "15" seconds	
+	Given "DEBUGOUTPUT,Assign[1]" is visible within "25" seconds	
 	# Creating A Workflow On Remote Server
 	Given I click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID"   
 	And I click "RIBBONNEWENDPOINT"
 	Given I send "Assign" to "TOOLBOX,PART_SearchBox"
 	#Drag Assign Tool To Remote Design Surface
 	And I drag "TOOLASSIGN" onto "WORKSURFACE,StartSymbol"
-	Given I type "rec().a" in "TOOLASSIGNSMALLVIEWGRID,UI_ActivityGrid_Row_0_AutoID,UI__Row1_FieldName_AutoID"
+	Given I type "rec().a" in "TOOLASSIGNSMALLVIEWGRID,UI_DataGridCell_AutoID[1],UI_TextBox_AutoID"
 	And I send "{TAB}" to ""
 	And I send "Warewolf" to ""
 	And I send "{TAB}" to ""
@@ -65,8 +66,8 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 	And I send "10" to ""
 	Given I type "[[result]]" in "WORKSURFACE,Data Merge (2)(DataMergeDesigner),SmallViewContent,UI__Resulttxt_AutoID"
 	And I send "{F6}" to ""
-	Given "DEBUGOUTPUT,Assign" is visible within "10" seconds	
-	And "DEBUGOUTPUT,Assign" is visible "1" time
+	Given "DEBUGOUTPUT,Assign[1]" is visible within "10" seconds	
+	Given "DEBUGOUTPUT,Assign[1]" is visible "1" time
 	#Saving Workflow On Remote Server
 	Given I click "RIBBONSAVE"
 	And I send "{TAB}{TAB}{TAB}{TAB}{TAB}" to ""
@@ -77,12 +78,13 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
     And all tabs are closed
 	#DragAndDropWorkflowFromRemoteServerOnALocalHostCreatedWorkflow_WorkFlowIsDroppedAndCanExecute
 	Given I click "EXPLORER,UI_localhost_AutoID"   
-	Given I click "EXPLORER,UI_localhost_AutoID,UI_EXAMPLES_AutoID,UI_Utility - Email_AutoID"
-	Given I double click "EXPLORER,UI_localhost_AutoID,UI_EXAMPLES_AutoID,UI_Utility - Email_AutoID"
+	Given I click "EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Email_AutoID"
+	Given I double click "EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Email_AutoID"
 	Given "WORKFLOWDESIGNER,Utility - Email(FlowchartDesigner)" is visible within "5" seconds
 	Given I click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID"   
 	Given I click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Remote1_AutoID"
 	Given I drag "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Remote1_AutoID" onto "WORKFLOWDESIGNER,Utility - Email(FlowchartDesigner),Email(EmailDesigner)"
+	##Given "WORKFLOWDESIGNER,Utility - Email(FlowchartDesigner),Remote1(ServiceDesigner)" is visible within "5" seconds
 	And I send "{F6}" to ""
 
 

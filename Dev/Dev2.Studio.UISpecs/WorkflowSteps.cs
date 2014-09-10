@@ -61,7 +61,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ToolFind = Toolbox + ",PART_Tools,Recordset,Unlimited.Applications.BusinessDesignStudio.Activities.DsfFindRecordsMultipleCriteriaActivity";
         //Data
         static readonly string ToolAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
-        static readonly string ToolAssignSmallViewGrid = Worksurface + ",Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid";
+        static readonly string ToolAssignSmallViewGrid = Worksurface + ",Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID";
         static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolDataMergeSmallViewGrid = Worksurface + ",Data Merge (1)(DataMergeDesigner),SmallViewContent,SmallDataGrid";
         static readonly string ToolBaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfBaseConvertActivity";
