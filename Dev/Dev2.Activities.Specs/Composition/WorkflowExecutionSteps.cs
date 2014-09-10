@@ -140,7 +140,7 @@ namespace Dev2.Activities.Specs.Composition
                     }
 
                     var newEnvironment = new EnvironmentModel(remoteServer.ResourceID, connection) { Name = remoteServer.ResourceName, Category = remoteServer.ResourcePath };
-                    newEnvironment.Connect();
+                    EnsureEnvironmentConnected(newEnvironment);
                     newEnvironment.ForceLoadResources();
 
                     // now find the bloody resource model for execution
@@ -183,8 +183,14 @@ namespace Dev2.Activities.Specs.Composition
         {
             while(!environmentModel.IsConnected)
             {
-                environmentModel.Connect();
-                Thread.Sleep(100);
+                try
+                {
+                    environmentModel.Connect();
+                }
+                catch(Exception)
+                {
+                    Thread.Sleep(100);
+                }
             }
         }
 
@@ -1039,7 +1045,7 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             var debugTo = new DebugTO { XmlData = "<DataList></DataList>", SessionID = Guid.NewGuid(), IsDebugMode = true };
-
+            EnsureEnvironmentConnected(resourceModel.Environment);
             var clientContext = resourceModel.Environment.Connection;
             if(clientContext != null)
             {
