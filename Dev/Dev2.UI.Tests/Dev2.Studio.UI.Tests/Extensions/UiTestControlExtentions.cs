@@ -37,7 +37,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
         public static UITestControl FindByAutomationId(this UITestControl container, string automationId, bool returnNullIfNotFound, bool throwIfMultiple = false)
         {
-            if (container == null)
+            if(container == null)
             {
 
                 if(returnNullIfNotFound)
@@ -48,25 +48,28 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 string message = string.Format("Control with automation id : [{0}] was not found", automationId);
                 throw new Exception(message);
             }
-            
+
 
             List<UITestControl> parentCollection = container.GetChildren()
                                                             .Where(c => c is WpfControl)
                                                             .ToList();
 
-            int index = 0;
-            if (automationId.Contains('[') && automationId.Contains(']'))
+            UITestControl control = null;
+            if(automationId.Contains('[') && automationId.Contains(']'))
             {
-                index = Convert.ToInt32(automationId.Substring(automationId.IndexOf('[')+1, automationId.Length - automationId.IndexOf(']')));
+                var index = Convert.ToInt32(automationId.Substring(automationId.IndexOf('[') + 1, automationId.Length - automationId.IndexOf(']')));
                 automationId = automationId.Substring(0, automationId.IndexOf('['));
+                var controls = parentCollection.Where(b => ((WpfControl)b).AutomationId.Equals(automationId)) as IList<UITestControl>;
+                if(controls.Any())
+                {
+                    control = controls.ElementAt(index);
+                }
             }
-            var controls = parentCollection.Where(b => ((WpfControl)b).AutomationId.Equals(automationId));
-            UITestControl control=null;
-            if(controls.Count() > 0)
+            else
             {
-                control = controls.ElementAt(index);
+                control = parentCollection.FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
             }
-            if (throwIfMultiple && parentCollection.Count(b => ((WpfControl)b).AutomationId.Equals(automationId))>1)
+            if(throwIfMultiple && parentCollection.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
                 throw new Exception("Multiple AutoIds Found");
             if(control != null)
             {
@@ -84,7 +87,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
 
                 control = collectionToSearch
                     .FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
-                if (throwIfMultiple && collectionToSearch.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
+                if(throwIfMultiple && collectionToSearch.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
                     throw new Exception("Multiple AutoIds Found");
                 if(control == null)
                 {
@@ -123,7 +126,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
             List<UITestControl> parentCollection = container.GetChildren()
                                                             .Where(c => !(c is WpfListItem) && c is WpfControl)
                                                             .ToList();
-            
+
             var control = parentCollection.FirstOrDefault(b => b.FriendlyName.Equals(cleanName)
                                                              || b.FriendlyName.StartsWith(cleanName)
                                                              || ((WpfControl)b).AutomationId.Contains(cleanName));
@@ -393,7 +396,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 throw new Exception("Control must be a check box");
             }
 
-            var point  = control.GetPointToClick();
+            var point = control.GetPointToClick();
             Mouse.Move(point);
             checkBox.Checked = isChecked;
         }
@@ -445,7 +448,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
             var point = control.GetPointToClick();
             Mouse.Move(point);
 
-            return editControl == null? textControl.DisplayText : editControl.Text;
+            return editControl == null ? textControl.DisplayText : editControl.Text;
         }
 
         public static void Select(this UITestControl control, int selectedIndex)
