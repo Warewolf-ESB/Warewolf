@@ -39,7 +39,6 @@ namespace Dev2.Studio.UI.Tests.Extensions
         {
             if(container == null)
             {
-
                 if(returnNullIfNotFound)
                 {
                     return null;
@@ -54,23 +53,9 @@ namespace Dev2.Studio.UI.Tests.Extensions
                                                             .Where(c => c is WpfControl)
                                                             .ToList();
 
-            UITestControl control=null;
-            if(automationId.Contains('[') && automationId.Contains(']'))
-            {
-                var index = Convert.ToInt32(automationId.Substring(automationId.IndexOf('[') + 1, automationId.Length - automationId.IndexOf(']')));
-                automationId = automationId.Substring(0, automationId.IndexOf('['));
-                var controls = parentCollection.Where(b => ((WpfControl)b).AutomationId.Equals(automationId));
-                if (controls.Any())
-                {
-                    control = controls.ElementAt(index);
-                }
-            }
-            else
-            {
-                control = parentCollection.FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
-                if (throwIfMultiple && parentCollection.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
+            var control = parentCollection.FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
+            if (throwIfMultiple && parentCollection.Count(b => ((WpfControl)b).AutomationId.Equals(automationId))>1)
                 throw new Exception("Multiple AutoIds Found");
-            }
             if(control != null)
             {
                 return control;
