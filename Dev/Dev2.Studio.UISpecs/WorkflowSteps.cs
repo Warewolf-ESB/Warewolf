@@ -145,8 +145,8 @@ namespace Dev2.Studio.UI.Specs
         static readonly string SchedulerSavingErrorOkButton = "UI_MessageBox_AutoID,UI_OkButton_AutoID";
         static readonly string SchedulerEditTriggerButton = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_EditTriggerButton_AutoID";
         static readonly string SchedulerSetupTriggerOkButton = "TriggerEditDialog,okBtn";
-        static readonly string SchedulerDeleteConfirmationYesButton = "MainViewWindow,UI_MessageBox_AutoID,UI_YesButton_AutoID";
-        static readonly string SchedulerDeleteConfirmationNoButton = "MainViewWindow,UI_MessageBox_AutoID,UI_NoButton_AutoID";
+        static readonly string SchedulerDeleteConfirmationYesButton = "UI_MessageBox_AutoID,UI_YesButton_AutoID";
+        static readonly string SchedulerDeleteConfirmationNoButton = "UI_MessageBox_AutoID,UI_NoButton_AutoID";
         static readonly string SchedulerHelpButton = SchedulerTab + ",UI_SchedulerHelpButton_AutoID";
 
         static readonly string RibbonDeploy = "UI_RibbonHomeTabDeployBtn_AutoID";
