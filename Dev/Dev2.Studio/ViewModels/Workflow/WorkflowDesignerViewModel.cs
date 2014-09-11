@@ -1579,6 +1579,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 // PBI 10652 - 2013.11.04 - TWR - Refactored to enable re-use!
                 var resourcePicked = ResourcePickerDialog.ShowDropDialog(ref _resourcePickerDialog, isWorkflow, out _vm);
+                if(_vm != null && resourcePicked)
+                {
+                    e.Data.SetData(_vm.SelectedExplorerItemModel);
+                }
                 if(_vm != null && !resourcePicked)
                 {
                     e.Handled = true;

@@ -230,6 +230,63 @@ namespace Dev2.Activities.Designers.Tests.Sequence
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
+        [TestCategory("SequenceDesignerViewModel_SetSmallViewItem")]
+        public void SequenceDesignerViewModel_SetSmallViewItem_WhenModelItemDsfPluginActivity_ActivityNotAdded()
+        {
+            //------------Setup for test--------------------------
+            var dsfSequenceActivity = new DsfSequenceActivity();
+            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
+            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
+            var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
+            dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
+            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
+            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfPluginActivity());
+            //------------Execute Test---------------------------
+            sequenceDesignerViewModel.SmallViewItem = modelItem;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SequenceDesignerViewModel_SetSmallViewItem")]
+        public void SequenceDesignerViewModel_SetSmallViewItem_WhenModelItemDsfWebserviceActivity_ActivityNotAdded()
+        {
+            //------------Setup for test--------------------------
+            var dsfSequenceActivity = new DsfSequenceActivity();
+            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
+            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
+            var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
+            dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
+            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
+            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfWebserviceActivity());
+            //------------Execute Test---------------------------
+            sequenceDesignerViewModel.SmallViewItem = modelItem;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SequenceDesignerViewModel_SetSmallViewItem")]
+        public void SequenceDesignerViewModel_SetSmallViewItem_WhenModelItemDsfDbServiceActivity_ActivityNotAdded()
+        {
+            //------------Setup for test--------------------------
+            var dsfSequenceActivity = new DsfSequenceActivity();
+            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
+            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
+            var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
+            dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
+            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
+            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfDatabaseActivity());
+            //------------Execute Test---------------------------
+            sequenceDesignerViewModel.SmallViewItem = modelItem;
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
         [TestCategory("SequenceDesignerViewModel_DoDrop")]
         public void SequenceDesignerViewModel_DoDrop_WhenNoFormats_ActivityNotAdded()
         {
@@ -291,6 +348,28 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Assert Results-------------------------
             Assert.IsTrue(doDrop);
             Assert.AreEqual(4, dsfSequenceActivity.Activities.Count);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("SequenceDesignerViewModel_DoDrop")]
+        public void SequenceDesignerViewModel_DoDrop_WhenModelItemsFormatHasSingleItem_ActivitiesAdded()
+        {
+            //------------Setup for test--------------------------
+            var dsfSequenceActivity = new DsfSequenceActivity();
+            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
+            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
+            var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
+            dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
+            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
+            var dataObjectMock = new Mock<IDataObject>();
+            dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemsFormat" });
+            dataObjectMock.Setup(o => o.GetData("ModelItemsFormat")).Returns(new List<ModelItem> { ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()) });
+            //------------Execute Test---------------------------
+            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(doDrop);
+            Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
         }
 
         [TestMethod]

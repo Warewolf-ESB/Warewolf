@@ -1234,8 +1234,7 @@ namespace Dev2.Core.Tests.Workflows
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
-
-            Assert.IsTrue(ok, msg);
+            Assert.IsTrue(ok, msg);            
 
         }
 

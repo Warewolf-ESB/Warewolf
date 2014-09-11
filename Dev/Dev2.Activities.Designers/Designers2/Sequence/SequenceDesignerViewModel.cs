@@ -43,7 +43,7 @@ namespace Dev2.Activities.Designers2.Sequence
 
                 if(test != null)
                 {
-                    if(test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity))
+                    if(test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity) && test.ItemType.BaseType != typeof(DsfActivity))
                     {
                         dynamic mi = ModelItem;
                         ModelItemCollection activitiesCollection = mi.Activities;
@@ -138,7 +138,7 @@ namespace Dev2.Activities.Designers2.Sequence
             {
                 var objectData = dataObject.GetData(modelItemString);
                 var data = objectData as List<ModelItem>;
-                if(data != null && data.Count > 1)
+                if(data != null && data.Count >= 1)
                 {
                     foreach(var item in data)
                     {

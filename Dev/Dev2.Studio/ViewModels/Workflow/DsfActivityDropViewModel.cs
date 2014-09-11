@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Models;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
@@ -165,12 +166,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
 
             SelectedResourceModel = environment.ResourceRepository.FindSingleWithPayLoad(r => r.ID == selectedItem.ResourceId) as IContextualResourceModel;
-
+            SelectedExplorerItemModel = selectedItem;
             if(SelectedResourceModel != null)
             {
                 RequestClose(ViewModelDialogResults.Okay);
             }
         }
+
+        public IExplorerItemModel SelectedExplorerItemModel { get; set; }
 
         /// <summary>
         /// Used for canceling the drop of t    he design surface
