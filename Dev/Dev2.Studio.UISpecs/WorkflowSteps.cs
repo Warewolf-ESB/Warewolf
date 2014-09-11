@@ -125,7 +125,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string SecurityServerHelp = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_SettingsView_AutoID,SecurityViewContent,ServerHelpToggleButton";
         static readonly string SecurityResourceHelp = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_SettingsView_AutoID,SecurityViewContent,ResourceHelpToggleButton";
 
-        static readonly string SchedulerTab = "ACTIVETAB,UI_SchedulerView_AutoID";
+        static readonly string SchedulerTab = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_SchedulerView_AutoID";
         static readonly string SchedulerConnectDropDown = SchedulerTab + ",ConnectUserControl,UI_SettingsServerComboBox_AutoID";
         static readonly string SchedulerConnectEditButton = SchedulerTab + ",ConnectUserControl,UI_SettingsServerEditButton_AutoID";
         static readonly string SchedulerConnectConnectButton = SchedulerTab + ",ConnectUserControl,UI_SettingsServerConnectButton_AutoID";
@@ -142,9 +142,9 @@ namespace Dev2.Studio.UI.Specs
         static readonly string SchedulerUsernameInput = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_UserNameTextBox";
         static readonly string SchedulerPasswordInput = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_PasswordBox";
         static readonly string SchedulerHistoryTab = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerHistoryTab_AutoID";
-        static readonly string SchedulerSavingErrorOkButton = "MainViewWindow,UI_MessageBox_AutoID,UI_OkButton_AutoID";
+        static readonly string SchedulerSavingErrorOkButton = "UI_MessageBox_AutoID,UI_OkButton_AutoID";
         static readonly string SchedulerEditTriggerButton = SchedulerTab + ",UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID,UI_EditTriggerButton_AutoID";
-        static readonly string SchedulerSetupTriggerOkButton = "MainViewWindow,TriggerEditDialog,okBtn";
+        static readonly string SchedulerSetupTriggerOkButton = "TriggerEditDialog,okBtn";
         static readonly string SchedulerDeleteConfirmationYesButton = "MainViewWindow,UI_MessageBox_AutoID,UI_YesButton_AutoID";
         static readonly string SchedulerDeleteConfirmationNoButton = "MainViewWindow,UI_MessageBox_AutoID,UI_NoButton_AutoID";
         static readonly string SchedulerHelpButton = SchedulerTab + ",UI_SchedulerHelpButton_AutoID";
