@@ -550,7 +550,7 @@ namespace Dev2.Studio.UI.Specs
                         Keyboard.SendKeys(serverDetailsRow["Password"]);
                         //CLICK TEST
                         window.Click(new Point(350, 200));
-                        Playback.Wait(2000);
+                        Playback.Wait(5000);
                         break;
                     }
                 case "Windows":
