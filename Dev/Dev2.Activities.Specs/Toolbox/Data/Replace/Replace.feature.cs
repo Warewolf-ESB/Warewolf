@@ -341,8 +341,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Replace With"});
             table11.AddRow(new string[] {
                         "[[sentence]] = Dear Mr XXXX, We welcome you as a customer",
-                        "[[my(-1).text]] =",
-                        "Warewolf user"});
+                        "",
+                        ""});
 #line 95
  testRunner.And("the debug inputs as", ((string)(null)), table11, "And ");
 #line hidden
@@ -384,8 +384,8 @@ this.ScenarioSetup(scenarioInfo);
                         "Replace With"});
             table13.AddRow(new string[] {
                         "[[sentence]] = Dear Mr XXXX, We welcome you as a customer",
-                        "XXXX",
-                        "[[my(-1).text]] ="});
+                        "",
+                        ""});
 #line 109
  testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
 #line hidden

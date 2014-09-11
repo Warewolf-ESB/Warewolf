@@ -1110,7 +1110,6 @@ Scenario: Executing Decision with malformed variables
 	And the execution has "AN" error
 	And the debug inputs as  
 	|           | Statement | Require All decisions to be True |
-	| [[[[a]] = | String    | YES                              |
 	And the debug output as 
 	|    |
 	| NO | 
@@ -1123,7 +1122,6 @@ Scenario: Executing Decision with malformed recordset
 	And the execution has "AN" error
 	And the debug inputs as  
 	|                 | Statement | Require All decisions to be True |
-	| [[[[rec().a]] = | String    | YES                              |
 	And the debug output as 
 	|    |
 	| NO | 
@@ -1136,7 +1134,6 @@ Scenario: Executing Decision with recordset contains spcl character as index
 	And the execution has "AN" error
 	And the debug inputs as  
 	|                | Statement | Require All decisions to be True |
-	| [[rec(&).a]] = | String    | YES                              |
 	And the debug output as 
 	|    |
 	| NO |

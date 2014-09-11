@@ -795,8 +795,6 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table32 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table32.AddRow(new string[] {
-                        "[[result]] ="});
 #line 240
  testRunner.And("the debug output as", ((string)(null)), table32, "And ");
 #line hidden
@@ -809,19 +807,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateWithNegativeRecordsetIndexForInput2()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate with negative recordset index for Input 2", ((string[])(null)));
-#line 244
+#line 243
 this.ScenarioSetup(scenarioInfo);
-#line 245
+#line 244
  testRunner.Given("I have a first date \"2014-11-01\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 246
+#line 245
  testRunner.And("I have a second date \"[[my(-1).date]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 247
+#line 246
  testRunner.And("the date format as \"yyyy-mm-dd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 248
+#line 247
  testRunner.And("I selected output in \"Minutes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 249
+#line 248
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 250
+#line 249
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table33 = new TechTalk.SpecFlow.Table(new string[] {
@@ -834,14 +832,12 @@ this.ScenarioSetup(scenarioInfo);
                         "[[my(-1).date]] =",
                         "yyyy-mm-dd",
                         "Minutes"});
-#line 251
+#line 250
  testRunner.And("the debug inputs as", ((string)(null)), table33, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table34 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table34.AddRow(new string[] {
-                        "[[result]] ="});
-#line 254
+#line 253
  testRunner.And("the debug output as", ((string)(null)), table34, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -853,19 +849,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateWithNegativeRecordsetIndexForFormat()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate with negative recordset index for Format", ((string[])(null)));
-#line 258
+#line 256
 this.ScenarioSetup(scenarioInfo);
-#line 259
+#line 257
  testRunner.Given("I have a first date \"2014-11-01\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 260
+#line 258
  testRunner.And("I have a second date \"2014-11-01\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 261
+#line 259
  testRunner.And("the date format as \"[[my(-1).format]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 262
+#line 260
  testRunner.And("I selected output in \"Minutes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 263
+#line 261
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 264
+#line 262
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table35 = new TechTalk.SpecFlow.Table(new string[] {
@@ -878,14 +874,12 @@ this.ScenarioSetup(scenarioInfo);
                         "2014-11-01",
                         "[[my(-1).format]] =",
                         "Minutes"});
-#line 265
+#line 263
  testRunner.And("the debug inputs as", ((string)(null)), table35, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table36 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table36.AddRow(new string[] {
-                        "[[result]] ="});
-#line 268
+#line 266
  testRunner.And("the debug output as", ((string)(null)), table36, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -897,21 +891,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfWeeksBetweenTwoGivenDatesFormatHasQuotedStrings()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of weeks between two given dates format has quoted strings", ((string[])(null)));
-#line 272
+#line 269
 this.ScenarioSetup(scenarioInfo);
-#line 273
+#line 270
  testRunner.Given("I have a first date \"2013-11-29 date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 274
+#line 271
  testRunner.And("I have a second date \"2014-11-01 date\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 275
+#line 272
  testRunner.And("the date format as \"yyyy-mm-dd \'date\'\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 276
+#line 273
  testRunner.And("I selected output in \"Hours\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 277
+#line 274
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 278
+#line 275
  testRunner.Then("the difference should be \"8088\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 279
+#line 276
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table37 = new TechTalk.SpecFlow.Table(new string[] {
@@ -924,14 +918,14 @@ this.ScenarioSetup(scenarioInfo);
                         "2014-11-01 date",
                         "yyyy-mm-dd \'date\'",
                         "Hours"});
-#line 280
+#line 277
  testRunner.And("the debug inputs as", ((string)(null)), table37, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table38 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table38.AddRow(new string[] {
                         "[[result]] = 8088"});
-#line 283
+#line 280
  testRunner.And("the debug output as", ((string)(null)), table38, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -943,23 +937,23 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfYearsWithIncorrectInputs()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of years with incorrect inputs", ((string[])(null)));
-#line 287
+#line 284
 this.ScenarioSetup(scenarioInfo);
-#line 288
+#line 285
  testRunner.Given("I have a DateAndTimeDifference variable \"[[a]]\" equal to 01.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 289
+#line 286
  testRunner.And("I have a first date \"2014/[[a]]/01\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 290
+#line 287
  testRunner.And("I have a second date \"2030/01/01\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 291
+#line 288
  testRunner.And("the date format as \"yyyy/mm/dd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 292
+#line 289
  testRunner.And("I selected output in \"Years\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 293
+#line 290
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 294
+#line 291
  testRunner.Then("the difference should be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 295
+#line 292
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table39 = new TechTalk.SpecFlow.Table(new string[] {
@@ -972,14 +966,14 @@ this.ScenarioSetup(scenarioInfo);
                         "2030/01/01",
                         "yyyy/mm/dd",
                         "Years"});
-#line 296
+#line 293
  testRunner.And("the debug inputs as", ((string)(null)), table39, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table40 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table40.AddRow(new string[] {
                         "[[result]] ="});
-#line 299
+#line 296
  testRunner.And("the debug output as", ((string)(null)), table40, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -991,21 +985,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfYearsWithIncorrectVariableInInput1()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of years with incorrect variable in input1", ((string[])(null)));
-#line 303
+#line 300
 this.ScenarioSetup(scenarioInfo);
-#line 304
+#line 301
  testRunner.Given("I have a DateAndTimeDifference variable \"[[a]]\" equal to 01.", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 305
+#line 302
  testRunner.And("I have a first date \"[[2014/01/01]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 306
+#line 303
  testRunner.And("I have a second date \"2030/01/01\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 307
+#line 304
  testRunner.And("the date format as \"yyyy/mm/dd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 308
+#line 305
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 309
+#line 306
  testRunner.Then("the difference should be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 310
+#line 307
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table41 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1018,12 +1012,12 @@ this.ScenarioSetup(scenarioInfo);
                         "2030/01/01",
                         "yyyy/mm/dd",
                         "Years"});
-#line 311
+#line 308
  testRunner.And("the debug inputs as", ((string)(null)), table41, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table42 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-#line 314
+#line 311
  testRunner.And("the debug output as", ((string)(null)), table42, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1035,21 +1029,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfSplitSeconds()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of split seconds", ((string[])(null)));
-#line 317
+#line 314
 this.ScenarioSetup(scenarioInfo);
-#line 318
+#line 315
  testRunner.Given("I have a first date \"06/01/2014 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 319
+#line 316
  testRunner.And("I have a second date \"06/01/2014 08:00:01.68\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 320
+#line 317
  testRunner.And("the date format as \"dd/mm/yyyy 12h:min:ss.sp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 321
+#line 318
  testRunner.And("I selected output in \"Split Secs\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 322
+#line 319
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 323
+#line 320
  testRunner.Then("the difference should be \"68\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 324
+#line 321
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table43 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1062,14 +1056,14 @@ this.ScenarioSetup(scenarioInfo);
                         "06/01/2014 08:00:01.68",
                         "dd/mm/yyyy 12h:min:ss.sp",
                         "Split Secs"});
-#line 325
+#line 322
  testRunner.And("the debug inputs as", ((string)(null)), table43, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table44 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table44.AddRow(new string[] {
                         "[[result]] = 68"});
-#line 328
+#line 325
  testRunner.And("the debug output as", ((string)(null)), table44, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1081,21 +1075,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfSplitSecondsByUsingDefaultDateFormat()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of split seconds by using default date format", ((string[])(null)));
-#line 333
+#line 330
 this.ScenarioSetup(scenarioInfo);
-#line 334
+#line 331
  testRunner.Given("I have a first date \"2014/01/06 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 335
+#line 332
  testRunner.And("I have a second date \"2014/01/06 08:00:01.68\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 336
+#line 333
  testRunner.And("the date format as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 337
+#line 334
  testRunner.And("I selected output in \"Split Secs\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 338
+#line 335
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 339
+#line 336
  testRunner.Then("the difference should be \"68\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 340
+#line 337
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table45 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1108,14 +1102,14 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/06 08:00:01.68",
                         "\"\"",
                         "Split Secs"});
-#line 341
+#line 338
  testRunner.And("the debug inputs as", ((string)(null)), table45, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table46 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table46.AddRow(new string[] {
                         "[[result]] = 68"});
-#line 344
+#line 341
  testRunner.And("the debug output as", ((string)(null)), table46, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1127,21 +1121,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfWeeks()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of weeks", ((string[])(null)));
-#line 348
+#line 345
 this.ScenarioSetup(scenarioInfo);
-#line 349
+#line 346
  testRunner.Given("I have a first date \"06/01/2014 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 350
+#line 347
  testRunner.And("I have a second date \"30/01/2014 08:00:01.06\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 351
+#line 348
  testRunner.And("the date format as \"dd/mm/yyyy 12h:min:ss.sp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 352
+#line 349
  testRunner.And("I selected output in \"Weeks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 353
+#line 350
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 354
+#line 351
  testRunner.Then("the difference should be \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 355
+#line 352
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table47 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1154,14 +1148,14 @@ this.ScenarioSetup(scenarioInfo);
                         "30/01/2014 08:00:01.06",
                         "dd/mm/yyyy 12h:min:ss.sp",
                         "Weeks"});
-#line 356
+#line 353
  testRunner.And("the debug inputs as", ((string)(null)), table47, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table48 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table48.AddRow(new string[] {
                         "[[result]] = 3"});
-#line 359
+#line 356
  testRunner.And("the debug output as", ((string)(null)), table48, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1173,21 +1167,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfWeeksByUsingDefaultFormat()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of weeks by using default format", ((string[])(null)));
-#line 363
+#line 360
 this.ScenarioSetup(scenarioInfo);
-#line 364
+#line 361
  testRunner.Given("I have a first date \"2014/01/06 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 365
+#line 362
  testRunner.And("I have a second date \"2014/01/30 08:00:01.06\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 366
+#line 363
  testRunner.And("the date format as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 367
+#line 364
  testRunner.And("I selected output in \"Weeks\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 368
+#line 365
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 369
+#line 366
  testRunner.Then("the difference should be \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 370
+#line 367
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table49 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1200,14 +1194,14 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/30 08:00:01.06",
                         "\"\"",
                         "Weeks"});
-#line 371
+#line 368
  testRunner.And("the debug inputs as", ((string)(null)), table49, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table50 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table50.AddRow(new string[] {
                         "[[result]] = 3"});
-#line 374
+#line 371
  testRunner.And("the debug output as", ((string)(null)), table50, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1219,21 +1213,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfHoursByUsingDefaultFormat()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of hours by using default format", ((string[])(null)));
-#line 378
+#line 375
 this.ScenarioSetup(scenarioInfo);
-#line 379
+#line 376
  testRunner.Given("I have a first date \"2014/01/06 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 380
+#line 377
  testRunner.And("I have a second date \"2014/01/30 08:00:01.06\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 381
+#line 378
  testRunner.And("the date format as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 382
+#line 379
  testRunner.And("I selected output in \"Hours\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 383
+#line 380
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 384
+#line 381
  testRunner.Then("the difference should be \"576\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 385
+#line 382
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table51 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1246,14 +1240,14 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/30 08:00:01.06",
                         "\"\"",
                         "Hours"});
-#line 386
+#line 383
  testRunner.And("the debug inputs as", ((string)(null)), table51, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table52 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table52.AddRow(new string[] {
                         "[[result]] = 576"});
-#line 389
+#line 386
  testRunner.And("the debug output as", ((string)(null)), table52, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1265,21 +1259,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfMinutesByUsingDefaultFormat()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of Minutes by using default format", ((string[])(null)));
-#line 394
+#line 391
 this.ScenarioSetup(scenarioInfo);
-#line 395
+#line 392
  testRunner.Given("I have a first date \"2014/01/06 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 396
+#line 393
  testRunner.And("I have a second date \"2014/01/30 08:00:01.68\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 397
+#line 394
  testRunner.And("the date format as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 398
+#line 395
  testRunner.And("I selected output in \"Minutes\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 399
+#line 396
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 400
+#line 397
  testRunner.Then("the difference should be \"34560\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 401
+#line 398
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table53 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1292,14 +1286,14 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/30 08:00:01.68",
                         "\"\"",
                         "Minutes"});
-#line 402
+#line 399
  testRunner.And("the debug inputs as", ((string)(null)), table53, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table54 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table54.AddRow(new string[] {
                         "[[result]] = 34560"});
-#line 405
+#line 402
  testRunner.And("the debug output as", ((string)(null)), table54, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1311,21 +1305,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfSecondsByUsingDefaultFormat()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of Seconds by using default format", ((string[])(null)));
-#line 409
+#line 406
 this.ScenarioSetup(scenarioInfo);
-#line 410
+#line 407
  testRunner.Given("I have a first date \"2014/01/06 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 411
+#line 408
  testRunner.And("I have a second date \"2014/01/30 08:00:01.68\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 412
+#line 409
  testRunner.And("the date format as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 413
+#line 410
  testRunner.And("I selected output in \"Seconds\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 414
+#line 411
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 415
+#line 412
  testRunner.Then("the difference should be \"2073600\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 416
+#line 413
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table55 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1338,14 +1332,14 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/30 08:00:01.68",
                         "\"\"",
                         "Seconds"});
-#line 417
+#line 414
  testRunner.And("the debug inputs as", ((string)(null)), table55, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table56 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table56.AddRow(new string[] {
                         "[[result]] = 2073600"});
-#line 420
+#line 417
  testRunner.And("the debug output as", ((string)(null)), table56, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1357,21 +1351,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfDaysByUsingDefaultFormat()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of Days by using default format", ((string[])(null)));
-#line 424
+#line 421
 this.ScenarioSetup(scenarioInfo);
-#line 425
+#line 422
  testRunner.Given("I have a first date \"2014/01/06 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 426
+#line 423
  testRunner.And("I have a second date \"2014/01/30 08:00:01.68\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 427
+#line 424
  testRunner.And("the date format as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 428
+#line 425
  testRunner.And("I selected output in \"Days\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 429
+#line 426
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 430
+#line 427
  testRunner.Then("the difference should be \"24\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 431
+#line 428
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table57 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1384,14 +1378,14 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/30 08:00:01.68",
                         "\"\"",
                         "Days"});
-#line 432
+#line 429
  testRunner.And("the debug inputs as", ((string)(null)), table57, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table58 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table58.AddRow(new string[] {
                         "[[result]] = 24"});
-#line 435
+#line 432
  testRunner.And("the debug output as", ((string)(null)), table58, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1403,21 +1397,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfMonthsByUsingDefaultFormat()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of Months by using default format", ((string[])(null)));
-#line 439
+#line 436
 this.ScenarioSetup(scenarioInfo);
-#line 440
+#line 437
  testRunner.Given("I have a first date \"2011/08/06 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 441
+#line 438
  testRunner.And("I have a second date \"2014/01/30 08:00:01.68\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 442
+#line 439
  testRunner.And("the date format as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 443
+#line 440
  testRunner.And("I selected output in \"Months\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 444
+#line 441
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 445
+#line 442
  testRunner.Then("the difference should be \"29\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 446
+#line 443
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table59 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1430,14 +1424,14 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/30 08:00:01.68",
                         "\"\"",
                         "Months"});
-#line 447
+#line 444
  testRunner.And("the debug inputs as", ((string)(null)), table59, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table60 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table60.AddRow(new string[] {
                         "[[result]] = 29"});
-#line 450
+#line 447
  testRunner.And("the debug output as", ((string)(null)), table60, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -1449,21 +1443,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void CalculateTheNumberOfYearsByUsingDefaultFormat()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Calculate the number of Years by using default format", ((string[])(null)));
-#line 454
+#line 451
 this.ScenarioSetup(scenarioInfo);
-#line 455
+#line 452
  testRunner.Given("I have a first date \"2014/01/06 08:00:01.00\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 456
+#line 453
  testRunner.And("I have a second date \"2016/01/06 08:00:01.68\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 457
+#line 454
  testRunner.And("the date format as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 458
+#line 455
  testRunner.And("I selected output in \"Years\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 459
+#line 456
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 460
+#line 457
  testRunner.Then("the difference should be \"2\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 461
+#line 458
  testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table61 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1476,14 +1470,14 @@ this.ScenarioSetup(scenarioInfo);
                         "2016/01/06 08:00:01.68",
                         "\"\"",
                         "Years"});
-#line 462
+#line 459
  testRunner.And("the debug inputs as", ((string)(null)), table61, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table62 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table62.AddRow(new string[] {
                         "[[result]] = 2"});
-#line 465
+#line 462
  testRunner.And("the debug output as", ((string)(null)), table62, "And ");
 #line hidden
             this.ScenarioCleanup();

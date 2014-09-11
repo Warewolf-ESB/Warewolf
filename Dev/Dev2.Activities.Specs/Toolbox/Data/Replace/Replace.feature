@@ -93,8 +93,8 @@ Scenario: Replace when text to find is negative recordset index
 	When the replace tool is executed
 	Then the execution has "AN" error
 	And the debug inputs as 
-	| In Field(s)                                               | Find              | Replace With  |
-	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer | [[my(-1).text]] = | Warewolf user |
+	| In Field(s)                                               | Find | Replace With |
+	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer |      |              |
 	And the debug output as 
 	|                |
 	| [[result]] =  |
@@ -108,7 +108,7 @@ Scenario: Replace when the replace with is negative recordset index
 	Then the execution has "AN" error
 	And the debug inputs as 
 	| In Field(s)                                               | Find | Replace With      |
-	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer | XXXX | [[my(-1).text]] = |
+	| [[sentence]] = Dear Mr XXXX, We welcome you as a customer |  | |
 	And the debug output as 
 	|                 |
 	| [[result]] =  |

@@ -43,7 +43,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2Logger.Log.Info("Delete Resource Service. Resource:" + resourceId);
             // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
             var msg = ResourceCatalog.Instance.DeleteResource(theWorkspace.ID, resourceId, type);
-            ResourceCatalog.Instance.DeleteResource(GlobalConstants.ServerWorkspaceID, resourceId, type);
 
             var result = new ExecuteMessage { HasError = false };
             result.SetMessage(msg.Message);

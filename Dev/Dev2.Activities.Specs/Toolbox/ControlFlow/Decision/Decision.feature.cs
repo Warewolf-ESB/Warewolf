@@ -3378,10 +3378,6 @@ this.ScenarioSetup(scenarioInfo);
                         "",
                         "Statement",
                         "Require All decisions to be True"});
-            table153.AddRow(new string[] {
-                        "[[[[a]] =",
-                        "String",
-                        "YES"});
 #line 1111
  testRunner.And("the debug inputs as", ((string)(null)), table153, "And ");
 #line hidden
@@ -3389,7 +3385,7 @@ this.ScenarioSetup(scenarioInfo);
                         ""});
             table154.AddRow(new string[] {
                         "NO"});
-#line 1114
+#line 1113
  testRunner.And("the debug output as", ((string)(null)), table154, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -3401,35 +3397,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingDecisionWithMalformedRecordset()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Decision with malformed recordset", ((string[])(null)));
-#line 1118
+#line 1117
 this.ScenarioSetup(scenarioInfo);
-#line 1119
+#line 1118
  testRunner.Given("a decision variable \"[[rec(1).a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1120
+#line 1119
  testRunner.And("is \"[[[[rec().a]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1121
+#line 1120
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1122
+#line 1121
  testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1123
+#line 1122
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table155 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
                         "Require All decisions to be True"});
-            table155.AddRow(new string[] {
-                        "[[[[rec().a]] =",
-                        "String",
-                        "YES"});
-#line 1124
+#line 1123
  testRunner.And("the debug inputs as", ((string)(null)), table155, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table156 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table156.AddRow(new string[] {
                         "NO"});
-#line 1127
+#line 1125
  testRunner.And("the debug output as", ((string)(null)), table156, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -3441,35 +3433,31 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecutingDecisionWithRecordsetContainsSpclCharacterAsIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Decision with recordset contains spcl character as index", ((string[])(null)));
-#line 1131
+#line 1129
 this.ScenarioSetup(scenarioInfo);
-#line 1132
+#line 1130
  testRunner.Given("a decision variable \"[[rec(1).a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1133
+#line 1131
  testRunner.And("is \"[[rec(&).a]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1134
+#line 1132
  testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1135
+#line 1133
  testRunner.Then("the decision result should be \"False\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1136
+#line 1134
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table157 = new TechTalk.SpecFlow.Table(new string[] {
                         "",
                         "Statement",
                         "Require All decisions to be True"});
-            table157.AddRow(new string[] {
-                        "[[rec(&).a]] =",
-                        "String",
-                        "YES"});
-#line 1137
+#line 1135
  testRunner.And("the debug inputs as", ((string)(null)), table157, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table158 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table158.AddRow(new string[] {
                         "NO"});
-#line 1140
+#line 1137
  testRunner.And("the debug output as", ((string)(null)), table158, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -3481,19 +3469,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void RuntimeInvalidRecordsetVariablePositveTest()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Runtime invalid recordset variable positve test", ((string[])(null)));
-#line 1159
+#line 1156
 this.ScenarioSetup(scenarioInfo);
-#line 1160
+#line 1157
        testRunner.Given("a decision variable \"[[A]]\" value \"rec(1).a\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 1161
+#line 1158
        testRunner.And("a decision variable \"[[rec(1).a]]\" value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1162
+#line 1159
        testRunner.And("is \"[[[[A]]]]\" \"IsEqual\" \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 1163
+#line 1160
        testRunner.When("the decision tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 1164
+#line 1161
        testRunner.Then("the decision result should be \"True\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 1165
+#line 1162
        testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table159 = new TechTalk.SpecFlow.Table(new string[] {
@@ -3504,14 +3492,14 @@ this.ScenarioSetup(scenarioInfo);
                         "[[[[A]]]] = 1",
                         "String",
                         "YES"});
-#line 1166
+#line 1163
        testRunner.And("the debug inputs as", ((string)(null)), table159, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table160 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table160.AddRow(new string[] {
                         "YES"});
-#line 1169
+#line 1166
        testRunner.And("the debug output as", ((string)(null)), table160, "And ");
 #line hidden
             this.ScenarioCleanup();

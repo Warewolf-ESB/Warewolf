@@ -520,8 +520,6 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             TechTalk.SpecFlow.Table table19 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table19.AddRow(new string[] {
-                        "[[result]] = -1"});
 #line 154
  testRunner.And("the debug output as", ((string)(null)), table19, "And ");
 #line hidden
@@ -534,19 +532,19 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void FindSomethingWithANegativeRecordsetIndexAsInput()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find something with a negative recordset index as Input", ((string[])(null)));
-#line 158
+#line 157
 this.ScenarioSetup(scenarioInfo);
-#line 159
+#line 158
  testRunner.Given("the sentence \"[[a(-1).b]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 160
+#line 159
  testRunner.And("I selected Index \"First Occurrence\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 161
+#line 160
  testRunner.And("I search for characters \"12\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 162
+#line 161
  testRunner.And("I selected direction as \"Left to Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 163
+#line 162
  testRunner.When("the data find index tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 164
+#line 163
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table20 = new TechTalk.SpecFlow.Table(new string[] {
@@ -559,14 +557,12 @@ this.ScenarioSetup(scenarioInfo);
                         "First Occurrence",
                         "12",
                         "Left to Right"});
-#line 165
+#line 164
  testRunner.And("the debug inputs as", ((string)(null)), table20, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table21 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table21.AddRow(new string[] {
-                        "[[result]] = -1"});
-#line 168
+#line 167
  testRunner.And("the debug output as", ((string)(null)), table21, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -578,21 +574,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OutputValuesInRecordsetWithStarNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Output values in recordset with star notation", ((string[])(null)));
-#line 172
+#line 170
 this.ScenarioSetup(scenarioInfo);
-#line 173
+#line 171
     testRunner.Given("the sentence \"abc3cde3fgh3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 174
+#line 172
  testRunner.And("I selected Index \"All Occurrences\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 175
+#line 173
  testRunner.And("I search for characters \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 176
+#line 174
  testRunner.And("I selected direction as \"Left to Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 177
+#line 175
  testRunner.And("result variable as \"[[rs(*).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 178
+#line 176
  testRunner.When("the data find index tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 179
+#line 177
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table22 = new TechTalk.SpecFlow.Table(new string[] {
@@ -605,7 +601,7 @@ this.ScenarioSetup(scenarioInfo);
                         "All Occurrences",
                         "3",
                         "Left to Right"});
-#line 180
+#line 178
  testRunner.And("the debug inputs as", ((string)(null)), table22, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table23 = new TechTalk.SpecFlow.Table(new string[] {
@@ -616,7 +612,7 @@ this.ScenarioSetup(scenarioInfo);
                         "[[rs(2).a]] = 8"});
             table23.AddRow(new string[] {
                         "[[rs(3).a]] = 12"});
-#line 183
+#line 181
  testRunner.And("the debug output as", ((string)(null)), table23, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -628,21 +624,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OutputValuesInRecordsetWithNumericNotation()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Output values in recordset with numeric notation", ((string[])(null)));
-#line 189
+#line 187
 this.ScenarioSetup(scenarioInfo);
-#line 190
+#line 188
     testRunner.Given("the sentence \"abc3cde3fgh3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 191
+#line 189
  testRunner.And("I selected Index \"All Occurrences\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 192
+#line 190
  testRunner.And("I search for characters \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 193
+#line 191
  testRunner.And("I selected direction as \"Left to Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 194
+#line 192
  testRunner.And("result variable as \"[[rs(1).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 195
+#line 193
  testRunner.When("the data find index tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 196
+#line 194
  testRunner.Then("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table24 = new TechTalk.SpecFlow.Table(new string[] {
@@ -655,14 +651,14 @@ this.ScenarioSetup(scenarioInfo);
                         "All Occurrences",
                         "3",
                         "Left to Right"});
-#line 197
+#line 195
  testRunner.And("the debug inputs as", ((string)(null)), table24, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table25 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table25.AddRow(new string[] {
                         "[[rs(1).a]] = 4,8,12"});
-#line 200
+#line 198
  testRunner.And("the debug output as", ((string)(null)), table25, "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -674,21 +670,21 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void OutputValuesInMultipleResultVariables()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Output values in multiple result variables", ((string[])(null)));
-#line 204
+#line 202
 this.ScenarioSetup(scenarioInfo);
-#line 205
+#line 203
     testRunner.Given("the sentence \"abc3cde3fgh3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 206
+#line 204
  testRunner.And("I selected Index \"All Occurrences\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 207
+#line 205
  testRunner.And("I search for characters \"3\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 208
+#line 206
  testRunner.And("I selected direction as \"Left to Right\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 209
+#line 207
  testRunner.And("result variable as \"[[res]],[[rs(*).a]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 210
+#line 208
  testRunner.When("the data find index tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 211
+#line 209
  testRunner.Then("the execution has \"An\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             TechTalk.SpecFlow.Table table26 = new TechTalk.SpecFlow.Table(new string[] {
@@ -701,12 +697,12 @@ this.ScenarioSetup(scenarioInfo);
                         "All Occurrences",
                         "3",
                         "Left to Right"});
-#line 212
+#line 210
  testRunner.And("the debug inputs as", ((string)(null)), table26, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table27 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-#line 215
+#line 213
  testRunner.And("the debug output as", ((string)(null)), table27, "And ");
 #line hidden
             this.ScenarioCleanup();

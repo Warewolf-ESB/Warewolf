@@ -239,7 +239,6 @@ Scenario: Calculate with negative recordset index for Input 1
 	| [[my(-1).date]] = | 2014-11-01 | yyyy-mm-dd   | Minutes   |
 	And the debug output as 
 	|               |
-	| [[result]] = |
 
 Scenario: Calculate with negative recordset index for Input 2
 	Given I have a first date "2014-11-01" 
@@ -253,7 +252,6 @@ Scenario: Calculate with negative recordset index for Input 2
 	| 2014-11-01 | [[my(-1).date]] = | yyyy-mm-dd   | Minutes   |
 	And the debug output as 
 	|               |
-	| [[result]] = |
 
 Scenario: Calculate with negative recordset index for Format
 	Given I have a first date "2014-11-01" 
@@ -267,7 +265,6 @@ Scenario: Calculate with negative recordset index for Format
 	| 2014-11-01 | 2014-11-01 | [[my(-1).format]] = | Minutes   |
 	And the debug output as 
 	|              |
-	| [[result]] = |
 
 Scenario: Calculate the number of weeks between two given dates format has quoted strings
 	Given I have a first date "2013-11-29 date" 
