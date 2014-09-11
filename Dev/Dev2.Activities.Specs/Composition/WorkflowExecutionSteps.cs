@@ -375,10 +375,12 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"""(.*)"" contains ""(.*)"" from server ""(.*)"" with mapping as")]
         public void GivenContainsFromServerWithMappingAs(string wf, string remoteWf, string server, Table mappings)
         {
+            EnsureEnvironmentConnected(EnvironmentRepository.Instance.Source);
+            EnvironmentRepository.Instance.Source.ForceLoadResources();
             var remoteEnvironment = EnvironmentRepository.Instance.FindSingle(model => model.Name == server);
             if(remoteEnvironment != null)
             {
-                remoteEnvironment.Connect();
+                EnsureEnvironmentConnected(remoteEnvironment);
                 remoteEnvironment.ForceLoadResources();
                 var remoteResourceModel = remoteEnvironment.ResourceRepository.FindSingle(model => model.ResourceName == remoteWf, true);
                 if(remoteResourceModel != null)
@@ -402,6 +404,10 @@ namespace Dev2.Activities.Specs.Composition
                     activity.InputMapping = inputMapping;
                     CommonSteps.AddActivityToActivityList(wf, remoteWf, activity);
                 }
+            }
+            else
+            {
+                throw new Exception(string.Format("Remote server {0} not found", server));
             }
         }
 

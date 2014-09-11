@@ -339,11 +339,6 @@ namespace Dev2.Studio.Core
         {
             lock(RestoreLock)
             {
-                if(IsLoaded)
-                {
-                    return;
-                }
-
                 var environments = LookupEnvironments(Source);
 
                 // Don't just clear and add, environments may be connected!!!

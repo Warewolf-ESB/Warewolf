@@ -62,7 +62,6 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public async Task AddDebugWriter(Guid workspaceId)
         {
-            Dev2Logger.Log.Debug("Added Debug Writer For Workspace [ " + workspaceId + " ]");
             var task = new Task(() => DebugDispatcher.Instance.Add(workspaceId, this));
             task.Start();
             await task;
@@ -299,8 +298,6 @@ namespace Dev2.Runtime.WebServer.Hubs
             var serializedMemo = JsonConvert.SerializeObject(memo);
             var hubCallerConnectionContext = Clients;
 
-            Dev2Logger.Log.Debug("Send Memo [ " + serializedMemo + " ]");
-
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
 
             CompileMessageRepo.Instance.ClearObservable();
@@ -317,8 +314,6 @@ namespace Dev2.Runtime.WebServer.Hubs
             var debugSerializated = JsonConvert.SerializeObject(debugState, _serializerSettings);
 
             var hubCallerConnectionContext = Clients;
-
-            Dev2Logger.Log.Error("Send Debug State For [ " + Context.User.Identity.Name + " ]");
 
             var user = hubCallerConnectionContext.All;
             user.SendDebugState(debugSerializated);
@@ -346,8 +341,6 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
 
             var memo = new TMemo { ServerID = HostSecurityProvider.Instance.ServerID };
-
-            Dev2Logger.Log.Debug("Write Event Provider Client Message [ " + memo.ServerID + " ]");
 
             foreach(var grouping in groupings)
             {
@@ -382,7 +375,6 @@ namespace Dev2.Runtime.WebServer.Hubs
         /// <param name="debugState">The state to be written.</param>
         public void Write(IDebugState debugState)
         {
-            Dev2Logger.Log.Debug("Write DebugState Message [ " + debugState.Message + " ] Name [ " + debugState.Name + " ] ServerID [ " + debugState.Server + " ]");
             SendDebugState(debugState as DebugState);
         }
 

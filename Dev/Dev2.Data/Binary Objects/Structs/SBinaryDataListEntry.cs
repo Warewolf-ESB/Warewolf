@@ -406,7 +406,7 @@ namespace Dev2.DataList.Contract.Binary_Objects.Structs
 
             for(int i = 0; i < colCnt; i++)
             {
-                _internalReturnValue.Add(new BinaryDataListItem(string.Empty, string.Empty));
+                _internalReturnValue.Add(new BinaryDataListItem(null, string.Empty));
 
                 if(Columns != null)
                 {

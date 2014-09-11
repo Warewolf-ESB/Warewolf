@@ -49,10 +49,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Views
                     var treeView = field.GetValue(tools) as TreeView;
                     if(treeView != null)
                     {
-                        var setSelectedItem = treeView.GetType().GetMethod("SetSelectedItem", BindingFlags.NonPublic | BindingFlags.Instance);
-                        if(setSelectedItem != null)
+                        var selectedContainer = treeView.GetType().GetField("_selectedContainer", BindingFlags.NonPublic | BindingFlags.Instance);
+                        if(selectedContainer != null)
                         {
-                            setSelectedItem.Invoke(treeView, new object[] { null });
+                            var treeViewItem = selectedContainer.GetValue(treeView) as TreeViewItem;
+                            if(treeViewItem != null)
+                            {
+                                treeViewItem.IsSelected = false;
+                            }
                         }
                     }
                 }
