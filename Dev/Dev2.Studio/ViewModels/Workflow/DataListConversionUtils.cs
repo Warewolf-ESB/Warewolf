@@ -68,9 +68,8 @@ namespace Dev2.ViewModels.Workflow
                             {
                                 singleRes.Value = item.TheValue;
                             }
-                            catch(Exception e)
+                            catch(Exception)
                             {
-                                Dev2Logger.Log.Error(e);
                                 singleRes.Value = null;
                             }
 
@@ -92,7 +91,14 @@ namespace Dev2.ViewModels.Workflow
                     singleRes.IsRecordset = false;
                     singleRes.Field = item.FieldName;
                     singleRes.DisplayValue = item.FieldName;
-                    singleRes.Value = item.TheValue;
+                    try
+                    {
+                        singleRes.Value = item.TheValue;
+                    }
+                    catch(Exception)
+                    {
+                        singleRes.Value = null;
+                    }
                     var desc = dataListEntry.Description;
                     singleRes.Description = string.IsNullOrWhiteSpace(desc) ? null : desc;
                     result.Add(singleRes);

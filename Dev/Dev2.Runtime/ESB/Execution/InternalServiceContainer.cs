@@ -18,7 +18,8 @@ namespace Dev2.Runtime.ESB.Execution
     public class InternalServiceContainer : EsbExecutionContainer
     {
 
-        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request) : base(sa, dataObj, theWorkspace, esbChannel, request)
+        public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
+            : base(sa, dataObj, theWorkspace, esbChannel, request)
         {
 
         }
@@ -79,7 +80,17 @@ namespace Dev2.Runtime.ESB.Execution
 
                     if(!DataListUtil.IsSystemTag(itm.FieldName))
                     {
-                        Request.AddArgument(itm.FieldName, new StringBuilder(itm.TheValue));
+                        var stringBuilder = new StringBuilder("");
+                        try
+                        {
+                            stringBuilder = new StringBuilder(itm.TheValue);
+                        }
+                        // ReSharper disable EmptyGeneralCatchClause
+                        catch(Exception)
+                        // ReSharper restore EmptyGeneralCatchClause
+                        {
+                        }
+                        Request.AddArgument(itm.FieldName, stringBuilder);
                     }
                 }
             }

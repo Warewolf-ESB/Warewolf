@@ -9464,8 +9464,8 @@ this.FeatureBackground();
                         "Replace With"});
             table513.AddRow(new string[] {
                         "[[rec()]] =",
-                        "[[Val1]] =",
-                        "[[Val2]] ="});
+                        "",
+                        ""});
 #line 3472
    testRunner.And("the \'Replacing\' in WorkFlow \'workflowithAssignandReplaceTestingUnassignedvariable" +
                     "values\' debug inputs as", ((string)(null)), table513, "And ");

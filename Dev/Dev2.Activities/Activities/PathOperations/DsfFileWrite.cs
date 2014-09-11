@@ -108,6 +108,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     outputs[0].OutputStrings.Add(null);
                     allErrors.AddError(e.Message);
+                    break;
                 }
             }
 

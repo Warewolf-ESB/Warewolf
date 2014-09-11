@@ -8,6 +8,7 @@ using System.Linq;
 using Dev2.Activities.Debug;
 using Dev2.Activities.SqlBulkInsert;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Factories;
 using Dev2.DataList.Contract;
@@ -349,7 +350,18 @@ namespace Dev2.Activities
 
                 var tmpData = new List<string>();
                 // ReSharper disable LoopCanBeConvertedToQuery
-                foreach(var value in from iterator in listOfIterators select iteratorCollection.FetchNextRow(iterator) into val where val != null select val.TheValue)
+                var values = listOfIterators.Select(iteratorCollection.FetchNextRow).Where(val => val != null).Select(val =>
+                {
+                    try
+                    {
+                        return val.TheValue;
+                    }
+                    catch(NullValueInVariableException)
+                    {
+                        return "";
+                    }
+                });
+                foreach(var value in values)
                 // ReSharper restore LoopCanBeConvertedToQuery
                 {
                     tmpData.Add(value);

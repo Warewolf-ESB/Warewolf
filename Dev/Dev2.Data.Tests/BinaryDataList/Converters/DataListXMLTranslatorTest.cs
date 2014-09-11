@@ -1,16 +1,18 @@
 ﻿using System;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.BinaryDataList.Converters
 {
     /// <summary>
     /// Summary description for DataListXMLTranslatorTest
     /// </summary>
     [TestClass]
-    public class DataListXMLTranslatorTest
+    public class DataListXmlTranslatorTest
     {
         /// <summary>
         ///Gets or sets the test context which provides
@@ -46,7 +48,15 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
 
             var scalar = scalarEntries[0].FetchScalar();
 
-            Assert.AreEqual(string.Empty, scalar.TheValue);
+            try
+            {
+                Assert.AreEqual(string.Empty, scalar.TheValue);
+                Assert.Fail("Exception not thrown");
+            }
+            catch(NullValueInVariableException e)
+            {
+                StringAssert.Contains(e.Message, "No Value assigned for: [[result]]");
+            }
             Assert.AreEqual("result", scalar.FieldName);
 
             scalar = scalarEntries[1].FetchScalar();

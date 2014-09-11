@@ -82,9 +82,10 @@ namespace Dev2.Data.Translators
                                 {
                                     result.Append(tu.FullCleanForEmit(col.TheValue));
                                 }
-                                catch(Exception e)
+                                // ReSharper disable EmptyGeneralCatchClause
+                                catch(Exception)
+                                // ReSharper restore EmptyGeneralCatchClause
                                 {
-                                    Dev2Logger.Log.Error(e);
                                 }
                                 result.Append("</");
                                 result.Append(fName);
@@ -110,9 +111,10 @@ namespace Dev2.Data.Translators
                             {
                                 result.Append(tu.FullCleanForEmit(val.TheValue));
                             }
-                            catch(Exception e)
+                            // ReSharper disable EmptyGeneralCatchClause
+                            catch(Exception)
+                            // ReSharper restore EmptyGeneralCatchClause
                             {
-                                Dev2Logger.Log.Error(e);
                             }
                             result.Append("</");
                             result.Append(fName);
@@ -388,9 +390,10 @@ namespace Dev2.Data.Translators
                                     {
                                         result.Append(tu.FullCleanForEmit(col.TheValue));
                                     }
-                                    catch(Exception e)
+                                    // ReSharper disable EmptyGeneralCatchClause
+                                    catch(Exception)
+                                    // ReSharper restore EmptyGeneralCatchClause
                                     {
-                                        Dev2Logger.Log.Error(e);
                                     }
                                     result.Append("</");
                                     result.Append(fName);
@@ -413,7 +416,15 @@ namespace Dev2.Data.Translators
                             result.Append("<");
                             result.Append(fName);
                             result.Append(">");
-                            result.Append(entry.Namespace != GlobalConstants.ManagementServicePayload ? tu.FullCleanForEmit(val.TheValue) : val.TheValue);
+                            try
+                            {
+                                result.Append(entry.Namespace != GlobalConstants.ManagementServicePayload ? tu.FullCleanForEmit(val.TheValue) : val.TheValue);
+                            }
+                            // ReSharper disable EmptyGeneralCatchClause
+                            catch
+                            // ReSharper restore EmptyGeneralCatchClause
+                            {
+                            }
                             result.Append("</");
                             result.Append(fName);
                             result.Append(">");

@@ -3470,8 +3470,8 @@ Scenario: Workflow with Assigns Replace and testing variables that hasn't been a
 	  | # |                |
 	  | 1 | [[Val]] = test |
 	  And the 'Replacing' in WorkFlow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug inputs as 
-	  | In Field(s) | Find       | Replace With |
-	  | [[rec()]] = | [[Val1]] = | [[Val2]] =   |
+	  | In Field(s) | Find | Replace With |
+	  | [[rec()]] = |      |              |
 	  And the 'Replacing' in Workflow 'workflowithAssignandReplaceTestingUnassignedvariablevalues' debug outputs as
 	  |              |
 	  | [[replac]] = |

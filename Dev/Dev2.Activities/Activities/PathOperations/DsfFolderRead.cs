@@ -129,6 +129,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     outputs.Add(DataListFactory.CreateOutputTO(null));
                     allErrors.AddError(e.Message);
+                    break;
                 }
             }
 

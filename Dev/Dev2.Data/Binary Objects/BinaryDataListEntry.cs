@@ -10,6 +10,7 @@ using Dev2.Data.Binary_Objects;
 using Dev2.Data.Storage.ProtocolBuffers;
 using Dev2.Data.SystemTemplates;
 using Dev2.DataList.Contract.Binary_Objects.Structs;
+using Dev2.DataList.Contract.Translators;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.DataList.Contract.Binary_Objects
@@ -360,7 +361,8 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
             if(result == null)
             {
-                result = new BinaryDataListItem(string.Empty, Namespace);
+                bool isSystemTag = TranslationConstants.systemTags.Cast<object>().Select((t, i) => TranslationConstants.systemTags.GetValue(i).ToString()).Any(key => Namespace.Contains(key));
+                result = isSystemTag ? new BinaryDataListItem("", Namespace) : new BinaryDataListItem(null, Namespace);
                 // place miss into the collection
                 _internalObj[0] = new List<IBinaryDataListItem> { result };
             }
@@ -1046,7 +1048,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             else
             {
                 var data = toSort.OrderByDescending(x => getValue(colIdx, x)).ToList();
- 
+
                 UpdateToSort(data, toSwap, toSort);
             }
 
@@ -1063,7 +1065,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
 
         public static void UpdateToSort(List<KeyValuePair<int, IList<IBinaryDataListItem>>> data, IDictionary toSwap, IDictionary<int, IList<IBinaryDataListItem>> toSort)
         {
-        
+
             int idx = 1;
             foreach(KeyValuePair<int, IList<IBinaryDataListItem>> tmp in data)
             {
@@ -1167,7 +1169,7 @@ namespace Dev2.DataList.Contract.Binary_Objects
             // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
             // ReSharper restore EmptyGeneralCatchClause
-        {
+            {
                 //There is no value so must be a gap
             }
 
