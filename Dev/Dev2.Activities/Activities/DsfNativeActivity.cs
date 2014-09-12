@@ -184,7 +184,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             catch(Exception ex)
             {
 
-                Dev2Logger.Log.Error("OnExecute",ex);
+                Dev2Logger.Log.Error("OnExecute", ex);
                 var errorString = ex.Message;
                 var errorResultTO = new ErrorResultTO();
                 errorResultTO.AddError(errorString);
@@ -526,7 +526,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
-                        Dev2Logger.Log.Error("Debug Dispatch Error",e);
+                        Dev2Logger.Log.Error("Debug Dispatch Error", e);
                         _debugState.ErrorMessage = e.Message;
                         _debugState.HasError = true;
                     }
@@ -719,8 +719,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected void AddDebugItem(DebugOutputBase parameters, DebugItem debugItem)
         {
-            var debugItemResults = parameters.GetDebugItemResult();
-            debugItem.AddRange(debugItemResults);
+            try
+            {
+                var debugItemResults = parameters.GetDebugItemResult();
+                debugItem.AddRange(debugItemResults);
+            }
+            catch(Exception e)
+            {
+                Dev2Logger.Log.Error(e);
+            }
         }
 
         #endregion

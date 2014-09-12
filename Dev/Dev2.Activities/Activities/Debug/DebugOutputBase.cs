@@ -176,7 +176,16 @@ namespace Dev2.Activities.Debug
                                 }
                             }
 
-                            CreateScalarDebugItems(expression, itemx.TheValue, labelText, results, "", groupIndex);
+                            try
+                            {
+                                CreateScalarDebugItems(expression, itemx.TheValue, labelText, results, "", groupIndex);
+                            }
+// ReSharper disable EmptyGeneralCatchClause
+                            catch(Exception)
+// ReSharper restore EmptyGeneralCatchClause
+                            {
+                                
+                            }
                         }
                     }
                     else

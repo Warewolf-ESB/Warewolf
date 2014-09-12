@@ -24,7 +24,7 @@ namespace Dev2.Activities
 #pragma warning restore 168
             tmpErrors.MergeErrors(invokeErrors);
 
-            if(webserviceExecution != null)
+            if(webserviceExecution != null && !tmpErrors.HasErrors())
             {
                 webserviceExecution.InstanceOutputDefintions = outputs; // set the output mapping for the instance ;)
                 var result = webserviceExecution.Execute(out invokeErrors);

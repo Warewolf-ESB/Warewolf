@@ -399,11 +399,21 @@ namespace Dev2.DataList.Contract.Binary_Objects
                     IsManagmentServicePayload = false;
                 }
 
-
+                try
+                {
+#pragma warning disable 168
+                    var theValue = item.TheValue;
+#pragma warning restore 168
+                    error = string.Empty;
+                }
+                catch(Exception e)
+                {
+                    error = e.Message;
+                }
                 _internalObj[0] = new List<IBinaryDataListItem> { item };
                 _internalObj.IsEmtpy = false;
 
-                error = string.Empty;
+
             }
         }
 
