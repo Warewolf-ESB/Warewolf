@@ -131,7 +131,10 @@ namespace Dev2.Security
                 else
                 {
                     // THIS TRY-CATCH IS HERE TO AVOID THE EXPLORER NOT LOADING ANYTHING WHEN THE DOMAIN CANNOT BE CONTACTED!
-                    isInRole = principal.IsInRole(windowsGroup);
+                    if(windowsGroup != WindowsGroupPermission.BuiltInGuestsText)
+                    {
+                        isInRole = principal.IsInRole(windowsGroup);
+                    }
                 }
             }
             // ReSharper disable EmptyGeneralCatchClause

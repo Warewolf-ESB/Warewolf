@@ -618,8 +618,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var resourceName = ModelItemUtils.GetProperty("ServiceName", modelItem) as string;
                         resource = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == resourceName);
                     }
-
-                    WorkflowDesignerUtils.EditResource(resource, EventPublisher);
+                    if(resource != null && environmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.View, resource.ID.ToString()))
+                    {
+                        WorkflowDesignerUtils.EditResource(resource, EventPublisher);
+                    }
                 }
             }
         }

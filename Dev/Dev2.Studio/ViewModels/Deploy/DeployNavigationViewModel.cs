@@ -27,7 +27,6 @@ namespace Dev2.ViewModels.Deploy
                 _authorizationService = value;
                 if(_authorizationService != null)
                 {
-                    _authorizationService.PermissionsChanged -= AuthorizationServiceOnPermissionsModified;
                     _authorizationService.PermissionsChanged += AuthorizationServiceOnPermissionsModified;
                 }
             }
@@ -99,7 +98,7 @@ namespace Dev2.ViewModels.Deploy
         public void Update()
         {
 
-            FilterEnvironments( Environment,false);
+            FilterEnvironments(Environment, false);
 
         }
         /// <summary>
@@ -222,7 +221,7 @@ namespace Dev2.ViewModels.Deploy
                         }
                     }
                 }
-                if (clearSelections)
+                if(clearSelections)
                 {
                     Iterate(model => model.IsChecked = false);
                     Iterate(model => model.IsOverwrite = false);

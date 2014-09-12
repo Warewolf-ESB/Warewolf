@@ -5,6 +5,7 @@ namespace Dev2.Common.Interfaces.Infrastructure.Providers.Errors
         None,
         ReloadMapping,
         IsRequiredChanged,
-        Delete
+        Delete,
+        InvalidPermissions
     }
 }

@@ -1234,7 +1234,7 @@ namespace Dev2.Core.Tests.Workflows
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
             t.Join();
-            Assert.IsTrue(ok, msg);            
+            Assert.IsTrue(ok, msg);
 
         }
 
@@ -2718,7 +2718,9 @@ namespace Dev2.Core.Tests.Workflows
             environment.Setup(e => e.Connect()).Verifiable();
             environment.Setup(e => e.LoadResources()).Verifiable();
             environment.Setup(e => e.ResourceRepository).Returns(mockResourceRepo.Object);
-
+            var mockAuthorization = new Mock<IAuthorizationService>();
+            mockAuthorization.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            environment.Setup(e => e.AuthorizationService).Returns(mockAuthorization.Object);
             // Setup environment repository to return our environment
             var envRepository = new Mock<IEnvironmentRepository>();
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(environment.Object);
@@ -2728,6 +2730,7 @@ namespace Dev2.Core.Tests.Workflows
             var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(mockResourceRepo.Object);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 13");
+            resourceModel.Setup(m => m.ID).Returns(Guid.NewGuid());
             var workflowHelper = new Mock<IWorkflowHelper>();
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(new ActivityBuilder());
 
