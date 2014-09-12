@@ -125,6 +125,56 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Data-DataSplit.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\FileAndFolder-Copy.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-Copy.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder-Create.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-Create.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder-Delete.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-Delete.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder-Move.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-Move.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder-ReadFile.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-ReadFile.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder-ReadFolder.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-ReadFolder.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder-Rename.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-Rename.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder-Unzip.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-Unzip.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder-WriteFile.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-WriteFile.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\FileAndFolder-Zip.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileAndFolder-Zip.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Recordset-Find.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -234,6 +284,46 @@
     <None Include="Tools\Data-DataSplit.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Data-DataSplit.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-Copy.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-Copy.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-Create.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-Create.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-Delete.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-Delete.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-Move.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-Move.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-ReadFile.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-ReadFile.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-ReadFolder.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-ReadFolder.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-Rename.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-Rename.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-Unzip.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-Unzip.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-WriteFile.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-WriteFile.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\FileAndFolder-Zip.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>FileAndFolder-Zip.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\Recordset-Find.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

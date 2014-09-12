@@ -88,7 +88,19 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ToolXpath = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolComment = Toolbox + ",PART_Tools,Utility,Unlimited.Applications.BusinessDesignStudio.Activities.DsfCommentActivity";
 
-      
+        //File and Folder
+        static readonly string ToolCreate = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathCreate";
+        static readonly string ToolCopy = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathCopy";
+        static readonly string ToolMove = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathMove";
+        static readonly string ToolFileDelete = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathDelete";
+        static readonly string ToolReadFile = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathRead";
+        static readonly string ToolWritefile = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathWrite";
+        static readonly string ToolReadFolder = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathRead";
+        static readonly string ToolRename = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathRename";
+        static readonly string ToolUnzip = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathUnzip";
+        static readonly string ToolZip = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathZip";
+
+
 
         //Settings Tab
         static readonly string SettingsTab = "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_SettingsView_AutoID";

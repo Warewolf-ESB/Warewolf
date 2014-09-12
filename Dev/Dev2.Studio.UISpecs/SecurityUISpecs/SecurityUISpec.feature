@@ -402,32 +402,37 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   #
 
 Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
-		#Given I click "EXPLORER,UI_localhost_AutoID" 
-		##Setup permissions for test
-		#And I click "RIBBONSETTINGS"   
-		#And I click "SECURITYPUBLICVIEW"
-		#And I click "SECURITYPUBLICEXECUTE"
-		#And I click "SETTINGSRESOURECESELECT"
-		#And I send "TestForEachOutput" to "RESOURCEPICKERFILTER"
-		#And "RESOURCEPICKERFOLDERS,UI_MO_AutoID,UI_TestForEachOutput_AutoID" is visible within "1" seconds
-		#And I click "RESOURCEPICKERFOLDERS,UI_MO_AutoID,UI_TestForEachOutput_AutoID"
-		#And I click "RESOURCEPICKEROKBUTTON"
-		#And I send "Public" to "SETTINGSRESOURCEROW1,UI_ResourcePermissionsWindowsGroupColumn_Row_0_Cell_AutoID,UI__AddWindowsGroupsTextBox_AutoID"
-		#And I click "SECURITYSAVE"
-		##Setup remote connection
-		#And I create a new remote connection "REM" as
-		#| Address               | AuthType | UserName | Password |
-		#| http://localhost:3142 | Public   |          |          |
-		##Open NewForEachNestedForEachTest and check if nested workflow (MO\TestForEachOutput) has proper permissions 
-  #      And I send "NewForEachNestedForEachTest" to "EXPLORERFILTER"
-		#And I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_INTEGRATION TEST SERVICES_AutoID,UI_NewForEachNestedForEachTest_AutoID"
-		#And I click point "240,10" on "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,NewForEachNestedForEachTest(FlowchartDesigner),For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Mo\TestForEachOutput(ServiceDesigner)"
-		Given "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,TestForEachOutput(FlowchartDesigner)" is invisible within "5" seconds
+		Given I click "EXPLORER,UI_localhost_AutoID" 
+		#Setup permissions for test
+		And I click "RIBBONSETTINGS"   
+		Given I click "SETTINGSRESOURECESELECT"
+        And I double click "RESOURCEPICKERFOLDERS,UI_MO_AutoID,UI_TestForEachOutput_AutoID"
+	    Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	    And I send "{TAB}" to ""
+	    And I send "Public" to ""
+		And I click "SECURITYPUBLICVIEW"
+		And I click "SECURITYPUBLICEXECUTE"	   
+		And I click "SECURITYSAVE"
+		#Setup remote connection
+		And I create a new remote connection "REM" as
+		| Address               | AuthType | UserName | Password |
+		| http://localhost:3142 | Public   |          |          |
+		#Open NewForEachNestedForEachTest and check if nested workflow (MO\TestForEachOutput) has proper permissions 
+        And I send "NewForEachNestedForEachTest" to "EXPLORERFILTER"
+		And I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_INTEGRATION TEST SERVICES_AutoID,UI_NewForEachNestedForEachTest_AutoID"
+		And I click point "240,10" on "ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,NewForEachNestedForEachTest(FlowchartDesigner),For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Mo\TestForEachOutput(ServiceDesigner)"
+		Given "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,TestForEachOutput(FlowchartDesigner)" is invisible within "5" seconds
 		And I double click "EXPLORERFILTER"
 		And I send "{DELETE}" to ""
 		When I click "EXPLORERFILTERREFRESHBUTTON"
 		And I send "NewForEachNestedForEachTest" to "EXPLORERFILTER"
-	    Then "EXPLORERFOLDERS,UI_INTEGRATION TEST SERVICES_AutoID,UI_NewForEachNestedForEachTest_AutoID" is visible within "1" seconds
+	    Then "EXPLORERFOLDERS,UI_INTEGRATION TEST SERVICES_AutoID,UI_NewForEachNestedForEachTest_AutoID" is visible within "3" seconds
+		And I double click "EXPLORERFILTER"
+		And I send "{DELETE}" to ""
+		And I send "TestForEachOutput" to "EXPLORERFILTER"
+	    Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_MO_AutoID,UI_TestForEachOutput_AutoID,UI_NotAutherized_AutoID" is visible
+
+
 		
 #PBi 12200
 #Scenario:Testing Remote Server Deploy Rights
