@@ -62,8 +62,13 @@ namespace Dev2.Studio.UI.Specs
         //Data
         static readonly string ToolAssign = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity";
         static readonly string ToolAssignSmallViewGrid = Worksurface + ",Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID";
+        
         static readonly string ToolDataMerge = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolDataMergeSmallViewGrid = Worksurface + ",Data Merge (1)(DataMergeDesigner),SmallViewContent,SmallDataGrid";
+       
+        static readonly string ToolDataSplit = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataSplitActivity";
+        static readonly string ToolDataSplitSmallView = "WORKSURFACE,Data Split (1)(DataSplitDesigner),SmallViewContent,SmallDataGrid";
+        
         static readonly string ToolBaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfBaseConvertActivity";
         static readonly string ToolBaseConvertSmallviewGrid = "ACTIVETAB,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),Base Conversion (1)(BaseConvertDesigner),SmallViewContent,SmallDataGrid";
         static readonly string ToolCaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
