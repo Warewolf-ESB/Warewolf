@@ -22,9 +22,8 @@ Scenario: Creating Scheduler Task Without password and expected error
 	 And I double click "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_File and Folder - Write File_AutoID"
 	 And I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
      And I type "IntegrationTester" in "SCHEDULERUSERNAMEINPUT"
-	 ##And I type "I73573r0" in "SCHEDULERPASSWORDINPUT"
 	 And I type "CIScheduleTest" in "SCHEDULERNAMEINPUT"
-	 #Opening Edit Trigger
+	 #Checking Edit Trigger Dialog Visible 
 	 When I click "SCHEDULEREDITTRIGGERBUTTON"
      Then "TriggerEditDialog" is visible
 	 And I click point "524,508" on "TriggerEditDialog"
@@ -37,7 +36,7 @@ Scenario: Creating Scheduler Task Without password and expected error
 	 And I click point "199,264" on ""
 	 And I click "SCHEDULERSAVINGERROROKBUTTON"
 	 Then "SCHEDULERNEWBUTTON" is disabled
-	 ##Closing The Tab Without Saving and Testing For validation
+	 ##Closing The Tab Without Saving and Testing For validations
 	 Given I click "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,closeBtn"
 	 And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID"
 	 And I click point "199,264" on ""
@@ -55,4 +54,4 @@ Scenario: Creating Scheduler Task Without password and expected error
 	 ##And "SCHEDULERTAB,UI_DataGridRow__AutoID,UI_DataGridCell_AutoID" contains text "Empty"
 	
 
-	
+

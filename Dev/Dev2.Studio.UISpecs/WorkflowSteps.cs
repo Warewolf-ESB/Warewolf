@@ -67,7 +67,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ToolDataMergeSmallViewGrid = Worksurface + ",Data Merge (1)(DataMergeDesigner),SmallViewContent,SmallDataGrid";
        
         static readonly string ToolDataSplit = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataSplitActivity";
-        static readonly string ToolDataSplitSmallView = "WORKSURFACE,Data Split (1)(DataSplitDesigner),SmallViewContent,SmallDataGrid";
+        static readonly string ToolDataSplitSmallView = WorkflowDesigner + ",Unsaved 1(FlowchartDesigner),Data Split (1)(DataSplitDesigner),SmallViewContent,SmallDataGrid";
         
         static readonly string ToolBaseConvert = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfBaseConvertActivity";
         static readonly string ToolBaseConvertSmallviewGrid = "ACTIVETAB,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),Base Conversion (1)(BaseConvertDesigner),SmallViewContent,SmallDataGrid";

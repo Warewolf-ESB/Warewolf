@@ -115,10 +115,25 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Data-Base Conversion.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Data-DataMerge.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Data-DataMerge.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Data-DataSplit.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Data-DataSplit.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Recordset-Find.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Recordset-Find.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Recordset-FindRecordIndex.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Recordset-FindRecordIndex.feature</DependentUpon>
     </Compile>
     <Compile Include="Tools\Recordset-SQL Bulk Insert.feature.cs">
       <AutoGen>True</AutoGen>
@@ -212,9 +227,21 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Data-Base Conversion.feature.cs</LastGenOutput>
     </None>
+    <None Include="Tools\Data-DataMerge.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Data-DataMerge.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Data-DataSplit.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Data-DataSplit.feature.cs</LastGenOutput>
+    </None>
     <None Include="Tools\Recordset-Find.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Recordset-Find.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Recordset-FindRecordIndex.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Recordset-FindRecordIndex.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\Recordset-SQL Bulk Insert.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
