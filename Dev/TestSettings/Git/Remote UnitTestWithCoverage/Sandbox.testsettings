@@ -13,7 +13,7 @@
     <DeploymentItem filename="Binaries\IronPython.Modules.dll" />
   </Deployment>
   <Scripts cleanupScript="TestScripts\Unit\Cleanup.bat" />
-  <RemoteController name="rsaklfsvrtfsbld:6901" />
+  <RemoteController name="rsaklftrevorwilliams" />
   <Execution location="Remote">
     <Buckets size="1000" />
     <TestTypeSpecific>

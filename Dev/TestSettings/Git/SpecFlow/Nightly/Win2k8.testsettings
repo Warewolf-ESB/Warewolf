@@ -3,10 +3,10 @@
   <Description>These are default test settings for a remote acceptance test run.</Description>
 	<Deployment>
 		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
-        <DeploymentItem filename="Server\" outputDirectory="Server" />
+        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
 	</Deployment>
-  <Scripts setupScript="TestScripts\Acceptance\Startup.bat" cleanupScript="TestScripts\Acceptance\Cleanup.bat" />
-  <RemoteController name="rsaklfsvrtfsbld:6901" />
+  <Scripts setupScript="..\src\src\main\TestScripts\Acceptance\Startup.bat" cleanupScript="..\src\src\main\TestScripts\Acceptance\Cleanup.bat" />
+  <RemoteController name="rsaklftrevorwilliams" />
   <Execution location="Remote">
     <Buckets size="10000" />
     <TestTypeSpecific>

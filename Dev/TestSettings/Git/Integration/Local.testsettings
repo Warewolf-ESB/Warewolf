@@ -6,11 +6,11 @@
 		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="StudiobinDebug" />
         
             <!--For Build Agents-->
-        <DeploymentItem filename="Server\" outputDirectory="Server" />
-        <DeploymentItem filename="Studio\" outputDirectory="Studio" />
+        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+        <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="TestScripts\Integration\Startup.bat" cleanupScript="TestScripts\Integration\Cleanup.bat" />
+  <Scripts setupScript="..\src\src\main\TestScripts\Integration\Startup.bat" cleanupScript="..\src\src\main\TestScripts\Integration\Cleanup.bat" />
   <Execution parallelTestCount="0">
     <Buckets size="1000" />
     <TestTypeSpecific>

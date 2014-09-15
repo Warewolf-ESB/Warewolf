@@ -13,7 +13,7 @@
     <DeploymentItem filename="ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe" />
   </Deployment>
   <Scripts cleanupScript="TestScripts\Unit\Cleanup.bat" />
-  <RemoteController name="rsaklfsvrtfsbld:6901" />
+  <RemoteController name="rsaklftrevorwilliams" />
   <Execution location="Remote">
     <Buckets size="1000" />
     <TestTypeSpecific>

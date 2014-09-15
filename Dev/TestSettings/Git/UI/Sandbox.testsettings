@@ -6,11 +6,11 @@
 		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="StudiobinDebug" />
         
             <!--For Build Agents-->
-        <DeploymentItem filename="Server\" outputDirectory="Server" />
-        <DeploymentItem filename="Studio\" outputDirectory="Studio" />
+        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+        <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
   </Deployment>
   <Scripts setupScript="TestScripts\UI\Startup.bat" cleanupScript="TestScripts\UI\Cleanup.bat" />
-  <RemoteController name="rsaklfsvrtfsbld:6901" />
+  <RemoteController name="rsaklftrevorwilliams" />
   <Execution location="Remote">
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
