@@ -88,10 +88,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 10
  testRunner.And("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 11
- testRunner.And("I click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID\"" +
+ testRunner.And("I click \"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID\"" +
                     "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 12
- testRunner.And("I double click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_" +
+ testRunner.And("I double click \"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_" +
                     "AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
  testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
@@ -102,31 +102,31 @@ this.ScenarioSetup(scenarioInfo);
 #line 16
  testRunner.And("I click \"RIBBONSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 17
- testRunner.And("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_A" +
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_A" +
                     "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
  testRunner.And("I click \"UI_ToggleVersionHistoryContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 19
- testRunner.And("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.1*\" is" +
+ testRunner.And("\"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID,v.1*\" is" +
                     " visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
- testRunner.And("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_A" +
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_A" +
                     "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 22
  testRunner.And("I click \"UI_RenameContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
- testRunner.And("I type \"Recordset - Records Length RENAME\" in \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID" +
+ testRunner.And("I type \"Recordset - Records Length RENAME\" in \"EXPLORERFOLDERS,UI_Examples_AutoID" +
                     ",UI_Recordset - Records Length_AutoID,UI_RenameTexbox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 24
  testRunner.And("I send \"{ENTER}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 25
- testRunner.Then("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length RENAME_AutoID\" " +
+ testRunner.Then("\"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length RENAME_AutoID\" " +
                     "is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 26
- testRunner.And("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length RENAME_AutoID,v" +
+ testRunner.And("\"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length RENAME_AutoID,v" +
                     ".2*\" is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
- testRunner.And("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length R" +
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length R" +
                     "ENAME_AutoID,v.1*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 29
  testRunner.When("I click \"UI_RollbackContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
@@ -136,28 +136,28 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
                     "gthDesigner)\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 32
- testRunner.And("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.3*\" is" +
+ testRunner.And("\"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID,v.3*\" is" +
                     " visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
  testRunner.And("I click \"RIBBONDEPLOY\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 35
- testRunner.Then("\"DEPLOYSOURCE,UI_SourceServer_UI_localhost_AutoID_AutoID,UI_SourceServer_UI_EXAMP" +
-                    "LES_AutoID_AutoID,UI_SourceServer_UI_Recordset - Records Length_AutoID_AutoID,v." +
+ testRunner.Then("\"DEPLOYSOURCE,UI_SourceServer_UI_localhost_AutoID_AutoID,UI_SourceServer_UI_Examp" +
+                    "les_AutoID_AutoID,UI_SourceServer_UI_Recordset - Records Length_AutoID_AutoID,v." +
                     "1*\" is invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 36
  testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 38
- testRunner.When("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_A" +
+ testRunner.When("I right click \"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_A" +
                     "utoID,v.3*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 39
  testRunner.And("I click \"UI_DeleteVersionContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
  testRunner.And("I click \"UI_MessageBox_AutoID,UI_YesButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 41
- testRunner.Then("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.3*\" is" +
+ testRunner.Then("\"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID,v.3*\" is" +
                     " invisible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 43
- testRunner.When("I double click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_" +
+ testRunner.When("I double click \"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_" +
                     "AutoID,v.2*\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 44
  testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner)\" is visible withi" +
@@ -167,12 +167,12 @@ this.ScenarioSetup(scenarioInfo);
 #line 46
  testRunner.Then("\"RIBBONDEBUG\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 48
- testRunner.And("I right click \"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_A" +
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_A" +
                     "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 49
  testRunner.And("I click \"UI_ToggleVersionHistoryContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 50
- testRunner.Then("\"EXPLORERFOLDERS,UI_EXAMPLES_AutoID,UI_Recordset - Records Length_AutoID,v.2*\" is" +
+ testRunner.Then("\"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID,v.2*\" is" +
                     " invisible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 51
  testRunner.And("I close Studio", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

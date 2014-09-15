@@ -5,20 +5,21 @@
 
 
 Background: 
-	   #Given I click "EXPLORER,UI_localhost_AutoID"
-	   #Given I click "RIBBONSETTINGS"   
-	   #And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
-	   #And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
-	   #And "SECURITYPUBLICADMINISTRATOR" is unchecked 
-	   #And I click "SECURITYPUBLICADMINISTRATOR"  
-    #   And I click "SECURITYSAVE" 
-	   #Given all tabs are closed
+	   Given I click "EXPLORER,UI_localhost_AutoID"
+	   Given I click "RIBBONSETTINGS"   
+	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
+	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
+	   And "SECURITYPUBLICADMINISTRATOR" is unchecked 
+	   And I click "SECURITYPUBLICADMINISTRATOR"  
+       And I click "SECURITYSAVE" 
+	   Given all tabs are closed
 
 
 @RemtoeServer
 Scenario: Testing Remote Server Connection Creating Remote Workflow and Executing
 	Given I have Warewolf running
 	And all tabs are closed
+	Given I click "EXPLORER,UI_localhost_AutoID"
     Given I create a new remote connection "Test" as
        | Address               | AuthType | UserName | Password |
        | http://localhost:3142 | Public   |          |          |
@@ -36,14 +37,15 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 	Given I double click "EXPLORER,UI_localhost_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
 	Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "5" seconds
 	And I send "{F6}" to ""
-	Given "DEBUGOUTPUT,Assign[1]" is visible within "25" seconds	
-	# Creating A Workflow On Remote Server
+	Given "DEBUGOUTPUT,Assign" is visible within "25" seconds	
+	## Creating A Workflow On Remote Server
 	Given I click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID"   
 	And I click "RIBBONNEWENDPOINT"
 	Given I send "Assign" to "TOOLBOX,PART_SearchBox"
 	#Drag Assign Tool To Remote Design Surface
 	And I drag "TOOLASSIGN" onto "WORKSURFACE,StartSymbol"
-	Given I type "rec().a" in "TOOLASSIGNSMALLVIEWGRID,UI_DataGridCell_AutoID[1],UI_TextBox_AutoID"
+	##Given I type "rec().a" in "TOOLASSIGNSMALLVIEWGRID,UI_TextBox_AutoID"
+	Given I send "rec().a" to "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID,UI_TextBox_AutoID"
 	And I send "{TAB}" to ""
 	And I send "Warewolf" to ""
 	And I send "{TAB}" to ""
@@ -52,22 +54,23 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 	When I double click point "5,5" on "WORKSURFACE,Assign (2)(MultiAssignDesigner)"
 	When I click "WORKSURFACE,Assign (2)(MultiAssignDesigner),DoneButton"
 	Then "WORKSURFACE,Assign (2)(MultiAssignDesigner),SmallViewContent" is visible
-	#Drag Data Merge Toll To Remote Design Surface
+	#Drag Data Merge Tool To Remote Design Surface
     Given I double click "TOOLBOX,PART_SearchBox"
     Given I send "{Delete}" to ""
 	Given I send "Data Merge" to "TOOLBOX,PART_SearchBox"
     Given I drag "TOOLDATAMERGE" onto "WORKSURFACE,Assign (2)(MultiAssignDesigner)"
-	Given I type "[[rec(1).a]]" in "TOOLDATAMERGESMALLVIEWGRID,UI__Row1_InputVariable_AutoID"
+	##Given I type "[[rec(1).a]]" in "TOOLDATAMERGESMALLVIEWGRID,UI__Row1_InputVariable_AutoID"
+	Given I send "[[rec(1).a]]" to "TOOLDATAMERGESMALLVIEWGRID,UI__Row1_InputVariable_AutoID"
 	And I send "{TAB}{TAB}" to ""
 	And I send "8" to ""
 	And I send "{TAB}" to ""
 	And I send "[[rec(2).a]]" to ""
 	And I send "{TAB}{TAB}" to ""
 	And I send "10" to ""
-	Given I type "[[result]]" in "WORKSURFACE,Data Merge (2)(DataMergeDesigner),SmallViewContent,UI__Resulttxt_AutoID"
+	And I send "[[result]]" to "WORKSURFACE,Data Merge (2)(DataMergeDesigner),SmallViewContent,UI__Resulttxt_AutoID"
+	##Given I type "[[result]]" in "WORKSURFACE,Data Merge (2)(DataMergeDesigner),SmallViewContent,UI__Resulttxt_AutoID"
 	And I send "{F6}" to ""
-	Given "DEBUGOUTPUT,Assign[1]" is visible within "10" seconds	
-	Given "DEBUGOUTPUT,Assign[1]" is visible "1" time
+	Given "DEBUGOUTPUT,Assign" is visible within "10" seconds	
 	#Saving Workflow On Remote Server
 	Given I click "RIBBONSAVE"
 	And I send "{TAB}{TAB}{TAB}{TAB}{TAB}" to ""
@@ -84,9 +87,9 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 	Given I click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID"   
 	Given I click "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Remote1_AutoID"
 	Given I drag "EXPLORER,UI_Test (http://localhost:3142/)_AutoID,UI_Remote1_AutoID" onto "WORKFLOWDESIGNER,Utility - Email(FlowchartDesigner),Email(EmailDesigner)"
-	##Given "WORKFLOWDESIGNER,Utility - Email(FlowchartDesigner),Remote1(ServiceDesigner)" is visible within "5" seconds
+	Given "WORKFLOWDESIGNER,Utility - Email(FlowchartDesigner),Remote1(ServiceDesigner)" is visible within "5" seconds
 	And I send "{F6}" to ""
-
+	
 
 
 Scenario: TestingRemoteServerUITests_EditRemoteDbService_DbServiceIsEdited1

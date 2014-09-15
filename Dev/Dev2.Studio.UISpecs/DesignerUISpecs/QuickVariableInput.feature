@@ -7,6 +7,7 @@
 Scenario: QVIAddToMoreThanOneAndReplace
 	Given I have Warewolf running
 	And all tabs are closed
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
 	And I send "{DELETE}Merge" to ""
