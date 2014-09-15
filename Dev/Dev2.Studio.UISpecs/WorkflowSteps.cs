@@ -93,12 +93,12 @@ namespace Dev2.Studio.UI.Specs
         static readonly string ToolCopy = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathCopy";
         static readonly string ToolMove = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathMove";
         static readonly string ToolFileDelete = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathDelete";
-        static readonly string ToolReadFile = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathRead";
-        static readonly string ToolWritefile = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathWrite";
-        static readonly string ToolReadFolder = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathRead";
+        static readonly string ToolReadFile = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfFileRead";
+        static readonly string ToolWritefile = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfFileWrite";
+        static readonly string ToolReadFolder = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfFolderRead";
         static readonly string ToolRename = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathRename";
-        static readonly string ToolUnzip = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathUnzip";
-        static readonly string ToolZip = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfPathZip";
+        static readonly string ToolUnzip = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfUnZip";
+        static readonly string ToolZip = Toolbox + ",PART_Tools,File and Folder,Unlimited.Applications.BusinessDesignStudio.Activities.DsfZip";
 
 
 
