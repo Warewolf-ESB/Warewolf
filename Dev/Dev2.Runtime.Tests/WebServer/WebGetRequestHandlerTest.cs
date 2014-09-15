@@ -37,7 +37,7 @@ namespace Dev2.Tests.Runtime.WebServer
             webGetRequestHandler.ProcessRequest(ctx.Object);
 
             //------------Assert Results-------------------------
-            principle.Verify(p => p.Identity.Name, Times.Once());
+            principle.Verify(p => p.Identity.Name, Times.AtLeast(1));
         }
 
 
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.WebServer
             webGetRequestHandler.ProcessRequest(ctx.Object);
 
             //------------Assert Results-------------------------
-            principle.Verify(p => p.Identity.Name, Times.Once());
+            principle.Verify(p => p.Identity.Name, Times.AtLeast(1));
         }
     }
 }

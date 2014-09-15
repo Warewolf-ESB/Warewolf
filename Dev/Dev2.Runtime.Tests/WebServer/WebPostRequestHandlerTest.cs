@@ -45,7 +45,7 @@ namespace Dev2.Tests.Runtime.WebServer
             webPostRequestHandler.ProcessRequest(ctx.Object);
 
             //------------Assert Results-------------------------
-            principle.Verify(p => p.Identity.Name, Times.Once());
+            principle.Verify(p => p.Identity.Name, Times.AtLeast(1));
         }
     }
 }

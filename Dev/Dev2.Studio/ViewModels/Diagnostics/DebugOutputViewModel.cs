@@ -10,11 +10,10 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
-using Dev2.Diagnostics;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Messages;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services;
 using Dev2.Services.Events;
@@ -726,6 +725,25 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         // BUG 9735 - 2013.06.22 - TWR : refactored
         void AddItemToTree(IDebugState content)
         {
+            var environmentId = content.EnvironmentID;
+            if(environmentId != Guid.Empty)
+            {
+                var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
+                if(remoteEnvironmentModel != null)
+                {
+                    if(content.ParentID != Guid.Empty)
+                    {
+                        if(remoteEnvironmentModel.AuthorizationService != null)
+                        {
+                            var remoteResourcePermissions = remoteEnvironmentModel.AuthorizationService.GetResourcePermissions(content.OriginatingResourceID);
+                            if(!remoteResourcePermissions.HasFlag(Permissions.View))
+                            {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
             _contentItems.Add(content);
 
             lock(_syncContext)

@@ -40,12 +40,12 @@ namespace Dev2.Tests.Runtime.WebServer
             ctx.Setup(c => c.Request.User).Returns(principle.Object);
 
             var websiteResourceHandler = new WebsiteResourceHandler();
-            
+
             //------------Execute Test---------------------------
             websiteResourceHandler.ProcessRequest(ctx.Object);
 
             //------------Assert Results-------------------------
-            principle.Verify(p => p.Identity.Name, Times.Once());
+            principle.Verify(p => p.Identity.Name, Times.AtLeast(1));
         }
 
         [TestMethod]
@@ -72,7 +72,7 @@ namespace Dev2.Tests.Runtime.WebServer
             websiteResourceHandler.ProcessRequest(ctx.Object);
 
             //------------Assert Results-------------------------
-            principle.Verify(p => p.Identity.Name, Times.Once());
+            principle.Verify(p => p.Identity.Name, Times.AtLeast(1));
         }
     }
 }

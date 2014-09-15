@@ -160,12 +160,18 @@ namespace Dev2.Diagnostics.Debug
                     item.WorkspaceID = debugState.WorkspaceID;
                     item.OriginatingResourceID = debugState.OriginatingResourceID;
                     item.Server = remoteInvokerId;
+                    Guid remoteEnvironmentId;
+                    if(Guid.TryParse(remoteInvokerId, out remoteEnvironmentId))
+                    {
+                        item.EnvironmentID = remoteEnvironmentId;
+                    }
                     item.ParentID = parentId;
                     QueueWrite(item);
                 }
 
                 remoteDebugItems.Clear();
             }
+            Dev2Logger.Log.Debug(string.Format("EnvironmentID: {0} Debug:{1}", debugState.EnvironmentID, debugState.DisplayName));
             QueueWrite(debugState);
         }
 
@@ -206,7 +212,6 @@ namespace Dev2.Diagnostics.Debug
                 {
                     if(debugState != null)
                     {
-                        Dev2Logger.Log.Debug(debugState);
                         IDebugWriter writer;
                         if((writer = Instance.Get(debugState.WorkspaceID)) != null)
                         {

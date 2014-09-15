@@ -430,6 +430,7 @@ namespace Dev2.Core.Tests
             mock.Setup(s => s.All()).Returns(models);
             mock.Setup(s => s.IsLoaded).Returns(true);
             mock.Setup(repository => repository.Source).Returns(_environmentModel.Object);
+            mock.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>())).Returns(_environmentModel.Object);
             _environmentRepo = mock.Object;
             return _environmentRepo;
         }

@@ -29,7 +29,6 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
-using Newtonsoft.Json;
 using ServiceStack.Messaging.Rcon;
 
 namespace Dev2.Network
@@ -39,6 +38,7 @@ namespace Dev2.Network
         System.Timers.Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
         readonly IAsyncWorker _asyncWorker;
+        readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
 
         public ServerProxy(Uri serverUri)
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
@@ -160,7 +160,14 @@ namespace Dev2.Network
             UserName = userName;
             Password = password;
             AuthenticationType = userName == "\\" ? AuthenticationType.Public : AuthenticationType.User;
-            SetupPrincipal();
+            if(AuthenticationType == AuthenticationType.Public)
+            {
+                Principal = null;
+            }
+            else
+            {
+                SetupPrincipal();
+            }
         }
 
         public bool IsLocalHost { get { return DisplayName == "localhost"; } }
@@ -212,11 +219,8 @@ namespace Dev2.Network
         void OnDebugStateReceived(string objString)
         {
 
-            var obj = JsonConvert.DeserializeObject<DebugState>(objString, new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.Objects
-            });
-            Dev2Logger.Log.Info(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.ID, obj.ParentID, obj.Name));
+            var obj = _serializer.Deserialize<DebugState>(objString);
+            Dev2Logger.Log.Info(string.Format("Debug Item Received ID {0}" + Environment.NewLine + "Parent ID:{1}" + "Name: {2}", obj.EnvironmentID, obj.ParentID, obj.Name));
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });
         }
 
@@ -461,7 +465,8 @@ namespace Dev2.Network
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
             Dev2Logger.Log.Info("Memo Received [ " + objString + " ]");
-            var obj = JsonConvert.DeserializeObject<DesignValidationMemo>(objString);
+
+            var obj = _serializer.Deserialize<DesignValidationMemo>(objString);
             ServerEvents.PublishObject(obj);
         }
 
@@ -470,7 +475,7 @@ namespace Dev2.Network
             // DO NOT use publish as memo is of type object 
             // and hence won't find the correct subscriptions
             Dev2Logger.Log.Info("PERMISSIONS MEMO OBJECT [ " + objString + " ]");
-            var obj = JsonConvert.DeserializeObject<PermissionsModifiedMemo>(objString);
+            var obj = _serializer.Deserialize<PermissionsModifiedMemo>(objString);
             try
             {
                 // When we connect against group A with Administrator perms, and we remove all permissions, a 403 will be thrown. 
@@ -488,7 +493,8 @@ namespace Dev2.Network
 
         void OnItemAddedMessageReceived(string obj)
         {
-            var serverExplorerItem = JsonConvert.DeserializeObject<ServerExplorerItem>(obj);
+            var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
+
             if(ItemAddedMessageAction != null)
             {
                 ItemAddedMessageAction(serverExplorerItem);
@@ -498,7 +504,7 @@ namespace Dev2.Network
         public Action<IExplorerItem> ItemItemDeletedMessageAction { get; set; }
         void OnItemDeletedMessageReceived(string obj)
         {
-            var serverExplorerItem = JsonConvert.DeserializeObject<ServerExplorerItem>(obj);
+            var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             if(ItemItemDeletedMessageAction != null)
             {
                 ItemItemDeletedMessageAction(serverExplorerItem);
@@ -509,7 +515,7 @@ namespace Dev2.Network
         public Action<IExplorerItem> ItemItemUpdatedMessageAction { get; set; }
         void OnItemUpdatedMessageReceived(string obj)
         {
-            var serverExplorerItem = JsonConvert.DeserializeObject<ServerExplorerItem>(obj);
+            var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             if(ItemItemUpdatedMessageAction != null)
             {
                 ItemItemUpdatedMessageAction(serverExplorerItem);

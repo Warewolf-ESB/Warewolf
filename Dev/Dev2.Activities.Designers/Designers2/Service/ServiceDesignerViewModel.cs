@@ -16,6 +16,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
 using Dev2.Network;
@@ -130,6 +131,44 @@ namespace Dev2.Activities.Designers2.Service
                     IsItemDragged.Instance.IsDragged = false;
 
                 }
+            }
+            if(_environment != null)
+            {
+                _environment.AuthorizationServiceSet += OnEnvironmentOnAuthorizationServiceSet;
+                AuthorizationServiceOnPermissionsChanged(null, null);
+            }
+
+        }
+
+        void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
+        {
+            if(_environment != null && _environment.AuthorizationService != null)
+            {
+                _environment.AuthorizationService.PermissionsChanged += AuthorizationServiceOnPermissionsChanged;
+            }
+        }
+
+        void AuthorizationServiceOnPermissionsChanged(object sender, EventArgs eventArgs)
+        {
+            var errorInfos = DesignValidationErrors.Where(info => info.FixType == FixType.InvalidPermissions);
+            RemoveErrors(errorInfos.ToList());
+
+            var hasNoPermission = _environment.AuthorizationService != null && _environment.AuthorizationService.GetResourcePermissions(ResourceID) == Permissions.None;
+            if(hasNoPermission)
+            {
+                var memo = new DesignValidationMemo
+                {
+                    InstanceID = UniqueID,
+                    IsValid = false,
+                };
+                memo.Errors.Add(new ErrorInfo
+                {
+                    InstanceID = UniqueID,
+                    ErrorType = ErrorType.Critical,
+                    FixType = FixType.InvalidPermissions,
+                    Message = "You do not have permissions to View or Execute this resource."
+                });
+                UpdateLastValidationMemo(memo);
             }
         }
 
@@ -532,8 +571,7 @@ namespace Dev2.Activities.Designers2.Service
 
                 RemoveErrors(
                     LastValidationMemo.Errors.Where(
-                        a =>
-                        a.Message.Contains("This service will only execute when the server is online.")));
+                        a => a.Message.Contains("This service will only execute when the server is online.")).ToList());
                 UpdateWorstError();
 
             }
@@ -975,9 +1013,7 @@ namespace Dev2.Activities.Designers2.Service
                         ResourceModel = NewModel;
                         InitializeMappings();
                         RemoveErrors(
-                      LastValidationMemo.Errors.Where(
-                      a =>
-                      a.Message.Contains("Incorrect Version")));
+                      LastValidationMemo.Errors.Where(a => a.Message.Contains("Incorrect Version")).ToList());
                         UpdateWorstError();
                     }
                     break;
@@ -1079,7 +1115,9 @@ namespace Dev2.Activities.Designers2.Service
             RootModel.RemoveError(worstError);
         }
 
-        void RemoveErrors(IEnumerable<IErrorInfo> worstErrors)
+        // ReSharper disable ParameterTypeCanBeEnumerable.Local
+        void RemoveErrors(IList<IErrorInfo> worstErrors)
+        // ReSharper restore ParameterTypeCanBeEnumerable.Local
         {
             worstErrors.ToList().ForEach(RemoveError);
         }
@@ -1189,6 +1227,10 @@ namespace Dev2.Activities.Designers2.Service
                     if(_validationService != null)
                     {
                         _validationService.Dispose();
+                    }
+                    if(_environment != null)
+                    {
+                        _environment.AuthorizationServiceSet -= OnEnvironmentOnAuthorizationServiceSet;
                     }
                 }
 

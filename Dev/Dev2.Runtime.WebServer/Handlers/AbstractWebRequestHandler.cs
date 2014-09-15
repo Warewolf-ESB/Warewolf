@@ -17,9 +17,11 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
 using Dev2.Runtime.WebServer.Responses;
 using Dev2.Runtime.WebServer.TransferObjects;
 using Dev2.Server.DataList.Translators;
+using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
 
@@ -125,16 +127,29 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
             }
             var esbEndpoint = new EsbServicesEndpoint();
+            var canExecute = true;
+            if(ServerAuthorizationService.Instance != null)
+            {
+                var authorizationService = ServerAuthorizationService.Instance;
+                var hasView = authorizationService.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
+                var hasExecute = authorizationService.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
+                canExecute = hasExecute && hasView;
+            }
 
             // Build EsbExecutionRequest - Internal Services Require This ;)
             EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
 
             Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
-
-            var executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
-            allErrors.MergeErrors(errors);
-
-
+            var executionDlid = GlobalConstants.NullDataListID;
+            if(canExecute)
+            {
+                executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
+                allErrors.MergeErrors(errors);
+            }
+            else
+            {
+                allErrors.AddError("Executing a service externally requires View and Execute permissions");
+            }
             // Fetch return type ;)
             var formatter = publicFormats.FirstOrDefault(c => c.PublicFormatName == dataObject.ReturnType)
                             ?? publicFormats.FirstOrDefault(c => c.PublicFormatName == EmitionTypes.XML);

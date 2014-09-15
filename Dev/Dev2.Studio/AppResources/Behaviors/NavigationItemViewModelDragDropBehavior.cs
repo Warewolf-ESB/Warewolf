@@ -5,7 +5,10 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Models;
+using Dev2.Services.Security;
+using Dev2.Studio.Core;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Studio.AppResources.Behaviors
 {
     public class NavigationItemViewModelDragDropBehavior : Behavior<FrameworkElement>
@@ -136,13 +139,23 @@ namespace Dev2.Studio.AppResources.Behaviors
                             }
 
                             //dragSourceDataContext.IsNew = true;
-                            if(dragSourceDataContext.ResourceType <= ResourceType.WebService)
+                            var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == dragSourceDataContext.EnvironmentId);
+                            var hasPermissionToDrag = true;
+                            if(environmentModel != null && environmentModel.AuthorizationService != null)
                             {
-                                dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dragSourceDataContext.ActivityName);
+                                var canExecute = environmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.Execute, dragSourceDataContext.ResourceId.ToString());
+                                var canView = environmentModel.AuthorizationService.IsAuthorized(AuthorizationContext.View, dragSourceDataContext.ResourceId.ToString());
+                                hasPermissionToDrag = canExecute && canView;
+                            }
+                            if(hasPermissionToDrag)
+                            {
+                                if(dragSourceDataContext.ResourceType <= ResourceType.WebService)
+                                {
+                                    dragData.SetData(DragDropHelper.WorkflowItemTypeNameFormat, dragSourceDataContext.ActivityName);
+                                    dragData.SetData(dragSourceDataContext);
+                                }
                                 dragData.SetData(dragSourceDataContext);
                             }
-
-                            dragData.SetData(dragSourceDataContext);
                         }
                         DragDrop.DoDragDrop(dependencyObject, dragData, DragDropEffects.Link);
                     }

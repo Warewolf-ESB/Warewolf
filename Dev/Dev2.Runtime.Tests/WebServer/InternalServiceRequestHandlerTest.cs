@@ -49,8 +49,8 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Setup for test--------------------------
             Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
             NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
-            NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, {"wid", Guid.Empty.ToString()} };
-            ctx.Setup(c=>c.Request.BoundVariables).Returns(boundVariables);
+            NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
+            ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
             ctx.Setup(c => c.Request.QueryString).Returns(queryString);
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost"));
 
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Runtime.WebServer
             internalServiceRequestHandler.ProcessRequest(ctx.Object);
 
             //------------Assert Results-------------------------
-            principle.Verify(p => p.Identity.Name, Times.Once());
+            principle.Verify(p => p.Identity.Name, Times.AtLeast(1));
 
         }
 

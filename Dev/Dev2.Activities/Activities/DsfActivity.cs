@@ -27,7 +27,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         #region Fields
         private InArgument<string> _iconPath = string.Empty;
-        string _previousInstanceID;
+        string _previousInstanceId;
         #endregion
 
         #region Constructors
@@ -82,7 +82,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         // ReSharper disable ConvertToAutoProperty
+        // ReSharper disable InconsistentNaming
         public InArgument<Guid> EnvironmentID
+        // ReSharper restore InconsistentNaming
         // ReSharper restore ConvertToAutoProperty
         {
             get
@@ -95,7 +97,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        // ReSharper disable InconsistentNaming
         public InArgument<Guid> ResourceID { get; set; }
+        // ReSharper restore InconsistentNaming
 
         /// <summary>
         /// Gets or sets the type.
@@ -205,7 +209,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         string _serviceUri;
         InArgument<string> _friendlySourceName;
+        // ReSharper disable InconsistentNaming
         InArgument<Guid> _environmentID;
+        // ReSharper restore InconsistentNaming
         [NonSerialized]
         IAuthorizationService _authorizationService;
         public override void UpdateDebugParentID(IDSFDataObject dataObject)
@@ -227,7 +233,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors;
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            Guid datalistID = DataListExecutionID.Get(context);
+            Guid datalistId = DataListExecutionID.Get(context);
             ParentServiceName = dataObject.ServiceName;
             ParentWorkflowInstanceId = context.WorkflowInstanceId.ToString();
 
@@ -239,16 +245,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // This is because we put and empty GUID in when designing against a remote server that uses it's resources
             // The first time through this value is set correctly when executing those designed resource from our localhost
             // If we change it as per what was here, we always get a localhost tag instead of the remote host we are design against
-            var currentEnviromentID = dataObject.EnvironmentID;
             var isRemote = dataObject.IsRemoteWorkflow();
             dataObject.EnvironmentID = context.GetValue(EnvironmentID);
             if((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
             {
-                dataObject.EnvironmentID = currentEnviromentID;
                 dataObject.IsRemoteInvokeOverridden = true;
             }
 
-            var oldResourceID = dataObject.ResourceID;
+            var oldResourceId = dataObject.ResourceID;
 
             InitializeDebug(dataObject);
 
@@ -269,14 +273,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(context, StateType.Before);
                 }
 
-                var resourceID = context.GetValue(ResourceID);
-                if(resourceID != Guid.Empty)
+                var resourceId = context.GetValue(ResourceID);
+                if(resourceId != Guid.Empty)
                 {
-                    dataObject.ResourceID = resourceID;
+                    dataObject.ResourceID = resourceId;
                 }
 
                 // scrub it clean ;)
-                ScrubDataList(compiler, datalistID, context.WorkflowInstanceId.ToString(), out errors);
+                ScrubDataList(compiler, datalistId, context.WorkflowInstanceId.ToString(), out errors);
                 allErrors.MergeErrors(errors);
 
                 // set the parent service
@@ -284,8 +288,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 serviceName = dataObject.ServiceName;
                 dataObject.ParentServiceName = serviceName;
 
-                _previousInstanceID = dataObject.ParentInstanceID;
-                dataObject.ParentID = oldResourceID;
+                _previousInstanceId = dataObject.ParentInstanceID;
+                dataObject.ParentID = oldResourceId;
 
                 dataObject.ParentInstanceID = UniqueID;
                 dataObject.ParentWorkflowInstanceId = ParentWorkflowInstanceId;
@@ -303,7 +307,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         // NEW EXECUTION MODEL ;)
                         // PBI 7913
-                        if(datalistID != GlobalConstants.NullDataListID)
+                        if(datalistId != GlobalConstants.NullDataListID)
                         {
                             BeforeExecutionStart(dataObject, allErrors);
                             allErrors.MergeErrors(tmpErrors);
@@ -317,7 +321,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                             AfterExecutionCompleted(tmpErrors);
                             allErrors.MergeErrors(tmpErrors);
-                            dataObject.DataListID = datalistID; // re-set DL ID
+                            dataObject.DataListID = datalistId; // re-set DL ID
                             dataObject.ServiceName = ServiceName;
                         }
 
@@ -334,7 +338,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     }
 
-                    bool whereErrors = compiler.HasErrors(datalistID);
+                    bool whereErrors = compiler.HasErrors(datalistId);
 
                     Result.Set(context, whereErrors);
                     HasError.Set(context, whereErrors);
@@ -344,7 +348,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                dataObject.ResourceID = oldResourceID;
+
 
                 if(!dataObject.WorkflowResumeable || !dataObject.IsDataListScoped)
                 {
@@ -367,11 +371,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(context, StateType.After);
                 }
 
-                dataObject.ParentInstanceID = _previousInstanceID;
+                dataObject.ParentInstanceID = _previousInstanceId;
                 dataObject.ParentServiceName = parentServiceName;
                 dataObject.ServiceName = serviceName;
                 dataObject.RemoteInvokeResultShape = string.Empty; // reset targnet shape ;)
                 dataObject.RunWorkflowAsync = false;
+                dataObject.RemoteInvokerID = Guid.Empty.ToString();
+                dataObject.EnvironmentID = Guid.Empty;
+                dataObject.ResourceID = oldResourceId;
                 compiler.ClearErrors(dataObject.DataListID);
             }
         }
@@ -390,12 +397,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected virtual void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
         {
-            var resourceID = ResourceID == null || ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
-            if(resourceID == Guid.Empty || dataObject.ExecutingUser == null)
+            var resourceId = ResourceID == null || ResourceID.Expression == null ? Guid.Empty : Guid.Parse(ResourceID.Expression.ToString());
+            if(resourceId == Guid.Empty || dataObject.ExecutingUser == null)
             {
                 return;
             }
-            var isAuthorized = AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceID.ToString());
+            var isAuthorized = AuthorizationService.IsAuthorized(dataObject.ExecutingUser, AuthorizationContext.Execute, resourceId.ToString());
             if(!isAuthorized)
             {
                 var message = string.Format("User: {0} does not have Execute Permission to resource {1}.", dataObject.ExecutingUser.Identity.Name, ServiceName);
@@ -412,10 +419,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             Dev2Logger.Log.Info("PRE-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
 
-            var resultID = esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
+            var resultId = esbChannel.ExecuteSubRequest(dataObject, dataObject.WorkspaceID, inputs, outputs, out tmpErrors);
             Dev2Logger.Log.Info("POST-SUB_EXECUTE SHAPE MEMORY USAGE [ " + BinaryDataListStorageLayer.GetUsedMemoryInMb().ToString("####.####") + " MBs ]");
 
-            return resultID;
+            return resultId;
         }
 
         public override IList<DsfForEachItem> GetForEachInputs()
@@ -437,25 +444,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void ScrubDataList(IDataListCompiler compiler, Guid executionID, string workflowID, out ErrorResultTO invokeErrors)
+        private void ScrubDataList(IDataListCompiler compiler, Guid executionId, string workflowId, out ErrorResultTO invokeErrors)
         {
             ErrorResultTO errors;
             invokeErrors = new ErrorResultTO();
             // Strip System Tags
 
-            compiler.UpsertSystemTag(executionID, enSystemTag.InstanceId, string.Empty, out errors);
+            compiler.UpsertSystemTag(executionId, enSystemTag.InstanceId, string.Empty, out errors);
             invokeErrors.MergeErrors(errors);
 
-            compiler.UpsertSystemTag(executionID, enSystemTag.Bookmark, string.Empty, out errors);
+            compiler.UpsertSystemTag(executionId, enSystemTag.Bookmark, string.Empty, out errors);
             invokeErrors.MergeErrors(errors);
 
-            compiler.UpsertSystemTag(executionID, enSystemTag.ParentWorkflowInstanceId, string.Empty, out errors);
+            compiler.UpsertSystemTag(executionId, enSystemTag.ParentWorkflowInstanceId, string.Empty, out errors);
             invokeErrors.MergeErrors(errors);
 
-            compiler.UpsertSystemTag(executionID, enSystemTag.ParentServiceName, string.Empty, out errors);
+            compiler.UpsertSystemTag(executionId, enSystemTag.ParentServiceName, string.Empty, out errors);
             invokeErrors.MergeErrors(errors);
 
-            compiler.UpsertSystemTag(executionID, enSystemTag.ParentWorkflowInstanceId, workflowID, out errors);
+            compiler.UpsertSystemTag(executionId, enSystemTag.ParentWorkflowInstanceId, workflowId, out errors);
             invokeErrors.MergeErrors(errors);
         }
 
@@ -473,10 +480,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string inputDlShape = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors);
             if(!errors.HasErrors())
             {
-                Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), inputDlString, inputDlShape, out errors);
+                Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), inputDlString, inputDlShape, out errors);
                 if(!errors.HasErrors())
                 {
-                    result = compiler.FetchBinaryDataList(dlID, out errors);
+                    result = compiler.FetchBinaryDataList(dlId, out errors);
                 }
                 else
                 {
@@ -503,10 +510,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string outputDlShape = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors);
             if(!errors.HasErrors())
             {
-                Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), outputDlString, outputDlShape, out errors);
+                Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), outputDlString, outputDlShape, out errors);
                 if(!errors.HasErrors())
                 {
-                    result = compiler.FetchBinaryDataList(dlID, out errors);
+                    result = compiler.FetchBinaryDataList(dlId, out errors);
                 }
                 else
                 {

@@ -207,6 +207,10 @@ namespace Dev2.Services.Security
         {
             var isInRole = false;
 
+            if(principal == null)
+            {
+                return p.IsBuiltInGuestsForExecution;
+            }
             try
             {
                 // If its our admin group ( Warewolf ), we need to check membership differently 

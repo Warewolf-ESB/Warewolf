@@ -161,12 +161,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var result = ExecuteProcess(null, true, null, false, true, false, environmentID) as IDSFDataObject;
 
             // ReSharper disable PossibleNullReferenceException
-            var resultEnvironmentID = result.EnvironmentID;
             var isRemoteOverridden = result.IsRemoteInvokeOverridden;
             // ReSharper restore PossibleNullReferenceException
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(environmentID, resultEnvironmentID);
             Assert.IsTrue(isRemoteOverridden);
         }
 

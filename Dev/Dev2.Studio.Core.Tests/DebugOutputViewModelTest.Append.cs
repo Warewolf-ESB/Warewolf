@@ -1,9 +1,9 @@
 ﻿using System;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
-using Dev2.Diagnostics;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Diagnostics.Debug;
-using Dev2.Providers.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.ViewModels.Diagnostics;
 using Dev2.ViewModels.Diagnostics;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -102,7 +102,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_ContentStateTypeIsNotMessage_StateTreeViewItemAdded()
         {
-            DebugOutputViewModel_Append_ContentStateType(stateType: StateType.All, expectedType: typeof(DebugStateTreeViewItemViewModel), isExpanded: false);
+            DebugOutputViewModel_Append_ContentStateType(StateType.All, typeof(DebugStateTreeViewItemViewModel), isExpanded: false);
         }
 
         static void DebugOutputViewModel_Append_ContentStateType(StateType stateType, Type expectedType, bool isExpanded)
@@ -141,7 +141,7 @@ namespace Dev2.Core.Tests
         [TestCategory("DebugOutputViewModel_Append")]
         public void DebugOutputViewModel_Append_ContentIsDebugStateAndParentIDIsEmpty_ItemAddedAtRootAndIsNotExpanded()
         {
-            DebugOutputViewModel_Append_ContentIsDebugState(contentID: Guid.NewGuid(), contentParentID: Guid.Empty, displayName: "Content");
+            DebugOutputViewModel_Append_ContentIsDebugState(Guid.NewGuid(), Guid.Empty, displayName: "Content");
         }
 
         [TestMethod]
@@ -150,7 +150,7 @@ namespace Dev2.Core.Tests
         public void DebugOutputViewModel_Append_ContentIsDebugStateAndIDDoesEqualParentID_ItemAddedAtRootAndIsNotExpanded()
         {
             var id = Guid.NewGuid();
-            DebugOutputViewModel_Append_ContentIsDebugState(contentID: id, contentParentID: id, displayName: "Content");
+            DebugOutputViewModel_Append_ContentIsDebugState(id, id, displayName: "Content");
         }
 
         [TestMethod]
@@ -185,6 +185,29 @@ namespace Dev2.Core.Tests
             {
                 Assert.AreEqual("Content2", child2.Content.DisplayName);
             }
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DebugOutputViewModel_Append")]
+        public void DebugOutputViewModel_Append_ItemRemoteHasNoPermission_ShouldNotAddAsNewItemIntoTree()
+        {
+            //------------Setup for test--------------------------
+            var id = Guid.NewGuid();
+            var envRepo = GetEnvironmentRepository();
+
+            var mockAuthorizationService = new Mock<IAuthorizationService>();
+            mockAuthorizationService.Setup(service => service.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.None);
+            _environmentModel.Setup(model => model.AuthorizationService).Returns(mockAuthorizationService.Object);
+            var viewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, envRepo, new Mock<IDebugOutputFilterStrategy>().Object);
+            var content = new DebugState { DisplayName = "Content", ID = id, ParentID = id, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID };
+            viewModel.Append(content);
+            var content2 = new DebugState { DisplayName = "Content2", ID = id, ParentID = id, StateType = StateType.All, ActivityType = ActivityType.Step, SessionID = viewModel.SessionID, EnvironmentID = Guid.NewGuid() };
+            //------------Execute Test---------------------------
+            viewModel.Append(content2);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, viewModel.RootItems.Count);
+
         }
 
         void DebugOutputViewModel_Append_ContentIsDebugState(Guid contentID, Guid contentParentID, string displayName)

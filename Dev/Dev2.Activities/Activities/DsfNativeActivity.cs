@@ -567,6 +567,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 // BUG 9706 - 2013.06.22 - TWR : refactored from here to DebugDispatcher
                 _debugState.ClientID = dataObject.ClientID;
+                _debugState.OriginatingResourceID = dataObject.ResourceID;
                 _debugDispatcher.Write(_debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
 
                 if(stateType == StateType.After)
