@@ -3,10 +3,11 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@mytag
+@FindRecordIndex
 Scenario: Find Record index Large view Invalid Recordset Expected Validation on Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging DataSplit Tool From Tool Box
 	Given I send "Find" to "TOOLBOX,PART_SearchBox"

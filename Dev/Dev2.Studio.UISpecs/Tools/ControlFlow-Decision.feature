@@ -3,10 +3,11 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@mytag
+@Decision
 Scenario: SaveDecisionWithBlankFieldsExpectedDecisionSaved12
 	Given I have Warewolf running
 	And all tabs are closed	
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
 	And I send "{DELETE}" to ""

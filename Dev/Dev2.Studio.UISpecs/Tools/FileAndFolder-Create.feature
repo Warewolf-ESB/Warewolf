@@ -3,10 +3,11 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@mytag
+@Create
 Scenario: CreateTool Large View And Invalid Variables Expected Error On Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging Create Tool From Tool Box
 	Given I send "Create" to "TOOLBOX,PART_SearchBox"

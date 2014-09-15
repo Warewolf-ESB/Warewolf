@@ -3,10 +3,11 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@mytag
+@Zip
 Scenario:zip Tool Large View And Invalid Variables Expected Error On Done Button
 	Given I have Warewolf running
 	And all tabs are closed	
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	#Dragging zip Tool From Tool Box
 	Given I send "zip" to "TOOLBOX,PART_SearchBox"

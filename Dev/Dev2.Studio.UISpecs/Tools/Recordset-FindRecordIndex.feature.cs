@@ -73,12 +73,12 @@ namespace Dev2.Studio.UI.Specs.Tools
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Find Record index Large view Invalid Recordset Expected Validation on Done Button" +
             "")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Recordset-FindRecordIndex")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mytag")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FindRecordIndex")]
         public virtual void FindRecordIndexLargeViewInvalidRecordsetExpectedValidationOnDoneButton()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Find Record index Large view Invalid Recordset Expected Validation on Done Button" +
                     "", new string[] {
-                        "mytag"});
+                        "FindRecordIndex"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
 #line 8
@@ -86,70 +86,72 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
  testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
+ testRunner.And("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
  testRunner.And("I click \"RIBBONNEWENDPOINT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
- testRunner.Given("I send \"Find\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 13
+ testRunner.Given("I send \"Find\" to \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 14
     testRunner.Given("I drag \"TOOLFIND\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 15
+#line 16
  testRunner.Given("I double click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Find Record Index (" +
                     "1)(FindRecordsMultipleCriteriaDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 17
+#line 18
  testRunner.Given("I type \"[[rec@(1).a]]\" in \"WORKSURFACE,Find Record Index (1)(FindRecordsMultipleC" +
                     "riteriaDesigner),LargeViewContent,UI__FieldsToSearchtxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 18
+#line 19
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Find Record Index (1)(Find" +
                     "RecordsMultipleCriteriaDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
- testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 20
- testRunner.Given("\"WORKSURFACE,UI_Error1_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("\"WORKSURFACE,UI_Error0_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
- testRunner.Given("\"WORKSURFACE,UI_Error2_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.Given("\"WORKSURFACE,UI_Error1_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
+ testRunner.Given("\"WORKSURFACE,UI_Error2_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 23
  testRunner.Given("I type \"[[rec().a]]\" in \"WORKSURFACE,Find Record Index (1)(FindRecordsMultipleCri" +
                     "teriaDesigner),LargeViewContent,UI__FieldsToSearchtxt_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 23
+#line 24
  testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
+#line 26
  testRunner.Given("\"VARIABLERECORDSET,UI_RecordSet_rec_AutoID,UI_NameTextBox_AutoID\" is visible with" +
                     "in \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 26
+#line 27
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Find Record Index (1)(Find" +
                     "RecordsMultipleCriteriaDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
- testRunner.Given("\"WORKSURFACE,UI_Error3_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 28
+ testRunner.Given("\"WORKSURFACE,UI_Error3_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 29
  testRunner.Given("I click \"WORKSURFACE,Find Record Index (1)(FindRecordsMultipleCriteriaDesigner),L" +
                     "argeViewContent,LargeDataGrid,UI__Row1_SearchType_AutoID,UI_ComboBoxItem_=_AutoI" +
                     "D\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 29
+#line 30
  testRunner.Given("I type \"[[rec().a]]\" in \"WORKSURFACE,Find Record Index (1)(FindRecordsMultipleCri" +
                     "teriaDesigner),LargeViewContent,LargeDataGrid,UI__Row1_SearchCriteria_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 30
+#line 31
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Find Record Index (1)(Find" +
                     "RecordsMultipleCriteriaDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 31
+#line 32
  testRunner.Given("\"WORKSURFACE,UI_Error4_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 33
+#line 34
  testRunner.Given("I type \"[[result*]]\" in \"WORKSURFACE,Find Record Index (1)(FindRecordsMultipleCri" +
                     "teriaDesigner),LargeViewContent,UI__Result_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 34
+#line 35
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Find Record Index (1)(Find" +
                     "RecordsMultipleCriteriaDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
- testRunner.Given("\"WORKSURFACE,UI_Error5_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 36
+ testRunner.Given("\"WORKSURFACE,UI_Error5_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 37
  testRunner.Given("I type \"[[result]]\" in \"WORKSURFACE,Find Record Index (1)(FindRecordsMultipleCrit" +
                     "eriaDesigner),LargeViewContent,UI__Result_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 37
+#line 38
  testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 39
- testRunner.And("\"VARIABLESCALAR,UI_Variable_result_AutoID\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 40
+ testRunner.And("\"VARIABLESCALAR,UI_Variable_result_AutoID\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
  testRunner.And("I click \"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Find Record Index (1)(Find" +
                     "RecordsMultipleCriteriaDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
+#line 42
  testRunner.Given("\"WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Find Record Index (1)(FindRecordsM" +
                     "ultipleCriteriaDesigner),SmallViewContent,SmallDataGrid\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden

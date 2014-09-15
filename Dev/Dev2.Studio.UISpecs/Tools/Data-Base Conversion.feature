@@ -3,9 +3,11 @@
 	As a Warewolf User
 	I want to be able to use Base Convert Tool
 
+@BaseConversion
 Scenario: DragOnBaseCovert
     Given I have Warewolf running
 	Given all tabs are closed
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click new "Workflow"
 	And I double click "TOOLBOX,PART_SearchBox"
     And I send "{DELETE}" to ""

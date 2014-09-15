@@ -28,11 +28,12 @@ Scenario: Creating Scheduler Task Without password and expected error
      Then "TriggerEditDialog" is visible
 	 And I click point "524,508" on "TriggerEditDialog"
 	 And I type "20" in "SCHEDULERHISTORYTOKEEPINPUT"
-	 And I click "SCHEDULERHISTORYTAB"
-	 And I click "SCHEDULERHELPBUTTON"
+	 And I send "{TAB}{ENTER}" to ""
+	 #And I click "SCHEDULERHISTORYTAB"
+	 #And I click "SCHEDULERHELPBUTTON"
 	 ##And "SCHEDULERHELPBUTTON" contains text "Each trigger that is executed"
 	 #Saving Task Without Password And Expected Error
-	 And I click "SCHEDULERSAVEBUTTON"
+	 Given I click "SCHEDULERSAVEBUTTON"
 	 And I click point "199,264" on ""
 	 And I click "SCHEDULERSAVINGERROROKBUTTON"
 	 Then "SCHEDULERNEWBUTTON" is disabled

@@ -6,7 +6,9 @@
 @Comment
 Scenario: CheckCommentInDebug
 	Given I have Warewolf running
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And all tabs are closed
+	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	And I double click "TOOLBOX,PART_SearchBox"
 	And I send "Comment" to ""

@@ -2,10 +2,11 @@
 	In order to be able to use warewolf
 	As a warewolf user
 	I want to be able to Drag Workflow Tool onto design surface
-
+@Workflow
 #Scenario: Drag Workflow to design surface and checking services are not showing in workflow resource picker
 #    Given I have Warewolf running
 #	Given all tabs are closed
+#And I click "EXPLORER,UI_localhost_AutoID"
 #	Given I click new "Workflow"
 #	And I drag "TOOLWORKFLOW" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
 #	And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
