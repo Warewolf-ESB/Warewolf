@@ -47,18 +47,29 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 string message = string.Format("Control with automation id : [{0}] was not found", automationId);
                 throw new Exception(message);
             }
-            
+
 
             List<UITestControl> parentCollection = container.GetChildren()
                                                             .Where(c => c is WpfControl)
                                                             .ToList();
 
-            var control = parentCollection.FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
-            if (throwIfMultiple && parentCollection.Count(b => ((WpfControl)b).AutomationId.Equals(automationId))>1)
-                throw new Exception("Multiple AutoIds Found");
-            if(control != null)
+            UITestControl control = null;
+            if(automationId.Contains('[') && automationId.Contains(']'))
             {
-                return control;
+                var index = Convert.ToInt32(automationId.Substring(automationId.IndexOf('[') + 1, automationId.Length - automationId.IndexOf(']')));
+                automationId = automationId.Substring(0, automationId.IndexOf('['));
+                var controls = parentCollection.Where(b => ((WpfControl)b).AutomationId.Equals(automationId));
+                var controlList = controls as IList<UITestControl> ?? controls.ToList();
+                if(controlList.Any())
+                {
+                    control = controlList.ElementAt(index);
+                }
+            }
+            else
+            {
+                control = parentCollection.FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
+                if(throwIfMultiple && parentCollection.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
+                    throw new Exception("Multiple AutoIds Found");
             }
 
             var levelsDeep = 0;
@@ -111,7 +122,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
             List<UITestControl> parentCollection = container.GetChildren()
                                                             .Where(c => !(c is WpfListItem) && c is WpfControl)
                                                             .ToList();
-            
+
             var control = parentCollection.FirstOrDefault(b => b.FriendlyName.Equals(cleanName)
                                                              || b.FriendlyName.StartsWith(cleanName)
                                                              || ((WpfControl)b).AutomationId.Contains(cleanName));
