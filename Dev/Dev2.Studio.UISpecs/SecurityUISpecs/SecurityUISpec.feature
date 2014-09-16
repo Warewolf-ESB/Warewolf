@@ -33,6 +33,11 @@ Scenario: Testing Different Server Permissions For Public
        Given I create a new remote connection "REM" as
        | Address               | AuthType | UserName | Password |
        | http://localhost:3142 | Public   |          |          |
+	   # Dragging remote server resource to local design surface
+	   And I click "EXPLORER,UI_localhost_AutoID" 
+	   And I click "RIBBONNEWENDPOINT"
+	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
+       Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	   #Checking Explorer Icons
        Then I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID"   
        Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
@@ -60,6 +65,11 @@ Scenario: Testing Different Server Permissions For Public
        And "SECURITYPUBLICDEPLOYFROM" is unchecked
        And I click "SECURITYPUBLICEXECUTE"
        And I click "SECURITYSAVE"
+	   # Dragging remote server resource to local design surface
+	   And I click "EXPLORER,UI_localhost_AutoID" 
+	   And I click "RIBBONNEWENDPOINT"
+	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
+       Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	   #Checking Explorer Icons
 	   Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
        And I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
@@ -88,6 +98,11 @@ Scenario: Testing Different Server Permissions For Public
        And "SECURITYPUBLICDEPLOYFROM" is unchecked
        And I click "SECURITYPUBLICCONTRIBUTE"
        And I click "SECURITYSAVE"
+	   # Dragging Remote Resource to local design surface
+	   And I click "EXPLORER,UI_localhost_AutoID" 
+	   And I click "RIBBONNEWENDPOINT"
+	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
+       Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is visible within "3" seconds
        #Checking Explorer Icons
 	   Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
 	   Then I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"       
@@ -113,6 +128,11 @@ Scenario: Testing Different Server Permissions For Public
        And "SECURITYPUBLICDEPLOYFROM" is unchecked
        And I click "SECURITYPUBLICDEPLOYTO"
        And I click "SECURITYSAVE"
+	   # Dragging remote server resource to local design surface
+	   And I click "EXPLORER,UI_localhost_AutoID" 
+	   And I click "RIBBONNEWENDPOINT"
+	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
+       Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	   #Checking Explorer Icons
        Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
        And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible      
@@ -141,6 +161,11 @@ Scenario: Testing Different Server Permissions For Public
        And "SECURITYPUBLICDEPLOYFROM" is unchecked
        And I click "SECURITYPUBLICDEPLOYFROM"
        And I click "SECURITYSAVE" 
+	   # Dragging remote server resource to local design surface
+	   And I click "EXPLORER,UI_localhost_AutoID" 
+	   And I click "RIBBONNEWENDPOINT"
+	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
+       Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	   #Exploer Icons
        And I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
        Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
