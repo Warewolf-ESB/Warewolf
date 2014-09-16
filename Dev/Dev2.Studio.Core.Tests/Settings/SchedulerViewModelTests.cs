@@ -1668,6 +1668,47 @@ You need Administrator permission.", schedulerViewModel.Error);
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SchedulerViewModel_TriggerEquals")]
+        public void SchedulerViewModel_TriggerEquals_Equals_ExpectTrue()
+        {
+            //------------Setup for test--------------------------
+
+// ReSharper disable UseObjectOrCollectionInitializer
+            DailyTrigger t = new DailyTrigger();
+
+            t.StartBoundary = new DateTime(2014, 01, 01);
+            DailyTrigger t2 = new DailyTrigger();
+            t2.StartBoundary = new DateTime(2014, 01, 01);
+// ReSharper restore UseObjectOrCollectionInitializer           
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(SchedulerViewModel.TriggerEquals(t, t2));
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SchedulerViewModel_TriggerEquals")]
+        public void SchedulerViewModel_TriggerEquals_NotEquals_ExpectFalse()
+        {
+            //------------Setup for test--------------------------
+
+            // ReSharper disable UseObjectOrCollectionInitializer
+            DailyTrigger t = new DailyTrigger();
+
+            t.StartBoundary = new DateTime(2014, 01, 01);
+            DailyTrigger t2 = new DailyTrigger();
+            t2.StartBoundary = new DateTime(2015, 01, 01);
+            // ReSharper restore UseObjectOrCollectionInitializer
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(SchedulerViewModel.TriggerEquals(t, t2));
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
         [TestCategory("SchedulerViewModel_DeActivate")]
         public void SchedulerViewModel_DeActivateCancel_ReturnsFalse()
         {

@@ -1041,7 +1041,7 @@ You need Administrator permission.";
             var tmpTrigger = SelectedTask.Trigger.Trigger.Instance;
             if(TriggerEditDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                if(TriggerEditDialog.Trigger.ToString() != tmpTrigger.ToString())
+                if (!TriggerEquals(TriggerEditDialog.Trigger,tmpTrigger))
                 {
                     return _schedulerFactory.CreateTrigger(TaskState.Disabled, new Dev2Trigger(null, TriggerEditDialog.Trigger));
                 }
@@ -1049,6 +1049,10 @@ You need Administrator permission.";
             return null;
         }
 
+        public static bool TriggerEquals(Microsoft.Win32.TaskScheduler.Trigger a, Microsoft.Win32.TaskScheduler.Trigger b)
+        {
+            return (a.ToString() == b.ToString()) && (a.StartBoundary == b.StartBoundary) && (a.EndBoundary == b.EndBoundary) && (a.ExecutionTimeLimit == b.ExecutionTimeLimit);
+        }
         [ExcludeFromCodeCoverage]
         public virtual void GetCredentials(IScheduledResource scheduledResource)
         {

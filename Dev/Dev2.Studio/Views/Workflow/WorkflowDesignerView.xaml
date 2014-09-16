@@ -8,11 +8,6 @@
              AutomationProperties.AutomationId="UI_WorkflowDesigner_AutoID">    
     
     <Grid cal:Bind.Model="{Binding .}">
-        <customControls:SplitterPanel Background="{StaticResource BrushBackground}" Margin="3,3,0,0" Header="{Binding Path=OutlineViewTitle}">
-            <customControls:SplitterPanel.ContentLeft>
-                <ContentControl Content="{Binding Path=OutlineView}"/>
-            </customControls:SplitterPanel.ContentLeft>
-            <customControls:SplitterPanel.ContentRight>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>
@@ -38,8 +33,6 @@
                         </i:Interaction.Behaviors>
                     </ContentControl>
                 </Grid>
-            </customControls:SplitterPanel.ContentRight>
-        </customControls:SplitterPanel>
 
         <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#88000000" 
                 Visibility="{Binding PopupContent, Converter={StaticResource NullToVisibilityConverter}}"

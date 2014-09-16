@@ -328,5 +328,22 @@ namespace Dev2.Activities.Designers2.Core
         {
             mi.SetProperty("IndexNumber", indexNumber);
         }
+
+        protected override void OnDispose()
+        {
+          
+          ProcessModelItemCollection(0, mi =>
+            {
+               var dto = mi.GetCurrentValue() as TDev2TOFn;
+                if(dto != null)
+                {
+                    CEventHelper.RemoveAllEventHandlers(dto);
+                }
+                CEventHelper.RemoveAllEventHandlers(mi);
+
+            });
+            base.OnDispose();
+        }
+
     }
 }

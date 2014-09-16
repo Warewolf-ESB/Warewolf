@@ -43,7 +43,7 @@ namespace Dev2.Activities.Designers2.Core
             _helpAdorner = new HelpAdorner(this);
             _errorsAdorner = new ErrorsAdorner(this);
 
-            Loaded += (sender, args) => OnLoaded();
+            Loaded += OnRoutedEventHandler;
             Unloaded += ActivityDesignerUnloaded;
             AllowDrop = true;
         }
@@ -163,7 +163,7 @@ namespace Dev2.Activities.Designers2.Core
             _zIndexProperty = DependencyPropertyDescriptor.FromProperty(ActivityDesignerViewModel.ZIndexPositionProperty, typeof(TViewModel));
             _zIndexProperty.AddValueChanged(viewModel, OnZIndexPositionChanged);
 
-            if(Context != null)
+            if (Context != null)
             {
                 Context.Items.Subscribe<Selection>(OnSelectionChanged);
                 Context.Services.Subscribe<IDesignerManagementService>(OnDesignerManagementServiceChanged);
@@ -199,11 +199,14 @@ namespace Dev2.Activities.Designers2.Core
             if(designerManagementService != null)
             {
                 _designerManagementService = designerManagementService;
+
                 _designerManagementService.CollapseAllRequested += OnDesignerManagementServiceCollapseAllRequested;
                 _designerManagementService.ExpandAllRequested += OnDesignerManagementServiceExpandAllRequested;
                 _designerManagementService.RestoreAllRequested += OnDesignerManagementServiceRestoreAllRequested;
             }
         }
+
+
 
         protected void OnDesignerManagementServiceRestoreAllRequested(object sender, EventArgs e)
         {
@@ -248,7 +251,10 @@ namespace Dev2.Activities.Designers2.Core
                 _designerManagementService.ExpandAllRequested -= OnDesignerManagementServiceExpandAllRequested;
                 _designerManagementService.RestoreAllRequested -= OnDesignerManagementServiceRestoreAllRequested;
             }
-
+            if(_showCollapseLargeView != null)
+            {
+                _showCollapseLargeView.Click -= ShowCollapseFromContextMenu;
+            }
             if(Context != null)
             {
                 Context.Items.Unsubscribe<Selection>(OnSelectionChanged);
@@ -259,17 +265,30 @@ namespace Dev2.Activities.Designers2.Core
             {
                 _zIndexProperty.RemoveValueChanged(_dataContext, OnZIndexPositionChanged);
             }
+            ViewModel.Dispose();
 
-            // ReSharper disable EventUnsubscriptionViaAnonymousDelegate
-            Loaded -= (sender, args) => OnLoaded();
-            // ReSharper restore EventUnsubscriptionViaAnonymousDelegate
+            Loaded -= OnRoutedEventHandler;
+
             Unloaded -= ActivityDesignerUnloaded;
+            CEventHelper.RemoveAllEventHandlers(this);
+            CEventHelper.RemoveAllEventHandlers(this);
+           GC.SuppressFinalize(this);
         }
 
+        void OnRoutedEventHandler(object sender, RoutedEventArgs args)
+        {
+            OnLoaded();
+        }
 
         void ActivityDesignerUnloaded(object sender, RoutedEventArgs e)
         {
+            OnUnloaded();
             Dispose();
+        }
+
+        protected virtual void OnUnloaded()
+        {
+  
         }
 
         // Do not make this method virtual.
@@ -297,6 +316,7 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     // Dispose managed resources.
                     OnDispose();
+                    _dataContext.Dispose();
                 }
 
                 // Call the appropriate methods to clean up

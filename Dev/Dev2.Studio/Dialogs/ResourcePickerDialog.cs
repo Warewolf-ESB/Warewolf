@@ -70,6 +70,7 @@ namespace Dev2.Dialogs
             }
             else
             {
+
                 _navigationViewModel.Filter(null);
                 var explorerItemModels = _navigationViewModel.ExplorerItemModels;
                 if(explorerItemModels != null)

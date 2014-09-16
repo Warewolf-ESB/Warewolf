@@ -1278,7 +1278,6 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual(ShellBarItemVisibility.PanMode, designerView.WorkflowShellBarItemVisibility & ShellBarItemVisibility.PanMode);
             Assert.AreEqual(ShellBarItemVisibility.MiniMap, designerView.WorkflowShellBarItemVisibility & ShellBarItemVisibility.MiniMap);
 
-            Assert.IsNotNull(wfd.OutlineView);
 
             wfd.Dispose();
         }

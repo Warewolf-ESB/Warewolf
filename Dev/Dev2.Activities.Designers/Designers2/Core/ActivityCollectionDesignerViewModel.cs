@@ -115,19 +115,19 @@ namespace Dev2.Activities.Designers2.Core
                 base.OnToggleCheckedChanged(propertyName, isChecked);
             }
         }
-
+        protected override void OnDispose()
+        {
+            CEventHelper.RemoveAllEventHandlers(ModelItemCollection);
+            CEventHelper.RemoveAllEventHandlers(QuickVariableInputViewModel);
+            CEventHelper.RemoveAllEventHandlers(ModelItem);
+        }
         protected void AddTitleBarQuickVariableInputToggle()
         {
-            var toggle = ActivityDesignerToggle.Create(
-                collapseImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceQuickVariableInput-32.png",
-                collapseToolTip: "Close Quick Variable Input",
-                expandImageSourceUri: "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceQuickVariableInput-32.png",
-                expandToolTip: "Open Quick Variable Input",
-                automationID: "QuickVariableInputToggle",
-                target: this,
-                dp: ShowQuickVariableInputProperty
+            var toggle = ActivityDesignerToggle.Create("pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceQuickVariableInput-32.png", "Close Quick Variable Input", "pack://application:,,,/Dev2.Activities.Designers;component/Images/ServiceQuickVariableInput-32.png", "Open Quick Variable Input", "QuickVariableInputToggle", this, ShowQuickVariableInputProperty
                 );
             TitleBarToggles.Add(toggle);
         }
+
+
     }
 }

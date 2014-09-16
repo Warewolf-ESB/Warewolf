@@ -701,11 +701,12 @@ namespace Dev2.Core.Tests
 
             //------------Execute Test---------------------------
             MainViewModel.CloseWorkSurfaceContext(activetx, null);
-
+            PrivateObject pvt = new PrivateObject(MainViewModel);
             //------------Assert Results-------------------------
             EventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Never());
             FirstResource.Verify(r => r.Commit(), Times.Never(), "ResourceModel was committed when saved.");
             FirstResource.Verify(r => r.Rollback(), Times.Never(), "ResourceModel was rolled back when saved.");
+            Assert.IsNull(pvt.GetField("_previousActive"));
         }
 
 

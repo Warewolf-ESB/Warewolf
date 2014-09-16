@@ -97,5 +97,15 @@ namespace Dev2.Activities.Designers2.DataMerge
                 yield return error;
             }
         }
+
+        protected override void OnDispose()
+        {
+            foreach(var mi in  ModelItemCollection)
+            {
+                var dto = mi.GetCurrentValue() as DataMergeDTO;
+                CEventHelper.RemoveAllEventHandlers(dto);
+            }
+            base.OnDispose();
+        }
     }
 }

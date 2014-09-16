@@ -104,7 +104,7 @@ namespace Dev2.Studio.Dock
         /// <param name="item">The item from the source collection</param>
         protected override void PrepareContainerForItem(DependencyObject container, object item)
         {
-            BindingHelper.BindPath(container, item, HeaderPath, HeaderedContentControl.HeaderProperty);
+             BindingHelper.BindPath(container, item, HeaderPath, HeaderedContentControl.HeaderProperty);
             BindingHelper.BindPath(container, item, ContentPath, ContentControl.ContentProperty);
             BindingHelper.BindPath(container, item, TabHeaderPath, ContentPane.TabHeaderProperty);
 
@@ -666,7 +666,7 @@ namespace Dev2.Studio.Dock
         /// <param name="pane">The pane being initialized</param>
         public InitializeContentPaneEventArgs(ContentPane pane)
         {
-            if(pane == null)
+            if (pane == null)
             {
                 throw new ArgumentNullException("pane");
             }

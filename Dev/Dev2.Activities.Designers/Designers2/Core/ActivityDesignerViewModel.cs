@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Core
     /// Rather bind to <see cref="ModelItem"/>.PropertyName - this will ensure that the built-in undo/redo framework just works.
     /// </remarks>
     /// </summary>
-    public abstract class ActivityDesignerViewModel : DependencyObject, IClosable, IHelpSource, IValidator, IErrorsSource
+    public abstract class ActivityDesignerViewModel : DependencyObject, IClosable, IHelpSource, IValidator, IErrorsSource,IDisposable
     {
         static Action<Type> CreateShowExampleWorkflowAction()
         {
@@ -380,5 +380,21 @@ namespace Dev2.Activities.Designers2.Core
             // Clearing errors will set ShowErrors to false
             Errors = null;
         }
+
+       
+        public void Dispose()
+        {
+            TitleBarToggles.Clear();
+
+            _modelItem.PropertyChanged -= OnModelItemPropertyChanged;
+           
+            OnDispose();
+            CEventHelper.RemoveAllEventHandlers(this);
+            CEventHelper.RemoveAllEventHandlers(TitleBarToggles);
+            CEventHelper.RemoveAllEventHandlers(ModelItem);
+           GC.SuppressFinalize(this);
+        }
+
+        protected virtual void OnDispose(){}
     }
 }

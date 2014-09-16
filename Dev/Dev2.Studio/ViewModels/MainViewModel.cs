@@ -1486,6 +1486,8 @@ namespace Dev2.Studio.ViewModels
                                     RemoveWorkspaceItem(workflowVm);
                                     Items.Remove(context);
                                     workflowVm.Dispose();
+                                    if (_previousActive != null && _previousActive.WorkSurfaceViewModel == vm)
+                                        _previousActive = null;
                                     Dev2Logger.Log.Info("Publish message of type - " + typeof(TabClosedMessage));
                                     EventPublisher.Publish(new TabClosedMessage(context));
                                     if(e != null)

@@ -26,6 +26,12 @@ namespace Dev2.Activities.Designers2.Core
             InitializeContextMenu();
             _dataContext.ModelItemCollection.CollectionChanged += ModelItemCollectionCollectionChanged;
         }
+        protected override void OnUnloaded()
+        {
+            base.OnUnloaded();
+            _dataContext.ModelItemCollection.CollectionChanged -= ModelItemCollectionCollectionChanged;
+
+        }
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
         {
@@ -94,5 +100,14 @@ namespace Dev2.Activities.Designers2.Core
                 theGrid.Items.Refresh();
             }
         }
+        protected override void OnDispose()
+        {
+            base.OnDispose();
+           CEventHelper.RemoveAllEventHandlers(TheGrid);
+           CEventHelper.RemoveAllEventHandlers(this);
+           CEventHelper.RemoveAllEventHandlers(ModelItem);
+            _dataContext.ModelItemCollection.CollectionChanged -= ModelItemCollectionCollectionChanged;
+        }
+      
     }
 }

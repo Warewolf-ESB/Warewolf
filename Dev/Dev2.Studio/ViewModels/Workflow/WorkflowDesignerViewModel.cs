@@ -87,7 +87,9 @@ namespace Dev2.Studio.ViewModels.Workflow
     {
         static readonly Type[] DecisionSwitchTypes = { typeof(FlowSwitch<string>), typeof(FlowDecision) };
 
-        #region Fields
+
+
+        #region Overrides of Screen
 
         public delegate void SourceLocationEventHandler(SourceLocation src);
 
@@ -304,9 +306,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         // BUG 9304 - 2013.05.08 - TWR - Refactored and removed setter
         public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(ModelService); } set { } }
-
-        // PBI 9221 : TWR : 2013.04.22 - added OutlineView
-        public UIElement OutlineView { get { return _wd.OutlineView; } }
 
         public string OutlineViewTitle { get; set; }
 
@@ -1029,11 +1028,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 MetadataStore.AddAttributeTable(builder.CreateTable());
 
-                _wd.Context.Services.Subscribe<ModelService>(instance =>
-                            {
-                                ModelService = instance;
-                                ModelService.ModelChanged += ModelServiceModelChanged;
-                            });
+                _wd.Context.Services.Subscribe<ModelService>(ModelServiceSubscribe);
             }
 
             LoadDesignerXaml();
@@ -1042,34 +1037,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _wdMeta.Register();
 
-                _wd.Context.Services.Subscribe<ViewStateService>(instance =>
-                { });
+                _wd.Context.Services.Subscribe<ViewStateService>(ViewStateServiceSubscribe);
 
                 _wd.View.PreviewDrop += ViewPreviewDrop;
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
                 _wd.View.Measure(new Size(2000, 2000));
 
-                _wd.View.LostFocus += (sender, args) =>
-                {
-                    var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
-
-                    // If we are opening from server skip this check, it cannot have "real" changes!
-                    if(!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
-                    {
-                        // an additional case we need to account for - Designer has resized and is only visible once focus is lost?! ;)
-                        if(OpeningWorkflowsHelper.IsWaitingForFistFocusLoss(workSurfaceKey) || WatermarkSential.IsWatermarkBeingApplied)
-                        {
-                            ResourceModel.WorkflowXaml = ServiceDefinition;
-                            OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
-                        }
-                    }
-                };
-                _wd.Context.Services.Subscribe<DesignerView>(instance =>
-                {
-                    // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
-                    instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
-                    instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
-                });
+                _wd.View.LostFocus += OnViewOnLostFocus;
+                _wd.Context.Services.Subscribe<DesignerView>(DesigenrViewSubscribe);
 
                 _wd.Context.Items.Subscribe<Selection>(OnItemSelected);
                 _wd.Context.Services.Publish(DesignerManagementService);
@@ -1095,6 +1070,39 @@ namespace Dev2.Studio.ViewModels.Workflow
                 WorkflowDesignerIcons.Activities.StartNode = new DrawingBrush(new ImageDrawing(new BitmapImage(new Uri(@"pack://application:,,,/Warewolf Studio;component/Images/StartNode.png")), new Rect(0, 0, 32, 32)));
                 SubscribeToDebugSelectionChanged();
             }
+        }
+
+        void DesigenrViewSubscribe(DesignerView instance)
+        {
+            // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
+            instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
+            instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
+        }
+
+        void OnViewOnLostFocus(object sender, RoutedEventArgs args)
+        {
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
+
+            // If we are opening from server skip this check, it cannot have "real" changes!
+            if(!OpeningWorkflowsHelper.IsWorkflowWaitingforDesignerLoad(workSurfaceKey))
+            {
+                // an additional case we need to account for - Designer has resized and is only visible once focus is lost?! ;)
+                if(OpeningWorkflowsHelper.IsWaitingForFistFocusLoss(workSurfaceKey) || WatermarkSential.IsWatermarkBeingApplied)
+                {
+                    ResourceModel.WorkflowXaml = ServiceDefinition;
+                    OpeningWorkflowsHelper.RemoveWorkflowWaitingForFirstFocusLoss(workSurfaceKey);
+                }
+            }
+        }
+
+        void ViewStateServiceSubscribe(ViewStateService instance)
+        {
+        }
+
+        void ModelServiceSubscribe(ModelService instance)
+        {
+            ModelService = instance;
+            ModelService.ModelChanged += ModelServiceModelChanged;
         }
 
         void SubscribeToDebugSelectionChanged()
@@ -1254,7 +1262,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                     // BUG 9304 - 2013.05.08 - TWR 
                     _wd.Load(_workflowHelper.CreateWorkflow(_resourceModel.ResourceName));
-
+               
                     BindToModel();
                 }
                 else
@@ -1580,7 +1588,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             if(isWorkflow != null)
             {
                 // PBI 10652 - 2013.11.04 - TWR - Refactored to enable re-use!
+
                 var resourcePicked = ResourcePickerDialog.ShowDropDialog(ref _resourcePickerDialog, isWorkflow, out _vm);
+               
                 if(_vm != null && resourcePicked)
                 {
                     e.Data.SetData(_vm.SelectedExplorerItemModel);
@@ -1801,23 +1811,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 _wd.Context.Items.Unsubscribe<Selection>(OnItemSelected);
                 _wd.ModelChanged -= WdOnModelChanged;
-                _wd.Context.Services.Unsubscribe<ModelService>(instance =>
-                {
-                    ModelService = instance;
-                    ModelService.ModelChanged += ModelServiceModelChanged;
-                });
-                _wd.Context.Services.Unsubscribe<ViewStateService>(instance =>
-                { });
+                _wd.Context.Services.Unsubscribe<ModelService>(ModelServiceSubscribe);
+                _wd.Context.Services.Unsubscribe<ViewStateService>(ViewStateServiceSubscribe);
 
                 _wd.View.PreviewDrop -= ViewPreviewDrop;
                 _wd.View.PreviewMouseDown -= ViewPreviewMouseDown;
-
-                _wd.Context.Services.Unsubscribe<DesignerView>(instance =>
-                {
-                    // PBI 9221 : TWR : 2013.04.22 - .NET 4.5 upgrade
-                    instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
-                    instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.Zoom | ShellBarItemVisibility.PanMode | ShellBarItemVisibility.MiniMap;
-                });
+                
+                _wd.Context.Services.Unsubscribe<DesignerView>(DesigenrViewSubscribe);
 
                 Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
                 CommandManager.RemovePreviewExecutedHandler(_wd.View, PreviewExecutedRoutedEventHandler);
@@ -1865,8 +1865,18 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _workflowInputDataViewModel.Dispose();
                 _workflowInputDataViewModel = null;
             }
+            try
+            {
+                CEventHelper.RemoveAllEventHandlers(_wd);
+            }
+// ReSharper disable EmptyGeneralCatchClause
+            catch{}
+// ReSharper restore EmptyGeneralCatchClause
+          
+
             _wd = null;
             base.OnDispose();
+            GC.SuppressFinalize(this);
         }
 
         #endregion

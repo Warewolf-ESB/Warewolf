@@ -35,7 +35,7 @@ using Dev2.Threading;
 
 namespace Dev2.Activities.Designers2.Service
 {
-    public class ServiceDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, IDisposable
+    public class ServiceDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>
     {
         const string SourceNotFoundMessage = "Source was not found. This service will not execute.";
         public static readonly ErrorInfo NoError = new ErrorInfo
@@ -1193,19 +1193,13 @@ namespace Dev2.Activities.Designers2.Service
             Dispose(false);
         }
 
-        // Do not make this method virtual.
-        // A derived class should not be able to override this method.
-        public void Dispose()
+        protected override void OnDispose()
         {
             Dispose(true);
-
-            // This object will be cleaned up by the Dispose method.
-            // Therefore, you should call GC.SupressFinalize to
-            // take this object off the finalization queue
-            // and prevent finalization code for this object
-            // from executing a second time.
             GC.SuppressFinalize(this);
+            base.OnDispose();
         }
+
 
         // Dispose(bool disposing) executes in two distinct scenarios.
         // If disposing equals true, the method has been called directly
