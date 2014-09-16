@@ -67,4 +67,36 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 #	And I click "UI_DeleteResourceShowDependenciesBtn_AutoID"
 #	Given "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,myScrollViewer,[DependencyGraph_Sample Project\GetCategoryTable_IsCircular_False]" is visible
 #
-#	
+
+
+Scenario: Saving A Workflow In NewFolder Is Saved And Delete Rename Works As Expected
+	Given I have Warewolf running
+	And all tabs are closed
+	And I click "EXPLORER,UI_localhost_AutoID"
+	And I click "RIBBONNEWENDPOINT"
+	#Saving a workflow
+	And I click "RIBBONSAVE"
+	And I send "{TAB}{TAB}{Enter}" to ""
+	#Creating a new folder
+	And I send "UIFolder" to ""
+	And I send "{TAB}{TAB}{Enter}" to ""
+	And I send "{TAB}{TAB}{TAB}" to ""
+	And I send "S1" to ""
+	And I click point "400,415" on "WebBrowserWindow"
+	And "EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_S1_AutoID" is visible
+	And I click "EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_S1_AutoID"
+	#Rename Folder
+	And I right click "EXPLORERFOLDERS,UI_UIFolder_AutoID"
+	And I click "UI_RenameContextMenuItem_AutoID"
+	And I type "RENAME" in "EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_RenameTexbox_AutoID"
+	And I send "{ENTER}" to ""
+	Then "EXPLORERFOLDERS,UI_RENAME_AutoID" is visible within "1" seconds
+	Then "EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID" is visible within "1" seconds
+	#Deleting Folder
+	And I right click "EXPLORERFOLDERS,UI_UIFolder_AutoID"
+	And I click "UI_DeleteContextMenuItem_AutoID"
+	Then "EXPLORERFOLDERS,UI_RENAME_AutoID" is invisible within "6" seconds
+	Then "EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID" is invisible within "1" seconds
+
+
+
