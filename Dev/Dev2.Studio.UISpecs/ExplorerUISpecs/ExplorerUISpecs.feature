@@ -90,13 +90,15 @@ Scenario: Saving A Workflow In NewFolder Is Saved And Delete Rename Works As Exp
 	And I click "UI_RenameContextMenuItem_AutoID"
 	And I type "RENAME" in "EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_RenameTexbox_AutoID"
 	And I send "{ENTER}" to ""
-	Then "EXPLORERFOLDERS,UI_RENAME_AutoID" is visible within "1" seconds
+	Given I click "EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID"
+	Then "EXPLORERFOLDERS,UI_RENAME_AutoID" is visible within "5" seconds
 	Then "EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID" is visible within "1" seconds
 	#Deleting Folder
-	And I right click "EXPLORERFOLDERS,UI_UIFolder_AutoID"
+	And I right click "EXPLORERFOLDERS,UI_RENAME_AutoID"
 	And I click "UI_DeleteContextMenuItem_AutoID"
-	Then "EXPLORERFOLDERS,UI_RENAME_AutoID" is invisible within "6" seconds
-	Then "EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID" is invisible within "1" seconds
+	And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID"
+	#Given "EXPLORERFOLDERS,UI_RENAME_AutoID" is invisible within "5" seconds
+	#Given "EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID" is invisible within "1" seconds
 
 
 

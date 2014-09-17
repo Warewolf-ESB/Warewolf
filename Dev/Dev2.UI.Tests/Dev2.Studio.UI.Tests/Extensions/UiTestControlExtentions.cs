@@ -71,6 +71,10 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 if(throwIfMultiple && parentCollection.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
                     throw new Exception("Multiple AutoIds Found");
             }
+            if (control != null)
+            {
+                return control;
+            }
 
             var levelsDeep = 0;
             while(parentCollection.Count > 0 && levelsDeep < 4)

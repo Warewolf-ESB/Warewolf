@@ -225,17 +225,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 92
  testRunner.And("I send \"{ENTER}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 93
- testRunner.Then("\"EXPLORERFOLDERS,UI_RENAME_AutoID\" is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I click \"EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 94
+ testRunner.Then("\"EXPLORERFOLDERS,UI_RENAME_AutoID\" is visible within \"5\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 95
  testRunner.Then("\"EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID\" is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 96
- testRunner.And("I right click \"EXPLORERFOLDERS,UI_UIFolder_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 97
- testRunner.And("I click \"UI_DeleteContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_RENAME_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 98
- testRunner.Then("\"EXPLORERFOLDERS,UI_RENAME_AutoID\" is invisible within \"6\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I click \"UI_DeleteContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 99
- testRunner.Then("\"EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID\" is invisible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.And("I click \"UI_MessageBox_AutoID,UI_YesButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
