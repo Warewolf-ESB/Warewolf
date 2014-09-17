@@ -79,7 +79,8 @@ Scenario: Saving A Workflow In NewFolder Is Saved And Delete Rename Works As Exp
 	And I send "{TAB}{TAB}{Enter}" to ""
 	#Creating a new folder
 	And I send "UIFolder" to ""
-	And I send "{TAB}{TAB}{Enter}" to ""
+	And I click point "304,305" on "WebBrowserWindow"
+	#And I send "{TAB}{TAB}{Enter}" to ""
 	And I send "{TAB}{TAB}{TAB}" to ""
 	And I send "S1" to ""
 	And I click point "400,415" on "WebBrowserWindow"

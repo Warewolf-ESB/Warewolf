@@ -205,36 +205,36 @@ this.ScenarioSetup(scenarioInfo);
 #line 81
  testRunner.And("I send \"UIFolder\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 82
- testRunner.And("I send \"{TAB}{TAB}{Enter}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 83
- testRunner.And("I send \"{TAB}{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click point \"304,305\" on \"WebBrowserWindow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 84
- testRunner.And("I send \"S1\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I send \"{TAB}{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 85
- testRunner.And("I click point \"400,415\" on \"WebBrowserWindow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I send \"S1\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 86
- testRunner.And("\"EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_S1_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click point \"400,415\" on \"WebBrowserWindow\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 87
+ testRunner.And("\"EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_S1_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 88
  testRunner.And("I click \"EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_S1_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 89
- testRunner.And("I right click \"EXPLORERFOLDERS,UI_UIFolder_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 90
- testRunner.And("I click \"UI_RenameContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_UIFolder_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 91
- testRunner.And("I type \"RENAME\" in \"EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_RenameTexbox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I click \"UI_RenameContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 92
- testRunner.And("I send \"{ENTER}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I type \"RENAME\" in \"EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_RenameTexbox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 93
- testRunner.Given("I click \"EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+ testRunner.And("I send \"{ENTER}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 94
- testRunner.Then("\"EXPLORERFOLDERS,UI_RENAME_AutoID\" is visible within \"5\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Given("I click \"EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 95
+ testRunner.Then("\"EXPLORERFOLDERS,UI_RENAME_AutoID\" is visible within \"5\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 96
  testRunner.Then("\"EXPLORERFOLDERS,UI_RENAME_AutoID,UI_S1_AutoID\" is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 97
- testRunner.And("I right click \"EXPLORERFOLDERS,UI_RENAME_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 98
- testRunner.And("I click \"UI_DeleteContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I right click \"EXPLORERFOLDERS,UI_RENAME_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 99
+ testRunner.And("I click \"UI_DeleteContextMenuItem_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 100
  testRunner.And("I click \"UI_MessageBox_AutoID,UI_YesButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();

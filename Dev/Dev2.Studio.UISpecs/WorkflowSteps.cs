@@ -922,6 +922,7 @@ namespace Dev2.Studio.UI.Specs
         public void GivenAllTabsAreClosed()
         {
             StudioWindow.SetFocus();
+            Keyboard.SendKeys("{Esc}");
             var tabManager = TabManagerUIMap.GetManager();
 
             if(tabManager != null)
@@ -938,6 +939,7 @@ namespace Dev2.Studio.UI.Specs
                         {
                             var closedialog = savedialog.FindByAutomationId("UI_NoButton_AutoID", false);
                             closedialog.Click(new Point(10, 10));
+
                         }
                     }
                 }
