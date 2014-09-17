@@ -493,7 +493,7 @@ namespace Dev2.Core.Tests.Environments
         {
             // DO NOT use mock as test requires IEquatable of IEnvironmentModel
             var c1 = CreateMockConnection();
-            c1.Setup(c => c.Connect()).Verifiable();
+            c1.Setup(c => c.Connect(It.IsAny<Guid>())).Verifiable();
 
             //var wizard = new Mock<IWizardEngine>();
             var e1 = new EnvironmentModel(Guid.NewGuid(), c1.Object);
@@ -503,7 +503,7 @@ namespace Dev2.Core.Tests.Environments
 
             repo.Save(e1);
 
-            c1.Verify(c => c.Connect(), Times.Never());
+            c1.Verify(c => c.Connect(It.IsAny<Guid>()), Times.Never());
         }
 
         #endregion

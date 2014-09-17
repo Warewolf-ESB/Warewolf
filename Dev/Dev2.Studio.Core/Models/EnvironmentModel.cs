@@ -162,7 +162,7 @@ namespace Dev2.Studio.Core.Models
             }
 
             Dev2Logger.Log.Debug("Attempting to connect to [ " + Connection.AppServerUri + " ] ");
-            Connection.Connect();
+            Connection.Connect(ID);
         }
 
         public void Connect(IEnvironmentModel other)
@@ -174,7 +174,7 @@ namespace Dev2.Studio.Core.Models
 
             if(!other.IsConnected)
             {
-                other.Connection.Connect();
+                other.Connection.Connect(ID);
 
                 if(!other.IsConnected)
                 {

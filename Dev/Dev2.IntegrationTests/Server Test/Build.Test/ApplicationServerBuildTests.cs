@@ -38,7 +38,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
             var setupEnvironmentConnection = SetupEnvironmentConnection();
             IEnvironmentConnection conn = setupEnvironmentConnection;
 
-            conn.Connect();
+            conn.Connect(Guid.Empty);
             Assert.IsTrue(conn.IsConnected);
             conn.Disconnect();
         }
@@ -50,7 +50,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
             var setupEnvironmentConnection = SetupEnvironmentConnection();
             IEnvironmentConnection conn = setupEnvironmentConnection;
 
-            conn.Connect();
+            conn.Connect(Guid.Empty);
             var res = conn.IsConnected;
             conn.Disconnect();
             Assert.IsTrue(res);
@@ -69,7 +69,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
         {
             var setupEnvironmentConnection = SetupEnvironmentConnection();
             _connection = setupEnvironmentConnection;
-            _connection.Connect();
+            _connection.Connect(Guid.Empty);
         }
         #endregion
 

@@ -102,7 +102,9 @@ namespace Dev2.Core.Tests.Deploy
             serverItemModel.Children.Add(workflowsFolder);
 
             var studioResourceRepository = new StudioResourceRepository(serverItemModel, Invoke);
+
             resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
+            resourceModel.Setup(a => a.ServerID).Returns(environmentModel.ID);
             TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
             // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(testEnvironmentRespository);

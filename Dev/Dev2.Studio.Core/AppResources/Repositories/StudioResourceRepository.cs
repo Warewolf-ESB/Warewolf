@@ -38,6 +38,7 @@ namespace Dev2.AppResources.Repositories
         private StudioResourceRepository()
         {
             ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
+            ExplorerItemModelClone = a => a.Clone();
             try
             {
                 _currentDispatcher = Dispatcher.CurrentDispatcher;
@@ -52,6 +53,7 @@ namespace Dev2.AppResources.Repositories
 
         internal StudioResourceRepository(IExplorerItem explorerItem, Guid environmentId, Action<Action, DispatcherPriority> invoke)
         {
+            ExplorerItemModelClone = a => a.Clone();
             ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
             _invoke = invoke;
 
@@ -67,6 +69,7 @@ namespace Dev2.AppResources.Repositories
         //This is for testing only need better way of putting this together
         internal StudioResourceRepository(ExplorerItemModel explorerItem, Action<Action, DispatcherPriority> invoke)
         {
+            ExplorerItemModelClone = a => a.Clone();
             ExplorerItemModels = new ObservableCollection<IExplorerItemModel>();
             _invoke = invoke;
             if(explorerItem != null)
@@ -106,7 +109,17 @@ namespace Dev2.AppResources.Repositories
 
         #region Implementation of IStudioResourceRepository
 
-        public ObservableCollection<IExplorerItemModel> ExplorerItemModels { get; private set; }
+        public ObservableCollection<IExplorerItemModel> ExplorerItemModels
+        {
+            get
+            {
+                return _explorerItemModels;
+            }
+            private set
+            {
+                _explorerItemModels = value;
+            }
+        }
 
         public void Load(Guid environmentId, IAsyncWorker asyncWorker)
         {
@@ -340,7 +353,7 @@ namespace Dev2.AppResources.Repositories
 
         public void AddResouceItem(IContextualResourceModel resourceModel)
         {
-            var explorerItemModel = new ServerExplorerItem { ResourcePath = resourceModel.Category, DisplayName = resourceModel.DisplayName, ResourceId = resourceModel.ID, Permissions = resourceModel.UserPermissions };
+            var explorerItemModel = new ServerExplorerItem { ResourcePath = resourceModel.Category, DisplayName = resourceModel.DisplayName, ResourceId = resourceModel.ID, Permissions = resourceModel.UserPermissions,ServerId = resourceModel.ServerID};
             ResourceType resourceType;
             Enum.TryParse(resourceModel.ServerResourceType, out resourceType);
             explorerItemModel.ResourceType = resourceType;
@@ -385,7 +398,7 @@ namespace Dev2.AppResources.Repositories
 
         public void ItemAddedMessageHandler(IExplorerItem item)
         {
-            var environmentId = GetCurrentEnvironment();
+            var environmentId = item.ServerId;
             var explorerItem = MapData(item, GetEnvironmentRepository(), environmentId);
             var resourcePath = item.ResourcePath.Replace("\\\\", "\\");
 
@@ -396,7 +409,7 @@ namespace Dev2.AppResources.Repositories
 
             // ReSharper disable ImplicitlyCapturedClosure
             var parent = FindItem(model => model.ResourcePath != null && model.ResourcePath.Equals(resourcePath) && model.EnvironmentId == environmentId);
-            var alreadyAdded = FindItem(model => model.ResourceId == item.ResourceId && model.ResourcePath == item.ResourcePath && model.EnvironmentId == environmentId) != null;
+            var alreadyAdded = FindItem(model =>  model.ResourcePath == item.ResourcePath && model.EnvironmentId == environmentId) != null;
             // ReSharper restore ImplicitlyCapturedClosure
             var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
             var resourceRepository = environmentModel.ResourceRepository;
@@ -413,7 +426,7 @@ namespace Dev2.AppResources.Repositories
                 {
                     resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
                 }
-                else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource)
+                else if(item.ResourceType >= ResourceType.DbService && item.ResourceType < ResourceType.DbSource )
                 {
                     resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Service, ResourceModelEqualityComparer.Current, true);
                 }
@@ -426,7 +439,7 @@ namespace Dev2.AppResources.Repositories
             {
                 lock(_syncRoot)
                 {
-                    if(parent != null && !alreadyAdded)
+                    if(parent != null && !alreadyAdded )
                     {
                         explorerItem.EnvironmentId = parent.EnvironmentId;
                         explorerItem.Parent = parent;
@@ -479,6 +492,9 @@ namespace Dev2.AppResources.Repositories
             return FindItem(model => model.ResourceId == id);
         }
 
+        public Func<IExplorerItemModel, IExplorerItemModel> ExplorerItemModelClone { get; set; } 
+
+
         public IExplorerItemModel FindItemByIdAndEnvironment(Guid id, Guid environmentId)
         {
             return FindItem(model => model.ResourceId == id && model.EnvironmentId == environmentId);
@@ -493,7 +509,8 @@ namespace Dev2.AppResources.Repositories
             var filteredCollection = new ObservableCollection<IExplorerItemModel>();
             foreach(var explorerItemModel in ExplorerItemModels)
             {
-                var serverItem = FilterRec(searchCriteria, explorerItemModel.Clone());
+                var cloned = ExplorerItemModelClone(explorerItemModel);
+                var serverItem = FilterRec(searchCriteria, cloned);
                 if(serverItem != null)
                 {
                     filteredCollection.Add(serverItem);
@@ -502,9 +519,44 @@ namespace Dev2.AppResources.Repositories
             return filteredCollection;
         }
 
+        public ObservableCollection<IExplorerItemModel> DialogFilter(Func<IExplorerItemModel, bool> searchCriteria)
+        {
+            if (searchCriteria == null)
+            {
+                return ExplorerItemModels;
+            }
+            var filteredCollection = new ObservableCollection<IExplorerItemModel>();
+            foreach (var explorerItemModel in ExplorerItemModels)
+            {
+                var cloned = ExplorerItemModelClone(explorerItemModel);
+                var serverItem = DialogFilterRec(searchCriteria, cloned);
+                if (serverItem != null)
+                {
+                    filteredCollection.Add(serverItem);
+                }
+            }
+            return filteredCollection;
+        }
+        private IExplorerItemModel DialogFilterRec(Func<IExplorerItemModel, bool> filter, IExplorerItemModel root, bool includeFolders = false)
+        {
+            if (filter == null)
+            {
+                return root;
+            }
+            var innerFilter = filter;
+            if (includeFolders)
+                innerFilter = a => filter(a) || a.ResourceType == ResourceType.Folder;
+            root.Children = root.Children.Where(innerFilter).ToObservableCollection();
+            foreach (var a in root.Children)
+            {
+                DialogFilterRec(filter, a);
+            }
+            return root;
+        }
+
         private bool ContainsChild(Func<IExplorerItemModel, bool> filter, IExplorerItemModel root)
         {
-            if(root.Children == null)
+            if (root.Children == null)
                 return false;
 
             bool desc = root.Children.Any(filter);
@@ -513,17 +565,18 @@ namespace Dev2.AppResources.Repositories
 
         private IExplorerItemModel FilterRec(Func<IExplorerItemModel, bool> filter, IExplorerItemModel root)
         {
-            if(filter == null)
+            if (filter == null)
             {
                 return root;
             }
-            if(!ContainsChild(filter, root))
+            if (!ContainsChild(filter, root))
             {
                 return null;
             }
             root.Children = root.Children.Where(a => FilterRec(filter, a) != null || filter(a)).ToObservableCollection();
             return root;
         }
+
 
         #endregion
 
@@ -775,6 +828,8 @@ namespace Dev2.AppResources.Repositories
         }
 
         readonly Dictionary<string, Guid> _versionKeys = new Dictionary<string, Guid>();
+        ObservableCollection<IExplorerItemModel> _explorerItemModels;
+
         private Guid GenerateVersionResourceId(Guid resourceId, Guid environmentId, string versionNumber)
         {
             var key = string.Format("{0}{1}{2}", resourceId, environmentId, versionNumber);

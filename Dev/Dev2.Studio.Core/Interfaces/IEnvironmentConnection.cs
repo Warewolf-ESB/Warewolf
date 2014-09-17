@@ -38,7 +38,7 @@ namespace Dev2.Studio.Core.Interfaces
         string Alias { get; set; }
         string DisplayName { get; set; }
 
-        void Connect();
+        void Connect(Guid Id);
         void Disconnect();
 
         // BUG 9634 - 2013.07.17 - TWR : added

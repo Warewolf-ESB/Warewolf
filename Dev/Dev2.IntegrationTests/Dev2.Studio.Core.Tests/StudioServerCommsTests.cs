@@ -26,7 +26,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         {
             IEnvironmentConnection conn = CreateConnection();
 
-            conn.Connect();
+            conn.Connect(Guid.Empty);
             // The IsConnected property of the EnvironmentConnection references the TCPDispatch Client
             // Only if the connection to the server is successfully made by the dispatch client will the
             // IsConnected message return true
@@ -42,10 +42,10 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
         {
             IEnvironmentConnection conn = CreateConnection();
 
-            conn.Connect();
+            conn.Connect(Guid.Empty);
             conn.Disconnect();
             Thread.Sleep(100);
-            conn.Connect();
+            conn.Connect(Guid.Empty);
             Thread.Sleep(500);
             bool afterReconnection = conn.IsConnected;
 

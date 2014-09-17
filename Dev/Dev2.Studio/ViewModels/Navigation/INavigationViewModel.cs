@@ -17,6 +17,6 @@ namespace Dev2.Studio.ViewModels.Navigation
         bool IsFromActivityDrop { get; set; }
         IEnvironmentModel FilterEnvironment { get; set; }
         void BringItemIntoView(IContextualResourceModel item);
-        void Filter(Func<IExplorerItemModel, bool> filter, bool fromFilter = false);
+        void Filter(Func<IExplorerItemModel, bool> filter, bool fromFilter = false, bool useDialogFilter=false);
     }
 }

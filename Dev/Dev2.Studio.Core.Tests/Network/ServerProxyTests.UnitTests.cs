@@ -5,6 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Security;
+using Dev2.Communication;
+using Dev2.Explorer;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Threading;
@@ -108,6 +112,64 @@ namespace Dev2.Core.Tests.Network
             //------------Assert Results-------------------------
             var subscription = serverProxy.EsbProxy.Subscribe("SendDebugState");
             Assert.IsNotNull(subscription);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServerProxy_Constructor")]
+        public void ServerProxy_HandleItemAdded()
+        {
+            //------------Setup for test--------------------------
+            var serverProxy = new ServerProxy(new Uri("http://bob"));
+            var serverGuid = Guid.NewGuid();
+            var ItemGuid = Guid.Empty;
+            try
+            {
+                serverProxy.Connect(serverGuid);
+            }
+            // ReSharper disable EmptyGeneralCatchClause
+            catch
+            // ReSharper restore EmptyGeneralCatchClause
+            {
+
+
+            }
+            //------------Execute Test---------------------------
+            ServerExplorerItem item = new ServerExplorerItem("bob",Guid.Empty,ResourceType.DbService,null,Permissions.Administrator, "bob");
+            serverProxy.ItemAddedMessageAction += explorerItem => { ItemGuid = explorerItem.ServerId; };
+            Dev2JsonSerializer dev = new Dev2JsonSerializer();
+            var output = dev.SerializeToBuilder(item);
+            PrivateObject p = new PrivateObject(serverProxy);
+            p.Invoke("OnItemAddedMessageReceived", new object[] { output.ToString() });
+            Assert.AreEqual(ItemGuid,serverGuid);
+            //------------Assert Results-------------------------
+            var subscription = serverProxy.EsbProxy.Subscribe("SendDebugState");
+            Assert.IsNotNull(subscription);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServerProxy_Connect")]
+        public void ServerProxy_ConnectSetsId()
+        {
+            //------------Setup for test--------------------------
+            //------------Execute Test---------------------------
+            var serverProxy = new TestServerProxy();
+            var x = Guid.NewGuid();
+            try
+            {
+                serverProxy.Connect(x);
+            }
+// ReSharper disable EmptyGeneralCatchClause
+            catch
+// ReSharper restore EmptyGeneralCatchClause
+            {
+                
+             
+            }
+            
+            //------------Assert Results-------------------------
+            Assert.AreEqual(x,serverProxy.ID);
         }
 
         [TestMethod]

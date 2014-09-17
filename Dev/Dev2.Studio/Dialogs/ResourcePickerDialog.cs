@@ -24,6 +24,7 @@ namespace Dev2.Dialogs
 
         readonly INavigationViewModel _navigationViewModel;
         IEnvironmentModel _environmentModel;
+        IStudioResourceRepository _studio;
 
         /// <summary>
         /// Creates a picker suitable for dropping from the toolbox.
@@ -47,7 +48,7 @@ namespace Dev2.Dialogs
             VerifyArgument.IsNotNull("eventPublisher", eventPublisher);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
             VerifyArgument.IsNotNull("connectControlSingleton", connectControlSingleton);
-
+            _studio = studioResourceRepository;
             _navigationViewModel = new NavigationViewModel(eventPublisher, asyncWorker, null, environmentRepository, studioResourceRepository,connectControlSingleton, () => {}, isFromDrop, activityType);
             _activityType = activityType;
         }
@@ -71,7 +72,7 @@ namespace Dev2.Dialogs
             else
             {
 
-                _navigationViewModel.Filter(null);
+                _navigationViewModel.Filter(null,false,true);
                 var explorerItemModels = _navigationViewModel.ExplorerItemModels;
                 if(explorerItemModels != null)
                 {

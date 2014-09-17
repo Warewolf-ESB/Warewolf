@@ -43,7 +43,7 @@ namespace Dev2.Runtime.ServiceModel
             var result = new EmailSource();
             try
             {
-                var xmlStr = Resources.ReadXml(workspaceId, ResourceType.EmailSource, resourceId);
+                var xmlStr = ResourceCatalog.Instance.GetResourceContents(workspaceId, Guid.Parse(resourceId)).ToString();
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);

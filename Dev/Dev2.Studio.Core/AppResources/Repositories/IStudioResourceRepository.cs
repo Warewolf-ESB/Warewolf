@@ -27,6 +27,7 @@ namespace Dev2.AppResources.Repositories
         IExplorerItemModel FindItemById(Guid id);
         IExplorerItemModel FindItemByIdAndEnvironment(Guid id, Guid environmentId);
         ObservableCollection<IExplorerItemModel> Filter(Func<IExplorerItemModel, bool> filter);
+        ObservableCollection<IExplorerItemModel> DialogFilter(Func<IExplorerItemModel, bool> searchCriteria);
         IExplorerItemModel FindItem(Func<IExplorerItemModel, bool> searchCriteria);
         void UpdateItem(Guid id, Action<IExplorerItemModel> action, Guid environmentId);
         void AddResouceItem(IContextualResourceModel resourceModel);

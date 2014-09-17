@@ -13,7 +13,6 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.ConnectionHelpers;
 using Dev2.Models;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
@@ -303,14 +302,16 @@ namespace Dev2.Studio.ViewModels.Navigation
             }
         }
 
-        public void Filter(Func<IExplorerItemModel, bool> filter, bool fromFilter = false)
+        public void Filter(Func<IExplorerItemModel, bool> filter, bool fromFilter = false,bool useDialogFilter = false)
         {
             Func<IExplorerItemModel, bool> workflowFilter = model => (model.ResourceType == ResourceType.WorkflowService || model.ResourceType == ResourceType.Folder);
             Func<IExplorerItemModel, bool> serviceFilter = model => ((model.ResourceType >= ResourceType.DbService && model.ResourceType <= ResourceType.WebService));
             Func<IExplorerItemModel, bool> sourceFilter = model => ((model.ResourceType >= ResourceType.DbSource && model.ResourceType <= ResourceType.ServerSource));
-
+   
             Func<IExplorerItemModel, bool> environmentFilter = model => true;
-
+            Func<Func<IExplorerItemModel, bool>, ObservableCollection<IExplorerItemModel>> filterMethod = StudioResourceRepository.Filter;
+            if (useDialogFilter)
+                filterMethod = StudioResourceRepository.DialogFilter;
             if(FilterEnvironment != null)
             {
                 environmentFilter = model => model.EnvironmentId == FilterEnvironment.ID;
@@ -321,16 +322,16 @@ namespace Dev2.Studio.ViewModels.Navigation
                 switch(DsfActivityType)
                 {
                     case enDsfActivityType.All:
-                        ExplorerItemModels = StudioResourceRepository.Filter(model => filter(model) && environmentFilter(model));
+                        ExplorerItemModels = filterMethod(model => filter(model) && environmentFilter(model));
                         break;
                     case enDsfActivityType.Workflow:
-                        ExplorerItemModels = StudioResourceRepository.Filter(model => workflowFilter(model) && filter(model) && environmentFilter(model));
+                        ExplorerItemModels = filterMethod(model => workflowFilter(model) && filter(model) && environmentFilter(model));
                         break;
                     case enDsfActivityType.Service:
-                        ExplorerItemModels = StudioResourceRepository.Filter(model => serviceFilter(model) && filter(model) && environmentFilter(model));
+                        ExplorerItemModels = filterMethod(model => serviceFilter(model) && filter(model) && environmentFilter(model));
                         break;
                     case enDsfActivityType.Source:
-                        ExplorerItemModels = StudioResourceRepository.Filter(model => sourceFilter(model) && filter(model) && environmentFilter(model));
+                        ExplorerItemModels = filterMethod(model => sourceFilter(model) && filter(model) && environmentFilter(model));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -360,20 +361,20 @@ namespace Dev2.Studio.ViewModels.Navigation
                         ExplorerItemModels = StudioResourceRepository.ExplorerItemModels;
                         break;
                     case enDsfActivityType.Workflow:
-                        ExplorerItemModels = StudioResourceRepository.Filter(model => workflowFilter(model) && environmentFilter(model));
+                        ExplorerItemModels = filterMethod(model => model != null && workflowFilter(model) && environmentFilter(model));
                         break;
                     case enDsfActivityType.Service:
-                        ExplorerItemModels = StudioResourceRepository.Filter(model => serviceFilter(model) && environmentFilter(model));
-                        break;
+                        ExplorerItemModels = filterMethod(model => serviceFilter(model) && environmentFilter(model));
+                         break;
                     case enDsfActivityType.Source:
-                        ExplorerItemModels = StudioResourceRepository.Filter(model => sourceFilter(model) && environmentFilter(model));
+                        ExplorerItemModels = filterMethod(model => model != null && sourceFilter(model) && environmentFilter(model));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
             }
         }
-
+    
         public IExplorerItemModel FindChild(IContextualResourceModel resource)
         {
             var explorerItemModels = ExplorerItemModels.SelectMany(explorerItemModel => explorerItemModel.Descendants()).ToList();

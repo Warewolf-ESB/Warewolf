@@ -113,13 +113,13 @@ namespace Dev2.Core.Tests.Environments
             var connection = CreateConnection();
             connection.Setup(c => c.IsConnected).Returns(false);
             connection.Setup(c => c.DisplayName).Returns("Test");
-            connection.Setup(c => c.Connect()).Verifiable();
+            connection.Setup(c => c.Connect(It.IsAny<Guid>())).Verifiable();
 
             var env = CreateEnvironmentModel(Guid.NewGuid(), connection.Object);
 
             env.Connect();
 
-            connection.Verify(c => c.Connect(), Times.Once());
+            connection.Verify(c => c.Connect(It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -130,13 +130,13 @@ namespace Dev2.Core.Tests.Environments
             var connection = CreateConnection();
             connection.Setup(c => c.IsConnected).Returns(true);
             connection.Setup(c => c.DisplayName).Returns("Test");
-            connection.Setup(c => c.Connect()).Verifiable();
+            connection.Setup(c => c.Connect(It.IsAny<Guid>())).Verifiable();
 
             var env = CreateEnvironmentModel(Guid.NewGuid(), connection.Object);
 
             env.Connect();
 
-            connection.Verify(c => c.Connect(), Times.Never());
+            connection.Verify(c => c.Connect(It.IsAny<Guid>()), Times.Never());
         }
 
         [TestMethod]
@@ -157,11 +157,11 @@ namespace Dev2.Core.Tests.Environments
         {
             var c1 = CreateConnection();
             c1.Setup(c => c.DisplayName).Returns("Test");
-            c1.Setup(c => c.Connect()).Verifiable();
+            c1.Setup(c => c.Connect(It.IsAny<Guid>())).Verifiable();
 
             var c2 = CreateConnection();
             c2.Setup(c => c.DisplayName).Returns("Other");
-            c2.Setup(c => c.Connect()).Verifiable();
+            c2.Setup(c => c.Connect(It.IsAny<Guid>())).Verifiable();
             c2.Setup(c => c.IsConnected).Returns(true);
 
             var e1 = CreateEnvironmentModel(Guid.NewGuid(), c1.Object);
@@ -169,7 +169,7 @@ namespace Dev2.Core.Tests.Environments
 
             e1.Connect(e2);
 
-            c2.Verify(c => c.Connect(), Times.Never());
+            c2.Verify(c => c.Connect(It.IsAny<Guid>()), Times.Never());
         }
 
         [TestMethod]
@@ -178,11 +178,11 @@ namespace Dev2.Core.Tests.Environments
         {
             var c1 = CreateConnection();
             c1.Setup(c => c.DisplayName).Returns("Test");
-            c1.Setup(c => c.Connect()).Verifiable();
+            c1.Setup(c => c.Connect(It.IsAny<Guid>())).Verifiable();
 
             var c2 = CreateConnection();
             c2.Setup(c => c.DisplayName).Returns("Other");
-            c2.Setup(c => c.Connect()).Verifiable();
+            c2.Setup(c => c.Connect(It.IsAny<Guid>())).Verifiable();
             c2.Setup(c => c.IsConnected).Returns(true);
 
             var e1 = CreateEnvironmentModel(Guid.NewGuid(), c1.Object);
@@ -190,7 +190,7 @@ namespace Dev2.Core.Tests.Environments
 
             e1.Connect(e2);
 
-            c1.Verify(c => c.Connect(), Times.Once());
+            c1.Verify(c => c.Connect(It.IsAny<Guid>()), Times.Once());
         }
 
         [TestMethod]
@@ -200,19 +200,19 @@ namespace Dev2.Core.Tests.Environments
         {
             var c1 = CreateConnection();
             c1.Setup(c => c.DisplayName).Returns("Test");
-            c1.Setup(c => c.Connect()).Verifiable();
+            c1.Setup(c => c.Connect(It.IsAny<Guid>())).Verifiable();
 
             var c2 = CreateConnection();
             c2.Setup(c => c.DisplayName).Returns("Other");
             c2.Setup(c => c.IsConnected).Returns(false);
-            c2.Setup(c => c.Connect()).Callback(() => c2.Setup(c => c.IsConnected).Returns(true)).Verifiable();
+            c2.Setup(c => c.Connect(It.IsAny<Guid>())).Callback(() => c2.Setup(c => c.IsConnected).Returns(true)).Verifiable();
 
             var e1 = CreateEnvironmentModel(Guid.NewGuid(), c1.Object);
             var e2 = CreateEnvironmentModel(Guid.NewGuid(), c2.Object);
 
             e1.Connect(e2);
 
-            c2.Verify(c => c.Connect(), Times.Once());
+            c2.Verify(c => c.Connect(It.IsAny<Guid>()), Times.Once());
         }
 
 
@@ -224,7 +224,7 @@ namespace Dev2.Core.Tests.Environments
         {
             var c1 = CreateConnection();
             c1.Setup(c => c.DisplayName).Returns("Test");
-            c1.Setup(c => c.Connect()).Verifiable();
+            c1.Setup(c => c.Connect(It.IsAny<Guid>())).Verifiable();
 
             var c2 = CreateConnection();
             c2.Setup(c => c.DisplayName).Returns("Other");

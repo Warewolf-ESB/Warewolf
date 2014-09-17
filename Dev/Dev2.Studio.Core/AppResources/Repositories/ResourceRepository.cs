@@ -187,28 +187,31 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void UpdateResourceRepositoryWithDeploy(IResourceModel resource)
         {
             var x = GetStudioResourceRepository().FindItem(a => a.ResourceId == resource.ID && a.EnvironmentId == _environmentModel.ID);
-            if(x == null)
+            if (x == null)
             {
                 IEnumerable<string> folder = resource.Category.Split('\\');
-                var sAppend = "";
-                IExplorerItem item = null;
-                if(folder.Count() > 1)
+                if (folder.Count() > 1)
                 {
-                    folder = folder.Take(folder.Count() - 1);
-                }
-                foreach(var s in folder)
-                {
-                    sAppend += (sAppend.Length > 0 ? "\\" : "") + s;
-                    string append = sAppend;
-                    if(GetStudioResourceRepository().FindItem(a => a.ResourcePath == append && a.EnvironmentId == _environmentModel.ID) == null)
+                    var sAppend = "";
+                    IExplorerItem item = null;
+                    if (folder.Count() > 1)
                     {
-                        item = new ServerExplorerItem(s, Guid.NewGuid(), ResourceType.Folder, new List<IExplorerItem>(), Permissions.Administrator, sAppend) { ServerId = _environmentModel.ID };
-                        GetStudioResourceRepository().ItemAddedMessageHandler(item);
+                        folder = folder.Take(folder.Count() - 1);
                     }
+                    foreach (var s in folder)
+                    {
+                        sAppend += (sAppend.Length > 0 ? "\\" : "") + s;
+                        string append = sAppend;
+                        if (GetStudioResourceRepository().FindItem(a => a.ResourcePath == append && a.EnvironmentId == _environmentModel.ID) == null)
+                        {
+                            item = new ServerExplorerItem(s, Guid.NewGuid(), ResourceType.Folder, new List<IExplorerItem>(), Permissions.Administrator, sAppend) { ServerId = _environmentModel.ID };
+                            GetStudioResourceRepository().ItemAddedMessageHandler(item);
+                        }
+                    }
+                    ResourceType type;
+                    Enum.TryParse(resource.ServerResourceType, out type);
+                    GetStudioResourceRepository().ItemAddedMessageHandler(new ServerExplorerItem(resource.DisplayName, resource.ID, type, new List<IExplorerItem>(), resource.UserPermissions, resource.Category) { ServerId = _environmentModel.ID, Parent = item });
                 }
-                ResourceType type;
-                Enum.TryParse(resource.ServerResourceType, out type);
-                GetStudioResourceRepository().ItemAddedMessageHandler(new ServerExplorerItem(resource.DisplayName, resource.ID, type, new List<IExplorerItem>(), resource.UserPermissions, resource.Category) { ServerId = _environmentModel.ID, Parent = item });
             }
         }
 

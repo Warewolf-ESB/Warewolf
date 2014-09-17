@@ -29,6 +29,7 @@ using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNet.SignalR.Client.Hubs;
 using ServiceStack.Messaging.Rcon;
 
 namespace Dev2.Network
@@ -51,6 +52,7 @@ namespace Dev2.Network
 
         public ServerProxy(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
+
             IsAuthorized = true;
             VerifyArgument.IsNotNull("serverUri", serverUri);
             ServerEvents = EventPublishers.Studio;
@@ -249,8 +251,9 @@ namespace Dev2.Network
         public string Alias { get; set; }
         public string DisplayName { get; set; }
 
-        public void Connect()
+        public void Connect(Guid id)
         {
+            ID = id;
             try
             {
                 if(!IsLocalHost)
@@ -372,7 +375,7 @@ namespace Dev2.Network
         void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
         {
             Dev2Logger.Log.Info("");
-            Connect();
+            Connect(ID);
             if(IsConnected)
             {
                 StopReconnectHeartbeat();
@@ -494,7 +497,7 @@ namespace Dev2.Network
         void OnItemAddedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
-
+            serverExplorerItem.ServerId = ID;
             if(ItemAddedMessageAction != null)
             {
                 ItemAddedMessageAction(serverExplorerItem);
@@ -505,6 +508,7 @@ namespace Dev2.Network
         void OnItemDeletedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
+            serverExplorerItem.ServerId = ID;
             if(ItemItemDeletedMessageAction != null)
             {
                 ItemItemDeletedMessageAction(serverExplorerItem);
@@ -725,5 +729,8 @@ namespace Dev2.Network
         }
 
         #endregion
+
+        public Guid ID { get; private set; }
+
     }
 }

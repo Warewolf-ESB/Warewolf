@@ -36,7 +36,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
         {
             IEnvironmentConnection conn = CreateConnection();
 
-            conn.Connect();
+            conn.Connect(Guid.Empty);
             Assert.IsTrue(conn.IsConnected);
             conn.Disconnect();
         }
@@ -55,7 +55,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
 
             IEnvironmentConnection conn = CreateConnection();
 
-            conn.Connect();
+            conn.Connect(Guid.Empty);
             if(conn.IsConnected)
             {
 
@@ -66,7 +66,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
             {
                 Assert.Fail("Unable to create a connection to the server");
             }
-            conn.Connect();
+            conn.Connect(Guid.Empty);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
             var xmlString = CreateDataObject("FindResourceService", "*");
             IEnvironmentConnection conn = CreateConnection();
 
-            conn.Connect();
+            conn.Connect(Guid.Empty);
             if(conn.IsConnected)
             {
                 var returnData = conn.ExecuteCommand(xmlString, Guid.Empty, Guid.Empty);
@@ -88,7 +88,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests.Models
             {
                 Assert.Fail("Unable to create a connection to the server");
             }
-            conn.Connect();
+            conn.Connect(Guid.Empty);
 
         }
 

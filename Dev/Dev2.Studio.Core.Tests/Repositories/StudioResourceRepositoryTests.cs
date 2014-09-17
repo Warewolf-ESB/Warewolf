@@ -10,7 +10,6 @@ using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Explorer;
-using Dev2.Interfaces;
 using Dev2.Models;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -283,6 +282,35 @@ namespace Dev2.Core.Tests.Repositories
             Assert.AreEqual("dbService1", explorerItemModels[0].Children[0].Children[0].DisplayName);
         }
 
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("StudioResourceRepository_Filter")]
+        public void StudioResourceRepository_FilterDialog_String_ReturnsMatchingItems()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var explorerItem = GetTestData();
+            SetupEnvironmentRepo(Guid.Empty);
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var repository = new StudioResourceRepository(explorerItem, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object
+            };
+            //------------Execute Test---------------------------
+            var explorerItemModels = repository.DialogFilter(model => model.DisplayName.Contains("dbService") || model.ResourceType == ResourceType.Folder);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(explorerItemModels);
+            Assert.AreEqual(explorerItemModels[0].DisplayName, repository.ExplorerItemModels[0].DisplayName);
+            Assert.AreNotEqual(explorerItemModels[0].Children.Count, repository.ExplorerItemModels[0].Children.Count);
+            Assert.AreEqual(1, explorerItemModels[0].Children.Count);
+            Assert.AreEqual("folder1", explorerItemModels[0].Children[0].DisplayName);
+            Assert.AreEqual("dbService1", explorerItemModels[0].Children[0].Children[0].DisplayName);
+        }
+
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioResourceRepository_Filter")]
@@ -309,6 +337,34 @@ namespace Dev2.Core.Tests.Repositories
             Assert.AreEqual(4, repository.ExplorerItemModels[0].ChildrenCount);
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("StudioResourceRepository_Filter")]
+        public void StudioResourceRepository_FilterDialog_NullAfterFilter_ReturnsOriginalCollection()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var explorerItem = GetTestData();
+            SetupEnvironmentRepo(Guid.Empty);
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var repository = new StudioResourceRepository(explorerItem, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object
+            };
+            //------------Preconditions--------------------------
+            Assert.AreEqual(4, repository.ExplorerItemModels[0].ChildrenCount);
+            var explorerItemModels = repository.Filter(model => model.DisplayName.Contains("r1"));
+            Assert.AreEqual(0, explorerItemModels[0].ChildrenCount);
+            Assert.AreEqual(1, explorerItemModels[0].Children.Count);
+            //------------Execute Test---------------------------
+            repository.Filter(null);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(4, repository.ExplorerItemModels[0].ChildrenCount);
+        }
+
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("StudioResourceRepository_Filter")]
@@ -326,6 +382,31 @@ namespace Dev2.Core.Tests.Repositories
                 };
             //------------Execute Test---------------------------
             var explorerItemModels = repository.Filter(model => model.DisplayName.Contains("r1"));
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(explorerItemModels);
+            Assert.AreEqual(explorerItemModels[0].DisplayName, repository.ExplorerItemModels[0].DisplayName);
+            Assert.AreNotEqual(explorerItemModels[0].Children.Count, repository.ExplorerItemModels[0].Children.Count);
+            Assert.AreEqual(1, explorerItemModels[0].Children.Count);
+            Assert.AreEqual("folder1", explorerItemModels[0].Children[0].DisplayName);
+            Assert.AreEqual("subfolder1", explorerItemModels[0].Children[0].Children[0].DisplayName);
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("StudioResourceRepository_Filter")]
+        public void StudioResourceRepository_FilterDialog_String_Multiple_ReturnsMatchingItems()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var explorerItem = GetTestData();
+            SetupEnvironmentRepo(Guid.Empty);
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var repository = new StudioResourceRepository(explorerItem, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object
+            };
+            //------------Execute Test---------------------------
+            var explorerItemModels = repository.DialogFilter(model => model.DisplayName.Contains("r1"));
             //------------Assert Results-------------------------
             Assert.IsNotNull(explorerItemModels);
             Assert.AreEqual(explorerItemModels[0].DisplayName, repository.ExplorerItemModels[0].DisplayName);
