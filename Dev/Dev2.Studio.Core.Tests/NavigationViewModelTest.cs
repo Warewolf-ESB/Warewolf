@@ -276,7 +276,7 @@ namespace Dev2.Core.Tests
             //------------Preconditions---------------------------
             Assert.AreEqual(4, viewModel.ExplorerItemModels[0].ChildrenCount);
             //------------Execute Test---------------------------
-            viewModel.Filter(model => model.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService || model.ResourceType == Common.Interfaces.Data.ResourceType.Folder,false,true);
+            viewModel.Filter(model => model.ResourceType == Common.Interfaces.Data.ResourceType.WorkflowService || model.ResourceType == Common.Interfaces.Data.ResourceType.Folder,false,false);
             //------------Assert Results-------------------------
             Assert.IsTrue(HasFolder(viewModel.ExplorerItemModels[0].Children));
         }
@@ -783,7 +783,7 @@ namespace Dev2.Core.Tests
             vm.UpdateSearchFilter("Testing2");
             //------------Assert Results-------------------------
             Assert.AreEqual(1, explorerBeforeCount);
-            Assert.AreEqual(1, vm.ExplorerItemModels.Count);
+            Assert.AreEqual(0, vm.ExplorerItemModels.Count);
         }
 
         [TestMethod]

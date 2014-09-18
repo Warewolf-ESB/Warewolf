@@ -73,7 +73,7 @@ namespace Dev2.Dialogs
             else
             {
 
-                _navigationViewModel.Filter(null,false,_activityType == enDsfActivityType.Workflow);
+                _navigationViewModel.Filter(null,false,false);
                 var explorerItemModels = _navigationViewModel.ExplorerItemModels;
                 if(explorerItemModels != null)
                 {
