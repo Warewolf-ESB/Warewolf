@@ -106,13 +106,13 @@ namespace Dev2.Runtime.Hosting
             }
             LoadFrequentlyUsedServices().Wait();
         }
-        public ResourceCatalog(IEnumerable<DynamicService> managementServices,IServerVersionRepository serverVersionRepository)
+        public ResourceCatalog(IEnumerable<DynamicService> managementServices, IServerVersionRepository serverVersionRepository)
         {
             // MUST load management services BEFORE server workspace!!
             _versioningRepository = serverVersionRepository;
-            if (managementServices != null)
+            if(managementServices != null)
             {
-                foreach (var service in managementServices)
+                foreach(var service in managementServices)
                 {
                     var resource = new ManagementServiceResource(service);
                     _managementServices.TryAdd(resource.ResourceID, resource);
@@ -510,9 +510,9 @@ namespace Dev2.Runtime.Hosting
         {
             if(resource != null)
             {
-                var copy = new Resource(resource) ;
+                var copy = new Resource(resource);
                 var globalResource = GetResource(Guid.Empty, resource.ResourceID);
-                if(globalResource!= null )
+                if(globalResource != null)
                 {
 
                     copy.VersionInfo = globalResource.VersionInfo;
@@ -534,39 +534,39 @@ namespace Dev2.Runtime.Hosting
             try
             {
 
-     
-            if(resourceXml == null || resourceXml.Length == 0)
-            {
-                throw new ArgumentNullException("resourceXml");
+
+                if(resourceXml == null || resourceXml.Length == 0)
+                {
+                    throw new ArgumentNullException("resourceXml");
+                }
+
+                var workspaceLock = GetWorkspaceLock(workspaceID);
+                lock(workspaceLock)
+                {
+                    var xml = resourceXml.ToXElement();
+
+                    var resource = new Resource(xml);
+                    Dev2Logger.Log.Info("Save Resource." + resource);
+                    _versioningRepository.StoreVersion(resource, user, reason, workspaceID);
+
+                    resource.UpgradeXml(xml, resource);
+
+                    StringBuilder result = xml.ToStringBuilder();
+
+                    return CompileAndSave(workspaceID, resource, result);
+                }
             }
-
-            var workspaceLock = GetWorkspaceLock(workspaceID);
-            lock(workspaceLock)
+            catch(Exception err)
             {
-                var xml = resourceXml.ToXElement();
-
-                var resource = new Resource(xml);
-                Dev2Logger.Log.Info("Save Resource."+ resource);
-                _versioningRepository.StoreVersion(resource, user, reason,workspaceID);
-
-                resource.UpgradeXml(xml, resource);
-
-                StringBuilder result = xml.ToStringBuilder();
-
-                return CompileAndSave(workspaceID, resource, result);
-            }
-            }
-            catch (Exception err)
-            {
-                Dev2Logger.Log.Error("Save Error",err);
+                Dev2Logger.Log.Error("Save Error", err);
                 throw;
             }
         }
 
-        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string userRoles = null, string reason ="",string user ="")
+        public ResourceCatalogResult SaveResource(Guid workspaceID, IResource resource, string userRoles = null, string reason = "", string user = "")
         {
-           
-            _versioningRepository.StoreVersion(resource, user,reason,workspaceID);
+
+            _versioningRepository.StoreVersion(resource, user, reason, workspaceID);
 
             if(resource == null)
             {
@@ -652,7 +652,7 @@ namespace Dev2.Runtime.Hosting
                         };
 
                     case 1:
-                        return DeleteImpl(workspaceID, resources, workspaceResources,deleteVersions);
+                        return DeleteImpl(workspaceID, resources, workspaceResources, deleteVersions);
 
                     default:
                         return new ResourceCatalogResult
@@ -669,46 +669,46 @@ namespace Dev2.Runtime.Hosting
             try
             {
 
-       
-            var workspaceLock = GetWorkspaceLock(workspaceID);
-            lock(workspaceLock)
-            {
-                if(resourceID == Guid.Empty || string.IsNullOrEmpty(type))
+
+                var workspaceLock = GetWorkspaceLock(workspaceID);
+                lock(workspaceLock)
                 {
-                    throw new InvalidDataContractException("ResourceID or Type is missing from the request");
-                }
+                    if(resourceID == Guid.Empty || string.IsNullOrEmpty(type))
+                    {
+                        throw new InvalidDataContractException("ResourceID or Type is missing from the request");
+                    }
 
-                var resourceTypes = ResourceTypeConverter.ToResourceTypes(type, false);
+                    var resourceTypes = ResourceTypeConverter.ToResourceTypes(type, false);
 
-                var workspaceResources = GetResources(workspaceID);
-                var resources = workspaceResources.FindAll(r =>
-                    Equals(r.ResourceID, resourceID)
-                    && resourceTypes.Contains(r.ResourceType));
+                    var workspaceResources = GetResources(workspaceID);
+                    var resources = workspaceResources.FindAll(r =>
+                        Equals(r.ResourceID, resourceID)
+                        && resourceTypes.Contains(r.ResourceType));
 
-                switch(resources.Count)
-                {
-                    case 0:
-                        return new ResourceCatalogResult
-                        {
-                            Status = ExecStatus.NoMatch,
-                            Message = string.Format("<Result>{0} '{1}' was not found.</Result>", type, resourceID)
-                        };
+                    switch(resources.Count)
+                    {
+                        case 0:
+                            return new ResourceCatalogResult
+                            {
+                                Status = ExecStatus.NoMatch,
+                                Message = string.Format("<Result>{0} '{1}' was not found.</Result>", type, resourceID)
+                            };
 
-                    case 1:
-                        return DeleteImpl(workspaceID, resources, workspaceResources,deleteVersions);
+                        case 1:
+                            return DeleteImpl(workspaceID, resources, workspaceResources, deleteVersions);
 
-                    default:
-                        return new ResourceCatalogResult
-                        {
-                            Status = ExecStatus.DuplicateMatch,
-                            Message = string.Format("<Result>Multiple matches found for {0} '{1}'.</Result>", type, resourceID)
-                        };
+                        default:
+                            return new ResourceCatalogResult
+                            {
+                                Status = ExecStatus.DuplicateMatch,
+                                Message = string.Format("<Result>Multiple matches found for {0} '{1}'.</Result>", type, resourceID)
+                            };
+                    }
                 }
             }
-            }
-            catch (Exception err)
+            catch(Exception err)
             {
-                Dev2Logger.Log.Error("Delete Error",err);
+                Dev2Logger.Log.Error("Delete Error", err);
                 throw;
             }
         }
@@ -718,7 +718,7 @@ namespace Dev2.Runtime.Hosting
             var resource = resources[0];
 
             if(workspaceID == Guid.Empty && deleteVersions)
-            _versioningRepository.GetVersions(resource.ResourceID).ForEach(a=>_versioningRepository.DeleteVersion(resource.ResourceID,a.VersionInfo.VersionNumber));
+                _versioningRepository.GetVersions(resource.ResourceID).ForEach(a => _versioningRepository.DeleteVersion(resource.ResourceID, a.VersionInfo.VersionNumber));
 
             workspaceResources.Remove(resource);
             if(File.Exists(resource.FilePath))
@@ -1129,7 +1129,7 @@ namespace Dev2.Runtime.Hosting
             }
 
             XElement xml = contents.ToXElement();
-            xml = resource.UpgradeXml(xml,resource);
+            xml = resource.UpgradeXml(xml, resource);
             if(resource.ResourcePath != null && !resource.ResourcePath.EndsWith(resource.ResourceName))
             {
                 var resourcePath = (resPath == "" ? "" : resource.ResourcePath + "\\") + resource.ResourceName;
@@ -1202,8 +1202,11 @@ namespace Dev2.Runtime.Hosting
                 var messages = GetCompileMessages(resource, contents, beforeAction, smc);
                 if(messages != null)
                 {
-                    CompileMessageRepo.Instance.AddMessage(workspaceID, messages); //Sends the message for the resource being saved
-                    UpdateDependantResourceWithCompileMessages(workspaceID, resource, messages);
+                    _workspaceLocks.Keys.ForEach(workspace =>
+                    {
+                        CompileMessageRepo.Instance.AddMessage(workspace, messages); //Sends the message for the resource being saved
+                        UpdateDependantResourceWithCompileMessages(workspace, resource, messages);
+                    });
                 }
             }
         }
@@ -1246,11 +1249,17 @@ namespace Dev2.Runtime.Hosting
                 {
                     compileMessageTO.WorkspaceID = workspaceID;
                     compileMessageTO.UniqueID = dependant.UniqueID;
-                    compileMessageTO.ServiceName = affectedResource.ResourceName;
-                    compileMessageTO.ServiceID = affectedResource.ResourceID;
+                    if(affectedResource != null)
+                    {
+                        compileMessageTO.ServiceName = affectedResource.ResourceName;
+                        compileMessageTO.ServiceID = affectedResource.ResourceID;
+                    }
                     dependsMessageList.Add(compileMessageTO.Clone());
                 }
-                UpdateResourceXml(workspaceID, affectedResource, messages);
+                if(affectedResource != null)
+                {
+                    UpdateResourceXml(workspaceID, affectedResource, messages);
+                }
             }
             CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
         }
@@ -1521,7 +1530,7 @@ namespace Dev2.Runtime.Hosting
                         Message = string.Format("{0} '{1}' to '{2}'", "Failed to Find Resource", resourceID, newName)
                     };
                 }
-                _versioningRepository.StoreVersion(GetResource(Guid.Empty,resourceID), "unknown", "Rename",workspaceID);
+                _versioningRepository.StoreVersion(GetResource(Guid.Empty, resourceID), "unknown", "Rename", workspaceID);
                 //rename and save to workspace
                 var renameResult = UpdateResourceName(workspaceID, resourcesToUpdate[0], newName);
                 if(renameResult.Status != ExecStatus.Success)
@@ -1557,7 +1566,7 @@ namespace Dev2.Runtime.Hosting
             var oldCategory = resource.ResourcePath;
             string newCategory = "";
             var indexOfCategory = resource.ResourcePath.LastIndexOf(resource.ResourceName, StringComparison.Ordinal);
-            if (indexOfCategory > 0)
+            if(indexOfCategory > 0)
             {
                 newCategory = oldCategory.Substring(0, indexOfCategory) + newName;
             }
@@ -1601,7 +1610,7 @@ namespace Dev2.Runtime.Hosting
                 displayNameElement.SetValue(newName);
             }
             var categoryElement = resourceElement.Element("Category");
-            if (categoryElement != null)
+            if(categoryElement != null)
             {
                 categoryElement.SetValue(newCategory);
             }
@@ -1624,7 +1633,7 @@ namespace Dev2.Runtime.Hosting
             }
             //re-create, resign and save to file system the new resource
             StringBuilder contents = resourceElement.ToStringBuilder();
-            
+
             return SaveImpl(workspaceID, resource, contents);
 
         }

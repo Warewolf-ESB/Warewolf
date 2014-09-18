@@ -21,6 +21,7 @@ namespace Dev2.Activities.Designers2.Sequence
     public class SequenceDesignerViewModel : ActivityDesignerViewModel
     {
         object _smallViewItem;
+        bool _addedFromDesignSurface;
 
         public SequenceDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -41,7 +42,7 @@ namespace Dev2.Activities.Designers2.Sequence
             {
                 var test = value as ModelItem;
 
-                if(test != null)
+                if(test != null && !_addedFromDesignSurface)
                 {
                     if(test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity) && test.ItemType.BaseType != typeof(DsfActivity))
                     {
@@ -49,6 +50,10 @@ namespace Dev2.Activities.Designers2.Sequence
                         ModelItemCollection activitiesCollection = mi.Activities;
                         activitiesCollection.Insert(activitiesCollection.Count, test);
                     }
+                }
+                if(test != null)
+                {
+                    _addedFromDesignSurface = false;
                 }
                 _smallViewItem = null;
             }
@@ -144,6 +149,7 @@ namespace Dev2.Activities.Designers2.Sequence
                     {
                         activitiesCollection.Insert(activitiesCollection.Count, item);
                     }
+                    _addedFromDesignSurface = true;
                     return true;
                 }
             }

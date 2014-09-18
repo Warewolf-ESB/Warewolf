@@ -12,7 +12,6 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -80,7 +79,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2Logger.Log.Info(String.Format("Get Database Columns For Table. Database:{0} Schema:{1} Table{2}" ,database,schema,tableName));
             try
             {
-                var dbSource = JsonConvert.DeserializeObject<DbSource>(database);
+                var dbSource = serializer.Deserialize<DbSource>(database);
                 var runtTimedbSource = ResourceCatalog.Instance.GetResource<DbSource>(theWorkspace.ID, dbSource.ResourceID);
                 DataTable columnInfo;
                 using(var connection = new SqlConnection(runtTimedbSource.ConnectionString))

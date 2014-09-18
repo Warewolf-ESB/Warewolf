@@ -187,22 +187,22 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public void UpdateResourceRepositoryWithDeploy(IResourceModel resource)
         {
             var x = GetStudioResourceRepository().FindItem(a => a.ResourceId == resource.ID && a.EnvironmentId == _environmentModel.ID);
-            if (x == null)
+            if(x == null)
             {
                 IEnumerable<string> folder = resource.Category.Split('\\');
-                if (folder.Count() > 1)
+                if(folder.Count() > 1)
                 {
                     var sAppend = "";
                     IExplorerItem item = null;
-                    if (folder.Count() > 1)
+                    if(folder.Count() > 1)
                     {
                         folder = folder.Take(folder.Count() - 1);
                     }
-                    foreach (var s in folder)
+                    foreach(var s in folder)
                     {
                         sAppend += (sAppend.Length > 0 ? "\\" : "") + s;
                         string append = sAppend;
-                        if (GetStudioResourceRepository().FindItem(a => a.ResourcePath == append && a.EnvironmentId == _environmentModel.ID) == null)
+                        if(GetStudioResourceRepository().FindItem(a => a.ResourcePath == append && a.EnvironmentId == _environmentModel.ID) == null)
                         {
                             item = new ServerExplorerItem(s, Guid.NewGuid(), ResourceType.Folder, new List<IExplorerItem>(), Permissions.Administrator, sAppend) { ServerId = _environmentModel.ID };
                             GetStudioResourceRepository().ItemAddedMessageHandler(item);
@@ -988,11 +988,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         #region DB Resources
 
+        readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
         public DbTableList GetDatabaseTables(DbSource dbSource)
         {
             var comController = new CommunicationController { ServiceName = "GetDatabaseTablesService" };
 
-            comController.AddPayloadArgument("Database", JsonConvert.SerializeObject(dbSource));
+            comController.AddPayloadArgument("Database", _serializer.Serialize(dbSource));
 
             var tables = comController.ExecuteCommand<DbTableList>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
 
@@ -1003,9 +1004,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             var comController = new CommunicationController { ServiceName = "GetDatabaseColumnsForTableService" };
 
-            comController.AddPayloadArgument("Database", JsonConvert.SerializeObject(dbSource));
-            comController.AddPayloadArgument("TableName", JsonConvert.SerializeObject(dbTable.TableName));
-            comController.AddPayloadArgument("Schema", JsonConvert.SerializeObject(dbTable.Schema));
+            comController.AddPayloadArgument("Database", _serializer.Serialize(dbSource));
+            comController.AddPayloadArgument("TableName", _serializer.Serialize(dbTable.TableName));
+            comController.AddPayloadArgument("Schema", _serializer.Serialize(dbTable.Schema));
 
             var columns = comController.ExecuteCommand<DbColumnList>(_environmentModel.Connection, GlobalConstants.ServerWorkspaceID);
 
