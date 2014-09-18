@@ -32,256 +32,260 @@ namespace Dev2.Runtime.WebServer.Handlers
     {
         protected readonly List<DataListFormat> PublicFormats = new DataListTranslatorFactory().FetchAllFormats().Where(c => c.ContentType != "").ToList();
         string _location;
+        static readonly object ExecutionObject = new object();
         public string Location { get { return _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)); } }
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
 
         protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, List<DataListFormat> publicFormats, IPrincipal user = null)
         {
-            string executePayload;
-            IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid workspaceGuid;
-
-            if(workspaceId != null)
+            lock(ExecutionObject)
             {
-                if(!Guid.TryParse(workspaceId, out workspaceGuid))
+                string executePayload;
+                IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
+                Guid workspaceGuid;
+
+                if(workspaceId != null)
+                {
+                    if(!Guid.TryParse(workspaceId, out workspaceGuid))
+                    {
+                        workspaceGuid = WorkspaceRepository.Instance.ServerWorkspace.ID;
+                    }
+                }
+                else
                 {
                     workspaceGuid = WorkspaceRepository.Instance.ServerWorkspace.ID;
                 }
-            }
-            else
-            {
-                workspaceGuid = WorkspaceRepository.Instance.ServerWorkspace.ID;
-            }
 
-            ErrorResultTO errors;
-            var allErrors = new ErrorResultTO();
-            var dataObject = new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload) { IsFromWebServer = true, ExecutingUser = user, ServiceName = serviceName, WorkspaceID = workspaceGuid };
+                ErrorResultTO errors;
+                var allErrors = new ErrorResultTO();
+                var dataObject = new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload) { IsFromWebServer = true, ExecutingUser = user, ServiceName = serviceName, WorkspaceID = workspaceGuid };
 
-            // now bind any variables that are part of the path arguments ;)
-            BindRequestVariablesToDataObject(webRequest, ref dataObject);
+                // now bind any variables that are part of the path arguments ;)
+                BindRequestVariablesToDataObject(webRequest, ref dataObject);
 
-            // now process headers ;)
-            if(headers != null)
-            {
-                Dev2Logger.Log.Debug("Remote Invoke");
-
-                var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
-                var remoteId = headers.Get(HttpRequestHeader.From.ToString());
-
-                if(isRemote != null && remoteId != null)
+                // now process headers ;)
+                if(headers != null)
                 {
-                    if(isRemote.Equals(GlobalConstants.RemoteServerInvoke))
+                    Dev2Logger.Log.Debug("Remote Invoke");
+
+                    var isRemote = headers.Get(HttpRequestHeader.Cookie.ToString());
+                    var remoteId = headers.Get(HttpRequestHeader.From.ToString());
+
+                    if(isRemote != null && remoteId != null)
                     {
-                        // we have a remote invoke ;)
-                        dataObject.RemoteInvoke = true;
+                        if(isRemote.Equals(GlobalConstants.RemoteServerInvoke))
+                        {
+                            // we have a remote invoke ;)
+                            dataObject.RemoteInvoke = true;
+                        }
+
+                        dataObject.RemoteInvokerID = remoteId;
                     }
-
-                    dataObject.RemoteInvokerID = remoteId;
                 }
-            }
 
-            // now set the emition type ;)
-            int loc;
-            if(!String.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
-            {
-                // default it to xml
-                dataObject.ReturnType = EmitionTypes.XML;
-
-                if(loc > 0)
+                // now set the emition type ;)
+                int loc;
+                if(!String.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
                 {
-                    var typeOf = serviceName.Substring((loc + 1)).ToUpper();
-                    EmitionTypes myType;
-                    if(Enum.TryParse(typeOf, out myType))
+                    // default it to xml
+                    dataObject.ReturnType = EmitionTypes.XML;
+
+                    if(loc > 0)
                     {
-                        dataObject.ReturnType = myType;
+                        var typeOf = serviceName.Substring((loc + 1)).ToUpper();
+                        EmitionTypes myType;
+                        if(Enum.TryParse(typeOf, out myType))
+                        {
+                            dataObject.ReturnType = myType;
+                        }
+
+                        // adjust the service name to drop the type ;)
+
+                        // avoid .wiz amendments ;)
+                        if(!typeOf.ToLower().Equals(GlobalConstants.WizardExt))
+                        {
+                            serviceName = serviceName.Substring(0, loc);
+                            dataObject.ServiceName = serviceName;
+                        }
+
                     }
-
-                    // adjust the service name to drop the type ;)
-
-                    // avoid .wiz amendments ;)
-                    if(!typeOf.ToLower().Equals(GlobalConstants.WizardExt))
-                    {
-                        serviceName = serviceName.Substring(0, loc);
-                        dataObject.ServiceName = serviceName;
-                    }
-
                 }
-            }
-            else
-            {
-                // default it to xml
-                dataObject.ReturnType = EmitionTypes.XML;
-            }
-
-            // ensure service gets set ;)
-            if(dataObject.ServiceName == null)
-            {
-                dataObject.ServiceName = serviceName;
-            }
-            IResource resource = null;
-            if(!String.IsNullOrEmpty(dataObject.ServiceName))
-            {
-                resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
-                if(resource != null)
+                else
                 {
-                    dataObject.ResourceID = resource.ResourceID;
-
+                    // default it to xml
+                    dataObject.ReturnType = EmitionTypes.XML;
                 }
-            }
-            var esbEndpoint = new EsbServicesEndpoint();
-            var canExecute = true;
-            if(ServerAuthorizationService.Instance != null)
-            {
-                var authorizationService = ServerAuthorizationService.Instance;
-                var hasView = authorizationService.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
-                var hasExecute = authorizationService.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
-                canExecute = (hasExecute && hasView) || (dataObject.RemoteInvoke && hasExecute) || (resource != null && resource.ResourceType == ResourceType.ReservedService);
-            }
-            // Build EsbExecutionRequest - Internal Services Require This ;)
-            EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
 
-            Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
-            var executionDlid = GlobalConstants.NullDataListID;
-            if(canExecute)
-            {
-                executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
-                allErrors.MergeErrors(errors);
-            }
-            else
-            {
-                allErrors.AddError("Executing a service externally requires View and Execute permissions");
-            }
-            // Fetch return type ;)
-            var formatter = publicFormats.FirstOrDefault(c => c.PublicFormatName == dataObject.ReturnType)
-                            ?? publicFormats.FirstOrDefault(c => c.PublicFormatName == EmitionTypes.XML);
-
-            // force it to XML if need be ;)
-
-            // Fetch and convert DL ;)
-            if(executionDlid != GlobalConstants.NullDataListID)
-            {
-                // a normal service request
-                if(!esbExecuteRequest.WasInternalService)
+                // ensure service gets set ;)
+                if(dataObject.ServiceName == null)
                 {
-                    dataObject.DataListID = executionDlid;
-                    dataObject.WorkspaceID = workspaceGuid;
                     dataObject.ServiceName = serviceName;
-
-
-                    // some silly chicken thinks web request where a good idea for debug ;(
-                    if(!dataObject.IsDebug || dataObject.RemoteInvoke)
+                }
+                IResource resource = null;
+                if(!String.IsNullOrEmpty(dataObject.ServiceName))
+                {
+                    resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
+                    if(resource != null)
                     {
-                        executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formatter, out errors);
-                        allErrors.MergeErrors(errors);
-                        compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error, allErrors.MakeDataListReady(),
-                                                 out errors);
+                        dataObject.ResourceID = resource.ResourceID;
+
+                    }
+                }
+                var esbEndpoint = new EsbServicesEndpoint();
+                var canExecute = true;
+                if(ServerAuthorizationService.Instance != null)
+                {
+                    var authorizationService = ServerAuthorizationService.Instance;
+                    var hasView = authorizationService.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
+                    var hasExecute = authorizationService.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
+                    canExecute = (hasExecute && hasView) || (dataObject.RemoteInvoke && hasExecute) || (resource != null && resource.ResourceType == ResourceType.ReservedService);
+                }
+                // Build EsbExecutionRequest - Internal Services Require This ;)
+                EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
+
+                Dev2Logger.Log.Debug("About to execute web request [ " + serviceName + " ] DataObject Payload [ " + dataObject.RawPayload + " ]");
+                var executionDlid = GlobalConstants.NullDataListID;
+                if(canExecute)
+                {
+
+                    executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors);
+                    allErrors.MergeErrors(errors);
+                }
+                else
+                {
+                    allErrors.AddError("Executing a service externally requires View and Execute permissions");
+                }
+                // Fetch return type ;)
+                var formatter = publicFormats.FirstOrDefault(c => c.PublicFormatName == dataObject.ReturnType)
+                                ?? publicFormats.FirstOrDefault(c => c.PublicFormatName == EmitionTypes.XML);
+
+                // force it to XML if need be ;)
+
+                // Fetch and convert DL ;)
+                if(executionDlid != GlobalConstants.NullDataListID)
+                {
+                    // a normal service request
+                    if(!esbExecuteRequest.WasInternalService)
+                    {
+                        dataObject.DataListID = executionDlid;
+                        dataObject.WorkspaceID = workspaceGuid;
+                        dataObject.ServiceName = serviceName;
+
+
+                        // some silly chicken thinks web request where a good idea for debug ;(
+                        if(!dataObject.IsDebug || dataObject.RemoteInvoke)
+                        {
+                            executePayload = esbEndpoint.FetchExecutionPayload(dataObject, formatter, out errors);
+                            allErrors.MergeErrors(errors);
+                            compiler.UpsertSystemTag(executionDlid, enSystemTag.Dev2Error, allErrors.MakeDataListReady(),
+                                                     out errors);
+                        }
+                        else
+                        {
+                            executePayload = string.Empty;
+                        }
+
                     }
                     else
                     {
+                        // internal service request we need to return data for it from the request object ;)
+                        var serializer = new Dev2JsonSerializer();
                         executePayload = string.Empty;
-                    }
+                        var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
 
+                        if(msg != null)
+                        {
+                            executePayload = msg.Message.ToString();
+                        }
+
+                        // out fail safe to return different types of data from services ;)
+                        if(string.IsNullOrEmpty(executePayload))
+                        {
+                            executePayload = esbExecuteRequest.ExecuteResult.ToString();
+                        }
+                    }
                 }
                 else
                 {
-                    // internal service request we need to return data for it from the request object ;)
-                    var serializer = new Dev2JsonSerializer();
-                    executePayload = string.Empty;
-                    var msg = serializer.Deserialize<ExecuteMessage>(esbExecuteRequest.ExecuteResult);
-
-                    if(msg != null)
+                    if(dataObject.ReturnType == EmitionTypes.XML)
                     {
-                        executePayload = msg.Message.ToString();
+
+                        executePayload =
+                            "<FatalError> <Message> An internal error occurred while executing the service request </Message>";
+                        executePayload += allErrors.MakeDataListReady();
+                        executePayload += "</FatalError>";
                     }
-
-                    // out fail safe to return different types of data from services ;)
-                    if(string.IsNullOrEmpty(executePayload))
+                    else
                     {
-                        executePayload = esbExecuteRequest.ExecuteResult.ToString();
-                    }
-                }
-            }
-            else
-            {
-                if(dataObject.ReturnType == EmitionTypes.XML)
-                {
-
-                    executePayload =
-                        "<FatalError> <Message> An internal error occurred while executing the service request </Message>";
-                    executePayload += allErrors.MakeDataListReady();
-                    executePayload += "</FatalError>";
-                }
-                else
-                {
-                    // convert output to JSON ;)
-                    executePayload =
-                        "{ \"FatalError\": \"An internal error occurred while executing the service request\",";
-                    executePayload += allErrors.MakeDataListReady(false);
-                    executePayload += "}";
-                }
-            }
-
-
-            Dev2Logger.Log.Debug("Execution Result [ " + executePayload + " ]");
-
-            // Clean up the datalist from the server
-            if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
-            {
-
-                if(dataObject.IsDebug && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
-                {
-                    DataListRegistar.ClearDataList();
-                }
-                else
-                {
-                    foreach(var thread in dataObject.ThreadsToDispose)
-                    {
-                        DataListRegistar.DisposeScope(thread.Key, executionDlid);
-                    }
-
-                    DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, executionDlid);
-                }
-            }
-
-            // old HTML throw back ;)
-            if(dataObject.ReturnType == EmitionTypes.WIZ)
-            {
-                int start = (executePayload.IndexOf("<Dev2System.FormView>", StringComparison.Ordinal) + 21);
-                int end = (executePayload.IndexOf("</Dev2System.FormView>", StringComparison.Ordinal));
-                int len = (end - start);
-                if(len > 0)
-                {
-                    if(dataObject.ReturnType == EmitionTypes.WIZ)
-                    {
-                        string tmp = executePayload.Substring(start, (end - start));
-                        string result = CleanupHtml(tmp);
-                        const string DocType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
-                        return new StringResponseWriter(String.Format("{0}\r\n{1}", DocType, result), ContentTypes.Html);
+                        // convert output to JSON ;)
+                        executePayload =
+                            "{ \"FatalError\": \"An internal error occurred while executing the service request\",";
+                        executePayload += allErrors.MakeDataListReady(false);
+                        executePayload += "}";
                     }
                 }
-            }
 
-            // JSON Data ;)
-            if(executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
-            {
-                int start = executePayload.IndexOf(GlobalConstants.OpenJSON, StringComparison.Ordinal);
-                if(start >= 0)
+
+                Dev2Logger.Log.Debug("Execution Result [ " + executePayload + " ]");
+
+                // Clean up the datalist from the server
+                if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
                 {
-                    int end = executePayload.IndexOf(GlobalConstants.CloseJSON, StringComparison.Ordinal);
-                    start += GlobalConstants.OpenJSON.Length;
-
-                    executePayload = CleanupHtml(executePayload.Substring(start, (end - start)));
-                    if(!String.IsNullOrEmpty(executePayload))
+                    compiler.ForceDeleteDataListByID(executionDlid);
+                    if(dataObject.IsDebug && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
                     {
-                        return new StringResponseWriter(executePayload, ContentTypes.Json);
+                        DataListRegistar.ClearDataList();
+                    }
+                    else
+                    {
+                        foreach(var thread in dataObject.ThreadsToDispose)
+                        {
+                            DataListRegistar.DisposeScope(thread.Key, executionDlid);
+                        }
+
+                        DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, executionDlid);
                     }
                 }
+
+                // old HTML throw back ;)
+                if(dataObject.ReturnType == EmitionTypes.WIZ)
+                {
+                    int start = (executePayload.IndexOf("<Dev2System.FormView>", StringComparison.Ordinal) + 21);
+                    int end = (executePayload.IndexOf("</Dev2System.FormView>", StringComparison.Ordinal));
+                    int len = (end - start);
+                    if(len > 0)
+                    {
+                        if(dataObject.ReturnType == EmitionTypes.WIZ)
+                        {
+                            string tmp = executePayload.Substring(start, (end - start));
+                            string result = CleanupHtml(tmp);
+                            const string DocType = @"<!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Strict//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"">";
+                            return new StringResponseWriter(String.Format("{0}\r\n{1}", DocType, result), ContentTypes.Html);
+                        }
+                    }
+                }
+
+                // JSON Data ;)
+                if(executePayload.IndexOf("</JSON>", StringComparison.Ordinal) >= 0)
+                {
+                    int start = executePayload.IndexOf(GlobalConstants.OpenJSON, StringComparison.Ordinal);
+                    if(start >= 0)
+                    {
+                        int end = executePayload.IndexOf(GlobalConstants.CloseJSON, StringComparison.Ordinal);
+                        start += GlobalConstants.OpenJSON.Length;
+
+                        executePayload = CleanupHtml(executePayload.Substring(start, (end - start)));
+                        if(!String.IsNullOrEmpty(executePayload))
+                        {
+                            return new StringResponseWriter(executePayload, ContentTypes.Json);
+                        }
+                    }
+                }
+
+                // else handle the format requested ;)
+                return new StringResponseWriter(executePayload, formatter.ContentType);
             }
-
-            // else handle the format requested ;)
-            return new StringResponseWriter(executePayload, formatter.ContentType);
-
         }
 
         protected static void BindRequestVariablesToDataObject(WebRequestTO request, ref DsfDataObject dataObject)
