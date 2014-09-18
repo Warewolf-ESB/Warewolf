@@ -31,6 +31,7 @@ namespace Dev2.Studio.UI.Specs
         static readonly string Toolbox = "UI_DocManager_AutoID,UI_ToolboxPane_AutoID,UI_ToolboxControl_AutoID";
         static readonly string WorkflowDesigner = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,ActivityTypeDesigner,WorkflowItemPresenter";
         static readonly string Worksurface = WorkflowDesigner + ",Unsaved 1(FlowchartDesigner)";
+       // ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter
         static readonly string DebugOutput = "UI_DocManager_AutoID,OutputPane,DebugOutput,DebugOutputTree";
         static readonly string ToolBoxSearch = Toolbox + ",PART_SearchBox";
         static readonly string TabActive = "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter";
@@ -77,6 +78,7 @@ namespace Dev2.Studio.UI.Specs
         //Resources
         static readonly string ToolWorkflow = Toolbox + ",PART_Tools,Resources,Unlimited.Applications.BusinessDesignStudio.Activities.DsfWorkflowActivity";
         static readonly string ToolWorkflowRisourcePickFilter = "UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
+        static readonly string ToolServices = Toolbox + ",PART_Tools,Resources,Unlimited.Applications.BusinessDesignStudio.Activities.DsfServiceActivity";
         //Utility
         static readonly string ToolCalculate = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";
         static readonly string ToolFormatnumber = Toolbox + ",PART_Tools,Data,Unlimited.Applications.BusinessDesignStudio.Activities.DsfDataMergeActivity";

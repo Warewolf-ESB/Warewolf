@@ -92,30 +92,6 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 	
 
 
-#Scenario: TestingRemoteServerUITests_EditRemoteDbService_DbServiceIsEdited1
-#    Given I have Warewolf running
-#	And all tabs are closed
-#    And I create a new remote connection "TestService" as
-#       | Address               | AuthType | UserName | Password |
-#       | http://localhost:3142 | Public   |          |          |
-#    And I click "EXPLORER,UI_TestService (http://localhost:3142/)_AutoID"   
-#	And I click "EXPLORER,UI_TestService (http://localhost:3142/)_AutoID,UI_REMOTEUITESTS_AutoID,UI_RemoteDBService_AutoID"
-#	And I double click "EXPLORER,UI_TestService (http://localhost:3142/)_AutoID,UI_REMOTEUITESTS_AutoID,UI_RemoteDBService_AutoID"
-#	And I click point "200,104" on "WebBrowserWindow"
-#	And I send "testingDBSrc{ENTER}" to ""
-#	And I click point "241,250" on "WebBrowserWindow"
-#	And I click point "891,118" on "WebBrowserWindow"
-#	And I send "{TAB}{TAB}{TAB}{TAB}{TAB}" to ""
-#	And I send "{ENTER}" to ""
-#	#Given "dbo.FetchForEachMinMaxRunTimes" is Selected in "WebBrowserWindow"
-#	Given I double click "EXPLORER,UI_TestService (http://localhost:3142/)_AutoID,UI_REMOTEUITESTS_AutoID,UI_RemoteDBService_AutoID"
-#	Given I click point "138,232" on "WebBrowserWindow"
-#	Given I click point "891,118" on "WebBrowserWindow"
-#	And I send "{TAB}{TAB}{TAB}{TAB}{TAB}" to ""
-#	And I send "{ENTER}" to ""
-#	Given I double click "EXPLORER,UI_TestService (http://localhost:3142/)_AutoID,UI_REMOTEUITESTS_AutoID,UI_RemoteDBService_AutoID"
-#	#Given "dbo.FieldWithDotlnName" is Selected in "WebBrowserWindow"
-
 #Scenario: RemoteWorkflowWithNestedRemoteWorkflowReturnsFastAccurateData
 #	Given I have Warewolf running
 #	And all tabs are closed
@@ -134,3 +110,9 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 #	#NOTE: This step needs to be plumbed in properly. Right now that AutoID appears twice in the debug output (at the top and the bottom) and they should be different.
 #	#NOTE: Also cannot currently check for text in debug output items
 #	And "WfApplicationUtils" contains text "Success"
+
+
+
+
+
+

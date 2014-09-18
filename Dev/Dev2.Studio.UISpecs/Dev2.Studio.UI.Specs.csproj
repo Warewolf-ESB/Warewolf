@@ -190,6 +190,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Recordset-SQL Bulk Insert.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Resource-Service.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource-Service.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Resource-Workflow.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -336,6 +341,10 @@
     <None Include="Tools\Recordset-SQL Bulk Insert.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>Recordset-SQL Bulk Insert.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Resource-Service.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Resource-Service.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\Resource-Workflow.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
