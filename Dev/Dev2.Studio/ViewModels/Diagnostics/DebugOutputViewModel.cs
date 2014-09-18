@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -12,6 +14,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Data;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Messages;
@@ -25,6 +28,7 @@ using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Diagnostics;
 using Dev2.ViewModels.Diagnostics;
+using Infragistics.Shared;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Diagnostics
@@ -91,9 +95,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
             _contentItems = new List<IDebugState>();
             _contentItemMap = new Dictionary<Guid, IDebugTreeViewItemViewModel>();
-
             _debugWriterSubscriptionService = new SubscriptionService<DebugWriterWriteMessage>(serverEventPublisher);
-            _debugWriterSubscriptionService.Subscribe(msg => Append(msg.DebugState));
+            _debugWriterSubscriptionService.Subscribe(msg =>
+            {
+                IDebugState debugState = msg.DebugState;
+                Append(debugState);
+            });
 
             SessionID = Guid.NewGuid();
         }
@@ -727,8 +734,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         void AddItemToTree(IDebugState content)
         {
             var environmentId = content.EnvironmentID;
-
-            if(environmentId != Guid.Empty)
+            var isRemote = environmentId != Guid.Empty;
+            if(isRemote)
+            {
+               Thread.Sleep(500);
+            }
+            if(isRemote)
             {
                 var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
                 if(remoteEnvironmentModel != null)
@@ -767,7 +778,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 var contentToDispatch = content;
                 if(dispatcher != null && dispatcher.CheckAccess())
                 {
-                    Thread.Sleep(500);
                     dispatcher.BeginInvoke(new Action(() => AddItemToTreeImpl(contentToDispatch)), DispatcherPriority.Background);
                 }
             }
@@ -779,6 +789,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         void AddItemToTreeImpl(IDebugState content)
         {
+
             if((DebugStatus == DebugStatus.Stopping || DebugStatus == DebugStatus.Finished || _allDebugReceived) && string.IsNullOrEmpty(content.Message) && !_continueDebugDispatch && !_dispatchLastDebugState)
             {
                 return;
@@ -852,7 +863,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             {
                 DebugStatus = DebugStatus.Finished;
             }
+
         }
+
+        readonly object _debugDispatch = new object();
 
         #endregion
 
