@@ -1217,39 +1217,39 @@ namespace Dev2.Models
         private void Rename(string newName)
         {
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
-            if (ResourceType == ResourceType.Folder)
+            if(ResourceType == ResourceType.Folder)
             {
                 _studioResourceRepository.RenameFolder(this, newName);
             }
             else
-            if(environmentModel != null)
-            {
-                var resourceModel = environmentModel.ResourceRepository.FindSingle(a => a.ID == ResourceId) as IContextualResourceModel;
-                if(resourceModel != null)
+                if(environmentModel != null)
                 {
-                    IMainViewModel mainViewModel = CustomContainer.Get<IMainViewModel>();
-                    var isOpen = mainViewModel.IsWorkFlowOpened(resourceModel);
-                    if(isOpen)
+                    var resourceModel = environmentModel.ResourceRepository.FindSingle(a => a.ID == ResourceId) as IContextualResourceModel;
+                    if(resourceModel != null)
                     {
-                        EventPublishers.Aggregator.Publish(new RemoveResourceAndCloseTabMessage(resourceModel, true));
-                    }
-                    if(ResourceType == ResourceType.Folder)
-                    {
-                        _studioResourceRepository.RenameFolder(this, newName);
-                    }
-                    else
-                    {
-                        _studioResourceRepository.RenameItem(this, newName);
-                    }
+                        IMainViewModel mainViewModel = CustomContainer.Get<IMainViewModel>();
+                        var isOpen = mainViewModel.IsWorkFlowOpened(resourceModel);
+                        if(isOpen)
+                        {
+                            EventPublishers.Aggregator.Publish(new RemoveResourceAndCloseTabMessage(resourceModel, true));
+                        }
+                        if(ResourceType == ResourceType.Folder)
+                        {
+                            _studioResourceRepository.RenameFolder(this, newName);
+                        }
+                        else
+                        {
+                            _studioResourceRepository.RenameItem(this, newName);
+                        }
 
-                    RefreshName(newName);
+                        RefreshName(newName);
 
-                    if(isOpen)
-                    {
-                        EventPublishers.Aggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
+                        if(isOpen)
+                        {
+                            EventPublishers.Aggregator.Publish(new AddWorkSurfaceMessage(resourceModel));
+                        }
                     }
                 }
-            }
         }
 
         public void RefreshName(string newName)

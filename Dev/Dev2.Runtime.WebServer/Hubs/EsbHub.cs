@@ -21,7 +21,6 @@ using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 using Dev2.Services.Security;
 using Microsoft.AspNet.SignalR.Hubs;
-using Newtonsoft.Json;
 
 namespace Dev2.Runtime.WebServer.Hubs
 {
@@ -30,7 +29,7 @@ namespace Dev2.Runtime.WebServer.Hubs
     public class EsbHub : ServerHub, IDebugWriter, IExplorerRepositorySync
     {
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
-
+        readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
         public EsbHub()
         {
 
@@ -50,7 +49,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                     ModifiedPermissions = permissionsModifiedEventArgs.ModifiedWindowsGroupPermissions,
                     ServerID = HostSecurityProvider.Instance.ServerID
                 };
-            var serializedMemo = JsonConvert.SerializeObject(permissionsMemo);
+            var serializedMemo = _serializer.Serialize(permissionsMemo);
             var hubCallerConnectionContext = Clients;
             hubCallerConnectionContext.All.SendPermissionsMemo(serializedMemo);
         }
@@ -198,8 +197,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                         if(endOfStream)
                         {
                             MessageCache.TryRemove(messageId, out sb);
-                            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-                            EsbExecuteRequest request = serializer.Deserialize<EsbExecuteRequest>(sb);
+                            EsbExecuteRequest request = _serializer.Deserialize<EsbExecuteRequest>(sb);
 
                             var user = string.Empty;
                             // ReSharper disable ConditionIsAlwaysTrueOrFalse
@@ -295,7 +293,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         public void SendMemo(Memo memo)
         {
-            var serializedMemo = JsonConvert.SerializeObject(memo);
+            var serializedMemo = _serializer.Serialize(memo);
             var hubCallerConnectionContext = Clients;
 
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
@@ -303,19 +301,14 @@ namespace Dev2.Runtime.WebServer.Hubs
             CompileMessageRepo.Instance.ClearObservable();
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
-        readonly JsonSerializerSettings _serializerSettings = new JsonSerializerSettings
-        {
-            TypeNameHandling = TypeNameHandling.Objects,
-            TypeNameAssemblyFormat = System.Runtime.Serialization.Formatters.FormatterAssemblyStyle.Simple
-        };
 
         public void SendDebugState(DebugState debugState)
         {
-            var debugSerializated = JsonConvert.SerializeObject(debugState, _serializerSettings);
+            var debugSerializated = _serializer.Serialize(debugState);
 
             var hubCallerConnectionContext = Clients;
-
-            var user = hubCallerConnectionContext.All;
+            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+            //var user = hubCallerConnectionContext.All;
             user.SendDebugState(debugSerializated);
         }
 
@@ -388,7 +381,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             if(addedItem != null)
             {
                 addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
-                var item = JsonConvert.SerializeObject(addedItem);
+                var item = _serializer.Serialize(addedItem);
                 var hubCallerConnectionContext = Clients;
                 hubCallerConnectionContext.All.ItemAddedMessage(item);
             }

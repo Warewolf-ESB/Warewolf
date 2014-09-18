@@ -15,6 +15,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         {
             get;
         }
+        bool IsQueueEmpty { get; }
 
         /// <summary>
         /// Adds the specified writer to the dispatcher.

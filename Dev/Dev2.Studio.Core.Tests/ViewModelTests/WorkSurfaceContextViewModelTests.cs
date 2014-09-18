@@ -138,6 +138,7 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("WorkSurfaceContextViewModel_HandleDebugOutputMessage")]
+        [Ignore]
         public void WorkSurfaceContextViewModel_DebugOutputMessage_DebugStateHasData_OnlyOneRootItemIsDisplayed()
         {
             //------------Setup for test--------------------------

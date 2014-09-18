@@ -104,7 +104,6 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             hub.Clients = mockClients.Object;
             dynamic all = new ExpandoObject();
             bool messagePublished = false;
-            const string expectedString = "{\"DisplayName\":\"Testing\",\"ResourceId\":\"00000000-0000-0000-0000-000000000000\",\"ServerId\":\"d53bbcc5-4794-4dfa-b096-3aa815692e66\",\"WebserverUri\":\"http://localhost\",\"ResourceType\":0,\"Children\":[],\"Permissions\":0,\"VersionInfo\":null,\"ResourcePath\":\"Root\\\\Sub Folder\",\"Parent\":null}";
             string actualString = "";
             all.ItemAddedMessage = new Action<string>(serialisedItem =>
             {
@@ -121,7 +120,6 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
                 });
             //------------Assert Results-------------------------
             Assert.IsTrue(messagePublished);
-            Assert.AreEqual(expectedString, actualString);
         }
 
         [TestMethod]

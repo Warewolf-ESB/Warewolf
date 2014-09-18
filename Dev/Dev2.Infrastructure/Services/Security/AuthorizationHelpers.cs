@@ -75,7 +75,15 @@ namespace Dev2.Services.Security
             }
 
             // ResourceName is in the format: {categoryName}\{resourceName}
-            return permission.ResourceName.EndsWith("\\" + resource);
+            if(resource != null)
+            {
+                resource = resource.Replace('/', '\\');
+            }
+            if(string.IsNullOrEmpty(resource))
+            {
+                return true;
+            }
+            return permission.ResourceName.Contains("\\" + resource);
         }
     }
 }

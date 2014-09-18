@@ -9,6 +9,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Web;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
@@ -118,12 +119,14 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 dataObject.ServiceName = serviceName;
             }
+            IResource resource = null;
             if(!String.IsNullOrEmpty(dataObject.ServiceName))
             {
-                var resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
+                resource = ResourceCatalog.Instance.GetResource(dataObject.WorkspaceID, dataObject.ServiceName);
                 if(resource != null)
                 {
                     dataObject.ResourceID = resource.ResourceID;
+
                 }
             }
             var esbEndpoint = new EsbServicesEndpoint();
@@ -133,9 +136,8 @@ namespace Dev2.Runtime.WebServer.Handlers
                 var authorizationService = ServerAuthorizationService.Instance;
                 var hasView = authorizationService.IsAuthorized(AuthorizationContext.View, dataObject.ResourceID.ToString());
                 var hasExecute = authorizationService.IsAuthorized(AuthorizationContext.Execute, dataObject.ResourceID.ToString());
-                canExecute = hasExecute && hasView;
+                canExecute = (hasExecute && hasView) || (dataObject.RemoteInvoke && hasExecute) || (resource != null && resource.ResourceType == ResourceType.ReservedService);
             }
-
             // Build EsbExecutionRequest - Internal Services Require This ;)
             EsbExecuteRequest esbExecuteRequest = new EsbExecuteRequest { ServiceName = serviceName };
 
@@ -226,7 +228,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             // Clean up the datalist from the server
             if(!dataObject.WorkflowResumeable && executionDlid != GlobalConstants.NullDataListID)
             {
-                compiler.ForceDeleteDataListByID(executionDlid);
+
                 if(dataObject.IsDebug && !dataObject.IsRemoteInvoke && !dataObject.RunWorkflowAsync)
                 {
                     DataListRegistar.ClearDataList();
@@ -240,7 +242,6 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                     DataListRegistar.DisposeScope(Thread.CurrentThread.ManagedThreadId, executionDlid);
                 }
-
             }
 
             // old HTML throw back ;)

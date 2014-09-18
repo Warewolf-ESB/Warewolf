@@ -150,10 +150,9 @@ namespace Dev2.Activities.Designers2.Service
 
         void AuthorizationServiceOnPermissionsChanged(object sender, EventArgs eventArgs)
         {
-            var errorInfos = DesignValidationErrors.Where(info => info.FixType == FixType.InvalidPermissions);
-            RemoveErrors(errorInfos.ToList());
+            RemovePermissionsError();
 
-            var hasNoPermission = _environment.AuthorizationService != null && _environment.AuthorizationService.GetResourcePermissions(ResourceID) == Permissions.None;
+            var hasNoPermission = HasNoPermission();
             if(hasNoPermission)
             {
                 var memo = new DesignValidationMemo
@@ -170,6 +169,18 @@ namespace Dev2.Activities.Designers2.Service
                 });
                 UpdateLastValidationMemo(memo);
             }
+        }
+
+        void RemovePermissionsError()
+        {
+            var errorInfos = DesignValidationErrors.Where(info => info.FixType == FixType.InvalidPermissions);
+            RemoveErrors(errorInfos.ToList());
+        }
+
+        bool HasNoPermission()
+        {
+            var hasNoPermission = _environment.AuthorizationService != null && _environment.AuthorizationService.GetResourcePermissions(ResourceID) == Permissions.None;
+            return hasNoPermission;
         }
 
         void DoneCompleted()
@@ -388,6 +399,16 @@ namespace Dev2.Activities.Designers2.Service
 
         public override void Validate()
         {
+            Errors = new List<IActionableErrorInfo>();
+            if(HasNoPermission())
+            {
+                var errorInfos = DesignValidationErrors.Where(info => info.FixType == FixType.InvalidPermissions);
+                Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfos.ToList()[0], () => { }) };
+            }
+            else
+            {
+                RemovePermissionsError();
+            }
         }
 
         public void UpdateMappings()
@@ -1172,15 +1193,23 @@ namespace Dev2.Activities.Designers2.Service
 
         public void Handle(UpdateResourceMessage message)
         {
-            if(message != null && message.ResourceModel != null && SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
+            if(message != null && message.ResourceModel != null)
             {
-                IErrorInfo sourceNotAvailableMessage = DesignValidationErrors.FirstOrDefault(info => info.Message == SourceNotFoundMessage);
-                if(sourceNotAvailableMessage != null)
+                //                if(message.ResourceModel.ID == ResourceID)
+                //                {
+                //                    InitializeMappings();
+                //                }
+                if(SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
                 {
-                    RemoveError(sourceNotAvailableMessage);
-                    UpdateWorstError();
-                    InitializeMappings();
-                    UpdateMappings();
+
+                    IErrorInfo sourceNotAvailableMessage = DesignValidationErrors.FirstOrDefault(info => info.Message == SourceNotFoundMessage);
+                    if(sourceNotAvailableMessage != null)
+                    {
+                        RemoveError(sourceNotAvailableMessage);
+                        UpdateWorstError();
+                        InitializeMappings();
+                        UpdateMappings();
+                    }
                 }
             }
         }

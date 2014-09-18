@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Dev2.Activities.Debug;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
@@ -68,7 +69,7 @@ namespace Dev2.Runtime.ESB.WF
                     SessionID = dataObject.DebugSessionID,
                     EnvironmentID = dataObject.EnvironmentID,
                     ClientID = dataObject.ClientID,
-                    Name = GetType().Name,
+                    Name = stateType.ToString(),
                     HasError = hasErrors || hasError,
                     ErrorMessage = existingErrors,
 
@@ -98,7 +99,6 @@ namespace Dev2.Runtime.ESB.WF
                 }
                 if(stateType == StateType.End)
                 {
-
                     debugState.NumberOfSteps = dataObject.NumberOfSteps;
                 }
 
@@ -110,13 +110,18 @@ namespace Dev2.Runtime.ESB.WF
 
                 if(dataObject.IsDebugMode() || (dataObject.RunWorkflowAsync && !dataObject.IsFromWebServer))
                 {
+                    var debugDispatcher = GetDebugDispatcher();
                     if(debugState.StateType == StateType.End)
                     {
-                        GetDebugDispatcher().Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+                        while(!debugDispatcher.IsQueueEmpty)
+                        {
+                            Thread.Sleep(100);
+                        }
+                        debugDispatcher.Write(debugState, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
                     }
                     else
                     {
-                        GetDebugDispatcher().Write(debugState);
+                        debugDispatcher.Write(debugState);
                     }
                 }
             }

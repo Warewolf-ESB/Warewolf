@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -726,11 +727,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         void AddItemToTree(IDebugState content)
         {
             var environmentId = content.EnvironmentID;
+
             if(environmentId != Guid.Empty)
             {
                 var remoteEnvironmentModel = _environmentRepository.FindSingle(model => model.ID == environmentId);
                 if(remoteEnvironmentModel != null)
                 {
+                    if(!remoteEnvironmentModel.IsConnected)
+                    {
+                        remoteEnvironmentModel.Connect();
+                    }
                     if(content.ParentID != Guid.Empty)
                     {
                         if(remoteEnvironmentModel.AuthorizationService != null)
@@ -754,9 +760,16 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                 }
             }
 
-            if(Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess())
+            var application = Application.Current;
+            if(application != null)
             {
-                Application.Current.Dispatcher.BeginInvoke(new Action(() => AddItemToTreeImpl(content)), DispatcherPriority.Background);
+                var dispatcher = application.Dispatcher;
+                var contentToDispatch = content;
+                if(dispatcher != null && dispatcher.CheckAccess())
+                {
+                    Thread.Sleep(500);
+                    dispatcher.BeginInvoke(new Action(() => AddItemToTreeImpl(contentToDispatch)), DispatcherPriority.Background);
+                }
             }
             else
             {

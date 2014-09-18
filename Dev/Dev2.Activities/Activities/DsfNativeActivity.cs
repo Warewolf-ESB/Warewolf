@@ -555,14 +555,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(_debugState != null)
             {
-                switch(_debugState.StateType)
+                if(remoteID == Guid.Empty)
                 {
-                    case StateType.Before:
-                        _debugState.Outputs.Clear();
-                        break;
-                    case StateType.After:
-                        _debugState.Inputs.Clear();
-                        break;
+                    switch(_debugState.StateType)
+                    {
+                        case StateType.Before:
+                            _debugState.Outputs.Clear();
+                            break;
+                        case StateType.After:
+                            _debugState.Inputs.Clear();
+                            break;
+                    }
                 }
 
                 // BUG 9706 - 2013.06.22 - TWR : refactored from here to DebugDispatcher
@@ -594,6 +597,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Guid parentInstanceID;
             Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceID);
             UpdateDebugParentID(dataObject);
+            if(remoteID != Guid.Empty)
+            {
+                UniqueID = Guid.NewGuid().ToString();
+            }
             _debugState = new DebugState
             {
                 ID = Guid.Parse(UniqueID),

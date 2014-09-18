@@ -56,17 +56,17 @@ namespace Dev2.Tests.Activities.ActivityTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorWithNullDebugDispatcher_Expected_ArgumentNullException()
         {
-// ReSharper disable ObjectCreationAsStatement
+            // ReSharper disable ObjectCreationAsStatement
             new TestActivity(null);
-// ReSharper restore ObjectCreationAsStatement
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
         public void ConstructorWithDebugDispatcher_Expected_NoArgumentNullException()
         {
-// ReSharper disable ObjectCreationAsStatement
+            // ReSharper disable ObjectCreationAsStatement
             new TestActivity(DebugDispatcher.Instance);
-// ReSharper restore ObjectCreationAsStatement
+            // ReSharper restore ObjectCreationAsStatement
         }
 
         [TestMethod]
@@ -379,13 +379,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                     else
                     {
                         var foundCount = 0;
-// ReSharper disable LoopCanBeConvertedToQuery
+                        // ReSharper disable LoopCanBeConvertedToQuery
                         foreach(var field in fields)
-// ReSharper restore LoopCanBeConvertedToQuery
+                        // ReSharper restore LoopCanBeConvertedToQuery
                         {
-// ReSharper disable LoopCanBeConvertedToQuery
+                            // ReSharper disable LoopCanBeConvertedToQuery
                             foreach(var expectedValue in expectedValues)
-// ReSharper restore LoopCanBeConvertedToQuery
+                            // ReSharper restore LoopCanBeConvertedToQuery
                             {
                                 if(field.FieldName == expectedValue.Key && expectedValue.Value.Contains(field.TheValue))
                                 {
@@ -548,7 +548,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfNativeActivity_UnitTest_InitializeDebugState_SetsPropertiesCorrectly()
         {
             var parentInstanceID = Guid.NewGuid();
-            var remoteID = Guid.NewGuid();
+            var remoteID = Guid.Empty;
             const bool HasError = true;
             const string ErrorMessage = "Error occurred..";
             const StateType StateType = StateType.All;
@@ -658,7 +658,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsDebug = true,
             };
 
-            TestNativeActivity act = new TestNativeActivity(false,"bob");
+            TestNativeActivity act = new TestNativeActivity(false, "bob");
             var originalGuid = Guid.NewGuid();
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);

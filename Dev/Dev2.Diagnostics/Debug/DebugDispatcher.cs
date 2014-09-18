@@ -153,7 +153,6 @@ namespace Dev2.Diagnostics.Debug
             {
                 Guid parentId;
                 Guid.TryParse(parentInstanceId, out parentId);
-
                 foreach(var item in remoteDebugItems)
                 {
                     // re-jigger it so it will dispatch and display
@@ -165,7 +164,10 @@ namespace Dev2.Diagnostics.Debug
                     {
                         item.EnvironmentID = remoteEnvironmentId;
                     }
-                    item.ParentID = parentId;
+                    if(item.ParentID == Guid.Empty)
+                    {
+                        item.ParentID = parentId;
+                    }
                     QueueWrite(item);
                 }
 
@@ -173,6 +175,14 @@ namespace Dev2.Diagnostics.Debug
             }
             Dev2Logger.Log.Debug(string.Format("EnvironmentID: {0} Debug:{1}", debugState.EnvironmentID, debugState.DisplayName));
             QueueWrite(debugState);
+        }
+
+        public bool IsQueueEmpty
+        {
+            get
+            {
+                return WriterQueue.IsEmpty;
+            }
         }
 
         #endregion

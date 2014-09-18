@@ -111,8 +111,8 @@ namespace Dev2.Runtime.ESB.Execution
             }
             catch(Exception e)
             {
+                errors.AddError(e.Message.Contains("Forbidden") ? "Executing a service requires Execute permissions" : e.Message);
                 Dev2Logger.Log.Error(e);
-                errors.AddError(e.Message);
             }
 
             // Create tmpDL

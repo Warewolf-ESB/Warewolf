@@ -86,7 +86,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var authorized = securityPermission.Matches(null);
 
             //------------Assert Results-------------------------
-            Assert.IsFalse(authorized);
+            Assert.IsTrue(authorized);
         }
 
         [TestMethod]
