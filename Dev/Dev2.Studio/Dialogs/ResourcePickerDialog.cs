@@ -26,6 +26,7 @@ namespace Dev2.Dialogs
         IEnvironmentModel _environmentModel;
         IStudioResourceRepository _studio;
 
+
         /// <summary>
         /// Creates a picker suitable for dropping from the toolbox.
         /// </summary>
@@ -72,7 +73,7 @@ namespace Dev2.Dialogs
             else
             {
 
-                _navigationViewModel.Filter(null,false,true);
+                _navigationViewModel.Filter(null,false,_activityType == enDsfActivityType.Workflow);
                 var explorerItemModels = _navigationViewModel.ExplorerItemModels;
                 if(explorerItemModels != null)
                 {

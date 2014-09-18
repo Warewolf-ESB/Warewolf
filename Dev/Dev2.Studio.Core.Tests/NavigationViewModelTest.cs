@@ -505,8 +505,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void CreateNavigationViewModelWithIsActivityDropTrueAndTypexServiceExpectedOnlyServicesToBeInTree()
         {
-            var x = Init(false, true);
-            x = null;
+            Init(false, true);
             Mock<IResourceRepository> mockResourceRepository;
             SetupWithOutViewModel(false, true, out mockResourceRepository);
             var viewModel = CreateViewModel(GetEnvironmentRepository(_mockEnvironmentModel), mockResourceRepository, true, enDsfActivityType.Workflow);

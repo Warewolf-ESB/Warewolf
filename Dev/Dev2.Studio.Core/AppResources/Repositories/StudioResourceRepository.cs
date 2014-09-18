@@ -353,7 +353,7 @@ namespace Dev2.AppResources.Repositories
 
         public void AddResouceItem(IContextualResourceModel resourceModel)
         {
-            var explorerItemModel = new ServerExplorerItem { ResourcePath = resourceModel.Category, DisplayName = resourceModel.DisplayName, ResourceId = resourceModel.ID, Permissions = resourceModel.UserPermissions,ServerId = resourceModel.ServerID};
+            var explorerItemModel = new ServerExplorerItem { ResourcePath = resourceModel.Category, DisplayName = resourceModel.DisplayName, ResourceId = resourceModel.ID, Permissions = resourceModel.UserPermissions,ServerId = resourceModel.Environment.ID};
             ResourceType resourceType;
             Enum.TryParse(resourceModel.ServerResourceType, out resourceType);
             explorerItemModel.ResourceType = resourceType;

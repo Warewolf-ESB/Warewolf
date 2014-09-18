@@ -305,7 +305,7 @@ namespace Dev2.Studio.ViewModels.Navigation
         public void Filter(Func<IExplorerItemModel, bool> filter, bool fromFilter = false,bool useDialogFilter = false)
         {
             Func<IExplorerItemModel, bool> workflowFilter = model => (model.ResourceType == ResourceType.WorkflowService || model.ResourceType == ResourceType.Folder);
-            Func<IExplorerItemModel, bool> serviceFilter = model => ((model.ResourceType >= ResourceType.DbService && model.ResourceType <= ResourceType.WebService));
+            Func<IExplorerItemModel, bool> serviceFilter = model => ((model.ResourceType >= ResourceType.DbService && model.ResourceType <= ResourceType.WebService ));
             Func<IExplorerItemModel, bool> sourceFilter = model => ((model.ResourceType >= ResourceType.DbSource && model.ResourceType <= ResourceType.ServerSource));
    
             Func<IExplorerItemModel, bool> environmentFilter = model => true;

@@ -2085,7 +2085,7 @@ namespace Dev2.Core.Tests.Repositories
             resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
             TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
             new EnvironmentRepository(testEnvironmentRespository);
-
+            resourceModel.Setup(a => a.Environment).Returns(mockEnvironmentModel.Object);
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
             //------------Execute Test---------------------------

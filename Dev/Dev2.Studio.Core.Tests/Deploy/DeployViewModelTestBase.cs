@@ -105,6 +105,9 @@ namespace Dev2.Core.Tests.Deploy
 
             resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
             resourceModel.Setup(a => a.ServerID).Returns(environmentModel.ID);
+            var env = new Mock<IEnvironmentModel>();
+            resourceModel.Setup(a => a.Environment).Returns(env.Object);
+            env.Setup(a => a.ID).Returns(environmentModel.ID);
             TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
             // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(testEnvironmentRespository);
