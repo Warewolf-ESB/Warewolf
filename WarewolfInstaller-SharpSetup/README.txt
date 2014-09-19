@@ -1,1 +1,0 @@
-Replace the file at c:\program files (x86)\sharpsetup\include\prerequisites.h with the prerequisites.h in this folder

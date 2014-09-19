@@ -1,9 +1,0 @@
-<ss:ModernWizard x:Class="Gui.SetupWizard"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:ss="http://sharpsetup.eu/schemas/xaml/wpfui/2012"
-    xmlns:props="clr-namespace:Gui.Properties"
-    Title="{x:Static props:Resources.SetupWizard_Title}"
-                 Style="{StaticResource {x:Type ss:ModernWizard}}"
-    >
-</ss:ModernWizard>
