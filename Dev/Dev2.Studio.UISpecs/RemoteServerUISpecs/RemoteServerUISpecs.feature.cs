@@ -253,6 +253,57 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("RemoteWorkflowWithNestedRemoteWorkflowReturnsFastAccurateData")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "RemoteServerUISpecs")]
+        public virtual void RemoteWorkflowWithNestedRemoteWorkflowReturnsFastAccurateData()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("RemoteWorkflowWithNestedRemoteWorkflowReturnsFastAccurateData", ((string[])(null)));
+#line 95
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 96
+ testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 97
+ testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 98
+ testRunner.And("I click \"RIBBONNEWENDPOINT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Address",
+                        "AuthType",
+                        "UserName",
+                        "Password"});
+            table2.AddRow(new string[] {
+                        "http://dev2-warewolf.cloudapp.net:3142/dsf",
+                        "User",
+                        "dev2user",
+                        "VisualService8us"});
+#line 100
+    testRunner.And("I create a new remote connection \"Azure\" as", ((string)(null)), table2, "And ");
+#line 103
+ testRunner.And("I click \"EXPLORER,UI_Azure (http://dev2-warewolf.cloudapp.net:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 104
+ testRunner.And("I send \"Call Nested Workflow\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 106
+ testRunner.And("I drag \"EXPLORER,UI_Azure (http://dev2-warewolf.cloudapp.net:3142/)_AutoID,UI_Ext" +
+                    "ernal Access Testing_AutoID,UI_Call Nested Workflow_AutoID\" onto \"WORKSURFACE,St" +
+                    "artSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 107
+ testRunner.And("I send \"{F5}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 108
+ testRunner.And("I send \"Suc\" to \"UI_DebugInputWindow_AutoID,TabItems,UI_InputDataTab_AutoID,DataL" +
+                    "istInputs,UI_InputData_Row_0_AutoID,UI_InputData_Row_0_Cell_AutoID,UI_Inputtxt_A" +
+                    "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 109
+ testRunner.And("I click \"WINDOWDEBUGBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 112
+ testRunner.And("\"WfApplicationUtils\" contains text \"Success\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

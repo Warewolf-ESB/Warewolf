@@ -92,24 +92,24 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 	
 
 
-#Scenario: RemoteWorkflowWithNestedRemoteWorkflowReturnsFastAccurateData
-#	Given I have Warewolf running
-#	And all tabs are closed
-#	And I click "RIBBONNEWENDPOINT"
-##	A long wait has been put in here (5 seconds) it would be better to try for up to 5 seconds and then fail -  please look at plumbing that
-#    And I create a new remote connection "Azure" as
-#       | Address                                    | AuthType | UserName | Password         |
-#       | http://dev2-warewolf.cloudapp.net:3142/dsf | User     | dev2user | VisualService8us |
-#	And I click "EXPLORER,UI_Azure (http://dev2-warewolf.cloudapp.net:3142/)_AutoID"   
-#	And I send "Call Nested Workflow" to "EXPLORERFILTER"
-#	#This remote workflow has another remote workflow nested inside it.
-#	And I drag "EXPLORER,UI_Azure (http://dev2-warewolf.cloudapp.net:3142/)_AutoID,UI_External Access Testing_AutoID,UI_Call Nested Workflow_AutoID" onto "WORKSURFACE,StartSymbol"
-#	And I send "{F5}" to ""
-#	And I send "Suc" to "UI_DebugInputWindow_AutoID,TabItems,UI_InputDataTab_AutoID,DataListInputs,UI_InputData_Row_0_AutoID,UI_InputData_Row_0_Cell_AutoID,UI_Inputtxt_AutoID"
-#	And I click "WINDOWDEBUGBUTTON"
-#	#NOTE: This step needs to be plumbed in properly. Right now that AutoID appears twice in the debug output (at the top and the bottom) and they should be different.
-#	#NOTE: Also cannot currently check for text in debug output items
-#	And "WfApplicationUtils" contains text "Success"
+Scenario: RemoteWorkflowWithNestedRemoteWorkflowReturnsFastAccurateData
+	Given I have Warewolf running
+	And all tabs are closed
+	And I click "RIBBONNEWENDPOINT"
+#	A long wait has been put in here (5 seconds) it would be better to try for up to 5 seconds and then fail -  please look at plumbing that
+    And I create a new remote connection "Azure" as
+       | Address                                    | AuthType | UserName | Password         |
+       | http://dev2-warewolf.cloudapp.net:3142/dsf | User     | dev2user | VisualService8us |
+	And I click "EXPLORER,UI_Azure (http://dev2-warewolf.cloudapp.net:3142/)_AutoID"   
+	And I send "Call Nested Workflow" to "EXPLORERFILTER"
+	#This remote workflow has another remote workflow nested inside it.
+	And I drag "EXPLORER,UI_Azure (http://dev2-warewolf.cloudapp.net:3142/)_AutoID,UI_External Access Testing_AutoID,UI_Call Nested Workflow_AutoID" onto "WORKSURFACE,StartSymbol"
+	And I send "{F5}" to ""
+	And I send "Suc" to "UI_DebugInputWindow_AutoID,TabItems,UI_InputDataTab_AutoID,DataListInputs,UI_InputData_Row_0_AutoID,UI_InputData_Row_0_Cell_AutoID,UI_Inputtxt_AutoID"
+	And I click "WINDOWDEBUGBUTTON"
+	#NOTE: This step needs to be plumbed in properly. Right now that AutoID appears twice in the debug output (at the top and the bottom) and they should be different.
+	#NOTE: Also cannot currently check for text in debug output items
+	And "WfApplicationUtils" contains text "Success"
 
 
 
