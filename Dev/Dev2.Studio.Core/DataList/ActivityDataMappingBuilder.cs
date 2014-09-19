@@ -18,9 +18,9 @@ namespace Dev2.DataList
     /// </summary>
     class FuzzyMatchVo
     {
-        internal IDictionary<string, string> RecordsetColumnsToName;
+        internal IDictionary<Tuple<string, string>, string> RecordsetColumnsToName;
 
-        internal FuzzyMatchVo(IDictionary<string, string> matches)
+        internal FuzzyMatchVo(IDictionary<Tuple<string,string>, string> matches)
         {
             RecordsetColumnsToName = matches;
         }
@@ -29,12 +29,13 @@ namespace Dev2.DataList
         /// Fetches the match.
         /// </summary>
         /// <param name="token">The token.</param>
+        /// <param name="recset"></param>
         /// <returns></returns>
-        internal string FetchMatch(string token)
+        internal string FetchMatch(string token,string recset)
         {
             string result;
 
-            RecordsetColumnsToName.TryGetValue(token, out result);
+            RecordsetColumnsToName.TryGetValue(new Tuple<string, string>(token,recset), out result);
 
             return result;
         }
@@ -337,7 +338,7 @@ namespace Dev2.DataList
                                 field = def.Name;
                             }
 
-                            string recordsetName = fuzzyMatch.FetchMatch(def.Name);
+                            string recordsetName = fuzzyMatch.FetchMatch(def.Name,def.RecordSetName);
                             if(!string.IsNullOrEmpty(recordsetName))
                             {
                                 masterRecordsetName = recordsetName;
@@ -358,7 +359,7 @@ namespace Dev2.DataList
                             {
                                 if(fuzzyMatch != null)
                                 {
-                                    string recordsetName = fuzzyMatch.FetchMatch(def.Name);
+                                    string recordsetName = fuzzyMatch.FetchMatch(def.Name, def.RecordSetName);
                                     masterRecordsetName = !String.IsNullOrEmpty(recordsetName) ? recordsetName : def.RecordSetName;
                                 }
                                 else
@@ -394,7 +395,7 @@ namespace Dev2.DataList
                             {
                                 if(string.IsNullOrEmpty(masterRecordsetName))
                                 {
-                                    string recordsetName = fuzzyMatch.FetchMatch(def.Name);
+                                    string recordsetName = fuzzyMatch.FetchMatch(def.Name, def.RecordSetName);
                                     masterRecordsetName = !string.IsNullOrEmpty(recordsetName) ? recordsetName : def.RecordSetName;
                                 }
 
@@ -469,25 +470,25 @@ namespace Dev2.DataList
         {
             FuzzyMatchVo result = null;
 
-            if(!string.IsNullOrEmpty(DataList))
+            if (!string.IsNullOrEmpty(DataList))
             {
                 var compiler = DataListFactory.CreateDataListCompiler();
 
                 ErrorResultTO invokeErrors;
                 var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, DataList, out invokeErrors);
                 var dl = compiler.FetchBinaryDataList(dlID, out invokeErrors);
-                IDictionary<string, string> tmp = new Dictionary<string, string>();
+                IDictionary<Tuple<string, string>, string> tmp = new Dictionary<Tuple<string, string>, string>();
 
-                if(dl != null)
+                if (dl != null)
                 {
-                    foreach(var rs in dl.FetchRecordsetEntries())
+                    foreach (var rs in dl.FetchRecordsetEntries())
                     {
                         // build map for each column in a recordset ;)
-                        foreach(var col in rs.Columns)
+                        foreach (var col in rs.Columns)
                         {
-                            if(!tmp.Keys.Contains(col.ColumnName))
+                            if (!tmp.Keys.Any(a => a.Item2 == col.ColumnName && a.Item1 == rs.Namespace))
                             {
-                                tmp[col.ColumnName] = rs.Namespace;
+                                tmp[new Tuple<string, string>(rs.Namespace, col.ColumnName)] = rs.Namespace;
                             }
                         }
                     }
