@@ -1,7 +1,0 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="EditorsOffice2k7Blue_Express.xaml" />
-        <ResourceDictionary Source="../EditorsBrushes/EditorsOffice2k7Silver_Brushes.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-</ResourceDictionary>
