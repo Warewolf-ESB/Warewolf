@@ -104,35 +104,40 @@ namespace Dev2.Activities.Designers2.Service
             // an environment id when this is the case as it will fail with source not found since the remote 
             // does not contain localhost's connections ;)
             var activeEnvironment = environmentRepository.ActiveEnvironment;
-            if(EnvironmentID == Guid.Empty && !activeEnvironment.IsLocalHostCheck())
+            if (EnvironmentID == Guid.Empty && !activeEnvironment.IsLocalHostCheck())
             {
                 _environment = activeEnvironment;
             }
             else
             {
                 var environment = environmentRepository.FindSingle(c => c.ID == EnvironmentID);
+                if (environment == null)
+                {
+                    IList<IEnvironmentModel> environments = EnvironmentRepository.Instance.LookupEnvironments(activeEnvironment);
+                    environment = environments.FirstOrDefault(model => model.ID == EnvironmentID);
+                }
                 _environment = environment;
             }
 
 
             InitializeValidationService(_environment);
-            if(!InitializeResourceModel(_environment))
+            if (!InitializeResourceModel(_environment))
             {
                 return;
             }
-            if(!IsDeleted)
+            if (!IsDeleted)
             {
                 // MUST InitializeMappings() first!
                 InitializeMappings();
                 InitializeLastValidationMemo(_environment);
-                if(IsItemDragged.Instance.IsDragged)
+                if (IsItemDragged.Instance.IsDragged)
                 {
                     Expand();
                     IsItemDragged.Instance.IsDragged = false;
 
                 }
             }
-            if(_environment != null)
+            if (_environment != null)
             {
                 _environment.AuthorizationServiceSet += OnEnvironmentOnAuthorizationServiceSet;
                 AuthorizationServiceOnPermissionsChanged(null, null);
@@ -142,7 +147,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
         {
-            if(_environment != null && _environment.AuthorizationService != null)
+            if (_environment != null && _environment.AuthorizationService != null)
             {
                 _environment.AuthorizationService.PermissionsChanged += AuthorizationServiceOnPermissionsChanged;
             }
@@ -153,7 +158,7 @@ namespace Dev2.Activities.Designers2.Service
             RemovePermissionsError();
 
             var hasNoPermission = HasNoPermission();
-            if(hasNoPermission)
+            if (hasNoPermission)
             {
                 var memo = new DesignValidationMemo
                 {
@@ -190,7 +195,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void Done()
         {
-            if(!IsWorstErrorReadOnly)
+            if (!IsWorstErrorReadOnly)
             {
                 FixErrors();
             }
@@ -252,7 +257,7 @@ namespace Dev2.Activities.Designers2.Service
             get { return (bool)GetValue(IsWorstErrorReadOnlyProperty); }
             private set
             {
-                if(value)
+                if (value)
                 {
                     ButtonDisplayValue = DoneText;
                 }
@@ -271,7 +276,7 @@ namespace Dev2.Activities.Designers2.Service
         public bool IsDeleted
         {
             get { return (bool)GetValue(IsDeletedProperty); }
-            private set { if(!(bool)GetValue(IsDeletedProperty)) SetValue(IsDeletedProperty, value); }
+            private set { if (!(bool)GetValue(IsDeletedProperty)) SetValue(IsDeletedProperty, value); }
         }
 
         public static readonly DependencyProperty IsDeletedProperty =
@@ -341,7 +346,7 @@ namespace Dev2.Activities.Designers2.Service
         {
             var viewModel = (ServiceDesignerViewModel)d;
             var showParent = (bool)e.NewValue;
-            if(showParent)
+            if (showParent)
             {
                 viewModel.DoShowParent();
             }
@@ -352,7 +357,7 @@ namespace Dev2.Activities.Designers2.Service
             get { return _worstDesignError; }
             set
             {
-                if(_worstDesignError != value)
+                if (_worstDesignError != value)
                 {
                     _worstDesignError = value;
                     IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
@@ -400,7 +405,7 @@ namespace Dev2.Activities.Designers2.Service
         public override void Validate()
         {
             Errors = new List<IActionableErrorInfo>();
-            if(HasNoPermission())
+            if (HasNoPermission())
             {
                 var errorInfos = DesignValidationErrors.Where(info => info.FixType == FixType.InvalidPermissions);
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(errorInfos.ToList()[0], () => { }) };
@@ -413,7 +418,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public void UpdateMappings()
         {
-            if(!_resourcesUpdated)
+            if (!_resourcesUpdated)
             {
                 SetInputs();
                 SetOuputs();
@@ -427,9 +432,9 @@ namespace Dev2.Activities.Designers2.Service
             base.OnToggleCheckedChanged(propertyName, isChecked);
 
             // AddTitleBarMappingToggle() binds Mapping button to ShowLarge property
-            if(propertyName == ShowLargeProperty.Name)
+            if (propertyName == ShowLargeProperty.Name)
             {
-                if(!isChecked)
+                if (!isChecked)
                 {
                     // Collapsing
                     UpdateMappings();
@@ -442,7 +447,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void SetInputs()
         {
-            if(DataMappingViewModel != null)
+            if (DataMappingViewModel != null)
             {
                 InputMapping = DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs);
             }
@@ -450,7 +455,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void SetOuputs()
         {
-            if(DataMappingViewModel != null)
+            if (DataMappingViewModel != null)
             {
                 OutputMapping = DataMappingViewModel.GetOutputString(DataMappingViewModel.Outputs);
             }
@@ -466,16 +471,16 @@ namespace Dev2.Activities.Designers2.Service
 
         void OnMappingCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if(e.NewItems != null)
+            if (e.NewItems != null)
             {
-                foreach(IInputOutputViewModel mapping in e.NewItems)
+                foreach (IInputOutputViewModel mapping in e.NewItems)
                 {
                     mapping.PropertyChanged += OnMappingPropertyChanged;
                 }
             }
-            if(e.OldItems != null)
+            if (e.OldItems != null)
             {
-                foreach(IInputOutputViewModel mapping in e.OldItems)
+                foreach (IInputOutputViewModel mapping in e.OldItems)
                 {
                     mapping.PropertyChanged -= OnMappingPropertyChanged;
                 }
@@ -484,7 +489,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void OnMappingPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
                 case "MapsTo":
                     SetInputs();
@@ -499,10 +504,10 @@ namespace Dev2.Activities.Designers2.Service
         void InitializeDisplayName()
         {
             var serviceName = ServiceName;
-            if(!string.IsNullOrEmpty(serviceName))
+            if (!string.IsNullOrEmpty(serviceName))
             {
                 var displayName = DisplayName;
-                if(!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
+                if (!string.IsNullOrEmpty(displayName) && displayName.Contains("Dsf"))
                 {
                     DisplayName = serviceName;
                 }
@@ -520,7 +525,7 @@ namespace Dev2.Activities.Designers2.Service
             };
             designValidationMemo.Errors.AddRange(RootModel.GetErrors(uniqueId).Cast<ErrorInfo>());
 
-            if(environmentModel == null)
+            if (environmentModel == null)
             {
                 designValidationMemo.IsValid = false;
                 designValidationMemo.Errors.Add(new ErrorInfo
@@ -537,9 +542,9 @@ namespace Dev2.Activities.Designers2.Service
 
         bool InitializeResourceModel(IEnvironmentModel environmentModel)
         {
-            if(environmentModel != null)
+            if (environmentModel != null)
             {
-                if(!environmentModel.IsLocalHost && !environmentModel.HasLoadedResources)
+                if (!environmentModel.IsLocalHost && !environmentModel.HasLoadedResources)
                 {
                     ResourceModel = ResourceModelFactory.CreateResourceModel(environmentModel);
                     ResourceModel.Inputs = InputMapping;
@@ -550,7 +555,7 @@ namespace Dev2.Activities.Designers2.Service
                     return true;
                 }
 
-                if(!InitializeResourceModelSync(environmentModel))
+                if (!InitializeResourceModelSync(environmentModel))
                     return false;
 
             }
@@ -570,14 +575,14 @@ namespace Dev2.Activities.Designers2.Service
         {
             var resourceId = ResourceID;
 
-            if(resourceId != Guid.Empty) // if we have a GUID then get the model
+            if (resourceId != Guid.Empty) // if we have a GUID then get the model
             {
                 NewModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
 
             }
             else
             {
-                if(!String.IsNullOrEmpty(ServiceName)) // otherwise try to get the resource model using a name
+                if (!String.IsNullOrEmpty(ServiceName)) // otherwise try to get the resource model using a name
                 {
                     NewModel = environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == ServiceName) as IContextualResourceModel;
 
@@ -587,7 +592,7 @@ namespace Dev2.Activities.Designers2.Service
 
         private void CheckVersions()
         {
-            if(LastValidationMemo != null && LastValidationMemo.Errors.Any(a => a.Message.Contains("This service will only execute when the server is online.")))
+            if (LastValidationMemo != null && LastValidationMemo.Errors.Any(a => a.Message.Contains("This service will only execute when the server is online.")))
             {
 
                 RemoveErrors(
@@ -598,7 +603,7 @@ namespace Dev2.Activities.Designers2.Service
             }
             var webAct = ActivityFactory.CreateWebActivity(NewModel, NewModel, ServiceName);
             var newMapping = MappingFactory.CreateModel(webAct, OnMappingCollectionChanged);
-            if(newMapping.GetInputString(DataMappingViewModel.Inputs) != DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs) ||
+            if (newMapping.GetInputString(DataMappingViewModel.Inputs) != DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs) ||
                 newMapping.GetOutputString(DataMappingViewModel.Outputs) != DataMappingViewModel.GetOutputString(DataMappingViewModel.Outputs))
             {
                 UpdateLastValidationMemoWithVersionChanged();
@@ -613,19 +618,19 @@ namespace Dev2.Activities.Designers2.Service
         private bool InitializeResourceModelSync(IEnvironmentModel environmentModel)
         {
             var resourceId = ResourceID;
-            if(!environmentModel.IsConnected) // if we are not connected then just verify connection and return
+            if (!environmentModel.IsConnected) // if we are not connected then just verify connection and return
             {
                 environmentModel.Connection.Verify(UpdateLastValidationMemoWithOfflineError);
                 return true;
             }
-            if(resourceId != Guid.Empty) // if we have a GUID then get the model
+            if (resourceId != Guid.Empty) // if we have a GUID then get the model
             {
                 ResourceModel = environmentModel.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
 
             }
             else
             {
-                if(!String.IsNullOrEmpty(ServiceName)) // otherwise try to get the resource model using a name
+                if (!String.IsNullOrEmpty(ServiceName)) // otherwise try to get the resource model using a name
                 {
                     ResourceModel =
                         environmentModel.ResourceRepository.FindSingle(c => c.ResourceName == ServiceName, true) as
@@ -634,14 +639,14 @@ namespace Dev2.Activities.Designers2.Service
                 }
                 // else return;
             }
-            if(ResourceModel == null && environmentModel.IsConnected) // if we have no name, guid and no resource, then set deleted
+            if (ResourceModel == null && environmentModel.IsConnected) // if we have no name, guid and no resource, then set deleted
             {
 
                 UpdateLastValidationMemoWithDeleteError();
             }
             else
             {
-                if(!CheckSourceMissing())
+                if (!CheckSourceMissing())
                     return false;
             }
 
@@ -675,10 +680,10 @@ namespace Dev2.Activities.Designers2.Service
 
         bool CheckSourceMissing()
         {
-            if(ResourceModel != null && (ResourceModel.ResourceType == Studio.Core.AppResources.Enums.ResourceType.Service && _environment != null))
+            if (ResourceModel != null && (ResourceModel.ResourceType == Studio.Core.AppResources.Enums.ResourceType.Service && _environment != null))
             {
                 var resourceModel = _environment.ResourceRepository.FindSingle(c => c.ID == ResourceModel.ID, true) as IContextualResourceModel;
-                if(resourceModel != null)
+                if (resourceModel != null)
                 {
                     string srcId;
                     var workflowXml = resourceModel.WorkflowXaml;
@@ -687,7 +692,7 @@ namespace Dev2.Activities.Designers2.Service
                         var xe = workflowXml.Replace("&", "&amp;").ToXElement();
                         srcId = xe.AttributeSafe("SourceID");
                     }
-                    catch(XmlException xe)
+                    catch (XmlException xe)
                     {
                         Dev2Logger.Log.Error(xe);
                         // invalid xml, we need to extract the sourceID another way ;)
@@ -695,11 +700,11 @@ namespace Dev2.Activities.Designers2.Service
                     }
 
                     Guid sourceId;
-                    if(Guid.TryParse(srcId, out sourceId))
+                    if (Guid.TryParse(srcId, out sourceId))
                     {
                         SourceId = sourceId;
                         var sourceResource = _environment.ResourceRepository.FindSingle(c => c.ID == sourceId);
-                        if(sourceResource == null)
+                        if (sourceResource == null)
                         {
                             UpdateLastValidationMemoWithSourceNotFoundError();
                             return false;
@@ -715,7 +720,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void InitializeValidationService(IEnvironmentModel environmentModel)
         {
-            if(environmentModel != null && environmentModel.Connection != null && environmentModel.Connection.ServerEvents != null)
+            if (environmentModel != null && environmentModel.Connection != null && environmentModel.Connection.ServerEvents != null)
             {
                 _validationService = new DesignValidationService(environmentModel.Connection.ServerEvents);
                 _validationService.Subscribe(UniqueID, (a => UpdateLastValidationMemo(a)));
@@ -733,7 +738,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void AddProperty(string key, string value)
         {
-            if(!string.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
             {
                 Properties.Add(new KeyValuePair<string, string>(key, value));
             }
@@ -747,7 +752,7 @@ namespace Dev2.Activities.Designers2.Service
 
         string GetIconPath(Common.Interfaces.Core.DynamicServices.enActionType actionType)
         {
-            switch(actionType)
+            switch (actionType)
             {
                 case Common.Interfaces.Core.DynamicServices.enActionType.InvokeStoredProc:
                     return "DatabaseService-32";
@@ -794,7 +799,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void DoShowParent()
         {
-            if(!IsDeleted)
+            if (!IsDeleted)
             {
                 _eventPublisher.Publish(new EditActivityMessage(ModelItem, EnvironmentID, null));
             }
@@ -808,15 +813,15 @@ namespace Dev2.Activities.Designers2.Service
             CheckIsDeleted(memo);
 
             UpdateDesignValidationErrors(memo.Errors.Where(info => info.InstanceID == UniqueID && info.ErrorType != ErrorType.None));
-            if(SourceId == Guid.Empty)
+            if (SourceId == Guid.Empty)
             {
-                if(checkSource && CheckSourceMissing())
+                if (checkSource && CheckSourceMissing())
                 {
                     InitializeMappings();
                     UpdateMappings();
                 }
             }
-            if(OnDesignValidationReceived != null)
+            if (OnDesignValidationReceived != null)
             {
                 OnDesignValidationReceived(this, memo);
             }
@@ -861,58 +866,58 @@ namespace Dev2.Activities.Designers2.Service
         void UpdateLastValidationMemoWithOfflineError(ConnectResult result)
         {
             Dispatcher.Invoke(() =>
+            {
+                switch (result)
                 {
-                    switch(result)
-                    {
-                        case ConnectResult.Success:
+                    case ConnectResult.Success:
 
-                            break;
+                        break;
 
-                        case ConnectResult.ConnectFailed:
-                        case ConnectResult.LoginFailed:
-                            var uniqueId = UniqueID;
-                            var memo = new DesignValidationMemo
-                                {
-                                    InstanceID = uniqueId,
-                                    IsValid = false,
-                                };
-                            memo.Errors.Add(new ErrorInfo
-                                {
-                                    InstanceID = uniqueId,
-                                    ErrorType = ErrorType.Warning,
-                                    FixType = FixType.None,
-                                    Message = result == ConnectResult.ConnectFailed
-                                                  ? "Server is offline. This service will only execute when the server is online."
-                                                  : "Server login failed. This service will only execute when the login permissions issues have been resolved."
-                                });
-                            UpdateLastValidationMemo(memo);
-                            break;
-                    }
+                    case ConnectResult.ConnectFailed:
+                    case ConnectResult.LoginFailed:
+                        var uniqueId = UniqueID;
+                        var memo = new DesignValidationMemo
+                        {
+                            InstanceID = uniqueId,
+                            IsValid = false,
+                        };
+                        memo.Errors.Add(new ErrorInfo
+                        {
+                            InstanceID = uniqueId,
+                            ErrorType = ErrorType.Warning,
+                            FixType = FixType.None,
+                            Message = result == ConnectResult.ConnectFailed
+                                          ? "Server is offline. This service will only execute when the server is online."
+                                          : "Server login failed. This service will only execute when the login permissions issues have been resolved."
+                        });
+                        UpdateLastValidationMemo(memo);
+                        break;
+                }
 
-                });
+            });
         }
 
         void CheckRequiredMappingChangedErrors(DesignValidationMemo memo)
         {
             var keepError = false;
             var reqiredMappingChanged = memo.Errors.FirstOrDefault(c => c.FixType == FixType.IsRequiredChanged);
-            if(reqiredMappingChanged != null)
+            if (reqiredMappingChanged != null)
             {
-                if(reqiredMappingChanged.FixData != null)
+                if (reqiredMappingChanged.FixData != null)
                 {
                     var xElement = XElement.Parse(reqiredMappingChanged.FixData);
                     var inputOutputViewModels = DeserializeMappings(true, xElement);
 
-                    foreach(var input in inputOutputViewModels)
+                    foreach (var input in inputOutputViewModels)
                     {
                         IInputOutputViewModel currentInputViewModel = input;
-                        if(DataMappingViewModel != null)
+                        if (DataMappingViewModel != null)
                         {
                             var inputOutputViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == currentInputViewModel.Name);
-                            if(inputOutputViewModel != null)
+                            if (inputOutputViewModel != null)
                             {
                                 inputOutputViewModel.Required = input.Required;
-                                if(inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
+                                if (inputOutputViewModel.MapsTo == string.Empty && inputOutputViewModel.Required)
                                 {
                                     keepError = true;
                                 }
@@ -921,7 +926,7 @@ namespace Dev2.Activities.Designers2.Service
                     }
                 }
 
-                if(!keepError)
+                if (!keepError)
                 {
                     var worstErrors = memo.Errors.Where(c => c.FixType == FixType.IsRequiredChanged && c.InstanceID == UniqueID).ToList();
                     memo.Errors.RemoveAll(c => c.FixType == FixType.IsRequiredChanged && c.InstanceID == UniqueID);
@@ -936,12 +941,12 @@ namespace Dev2.Activities.Designers2.Service
             var error = memo.Errors.FirstOrDefault(c => c.FixType == FixType.Delete);
             IsDeleted = error != null;
             IsEditable = !IsDeleted;
-            if(IsDeleted)
+            if (IsDeleted)
             {
-                while(memo.Errors.Count > 1)
+                while (memo.Errors.Count > 1)
                 {
                     error = memo.Errors.FirstOrDefault(c => c.FixType != FixType.Delete);
-                    if(error != null)
+                    if (error != null)
                     {
                         memo.Errors.Remove(error);
                     }
@@ -951,13 +956,13 @@ namespace Dev2.Activities.Designers2.Service
 
         void CheckForRequiredMapping()
         {
-            if(DataMappingViewModel != null && DataMappingViewModel.Inputs.Any(c => c.Required && String.IsNullOrEmpty(c.MapsTo)))
+            if (DataMappingViewModel != null && DataMappingViewModel.Inputs.Any(c => c.Required && String.IsNullOrEmpty(c.MapsTo)))
             {
-                if(DesignValidationErrors.All(c => c.FixType != FixType.IsRequiredChanged))
+                if (DesignValidationErrors.All(c => c.FixType != FixType.IsRequiredChanged))
                 {
                     var listToRemove = DesignValidationErrors.Where(c => c.FixType == FixType.None && c.ErrorType == ErrorType.None).ToList();
 
-                    foreach(var errorInfo in listToRemove)
+                    foreach (var errorInfo in listToRemove)
                     {
                         DesignValidationErrors.Remove(errorInfo);
                     }
@@ -970,11 +975,11 @@ namespace Dev2.Activities.Designers2.Service
                 return;
             }
 
-            if(DesignValidationErrors.Any(c => c.FixType == FixType.IsRequiredChanged))
+            if (DesignValidationErrors.Any(c => c.FixType == FixType.IsRequiredChanged))
             {
                 var listToRemove = DesignValidationErrors.Where(c => c.FixType == FixType.IsRequiredChanged).ToList();
 
-                foreach(var errorInfo in listToRemove)
+                foreach (var errorInfo in listToRemove)
                 {
                     DesignValidationErrors.Remove(errorInfo);
                     RootModel.RemoveError(errorInfo);
@@ -998,29 +1003,29 @@ namespace Dev2.Activities.Designers2.Service
         // PBI 6690 - 2013.07.04 - TWR : added
         void FixErrors()
         {
-            if(!_versionsDifferent && (WorstDesignError.ErrorType == ErrorType.None || WorstDesignError.FixData == null))
+            if (!_versionsDifferent && (WorstDesignError.ErrorType == ErrorType.None || WorstDesignError.FixData == null))
             {
                 return;
             }
 
-            switch(WorstDesignError.FixType)
+            switch (WorstDesignError.FixType)
             {
                 case FixType.ReloadMapping:
                     ShowLarge = true;
-                    if(!_versionsDifferent)
+                    if (!_versionsDifferent)
                     {
                         var xml = FetchXElementFromFixData();
                         var inputs = GetMapping(xml, true, DataMappingViewModel.Inputs);
                         var outputs = GetMapping(xml, false, DataMappingViewModel.Outputs);
 
                         DataMappingViewModel.Inputs.Clear();
-                        foreach(var input in inputs)
+                        foreach (var input in inputs)
                         {
                             DataMappingViewModel.Inputs.Add(input);
                         }
 
                         DataMappingViewModel.Outputs.Clear();
-                        foreach(var output in outputs)
+                        foreach (var output in outputs)
                         {
                             DataMappingViewModel.Outputs.Add(output);
                         }
@@ -1029,7 +1034,7 @@ namespace Dev2.Activities.Designers2.Service
                         RemoveError(WorstDesignError);
                         UpdateWorstError();
                     }
-                    else if(_versionsDifferent)
+                    else if (_versionsDifferent)
                     {
                         ResourceModel = NewModel;
                         InitializeMappings();
@@ -1042,13 +1047,13 @@ namespace Dev2.Activities.Designers2.Service
                 case FixType.IsRequiredChanged:
                     ShowLarge = true;
                     var inputOutputViewModels = DeserializeMappings(true, FetchXElementFromFixData());
-                    foreach(var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
+                    foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
                     {
                         IInputOutputViewModel model = inputOutputViewModel;
                         var actualViewModel = DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
-                        if(actualViewModel != null)
+                        if (actualViewModel != null)
                         {
-                            if(actualViewModel.Value == string.Empty)
+                            if (actualViewModel.Value == string.Empty)
                             {
                                 actualViewModel.RequiredMissing = true;
                             }
@@ -1063,13 +1068,13 @@ namespace Dev2.Activities.Designers2.Service
 
         XElement FetchXElementFromFixData()
         {
-            if(WorstDesignError != null && !string.IsNullOrEmpty(WorstDesignError.FixData))
+            if (WorstDesignError != null && !string.IsNullOrEmpty(WorstDesignError.FixData))
             {
                 try
                 {
                     return XElement.Parse(WorstDesignError.FixData);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Dev2Logger.Log.Error(e);
                 }
@@ -1083,15 +1088,15 @@ namespace Dev2.Activities.Designers2.Service
             var result = new ObservableCollection<IInputOutputViewModel>();
 
             var input = xml.Descendants(isInput ? "Input" : "Output").FirstOrDefault();
-            if(input != null)
+            if (input != null)
             {
                 var newMappings = DeserializeMappings(isInput, input);
 
-                foreach(var newMapping in newMappings)
+                foreach (var newMapping in newMappings)
                 {
                     IInputOutputViewModel mapping = newMapping;
                     var oldMapping = oldMappings.FirstOrDefault(m => m.Name.Equals(mapping.Name, StringComparison.InvariantCultureIgnoreCase));
-                    if(oldMapping != null)
+                    if (oldMapping != null)
                     {
                         newMapping.MapsTo = oldMapping.MapsTo;
                         newMapping.Value = oldMapping.Value;
@@ -1118,7 +1123,7 @@ namespace Dev2.Activities.Designers2.Service
                     : InputOutputViewModelFactory.CreateListToDisplayOutputs(idefs);
                 return newMappings;
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Log.Error(e);
             }
@@ -1149,10 +1154,10 @@ namespace Dev2.Activities.Designers2.Service
 
         void UpdateWorstError()
         {
-            if(DesignValidationErrors.Count == 0)
+            if (DesignValidationErrors.Count == 0)
             {
                 DesignValidationErrors.Add(NoError);
-                if(!RootModel.HasErrors)
+                if (!RootModel.HasErrors)
                 {
                     RootModel.IsValid = true;
                 }
@@ -1160,10 +1165,10 @@ namespace Dev2.Activities.Designers2.Service
 
             IErrorInfo[] worstError = { DesignValidationErrors[0] };
 
-            foreach(var error in DesignValidationErrors.Where(error => error.ErrorType > worstError[0].ErrorType))
+            foreach (var error in DesignValidationErrors.Where(error => error.ErrorType > worstError[0].ErrorType))
             {
                 worstError[0] = error;
-                if(error.ErrorType == ErrorType.Critical)
+                if (error.ErrorType == ErrorType.Critical)
                 {
                     break;
                 }
@@ -1179,7 +1184,7 @@ namespace Dev2.Activities.Designers2.Service
         {
             DesignValidationErrors.Clear();
             RootModel.ClearErrors();
-            foreach(var error in errors)
+            foreach (var error in errors)
             {
                 DesignValidationErrors.Add(error);
                 RootModel.AddError(error);
@@ -1193,17 +1198,17 @@ namespace Dev2.Activities.Designers2.Service
 
         public void Handle(UpdateResourceMessage message)
         {
-            if(message != null && message.ResourceModel != null)
+            if (message != null && message.ResourceModel != null)
             {
                 //                if(message.ResourceModel.ID == ResourceID)
                 //                {
                 //                    InitializeMappings();
                 //                }
-                if(SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
+                if (SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
                 {
 
                     IErrorInfo sourceNotAvailableMessage = DesignValidationErrors.FirstOrDefault(info => info.Message == SourceNotFoundMessage);
-                    if(sourceNotAvailableMessage != null)
+                    if (sourceNotAvailableMessage != null)
                     {
                         RemoveError(sourceNotAvailableMessage);
                         UpdateWorstError();
@@ -1240,18 +1245,18 @@ namespace Dev2.Activities.Designers2.Service
         void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if(!_isDisposed)
+            if (!_isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
-                if(disposing)
+                if (disposing)
                 {
                     // Dispose managed resources.
-                    if(_validationService != null)
+                    if (_validationService != null)
                     {
                         _validationService.Dispose();
                     }
-                    if(_environment != null)
+                    if (_environment != null)
                     {
                         _environment.AuthorizationServiceSet -= OnEnvironmentOnAuthorizationServiceSet;
                     }

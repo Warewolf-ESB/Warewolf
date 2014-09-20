@@ -11,9 +11,12 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Service;
 using Dev2.Collections;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Communication;
+using Dev2.Core.Tests.Environments;
+using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.Network;
 using Dev2.Providers.Errors;
@@ -29,6 +32,7 @@ using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Moq.Language.Flow;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
@@ -451,7 +455,7 @@ namespace Dev2.Activities.Designers.Tests.Service
                 Assert.AreEqual(m.Errors.Count, model.DesignValidationErrors.Count);
                 Assert.AreEqual(ErrorType.Critical, model.WorstError);
 
-                foreach(var error in m.Errors)
+                foreach (var error in m.Errors)
                 {
                     IErrorInfo currentError = error;
                     var modelError = model.DesignValidationErrors.FirstOrDefault(me => me.ErrorType == currentError.ErrorType && me.Message == currentError.Message);
@@ -1194,14 +1198,14 @@ namespace Dev2.Activities.Designers.Tests.Service
 
 
             var activity = new DsfActivity
-                {
-                    ResourceID = new InArgument<Guid>(resourceID),
-                    EnvironmentID = new InArgument<Guid>(Guid.Empty),
-                    UniqueID = Guid.NewGuid().ToString(),
-                    SimulationMode = SimulationMode.OnDemand,
-                    InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
-                    OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
-                };
+            {
+                ResourceID = new InArgument<Guid>(resourceID),
+                EnvironmentID = new InArgument<Guid>(Guid.Empty),
+                UniqueID = Guid.NewGuid().ToString(),
+                SimulationMode = SimulationMode.OnDemand,
+                InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
+                OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
+            };
 
             var modelItem = CreateModelItem(activity);
 
@@ -1727,10 +1731,10 @@ namespace Dev2.Activities.Designers.Tests.Service
             var worker = new Mock<IAsyncWorker>();
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()))
                 .Callback((System.Action a, System.Action b) =>
-                        {
-                            a.Invoke();
-                            b.Invoke();
-                        }
+                {
+                    a.Invoke();
+                    b.Invoke();
+                }
                 );
             //------------Execute Test---------------------------
             // ReSharper disable UnusedVariable
@@ -1802,6 +1806,38 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             Assert.AreEqual("<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>", inputMapping);
             Assert.AreEqual("<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>", outputMapping);
+
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("ServiceDesignerViewModel_Constructor")]
+        public void ServiceDesignerViewModel_InitializeWhenEnvironmentModelOnOtherServer_StillCorrectlySetsUp()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+
+            var resourceModel = CreateResourceModel(Guid.Empty, false);
+            ISetup<IContextualResourceModel, string> setupResourceModel = resourceModel.Setup(model => model.DataList);
+            setupResourceModel.Returns("<DataList><n1/></DataList>");
+
+
+            var rootModel = CreateResourceModel(Guid.Empty);
+
+            var envRepository = new Mock<IEnvironmentRepository>();
+            ISetup<IEnvironmentRepository, IEnvironmentModel> setupFindSingle = envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IEnvironmentModel, bool>>>()));
+            setupFindSingle.Returns((IEnvironmentModel)null);
+            ISetup<IEnvironmentRepository, IEnvironmentModel> setupActiveEnvironment = envRepository.Setup(r => r.ActiveEnvironment);
+            setupActiveEnvironment.Returns(resourceModel.Object.Environment);
+
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(rootModel.Object.Environment.ID), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+
+            var modelItem = CreateModelItem(activity);
+
+            //------------Execute Test---------------------------
+            var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(viewModel.ResourceModel);
 
         }
 
@@ -1942,7 +1978,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         {
             const int OffSet = 4;
             var startIndex = 0;
-            if(modelProperties == null)
+            if (modelProperties == null)
             {
                 modelProperties = new ModelProperty[OffSet];
             }
@@ -1959,7 +1995,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var properties = new Mock<ModelPropertyCollection>();
 
-            foreach(var modelProperty in modelProperties)
+            foreach (var modelProperty in modelProperties)
             {
                 properties.Protected().Setup<ModelProperty>("Find", modelProperty.Name, true).Returns(modelProperty);
             }
@@ -2013,9 +2049,9 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.IsLocalHost).Returns(true);
             environment.Setup(e => e.IsLocalHostCheck()).Returns(true);
             var errors = new ObservableReadOnlyList<IErrorInfo>();
-            if(resourceErrors != null)
+            if (resourceErrors != null)
             {
-                foreach(var resourceError in resourceErrors)
+                foreach (var resourceError in resourceErrors)
                 {
                     errors.Add(resourceError);
                 }
@@ -2027,14 +2063,17 @@ namespace Dev2.Activities.Designers.Tests.Service
             model.Setup(r => r.WorkflowXaml).Returns(new StringBuilder("<root/>"));
             model.Setup(m => m.Errors).Returns(errors);
             model.Setup(m => m.ID).Returns(resourceID);
-            model.Setup(m => m.Environment).Returns(environment.Object);
+            var environmentModel = environment.Object;
+            model.Setup(m => m.Environment).Returns(environmentModel);
             model.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(errors);
             model.Setup(m => m.HasErrors).Returns(() => model.Object.Errors.Count > 0);
             model.SetupProperty(m => m.IsValid);
             model.Setup(m => m.RemoveError(It.IsAny<IErrorInfo>())).Callback((IErrorInfo error) => errors.Remove(error));
 
             resourceRepository = new Mock<IResourceRepository>();
-
+            var mockEnvironmentRepository = new Mock<IEnvironmentRepository>();
+            mockEnvironmentRepository.Setup(e => e.LookupEnvironments(It.IsAny<IEnvironmentModel>(), null)).Returns(new List<IEnvironmentModel> { environmentModel });
+            new EnvironmentRepository(mockEnvironmentRepository.Object);
             environment.Setup(e => e.ResourceRepository).Returns(resourceRepository.Object);
             return model;
         }
@@ -2134,7 +2173,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             const string src = @"1afe38e9-a6f5-403d-9e52-06dd7ae11198";
             string xaml = string.Format(@"<Action Name=""foobar"" Type=""InvokeWebService"" SourceID=""{0}"" SourceName=""dummy"" SourceMethod="""" RequestUrl="""" RequestMethod=""Post"" JsonPath=""""></Action>", src);
 
-            if(mangleXaml)
+            if (mangleXaml)
             {
                 xaml += "<foo./>.</";
             }
@@ -2164,7 +2203,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resourceID = Guid.NewGuid();
             var rootModel = myModel;
 
-            if(myModel == null)
+            if (myModel == null)
             {
                 rootModel = new Mock<IContextualResourceModel>();
                 rootModel.Setup(m => m.Errors.Count).Returns(0);
@@ -2173,12 +2212,12 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = name };
 
-            if(type != null)
+            if (type != null)
             {
                 activity.Type = type;
             }
 
-            if(serviceURI != null)
+            if (serviceURI != null)
             {
                 activity.ServiceUri = serviceURI;
             }

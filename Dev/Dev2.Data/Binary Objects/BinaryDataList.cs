@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
@@ -380,9 +381,17 @@ namespace Dev2.DataList.Contract.Binary_Objects
             TryGetEntry(GlobalConstants.ErrorPayload, out entry, out error);
             if(entry != null)
             {
-                if(entry.FetchScalar().TheValue != string.Empty)
+                try
                 {
-                    result = true;
+                    var theValue = entry.FetchScalar().TheValue;
+                    if(theValue != string.Empty)
+                    {
+                        result = true;
+                    }
+                }
+                catch(NullValueInVariableException)
+                {
+                    return result;
                 }
             }
 

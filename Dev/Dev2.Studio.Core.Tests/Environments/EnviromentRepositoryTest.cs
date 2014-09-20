@@ -773,7 +773,7 @@ namespace Dev2.Core.Tests.Environments
         [ExpectedException(typeof(ArgumentNullException))]
         public void EnvironmentRepositoryLookupEnvironmentsWithNullParametersExpectedThrowsArgumentNullException()
         {
-            EnvironmentRepository.LookupEnvironments(null);
+            EnvironmentRepository.Instance.LookupEnvironments(null);
         }
 
         [TestMethod]
@@ -803,7 +803,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var result = EnvironmentRepository.LookupEnvironments(env.Object);
+            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object);
 
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(id, result[0].ID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
@@ -878,7 +878,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var result = EnvironmentRepository.LookupEnvironments(env.Object);
+            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object);
 
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(id, result[0].ID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
@@ -891,7 +891,7 @@ namespace Dev2.Core.Tests.Environments
         public void EnvironmentRepositoryLookupEnvironmentsWithInvalidParametersExpectedReturnsEmptyList()
         {
             var env = CreateMockEnvironment();
-            var result = EnvironmentRepository.LookupEnvironments(env.Object, new List<string> { "xxx", "aaa" });
+            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { "xxx", "aaa" });
             // Test
             Assert.AreEqual(0, result.Count);
         }
@@ -902,7 +902,7 @@ namespace Dev2.Core.Tests.Environments
             var env = CreateMockEnvironment(
                 "<Source ID=\"{5E8EB586-1D63-4C9F-9A35-CD05ACC2B6}\" ConnectionString=\"AppServerUri=//127.0.0.1:77/dsf;WebServerPort=1234\" Name=\"TheName\" Type=\"Dev2Server\"><DisplayName>The Name</DisplayName></Source>");
 
-            var result = EnvironmentRepository.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
+            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
             Assert.AreEqual(0, result.Count);
         }
 
@@ -913,7 +913,7 @@ namespace Dev2.Core.Tests.Environments
             var env = CreateMockEnvironment(
                 "<Source ID=\"{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}\" ConnectionString=\"AppServerUri=//127.0.0.1:77/dsf;WebServerPort=1234\" Name=\"TheName\" Type=\"Dev2Server\"><DisplayName>The Name</DisplayName></Source>");
 
-            var result = EnvironmentRepository.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
+            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
             Assert.AreEqual(0, result.Count);
         }
 
@@ -923,7 +923,7 @@ namespace Dev2.Core.Tests.Environments
             var env = CreateMockEnvironment(
                 "<Source ID=\"{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}\" ConnectionString=\"AppServerUri=http://127.0.0.1:77/dsf;WebServerPort=12a34\" Name=\"TheName\" Type=\"Dev2Server\"><DisplayName>The Name</DisplayName></Source>");
 
-            var result = EnvironmentRepository.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
+            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID, "{5E8EB586-1D63-4C9F-9A35-CD05ACC2B607}" });
             Assert.AreEqual(0, result.Count);
         }
 
@@ -961,7 +961,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var result = EnvironmentRepository.LookupEnvironments(env.Object, new List<string> { Server1ID });
+            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID });
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("http://tst-ci-remote:3142/", result[0].Connection.WebServerUri.AbsoluteUri);
         }
@@ -1000,7 +1000,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var result = EnvironmentRepository.LookupEnvironments(env.Object, new List<string> { Server1ID });
+            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object, new List<string> { Server1ID });
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("http://tst-ci-remote:3142/", result[0].Connection.WebServerUri.AbsoluteUri);
             Assert.AreEqual(AuthenticationType.User, result[0].Connection.AuthenticationType);
@@ -1039,7 +1039,7 @@ namespace Dev2.Core.Tests.Environments
             //------------Setup for test--------------------------
             var defaultEnvironment = new EnvironmentModel(Guid.NewGuid(), CreateMockConnection(new[] { "localhost" }).Object, repo.Object, studiorepo.Object);
             //------------Execute Test---------------------------
-            EnvironmentRepository.LookupEnvironments(defaultEnvironment);
+            EnvironmentRepository.Instance.LookupEnvironments(defaultEnvironment);
             //------------Assert Results-------------------------
             Assert.IsTrue(true);
         }
@@ -1075,7 +1075,7 @@ namespace Dev2.Core.Tests.Environments
             env.Setup(e => e.Connection).Returns(con.Object);
             env.Setup(e => e.ResourceRepository).Returns(repo.Object);
 
-            var result = EnvironmentRepository.LookupEnvironments(env.Object);
+            var result = EnvironmentRepository.Instance.LookupEnvironments(env.Object);
             Assert.AreEqual(1, result.Count, "EnvironmentRepository failed to load environment.");
             Assert.AreEqual(id, result[0].ID, "EnvironmentRepository did not assign the resource ID to the environment ID.");
         }

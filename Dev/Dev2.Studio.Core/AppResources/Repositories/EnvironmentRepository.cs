@@ -37,7 +37,7 @@ namespace Dev2.Studio.Core
         // completes before the instance variable can be accessed. Lastly, this approach uses a SyncInstance 
         // instance to lock on, rather than locking on the type itself, to avoid deadlocks.
         //
-        static volatile EnvironmentRepository _instance;
+        static volatile IEnvironmentRepository _instance;
 
         static readonly object SyncInstance = new Object();
 
@@ -48,11 +48,11 @@ namespace Dev2.Studio.Core
         {
             get
             {
-                if(_instance == null)
+                if (_instance == null)
                 {
-                    lock(SyncInstance)
+                    lock (SyncInstance)
                     {
-                        if(_instance == null)
+                        if (_instance == null)
                         {
                             _instance = new EnvironmentRepository();
                         }
@@ -80,7 +80,7 @@ namespace Dev2.Studio.Core
         // Testing only!!!
         protected EnvironmentRepository(IEnvironmentModel source)
         {
-            if(source == null)
+            if (source == null)
             {
                 throw new ArgumentNullException("source");
             }
@@ -89,7 +89,7 @@ namespace Dev2.Studio.Core
         }
 
         //For Testing Only!!!!!!!
-        public EnvironmentRepository(EnvironmentRepository environmentRepository)
+        public EnvironmentRepository(IEnvironmentRepository environmentRepository)
         {
             _instance = environmentRepository;
         }
@@ -108,7 +108,7 @@ namespace Dev2.Studio.Core
 
         public void Clear()
         {
-            foreach(var environment in Environments)
+            foreach (var environment in Environments)
             {
                 environment.Disconnect();
             }
@@ -165,11 +165,11 @@ namespace Dev2.Studio.Core
 
         public void Save(ICollection<IEnvironmentModel> environments)
         {
-            if(environments == null || environments.Count == 0)
+            if (environments == null || environments.Count == 0)
             {
                 return;
             }
-            foreach(var environmentModel in environments)
+            foreach (var environmentModel in environments)
             {
                 AddInternal(environmentModel);
             }
@@ -177,7 +177,7 @@ namespace Dev2.Studio.Core
 
         public string Save(IEnvironmentModel environment)
         {
-            if(environment == null)
+            if (environment == null)
             {
                 return "Not Saved";
             }
@@ -191,11 +191,11 @@ namespace Dev2.Studio.Core
 
         public void Remove(ICollection<IEnvironmentModel> environments)
         {
-            if(environments == null || environments.Count == 0)
+            if (environments == null || environments.Count == 0)
             {
                 return;
             }
-            foreach(var environmentModel in environments)
+            foreach (var environmentModel in environments)
             {
                 RemoveInternal(environmentModel);
             }
@@ -207,7 +207,7 @@ namespace Dev2.Studio.Core
 
         public void Remove(IEnvironmentModel environment)
         {
-            if(environment == null)
+            if (environment == null)
             {
                 return;
             }
@@ -224,7 +224,7 @@ namespace Dev2.Studio.Core
 
         public virtual IList<Guid> ReadSession()
         {
-            lock(FileLock)
+            lock (FileLock)
             {
                 var path = GetEnvironmentsFilePath();
 
@@ -235,16 +235,16 @@ namespace Dev2.Studio.Core
                 // ReSharper restore RedundantAssignment
                 var result = new List<Guid>();
 
-                if(!string.IsNullOrEmpty(tryReadFile))
+                if (!string.IsNullOrEmpty(tryReadFile))
                 {
                     try
                     {
                         xml = XElement.Parse(tryReadFile);
                         var guids = xml.Descendants("Environment").Select(id => id.Value).ToList();
-                        foreach(var guidStr in guids)
+                        foreach (var guidStr in guids)
                         {
                             Guid guid;
-                            if(Guid.TryParse(guidStr, out guid))
+                            if (Guid.TryParse(guidStr, out guid))
                             {
                                 result.Add(guid);
                             }
@@ -261,12 +261,12 @@ namespace Dev2.Studio.Core
 
         public virtual void WriteSession(IEnumerable<Guid> environmentGuids)
         {
-            lock(FileLock)
+            lock (FileLock)
             {
                 var xml = new XElement("Environments");
-                if(environmentGuids != null)
+                if (environmentGuids != null)
                 {
-                    foreach(var environmentId in environmentGuids.Where(id => id != Guid.Empty))
+                    foreach (var environmentId in environmentGuids.Where(id => id != Guid.Empty))
                     {
                         xml.Add(new XElement("Environment", environmentId));
                     }
@@ -285,7 +285,7 @@ namespace Dev2.Studio.Core
             LoadInternal();
 
             IEnvironmentModel environment = null;
-            if(server != null)
+            if (server != null)
             {
                 Guid id = server.ID;
                 environment = Environments.FirstOrDefault(e => e.ID == id) ?? CreateEnvironmentModel(id, server.Connection.AppServerUri, server.Connection.AuthenticationType, server.Connection.UserName, server.Connection.Password, server.Name);
@@ -296,13 +296,13 @@ namespace Dev2.Studio.Core
         static IEnvironmentModel CreateEnvironmentModel(Guid id, Uri applicationServerUri, AuthenticationType authenticationType, string userName, string password, string name)
         {
             ServerProxy connectionProxy;
-            if(authenticationType == AuthenticationType.Windows || authenticationType == AuthenticationType.Anonymous)
+            if (authenticationType == AuthenticationType.Windows || authenticationType == AuthenticationType.Anonymous)
             {
                 connectionProxy = new ServerProxy(applicationServerUri);
             }
             else
             {
-                if(authenticationType == AuthenticationType.Public)
+                if (authenticationType == AuthenticationType.Public)
                 {
                     userName = "\\";
                     password = "";
@@ -318,7 +318,7 @@ namespace Dev2.Studio.Core
 
         void RaiseItemAdded()
         {
-            if(ItemAdded != null)
+            if (ItemAdded != null)
             {
                 ItemAdded(this, new EventArgs());
             }
@@ -326,7 +326,7 @@ namespace Dev2.Studio.Core
 
         void RaiseItemEdited(IEnvironmentModel environment, bool isConnected)
         {
-            if(ItemEdited != null)
+            if (ItemEdited != null)
             {
                 ItemEdited(this, new EnvironmentEditedArgs(environment, isConnected));
             }
@@ -337,23 +337,23 @@ namespace Dev2.Studio.Core
         #region LoadInternal
         protected virtual void LoadInternal()
         {
-            lock(RestoreLock)
+            lock (RestoreLock)
             {
-                if(IsLoaded)
+                if (IsLoaded)
                 {
                     return;
                 }
                 var environments = LookupEnvironments(Source);
 
                 // Don't just clear and add, environments may be connected!!!
-                foreach(var newEnv in environments.Where(newEnv => !Environments.Contains(newEnv)))
+                foreach (var newEnv in environments.Where(newEnv => !Environments.Contains(newEnv)))
                 {
                     Environments.Add(newEnv);
                 }
 
 
                 var toBeRemoved = Environments.Where(e => !e.Equals(Source) && !environments.Contains(e)).ToList();
-                foreach(var environment in toBeRemoved)
+                foreach (var environment in toBeRemoved)
                 {
                     environment.Disconnect();
                     Environments.Remove(environment);
@@ -371,7 +371,7 @@ namespace Dev2.Studio.Core
         {
             var index = Environments.IndexOf(environment);
 
-            if(index == -1)
+            if (index == -1)
             {
                 Environments.Add(environment);
             }
@@ -389,7 +389,7 @@ namespace Dev2.Studio.Core
         protected virtual bool RemoveInternal(IEnvironmentModel environment)
         {
             var index = Environments.IndexOf(environment);
-            if(index != -1)
+            if (index != -1)
             {
                 environment.Disconnect();
                 Environments.RemoveAt(index);
@@ -414,9 +414,9 @@ namespace Dev2.Studio.Core
         /// <param name="environmentGuids">The environment guids to be queried; may be null.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">defaultEnvironment</exception>
-        public static IList<IEnvironmentModel> LookupEnvironments(IEnvironmentModel defaultEnvironment, IList<string> environmentGuids = null)
+        public IList<IEnvironmentModel> LookupEnvironments(IEnvironmentModel defaultEnvironment, IList<string> environmentGuids = null)
         {
-            if(defaultEnvironment == null)
+            if (defaultEnvironment == null)
             {
                 throw new ArgumentNullException("defaultEnvironment");
             }
@@ -427,26 +427,26 @@ namespace Dev2.Studio.Core
                 defaultEnvironment.Connect();
             }
             // ReSharper disable EmptyGeneralCatchClause
-            catch(Exception)
+            catch (Exception)
             // ReSharper restore EmptyGeneralCatchClause
             {
                 //Swallow exception for localhost connection
             }
-            if(!defaultEnvironment.IsConnected)
+            if (!defaultEnvironment.IsConnected)
             {
                 return result;
             }
 
             var hasEnvironmentGuids = environmentGuids != null;
 
-            if(hasEnvironmentGuids)
+            if (hasEnvironmentGuids)
             {
                 var servers = defaultEnvironment.ResourceRepository.FindResourcesByID(defaultEnvironment, environmentGuids, ResourceType.Source);
-                foreach(var env in servers)
+                foreach (var env in servers)
                 {
                     var payload = env.WorkflowXaml;
 
-                    if(payload != null)
+                    if (payload != null)
                     {
                         #region Parse connection string values
 
@@ -456,7 +456,7 @@ namespace Dev2.Studio.Core
                         Dictionary<string, string> connectionParams = ParseConnectionString(conStr);
 
                         string tmp;
-                        if(!connectionParams.TryGetValue("AppServerUri", out tmp))
+                        if (!connectionParams.TryGetValue("AppServerUri", out tmp))
                         {
                             continue;
                         }
@@ -471,22 +471,22 @@ namespace Dev2.Studio.Core
                             continue;
                         }
 
-                        if(!connectionParams.TryGetValue("WebServerPort", out tmp))
+                        if (!connectionParams.TryGetValue("WebServerPort", out tmp))
                         {
                             continue;
                         }
                         int webServerPort;
-                        if(!int.TryParse(tmp, out webServerPort))
+                        if (!int.TryParse(tmp, out webServerPort))
                         {
                             continue;
                         }
 
-                        if(!connectionParams.TryGetValue("AuthenticationType", out tmp))
+                        if (!connectionParams.TryGetValue("AuthenticationType", out tmp))
                         {
                             tmp = "";
                         }
                         AuthenticationType authenticationType;
-                        if(!Enum.TryParse(tmp, true, out authenticationType))
+                        if (!Enum.TryParse(tmp, true, out authenticationType))
                         {
                             authenticationType = AuthenticationType.Windows;
                         }
@@ -504,7 +504,7 @@ namespace Dev2.Studio.Core
             else
             {
                 var servers = defaultEnvironment.ResourceRepository.FindSourcesByType<Connection>(defaultEnvironment, enSourceType.Dev2Server);
-                if(servers != null)
+                if (servers != null)
                 {
                     result.AddRange(from env in servers let uri = new Uri(env.Address) select CreateEnvironmentModel(env));
                 }
@@ -518,7 +518,7 @@ namespace Dev2.Studio.Core
 
             var resourceId = connection.ResourceID;
             ServerProxy connectionProxy;
-            if(connection.AuthenticationType == AuthenticationType.Windows || connection.AuthenticationType == AuthenticationType.Anonymous)
+            if (connection.AuthenticationType == AuthenticationType.Windows || connection.AuthenticationType == AuthenticationType.Anonymous)
             {
                 connectionProxy = new ServerProxy(new Uri(connection.WebAddress));
             }
@@ -526,7 +526,7 @@ namespace Dev2.Studio.Core
             {
                 var userName = connection.UserName;
                 var password = connection.Password;
-                if(connection.AuthenticationType == AuthenticationType.Public)
+                if (connection.AuthenticationType == AuthenticationType.Public)
                 {
                     userName = "\\";
                     password = "";
@@ -563,7 +563,7 @@ namespace Dev2.Studio.Core
                 StringResources.Environments_Directory
             });
 
-            if(!Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
@@ -594,7 +594,7 @@ namespace Dev2.Studio.Core
 
         public static string GetAppServerUriFromConnectionString(string connectionstring)
         {
-            if(string.IsNullOrWhiteSpace(connectionstring))
+            if (string.IsNullOrWhiteSpace(connectionstring))
             {
                 return string.Empty;
             }
@@ -643,11 +643,11 @@ namespace Dev2.Studio.Core
         void Dispose(bool disposing)
         {
             // Check to see if Dispose has already been called.
-            if(!_isDisposed)
+            if (!_isDisposed)
             {
                 // If disposing equals true, dispose all managed
                 // and unmanaged resources.
-                if(disposing)
+                if (disposing)
                 {
                     // TODO 
                 }

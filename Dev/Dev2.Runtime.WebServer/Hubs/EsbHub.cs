@@ -101,7 +101,6 @@ namespace Dev2.Runtime.WebServer.Hubs
             {
                 authorizationServiceBase.Dispose();
             }
-            CompileMessageRepo.Instance.ClearObservable();
             if(ResourceCatalog.Instance.ResourceSaved == null)
             {
                 ResourceCatalog.Instance.ResourceSaved = null;
@@ -298,7 +297,6 @@ namespace Dev2.Runtime.WebServer.Hubs
 
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
 
-            CompileMessageRepo.Instance.ClearObservable();
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
 

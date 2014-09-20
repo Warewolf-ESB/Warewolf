@@ -1202,7 +1202,8 @@ namespace Dev2.Runtime.Hosting
                 var messages = GetCompileMessages(resource, contents, beforeAction, smc);
                 if(messages != null)
                 {
-                    _workspaceLocks.Keys.ForEach(workspace =>
+                    var keys = new List<Guid>(_workspaceResources.Keys);
+                    keys.ForEach(workspace =>
                     {
                         CompileMessageRepo.Instance.AddMessage(workspace, messages); //Sends the message for the resource being saved
                         UpdateDependantResourceWithCompileMessages(workspace, resource, messages);
