@@ -127,6 +127,7 @@ namespace Dev2.Runtime.ServiceModel
                     Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
                     var source = serialiser.Deserialize<DbSource>(args);
                     source = _resourceCatalog.GetResource<DbSource>(workspaceId, source.ResourceID);
+                    source.ReloadActions = source.ReloadActions;
                     var serviceMethods = FetchMethods(source);
                     result.AddRange(serviceMethods);
                 }
