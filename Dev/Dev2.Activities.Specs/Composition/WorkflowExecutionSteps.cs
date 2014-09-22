@@ -723,7 +723,7 @@ namespace Dev2.Activities.Specs.Composition
             //bool isDataMergeDebug = toolSpecificDebug.Any(t => t.Name == "Data Merge");
 
             var commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
+            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug.Distinct()
                                                     .SelectMany(s => s.Inputs)
                                                     .SelectMany(s => s.ResultsList).ToList());
         }

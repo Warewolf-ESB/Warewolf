@@ -123,7 +123,6 @@ namespace Dev2.Runtime.ServiceModel
             {
                 try
                 {
-                    // TODO : Extract IsForceUpdate flag
                     Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
                     var source = serialiser.Deserialize<DbSource>(args);
                     source = _resourceCatalog.GetResource<DbSource>(workspaceId, source.ResourceID);
