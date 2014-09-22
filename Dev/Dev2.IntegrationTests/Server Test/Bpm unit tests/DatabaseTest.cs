@@ -116,7 +116,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
         [TestMethod]
         public void TestDBNullLogicEmptyNullConvertOffValue_Expected_ZZZ()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-TESTING/IntegrationTestDBEmptyToNull", "testType=nullActive&nullLogicValue=");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-TESTING/IntegrationTestDBEmptyToNull", "testType=nullActive");
             string result = TestHelper.PostDataToWebserver(postData);
             StringAssert.Contains(result, "<val>ZZZ</val>", "Got [ " + result + " ]");
         }
