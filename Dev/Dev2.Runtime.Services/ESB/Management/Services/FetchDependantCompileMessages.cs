@@ -70,8 +70,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                     dependants = union.ToList();
                 });
                 
-                //var union = dependants.Union(ResourceCatalog.Instance.GetDependants(GlobalConstants.ServerWorkspaceID, thisService.ResourceID));
-                //dependants =union.ToList();
                 var enumerable = dependants.Select(a =>
                 {
                     var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID,a) ?? ResourceCatalog.Instance.GetResource(wGuid,a);
