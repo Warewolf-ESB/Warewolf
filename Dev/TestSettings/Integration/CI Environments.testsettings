@@ -4,10 +4,14 @@
     <Deployment>
 		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
 		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="StudiobinDebug" />
+        
+            <!--For Build Agents-->
+        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+        <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
     </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="TestScripts\Integration\Startup.bat" cleanupScript="TestScripts\Integration\Cleanup.bat" />
-  <RemoteController name="rsaklfsvrtfsbld:6901" />
+  <Scripts setupScript="..\src\src\main\TestScripts\Integration\Startup.bat" cleanupScript="..\src\src\main\TestScripts\Integration\Cleanup.bat" />
+  <RemoteController name="rsaklftrevorwilliams" />
   <Execution location="Remote" parallelTestCount="0">
     <Buckets size="1000" />
     <TestTypeSpecific>
