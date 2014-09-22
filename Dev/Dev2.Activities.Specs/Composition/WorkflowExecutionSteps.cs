@@ -377,7 +377,13 @@ namespace Dev2.Activities.Specs.Composition
         {
             EnsureEnvironmentConnected(EnvironmentRepository.Instance.Source);
             EnvironmentRepository.Instance.Source.ForceLoadResources();
+            
             var remoteEnvironment = EnvironmentRepository.Instance.FindSingle(model => model.Name == server);
+            if (remoteEnvironment == null)
+            {
+                var environments = EnvironmentRepository.Instance.LookupEnvironments(EnvironmentRepository.Instance.Source);
+                remoteEnvironment = environments.FirstOrDefault(model => model.Name == server);
+            }
             if(remoteEnvironment != null)
             {
                 EnsureEnvironmentConnected(remoteEnvironment);
@@ -717,7 +723,7 @@ namespace Dev2.Activities.Specs.Composition
             //bool isDataMergeDebug = toolSpecificDebug.Any(t => t.Name == "Data Merge");
 
             var commonSteps = new CommonSteps();
-            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug
+            commonSteps.ThenTheDebugInputsAs(table, toolSpecificDebug.Distinct()
                                                     .SelectMany(s => s.Inputs)
                                                     .SelectMany(s => s.ResultsList).ToList());
         }

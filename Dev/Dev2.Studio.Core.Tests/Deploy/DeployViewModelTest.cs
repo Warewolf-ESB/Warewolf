@@ -248,12 +248,13 @@ namespace Dev2.Core.Tests
 
             //Setup Navigation Tree
 
-            var resourceTreeNode = new ExplorerItemModel();
+            
 
             //Setup Server Resources
 
 
             var mockStudioResourceRepository = GetMockStudioResourceRepository();
+            var resourceTreeNode = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object,mockStudioResourceRepository.Object);
             mockStudioResourceRepository.Setup(repository => repository.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(resourceTreeNode);
             var sourceDeployNavigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, mockedServerRepo.Object, mockStudioResourceRepository.Object, true) { Environment = server.Object, ExplorerItemModels = new ObservableCollection<IExplorerItemModel>() };
 
@@ -504,7 +505,7 @@ namespace Dev2.Core.Tests
 
             destEnv.Setup(e => e.IsConnected).Returns(false);
             //Changed to true because it was showing the error when not connected which isnt right
-            Assert.IsTrue(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is false when server is disconnected.");
+            Assert.IsFalse(deployViewModel.CanDeploy, "DeployViewModel CanDeploy is false when server is disconnected.");
         }
 
         [TestMethod]

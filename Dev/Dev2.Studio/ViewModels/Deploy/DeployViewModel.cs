@@ -208,7 +208,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 return SelectedDestinationServer.IsAuthorizedDeployTo;
             }
-            return true;
+            return false;
         }
 
         bool SelectedSourceServerIsValid()
@@ -217,7 +217,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             {
                 return SelectedSourceServer.IsAuthorizedDeployFrom;
             }
-            return true;
+            return false;
         }
 
         public bool SourceItemsSelected
