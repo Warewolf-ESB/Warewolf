@@ -1,14 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CodedUI.SpecGenerator", "Dev2.CodedUI.SpecGenerator\Dev2.CodedUI.SpecGenerator.csproj", "{0D2942AB-2C34-43F9-BB49-8BABA58A660A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.UI.Specs", "Dev2.Studio.UISpecs\Dev2.Studio.UI.Specs.csproj", "{2E886FC7-A0F6-4BBF-AE66-6884B3FD8AC5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.UI.Tests", "Dev2.UI.Tests\Dev2.Studio.UI.Tests\Dev2.Studio.UI.Tests.csproj", "{9C452452-634E-4A21-AB9E-681D3F05DF52}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
-EndProject
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}"
 	ProjectSection(SolutionItems) = preProject
 		TestSettings\UI\CI Test Environment 1 (TST7X64-CIUI1).testsettings = TestSettings\UI\CI Test Environment 1 (TST7X64-CIUI1).testsettings
@@ -25,28 +19,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts"
 		TestScripts\UI\Startup.bat = TestScripts\UI\Startup.bat
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CodedUI.SpecGenerator", "Dev2.CodedUI.SpecGenerator\Dev2.CodedUI.SpecGenerator.csproj", "{0D2942AB-2C34-43F9-BB49-8BABA58A660A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.UI.Specs", "Dev2.Studio.UISpecs\Dev2.Studio.UI.Specs.csproj", "{2E886FC7-A0F6-4BBF-AE66-6884B3FD8AC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio.UI.Tests", "Dev2.UI.Tests\Dev2.Studio.UI.Tests\Dev2.Studio.UI.Tests.csproj", "{9C452452-634E-4A21-AB9E-681D3F05DF52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
+EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Dev2.CodedUI.SpecGenerator\\Dev2.CodedUI.SpecGenerator.csproj
-		SccProjectName1 = Dev2.CodedUI.SpecGenerator
-		SccLocalPath1 = Dev2.CodedUI.SpecGenerator
-		SccProjectUniqueName2 = Dev2.Studio.UISpecs\\Dev2.Studio.UI.Specs.csproj
-		SccProjectName2 = Dev2.Studio.UISpecs
-		SccLocalPath2 = Dev2.Studio.UISpecs
-		SccProjectUniqueName3 = Dev2.UI.Tests\\Dev2.Studio.UI.Tests\\Dev2.Studio.UI.Tests.csproj
-		SccProjectName3 = Dev2.UI.Tests/Dev2.Studio.UI.Tests
-		SccLocalPath3 = Dev2.UI.Tests\\Dev2.Studio.UI.Tests
-		SccProjectUniqueName4 = Dev2.Common.Interfaces\\Dev2.Common.Interfaces.csproj
-		SccProjectName4 = Dev2.Common.Interfaces
-		SccLocalPath4 = Dev2.Common.Interfaces
-	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Dev2.UI.Tests.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -141,6 +122,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F6BA6701-359E-4521-9978-4298A7302A5A} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
 		{380CF0B0-6BA2-41E1-B275-62B61CEDFD73} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Dev2.UI.Tests.vsmdi
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = e700b763-40fc-4ea1-a307-b85689995018
