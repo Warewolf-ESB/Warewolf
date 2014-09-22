@@ -13,6 +13,7 @@ namespace Dev2.Integration.Tests.Load_Tests
         const double _ticksPerSec = 10000000;
 
         [TestMethod]
+        [Ignore]
         public void FileWith10kPrimes_Expect10kRecordsetEntries_in_Under_5Seconds()
         {
             string path = ServerSettings.WebserverURI + "ML-TESTING/LargeDataTest";
