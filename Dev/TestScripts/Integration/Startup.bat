@@ -26,17 +26,8 @@ taskkill /im "Warewolf Server.exe"
 REM  Wait 10 seconds ;)
 ping -n 10 127.0.0.1 > nul
 
-IF EXIST %DeploymentDirectory% GOTO RunDeployed
-
-:RunLocal
-REM ** Start Warewolf server from local binaries built in debug config**
-START "..\..\Dev2.Server\bin\Debug\Warewolf Server.exe" /D "..\..\Dev2.Server\bin\Debug" "Warewolf Server.exe"
-GOTO exit
-
-:RunDeployed
 REM ** Start Warewolf server from deployed binaries built in debug config**
-START "%DeploymentDirectory%\ServerbinDebug\Warewolf Server.exe" /D %DeploymentDirectory%\ServerbinDebug "Warewolf Server.exe"
-:exit
+START "%DeploymentDirectory%\Server\Warewolf Server.exe" /D %DeploymentDirectory%\Server "Warewolf Server.exe"
 
 REM  Wait 20 seconds ;)
 ping -n 20 127.0.0.1 > nul

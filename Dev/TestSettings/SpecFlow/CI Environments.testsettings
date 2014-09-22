@@ -2,12 +2,14 @@
 <TestSettings name="CI Environments Acceptance Run" id="3264dd0f-6fc1-4cb9-b44f-c649fef29615" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote acceptance test run.</Description>
     <Deployment>
-		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
+		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+        
+            <!--For Build Agents-->
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
     </Deployment>
   <NamingScheme baseName="UT" />
     <Scripts setupScript="..\src\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\src\Dev\TestScripts\Acceptance\Cleanup.bat" />
-  <RemoteController name="rsaklftrevorwilliams" />
+  <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote">
     <Timeouts testTimeout="180000" />
     <Buckets size="100" />
@@ -31,7 +33,6 @@
     <AgentRule name="Run in the Acceptance Testing Environment Pool Agent 1">
       <SelectionCriteria>
         <AgentProperty name="Pool" value="Acceptance Testing" />
-        <AgentProperty name="ID" value="1" />
       </SelectionCriteria>
 	  <DataCollectors>
 	    <DataCollector uri="datacollector://microsoft/SystemInfo/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo.SystemInfoDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.SystemInfo, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="System Information">
