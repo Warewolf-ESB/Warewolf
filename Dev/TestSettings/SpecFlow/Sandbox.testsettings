@@ -5,7 +5,7 @@
 		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
 	</Deployment>
-  <Scripts setupScript="..\src\src\main\TestScripts\Acceptance\Startup.bat" cleanupScript="..\src\src\main\TestScripts\Acceptance\Cleanup.bat" />
+  <Scripts setupScript="..\src\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\src\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklftrevorwilliams" />
   <Execution location="Remote">
     <Timeouts testTimeout="180000" />

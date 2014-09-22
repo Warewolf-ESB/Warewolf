@@ -8,7 +8,7 @@
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="..\src\src\main\TestScripts\Load\Startup.bat" cleanupScript="..\src\src\main\TestScripts\Load\Cleanup.bat" />
+  <Scripts setupScript="..\src\Dev\TestScripts\Load\Startup.bat" cleanupScript="..\src\Dev\TestScripts\Load\Cleanup.bat" />
   <RemoteController name="rsaklftrevorwilliams" />
   <Execution location="Remote">
     <TestTypeSpecific>
