@@ -8,7 +8,6 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Models;
-using Dev2.Providers.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Behaviors;
 using Dev2.Studio.Core;
@@ -33,6 +32,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
+            // ReSharper disable once ObjectCreationAsStatement
             new NavigationItemViewModelMouseDownBehavior(null);
 
             //------------Assert Results-------------------------
@@ -128,8 +128,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
         {
             //------------Setup for test--------------------------
             var eventPublisher = new Mock<IEventAggregator>();
-            var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
-            behavior.SelectOnRightClick = selectOnRightClick;
+            var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object) { SelectOnRightClick = selectOnRightClick };
 
             var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object);
 
@@ -147,6 +146,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
         public void NavigationItemViewModelMouseDownBehavior_OnMouseDown_SetActiveEnvironmentOnClick_PublishEventsCorrectly()
         {
             TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(new Mock<IEnvironmentModel>().Object);
+            // ReSharper disable once ObjectCreationAsStatement
             new EnvironmentRepository(testEnvironmentRespository);
             Verify_OnMouseDown_SetActiveEnvironmentOnClick(0, false);
             Verify_OnMouseDown_SetActiveEnvironmentOnClick(0, false);
@@ -159,8 +159,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             var eventPublisher = new Mock<IEventAggregator>();
             eventPublisher.Setup(p => p.Publish(It.IsAny<SetActiveEnvironmentMessage>())).Verifiable();
 
-            var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
-            behavior.SetActiveEnvironmentOnClick = setActiveEnvironmentOnClick;
+            var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object) { SetActiveEnvironmentOnClick = setActiveEnvironmentOnClick };
 
             var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object);
 
@@ -289,8 +288,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             var eventPublisher = new Mock<IEventAggregator>();
             eventPublisher.Setup(p => p.Publish(It.IsAny<object>())).Verifiable();
 
-            var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
-            behavior.OpenOnDoubleClick = openOnDoubleClick;
+            var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object) { OpenOnDoubleClick = openOnDoubleClick };
 
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -301,8 +299,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             resourceModel.Setup(r => r.Environment).Returns(environmentModel.Object);
             resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.View)).Returns(true);
 
-            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object);
-            explorerItemModel.Permissions = Permissions.Administrator;
+            var explorerItemModel = new ExplorerItemModel(new Mock<IStudioResourceRepository>().Object, new Mock<IAsyncWorker>().Object, new Mock<IConnectControlSingleton>().Object) { Permissions = Permissions.Administrator };
             //------------Execute Test---------------------------
             var result = behavior.TestOnMouseDown(explorerItemModel, clickCount);
 
@@ -318,8 +315,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
         {
             //------------Setup for test--------------------------
             var eventPublisher = new Mock<IEventAggregator>();
-            var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
-            behavior.OpenOnDoubleClick = true;
+            var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object) { OpenOnDoubleClick = true };
 
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
@@ -353,9 +349,7 @@ namespace Dev2.Core.Tests.AppResources.Behaviors
             //------------Setup for test--------------------------
             var eventPublisher = new Mock<IEventAggregator>();
 
-            var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object);
-            behavior.OpenOnDoubleClick = true;
-            behavior.DontAllowDoubleClick = dontAllowDoubleClick;
+            var behavior = new TestNavigationItemViewModelMouseDownBehavior(eventPublisher.Object) { OpenOnDoubleClick = true, DontAllowDoubleClick = dontAllowDoubleClick };
 
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(c => c.ServerEvents).Returns(new Mock<IEventPublisher>().Object);

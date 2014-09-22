@@ -14,7 +14,7 @@
              xmlns:explorer="clr-namespace:Dev2.Studio.ViewModels.Explorer"
              xmlns:explorer2="clr-namespace:Dev2.Models;assembly=Dev2.Studio.Core"
              xmlns:connections="clr-namespace:Dev2.CustomControls.Connections"
-             AllowDrop="False"
+             AllowDrop="True"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance explorer:ExplorerViewModel}"
              Name="Explorer">
@@ -56,7 +56,7 @@
                             Value="{Binding IsExplorerExpanded, Mode=TwoWay}" />
                     <Setter Property="IsSelected"
                             Value="{Binding IsExplorerSelected, Mode=TwoWay}" />
-
+                    <EventSetter Event="TreeViewItem.Drop" Handler="TreeViewDrop"/>
                     <!-- This is a hack. Need to rethink how to get this behavior attached properly-->
                     <Setter Property="behavior:AttachBehavior.BehaviorType"
                             Value="{x:Type behavior2:BringIntoViewWhenSelectedBehavior}" />
@@ -256,9 +256,9 @@
                             </ContextMenu>
                         </Border.ContextMenu>
 
-                        <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Vertical" AllowDrop="True">
                             <StackPanel Orientation="Horizontal"
-                                        AllowDrop="False">
+                                        AllowDrop="True">
                                 <i:Interaction.Behaviors>
                                     <local:NavigationItemViewModelMouseDownBehavior SetActiveEnvironmentOnClick="True"
                                                                                     OpenOnDoubleClick="True"
@@ -276,10 +276,11 @@
                                                                      AutomationProperties.AutomationId="UI_IndicatorRefresh_AutoID" />
 
                                 <StackPanel Orientation="Horizontal"
+                                    AllowDrop="True"
                                             Margin="3,1,0,1"
                                             Visibility="{Binding IsRefreshing, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                     <Image Width="17"
-                                           Height="17">
+                                           Height="17" AllowDrop="True">
                                         <Image.Source>
                                             <MultiBinding Converter="{StaticResource ExplorerItemModelToIconConverter}">
                                                 <Binding Path="ResourceType"/>
@@ -321,7 +322,7 @@
                                            AutomationProperties.AutomationId="UI_NotAutherized_AutoID" />
                                 </StackPanel>
 
-                                <ContentControl Content="{Binding}">
+                                <ContentControl Content="{Binding}" AllowDrop="True">
                                     <ContentControl.Resources>
                                     </ContentControl.Resources>
                                 </ContentControl>

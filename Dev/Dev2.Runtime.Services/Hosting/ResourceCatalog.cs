@@ -1701,6 +1701,11 @@ namespace Dev2.Runtime.Hosting
         {
             VerifyArguments(oldCategory, newCategory);
             var resourcesToUpdate = Instance.GetResources(workspaceID, resource => resource.ResourcePath.StartsWith(oldCategory + "\\", StringComparison.OrdinalIgnoreCase)).ToList();
+            return RenameCategory(workspaceID, oldCategory, newCategory, resourcesToUpdate);
+        }
+
+        public ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, List<IResource> resourcesToUpdate)
+        {
             if(resourcesToUpdate.Count == 0)
             {
                 return new ResourceCatalogResult

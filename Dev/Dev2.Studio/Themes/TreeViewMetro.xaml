@@ -225,7 +225,7 @@
 
     <!-- *********************************  TreeView Style  ********************************* -->
     <Style x:Key="TreeViewStyle" TargetType="{x:Type TreeView}">
-        <Setter Property="AllowDrop" Value="False"></Setter>
+        <Setter Property="AllowDrop" Value="True"></Setter>
         <Setter Property="Background" Value="{StaticResource TreeViewBackgroundBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource TreeViewBorderBrush}"/>
         <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />

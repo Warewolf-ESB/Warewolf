@@ -54,6 +54,7 @@
         
         <TreeView x:Name="Navigation"
                   ItemsSource="{Binding Path=ExplorerItemModels}"
+                  AllowDrop="True"
                   Grid.Row="1"
                   Grid.ColumnSpan="2"
                   BorderThickness="0"

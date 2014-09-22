@@ -165,7 +165,6 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         private void AssociatedObject_DragOver(object sender, DragEventArgs e)
         {
-            e.Effects = DragDropEffects.None;
         }
 
         private void AssociatedObject_MouseDown(object sender, MouseButtonEventArgs e)

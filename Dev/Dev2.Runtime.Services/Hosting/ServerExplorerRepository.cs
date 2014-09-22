@@ -4,6 +4,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Runtime;
+using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Runtime.Security;
@@ -17,6 +18,7 @@ namespace Dev2.Runtime.Hosting
     public class ServerExplorerRepository : IExplorerServerResourceRepository
     {
         IExplorerRepositorySync _sync;
+        readonly IFile _file;
         public static IExplorerServerResourceRepository Instance { get; private set; }
 
         static ServerExplorerRepository()
@@ -25,15 +27,16 @@ namespace Dev2.Runtime.Hosting
                 {
                     ResourceCatalogue = ResourceCatalog.Instance,
                     ExplorerItemFactory = new ExplorerItemFactory(ResourceCatalog.Instance, new DirectoryWrapper(), ServerAuthorizationService.Instance),
-                    Directory = new DirectoryWrapper()
+                    Directory = new DirectoryWrapper(),
+                    VersionRepository = new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper())
+                    
                 };
         }
 
-        ServerExplorerRepository()
-        {
-        }
 
-        internal ServerExplorerRepository(IResourceCatalog resourceCatalog, IExplorerItemFactory explorerItemFactory, IDirectory directory, IExplorerRepositorySync sync)
+        internal ServerExplorerRepository() { _file = new FileWrapper(); }
+
+        internal ServerExplorerRepository(IResourceCatalog resourceCatalog, IExplorerItemFactory explorerItemFactory, IDirectory directory, IExplorerRepositorySync sync, IServerVersionRepository versionRepository,IFile file)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object>
                 {
@@ -42,6 +45,8 @@ namespace Dev2.Runtime.Hosting
                     { "directory", directory }
                 });
             _sync = sync;
+            _file = file;
+            VersionRepository = versionRepository;
             ResourceCatalogue = resourceCatalog;
             ExplorerItemFactory = explorerItemFactory;
             Directory = directory;
@@ -51,6 +56,7 @@ namespace Dev2.Runtime.Hosting
         public IDirectory Directory { get; private set; }
 
         public IResourceCatalog ResourceCatalogue { get; private set; }
+        public IServerVersionRepository VersionRepository { get; set; }
 
         public IExplorerItem Load(Guid workSpaceId)
         {
@@ -251,7 +257,31 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        static string DirectoryStructureFromPath(string path)
+        public IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)
+        {
+
+            IEnumerable<IResource> item =
+                ResourceCatalogue.GetResourceList(workSpaceId)
+                                 .Where(
+                                     a =>
+                                     (a.ResourcePath == newPath));
+            if (item.Any())
+            {
+                return new ExplorerRepositoryResult(ExecStatus.Fail, "There is an item that exists with the same name and path");
+            }
+            MoveVersions(itemToMove, newPath);
+            ResourceCatalogResult result = ResourceCatalogue.RenameCategory(workSpaceId,itemToMove.ResourcePath , newPath,new List<IResource>{ResourceCatalogue.GetResource(workSpaceId,itemToMove.ResourceId)});
+            _file.Delete(string.Format("{0}.xml", DirectoryStructureFromPath(itemToMove.ResourcePath)));
+            
+            return new ExplorerRepositoryResult(result.Status, result.Message);
+        }
+
+        void MoveVersions(IExplorerItem itemToMove,string newPath)
+        {
+          VersionRepository.MoveVersions(itemToMove.ResourceId,newPath);
+        }
+
+       public static string DirectoryStructureFromPath(string path)
         {
             return Path.Combine(EnvironmentVariables.ResourcePath, path);
         }

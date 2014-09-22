@@ -114,6 +114,33 @@ namespace Dev2.Core.Tests
 
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ClientExplorerRepository_MoveItem")]
+        public void ClientExplorerRepository_MoveItem_ExpectMoveServiceCalled()
+        {
+            //------------Setup for test--------------------------
+            var env = new Mock<IEnvironmentConnection>();
+            var comFactory = new Mock<ICommunicationControllerFactory>();
+            var rep = new ServerExplorerClientProxy(env.Object, comFactory.Object);
+            var com = new Mock<ICommunicationController>();
+            var item = new ServerExplorerItem("", Guid.Empty, ResourceType.DbService, null, Permissions.Contribute, "f");
+            comFactory.Setup(a => a.CreateController("MoveItemService")).Returns(com.Object).Verifiable();
+            com.Setup(a => a.ExecuteCommand<IExplorerItem>(env.Object, Guid.Empty)).Returns(item).Verifiable();
+
+            //------------Execute Test---------------------------
+            rep.MoveItem(item, "bob", Guid.Empty);
+            //------------Assert Results-------------------------
+
+            comFactory.Verify(a => a.CreateController("MoveItemService"));
+            com.Verify(a => a.ExecuteCommand<IExplorerRepositoryResult>(env.Object, Guid.Empty));
+            com.Verify(a => a.AddPayloadArgument("itemToMove", It.IsAny<string>()));
+            com.Verify(a => a.AddPayloadArgument("newPath", "bob"));
+            com.Verify(a => a.ExecuteCommand<IExplorerRepositoryResult>(env.Object, Guid.Empty));
+
+        }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ClientExplorerRepository_DeleteItemItem")]

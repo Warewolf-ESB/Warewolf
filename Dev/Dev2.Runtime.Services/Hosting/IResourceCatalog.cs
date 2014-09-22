@@ -118,6 +118,8 @@ namespace Dev2.Runtime.Hosting
 
         ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory);
 
+        ResourceCatalogResult RenameCategory(Guid workspaceID, string oldCategory, string newCategory, List<IResource> resourcesToUpdate);
+
         T GetResource<T>(Guid workspaceID, Guid serviceID) where T : Resource, new();
 
         T GetResource<T>(Guid workspaceID, string resourceName) where T : Resource, new();

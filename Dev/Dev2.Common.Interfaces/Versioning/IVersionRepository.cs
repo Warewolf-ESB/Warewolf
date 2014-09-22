@@ -13,4 +13,9 @@ namespace Dev2.Common.Interfaces.Versioning
         IRollbackResult RollbackTo(Guid resourceId, string versionNumber);
         IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber);
     }
+
+    public interface IVersionManager
+    {
+        void MoveVersions(Guid resourceId, string newPath);
+    }
 }

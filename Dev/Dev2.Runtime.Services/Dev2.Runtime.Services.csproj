@@ -139,6 +139,7 @@
     <Compile Include="ESB\Management\Services\FetchExplorerItems.cs" />
     <Compile Include="ESB\Management\Services\GetVersion.cs" />
     <Compile Include="ESB\Management\Services\GetVersions.cs" />
+    <Compile Include="ESB\Management\Services\MoveItemService.cs" />
     <Compile Include="ESB\Management\Services\RenameFolderService.cs" />
     <Compile Include="ESB\Management\Services\RenameItemService.cs" />
     <Compile Include="ESB\Management\Services\RollbackTo.cs" />

@@ -1959,6 +1959,84 @@ namespace Dev2.Core.Tests.ModelTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_RenameCommand")]
+        public void ExplorerItemModel_UpdateCategoryIfOpened_ExpectCategory()
+        {
+            //------------Setup for test--------------------------
+            var aggregator = new Mock<EventAggregator>();
+            EventPublishers.Aggregator = aggregator.Object;
+            var mockStudioRepository = new Mock<IStudioResourceRepository>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            var resourceId = Guid.NewGuid();
+            var envID = Guid.Empty;
+
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
+            mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            mockEnvironment.Setup(model => model.ID).Returns(envID);
+            GetEnvironmentRepository(mockEnvironment);
+
+            const string displayName = "localhost";
+            ExplorerItemModel resourceItem;
+#pragma warning disable 168
+            var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
+#pragma warning restore 168
+            var mainViewModel = new Mock<IMainViewModel>();
+            mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
+            mockResourceModel.Setup(a => a.WorkflowXaml).Returns(new StringBuilder("Category=dave\\bob"));
+
+            resourceItem.UpdateCategoryIfOpened("bobthebuilder");
+
+
+            //------------Assert Results-------------------------
+            mockResourceModel.VerifySet(a=>a.Category = "bobthebuilder");
+            mockResourceModel.VerifySet(a => a.WorkflowXaml = It.IsAny<StringBuilder>());
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_RenameCommand")]
+        public void ExplorerItemModel_UpdateCategoryIfOpened_ExpectCategoryUpdate_NoWFXamlSet()
+        {
+            //------------Setup for test--------------------------
+            var aggregator = new Mock<EventAggregator>();
+            EventPublishers.Aggregator = aggregator.Object;
+            var mockStudioRepository = new Mock<IStudioResourceRepository>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            var resourceId = Guid.NewGuid();
+            var envID = Guid.Empty;
+
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
+            mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            mockEnvironment.Setup(model => model.ID).Returns(envID);
+            GetEnvironmentRepository(mockEnvironment);
+
+            const string displayName = "localhost";
+            ExplorerItemModel resourceItem;
+#pragma warning disable 168
+            var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
+#pragma warning restore 168
+            var mainViewModel = new Mock<IMainViewModel>();
+            mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
+          
+
+            resourceItem.UpdateCategoryIfOpened("bobthebuilder");
+
+
+            //------------Assert Results-------------------------
+            mockResourceModel.VerifySet(a => a.Category = "bobthebuilder");
+            mockResourceModel.VerifySet(a => a.WorkflowXaml = It.IsAny<StringBuilder>(),Times.Never());
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_RenameCommand")]
         public void ExplorerItemModel_SettingDisplayName_PublishesDisplayNameMessagesForItem_ExpectMessagesWithCorrectValues()
         {
             //------------Setup for test--------------------------

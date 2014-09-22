@@ -13,6 +13,7 @@ namespace Dev2.Common.Interfaces.Infrastructure
         IExplorerRepositoryResult RenameFolder(string path, string newName, Guid workSpaceId);
         IExplorerRepositoryResult DeleteItem(IExplorerItem itemToRename, Guid workSpaceId);
         IExplorerRepositoryResult AddItem(IExplorerItem itemToRename, Guid workSpaceId);
+        IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid empty);
     }
 
     public interface IExplorerRepositoryResult

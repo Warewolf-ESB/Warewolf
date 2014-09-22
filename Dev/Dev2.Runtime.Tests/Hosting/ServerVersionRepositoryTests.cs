@@ -427,6 +427,118 @@ namespace Dev2.Tests.Runtime.Hosting
             file.Verify(a => a.Delete(filedel));
 
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServerVersionRepostory_Move")]
+        public void ServerVersionRepostory_Move_VersionDoesExist()
+        {
+
+            var strat = new Mock<IVersionStrategy>();
+            var cat = new Mock<IResourceCatalog>();
+            var resourceId = Guid.NewGuid();
+            var versionId = Guid.NewGuid();
+            var file = new Mock<IFile>();
+            var dir = new Mock<IDirectory>();
+            const string rootPath = "bob";
+            var dt = DateTime.Now;
+            bool moov = false;
+            var resource = new Mock<IResource>();
+            resource.Setup(a => a.ResourceName).Returns("moon");
+            resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
+            cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
+            resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(dt, "mook", "usr", "12345", resourceId, versionId));
+            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
+            dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
+            file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b)=>
+            {
+                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa"); ;
+                    
+            });
+
+            //------------Setup for test--------------------------
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            //------------Execute Test---------------------------
+            serverVersionRepostory.MoveVersions(resourceId, "222aaa");
+
+            file.Verify(a => a.Move(It.IsAny<string>(),It.IsAny<string>()));
+            Assert.IsTrue(moov);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServerVersionRepostory_Move")]
+        public void ServerVersionRepostory_Move_VersionInfoDoesNotExist()
+        {
+
+            var strat = new Mock<IVersionStrategy>();
+            var cat = new Mock<IResourceCatalog>();
+            var resourceId = Guid.NewGuid();
+            var versionId = Guid.NewGuid();
+            var file = new Mock<IFile>();
+            var dir = new Mock<IDirectory>();
+            const string rootPath = "bob";
+            var dt = DateTime.Now;
+            bool moov = false;
+            var resource = new Mock<IResource>();
+            resource.Setup(a => a.ResourceName).Returns("moon");
+            resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
+            cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
+          
+            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
+            dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
+            file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b) =>
+            {
+                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa"); ;
+
+            });
+
+            //------------Setup for test--------------------------
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            //------------Execute Test---------------------------
+            serverVersionRepostory.MoveVersions(resourceId, "222aaa");
+
+
+            Assert.IsFalse(moov);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ServerVersionRepostory_Move")]
+        public void ServerVersionRepostory_Move_VersionDoesExistDirectoryDoesNotExist()
+        {
+
+            var strat = new Mock<IVersionStrategy>();
+            var cat = new Mock<IResourceCatalog>();
+            var resourceId = Guid.NewGuid();
+            var versionId = Guid.NewGuid();
+            var file = new Mock<IFile>();
+            var dir = new Mock<IDirectory>();
+            const string rootPath = "bob";
+            var dt = DateTime.Now;
+            bool moov = false;
+            var resource = new Mock<IResource>();
+            resource.Setup(a => a.ResourceName).Returns("moon");
+            resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
+            cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
+            resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(dt, "mook", "usr", "12345", resourceId, versionId));
+            resource.Setup(a => a.ResourcePath).Returns("moot\\boot");
+            dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
+            file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b) =>
+            {
+                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa"); ;
+
+            });
+            dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
+            //------------Setup for test--------------------------
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            //------------Execute Test---------------------------
+            serverVersionRepostory.MoveVersions(resourceId, "222aaa");
+
+            file.Verify(a => a.Move(It.IsAny<string>(), It.IsAny<string>()));
+            Assert.IsTrue(moov);
+            dir.Verify(a=>a.CreateIfNotExists(It.IsAny<string>()));
+        }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Delete")]

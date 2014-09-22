@@ -81,5 +81,19 @@ namespace Dev2.Models
             controller.AddPayloadArgument("itemToAdd", serializer.SerializeToBuilder(itemToAdd).ToString());
             return controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, workSpaceId);
         }
+
+        public IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)
+        {
+            var controller = CommunicationControllerFactory.CreateController("MoveItemService");
+            if (itemToMove.Children != null)
+            {
+                var any = itemToMove.Children.Where(a => a.ResourceType == ResourceType.Version);
+                itemToMove.Children = itemToMove.Children.Except(any).ToList();
+            }
+            var serializer = new Dev2JsonSerializer();
+            controller.AddPayloadArgument("itemToMove", serializer.SerializeToBuilder(itemToMove).ToString());
+            controller.AddPayloadArgument("newPath", newPath);
+            return controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, workSpaceId);
+        }
     }
 }

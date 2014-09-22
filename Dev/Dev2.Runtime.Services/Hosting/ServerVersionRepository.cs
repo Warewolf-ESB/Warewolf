@@ -16,6 +16,7 @@ using System.Linq;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Explorer;
 using Dev2.Runtime.ServiceModel.Data;
+using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -62,6 +63,27 @@ namespace Dev2.Runtime.Hosting
 // ReSharper restore ImplicitlyCapturedClosure
             return files.Select(a => CreateVersionFromFilePath(a, resource)).OrderByDescending(a => a.VersionInfo.DateTimeStamp).Take(GlobalConstants.VersionCount).ToList();
         }
+
+        public void MoveVersions(Guid resourceId,string newPath)
+        {
+            var resource = _catalogue.GetResource(Guid.Empty, resourceId);
+
+            if (resource == null || resource.VersionInfo == null)
+            {
+                return;
+            }
+            var path = GetVersionFolderFromResource(resource);
+
+            // ReSharper disable ImplicitlyCapturedClosure
+            var files = _directory.GetFiles(path).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
+            var versionPath = Path.Combine( ServerExplorerRepository.DirectoryStructureFromPath(newPath),"VersionControl");
+            if(!_directory.Exists(versionPath))
+                _directory.CreateIfNotExists(versionPath);
+            // ReSharper restore ImplicitlyCapturedClosure
+            IEnumerable<string> enumerable = files as IList<string> ?? files.ToList();
+            // ReSharper disable once AssignNullToNotNullAttribute
+            enumerable.ForEach(a=>_file.Move(a, Path.Combine(versionPath,Path.GetFileName(a))));
+          }
 
         public StringBuilder GetVersion(IVersionInfo version)
         {

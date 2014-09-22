@@ -183,5 +183,7 @@ namespace Dev2.Models
         /// <date>2013/01/23</date>
         void VerifyCheckState();
         void RefreshName(string newName);
+        void RemoveChild(IExplorerItemModel child);
+        void UpdateCategoryIfOpened(string category);
     }
 }

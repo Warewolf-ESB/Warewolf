@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common", "Dev2.Common\Dev2.Common.csproj", "{84405FDF-0FF8-49A2-8925-8A4AEBA8104A}"
@@ -77,111 +79,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 33
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Dev2.Common\\Dev2.Common.csproj
-		SccProjectName1 = Dev2.Common
-		SccLocalPath1 = Dev2.Common
-		SccProjectUniqueName2 = Dev2.Network\\Dev2.Network.csproj
-		SccProjectName2 = Dev2.Network
-		SccLocalPath2 = Dev2.Network
-		SccProjectUniqueName3 = Dev2.Studio.Core\\Dev2.Studio.Core.csproj
-		SccProjectName3 = Dev2.Studio.Core
-		SccLocalPath3 = Dev2.Studio.Core
-		SccProjectUniqueName4 = Dev2.Activities\\Dev2.Activities.csproj
-		SccProjectName4 = Dev2.Activities
-		SccLocalPath4 = Dev2.Activities
-		SccProjectUniqueName5 = Dev2.Core\\Dev2.Core.csproj
-		SccProjectName5 = Dev2.Core
-		SccLocalPath5 = Dev2.Core
-		SccProjectUniqueName6 = Dev2.Runtime.WebServer\\Dev2.Runtime.WebServer.csproj
-		SccProjectName6 = Dev2.Runtime.WebServer
-		SccLocalPath6 = Dev2.Runtime.WebServer
-		SccProjectUniqueName7 = Dev2.Data\\Dev2.Data.csproj
-		SccProjectName7 = Dev2.Data
-		SccLocalPath7 = Dev2.Data
-		SccProjectUniqueName8 = Dev2.UndoFramework\\Dev2.UndoFramework.csproj
-		SccProjectName8 = Dev2.UndoFramework
-		SccLocalPath8 = Dev2.UndoFramework
-		SccProjectUniqueName9 = Dev2.Runtime\\Dev2.Runtime.csproj
-		SccProjectName9 = Dev2.Runtime
-		SccLocalPath9 = Dev2.Runtime
-		SccProjectUniqueName10 = Dev2.Runtime.Services\\Dev2.Runtime.Services.csproj
-		SccProjectName10 = Dev2.Runtime.Services
-		SccLocalPath10 = Dev2.Runtime.Services
-		SccProjectUniqueName11 = Dev2.OutputLibraries\\Dev2.OutputLibraries.csproj
-		SccProjectName11 = Dev2.OutputLibraries
-		SccLocalPath11 = Dev2.OutputLibraries
-		SccProjectUniqueName12 = Dev2.OuputConfigFiles\\Dev2.OuputConfigFiles.csproj
-		SccProjectName12 = Dev2.OuputConfigFiles
-		SccLocalPath12 = Dev2.OuputConfigFiles
-		SccProjectUniqueName13 = Dev2.Runtime.Configuration\\Dev2.Runtime.Configuration.csproj
-		SccProjectName13 = Dev2.Runtime.Configuration
-		SccLocalPath13 = Dev2.Runtime.Configuration
-		SccProjectUniqueName14 = Dev2.Sql\\Dev2.Sql.csproj
-		SccProjectName14 = Dev2.Sql
-		SccLocalPath14 = Dev2.Sql
-		SccProjectUniqueName15 = Dev2.Sql.Tests\\Dev2.Sql.Tests.csproj
-		SccProjectName15 = Dev2.Sql.Tests
-		SccLocalPath15 = Dev2.Sql.Tests
-		SccProjectUniqueName16 = ConsoleAppToTestExecuteCommandLineActivity\\ConsoleAppToTestExecuteCommandLineActivity.csproj
-		SccProjectName16 = ConsoleAppToTestExecuteCommandLineActivity
-		SccLocalPath16 = ConsoleAppToTestExecuteCommandLineActivity
-		SccProjectUniqueName17 = Dev2.Diagnostics\\Dev2.Diagnostics.csproj
-		SccProjectName17 = Dev2.Diagnostics
-		SccLocalPath17 = Dev2.Diagnostics
-		SccProjectUniqueName18 = Dev2.CustomControls\\Dev2.CustomControls.csproj
-		SccProjectName18 = Dev2.CustomControls
-		SccLocalPath18 = Dev2.CustomControls
-		SccProjectUniqueName19 = Dev2.Util\\Dev2.Util.csproj
-		SccProjectName19 = Dev2.Util
-		SccLocalPath19 = Dev2.Util
-		SccProjectUniqueName20 = Dev2.Development.Languages\\Dev2.Development.Languages.csproj
-		SccProjectName20 = Dev2.Development.Languages
-		SccLocalPath20 = Dev2.Development.Languages
-		SccProjectUniqueName21 = Dev2.Infrastructure\\Dev2.Infrastructure.csproj
-		SccProjectName21 = Dev2.Infrastructure
-		SccLocalPath21 = Dev2.Infrastructure
-		SccProjectUniqueName22 = Dev2.Intellisense\\Dev2.Intellisense.csproj
-		SccProjectName22 = Dev2.Intellisense
-		SccLocalPath22 = Dev2.Intellisense
-		SccProjectUniqueName23 = Dev2.Activities.Designers\\Dev2.Activities.Designers.csproj
-		SccProjectName23 = Dev2.Activities.Designers
-		SccLocalPath23 = Dev2.Activities.Designers
-		SccProjectUniqueName24 = Dev2.Services.Sql\\Dev2.Services.Sql.csproj
-		SccProjectName24 = Dev2.Services.Sql
-		SccLocalPath24 = Dev2.Services.Sql
-		SccProjectUniqueName25 = Dev2.Server\\Dev2.Server.csproj
-		SccProjectName25 = Dev2.Server
-		SccLocalPath25 = Dev2.Server
-		SccProjectUniqueName26 = Dev2.Services.Execution\\Dev2.Services.Execution.csproj
-		SccProjectName26 = Dev2.Services.Execution
-		SccLocalPath26 = Dev2.Services.Execution
-		SccProjectUniqueName27 = Dev2.Instrumentation\\Dev2.Instrumentation.csproj
-		SccProjectName27 = Dev2.Instrumentation
-		SccLocalPath27 = Dev2.Instrumentation
-		SccProjectUniqueName28 = Dev2.IntegrationTests\\Dev2.Integration.Tests.csproj
-		SccProjectName28 = Dev2.IntegrationTests
-		SccLocalPath28 = Dev2.IntegrationTests
-		SccProjectUniqueName29 = Dev2.LoadTests\\Dev2.Load.Tests.csproj
-		SccProjectName29 = Dev2.LoadTests
-		SccLocalPath29 = Dev2.LoadTests
-		SccProjectUniqueName30 = Dev2.Scheduler\\Dev2.Scheduler.csproj
-		SccProjectName30 = Dev2.Scheduler
-		SccLocalPath30 = Dev2.Scheduler
-		SccProjectUniqueName31 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
-		SccProjectName31 = Dev2.TaskScheduler.Wrappers
-		SccLocalPath31 = Dev2.TaskScheduler.Wrappers
-		SccProjectUniqueName32 = Dev2.Common.Interfaces\\Dev2.Common.Interfaces.csproj
-		SccProjectName32 = Dev2.Common.Interfaces
-		SccLocalPath32 = Dev2.Common.Interfaces
-	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = IntegrationTests.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -628,6 +525,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = IntegrationTests.vsmdi
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 5a0c3994-6f1d-461d-8c94-696b3470e61c

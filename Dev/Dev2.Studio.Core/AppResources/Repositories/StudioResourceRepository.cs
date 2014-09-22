@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -109,17 +110,7 @@ namespace Dev2.AppResources.Repositories
 
         #region Implementation of IStudioResourceRepository
 
-        public ObservableCollection<IExplorerItemModel> ExplorerItemModels
-        {
-            get
-            {
-                return _explorerItemModels;
-            }
-            private set
-            {
-                _explorerItemModels = value;
-            }
-        }
+        public ObservableCollection<IExplorerItemModel> ExplorerItemModels { get; private set; }
 
         public void Load(Guid environmentId, IAsyncWorker asyncWorker)
         {
@@ -349,6 +340,77 @@ namespace Dev2.AppResources.Repositories
             {
                 EventPublishers.Aggregator.Publish(new DisplayMessageBoxMessage("Error Renaming Folder", "Conflicting resources found in destination folder.", MessageBoxImage.Warning));
             }
+        }
+        public void MoveFolder(IExplorerItemModel item, string newName)
+        {
+
+            VerifyArgument.IsNotNull("item", item);
+            VerifyArgument.IsNotNullOrWhitespace("newName", newName);
+            Dev2Logger.Log.Info(String.Format("Move Folder Resource: {0} New name :{1} Id:{2}", item.DisplayName, newName, item.EnvironmentId));
+            var oldResourcePath = item.ResourcePath;
+            var newPath = newName;
+            var environmentId = item.EnvironmentId;
+            var result = GetExplorerProxy(environmentId).RenameFolder(oldResourcePath, newPath, Guid.Empty);
+            var explorerItemModel = LoadEnvironment(environmentId);
+            LoadItemsToTree(environmentId, explorerItemModel);
+            if (result.Status != ExecStatus.Success)
+            {
+                EventPublishers.Aggregator.Publish(new DisplayMessageBoxMessage("Error Renaming Folder", "Conflicting resources found in destination folder.", MessageBoxImage.Warning));
+            }
+        }
+
+        public void MoveItem(IExplorerItemModel model, string newPath)
+        {
+            VerifyArgument.IsNotNull("model", model);
+            VerifyArgument.IsNotNull("newPath", newPath);
+            if((model.ResourcePath==""?"": Path.GetDirectoryName(model.ResourcePath)) != newPath )
+            switch (model.ResourceType)
+            {
+                case ResourceType.Folder:
+                    MoveFolder(model, newPath+ (newPath==""?"":"\\")+model.DisplayName);
+                    UpdateCategory(model, newPath + (newPath == "" ? "" : "\\") + model.DisplayName);
+                    break;
+                default:
+                    MoveResource(model, newPath);
+                    break;
+            }
+         
+
+        }
+
+        private void UpdateCategory(IExplorerItemModel model, string newPath)
+        {
+            
+            foreach(var child in model.Children)
+            {
+                if (child.ResourceType == ResourceType.Folder)
+                    UpdateCategory(child, newPath + "\\" + child.DisplayName);
+                else
+                child.UpdateCategoryIfOpened(newPath + (newPath == "" ? "" : "\\") + child.DisplayName);  
+
+            }
+        }
+
+
+
+        void MoveResource(IExplorerItemModel model, string newPath)
+        {
+            if(model.ResourcePath == newPath +"\\"+model.DisplayName && model.ResourcePath != model.DisplayName)
+            {
+                return;
+            }
+            model.UpdateCategoryIfOpened(newPath + "\\" + model.DisplayName);
+            var result = GetExplorerProxy(model.EnvironmentId).MoveItem(MapData(model), newPath, Guid.Empty);
+
+            if(result.Status != ExecStatus.Success)
+            {
+                throw new Exception(result.Message);
+            }
+            model.Parent.RemoveChild(model);
+            model.ResourcePath = newPath;
+            ItemAddedMessageHandler(new ServerExplorerItem(model.DisplayName,model.ResourceId,model.ResourceType,null,model.Permissions,newPath+"\\"+model.DisplayName));
+
+            RefreshVersionHistory(model.EnvironmentId, model.ResourceId);
         }
 
         public void AddResouceItem(IContextualResourceModel resourceModel)
@@ -828,7 +890,6 @@ namespace Dev2.AppResources.Repositories
         }
 
         readonly Dictionary<string, Guid> _versionKeys = new Dictionary<string, Guid>();
-        ObservableCollection<IExplorerItemModel> _explorerItemModels;
 
         private Guid GenerateVersionResourceId(Guid resourceId, Guid environmentId, string versionNumber)
         {

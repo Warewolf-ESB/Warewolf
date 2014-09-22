@@ -230,6 +230,7 @@
     <Compile Include="Services\HostSecureConfigTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MockServiceExecutionAbstract.cs" />
+    <Compile Include="Services\MoveItemService.cs" />
     <Compile Include="Services\RenameCategoryResourceTests.cs" />
     <Compile Include="Services\RenameItemsTest.cs" />
     <Compile Include="Services\RollBackToTest.cs" />

@@ -194,6 +194,11 @@ namespace Dev2.Models
 
             }
         }
+        public void RemoveChild(IExplorerItemModel child)
+        {
+            Children.Remove(child);
+            OnChildrenChanged();
+        }
         public Guid EnvironmentId { get; set; }
         public IExplorerItemModel Parent { get; set; }
         public string DisplayName
@@ -1211,6 +1216,29 @@ namespace Dev2.Models
             if(res == MessageBoxResult.Yes)
             {
                 _studioResourceRepository.DeleteVersion(VersionInfo, EnvironmentId);
+            }
+        }
+
+        public void UpdateCategoryIfOpened(string category)
+        {
+
+            var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
+            if (environmentModel != null)
+            {
+                var resource = environmentModel.ResourceRepository.FindSingle(a => a.ID == ResourceId);
+
+
+                if (resource != null && ResourceType <= ResourceType.ServerSource)
+                {
+                    var xaml = resource.WorkflowXaml;
+                    if (xaml != null)
+                    {
+                        resource.WorkflowXaml = xaml.Replace("Category=\"" + resource.Category, "Category=\"" + category);
+
+                    }
+                    resource.Category = category;
+                    
+                }
             }
         }
 

@@ -23,6 +23,7 @@ namespace Dev2.AppResources.Repositories
         void AddServerNode(IExplorerItemModel explorerItem);
         void RenameItem(IExplorerItemModel explorerItem, string newName);
         void RenameFolder(IExplorerItemModel explorerItem, string newName);
+        void MoveItem(IExplorerItemModel model, string newPath);
         void AddItem(IExplorerItemModel item);
         IExplorerItemModel FindItemById(Guid id);
         IExplorerItemModel FindItemByIdAndEnvironment(Guid id, Guid environmentId);
