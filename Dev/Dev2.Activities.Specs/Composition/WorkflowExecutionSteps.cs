@@ -377,7 +377,13 @@ namespace Dev2.Activities.Specs.Composition
         {
             EnsureEnvironmentConnected(EnvironmentRepository.Instance.Source);
             EnvironmentRepository.Instance.Source.ForceLoadResources();
+            
             var remoteEnvironment = EnvironmentRepository.Instance.FindSingle(model => model.Name == server);
+            if (remoteEnvironment == null)
+            {
+                var environments = EnvironmentRepository.Instance.LookupEnvironments(EnvironmentRepository.Instance.Source);
+                remoteEnvironment = environments.FirstOrDefault(model => model.Name == server);
+            }
             if(remoteEnvironment != null)
             {
                 EnsureEnvironmentConnected(remoteEnvironment);
