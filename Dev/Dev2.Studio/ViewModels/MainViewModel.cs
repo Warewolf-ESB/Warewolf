@@ -45,6 +45,7 @@ using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Explorer;
 using Dev2.Studio.ViewModels.Help;
+using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views;
 using Dev2.Studio.Views.ResourceManagement;
@@ -1328,7 +1329,21 @@ namespace Dev2.Studio.ViewModels
         {
             return FindWorkSurfaceContextViewModel(resource) != null;
         }
-
+        public void UpdateWorkflowLink(IContextualResourceModel resource,string newPath,string oldPath)
+        {
+            var x = (FindWorkSurfaceContextViewModel(resource));
+            if(x != null)
+            {
+             
+            
+            var path = oldPath.Replace('\\', '/');
+            var b = x.WorkSurfaceViewModel as WorkflowDesignerViewModel;
+            if( b!= null )
+            {
+                b.UpdateWorkflowLink(b.DisplayWorkflowLink.Replace(path, newPath.Replace('\\', '/')));   
+            }
+            }
+        }
         public WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key)
         {
             return Items.FirstOrDefault(

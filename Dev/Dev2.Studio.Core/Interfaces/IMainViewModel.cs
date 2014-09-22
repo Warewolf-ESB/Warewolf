@@ -13,6 +13,7 @@ namespace Dev2.Interfaces
         IContextualResourceModel DeployResource { get; set; }
         void SetActiveEnvironment(IEnvironmentModel activeEnvironment);
         bool IsWorkFlowOpened(IContextualResourceModel resource);
+        void UpdateWorkflowLink(IContextualResourceModel resource, string newPath, string oldPath);
         void ClearToolboxSelection();
     }
 }

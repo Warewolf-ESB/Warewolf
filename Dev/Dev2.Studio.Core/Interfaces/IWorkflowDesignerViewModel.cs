@@ -13,7 +13,7 @@ namespace Dev2.Studio.Core.ViewModels
         bool RequiredSignOff { get; }
         WorkflowDesigner Designer { get; }
         UIElement DesignerView { get; }
-
+        void UpdateWorkflowLink(string newLink);
         void Dispose();
         bool NotifyItemSelected(object primarySelection);
         void BindToModel();

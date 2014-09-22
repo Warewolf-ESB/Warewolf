@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Activities.Expressions;
+using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
@@ -1962,6 +1963,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_UpdateCategoryIfOpened_ExpectCategory()
         {
             //------------Setup for test--------------------------
+            CustomContainer.Register(new Mock<IMainViewModel>().Object);
             var aggregator = new Mock<EventAggregator>();
             EventPublishers.Aggregator = aggregator.Object;
             var mockStudioRepository = new Mock<IStudioResourceRepository>();
@@ -2001,6 +2003,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ExplorerItemModel_UpdateCategoryIfOpened_ExpectCategoryUpdate_NoWFXamlSet()
         {
             //------------Setup for test--------------------------
+            CustomContainer.Register(new Mock<IMainViewModel>().Object);
             var aggregator = new Mock<EventAggregator>();
             EventPublishers.Aggregator = aggregator.Object;
             var mockStudioRepository = new Mock<IStudioResourceRepository>();

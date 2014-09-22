@@ -1221,15 +1221,17 @@ namespace Dev2.Models
 
         public void UpdateCategoryIfOpened(string category)
         {
-
+           
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
             if (environmentModel != null)
             {
-                var resource = environmentModel.ResourceRepository.FindSingle(a => a.ID == ResourceId);
+                var resource = environmentModel.ResourceRepository.FindSingle(a => a.ID == ResourceId) as IContextualResourceModel;
 
 
                 if (resource != null && ResourceType <= ResourceType.ServerSource)
                 {
+                    IMainViewModel mainViewModel = CustomContainer.Get<IMainViewModel>();
+                    mainViewModel.UpdateWorkflowLink(resource,category,resource.Category);
                     var xaml = resource.WorkflowXaml;
                     if (xaml != null)
                     {

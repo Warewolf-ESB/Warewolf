@@ -1334,10 +1334,55 @@ namespace Dev2.Core.Tests.Repositories
             var explorerItemModel = repository.ExplorerItemModels[0].Children[0];
             explorerItemModel.Children[0].ResourcePath = "\\folder1\\bob\\dave";
             explorerItemModel.ResourcePath = "\\folder1\\bob";
+         
             repository.MoveItem(explorerItemModel, "New Name");
             //------------Assert Results-------------------------
             mockExplorerResourceRepository.Verify(m => m.RenameFolder("\\folder1\\bob", "New Name\\folder1", It.IsAny<Guid>()), Times.Once());
      
+            //------------Execute Test---------------------------
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("StudioResourceRepository_MoveItem")]
+        public void StudioResourceRepository_MoveItem_Version_ExpectNothing()
+        {
+
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            mockExplorerResourceRepository.Setup(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
+                                          .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
+                                          .Verifiable();
+
+            var environmentId = Guid.NewGuid();
+            var workflowId = Guid.NewGuid();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.SetupProperty(model => model.Category);
+            mockResourceModel.SetupProperty(model => model.ResourceName);
+            mockResourceModel.Object.Category = "MyCat";
+            mockResourceModel.Object.ResourceName = "MyResName";
+            mockResourceRepository.Setup(resourceRepository => resourceRepository.Find(It.IsAny<Expression<Func<IResourceModel, bool>>>())).Returns(new List<IResourceModel> { mockResourceModel.Object });
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            mockEnvironment.Setup(model => model.ID).Returns(environmentId);
+            GetEnvironmentRepository(mockEnvironment);
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var repository = new StudioResourceRepository(GetTestData(workflowId.ToString()), environmentId, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object
+            };
+            //------------Execute Test---------------------------
+
+            var explorerItemModel = repository.ExplorerItemModels[0].Children[0];
+            explorerItemModel.ResourceType = ResourceType.Version;
+            explorerItemModel.Children[0].ResourcePath = "\\folder1\\bob\\dave";
+            explorerItemModel.ResourcePath = "\\folder1\\bob";
+            repository.MoveItem(explorerItemModel, "New Name");
+            //------------Assert Results-------------------------
+            mockExplorerResourceRepository.Verify(m => m.RenameFolder("\\folder1\\bob", "New Name\\folder1", It.IsAny<Guid>()), Times.Never());
+
             //------------Execute Test---------------------------
 
         }
@@ -2035,12 +2080,19 @@ namespace Dev2.Core.Tests.Repositories
             var studioResourceRepository = StudioResourceRepository.Instance;
 
             //------------Execute Test---------------------------
-            studioResourceRepository.MoveItem(new ExplorerItemModel(studioResourceRepository, new Mock<IAsyncWorker>().Object, 
-                new Mock<IConnectControlSingleton>().Object) { ResourcePath = "dave", DisplayName = "dave\bob", Children = null, 
-                Parent = new ExplorerItemModel(){Children = new ObservableCollection<IExplorerItemModel>()} }, "bob");
+            var itemToMove = new ExplorerItemModel(studioResourceRepository, new Mock<IAsyncWorker>().Object,
+                new Mock<IConnectControlSingleton>().Object)
+                {
+                    ResourcePath = "dave",
+                    DisplayName = "dave\bob",
+                    Children = new ObservableCollection<IExplorerItemModel>() { new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, studioResourceRepository) },
+                    Parent = new ExplorerItemModel() { Children = new ObservableCollection<IExplorerItemModel>() }
+                };
+            Assert.AreEqual(itemToMove.Children.Count, 1);
+            studioResourceRepository.MoveItem(itemToMove, "bob");
 
             mockExplorerResourceRepository.Verify(a => a.MoveItem(It.IsAny<IExplorerItem>(), "bob", Guid.Empty));
-
+            Assert.AreEqual(itemToMove.Children.Count,0);
         }
 
         [TestMethod]

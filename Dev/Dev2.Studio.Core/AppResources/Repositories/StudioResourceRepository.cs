@@ -399,6 +399,18 @@ namespace Dev2.AppResources.Repositories
             {
                 return;
             }
+            switch(model.ResourceType)
+            {
+                case ResourceType.Folder :
+                    break;
+                case ResourceType.Server :
+                    break;
+                case ResourceType.Version:
+                    return;
+                default :
+                        model.Children = new ObservableCollection<IExplorerItemModel>();
+                        break;
+            }
             model.UpdateCategoryIfOpened(newPath + "\\" + model.DisplayName);
             var result = GetExplorerProxy(model.EnvironmentId).MoveItem(MapData(model), newPath, Guid.Empty);
 

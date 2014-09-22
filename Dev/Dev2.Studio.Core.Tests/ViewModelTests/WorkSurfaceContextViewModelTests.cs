@@ -1239,6 +1239,10 @@ namespace Dev2.Core.Tests.ViewModelTests
             get { throw new NotImplementedException(); }
         }
 
+        public void UpdateWorkflowLink(string newLink)
+        {
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();

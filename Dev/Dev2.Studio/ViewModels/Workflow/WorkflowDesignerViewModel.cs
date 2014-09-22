@@ -237,6 +237,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 return workflowLink;
             }
+            private set
+            {
+                _workflowLink = value;
+            }
         }
 
         public Visibility WorkflowLinkVisible
@@ -300,6 +304,12 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                 return _wd.View;
             }
+        }
+
+        public void UpdateWorkflowLink(string newLink)
+        {
+            DisplayWorkflowLink = newLink;
+            NotifyOfPropertyChange("DisplayWorkflowLink");
         }
 
         public StringBuilder DesignerText { get { return ServiceDefinition; } }
