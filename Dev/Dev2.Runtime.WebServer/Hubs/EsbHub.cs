@@ -297,7 +297,7 @@ namespace Dev2.Runtime.WebServer.Hubs
 
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
 
-            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
+            //CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
 
         public void SendDebugState(DebugState debugState)
