@@ -3,7 +3,6 @@
   <Description>These are default test settings for a local test run.</Description>
     <Deployment>
         <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
-        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
 	</Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
   <Scripts setupScript="..\src\Dev\TestScripts\Load\Startup.bat" cleanupScript="..\src\Dev\TestScripts\Load\Cleanup.bat" />

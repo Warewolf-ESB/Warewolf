@@ -2,7 +2,7 @@
 <TestSettings name="Nightly UI Test" id="e8eace60-accd-4300-bc1d-1c967914da3a" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote UI test run.</Description>
   <Deployment>
-		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
+		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
 		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="StudiobinDebug" />
         
             <!--For Build Agents-->
