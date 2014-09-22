@@ -7,7 +7,7 @@
     </Deployment>
   <NamingScheme baseName="UT" />
     <Scripts setupScript="..\src\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\src\Dev\TestScripts\Acceptance\Cleanup.bat" />
-  <RemoteController name="rsaklftrevorwilliams" />
+  <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote">
     <Timeouts testTimeout="180000" />
     <Buckets size="100" />

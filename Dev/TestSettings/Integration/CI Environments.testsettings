@@ -11,7 +11,7 @@
     </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
   <Scripts setupScript="..\src\Dev\TestScripts\Integration\Startup.bat" cleanupScript="..\src\Dev\TestScripts\Integration\Cleanup.bat" />
-  <RemoteController name="rsaklftrevorwilliams" />
+  <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote" parallelTestCount="0">
     <Buckets size="1000" />
     <TestTypeSpecific>

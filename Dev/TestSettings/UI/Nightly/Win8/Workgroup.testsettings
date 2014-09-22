@@ -11,7 +11,7 @@
   </Deployment>
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
   <Scripts setupScript="TestScripts\UI\Startup.bat" cleanupScript="TestScripts\UI\Cleanup.bat" />
-  <RemoteController name="rsaklftrevorwilliams" />
+  <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote">
     <Hosts skipUnhostableTests="false" />
     <TestTypeSpecific>

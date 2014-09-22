@@ -11,7 +11,7 @@
 	<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="StudiobinDebug" />
   </Deployment>
   <Scripts setupScript="..\src\Dev\TestScripts\Integration\Startup.bat" cleanupScript="..\src\Dev\TestScripts\Integration\Cleanup.bat" />
-  <RemoteController name="rsaklftrevorwilliams" />
+  <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote" parallelTestCount="0">
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">

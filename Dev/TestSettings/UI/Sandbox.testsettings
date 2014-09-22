@@ -10,7 +10,7 @@
         <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
   </Deployment>
   <Scripts setupScript="TestScripts\UI\Startup.bat" cleanupScript="TestScripts\UI\Cleanup.bat" />
-  <RemoteController name="rsaklftrevorwilliams" />
+  <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote">
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
