@@ -2,10 +2,15 @@
 <TestSettings name="Integration Test Settings" id="e8eace60-accd-4300-bc1d-1c967914dabc" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
   <Deployment>
-    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
+		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
+		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="StudiobinDebug" />
+        
+            <!--For Build Agents-->
+        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+        <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
   </Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="TestScripts\Integration\Startup.bat" cleanupScript="TestScripts\Integration\Cleanup.bat" />
+  <Scripts setupScript="..\src\src\main\TestScripts\Integration\Startup.bat" cleanupScript="..\src\src\main\TestScripts\Integration\Cleanup.bat" />
   <Execution parallelTestCount="0">
     <Buckets size="1000" />
     <TestTypeSpecific>

@@ -1,11 +1,12 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="Nightly Acceptance" id="3264dd0f-6fc1-4cb9-b44f-c649fef29605" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a remote acceptance test run.</Description>
-  <Deployment>
-    <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
-  </Deployment>
-  <Scripts setupScript="TestScripts\Acceptance\Startup.bat" cleanupScript="TestScripts\Acceptance\Cleanup.bat" />
-  <RemoteController name="rsaklfsvrtfsbld:6901" />
+	<Deployment>
+		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="ServerbinDebug" />
+        <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+	</Deployment>
+  <Scripts setupScript="..\src\src\main\TestScripts\Acceptance\Startup.bat" cleanupScript="..\src\src\main\TestScripts\Acceptance\Cleanup.bat" />
+  <RemoteController name="rsaklftrevorwilliams" />
   <Execution location="Remote">
     <Buckets size="10000" />
     <TestTypeSpecific>
