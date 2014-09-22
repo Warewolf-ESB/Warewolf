@@ -88,8 +88,19 @@ namespace Dev2.ViewModels.Diagnostics
 
             var envID = content.EnvironmentID;
 
-            var env = _environmentRepository.All().FirstOrDefault(e => e.ID == envID) ?? _environmentRepository.Source;
-
+            var env = _environmentRepository.All().FirstOrDefault(e => e.ID == envID);
+            if (env == null)
+            {
+                var environmentModels = _environmentRepository.LookupEnvironments(_environmentRepository.ActiveEnvironment);
+                if(environmentModels != null)
+                {
+                    env = environmentModels.FirstOrDefault(e => e.ID == envID) ?? _environmentRepository.ActiveEnvironment;
+                }
+                else
+                {
+                    env = _environmentRepository.Source;
+                }
+            }
             if(Equals(env, _environmentRepository.Source) && isRemote)
             {
                 // We have an unknown remote server ;)
