@@ -26,7 +26,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         public void TestPluginNull_Expected_AnonymousSend()
         {
-            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-Testing/IntegrationTestPluginEmptyToNull", "testType=nullActive&sender=");
+            string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-Testing/IntegrationTestPluginEmptyToNull", "testType=nullActive");
             string result = TestHelper.PostDataToWebserver(postData);
 
             StringAssert.Contains(result, "Anonymous email sent");

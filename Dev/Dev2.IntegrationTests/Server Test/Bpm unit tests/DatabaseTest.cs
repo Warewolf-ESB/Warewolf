@@ -99,7 +99,7 @@ namespace Dev2.Integration.Tests.Server_Test.Bpm_unit_tests
             // ensure we get the same result 10 times ;)
             for(int i = 0; i < 10; i++)
             {
-                string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-TESTING/IntegrationTestDBEmptyToNull", "testType=logic&nullLogicValue=");
+                string postData = String.Format("{0}{1}?{2}", ServerSettings.WebserverURI, "ML-TESTING/IntegrationTestDBEmptyToNull", "testType=nullActive");
                 string result = TestHelper.PostDataToWebserver(postData);
                 StringAssert.Contains(result, "<val>ZZZ</val>", "Got [ " + result + " ]");
             }
