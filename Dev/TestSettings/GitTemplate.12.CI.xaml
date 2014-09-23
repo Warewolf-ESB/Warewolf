@@ -148,7 +148,7 @@
       <mtbw:ProcessParameterMetadata Category="#500 Dev2 CI Report" Description="Default value is &quot;Http://RSAKLFSVRWRWBLD:3142/services/TFSPLUGINS/JustProcessFile&quot;" DisplayName="Warewolf Server Publish Results URI" ParameterName="WarewolfServerInsertResultsURI" />
       <mtbw:ProcessParameterMetadata Category="#500 Dev2 CI Report" Description="The URI of the Warewolf service responsible for sending CI reports. This is executed after all the test runs are finished. Default value is &quot;Http://RSAKLFSVRWRWBLD:3142/services/UTILITIES/JustSendCIReport&quot;" DisplayName="Warewolf Server Send Report URI" ParameterName="WarewolfServerSendReportURI" />
       <mtbw:ProcessParameterMetadata Category="#500 Dev2 CI Report" Description="Timeout for web requests. Web requests are used to call Warewolf workflows for interfacing with the Dev2 test resutls database." DisplayName="Web Request Timeout" ParameterName="WebRequestTimeout" />
-      <mtbw:ProcessParameterMetadata Category="#250 Test" Description="Publish test results to Tfs_DefaultColleciton database. Set this to true to be able to view test results in this build's summary." DisplayName="Publish to TFS" ParameterName="AdvancedTestSettings.PublishToTfs" />
+      <mtbw:ProcessParameterMetadata Category="#250 Test" Description="Publish test results to Tfs_DefaultCollection database. Set this to true to be able to view test results in this build's summary." DisplayName="Publish to TFS" ParameterName="AdvancedTestSettings.PublishToTfs" />
     </mtbw:ProcessParameterMetadataCollection>
   </this:Process.Metadata>
   <sap2010:WorkflowViewState.IdRef>TfsBuild.Process_1</sap2010:WorkflowViewState.IdRef>
