@@ -1,4 +1,4 @@
-Warewolf-Service-Bus
+Warewolf-ESB
 ====================
 
-This is the main repository for the Warewolf Service Bus. The repository includes the code-base for the Warewolf Studio and Warewolf Server.
+The main repository for Warewolf Easy Service Bus (ESB). The repository includes the code-base for the Warewolf Studio and Warewolf Server. Warewolf ESB is the easiest Service Bus available and can be deployed by anyone, into any system, anywhere, anytime… and it’s free.
