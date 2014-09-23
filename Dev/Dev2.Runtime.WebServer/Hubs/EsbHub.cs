@@ -264,9 +264,8 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         protected void OnCompilerMessageReceived(IList<ICompileMessageTO> messages)
         {
-            WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.MappingChange || m.MessageType == CompileMessageType.MappingIsRequiredChanged), CoalesceMappingChangedErrors);
+            WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => (m.MessageType == CompileMessageType.MappingChange || m.MessageType == CompileMessageType.MappingIsRequiredChanged)), CoalesceMappingChangedErrors);
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
-
         }
 
         #region CoalesceMappingChangedErrors
@@ -296,8 +295,9 @@ namespace Dev2.Runtime.WebServer.Hubs
             var hubCallerConnectionContext = Clients;
 
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
-
-            //CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
+            
+            CompileMessageRepo.Instance.ClearObservable();
+            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
 
         public void SendDebugState(DebugState debugState)

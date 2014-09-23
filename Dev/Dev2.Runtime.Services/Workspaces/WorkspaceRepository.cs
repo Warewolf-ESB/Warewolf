@@ -389,5 +389,10 @@ namespace Dev2.Workspaces
         }
 
         #endregion
+
+        public ICollection<Guid> GetWorkspaceGuids()
+        {
+            return _items.Keys;
+        }
     }
 }

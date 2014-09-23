@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel.Messages;
@@ -12,6 +13,7 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
+using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -58,14 +60,35 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             var thisService = ResourceCatalog.Instance.GetResource(wGuid, sGuid);
             var msgs = new CompileMessageList();
+            var dependants = new List<Guid>();
             if(thisService != null)
             {
-                var deps = ResourceCatalog.Instance.GetDependants(wGuid, thisService.ResourceID).Select(a => ResourceCatalog.Instance.GetResource(wGuid,a).ResourcePath).ToList();
-                CompileMessageType[] filters = null; // TODO : Convert string list to enum array ;)
+                var workspaceGuids = WorkspaceRepository.Instance.GetWorkspaceGuids();
+                workspaceGuids.ForEach(guid =>
+                {
+                    var union = dependants.Union(ResourceCatalog.Instance.GetDependants(guid, thisService.ResourceID));
+                    dependants = union.ToList();
+                });
+                
+                var enumerable = dependants.Select(a =>
+                {
+                    var resource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID,a) ?? ResourceCatalog.Instance.GetResource(wGuid,a);
+                    return resource==null?"": resource.ResourcePath;
+                });
+                var deps = enumerable.Distinct().ToList();
+               // CompileMessageType[] filters = null; // TODO : Convert string list to enum array ;)
                 if(deps.Count > 0)
                 {
                     // ReSharper disable ExpressionIsAlwaysNull
-                    msgs = CompileMessageRepo.Instance.FetchMessages(GlobalConstants.ServerWorkspaceID, sGuid, deps, filters);
+                    msgs = new CompileMessageList();
+                    var compileMessageTo = new CompileMessageTO
+                    {
+                        ErrorType = ErrorType.Critical, 
+                        MessageType = CompileMessageType.MappingChange
+                    };
+                    msgs.Dependants =new List<string>();
+                    deps.ForEach(s => msgs.Dependants.Add(s));
+                    msgs.MessageList = new List<ICompileMessageTO> { compileMessageTo };
                     // ReSharper restore ExpressionIsAlwaysNull
                     return serializer.SerializeToBuilder(msgs);
                 }
