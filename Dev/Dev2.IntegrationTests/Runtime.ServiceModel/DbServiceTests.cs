@@ -204,14 +204,15 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var dbSource = SqlServerTests.CreateDev2TestingDbSource();
             var args = JsonConvert.SerializeObject(dbSource);
-
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResource<DbSource>(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dbSource);
             var outputDescription = new Mock<IOutputDescription>();
             outputDescription.Setup(d => d.DataSourceShapes).Returns(new List<IDataSourceShape> { new DataSourceShape() });
 
             var dbBroker = new Mock<SqlDatabaseBroker>();
             dbBroker.Setup(b => b.GetServiceMethods(It.IsAny<DbSource>())).Verifiable();
 
-            var dbServices = new TestDbServices(dbBroker.Object);
+            var dbServices = new TestDbServices(resourceCatalog.Object,dbBroker.Object);
 
             //------------Execute Test---------------------------
             var result = dbServices.DbMethods(args, Guid.Empty, Guid.Empty);

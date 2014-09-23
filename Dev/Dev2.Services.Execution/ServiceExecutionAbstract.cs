@@ -223,8 +223,18 @@ namespace Dev2.Services.Execution
                     var param = methodParameters[pos];
                     if(param != null)
                     {
-                        param.Value = param.EmptyToNull && (injectVal == null || string.Compare(injectVal.TheValue, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0)
-                                          ? null : injectVal.TheValue;
+                        string theValue;
+                        try
+                        {
+                            theValue = injectVal.TheValue;
+                        }
+                        catch(Exception)
+                        {
+                            theValue = "";
+                        }
+
+                        param.Value = param.EmptyToNull && (injectVal == null || string.Compare(theValue, string.Empty, StringComparison.InvariantCultureIgnoreCase) == 0)
+                                          ? null : theValue;
                     }
                     pos++;
                 }

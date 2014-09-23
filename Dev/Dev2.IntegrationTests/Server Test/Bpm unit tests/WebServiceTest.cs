@@ -49,7 +49,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
             ////------------Assert Results-------------------------
 
-            Assert.AreEqual(debugItems.Count, 2);
+            Assert.AreEqual(debugItems.Count, 1);
             StringAssert.Contains(debugItems[0].ErrorMessage.Trim(), @"1 The '[' character, hexadecimal value 0x5B, cannot be included in a name. Line 5, position 4.
  2 Recordset index (**) contains invalid character(s)
  3 Invalid Recordset Index For { [[rec(**).A]] }
@@ -70,7 +70,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
             ////------------Assert Results-------------------------
 
-            Assert.AreEqual(debugItems.Count, 2);
+            Assert.AreEqual(debugItems.Count, 1);
             Assert.AreEqual(debugItems[0].ErrorMessage.Trim(), @"1 The '[' character, hexadecimal value 0x5B, cannot be included in a name. Line 5, position 4.");
         }
     }

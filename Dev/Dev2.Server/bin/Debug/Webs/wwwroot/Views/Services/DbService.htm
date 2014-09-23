@@ -38,9 +38,9 @@
                 <!-- TEST ACTION -->
                 <div style="float: left; width: auto; padding-left: 10px;">
                     <div style="height: 67px">
-                        <div style="float: left; width: 450px;">
+                        <div style="float: left; width: 450px; height:50px;text-overflow: ellipsis;overflow: hidden">
                             <h4 style="margin-bottom: 8px">3. Provide Test Values</h4>
-                            <a class="selectable" style="margin-left: 20px;" href="#" title="Inspect source" data-bind="text: data.method.Name, click: showAction"></a>
+                            <a class="selectable" style="margin-left: 20px;text-overflow: ellipsis;overflow: hidden" href="#" title="Inspect source" data-bind="text: data.method.Name, click: showAction"></a>
                         </div>
                         <button style="float: right; margin-top: 21px" type="button" name="cancel" id="testButton" data-bind="click: testAction, jEnable: isTestEnabled">Test</button>
                     </div>

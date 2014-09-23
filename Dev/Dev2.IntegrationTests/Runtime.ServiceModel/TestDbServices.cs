@@ -28,6 +28,11 @@ namespace Dev2.Integration.Tests.Runtime.ServiceModel
         {
             Broker = broker;
         }
+        
+        public TestDbServices(IResourceCatalog resourceCatalog,SqlDatabaseBroker broker):this(resourceCatalog)
+        {
+            Broker = broker;
+        }
 
         protected override SqlDatabaseBroker CreateDatabaseBroker()
         {

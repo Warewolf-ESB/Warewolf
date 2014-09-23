@@ -129,16 +129,6 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
 
         [TestMethod]
         [TestCategory("WebServer_ServicesGet")]
-        public void WebServer_ServicesGet_WorkflowAsJson_ResultAsJson()
-        {
-            VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
-            {
-                new Tuple<string, string, AssertType>(WebServerTest + ".json", WebServerTestExpectedJson, AssertType.Equals)
-            });
-        }
-
-        [TestMethod]
-        [TestCategory("WebServer_ServicesGet")]
         public void WebServer_ServicesGet_WorkflowAsXml_ResultAsXml()
         {
             VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
