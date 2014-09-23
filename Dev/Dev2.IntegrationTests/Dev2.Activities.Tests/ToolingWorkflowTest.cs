@@ -38,7 +38,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
             }
 
             // Find Record Index: PASS
-            const string Expected = @"<DataList><Test index=""1""><Result>PASS</Result></Test><Test index=""2""><Result>Switch: PASS</Result></Test><Test index=""3""><Result>Decision: PASS</Result></Test><Test index=""4""><Result>Count Records: PASS</Result></Test><Test index=""5""><Result>Delete Record: PASS</Result></Test><Test index=""6""><Result>Sort Records: PASS</Result></Test>";
+            const string Expected = @"<DataList><Test index=""1""><Result>ForEach: PASS</Result></Test><Test index=""2""><Result>Switch: PASS</Result></Test><Test index=""3""><Result>Decision: PASS</Result></Test><Test index=""4""><Result>Count Records: PASS</Result></Test><Test index=""5""><Result>Delete Record: PASS</Result></Test><Test index=""6""><Result>Sort Records: PASS</Result></Test>";
             StringAssert.Contains(responseData, Expected);
         }
 
