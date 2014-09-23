@@ -409,6 +409,7 @@
       <DependentUpon>ReportsViewerView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Views\Explorer\DragDropExtension.cs" />
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>

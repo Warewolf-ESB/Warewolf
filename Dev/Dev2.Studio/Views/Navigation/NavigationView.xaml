@@ -12,6 +12,7 @@
     d:DataContext="{d:DesignInstance navigation:NavigationViewModel}"
     xmlns:behaviors="clr-namespace:Dev2.Studio.AppResources.Behaviors"
     xmlns:behavior="clr-namespace:Dev2.CustomControls.Behavior;assembly=Dev2.CustomControls"
+    xmlns:explorer="clr-namespace:Dev2.Views.Explorer"
 
     Name="NavigationViewUserControl">
     <Grid cal:Bind.Model="{Binding .}">
@@ -53,6 +54,7 @@
         </Grid>
         
         <TreeView x:Name="Navigation"
+                  explorer:DragDropExtension.ScrollOnDragDrop="True"
                   ItemsSource="{Binding Path=ExplorerItemModels}"
                   AllowDrop="True"
                   Grid.Row="1"
