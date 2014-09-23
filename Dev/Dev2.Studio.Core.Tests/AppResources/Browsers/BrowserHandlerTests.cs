@@ -5,6 +5,7 @@ using CefSharp;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.IO;
 
 namespace Dev2.Core.Tests.AppResources.Browsers
 {
@@ -15,6 +16,21 @@ namespace Dev2.Core.Tests.AppResources.Browsers
     [ExcludeFromCodeCoverage]
     public class BrowserHandlerTests
     {
+        #region Class Init
+
+        [ClassInitialize]
+        public static void ResolveDependency(TestContext testContext)
+        {
+            var dependancy = Path.Combine(Environment.CurrentDirectory, "CefSharp.dll");
+            var relativePathInBuildEnvironment = Environment.CurrentDirectory + @"\..\..\..\..\src\Dev\Binaries\CefSharp\CefSharp.dll";
+            if(!File.Exists(dependancy) && File.Exists(relativePathInBuildEnvironment))
+            {
+                File.Copy(relativePathInBuildEnvironment, dependancy);
+            }
+        }
+
+        #endregion
+
         #region CTOR
 
         [TestMethod]

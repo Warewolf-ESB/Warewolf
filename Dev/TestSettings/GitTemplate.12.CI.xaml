@@ -1,4 +1,4 @@
-﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.AutomatedTests="[{New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;AssemblyFileSpec&quot;&quot;: &quot;&quot;**\\*test*.dll;**\\*test*.appx&quot;&quot;, &quot;&quot;RunSettingsFileName&quot;&quot;: null, &quot;&quot;TestCaseFilter&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;RunSettingsForTestRun&quot;&quot;: { &quot;&quot;ServerRunSettingsFile&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;TypeRunSettings&quot;&quot;: &quot;&quot;Default&quot;&quot; }, &quot;&quot;HasTestCaseFilter&quot;&quot;: false, &quot;&quot;FailBuildOnFailure&quot;&quot;: false, &quot;&quot;RunName&quot;&quot;: &quot;&quot;&quot;&quot; } &quot;)}]" this:Process.AdvancedTestSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;DisableTests&quot;&quot;: false, &quot;&quot;PreActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PreActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;AsyncTests&quot;&quot;: false &quot;)]" this:Process.BuildNumberFormat="[&quot;$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)&quot;]" this:Process.CleanRepository="[True]" this:Process.AdvancedBuildSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;MSBuildArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;MSBuildPlatform&quot;&quot;: &quot;&quot;Auto&quot;&quot;, &quot;&quot;PreActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PreActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;RunCodeAnalysis&quot;&quot;: &quot;&quot;AsConfigured&quot;&quot; } &quot;)]" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;MaxExecutionTime&quot;&quot;: &quot;&quot;00:00:00&quot;&quot;, &quot;&quot;MaxWaitTime&quot;&quot;: &quot;&quot;04:00:00&quot;&quot;, &quot;&quot;Name&quot;&quot;: &quot;&quot;*&quot;&quot;, &quot;&quot;Tags&quot;&quot;: [], &quot;&quot;TagComparison&quot;&quot;: &quot;&quot;MatchExactly&quot;&quot; } &quot;)]" this:Process.CleanBuild="[True]" this:Process.OutputLocation="[&quot;SingleFolder&quot;]" this:Process.CreateWorkItem="[True]" this:Process.UpdateAssociatedWorkItems="[True]" this:Process.SupportedReasons="Manual, IndividualCI, BatchedCI" this:Process.BuildProcessVersion="12.0" this:Process.WarewolfServerInsertResultsURI="Http://RSAKLFSVRWRWBLD:3142/services/TFSPLUGINS/JustProcessFile" this:Process.WarewolfServerSendReportURI="Http://RSAKLFSVRWRWBLD:3142/services/UTILITIES/JustSendCIReport" this:Process.WebRequestTimeout="60000"
+﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.AutomatedTests="[{New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;AssemblyFileSpec&quot;&quot;: &quot;&quot;**\\*test*.dll;**\\*test*.appx&quot;&quot;, &quot;&quot;RunSettingsFileName&quot;&quot;: null, &quot;&quot;TestCaseFilter&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;RunSettingsForTestRun&quot;&quot;: { &quot;&quot;ServerRunSettingsFile&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;TypeRunSettings&quot;&quot;: &quot;&quot;Default&quot;&quot; }, &quot;&quot;HasTestCaseFilter&quot;&quot;: false, &quot;&quot;FailBuildOnFailure&quot;&quot;: false, &quot;&quot;RunName&quot;&quot;: &quot;&quot;&quot;&quot; } &quot;)}]" this:Process.AdvancedTestSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;DisableTests&quot;&quot;: false, &quot;&quot;PreActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PreActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;AsyncTests&quot;&quot;: false, &quot;&quot;PublishToTfs&quot;&quot;: true } &quot;)]" this:Process.BuildNumberFormat="[&quot;$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)&quot;]" this:Process.CleanRepository="[True]" this:Process.AdvancedBuildSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;MSBuildArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;MSBuildPlatform&quot;&quot;: &quot;&quot;Auto&quot;&quot;, &quot;&quot;PreActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PreActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;RunCodeAnalysis&quot;&quot;: &quot;&quot;AsConfigured&quot;&quot; } &quot;)]" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;MaxExecutionTime&quot;&quot;: &quot;&quot;00:00:00&quot;&quot;, &quot;&quot;MaxWaitTime&quot;&quot;: &quot;&quot;04:00:00&quot;&quot;, &quot;&quot;Name&quot;&quot;: &quot;&quot;*&quot;&quot;, &quot;&quot;Tags&quot;&quot;: [], &quot;&quot;TagComparison&quot;&quot;: &quot;&quot;MatchExactly&quot;&quot; } &quot;)]" this:Process.CleanBuild="[True]" this:Process.OutputLocation="[&quot;SingleFolder&quot;]" this:Process.CreateWorkItem="[True]" this:Process.UpdateAssociatedWorkItems="[True]" this:Process.SupportedReasons="Manual, IndividualCI, BatchedCI" this:Process.BuildProcessVersion="12.0" this:Process.WarewolfServerInsertResultsURI="Http://RSAKLFSVRWRWBLD:3142/services/TFSPLUGINS/JustProcessFile" this:Process.WarewolfServerSendReportURI="Http://RSAKLFSVRWRWBLD:3142/services/UTILITIES/JustSendCIReport" this:Process.WebRequestTimeout="60000"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mt="clr-namespace:Microsoft.TeamFoundation;assembly=Microsoft.TeamFoundation.Common"
@@ -148,6 +148,7 @@
       <mtbw:ProcessParameterMetadata Category="#500 Dev2 CI Report" Description="Default value is &quot;Http://RSAKLFSVRWRWBLD:3142/services/TFSPLUGINS/JustProcessFile&quot;" DisplayName="Warewolf Server Publish Results URI" ParameterName="WarewolfServerInsertResultsURI" />
       <mtbw:ProcessParameterMetadata Category="#500 Dev2 CI Report" Description="The URI of the Warewolf service responsible for sending CI reports. This is executed after all the test runs are finished. Default value is &quot;Http://RSAKLFSVRWRWBLD:3142/services/UTILITIES/JustSendCIReport&quot;" DisplayName="Warewolf Server Send Report URI" ParameterName="WarewolfServerSendReportURI" />
       <mtbw:ProcessParameterMetadata Category="#500 Dev2 CI Report" Description="Timeout for web requests. Web requests are used to call Warewolf workflows for interfacing with the Dev2 test resutls database." DisplayName="Web Request Timeout" ParameterName="WebRequestTimeout" />
+      <mtbw:ProcessParameterMetadata Category="#250 Test" Description="Publish test results to Tfs_DefaultColleciton database. Set this to true to be able to view test results in this build's summary." DisplayName="Publish to TFS" ParameterName="AdvancedTestSettings.PublishToTfs" />
     </mtbw:ProcessParameterMetadataCollection>
   </this:Process.Metadata>
   <sap2010:WorkflowViewState.IdRef>TfsBuild.Process_1</sap2010:WorkflowViewState.IdRef>
@@ -192,10 +193,10 @@
               <mtbwa:DeleteDirectory Directory="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;, &quot;Resources&quot;)]" DisplayName="Delete Server Resources" sap2010:WorkflowViewState.IdRef="DeleteDirectory_3" />
               <If Condition="[ConfigurationsToBuild.FirstOrDefault.Substring(ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c) + 1) = &quot;Debug&quot;]" DisplayName="If built in debug config" sap2010:WorkflowViewState.IdRef="If_26">
                 <If.Then>
-                  <mtbwa:CopyDirectory Destination="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;)]" DisplayName="Ensure Server Debug Resources" sap2010:WorkflowViewState.IdRef="CopyDirectory_1" Source="[Path.Combine(BuildDirectory, GitRepoFolderName, &quot;Dev2.Server&quot;, &quot;bin&quot;, &quot;Debug&quot;)]" />
+                  <mtbwa:CopyDirectory Destination="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;)]" DisplayName="Ensure Server Debug Resources" sap2010:WorkflowViewState.IdRef="CopyDirectory_1" Source="[Path.Combine(BuildDirectory, GitRepoFolderName, &quot;Dev&quot;, &quot;Dev2.Server&quot;, &quot;bin&quot;, &quot;Debug&quot;)]" />
                 </If.Then>
               </If>
-              <mtbwa:CopyDirectory Destination="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;)]" DisplayName="Ensure Server Release Resources" sap2010:WorkflowViewState.IdRef="CopyDirectory_2" Source="[Path.Combine(BuildDirectory, GitRepoFolderName, &quot;BPM Resources - Release&quot;)]" />
+              <mtbwa:CopyDirectory Destination="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;)]" DisplayName="Ensure Server Release Resources" sap2010:WorkflowViewState.IdRef="CopyDirectory_2" Source="[Path.Combine(BuildDirectory, GitRepoFolderName, &quot;Dev&quot;, &quot;BPM Resources - Release&quot;)]" />
             </Sequence>
             <mtbac:DropBinaries DestinationPath="{x:Null}" DisplayName="Copy binaries to drop" Enabled="True" sap2010:WorkflowViewState.IdRef="DropBinaries_2" />
             <Sequence DisplayName="Initialize for MSTest execution" sap2010:WorkflowViewState.IdRef="Sequence_21">
@@ -310,8 +311,17 @@
                             <Variable x:TypeArguments="x:String" Default="[Nothing]" Name="localSettings" />
                             <Variable x:TypeArguments="x:Int32" Default="0" Name="scriptResult" />
                             <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="localTestAssemblies" />
+                            <Variable x:TypeArguments="x:String" Name="ResultsSubFolderName" />
                           </Sequence.Variables>
-                          <mtbwa:FindMatchingFiles sap2010:WorkflowViewState.IdRef="FindMatchingFiles_3" MatchPattern="[Path.Combine(BuildDirectory, BinariesFolderName) &amp; testSpec.GetValue(Of String)(&quot;AssemblyFileSpec&quot;)]" Result="[localTestAssemblies]" />
+                          <Assign DisplayName="Re-initialize test results folder name to run name" sap2010:WorkflowViewState.IdRef="Assign_49">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[ResultsSubFolderName]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">[testSpec.GetValue(Of String)("RunName") &amp; " Results"]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <mtbwa:FindMatchingFiles sap2010:WorkflowViewState.IdRef="FindMatchingFiles_3" MatchPattern="[Path.Combine(BuildDirectory, BinariesFolderName) &amp; &quot;\&quot; &amp; testSpec.GetValue(Of String)(&quot;AssemblyFileSpec&quot;)]" Result="[localTestAssemblies]" />
                           <If Condition="[Not testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;) = String.Empty]" DisplayName="If has settings" sap2010:WorkflowViewState.IdRef="If_5">
                             <If.Then>
                               <mtbac:GetLocalPath sap2010:WorkflowViewState.IdRef="GetLocalPath_3" IncomingPath="[testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;)]" Result="[localSettings]" />
@@ -320,7 +330,7 @@
                           <mtba:RunScript Arguments="[AdvancedTestSettings.GetValue(Of String)(&quot;PreActionScriptArguments&quot;, String.Empty)]" DisplayName="Run optional script before Test Runner" Enabled="True" FilePath="[AdvancedTestSettings.GetValue(Of String)(&quot;PreActionScriptPath&quot;, String.Empty)]" sap2010:WorkflowViewState.IdRef="RunScript_10" />
                           <TryCatch sap2010:WorkflowViewState.IdRef="TryCatch_2">
                             <TryCatch.Try>
-                              <mtbwa:MSTest Category="[testSpec.GetValue(Of String)(&quot;TestCaseFilter&quot;)]" Flavor="[ConfigurationsToBuild.FirstOrDefault.Substring(ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c) + 1)]" sap2010:WorkflowViewState.IdRef="MSTest_3" PathToResultsFilesRoot="[Path.Combine(BuildDirectory, TestResultsFolderName)]" Platform="[ConfigurationsToBuild.FirstOrDefault.Substring(0, ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c))]" Publish="False" RunTitle="[testSpec.GetValue(Of String)(&quot;RunName&quot;)]" SearchPathRoot="[Path.Combine(BuildDirectory, BinariesFolderName)]" TestContainers="[localTestAssemblies]" TestSettings="[localSettings]" ToolPath="C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE" />
+                              <mtbwa:MSTest Category="[testSpec.GetValue(Of String)(&quot;TestCaseFilter&quot;)]" Flavor="[ConfigurationsToBuild.FirstOrDefault.Substring(ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c) + 1)]" sap2010:WorkflowViewState.IdRef="MSTest_3" PathToResultsFilesRoot="[Path.Combine(BuildDirectory, TestResultsFolderName, ResultsSubFolderName)]" Platform="[ConfigurationsToBuild.FirstOrDefault.Substring(0, ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c))]" Publish="[AdvancedTestSettings.GetValue(Of Boolean)(&quot;PublishToTfs&quot;)]" RunTitle="[testSpec.GetValue(Of String)(&quot;RunName&quot;)]" SearchPathRoot="[Path.Combine(BuildDirectory, BinariesFolderName)]" TestContainers="[localTestAssemblies]" TestSettings="[localSettings]" ToolPath="C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE" />
                             </TryCatch.Try>
                             <TryCatch.Catches>
                               <Catch x:TypeArguments="mtbwa:TestFailureException" sap2010:WorkflowViewState.IdRef="Catch`1_2">
@@ -355,7 +365,7 @@
                                 <InvokeMethod.Result>
                                   <OutArgument x:TypeArguments="s:String[]">[ResultFileNames]</OutArgument>
                                 </InvokeMethod.Result>
-                                <InArgument x:TypeArguments="x:String">[Path.Combine(BuildDirectory, TestResultsFolderName)]</InArgument>
+                                <InArgument x:TypeArguments="x:String">[Path.Combine(BuildDirectory, TestResultsFolderName, ResultsSubFolderName)]</InArgument>
                                 <InArgument x:TypeArguments="x:String">*.trx</InArgument>
                               </InvokeMethod>
                               <If Condition="[System.IO.File.Exists(TestResultsStagingDirectoryWithNewFileName)]" DisplayName="If results already exist" sap2010:WorkflowViewState.IdRef="If_11">
@@ -368,112 +378,128 @@
                               </If>
                               <If Condition="[ResultFileNames.Count = 1]" DisplayName="If there were any results" sap2010:WorkflowViewState.IdRef="If_12">
                                 <If.Then>
-                                  <ForEach x:TypeArguments="x:String" DisplayName="ForEachTestResultFile" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[ResultFileNames]">
-                                    <ActivityAction x:TypeArguments="x:String">
-                                      <ActivityAction.Argument>
-                                        <DelegateInArgument x:TypeArguments="x:String" Name="fileName" />
-                                      </ActivityAction.Argument>
-                                      <InvokeMethod DisplayName="Deploy Results File" sap2010:WorkflowViewState.IdRef="InvokeMethod_3" MethodName="Move" TargetType="si:File">
-                                        <InArgument x:TypeArguments="x:String">[fileName]</InArgument>
-                                        <InArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName]</InArgument>
-                                      </InvokeMethod>
-                                    </ActivityAction>
-                                  </ForEach>
+                                  <Sequence DisplayName="Deploy and publish" sap2010:WorkflowViewState.IdRef="Sequence_23">
+                                    <ForEach x:TypeArguments="x:String" DisplayName="ForEachTestResultFile" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[ResultFileNames]">
+                                      <ActivityAction x:TypeArguments="x:String">
+                                        <ActivityAction.Argument>
+                                          <DelegateInArgument x:TypeArguments="x:String" Name="fileName" />
+                                        </ActivityAction.Argument>
+                                        <InvokeMethod DisplayName="Deploy Results File" sap2010:WorkflowViewState.IdRef="InvokeMethod_20" MethodName="Move" TargetType="si:File">
+                                          <InArgument x:TypeArguments="x:String">[fileName]</InArgument>
+                                          <InArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName]</InArgument>
+                                        </InvokeMethod>
+                                      </ActivityAction>
+                                    </ForEach>
+                                    <If Condition="[Not WarewolfServerInsertResultsURI = String.Empty]" DisplayName="If can publish" sap2010:WorkflowViewState.IdRef="If_13">
+                                      <If.Then>
+                                        <Sequence DisplayName="Publish Results to Dev2's database" sap2010:WorkflowViewState.IdRef="Sequence_9">
+                                          <Sequence.Variables>
+                                            <Variable x:TypeArguments="sn:CredentialCache" Default="[New CredentialCache]" Name="cc" />
+                                            <Variable x:TypeArguments="sn:WebRequest" Name="agentWebRequest" />
+                                            <Variable x:TypeArguments="x:String" Name="URL" />
+                                            <Variable x:TypeArguments="sn:WebResponse" Name="Dev2ResultsPublishResult" />
+                                            <Variable x:TypeArguments="si:StreamReader" Name="Dev2ResultsDBResponseStream" />
+                                            <Variable x:TypeArguments="x:String" Name="Dev2TestResultsDBResponse" />
+                                          </Sequence.Variables>
+                                          <InvokeMethod DisplayName="Create Credentials" sap2010:WorkflowViewState.IdRef="InvokeMethod_4" MethodName="Add">
+                                            <InvokeMethod.TargetObject>
+                                              <InArgument x:TypeArguments="sn:CredentialCache">[cc]</InArgument>
+                                            </InvokeMethod.TargetObject>
+                                            <InArgument x:TypeArguments="x:Uri">[New Uri("http://RSAKLFSVRWRWBLD:3142/")]</InArgument>
+                                            <InArgument x:TypeArguments="x:String">NTLM</InArgument>
+                                            <InArgument x:TypeArguments="sn:NetworkCredential">[New Net.NetworkCredential("IntegrationTester", "I73573r0", "DEV2")]</InArgument>
+                                          </InvokeMethod>
+                                          <Assign DisplayName="Init URL" sap2010:WorkflowViewState.IdRef="Assign_5">
+                                            <Assign.To>
+                                              <OutArgument x:TypeArguments="x:String">[URL]</OutArgument>
+                                            </Assign.To>
+                                            <Assign.Value>
+                                              <InArgument x:TypeArguments="x:String">[WarewolfServerInsertResultsURI &amp; "?File=" &amp; HttpUtility.UrlEncode(TestResultsStagingDirectoryWithNewFileName)]</InArgument>
+                                            </Assign.Value>
+                                          </Assign>
+                                          <Sequence DisplayName="Try publish" sap2010:WorkflowViewState.IdRef="Sequence_8">
+                                            <Assign DisplayName="Init WebRequest URL" sap2010:WorkflowViewState.IdRef="Assign_6">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="sn:WebRequest">[agentWebRequest]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="sn:WebRequest">[DirectCast(WebRequest.Create(URL), HttpWebRequest)]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                            <Assign DisplayName="Init WebRequest Creds" sap2010:WorkflowViewState.IdRef="Assign_7">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="sn:ICredentials">[agentWebRequest.Credentials]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="sn:ICredentials">[cc]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                            <Assign DisplayName="Init WebRequest TimeOut" sap2010:WorkflowViewState.IdRef="Assign_8">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="x:Int32">[agentWebRequest.Timeout]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="x:Int32">[WebRequestTimeout]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                            <TryCatch sap2010:WorkflowViewState.IdRef="TryCatch_5">
+                                              <TryCatch.Try>
+                                                <Assign DisplayName="Get Response" sap2010:WorkflowViewState.IdRef="Assign_9">
+                                                  <Assign.To>
+                                                    <OutArgument x:TypeArguments="sn:WebResponse">[Dev2ResultsPublishResult]</OutArgument>
+                                                  </Assign.To>
+                                                  <Assign.Value>
+                                                    <InArgument x:TypeArguments="sn:WebResponse">[agentWebRequest.GetResponse()]</InArgument>
+                                                  </Assign.Value>
+                                                </Assign>
+                                              </TryCatch.Try>
+                                              <TryCatch.Catches>
+                                                <Catch x:TypeArguments="sn:WebException" sap2010:WorkflowViewState.IdRef="Catch`1_5">
+                                                  <ActivityAction x:TypeArguments="sn:WebException">
+                                                    <ActivityAction.Argument>
+                                                      <DelegateInArgument x:TypeArguments="sn:WebException" Name="exception" />
+                                                    </ActivityAction.Argument>
+                                                    <mtbwa:WriteBuildError sap2010:WorkflowViewState.IdRef="WriteBuildError_24" Message="[URL &amp; Constants.vbCrLf &amp; exception.message]" />
+                                                  </ActivityAction>
+                                                </Catch>
+                                              </TryCatch.Catches>
+                                            </TryCatch>
+                                            <Assign DisplayName="Get Response Data" sap2010:WorkflowViewState.IdRef="Assign_10">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="si:StreamReader">[Dev2ResultsDBResponseStream]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="si:StreamReader">[New StreamReader(Dev2ResultsPublishResult.GetResponseStream())]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                            <Assign DisplayName="Read response to the end" sap2010:WorkflowViewState.IdRef="Assign_11">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="x:String">[Dev2TestResultsDBResponse]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="x:String">[Dev2ResultsDBResponseStream.ReadToEnd]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                            <If Condition="[Not Dev2TestResultsDBResponse.Contains(&quot;&lt;Broke&gt;0&lt;/Broke&gt;&quot;)]" DisplayName="If Dev2 results database returned an unexpected response" sap2010:WorkflowViewState.IdRef="If_22">
+                                              <If.Then>
+                                                <mtbwa:WriteBuildError DisplayName="WriteDev2TestResultsDBResponse" sap2010:WorkflowViewState.IdRef="WriteBuildError_20" Message="[Dev2TestResultsDBResponse &amp; Constants.vbCrLf &amp; URL]" />
+                                              </If.Then>
+                                            </If>
+                                            <InvokeMethod DisplayName="Dispose stream reader" sap2010:WorkflowViewState.IdRef="InvokeMethod_5" MethodName="Close">
+                                              <InvokeMethod.TargetObject>
+                                                <InArgument x:TypeArguments="si:StreamReader">[Dev2ResultsDBResponseStream]</InArgument>
+                                              </InvokeMethod.TargetObject>
+                                            </InvokeMethod>
+                                          </Sequence>
+                                          <mtbwa:WriteBuildMessage DisplayName="Write Response Out" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_1" Message="[Dev2TestResultsDBResponse]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                        </Sequence>
+                                      </If.Then>
+                                    </If>
+                                  </Sequence>
                                 </If.Then>
                                 <If.Else>
                                   <mtbwa:WriteBuildError sap2010:WorkflowViewState.IdRef="WriteBuildError_15" Message="Number of test result trx file found is not exactly 1" />
                                 </If.Else>
-                              </If>
-                              <If Condition="[Not WarewolfServerInsertResultsURI = String.Empty]" DisplayName="If can publish" sap2010:WorkflowViewState.IdRef="If_13">
-                                <If.Then>
-                                  <Sequence DisplayName="Publish Results to Dev2's database" sap2010:WorkflowViewState.IdRef="Sequence_9">
-                                    <Sequence.Variables>
-                                      <Variable x:TypeArguments="sn:CredentialCache" Default="[New CredentialCache]" Name="cc" />
-                                      <Variable x:TypeArguments="sn:WebRequest" Name="agentWebRequest" />
-                                      <Variable x:TypeArguments="x:String" Name="URL" />
-                                      <Variable x:TypeArguments="sn:WebResponse" Name="Dev2ResultsPublishResult" />
-                                      <Variable x:TypeArguments="si:StreamReader" Name="Dev2ResultsDBResponseStream" />
-                                      <Variable x:TypeArguments="x:String" Name="Dev2TestResultsDBResponse" />
-                                    </Sequence.Variables>
-                                    <InvokeMethod DisplayName="Create Credentials" sap2010:WorkflowViewState.IdRef="InvokeMethod_4" MethodName="Add">
-                                      <InvokeMethod.TargetObject>
-                                        <InArgument x:TypeArguments="sn:CredentialCache">[cc]</InArgument>
-                                      </InvokeMethod.TargetObject>
-                                      <InArgument x:TypeArguments="x:Uri">[New Uri("http://RSAKLFSVRWRWBLD:3142/")]</InArgument>
-                                      <InArgument x:TypeArguments="x:String">NTLM</InArgument>
-                                      <InArgument x:TypeArguments="sn:NetworkCredential">[New Net.NetworkCredential("IntegrationTester", "I73573r0", "DEV2")]</InArgument>
-                                    </InvokeMethod>
-                                    <Assign DisplayName="Init URL" sap2010:WorkflowViewState.IdRef="Assign_5">
-                                      <Assign.To>
-                                        <OutArgument x:TypeArguments="x:String">[URL]</OutArgument>
-                                      </Assign.To>
-                                      <Assign.Value>
-                                        <InArgument x:TypeArguments="x:String">[WarewolfServerInsertResultsURI &amp; "?File=" &amp; HttpUtility.UrlEncode(TestResultsStagingDirectoryWithNewFileName)]</InArgument>
-                                      </Assign.Value>
-                                    </Assign>
-                                    <Sequence DisplayName="Try publish" sap2010:WorkflowViewState.IdRef="Sequence_8">
-                                      <Assign DisplayName="Init WebRequest URL" sap2010:WorkflowViewState.IdRef="Assign_6">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="sn:WebRequest">[agentWebRequest]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="sn:WebRequest">[DirectCast(WebRequest.Create(URL), HttpWebRequest)]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <Assign DisplayName="Init WebRequest Creds" sap2010:WorkflowViewState.IdRef="Assign_7">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="sn:ICredentials">[agentWebRequest.Credentials]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="sn:ICredentials">[cc]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <Assign DisplayName="Init WebRequest TimeOut" sap2010:WorkflowViewState.IdRef="Assign_8">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="x:Int32">[agentWebRequest.Timeout]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="x:Int32">[WebRequestTimeout]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <Assign DisplayName="Get Response" sap2010:WorkflowViewState.IdRef="Assign_9">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="sn:WebResponse">[Dev2ResultsPublishResult]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="sn:WebResponse">[agentWebRequest.GetResponse()]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <Assign DisplayName="Get Response Data" sap2010:WorkflowViewState.IdRef="Assign_10">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="si:StreamReader">[Dev2ResultsDBResponseStream]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="si:StreamReader">[New StreamReader(Dev2ResultsPublishResult.GetResponseStream())]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <Assign DisplayName="Read response to the end" sap2010:WorkflowViewState.IdRef="Assign_11">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="x:String">[Dev2TestResultsDBResponse]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="x:String">[Dev2ResultsDBResponseStream.ReadToEnd]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <If Condition="[Not Dev2TestResultsDBResponse.Contains(&quot;&lt;Broke&gt;0&lt;/Broke&gt;&quot;)]" DisplayName="If Dev2 results database returned an unexpected response" sap2010:WorkflowViewState.IdRef="If_22">
-                                        <If.Then>
-                                          <mtbwa:WriteBuildError DisplayName="WriteDev2TestResultsDBResponse" sap2010:WorkflowViewState.IdRef="WriteBuildError_20" Message="[Dev2TestResultsDBResponse &amp; Constants.vbCrLf &amp; URL]" />
-                                        </If.Then>
-                                      </If>
-                                      <InvokeMethod DisplayName="Dispose stream reader" sap2010:WorkflowViewState.IdRef="InvokeMethod_5" MethodName="Close">
-                                        <InvokeMethod.TargetObject>
-                                          <InArgument x:TypeArguments="si:StreamReader">[Dev2ResultsDBResponseStream]</InArgument>
-                                        </InvokeMethod.TargetObject>
-                                      </InvokeMethod>
-                                    </Sequence>
-                                    <mtbwa:WriteBuildMessage DisplayName="Write Response Out" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_1" Message="[Dev2TestResultsDBResponse]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
-                                  </Sequence>
-                                </If.Then>
                               </If>
                               <If Condition="[testSpec.GetValue(Of String)(&quot;RunName&quot;) = &quot;CodedUI Tests&quot; Or testSpec.GetValue(Of String)(&quot;RunName&quot;) = &quot;CodedUI Specs&quot;]" DisplayName="If test type is coded ui or coded ui specs" sap2010:WorkflowViewState.IdRef="If_18">
                                 <If.Then>
@@ -534,45 +560,54 @@
                         <ActivityAction.Argument>
                           <DelegateInArgument x:TypeArguments="mtbc:BuildParameter" Name="testSpec" />
                         </ActivityAction.Argument>
-                        <Sequence DisplayName="Begin MSTest execution" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                        <Sequence DisplayName="Begin MSTest execution" sap2010:WorkflowViewState.IdRef="Sequence_29">
                           <Sequence.Variables>
                             <Variable x:TypeArguments="x:String" Default="[Nothing]" Name="localSettings" />
+                            <Variable x:TypeArguments="x:Int32" Default="0" Name="scriptResult" />
                             <Variable x:TypeArguments="scg:IEnumerable(x:String)" Name="localTestAssemblies" />
-                            <Variable x:TypeArguments="x:Int32" Name="scriptResult" />
+                            <Variable x:TypeArguments="x:String" Name="ResultsSubFolderName" />
                           </Sequence.Variables>
-                          <mtbwa:FindMatchingFiles sap2010:WorkflowViewState.IdRef="FindMatchingFiles_7" MatchPattern="[Path.Combine(BuildDirectory, BinariesFolderName) &amp; testSpec.GetValue(Of String)(&quot;AssemblyFileSpec&quot;)]" Result="[localTestAssemblies]" />
-                          <If Condition="[Not testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;) = String.Empty]" DisplayName="If has settings" sap2010:WorkflowViewState.IdRef="If_25">
+                          <Assign DisplayName="Re-initialize test results folder name to run name" sap2010:WorkflowViewState.IdRef="Assign_50">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[ResultsSubFolderName]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">[testSpec.GetValue(Of String)("RunName") &amp; " Results"]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <mtbwa:FindMatchingFiles sap2010:WorkflowViewState.IdRef="FindMatchingFiles_8" MatchPattern="[Path.Combine(BuildDirectory, BinariesFolderName) &amp; &quot;\&quot; &amp; testSpec.GetValue(Of String)(&quot;AssemblyFileSpec&quot;)]" Result="[localTestAssemblies]" />
+                          <If Condition="[Not testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;) = String.Empty]" DisplayName="If has settings" sap2010:WorkflowViewState.IdRef="If_27">
                             <If.Then>
-                              <mtbac:GetLocalPath sap2010:WorkflowViewState.IdRef="GetLocalPath_5" IncomingPath="[testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;)]" Result="[localSettings]" />
+                              <mtbac:GetLocalPath sap2010:WorkflowViewState.IdRef="GetLocalPath_6" IncomingPath="[testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;)]" Result="[localSettings]" />
                             </If.Then>
                           </If>
-                          <mtba:RunScript Arguments="[AdvancedTestSettings.GetValue(Of String)(&quot;PreActionScriptArguments&quot;, String.Empty)]" DisplayName="Run optional script before Test Runner" Enabled="True" FilePath="[AdvancedTestSettings.GetValue(Of String)(&quot;PreActionScriptPath&quot;, String.Empty)]" sap2010:WorkflowViewState.IdRef="RunScript_11" />
-                          <TryCatch sap2010:WorkflowViewState.IdRef="TryCatch_3">
+                          <mtba:RunScript Arguments="[AdvancedTestSettings.GetValue(Of String)(&quot;PreActionScriptArguments&quot;, String.Empty)]" DisplayName="Run optional script before Test Runner" Enabled="True" FilePath="[AdvancedTestSettings.GetValue(Of String)(&quot;PreActionScriptPath&quot;, String.Empty)]" sap2010:WorkflowViewState.IdRef="RunScript_17" />
+                          <TryCatch sap2010:WorkflowViewState.IdRef="TryCatch_4">
                             <TryCatch.Try>
-                              <mtbwa:MSTest Category="[testSpec.GetValue(Of String)(&quot;TestCaseFilter&quot;)]" Flavor="[ConfigurationsToBuild.FirstOrDefault.Substring(ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c) + 1)]" sap2010:WorkflowViewState.IdRef="MSTest_11" PathToResultsFilesRoot="[Path.Combine(BuildDirectory, TestResultsFolderName)]" Platform="[ConfigurationsToBuild.FirstOrDefault.Substring(0, ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c))]" Publish="False" RunTitle="[testSpec.GetValue(Of String)(&quot;RunName&quot;)]" SearchPathRoot="[Path.Combine(BuildDirectory, BinariesFolderName)]" TestContainers="[localTestAssemblies]" TestSettings="[localSettings]" ToolPath="C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE" />
+                              <mtbwa:MSTest Category="[testSpec.GetValue(Of String)(&quot;TestCaseFilter&quot;)]" Flavor="[ConfigurationsToBuild.FirstOrDefault.Substring(ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c) + 1)]" sap2010:WorkflowViewState.IdRef="MSTest_12" PathToResultsFilesRoot="[Path.Combine(BuildDirectory, TestResultsFolderName, ResultsSubFolderName)]" Platform="[ConfigurationsToBuild.FirstOrDefault.Substring(0, ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c))]" Publish="[AdvancedTestSettings.GetValue(Of Boolean)(&quot;PublishToTfs&quot;)]" RunTitle="[testSpec.GetValue(Of String)(&quot;RunName&quot;)]" SearchPathRoot="[Path.Combine(BuildDirectory, BinariesFolderName)]" TestContainers="[localTestAssemblies]" TestSettings="[localSettings]" ToolPath="C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE" />
                             </TryCatch.Try>
                             <TryCatch.Catches>
-                              <Catch x:TypeArguments="mtbwa:TestFailureException" sap2010:WorkflowViewState.IdRef="Catch`1_3">
+                              <Catch x:TypeArguments="mtbwa:TestFailureException" sap2010:WorkflowViewState.IdRef="Catch`1_4">
                                 <ActivityAction x:TypeArguments="mtbwa:TestFailureException">
                                   <ActivityAction.Argument>
                                     <DelegateInArgument x:TypeArguments="mtbwa:TestFailureException" Name="exception" />
                                   </ActivityAction.Argument>
-                                  <If Condition="[testSpec.GetValue(Of Boolean)(&quot;FailBuildOnFailure&quot;)]" DisplayName="If FailBuildOnFailure" sap2010:WorkflowViewState.IdRef="If_10">
+                                  <If Condition="[testSpec.GetValue(Of Boolean)(&quot;FailBuildOnFailure&quot;)]" DisplayName="If FailBuildOnFailure" sap2010:WorkflowViewState.IdRef="If_28">
                                     <If.Then>
-                                      <Rethrow sap2010:WorkflowViewState.IdRef="Rethrow_3" />
+                                      <Rethrow sap2010:WorkflowViewState.IdRef="Rethrow_4" />
                                     </If.Then>
                                   </If>
                                 </ActivityAction>
                               </Catch>
                             </TryCatch.Catches>
                           </TryCatch>
-                          <mtbwa:InvokeForReason DisplayName="InvokeForCI" sap2010:WorkflowViewState.IdRef="InvokeForReason_2" Reason="IndividualCI, BatchedCI">
-                            <Sequence DisplayName="Publish to dev2 test results repository" sap2010:WorkflowViewState.IdRef="Sequence_13">
+                          <mtbwa:InvokeForReason DisplayName="InvokeForCI" sap2010:WorkflowViewState.IdRef="InvokeForReason_7" Reason="IndividualCI, BatchedCI">
+                            <Sequence DisplayName="Publish to dev2 test results repository" sap2010:WorkflowViewState.IdRef="Sequence_28">
                               <Sequence.Variables>
                                 <Variable x:TypeArguments="x:String" Name="TestResultsStagingDirectoryWithNewFileName" />
                                 <Variable x:TypeArguments="s:String[]" Name="ResultFileNames" />
                               </Sequence.Variables>
-                              <Assign DisplayName="Generate Test Results File Name" sap2010:WorkflowViewState.IdRef="Assign_45">
+                              <Assign DisplayName="Generate Test Results File Name" sap2010:WorkflowViewState.IdRef="Assign_51">
                                 <Assign.To>
                                   <OutArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName]</OutArgument>
                                 </Assign.To>
@@ -580,156 +615,172 @@
                                   <InArgument x:TypeArguments="x:String">["\\RSAKLFSVRGENDEV\TestResultFiles\" &amp; ChangesetID &amp; "_" &amp; Username &amp; "_" &amp; BranchID &amp; "_" &amp; testSpec.GetValue(Of String)("RunName").Substring(0, testSpec.GetValue(Of String)("RunName").IndexOf(" "c)) &amp; ".trx"]</InArgument>
                                 </Assign.Value>
                               </Assign>
-                              <InvokeMethod DisplayName="Read Results Folder" sap2010:WorkflowViewState.IdRef="InvokeMethod_6" MethodName="GetFiles" TargetType="si:Directory">
+                              <InvokeMethod DisplayName="Read Results Folder" sap2010:WorkflowViewState.IdRef="InvokeMethod_21" MethodName="GetFiles" TargetType="si:Directory">
                                 <InvokeMethod.Result>
                                   <OutArgument x:TypeArguments="s:String[]">[ResultFileNames]</OutArgument>
                                 </InvokeMethod.Result>
-                                <InArgument x:TypeArguments="x:String">[Path.Combine(BuildDirectory, TestResultsFolderName)]</InArgument>
+                                <InArgument x:TypeArguments="x:String">[Path.Combine(BuildDirectory, TestResultsFolderName, ResultsSubFolderName)]</InArgument>
                                 <InArgument x:TypeArguments="x:String">*.trx</InArgument>
                               </InvokeMethod>
-                              <If Condition="[System.IO.File.Exists(TestResultsStagingDirectoryWithNewFileName)]" DisplayName="If results already exist" sap2010:WorkflowViewState.IdRef="If_14">
+                              <If Condition="[System.IO.File.Exists(TestResultsStagingDirectoryWithNewFileName)]" DisplayName="If results already exist" sap2010:WorkflowViewState.IdRef="If_29">
                                 <If.Then>
-                                  <InvokeMethod DisplayName="Rename Existing" sap2010:WorkflowViewState.IdRef="InvokeMethod_7" MethodName="Move" TargetType="si:File">
+                                  <InvokeMethod DisplayName="Rename Existing" sap2010:WorkflowViewState.IdRef="InvokeMethod_22" MethodName="Move" TargetType="si:File">
                                     <InArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName]</InArgument>
                                     <InArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName.Replace(".trx", Guid.NewGuid.ToString &amp; ".trx")]</InArgument>
                                   </InvokeMethod>
                                 </If.Then>
                               </If>
-                              <If Condition="[ResultFileNames.Count = 1]" DisplayName="If there were any results" sap2010:WorkflowViewState.IdRef="If_15">
+                              <If Condition="[ResultFileNames.Count = 1]" DisplayName="If there were any results" sap2010:WorkflowViewState.IdRef="If_32">
                                 <If.Then>
-                                  <ForEach x:TypeArguments="x:String" DisplayName="ForEachTestResultFile" sap2010:WorkflowViewState.IdRef="ForEach`1_4" Values="[ResultFileNames]">
-                                    <ActivityAction x:TypeArguments="x:String">
-                                      <ActivityAction.Argument>
-                                        <DelegateInArgument x:TypeArguments="x:String" Name="fileName" />
-                                      </ActivityAction.Argument>
-                                      <InvokeMethod DisplayName="Deploy Results File" sap2010:WorkflowViewState.IdRef="InvokeMethod_8" MethodName="Move" TargetType="si:File">
-                                        <InArgument x:TypeArguments="x:String">[fileName]</InArgument>
-                                        <InArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName]</InArgument>
-                                      </InvokeMethod>
-                                    </ActivityAction>
-                                  </ForEach>
-                                </If.Then>
-                                <If.Else>
-                                  <mtbwa:WriteBuildError sap2010:WorkflowViewState.IdRef="WriteBuildError_16" Message="Number of test result trx file found is not exactly 1" />
-                                </If.Else>
-                              </If>
-                              <If Condition="[Not WarewolfServerInsertResultsURI = String.Empty]" DisplayName="If can publish" sap2010:WorkflowViewState.IdRef="If_16">
-                                <If.Then>
-                                  <Sequence DisplayName="Publish Results to Dev2's database" sap2010:WorkflowViewState.IdRef="Sequence_12">
-                                    <Sequence.Variables>
-                                      <Variable x:TypeArguments="sn:CredentialCache" Default="[New CredentialCache]" Name="cc" />
-                                      <Variable x:TypeArguments="sn:WebRequest" Name="agentWebRequest" />
-                                      <Variable x:TypeArguments="x:String" Name="URL" />
-                                      <Variable x:TypeArguments="sn:WebResponse" Name="Dev2ResultsPublishResult" />
-                                      <Variable x:TypeArguments="si:StreamReader" Name="Dev2ResultsDBResponseStream" />
-                                      <Variable x:TypeArguments="x:String" Name="Dev2TestResultsDBResponse" />
-                                    </Sequence.Variables>
-                                    <InvokeMethod DisplayName="Create Credentials" sap2010:WorkflowViewState.IdRef="InvokeMethod_9" MethodName="Add">
-                                      <InvokeMethod.TargetObject>
-                                        <InArgument x:TypeArguments="sn:CredentialCache">[cc]</InArgument>
-                                      </InvokeMethod.TargetObject>
-                                      <InArgument x:TypeArguments="x:Uri">[New Uri("http://RSAKLFSVRWRWBLD:3142/")]</InArgument>
-                                      <InArgument x:TypeArguments="x:String">NTLM</InArgument>
-                                      <InArgument x:TypeArguments="sn:NetworkCredential">[New Net.NetworkCredential("IntegrationTester", "I73573r0", "DEV2")]</InArgument>
-                                    </InvokeMethod>
-                                    <Assign DisplayName="Init URL" sap2010:WorkflowViewState.IdRef="Assign_42">
-                                      <Assign.To>
-                                        <OutArgument x:TypeArguments="x:String">[URL]</OutArgument>
-                                      </Assign.To>
-                                      <Assign.Value>
-                                        <InArgument x:TypeArguments="x:String">[WarewolfServerInsertResultsURI &amp; "?File=" &amp; HttpUtility.UrlEncode(TestResultsStagingDirectoryWithNewFileName)]</InArgument>
-                                      </Assign.Value>
-                                    </Assign>
-                                    <Sequence DisplayName="Try publish" sap2010:WorkflowViewState.IdRef="Sequence_11">
-                                      <Assign DisplayName="Init WebRequest URL" sap2010:WorkflowViewState.IdRef="Assign_14">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="sn:WebRequest">[agentWebRequest]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="sn:WebRequest">[DirectCast(WebRequest.Create(URL), HttpWebRequest)]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <Assign DisplayName="Init WebRequest Creds" sap2010:WorkflowViewState.IdRef="Assign_15">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="sn:ICredentials">[agentWebRequest.Credentials]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="sn:ICredentials">[cc]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <Assign DisplayName="Init WebRequest TimeOut" sap2010:WorkflowViewState.IdRef="Assign_16">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="x:Int32">[agentWebRequest.Timeout]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="x:Int32">[WebRequestTimeout]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <Assign DisplayName="Get Response" sap2010:WorkflowViewState.IdRef="Assign_17">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="sn:WebResponse">[Dev2ResultsPublishResult]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="sn:WebResponse">[agentWebRequest.GetResponse()]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <Assign DisplayName="Get Response Data" sap2010:WorkflowViewState.IdRef="Assign_18">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="si:StreamReader">[Dev2ResultsDBResponseStream]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="si:StreamReader">[New StreamReader(Dev2ResultsPublishResult.GetResponseStream())]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <Assign DisplayName="Read response to the end" sap2010:WorkflowViewState.IdRef="Assign_19">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="x:String">[Dev2TestResultsDBResponse]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="x:String">[Dev2ResultsDBResponseStream.ReadToEnd]</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                      <If Condition="[Not Dev2TestResultsDBResponse.Contains(&quot;&lt;Broke&gt;0&lt;/Broke&gt;&quot;)]" DisplayName="If Dev2 results database returned an unexpected response" sap2010:WorkflowViewState.IdRef="If_23">
-                                        <If.Then>
-                                          <mtbwa:WriteBuildError DisplayName="WriteDev2TestResultsDBResponse" sap2010:WorkflowViewState.IdRef="WriteBuildError_21" Message="[Dev2TestResultsDBResponse &amp; Constants.vbCrLf &amp; URL]" />
-                                        </If.Then>
-                                      </If>
-                                      <InvokeMethod DisplayName="Dispose stream reader" sap2010:WorkflowViewState.IdRef="InvokeMethod_10" MethodName="Close">
-                                        <InvokeMethod.TargetObject>
-                                          <InArgument x:TypeArguments="si:StreamReader">[Dev2ResultsDBResponseStream]</InArgument>
-                                        </InvokeMethod.TargetObject>
-                                      </InvokeMethod>
-                                    </Sequence>
-                                    <mtbwa:WriteBuildMessage DisplayName="Write Response Out" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_2" Message="[Dev2TestResultsDBResponse]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                  <Sequence DisplayName="Deploy and publish" sap2010:WorkflowViewState.IdRef="Sequence_26">
+                                    <ForEach x:TypeArguments="x:String" DisplayName="ForEachTestResultFile" sap2010:WorkflowViewState.IdRef="ForEach`1_7" Values="[ResultFileNames]">
+                                      <ActivityAction x:TypeArguments="x:String">
+                                        <ActivityAction.Argument>
+                                          <DelegateInArgument x:TypeArguments="x:String" Name="fileName" />
+                                        </ActivityAction.Argument>
+                                        <InvokeMethod DisplayName="Deploy Results File" sap2010:WorkflowViewState.IdRef="InvokeMethod_23" MethodName="Move" TargetType="si:File">
+                                          <InArgument x:TypeArguments="x:String">[fileName]</InArgument>
+                                          <InArgument x:TypeArguments="x:String">[TestResultsStagingDirectoryWithNewFileName]</InArgument>
+                                        </InvokeMethod>
+                                      </ActivityAction>
+                                    </ForEach>
+                                    <If Condition="[Not WarewolfServerInsertResultsURI = String.Empty]" DisplayName="If can publish" sap2010:WorkflowViewState.IdRef="If_31">
+                                      <If.Then>
+                                        <Sequence DisplayName="Publish Results to Dev2's database" sap2010:WorkflowViewState.IdRef="Sequence_25">
+                                          <Sequence.Variables>
+                                            <Variable x:TypeArguments="sn:CredentialCache" Default="[New CredentialCache]" Name="cc" />
+                                            <Variable x:TypeArguments="sn:WebRequest" Name="agentWebRequest" />
+                                            <Variable x:TypeArguments="x:String" Name="URL" />
+                                            <Variable x:TypeArguments="sn:WebResponse" Name="Dev2ResultsPublishResult" />
+                                            <Variable x:TypeArguments="si:StreamReader" Name="Dev2ResultsDBResponseStream" />
+                                            <Variable x:TypeArguments="x:String" Name="Dev2TestResultsDBResponse" />
+                                          </Sequence.Variables>
+                                          <InvokeMethod DisplayName="Create Credentials" sap2010:WorkflowViewState.IdRef="InvokeMethod_24" MethodName="Add">
+                                            <InvokeMethod.TargetObject>
+                                              <InArgument x:TypeArguments="sn:CredentialCache">[cc]</InArgument>
+                                            </InvokeMethod.TargetObject>
+                                            <InArgument x:TypeArguments="x:Uri">[New Uri("http://RSAKLFSVRWRWBLD:3142/")]</InArgument>
+                                            <InArgument x:TypeArguments="x:String">NTLM</InArgument>
+                                            <InArgument x:TypeArguments="sn:NetworkCredential">[New Net.NetworkCredential("IntegrationTester", "I73573r0", "DEV2")]</InArgument>
+                                          </InvokeMethod>
+                                          <Assign DisplayName="Init URL" sap2010:WorkflowViewState.IdRef="Assign_52">
+                                            <Assign.To>
+                                              <OutArgument x:TypeArguments="x:String">[URL]</OutArgument>
+                                            </Assign.To>
+                                            <Assign.Value>
+                                              <InArgument x:TypeArguments="x:String">[WarewolfServerInsertResultsURI &amp; "?File=" &amp; HttpUtility.UrlEncode(TestResultsStagingDirectoryWithNewFileName)]</InArgument>
+                                            </Assign.Value>
+                                          </Assign>
+                                          <Sequence DisplayName="Try publish" sap2010:WorkflowViewState.IdRef="Sequence_24">
+                                            <Assign DisplayName="Init WebRequest URL" sap2010:WorkflowViewState.IdRef="Assign_53">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="sn:WebRequest">[agentWebRequest]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="sn:WebRequest">[DirectCast(WebRequest.Create(URL), HttpWebRequest)]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                            <Assign DisplayName="Init WebRequest Creds" sap2010:WorkflowViewState.IdRef="Assign_54">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="sn:ICredentials">[agentWebRequest.Credentials]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="sn:ICredentials">[cc]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                            <Assign DisplayName="Init WebRequest TimeOut" sap2010:WorkflowViewState.IdRef="Assign_55">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="x:Int32">[agentWebRequest.Timeout]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="x:Int32">[WebRequestTimeout]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                            <TryCatch sap2010:WorkflowViewState.IdRef="TryCatch_6">
+                                              <TryCatch.Try>
+                                                <Assign DisplayName="Get Response" sap2010:WorkflowViewState.IdRef="Assign_56">
+                                                  <Assign.To>
+                                                    <OutArgument x:TypeArguments="sn:WebResponse">[Dev2ResultsPublishResult]</OutArgument>
+                                                  </Assign.To>
+                                                  <Assign.Value>
+                                                    <InArgument x:TypeArguments="sn:WebResponse">[agentWebRequest.GetResponse()]</InArgument>
+                                                  </Assign.Value>
+                                                </Assign>
+                                              </TryCatch.Try>
+                                              <TryCatch.Catches>
+                                                <Catch x:TypeArguments="sn:WebException" sap2010:WorkflowViewState.IdRef="Catch`1_6">
+                                                  <ActivityAction x:TypeArguments="sn:WebException">
+                                                    <ActivityAction.Argument>
+                                                      <DelegateInArgument x:TypeArguments="sn:WebException" Name="exception" />
+                                                    </ActivityAction.Argument>
+                                                    <mtbwa:WriteBuildError sap2010:WorkflowViewState.IdRef="WriteBuildError_25" Message="[URL &amp; Constants.vbCrLf &amp; exception.message]" />
+                                                  </ActivityAction>
+                                                </Catch>
+                                              </TryCatch.Catches>
+                                            </TryCatch>
+                                            <Assign DisplayName="Get Response Data" sap2010:WorkflowViewState.IdRef="Assign_57">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="si:StreamReader">[Dev2ResultsDBResponseStream]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="si:StreamReader">[New StreamReader(Dev2ResultsPublishResult.GetResponseStream())]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                            <Assign DisplayName="Read response to the end" sap2010:WorkflowViewState.IdRef="Assign_58">
+                                              <Assign.To>
+                                                <OutArgument x:TypeArguments="x:String">[Dev2TestResultsDBResponse]</OutArgument>
+                                              </Assign.To>
+                                              <Assign.Value>
+                                                <InArgument x:TypeArguments="x:String">[Dev2ResultsDBResponseStream.ReadToEnd]</InArgument>
+                                              </Assign.Value>
+                                            </Assign>
+                                            <If Condition="[Not Dev2TestResultsDBResponse.Contains(&quot;&lt;Broke&gt;0&lt;/Broke&gt;&quot;)]" DisplayName="If Dev2 results database returned an unexpected response" sap2010:WorkflowViewState.IdRef="If_30">
+                                              <If.Then>
+                                                <mtbwa:WriteBuildError DisplayName="WriteDev2TestResultsDBResponse" sap2010:WorkflowViewState.IdRef="WriteBuildError_22" Message="[Dev2TestResultsDBResponse &amp; Constants.vbCrLf &amp; URL]" />
+                                              </If.Then>
+                                            </If>
+                                            <InvokeMethod DisplayName="Dispose stream reader" sap2010:WorkflowViewState.IdRef="InvokeMethod_25" MethodName="Close">
+                                              <InvokeMethod.TargetObject>
+                                                <InArgument x:TypeArguments="si:StreamReader">[Dev2ResultsDBResponseStream]</InArgument>
+                                              </InvokeMethod.TargetObject>
+                                            </InvokeMethod>
+                                          </Sequence>
+                                          <mtbwa:WriteBuildMessage DisplayName="Write Response Out" sap2010:WorkflowViewState.IdRef="WriteBuildMessage_3" Message="[Dev2TestResultsDBResponse]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                        </Sequence>
+                                      </If.Then>
+                                    </If>
                                   </Sequence>
                                 </If.Then>
+                                <If.Else>
+                                  <mtbwa:WriteBuildError sap2010:WorkflowViewState.IdRef="WriteBuildError_23" Message="Number of test result trx file found is not exactly 1" />
+                                </If.Else>
                               </If>
-                              <If Condition="[testSpec.GetValue(Of String)(&quot;RunName&quot;) = &quot;CodedUI Tests&quot; Or testSpec.GetValue(Of String)(&quot;RunName&quot;) = &quot;CodedUI Specs&quot;]" DisplayName="If test type is coded ui or coded ui specs" sap2010:WorkflowViewState.IdRef="If_20">
+                              <If Condition="[testSpec.GetValue(Of String)(&quot;RunName&quot;) = &quot;CodedUI Tests&quot; Or testSpec.GetValue(Of String)(&quot;RunName&quot;) = &quot;CodedUI Specs&quot;]" DisplayName="If test type is coded ui or coded ui specs" sap2010:WorkflowViewState.IdRef="If_34">
                                 <If.Then>
-                                  <Sequence DisplayName="Deploy support files" sap2010:WorkflowViewState.IdRef="Sequence_15">
+                                  <Sequence DisplayName="Deploy support files" sap2010:WorkflowViewState.IdRef="Sequence_27">
                                     <Sequence.Variables>
                                       <Variable x:TypeArguments="s:String[]" Name="ResultFolderNames" />
                                     </Sequence.Variables>
-                                    <InvokeMethod DisplayName="Read Results Folder" sap2010:WorkflowViewState.IdRef="InvokeMethod_12" MethodName="GetDirectories" TargetType="si:Directory">
+                                    <InvokeMethod DisplayName="Read Results Folder" sap2010:WorkflowViewState.IdRef="InvokeMethod_26" MethodName="GetDirectories" TargetType="si:Directory">
                                       <InvokeMethod.Result>
                                         <OutArgument x:TypeArguments="s:String[]">[ResultFolderNames]</OutArgument>
                                       </InvokeMethod.Result>
                                       <InArgument x:TypeArguments="x:String">[Path.Combine(BuildDirectory, TestResultsFolderName)]</InArgument>
                                     </InvokeMethod>
-                                    <If Condition="[ResultFolderNames.Count = 1]" DisplayName="If there were any results" sap2010:WorkflowViewState.IdRef="If_19">
+                                    <If Condition="[ResultFolderNames.Count = 1]" DisplayName="If there were any results" sap2010:WorkflowViewState.IdRef="If_33">
                                       <If.Then>
-                                        <ForEach x:TypeArguments="x:String" DisplayName="ForEachTestResultFolder" sap2010:WorkflowViewState.IdRef="ForEach`1_6" Values="[ResultFolderNames]">
+                                        <ForEach x:TypeArguments="x:String" DisplayName="ForEachTestResultFolder" sap2010:WorkflowViewState.IdRef="ForEach`1_8" Values="[ResultFolderNames]">
                                           <ActivityAction x:TypeArguments="x:String">
                                             <ActivityAction.Argument>
                                               <DelegateInArgument x:TypeArguments="x:String" Name="folderName" />
                                             </ActivityAction.Argument>
-                                            <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; folderName &amp; &quot;&quot;&quot; &quot;&quot;\\rsaklfsvrgendev\TestResultFiles\UI&quot;&quot; *.* /s&quot;]" DisplayName="Deploy Results Support Folder" FileName="robocopy" sap2010:WorkflowViewState.IdRef="InvokeProcess_2">
+                                            <mtbwa:InvokeProcess Arguments="[&quot;&quot;&quot;&quot; &amp; folderName &amp; &quot;&quot;&quot; &quot;&quot;\\rsaklfsvrgendev\TestResultFiles\UI&quot;&quot; *.* /s&quot;]" DisplayName="Deploy Results Support Folder" FileName="robocopy" sap2010:WorkflowViewState.IdRef="InvokeProcess_6">
                                               <mtbwa:InvokeProcess.ErrorDataReceived>
                                                 <ActivityAction x:TypeArguments="x:String">
                                                   <ActivityAction.Argument>
                                                     <DelegateInArgument x:TypeArguments="x:String" Name="errOutput" />
                                                   </ActivityAction.Argument>
-                                                  <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_3" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                                  <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_5" Message="[errOutput]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
                                                 </ActivityAction>
                                               </mtbwa:InvokeProcess.ErrorDataReceived>
                                               <mtbwa:InvokeProcess.OutputDataReceived>
@@ -744,7 +795,7 @@
                                         </ForEach>
                                       </If.Then>
                                       <If.Else>
-                                        <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_4" Message="Number of test results found is not exactly 1" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
+                                        <mtbwa:WriteBuildWarning sap2010:WorkflowViewState.IdRef="WriteBuildWarning_6" Message="Number of test results found is not exactly 1" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces" />
                                       </If.Else>
                                     </If>
                                   </Sequence>
@@ -752,7 +803,7 @@
                               </If>
                             </Sequence>
                           </mtbwa:InvokeForReason>
-                          <mtba:RunScript Arguments="[AdvancedTestSettings.GetValue(Of String)(&quot;PostActionScriptArguments&quot;, String.Empty)]" DisplayName="Run optional script after Test Runner" Enabled="True" FilePath="[AdvancedTestSettings.GetValue(Of String)(&quot;PostActionScriptPath&quot;, String.Empty)]" sap2010:WorkflowViewState.IdRef="RunScript_16" Result="[scriptResult]" />
+                          <mtba:RunScript Arguments="[AdvancedTestSettings.GetValue(Of String)(&quot;PostActionScriptArguments&quot;, String.Empty)]" DisplayName="Run optional script after Test Runner" Enabled="True" FilePath="[AdvancedTestSettings.GetValue(Of String)(&quot;PostActionScriptPath&quot;, String.Empty)]" sap2010:WorkflowViewState.IdRef="RunScript_18" Result="[scriptResult]" />
                         </Sequence>
                       </ActivityAction>
                     </ForEach>
@@ -805,36 +856,36 @@
         </TryCatch.Finally>
       </TryCatch>
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
-      <sap2010:ViewStateData Id="GetEnvironmentVariable`1_5" sap:VirtualizedContainerService.HintSize="1712,22" />
-      <sap2010:ViewStateData Id="SetBuildNumber_1" sap:VirtualizedContainerService.HintSize="1712,22" />
-      <sap2010:ViewStateData Id="InitializeEnvironment_1" sap:VirtualizedContainerService.HintSize="1690,22" />
-      <sap2010:ViewStateData Id="GetEnvironmentVariable`1_4" sap:VirtualizedContainerService.HintSize="1690,22" />
-      <sap2010:ViewStateData Id="GetEnvironmentVariable`1_1" sap:VirtualizedContainerService.HintSize="1690,22" />
-      <sap2010:ViewStateData Id="GetEnvironmentVariable`1_3" sap:VirtualizedContainerService.HintSize="1690,22" />
-      <sap2010:ViewStateData Id="DeleteDirectory_1" sap:VirtualizedContainerService.HintSize="1690,22" />
-      <sap2010:ViewStateData Id="CreateDirectory_1" sap:VirtualizedContainerService.HintSize="1690,22" />
-      <sap2010:ViewStateData Id="GitPull_1" sap:VirtualizedContainerService.HintSize="1690,22" />
-      <sap2010:ViewStateData Id="AssociateChanges_1" sap:VirtualizedContainerService.HintSize="1690,22" />
-      <sap2010:ViewStateData Id="RunScript_1" sap:VirtualizedContainerService.HintSize="1650,22" />
-      <sap2010:ViewStateData Id="RunMSBuild_1" sap:VirtualizedContainerService.HintSize="1650,22" />
-      <sap2010:ViewStateData Id="RunScript_2" sap:VirtualizedContainerService.HintSize="1650,22" />
+      <sap2010:ViewStateData Id="GetEnvironmentVariable`1_5" sap:VirtualizedContainerService.HintSize="2164,22" />
+      <sap2010:ViewStateData Id="SetBuildNumber_1" sap:VirtualizedContainerService.HintSize="2164,22" />
+      <sap2010:ViewStateData Id="InitializeEnvironment_1" sap:VirtualizedContainerService.HintSize="2142,22" />
+      <sap2010:ViewStateData Id="GetEnvironmentVariable`1_4" sap:VirtualizedContainerService.HintSize="2142,22" />
+      <sap2010:ViewStateData Id="GetEnvironmentVariable`1_1" sap:VirtualizedContainerService.HintSize="2142,22" />
+      <sap2010:ViewStateData Id="GetEnvironmentVariable`1_3" sap:VirtualizedContainerService.HintSize="2142,22" />
+      <sap2010:ViewStateData Id="DeleteDirectory_1" sap:VirtualizedContainerService.HintSize="2142,22" />
+      <sap2010:ViewStateData Id="CreateDirectory_1" sap:VirtualizedContainerService.HintSize="2142,22" />
+      <sap2010:ViewStateData Id="GitPull_1" sap:VirtualizedContainerService.HintSize="2142,22" />
+      <sap2010:ViewStateData Id="AssociateChanges_1" sap:VirtualizedContainerService.HintSize="2142,22" />
+      <sap2010:ViewStateData Id="RunScript_1" sap:VirtualizedContainerService.HintSize="2102,22" />
+      <sap2010:ViewStateData Id="RunMSBuild_1" sap:VirtualizedContainerService.HintSize="2102,22" />
+      <sap2010:ViewStateData Id="RunScript_2" sap:VirtualizedContainerService.HintSize="2102,22" />
       <sap2010:ViewStateData Id="DeleteDirectory_2" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="DeleteDirectory_3" sap:VirtualizedContainerService.HintSize="464,22" />
       <sap2010:ViewStateData Id="CopyDirectory_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_26" sap:VirtualizedContainerService.HintSize="464,203" />
       <sap2010:ViewStateData Id="CopyDirectory_2" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="1650,513">
+      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="2102,513">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="DropBinaries_2" sap:VirtualizedContainerService.HintSize="1650,22" />
+      <sap2010:ViewStateData Id="DropBinaries_2" sap:VirtualizedContainerService.HintSize="2102,22" />
       <sap2010:ViewStateData Id="Assign_48" sap:VirtualizedContainerService.HintSize="242,59" />
       <sap2010:ViewStateData Id="InvokeForReason_5" sap:VirtualizedContainerService.HintSize="298,183">
         <sap:WorkflowViewStateService.ViewState>
@@ -875,17 +926,18 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="Assign_46" sap:VirtualizedContainerService.HintSize="242,59" />
       <sap2010:ViewStateData Id="InvokeProcess_4" sap:VirtualizedContainerService.HintSize="298,298" />
-      <sap2010:ViewStateData Id="Sequence_21" sap:VirtualizedContainerService.HintSize="1650,1792">
+      <sap2010:ViewStateData Id="Sequence_21" sap:VirtualizedContainerService.HintSize="2102,1792">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FindMatchingFiles_3" sap:VirtualizedContainerService.HintSize="698,22" />
+      <sap2010:ViewStateData Id="Assign_49" sap:VirtualizedContainerService.HintSize="924,59" />
+      <sap2010:ViewStateData Id="FindMatchingFiles_3" sap:VirtualizedContainerService.HintSize="924,22" />
       <sap2010:ViewStateData Id="GetLocalPath_3" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_5" sap:VirtualizedContainerService.HintSize="698,203" />
-      <sap2010:ViewStateData Id="RunScript_10" sap:VirtualizedContainerService.HintSize="698,22" />
+      <sap2010:ViewStateData Id="If_5" sap:VirtualizedContainerService.HintSize="924,203" />
+      <sap2010:ViewStateData Id="RunScript_10" sap:VirtualizedContainerService.HintSize="924,22" />
       <sap2010:ViewStateData Id="MSTest_3" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="Rethrow_2" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_9" sap:VirtualizedContainerService.HintSize="464,203" />
@@ -897,27 +949,35 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_2" sap:VirtualizedContainerService.HintSize="698,278" />
-      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="654,59" />
-      <sap2010:ViewStateData Id="InvokeMethod_1" sap:VirtualizedContainerService.HintSize="654,129" />
+      <sap2010:ViewStateData Id="TryCatch_2" sap:VirtualizedContainerService.HintSize="924,278" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="880,59" />
+      <sap2010:ViewStateData Id="InvokeMethod_1" sap:VirtualizedContainerService.HintSize="880,129" />
       <sap2010:ViewStateData Id="InvokeMethod_2" sap:VirtualizedContainerService.HintSize="208,129" />
-      <sap2010:ViewStateData Id="If_11" sap:VirtualizedContainerService.HintSize="654,272" />
-      <sap2010:ViewStateData Id="InvokeMethod_3" sap:VirtualizedContainerService.HintSize="208,129" />
-      <sap2010:ViewStateData Id="ForEach`1_3" sap:VirtualizedContainerService.HintSize="282,274" />
-      <sap2010:ViewStateData Id="WriteBuildError_15" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_12" sap:VirtualizedContainerService.HintSize="654,417" />
+      <sap2010:ViewStateData Id="If_11" sap:VirtualizedContainerService.HintSize="880,272" />
+      <sap2010:ViewStateData Id="InvokeMethod_20" sap:VirtualizedContainerService.HintSize="208,129" />
+      <sap2010:ViewStateData Id="ForEach`1_3" sap:VirtualizedContainerService.HintSize="633,274" />
       <sap2010:ViewStateData Id="InvokeMethod_4" sap:VirtualizedContainerService.HintSize="486,129" />
       <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="486,59" />
       <sap2010:ViewStateData Id="Assign_6" sap:VirtualizedContainerService.HintSize="464,59" />
       <sap2010:ViewStateData Id="Assign_7" sap:VirtualizedContainerService.HintSize="464,59" />
       <sap2010:ViewStateData Id="Assign_8" sap:VirtualizedContainerService.HintSize="464,59" />
-      <sap2010:ViewStateData Id="Assign_9" sap:VirtualizedContainerService.HintSize="464,59" />
+      <sap2010:ViewStateData Id="Assign_9" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="WriteBuildError_24" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Catch`1_5" sap:VirtualizedContainerService.HintSize="404,20">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_5" sap:VirtualizedContainerService.HintSize="464,278" />
       <sap2010:ViewStateData Id="Assign_10" sap:VirtualizedContainerService.HintSize="464,59" />
       <sap2010:ViewStateData Id="Assign_11" sap:VirtualizedContainerService.HintSize="464,59" />
       <sap2010:ViewStateData Id="WriteBuildError_20" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="If_22" sap:VirtualizedContainerService.HintSize="464,203" />
       <sap2010:ViewStateData Id="InvokeMethod_5" sap:VirtualizedContainerService.HintSize="464,129" />
-      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="486,1090">
+      <sap2010:ViewStateData Id="Sequence_8" sap:VirtualizedContainerService.HintSize="486,1309">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -925,14 +985,23 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="WriteBuildMessage_1" sap:VirtualizedContainerService.HintSize="486,22" />
-      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="508,1544">
+      <sap2010:ViewStateData Id="Sequence_9" sap:VirtualizedContainerService.HintSize="508,1763">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_13" sap:VirtualizedContainerService.HintSize="654,1687" />
+      <sap2010:ViewStateData Id="If_13" sap:VirtualizedContainerService.HintSize="633,1906" />
+      <sap2010:ViewStateData Id="Sequence_23" sap:VirtualizedContainerService.HintSize="655,2344">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="WriteBuildError_15" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_12" sap:VirtualizedContainerService.HintSize="880,2487" />
       <sap2010:ViewStateData Id="InvokeMethod_11" sap:VirtualizedContainerService.HintSize="507,129" />
       <sap2010:ViewStateData Id="WriteBuildWarning_1" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="InvokeProcess_1" sap:VirtualizedContainerService.HintSize="234,261" />
@@ -947,31 +1016,32 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_18" sap:VirtualizedContainerService.HintSize="654,985" />
-      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="676,3873">
+      <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="902,4216">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="InvokeForReason_1" sap:VirtualizedContainerService.HintSize="698,3997" />
+      <sap2010:ViewStateData Id="InvokeForReason_1" sap:VirtualizedContainerService.HintSize="924,4340" />
       <sap2010:ViewStateData Id="RunScript_9" sap:VirtualizedContainerService.HintSize="698,22" />
-      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="720,4868">
+      <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="946,5310">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ParallelForEach`1_2" sap:VirtualizedContainerService.HintSize="750,5013" />
-      <sap2010:ViewStateData Id="FindMatchingFiles_7" sap:VirtualizedContainerService.HintSize="698,22" />
-      <sap2010:ViewStateData Id="GetLocalPath_5" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_25" sap:VirtualizedContainerService.HintSize="698,203" />
-      <sap2010:ViewStateData Id="RunScript_11" sap:VirtualizedContainerService.HintSize="698,22" />
-      <sap2010:ViewStateData Id="MSTest_11" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="Rethrow_3" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_10" sap:VirtualizedContainerService.HintSize="464,203" />
-      <sap2010:ViewStateData Id="Catch`1_3" sap:VirtualizedContainerService.HintSize="404,20">
+      <sap2010:ViewStateData Id="ParallelForEach`1_2" sap:VirtualizedContainerService.HintSize="976,5455" />
+      <sap2010:ViewStateData Id="Assign_50" sap:VirtualizedContainerService.HintSize="924,59" />
+      <sap2010:ViewStateData Id="FindMatchingFiles_8" sap:VirtualizedContainerService.HintSize="924,22" />
+      <sap2010:ViewStateData Id="GetLocalPath_6" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_27" sap:VirtualizedContainerService.HintSize="924,203" />
+      <sap2010:ViewStateData Id="RunScript_17" sap:VirtualizedContainerService.HintSize="924,22" />
+      <sap2010:ViewStateData Id="MSTest_12" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Rethrow_4" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_28" sap:VirtualizedContainerService.HintSize="464,203" />
+      <sap2010:ViewStateData Id="Catch`1_4" sap:VirtualizedContainerService.HintSize="404,20">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -979,75 +1049,92 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TryCatch_3" sap:VirtualizedContainerService.HintSize="698,278" />
-      <sap2010:ViewStateData Id="Assign_45" sap:VirtualizedContainerService.HintSize="654,59" />
-      <sap2010:ViewStateData Id="InvokeMethod_6" sap:VirtualizedContainerService.HintSize="654,129" />
-      <sap2010:ViewStateData Id="InvokeMethod_7" sap:VirtualizedContainerService.HintSize="208,129" />
-      <sap2010:ViewStateData Id="If_14" sap:VirtualizedContainerService.HintSize="654,272" />
-      <sap2010:ViewStateData Id="InvokeMethod_8" sap:VirtualizedContainerService.HintSize="208,129" />
-      <sap2010:ViewStateData Id="ForEach`1_4" sap:VirtualizedContainerService.HintSize="282,274" />
-      <sap2010:ViewStateData Id="WriteBuildError_16" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_15" sap:VirtualizedContainerService.HintSize="654,417" />
-      <sap2010:ViewStateData Id="InvokeMethod_9" sap:VirtualizedContainerService.HintSize="486,129" />
-      <sap2010:ViewStateData Id="Assign_42" sap:VirtualizedContainerService.HintSize="486,59" />
-      <sap2010:ViewStateData Id="Assign_14" sap:VirtualizedContainerService.HintSize="464,59" />
-      <sap2010:ViewStateData Id="Assign_15" sap:VirtualizedContainerService.HintSize="464,59" />
-      <sap2010:ViewStateData Id="Assign_16" sap:VirtualizedContainerService.HintSize="464,59" />
-      <sap2010:ViewStateData Id="Assign_17" sap:VirtualizedContainerService.HintSize="464,59" />
-      <sap2010:ViewStateData Id="Assign_18" sap:VirtualizedContainerService.HintSize="464,59" />
-      <sap2010:ViewStateData Id="Assign_19" sap:VirtualizedContainerService.HintSize="464,59" />
-      <sap2010:ViewStateData Id="WriteBuildError_21" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_23" sap:VirtualizedContainerService.HintSize="464,203" />
-      <sap2010:ViewStateData Id="InvokeMethod_10" sap:VirtualizedContainerService.HintSize="464,129" />
-      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="486,1090">
+      <sap2010:ViewStateData Id="TryCatch_4" sap:VirtualizedContainerService.HintSize="924,278" />
+      <sap2010:ViewStateData Id="Assign_51" sap:VirtualizedContainerService.HintSize="880,59" />
+      <sap2010:ViewStateData Id="InvokeMethod_21" sap:VirtualizedContainerService.HintSize="880,129" />
+      <sap2010:ViewStateData Id="InvokeMethod_22" sap:VirtualizedContainerService.HintSize="208,129" />
+      <sap2010:ViewStateData Id="If_29" sap:VirtualizedContainerService.HintSize="880,272" />
+      <sap2010:ViewStateData Id="InvokeMethod_23" sap:VirtualizedContainerService.HintSize="208,129" />
+      <sap2010:ViewStateData Id="ForEach`1_7" sap:VirtualizedContainerService.HintSize="633,274" />
+      <sap2010:ViewStateData Id="InvokeMethod_24" sap:VirtualizedContainerService.HintSize="486,129" />
+      <sap2010:ViewStateData Id="Assign_52" sap:VirtualizedContainerService.HintSize="486,59" />
+      <sap2010:ViewStateData Id="Assign_53" sap:VirtualizedContainerService.HintSize="464,59" />
+      <sap2010:ViewStateData Id="Assign_54" sap:VirtualizedContainerService.HintSize="464,59" />
+      <sap2010:ViewStateData Id="Assign_55" sap:VirtualizedContainerService.HintSize="464,59" />
+      <sap2010:ViewStateData Id="Assign_56" sap:VirtualizedContainerService.HintSize="242,59" />
+      <sap2010:ViewStateData Id="WriteBuildError_25" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Catch`1_6" sap:VirtualizedContainerService.HintSize="404,20">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TryCatch_6" sap:VirtualizedContainerService.HintSize="464,278" />
+      <sap2010:ViewStateData Id="Assign_57" sap:VirtualizedContainerService.HintSize="464,59" />
+      <sap2010:ViewStateData Id="Assign_58" sap:VirtualizedContainerService.HintSize="464,59" />
+      <sap2010:ViewStateData Id="WriteBuildError_22" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_30" sap:VirtualizedContainerService.HintSize="464,203" />
+      <sap2010:ViewStateData Id="InvokeMethod_25" sap:VirtualizedContainerService.HintSize="464,129" />
+      <sap2010:ViewStateData Id="Sequence_24" sap:VirtualizedContainerService.HintSize="486,1309">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="WriteBuildMessage_2" sap:VirtualizedContainerService.HintSize="486,22" />
-      <sap2010:ViewStateData Id="Sequence_12" sap:VirtualizedContainerService.HintSize="508,1544">
+      <sap2010:ViewStateData Id="WriteBuildMessage_3" sap:VirtualizedContainerService.HintSize="486,22" />
+      <sap2010:ViewStateData Id="Sequence_25" sap:VirtualizedContainerService.HintSize="508,1763">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_16" sap:VirtualizedContainerService.HintSize="654,1687" />
-      <sap2010:ViewStateData Id="InvokeMethod_12" sap:VirtualizedContainerService.HintSize="507,129" />
-      <sap2010:ViewStateData Id="WriteBuildWarning_3" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="InvokeProcess_2" sap:VirtualizedContainerService.HintSize="234,261" />
-      <sap2010:ViewStateData Id="ForEach`1_6" sap:VirtualizedContainerService.HintSize="282,406" />
-      <sap2010:ViewStateData Id="WriteBuildWarning_4" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_19" sap:VirtualizedContainerService.HintSize="507,549" />
-      <sap2010:ViewStateData Id="Sequence_15" sap:VirtualizedContainerService.HintSize="529,842">
+      <sap2010:ViewStateData Id="If_31" sap:VirtualizedContainerService.HintSize="633,1906" />
+      <sap2010:ViewStateData Id="Sequence_26" sap:VirtualizedContainerService.HintSize="655,2344">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_20" sap:VirtualizedContainerService.HintSize="654,985" />
-      <sap2010:ViewStateData Id="Sequence_13" sap:VirtualizedContainerService.HintSize="676,3873">
+      <sap2010:ViewStateData Id="WriteBuildError_23" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_32" sap:VirtualizedContainerService.HintSize="880,2487" />
+      <sap2010:ViewStateData Id="InvokeMethod_26" sap:VirtualizedContainerService.HintSize="507,129" />
+      <sap2010:ViewStateData Id="WriteBuildWarning_5" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="InvokeProcess_6" sap:VirtualizedContainerService.HintSize="234,261" />
+      <sap2010:ViewStateData Id="ForEach`1_8" sap:VirtualizedContainerService.HintSize="282,406" />
+      <sap2010:ViewStateData Id="WriteBuildWarning_6" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="If_33" sap:VirtualizedContainerService.HintSize="507,549" />
+      <sap2010:ViewStateData Id="Sequence_27" sap:VirtualizedContainerService.HintSize="529,842">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="InvokeForReason_2" sap:VirtualizedContainerService.HintSize="698,3997" />
-      <sap2010:ViewStateData Id="RunScript_16" sap:VirtualizedContainerService.HintSize="698,22" />
-      <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="720,4868">
+      <sap2010:ViewStateData Id="If_34" sap:VirtualizedContainerService.HintSize="654,985" />
+      <sap2010:ViewStateData Id="Sequence_28" sap:VirtualizedContainerService.HintSize="902,4216">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="750,5013" />
-      <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="1525,5156" />
-      <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="1650,5299">
+      <sap2010:ViewStateData Id="InvokeForReason_7" sap:VirtualizedContainerService.HintSize="924,4340" />
+      <sap2010:ViewStateData Id="RunScript_18" sap:VirtualizedContainerService.HintSize="698,22" />
+      <sap2010:ViewStateData Id="Sequence_29" sap:VirtualizedContainerService.HintSize="946,5310">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="976,5455" />
+      <sap2010:ViewStateData Id="If_7" sap:VirtualizedContainerService.HintSize="1977,5598" />
+      <sap2010:ViewStateData Id="If_8" sap:VirtualizedContainerService.HintSize="2102,5741">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1067,7 +1154,7 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="If_21" sap:VirtualizedContainerService.HintSize="1650,734" />
       <sap2010:ViewStateData Id="RunPublishSymbols_1" sap:VirtualizedContainerService.HintSize="1650,22" />
-      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="1672,8892">
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="2124,9334">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1091,16 +1178,16 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ResetEnvironment_2" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="1690,9110" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="1712,9730" />
-      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="1734,9978">
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="2142,9552" />
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="2164,10172" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="2186,10420">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="1774,10058" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="2226,10500" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>

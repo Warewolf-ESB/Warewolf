@@ -55,7 +55,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(3, debugItems.Count);
+            Assert.AreEqual(2, debugItems.Count);
             StringAssert.Contains(debugItems[1].ErrorMessage, "1 Data Format Error : It is likely that you tested with one format yet the service is returning another. IE you tested with XML and it now returns JSON");
         }
 
@@ -76,7 +76,6 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             //------------Assert Results-------------------------
             Assert.AreEqual("TRUE", debugItems[2].Outputs[0].FetchResultsList()[1].Value);
-            StringAssert.Contains(debugItems[5].ErrorMessage, string.Empty);
         }
 
         [TestMethod]
@@ -91,7 +90,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
 
             var debugItems = TestHelper.FetchRemoteDebugItems(ServerSettings.WebserverURI, id);
 
-            Assert.AreEqual(6, debugItems.Count);
+            Assert.AreEqual(2, debugItems.Count);
         }
 
         [TestMethod]

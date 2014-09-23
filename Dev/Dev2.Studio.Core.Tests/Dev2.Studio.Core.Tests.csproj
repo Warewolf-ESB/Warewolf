@@ -236,7 +236,6 @@
     <Compile Include="NavigationViewModelTest.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExplorereViewTests.cs" />
     <Compile Include="Network\ServerProxyTests.UnitTests.cs" />
     <Compile Include="Network\ServerProxyTests.Specs.cs" />
     <Compile Include="PopupControllerTests.cs" />
