@@ -33,8 +33,6 @@ Scenario: Creating Scheduler Task Without password and expected error
 	 And I click point "199,264" on ""
 	 And "UI_MessageBox_AutoID,UI_OkButton_AutoID" is visible within "2" seconds
 	 Given I click "UI_MessageBox_AutoID,UI_OkButton_AutoID"
-	 And I click point "362,106" on "UI_MessageBox_AutoID"
-	 #And I click "UI_MessageBox_AutoID,UI_OkButton_AutoID"
 	 Then "SCHEDULERNEWBUTTON" is disabled
 	 ##Closing The Tab Without Saving and Testing For validations
 	Given I click "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,closeBtn"
