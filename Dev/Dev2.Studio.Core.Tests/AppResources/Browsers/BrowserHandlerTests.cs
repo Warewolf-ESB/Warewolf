@@ -5,6 +5,7 @@ using CefSharp;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.IO;
 
 namespace Dev2.Core.Tests.AppResources.Browsers
 {
@@ -15,6 +16,16 @@ namespace Dev2.Core.Tests.AppResources.Browsers
     [ExcludeFromCodeCoverage]
     public class BrowserHandlerTests
     {
+        #region Class Init
+
+        [ClassInitialize]
+        public static void MyClassInitialize(TestContext testContext)
+        {
+            Console.WriteLine("Environment.CurrentDirectory = " + Environment.CurrentDirectory);
+        }
+
+        #endregion
+
         #region CTOR
 
         [TestMethod]
