@@ -19,9 +19,14 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         #region Class Init
 
         [ClassInitialize]
-        public static void MyClassInitialize(TestContext testContext)
+        public static void ResolveDependency(TestContext testContext)
         {
-            Console.WriteLine("Environment.CurrentDirectory = " + Environment.CurrentDirectory);
+            var dependancy = Path.Combine(Environment.CurrentDirectory, "CefSharp.dll");
+            var relativePathInBuildEnvironment = Environment.CurrentDirectory + @"\..\..\..\..\src\Dev\Binaries\CefSharp\CefSharp.dll";
+            if(!File.Exists(dependancy) && File.Exists(relativePathInBuildEnvironment))
+            {
+                File.Copy(relativePathInBuildEnvironment, dependancy);
+            }
         }
 
         #endregion
