@@ -10,7 +10,7 @@
         <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
   </Deployment>
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
-  <Scripts setupScript="..\src\Dev\TestScripts\Integration\Startup.bat" cleanupScript="..\src\Dev\TestScripts\Integration\Cleanup.bat" />
+  <Scripts setupScript="..\src\Dev\TestScripts\UI\Startup.bat" cleanupScript="..\src\Dev\TestScripts\UI\Cleanup.bat" />
   <Execution>
     <Hosts skipUnhostableTests="false" />
     <TestTypeSpecific>
