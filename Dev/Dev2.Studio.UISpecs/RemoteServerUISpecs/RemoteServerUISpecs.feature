@@ -5,14 +5,15 @@
 
 
 Background: 
-	   Given I click "EXPLORER,UI_localhost_AutoID"
-	   Given I click "RIBBONSETTINGS"   
+       Given I click "EXPLORERFILTERCLEARBUTTON"
+	   And I click "EXPLORER,UI_localhost_AutoID"
+	   When I click "RIBBONSETTINGS"   
 	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
 	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
 	   And "SECURITYPUBLICADMINISTRATOR" is unchecked 
 	   And I click "SECURITYPUBLICADMINISTRATOR"  
        And I click "SECURITYSAVE" 
-	   Given all tabs are closed
+	   And all tabs are closed
 
 
 @RemtoeServer
@@ -100,6 +101,7 @@ Scenario: RemoteWorkflowWithNestedRemoteWorkflowReturnsFastAccurateData
     And I create a new remote connection "Azure" as
        | Address                                    | AuthType | UserName | Password         |
        | http://dev2-warewolf.cloudapp.net:3142/dsf | User     | dev2user | VisualService8us |
+   And I click "EXPLORERFILTERCLEARBUTTON"
 	And I click "EXPLORER,UI_Azure (http://dev2-warewolf.cloudapp.net:3142/)_AutoID"   
 	And I send "Call Nested Workflow" to "EXPLORERFILTER"
 	#This remote workflow has another remote workflow nested inside it.

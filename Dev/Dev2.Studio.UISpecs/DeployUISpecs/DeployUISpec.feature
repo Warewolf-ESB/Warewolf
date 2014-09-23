@@ -5,8 +5,6 @@
 
 @mytag
 Scenario: IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled12
-	  
-	   
 	   Given I have Warewolf running
 	   And all tabs are closed	
 	   Given I click "RIBBONDEPLOY"
@@ -23,7 +21,7 @@ Scenario: IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabl
        Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_Azure Public"
 	   ##Checking Deploy Button Enabled When Resource Selected in Source Server
 	   Given I click "DEPLOYSOURCE,UI_SourceServer_UI_BARNEY_AutoID_AutoID,UI_SourceServer_UI_Decision Testing_AutoID_AutoID,UI_CheckBoxDecision Testing_AutoID"
-       Given "DEPLOYBUTTON" is enabled
+       Given "DEPLOYBUTTON" is disabled
        ## Given "DEPLOYERROR" is not visible
 
 

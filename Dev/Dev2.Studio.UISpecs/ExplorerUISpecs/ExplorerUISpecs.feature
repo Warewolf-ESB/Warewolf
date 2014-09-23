@@ -7,6 +7,7 @@
 Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDeleteANDConfirmReadOnlyANDHide
 	Given I have Warewolf running
 	And all tabs are closed
+	And I click "EXPLORERFILTERCLEARBUTTON"
 	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID"
@@ -76,6 +77,7 @@ Scenario: Saving A Workflow In NewFolder Is Saved And Delete Rename Works As Exp
 	And I click "RIBBONNEWENDPOINT"
 	#Saving a workflow
 	And I click "RIBBONSAVE"
+	And "WebBrowserWindow" is visible within "3" seconds
 	And I send "{TAB}{TAB}{Enter}" to ""
 	#Creating a new folder
 	And I send "UIFolder" to ""
@@ -84,7 +86,8 @@ Scenario: Saving A Workflow In NewFolder Is Saved And Delete Rename Works As Exp
 	And I send "{TAB}{TAB}{TAB}" to ""
 	And I send "S1" to ""
 	And I click point "400,415" on "WebBrowserWindow"
-	And "EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_S1_AutoID" is visible
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And "EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_S1_AutoID" is visible within "3" seconds
 	And I click "EXPLORERFOLDERS,UI_UIFolder_AutoID,UI_S1_AutoID"
 	#Rename Folder
 	And I right click "EXPLORERFOLDERS,UI_UIFolder_AutoID"

@@ -3,7 +3,7 @@
 	As a Warewolf User
 	I want to be able to Create Tasks in Warewolf Scheduler Tab
 
-@mytag
+@Scheduler
 Scenario: Creating Scheduler Task Without password and expected error
      Given I have Warewolf running
      Given all tabs are closed
@@ -15,8 +15,6 @@ Scenario: Creating Scheduler Task Without password and expected error
 	 Then "SCHEDULERNEWBUTTON" is disabled
 	 #Testing Risource picker Is Allowing Only Workflows to Schedule
 	 And I click "SCHEDULERWORKFLOWSELECTORBUTTON" 
-	 When I double click "RESOURCEPICKERFOLDERS,UI_DBSERVICES_AutoID,UI_OnError DB Service_AutoID"
-	 Then "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID" is disabled
 	 And I double click "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_File and Folder - Write File_AutoID"
 	 And I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
      And I type "IntegrationTester" in "SCHEDULERUSERNAMEINPUT"
@@ -33,13 +31,17 @@ Scenario: Creating Scheduler Task Without password and expected error
 	 #Saving Task Without Password And Expected Error
 	 Given I click "SCHEDULERSAVEBUTTON"
 	 And I click point "199,264" on ""
-	 And I click "SCHEDULERSAVINGERROROKBUTTON"
+	 And "UI_MessageBox_AutoID,UI_OkButton_AutoID" is visible within "2" seconds
+	 Given I click "UI_MessageBox_AutoID,UI_OkButton_AutoID"
+	 And I click point "362,106" on "UI_MessageBox_AutoID"
+	 #And I click "UI_MessageBox_AutoID,UI_OkButton_AutoID"
 	 Then "SCHEDULERNEWBUTTON" is disabled
 	 ##Closing The Tab Without Saving and Testing For validations
-	 Given I click "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,closeBtn"
+	Given I click "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,closeBtn"
 	 And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID"
 	 And I click point "199,264" on ""
-	 And I click "SCHEDULERSAVINGERROROKBUTTON"
+	 And "UI_MessageBox_AutoID,UI_OkButton_AutoID" is visible within "2" seconds
+	 Given I click "UI_MessageBox_AutoID,UI_OkButton_AutoID"
 	 And I click "SCHEDULERTAB,UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoID"
 	 And "SCHEDULERNAMEINPUT" contains text "CIScheduleTest"
 	 ##Correcting Error And Saving The Task
