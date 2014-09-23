@@ -1,0 +1,37 @@
+
+<Source ID="c4ee6f5d-8b28-4265-8278-0f8b58698028" Version="1.0" Name="GetCities" ResourceType="DbSource" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Cities;User ID=testUser;Password=test123;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+  <DisplayName>GetCities</DisplayName>
+  <Category>DB\GetCities</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <XamlDefinition>
+  </XamlDefinition>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>M/RbBHSSB/byQgJXLOZrkJdhSXE=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>r+vODkY0ofrJCndS0fJxSi+I+yKWOjMoAAEpYy0Kb+K0zkdFSUT3pxHhjjzUBXxDof9WVWOWQ8CtcoiBXK2q7ncHz6meDB6uzbs80gz+ZnRn8Zy9mXo1U2GWdrXfRMzaq5Q5gqxQ4bjdsbJdr3Ii4uOiRWaQJZKpTYFYeVoKowE=</SignatureValue>
+  </Signature>
+</Source>
