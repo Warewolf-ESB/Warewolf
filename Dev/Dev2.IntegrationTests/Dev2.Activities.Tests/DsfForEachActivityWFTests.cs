@@ -104,7 +104,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ForEachAllToolsTest()
         {
             string PostData = String.Format("{0}{1}", WebserverURI, "MO/ForEachUpgradeTest");
-            const string expected = @"PASS";
+            const string expected = "PASS";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
             StringAssert.Contains(ResponseData, expected);
@@ -120,7 +120,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void ForEach_WithData_WhenInvoking_ExpectData()
         {
             //------------Setup for test--------------------------
-            const string expected = @"<Result>PASS</Result><FetchPeople index=""1""><ID>1</ID><UserName>Bob.Smith</UserName></FetchPeople><FetchPeople index=""2""><ID>2</ID><UserName>Jane.Jones</UserName></FetchPeople><FetchPeople index=""3""><ID>3</ID><UserName>Fred.Taylor</UserName></FetchPeople><FetchPeople index=""4""><ID>4</ID><UserName>Greg.Nixon</UserName></FetchPeople><FetchPeople index=""5""><ID>5</ID><UserName>Brad.Smith</UserName></FetchPeople><FetchPeople index=""6""><ID>6</ID><UserName>Travis.Fry</UserName></FetchPeople><FetchPeople index=""7""><ID>7</ID><UserName>Mo.Jones</UserName></FetchPeople><FetchPeople index=""8""><ID>8</ID><UserName>Jurie.Smith</UserName></FetchPeople><FetchPeople index=""9""><ID>9</ID><UserName>Trevor.Williams</UserName></FetchPeople><FetchPeople index=""10""><ID>10</ID><UserName>Ashley.Lewis</UserName></FetchPeople><dbo_FetchPeople index=""1""><ID>1</ID><UserName>Bob.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople index=""2""><ID>2</ID><UserName>Jane.Jones</UserName></dbo_FetchPeople><dbo_FetchPeople index=""3""><ID>3</ID><UserName>Fred.Taylor</UserName></dbo_FetchPeople><dbo_FetchPeople index=""4""><ID>4</ID><UserName>Greg.Nixon</UserName></dbo_FetchPeople><dbo_FetchPeople index=""5""><ID>5</ID><UserName>Brad.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople index=""6""><ID>6</ID><UserName>Travis.Fry</UserName></dbo_FetchPeople><dbo_FetchPeople index=""7""><ID>7</ID><UserName>Mo.Jones</UserName></dbo_FetchPeople><dbo_FetchPeople index=""8""><ID>8</ID><UserName>Jurie.Smith</UserName></dbo_FetchPeople><dbo_FetchPeople index=""9""><ID>9</ID><UserName>Trevor.Williams</UserName></dbo_FetchPeople><dbo_FetchPeople index=""10""><ID>10</ID><UserName>Ashley.Lewis</UserName></dbo_FetchPeople>";
+            const string expected = @"<Result>PASS</Result>";
 
             //------------Execute Test---------------------------
             string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/Bug_11463_WF");
