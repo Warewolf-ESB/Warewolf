@@ -22,19 +22,19 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         public static void ResolveDependency(TestContext testContext)
         {
             var dependancy = Path.Combine(Environment.CurrentDirectory, "CefSharp.dll");
-            Console.WriteLine("BrowserHandlerTests attempty to resolve dependency: " + dependancy);
+            testContext.WriteLine("BrowserHandlerTests attempty to resolve dependency: " + dependancy);
             var relativePathInBuildEnvironment = Environment.CurrentDirectory + @"\..\..\..\..\src\Dev\Binaries\CefSharp\CefSharp.dll";
-            Console.WriteLine("By copying: " + relativePathInBuildEnvironment);
+            testContext.WriteLine("By copying: " + relativePathInBuildEnvironment);
             if(!File.Exists(dependancy) && File.Exists(relativePathInBuildEnvironment))
             {
-                Console.WriteLine("Copying dependency...");
+                testContext.WriteLine("Copying dependency...");
                 File.Copy(relativePathInBuildEnvironment, dependancy, true);
             }
             else
             {
-                Console.WriteLine("Cannot copy, one of the following statements is false:");
-                Console.WriteLine("!File.Exists(dependancy) = " + !File.Exists(dependancy));
-                Console.WriteLine("File.Exists(relativePathInBuildEnvironment) = " + File.Exists(relativePathInBuildEnvironment));
+                testContext.WriteLine("Cannot copy, one of the following statements is false:");
+                testContext.WriteLine("!File.Exists(dependancy) = " + !File.Exists(dependancy));
+                testContext.WriteLine("File.Exists(relativePathInBuildEnvironment) = " + File.Exists(relativePathInBuildEnvironment));
             }
         }
 
