@@ -18,7 +18,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
     {
         #region Class Init
 
-        [ClassInitialize]
+        [AssemblyInitialize]
         public static void ResolveDependency(TestContext testContext)
         {
             var dependancy = Path.Combine(Environment.CurrentDirectory, "CefSharp.dll");
