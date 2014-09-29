@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Activities.Statements;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using System.Reflection;
 using CefSharp;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,31 +18,16 @@ namespace Dev2.Core.Tests.AppResources.Browsers
     [ExcludeFromCodeCoverage]
     public class BrowserHandlerTests
     {
+        static readonly string CefSharpDependancyLocation = Path.Combine(Environment.CurrentDirectory, "CefSharp.dll");
+
         #region Class Init
 
         [AssemblyInitialize]
         public static void ResolveDependency(TestContext testContext)
         {
-            var expectedDirectory = Path.Combine(Environment.CurrentDirectory, "..", "Binaries", "CefSharp");
-            var dependancy = Path.Combine(expectedDirectory, "CefSharp.dll");
-            testContext.WriteLine("BrowserHandlerTests attempty to resolve dependency: " + dependancy);
-            var relativePathInBuildEnvironment = Path.Combine(Environment.CurrentDirectory, "CefSharp.dll");
-            testContext.WriteLine("By copying: " + relativePathInBuildEnvironment);
-            if(!File.Exists(dependancy) && File.Exists(relativePathInBuildEnvironment))
+            if(File.Exists(CefSharpDependancyLocation))
             {
-                if(expectedDirectory != null)
-                {
-                    Directory.CreateDirectory(Path.GetDirectoryName(expectedDirectory));
-                    Directory.CreateDirectory(expectedDirectory);
-                }
-                testContext.WriteLine("Copying dependency...");
-                File.Copy(relativePathInBuildEnvironment, dependancy, true);
-            }
-            else
-            {
-                testContext.WriteLine("Cannot copy, one of the following statements is false:");
-                testContext.WriteLine("!File.Exists(dependancy) = " + !File.Exists(dependancy));
-                testContext.WriteLine("File.Exists(relativePathInBuildEnvironment) = " + File.Exists(relativePathInBuildEnvironment));
+                Assembly.LoadFile(CefSharpDependancyLocation);
             }
         }
 
