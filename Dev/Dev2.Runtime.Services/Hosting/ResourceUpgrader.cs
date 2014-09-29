@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Data;
+using Vestris.ResourceLib;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -26,12 +27,23 @@ namespace Dev2.Runtime.Hosting
                 var outputLang = available.Aggregate((a, b) => (x => (b(a(x)))));
                 
                 var output =  outputLang(sourceVersion);
-                output.SetAttributeValue("ServerVersion",Assembly.GetExecutingAssembly().GetName().Version);
+                output.SetAttributeValue("ServerVersion",GetVersion());
                 onUpgrade(output);
                 return output;
             }
           
             return sourceVersion;
+        }
+
+        static Version GetVersion()
+        {
+            var asm = Assembly.GetExecutingAssembly();
+            var versionResource = new VersionResource();
+            var fileName = asm.Location;
+            versionResource.LoadFrom(fileName);
+
+            Version v = new Version(versionResource.FileVersion);
+            return v;
         }
 
         public List<IUpgradePath> AvailableUpgrades { get; private set; }
