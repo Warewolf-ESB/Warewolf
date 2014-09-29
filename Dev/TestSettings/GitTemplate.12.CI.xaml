@@ -331,7 +331,7 @@
                             </Assign.Value>
                           </Assign>
                           <mtbwa:FindMatchingFiles sap2010:WorkflowViewState.IdRef="FindMatchingFiles_3" MatchPattern="[Path.Combine(BuildDirectory, BinariesFolderName) &amp; &quot;\&quot; &amp; testSpec.GetValue(Of String)(&quot;AssemblyFileSpec&quot;)]" Result="[localTestAssemblies]" />
-                          <If Condition="[Not testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;) = String.Empty]" DisplayName="If has settings" sap2010:WorkflowViewState.IdRef="If_5">
+                          <If Condition="[Not testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;) = String.Empty]" DisplayName="Get test settings" sap2010:WorkflowViewState.IdRef="If_5">
                             <If.Then>
                               <mtbac:GetLocalPath sap2010:WorkflowViewState.IdRef="GetLocalPath_3" IncomingPath="[testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;)]" Result="[localSettings]" />
                             </If.Then>
@@ -593,7 +593,7 @@
                             </Assign.Value>
                           </Assign>
                           <mtbwa:FindMatchingFiles sap2010:WorkflowViewState.IdRef="FindMatchingFiles_8" MatchPattern="[Path.Combine(BuildDirectory, BinariesFolderName) &amp; &quot;\&quot; &amp; testSpec.GetValue(Of String)(&quot;AssemblyFileSpec&quot;)]" Result="[localTestAssemblies]" />
-                          <If Condition="[Not testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;) = String.Empty]" DisplayName="If has settings" sap2010:WorkflowViewState.IdRef="If_27">
+                          <If Condition="[Not testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;) = String.Empty]" DisplayName="Get test settings" sap2010:WorkflowViewState.IdRef="If_27">
                             <If.Then>
                               <mtbac:GetLocalPath sap2010:WorkflowViewState.IdRef="GetLocalPath_6" IncomingPath="[testSpec.GetBuildParameter(&quot;RunSettingsForTestRun&quot;).GetValue(Of String)(&quot;ServerRunSettingsFile&quot;)]" Result="[localSettings]" />
                             </If.Then>
