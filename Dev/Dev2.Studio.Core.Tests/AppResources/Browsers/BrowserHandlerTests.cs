@@ -21,9 +21,9 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         [AssemblyInitialize]
         public static void ResolveDependency(TestContext testContext)
         {
-            var dependancy = Path.Combine(Environment.CurrentDirectory, "CefSharp.dll");
+            var dependancy = Path.Combine(Environment.CurrentDirectory, "CefSharp", "CefSharp.dll");
             testContext.WriteLine("BrowserHandlerTests attempty to resolve dependency: " + dependancy);
-            var relativePathInBuildEnvironment = Environment.CurrentDirectory + @"\..\..\..\..\src\Dev\Binaries\CefSharp\CefSharp.dll";
+            var relativePathInBuildEnvironment = Path.Combine(Environment.CurrentDirectory, "CefSharp.dll");
             testContext.WriteLine("By copying: " + relativePathInBuildEnvironment);
             if(!File.Exists(dependancy) && File.Exists(relativePathInBuildEnvironment))
             {
