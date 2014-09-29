@@ -80,15 +80,23 @@ namespace Dev2.Studio.UI.Tests.Extensions
             while(parentCollection.Count > 0 && levelsDeep < 4)
             {
                 levelsDeep++;
-                var collectionToSearch = parentCollection
-                                .SelectMany(c => c.GetChildren())
-                                .Where(c => c is WpfControl)
-                                .ToList();
+                List<UITestControl> collectionToSearch = null;
+                try
+                {
+                    collectionToSearch = parentCollection
+                                    .SelectMany(c => c.GetChildren())
+                                    .Where(c => c is WpfControl)
+                                    .ToList();
 
-                control = collectionToSearch
-                    .FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
-                if(throwIfMultiple && collectionToSearch.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
-                    throw new Exception("Multiple AutoIds Found");
+                    control = collectionToSearch
+                        .FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
+                    if(throwIfMultiple && collectionToSearch.Count(b => ((WpfControl)b).AutomationId.Equals(automationId)) > 1)
+                        throw new Exception("Multiple AutoIds Found");
+                }
+                catch (NullReferenceException)
+                {
+                    //Ashley: Swallowing exception 
+                }
                 if(control == null)
                 {
                     parentCollection = collectionToSearch;
