@@ -15,7 +15,10 @@ namespace Dev2.Runtime.Hosting
 
        private static List<IUpgradePath> CreateUpgradePath()
         {
-            List<IUpgradePath> upgrades = new List<IUpgradePath> { new UpgradePath(new Version(), new Version(0, 4, 16, 26347), new BaseResourceUpgrader()) };
+            List<IUpgradePath> upgrades = new List<IUpgradePath>
+            {
+                new UpgradePath(new Version(), new Version(0, 4, 17, 27001), new BaseResourceUpgrader())
+            };
            return upgrades;
         }
     }

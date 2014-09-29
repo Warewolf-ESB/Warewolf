@@ -23,7 +23,7 @@ namespace Dev2.Runtime.Hosting
         public bool CanUpgrade(XElement sourceVersion)
         {
             var version = GetVersionFromXML(sourceVersion);
-            return GetVersionFromXML(sourceVersion).CompareTo(UpgradesFrom) < 0 || (version.CompareTo(new Version()) ==0 && UpgradesFrom.CompareTo(version)==0) ;
+            return version.CompareTo(UpgradesFrom) < 0 || (version.CompareTo(new Version()) ==0 && UpgradesFrom.CompareTo(version)==0) ;
         }
         private Version GetVersionFromXML(XElement resource)
         {
