@@ -27,6 +27,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
             testContext.WriteLine("By copying: " + relativePathInBuildEnvironment);
             if(!File.Exists(dependancy) && File.Exists(relativePathInBuildEnvironment))
             {
+                Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "CefSharp"));
                 testContext.WriteLine("Copying dependency...");
                 File.Copy(relativePathInBuildEnvironment, dependancy, true);
             }
