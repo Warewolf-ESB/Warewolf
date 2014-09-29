@@ -11,8 +11,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TestSettings\UI\Sandbox.testsettings = TestSettings\UI\Sandbox.testsettings
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestSettings", "TestSettings", "{F6BA6701-359E-4521-9978-4298A7302A5A}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestScripts", "TestScripts", "{380CF0B0-6BA2-41E1-B275-62B61CEDFD73}"
 	ProjectSection(SolutionItems) = preProject
 		TestScripts\UI\Cleanup.bat = TestScripts\UI\Cleanup.bat
@@ -120,7 +118,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F6BA6701-359E-4521-9978-4298A7302A5A} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
 		{380CF0B0-6BA2-41E1-B275-62B61CEDFD73} = {C7A94CDE-3DA1-4C17-9A70-1BAD6735F8C9}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution

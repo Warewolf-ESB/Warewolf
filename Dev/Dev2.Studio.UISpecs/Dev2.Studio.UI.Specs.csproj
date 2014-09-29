@@ -75,6 +75,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DeployUISpec.feature</DependentUpon>
     </Compile>
+    <Compile Include="Sanity Test Suite\EXapmle Workflows.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EXapmle Workflows.feature</DependentUpon>
+    </Compile>
     <Compile Include="Scheduler\SchedulerUISpecFlow.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -246,6 +251,10 @@
     <None Include="DeployUISpecs\DeployUISpec.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeployUISpec.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Sanity Test Suite\EXapmle Workflows.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>EXapmle Workflows.feature.cs</LastGenOutput>
     </None>
     <None Include="Scheduler\SchedulerUISpecFlow.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>

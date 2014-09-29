@@ -44,7 +44,6 @@
 #   #    Then "RIBBONNEWWEBCONNECTOR" is disabled
 #   #    Then "RIBBONNEWENDPOINT" is disabled
 #   #    Then "RIBBONSCHEDULE" is disabled
-#	  # #Then close the Studio and Server
 #   #    #Set server permission execute
 #   #    Given I click "EXPLORER,UI_localhost_AutoID" 
 #   #    And I click "RIBBONSETTINGS"   

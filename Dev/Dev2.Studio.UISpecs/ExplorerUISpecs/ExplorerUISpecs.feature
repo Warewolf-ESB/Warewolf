@@ -73,6 +73,7 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 Scenario: Saving A Workflow In NewFolder Is Saved And Delete Rename Works As Expected
 	Given I have Warewolf running
 	And all tabs are closed
+	And I click "EXPLORERFILTERCLEARBUTTON"
 	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "RIBBONNEWENDPOINT"
 	#Saving a workflow
