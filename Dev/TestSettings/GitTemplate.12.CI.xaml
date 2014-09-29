@@ -1,4 +1,4 @@
-﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.AutomatedTests="[{New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;AssemblyFileSpec&quot;&quot;: &quot;&quot;**\\*test*.dll;**\\*test*.appx&quot;&quot;, &quot;&quot;RunSettingsFileName&quot;&quot;: null, &quot;&quot;TestCaseFilter&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;RunSettingsForTestRun&quot;&quot;: { &quot;&quot;ServerRunSettingsFile&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;TypeRunSettings&quot;&quot;: &quot;&quot;Default&quot;&quot; }, &quot;&quot;HasTestCaseFilter&quot;&quot;: false, &quot;&quot;FailBuildOnFailure&quot;&quot;: false, &quot;&quot;RunName&quot;&quot;: &quot;&quot;&quot;&quot; } &quot;)}]" this:Process.AdvancedTestSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;DisableTests&quot;&quot;: false, &quot;&quot;PreActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PreActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;AsyncTests&quot;&quot;: false, &quot;&quot;PublishToTfs&quot;&quot;: true } &quot;)]" this:Process.BuildNumberFormat="[&quot;$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)&quot;]" this:Process.CleanRepository="[True]" this:Process.AdvancedBuildSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;MSBuildArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;MSBuildPlatform&quot;&quot;: &quot;&quot;Auto&quot;&quot;, &quot;&quot;PreActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PreActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;RunCodeAnalysis&quot;&quot;: &quot;&quot;AsConfigured&quot;&quot; } &quot;)]" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;MaxExecutionTime&quot;&quot;: &quot;&quot;00:00:00&quot;&quot;, &quot;&quot;MaxWaitTime&quot;&quot;: &quot;&quot;04:00:00&quot;&quot;, &quot;&quot;Name&quot;&quot;: &quot;&quot;*&quot;&quot;, &quot;&quot;Tags&quot;&quot;: [], &quot;&quot;TagComparison&quot;&quot;: &quot;&quot;MatchExactly&quot;&quot; } &quot;)]" this:Process.CleanBuild="[True]" this:Process.OutputLocation="[&quot;SingleFolder&quot;]" this:Process.CreateWorkItem="[True]" this:Process.UpdateAssociatedWorkItems="[True]" this:Process.SupportedReasons="Manual, IndividualCI, BatchedCI" this:Process.BuildProcessVersion="12.0" this:Process.WarewolfServerInsertResultsURI="Http://RSAKLFSVRWRWBLD:3142/services/TFSPLUGINS/JustProcessFile" this:Process.WarewolfServerSendReportURI="Http://RSAKLFSVRWRWBLD:3142/services/UTILITIES/JustSendCIReport" this:Process.WebRequestTimeout="60000"
+﻿<Activity mc:Ignorable="sads sap sap2010" x:Class="TfsBuild.Process" this:Process.AutomatedTests="[{New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;AssemblyFileSpec&quot;&quot;: &quot;&quot;**\\*test*.dll;**\\*test*.appx&quot;&quot;, &quot;&quot;RunSettingsFileName&quot;&quot;: null, &quot;&quot;TestCaseFilter&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;RunSettingsForTestRun&quot;&quot;: { &quot;&quot;ServerRunSettingsFile&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;TypeRunSettings&quot;&quot;: &quot;&quot;Default&quot;&quot; }, &quot;&quot;HasTestCaseFilter&quot;&quot;: false, &quot;&quot;FailBuildOnFailure&quot;&quot;: false, &quot;&quot;RunName&quot;&quot;: &quot;&quot;&quot;&quot; } &quot;)}]" this:Process.AdvancedTestSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;DisableTests&quot;&quot;: false, &quot;&quot;PreActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PreActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;AsyncTests&quot;&quot;: false } &quot;)]" this:Process.BuildNumberFormat="[&quot;$(BuildDefinitionName)_$(Date:yyyyMMdd)$(Rev:.r)&quot;]" this:Process.CleanRepository="[True]" this:Process.AdvancedBuildSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;MSBuildArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;MSBuildPlatform&quot;&quot;: &quot;&quot;Auto&quot;&quot;, &quot;&quot;PreActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PreActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptPath&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;PostActionScriptArguments&quot;&quot;: &quot;&quot;&quot;&quot;, &quot;&quot;RunCodeAnalysis&quot;&quot;: &quot;&quot;AsConfigured&quot;&quot; } &quot;)]" this:Process.AgentSettings="[New Microsoft.TeamFoundation.Build.Common.BuildParameter(&quot; { &quot;&quot;MaxExecutionTime&quot;&quot;: &quot;&quot;00:00:00&quot;&quot;, &quot;&quot;MaxWaitTime&quot;&quot;: &quot;&quot;04:00:00&quot;&quot;, &quot;&quot;Name&quot;&quot;: &quot;&quot;*&quot;&quot;, &quot;&quot;Tags&quot;&quot;: [], &quot;&quot;TagComparison&quot;&quot;: &quot;&quot;MatchExactly&quot;&quot; } &quot;)]" this:Process.CleanBuild="[True]" this:Process.OutputLocation="[&quot;SingleFolder&quot;]" this:Process.CreateWorkItem="[True]" this:Process.UpdateAssociatedWorkItems="[True]" this:Process.SupportedReasons="All" this:Process.BuildProcessVersion="12.0" this:Process.WarewolfServerInsertResultsURI="Http://RSAKLFSVRWRWBLD:3142/services/TFSPLUGINS/JustProcessFile" this:Process.WarewolfServerSendReportURI="Http://RSAKLFSVRWRWBLD:3142/services/UTILITIES/JustSendCIReport" this:Process.WebRequestTimeout="60000" this:Process.BranchIDSuffix="[String.Empty]"
  xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
  xmlns:mt="clr-namespace:Microsoft.TeamFoundation;assembly=Microsoft.TeamFoundation.Common"
@@ -86,6 +86,7 @@
     <x:Property Name="WarewolfServerInsertResultsURI" Type="InArgument(x:String)" />
     <x:Property Name="WarewolfServerSendReportURI" Type="InArgument(x:String)" />
     <x:Property Name="WebRequestTimeout" Type="InArgument(x:Int32)" />
+    <x:Property Name="BranchIDSuffix" Type="InArgument(x:String)" />
   </x:Members>
   <this:Process.ProjectsToBuild>
     <InArgument x:TypeArguments="s:String[]" />
@@ -115,7 +116,7 @@
       <mtbw:ProcessParameterMetadata Description="Specify the path to a custom script that runs after the MSBuild activity successfully completes." DisplayName="Post-build script path" Editor="Microsoft.TeamFoundation.Build.Controls.GitLocalFileBrowserEditor, Microsoft.TeamFoundation.Build.Controls" ParameterName="AdvancedBuildSettings.PostActionScriptPath" ValueFormatString="" />
       <mtbw:ProcessParameterMetadata Description="Specify the command line arguments to pass to the script that runs after the MSBuild activity successfully completes." DisplayName="Post-build script arguments" ParameterName="AdvancedBuildSettings.PostActionScriptArguments" ValueFormatString="" />
       <mtbw:ProcessParameterMetadata Description="Specify AsConfigured to run code analysis according to project settings; Never to never run code analysis; Always to always run code analysis." DisplayName="Perform code analysis" Editor="@DropDownList=Never,AsConfigured,Always" ParameterName="AdvancedBuildSettings.RunCodeAnalysis" />
-      <mtbw:ProcessParameterMetadata Category="#250 Test" Description="Specify the test assemblies or test metadata files on which to run tests.  You can skip running these tests by setting the Disable Tests setting to True." DisplayName="1. Automated tests" Editor="Microsoft.TeamFoundation.Build.Controls" ParameterName="AutomatedTests" ValueFormatString="{}{Count} set(s) of tests specified." />
+      <mtbw:ProcessParameterMetadata Category="#250 Test" Description="Specify the test assemblies or test metadata files on which to run tests.  You can skip running these tests by setting the Disable Tests setting to True." DisplayName="1. Automated tests" Editor="Microsoft.TeamFoundation.Build.Controls.AgileTestSpecListEditor, Microsoft.TeamFoundation.Build.Controls" ParameterName="AutomatedTests" ValueFormatString="{}{Count} set(s) of tests specified." />
       <mtbw:ProcessParameterMetadata BrowsableWhen="Always" DisplayName="Test source" Editor="" ParameterName="AutomatedTests.[Item]" ValueFormatString="{}{RunName} - Run tests in test sources matching {AssemblyFileSpec}" />
       <mtbw:ProcessParameterMetadata BrowsableWhen="Always" Description="Specify the search pattern for locating test sources - e.g., **\\*test*.dll." DisplayName="Test sources spec" ParameterName="AutomatedTests.AssemblyFileSpec" />
       <mtbw:ProcessParameterMetadata BrowsableWhen="Never" ParameterName="AutomatedTests.HasRunSettingsFile" />
@@ -148,7 +149,7 @@
       <mtbw:ProcessParameterMetadata Category="#500 Dev2 CI Report" Description="Default value is &quot;Http://RSAKLFSVRWRWBLD:3142/services/TFSPLUGINS/JustProcessFile&quot;" DisplayName="Warewolf Server Publish Results URI" ParameterName="WarewolfServerInsertResultsURI" />
       <mtbw:ProcessParameterMetadata Category="#500 Dev2 CI Report" Description="The URI of the Warewolf service responsible for sending CI reports. This is executed after all the test runs are finished. Default value is &quot;Http://RSAKLFSVRWRWBLD:3142/services/UTILITIES/JustSendCIReport&quot;" DisplayName="Warewolf Server Send Report URI" ParameterName="WarewolfServerSendReportURI" />
       <mtbw:ProcessParameterMetadata Category="#500 Dev2 CI Report" Description="Timeout for web requests. Web requests are used to call Warewolf workflows for interfacing with the Dev2 test resutls database." DisplayName="Web Request Timeout" ParameterName="WebRequestTimeout" />
-      <mtbw:ProcessParameterMetadata Category="#250 Test" Description="Publish test results to Tfs_DefaultCollection database. Set this to true to be able to view test results in this build's summary." DisplayName="Publish to TFS" ParameterName="AdvancedTestSettings.PublishToTfs" />
+      <mtbw:ProcessParameterMetadata Category="#500 Dev2 CI Report" Description="Optional text to add to the end of the branch name this build reads from Git and uses in the CI report. Use this property to disinguish these builds from other builds for the same commit (eg flicker analysis)" DisplayName="Optional Branch ID Suffix" ParameterName="BranchIDSuffix" />
     </mtbw:ProcessParameterMetadataCollection>
   </this:Process.Metadata>
   <sap2010:WorkflowViewState.IdRef>TfsBuild.Process_1</sap2010:WorkflowViewState.IdRef>
@@ -162,7 +163,7 @@
     <mtbwa:AgentScope DataToIgnore="" DisplayName="Run on agent" sap2010:WorkflowViewState.IdRef="AgentScope_1" MaxExecutionTime="[AgentSettings.GetValue(Of TimeSpan)(&quot;MaxExecutionTime&quot;, New System.TimeSpan(0,0,0))]" MaxWaitTime="[AgentSettings.GetValue(Of TimeSpan)(&quot;MaxWaitTime&quot;, New System.TimeSpan(4,0,0))]" ReservationSpec="[AgentSettings.CreateAgentReservationSpec()]" mva:VisualBasic.Settings="Assembly references and imported namespaces serialized as XML namespaces">
       <mtbwa:AgentScope.Variables>
         <Variable x:TypeArguments="mtbc1:IBuildDetail" Name="BuildDetail" />
-        <Variable x:TypeArguments="x:String" Default="tst" Modifiers="ReadOnly" Name="TestResultsFolderName" />
+        <Variable x:TypeArguments="x:String" Default="src" Modifiers="ReadOnly" Name="TestResultsFolderName" />
         <Variable x:TypeArguments="x:String" Default="src" Modifiers="ReadOnly" Name="GitRepoFolderName" />
         <Variable x:TypeArguments="x:String" Default="bin" Modifiers="ReadOnly" Name="BinariesFolderName" />
         <Variable x:TypeArguments="x:String" Name="BuildDirectory" />
@@ -188,16 +189,17 @@
             <mtba:RunScript Arguments="[AdvancedBuildSettings.GetValue(Of String)(&quot;PreActionScriptArguments&quot;, String.Empty)]" DisplayName="Run optional script before MSBuild" Enabled="True" FilePath="[AdvancedBuildSettings.GetValue(Of String)(&quot;PreActionScriptPath&quot;, String.Empty)]" sap2010:WorkflowViewState.IdRef="RunScript_1" />
             <mtba:RunMSBuild CleanBuild="[CleanBuild]" CommandLineArguments="[String.Format(&quot;/p:SkipInvalidConfigurations=true {0}&quot;, AdvancedBuildSettings.GetValue(Of String)(&quot;MSBuildArguments&quot;, String.Empty))]" ConfigurationsToBuild="[ConfigurationsToBuild]" DisplayName="Run MSBuild" Enabled="True" sap2010:WorkflowViewState.IdRef="RunMSBuild_1" MSBuildMultiProc="True" OutputLocation="[OutputLocation]" ProjectsToBuild="[ProjectsToBuild]" RestoreNuGetPackages="True" RunCodeAnalysis="[AdvancedBuildSettings.GetValue(Of String)(&quot;RunCodeAnalysis&quot;, &quot;AsConfigured&quot;)]" ToolPlatform="[AdvancedBuildSettings.GetValue(Of String)(&quot;MSBuildPlatform&quot;, &quot;Auto&quot;)]" Verbosity="Normal" />
             <mtba:RunScript Arguments="[AdvancedBuildSettings.GetValue(Of String)(&quot;PostActionScriptArguments&quot;, String.Empty)]" DisplayName="Run optional script after MSBuild" Enabled="True" FilePath="[AdvancedBuildSettings.GetValue(Of String)(&quot;PostActionScriptPath&quot;, String.Empty)]" sap2010:WorkflowViewState.IdRef="RunScript_2" />
-            <Sequence DisplayName="Ensure server resources" sap2010:WorkflowViewState.IdRef="Sequence_22">
-              <mtbwa:DeleteDirectory Directory="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;, &quot;Workspaces&quot;)]" DisplayName="Delete Server Warewolf Workspaces" sap2010:WorkflowViewState.IdRef="DeleteDirectory_2" />
-              <mtbwa:DeleteDirectory Directory="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;, &quot;Resources&quot;)]" DisplayName="Delete Server Resources" sap2010:WorkflowViewState.IdRef="DeleteDirectory_3" />
-              <If Condition="[ConfigurationsToBuild.FirstOrDefault.Substring(ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c) + 1) = &quot;Debug&quot;]" DisplayName="If built in debug config" sap2010:WorkflowViewState.IdRef="If_26">
-                <If.Then>
+            <If Condition="[ConfigurationsToBuild.FirstOrDefault.Substring(ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c) + 1) = &quot;Debug&quot;]" DisplayName="If was built in debug config">
+              <If.Then>
+                <Sequence DisplayName="Ensure server debug resources" sap2010:WorkflowViewState.IdRef="Sequence_22">
+                  <mtbwa:DeleteDirectory Directory="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;, &quot;Workspaces&quot;)]" DisplayName="Delete Server Warewolf Workspaces" sap2010:WorkflowViewState.IdRef="DeleteDirectory_2" />
+                  <mtbwa:DeleteDirectory Directory="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;, &quot;Resources&quot;)]" DisplayName="Delete Server Resources" sap2010:WorkflowViewState.IdRef="DeleteDirectory_3" />
                   <mtbwa:CopyDirectory Destination="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;)]" DisplayName="Ensure Server Debug Resources" sap2010:WorkflowViewState.IdRef="CopyDirectory_1" Source="[Path.Combine(BuildDirectory, GitRepoFolderName, &quot;Dev&quot;, &quot;Dev2.Server&quot;, &quot;bin&quot;, &quot;Debug&quot;)]" />
-                </If.Then>
-              </If>
-              <mtbwa:CopyDirectory Destination="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;)]" DisplayName="Ensure Server Release Resources" sap2010:WorkflowViewState.IdRef="CopyDirectory_2" Source="[Path.Combine(BuildDirectory, GitRepoFolderName, &quot;Dev&quot;, &quot;BPM Resources - Release&quot;)]" />
-            </Sequence>
+                  <mtbwa:CopyDirectory Destination="[Path.Combine(BuildDirectory, BinariesFolderName, &quot;Server&quot;)]" DisplayName="Ensure Server Release Resources" sap2010:WorkflowViewState.IdRef="CopyDirectory_2" Source="[Path.Combine(BuildDirectory, GitRepoFolderName, &quot;Dev&quot;, &quot;BPM Resources - Release&quot;)]" />
+                </Sequence>
+              </If.Then>
+              <sap2010:WorkflowViewState.IdRef>If_36</sap2010:WorkflowViewState.IdRef>
+            </If>
             <mtbac:DropBinaries DestinationPath="{x:Null}" DisplayName="Copy binaries to drop" Enabled="True" sap2010:WorkflowViewState.IdRef="DropBinaries_2" />
             <Sequence DisplayName="Initialize for MSTest execution" sap2010:WorkflowViewState.IdRef="Sequence_21">
               <mtbwa:InvokeForReason DisplayName="For CI" sap2010:WorkflowViewState.IdRef="InvokeForReason_5" Reason="IndividualCI">
@@ -236,6 +238,14 @@
                   </mtbwa:InvokeProcess.OutputDataReceived>
                 </mtbwa:InvokeProcess>
               </mtbwa:InvokeForReason>
+              <Assign DisplayName="Append Suffix" sap2010:WorkflowViewState.IdRef="Assign_59">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">[BranchID]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">[BranchID &amp; BranchIDSuffix]</InArgument>
+                </Assign.Value>
+              </Assign>
               <mtbwa:InvokeForReason DisplayName="For CI" sap2010:WorkflowViewState.IdRef="InvokeForReason_3" Reason="IndividualCI">
                 <Assign DisplayName="Parse for changeset ID" sap2010:WorkflowViewState.IdRef="Assign_30">
                   <Assign.To>
@@ -330,7 +340,7 @@
                           <mtba:RunScript Arguments="[AdvancedTestSettings.GetValue(Of String)(&quot;PreActionScriptArguments&quot;, String.Empty)]" DisplayName="Run optional script before Test Runner" Enabled="True" FilePath="[AdvancedTestSettings.GetValue(Of String)(&quot;PreActionScriptPath&quot;, String.Empty)]" sap2010:WorkflowViewState.IdRef="RunScript_10" />
                           <TryCatch sap2010:WorkflowViewState.IdRef="TryCatch_2">
                             <TryCatch.Try>
-                              <mtbwa:MSTest Category="[testSpec.GetValue(Of String)(&quot;TestCaseFilter&quot;)]" Flavor="[ConfigurationsToBuild.FirstOrDefault.Substring(ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c) + 1)]" sap2010:WorkflowViewState.IdRef="MSTest_3" PathToResultsFilesRoot="[Path.Combine(BuildDirectory, TestResultsFolderName, ResultsSubFolderName)]" Platform="[ConfigurationsToBuild.FirstOrDefault.Substring(0, ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c))]" Publish="[AdvancedTestSettings.GetValue(Of Boolean)(&quot;PublishToTfs&quot;)]" RunTitle="[testSpec.GetValue(Of String)(&quot;RunName&quot;)]" SearchPathRoot="[Path.Combine(BuildDirectory, BinariesFolderName)]" TestContainers="[localTestAssemblies]" TestSettings="[localSettings]" ToolPath="C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE" />
+                              <mtbwa:MSTest Category="[testSpec.GetValue(Of String)(&quot;TestCaseFilter&quot;)]" Flavor="[ConfigurationsToBuild.FirstOrDefault.Substring(ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c) + 1)]" sap2010:WorkflowViewState.IdRef="MSTest_3" PathToResultsFilesRoot="[Path.Combine(BuildDirectory, TestResultsFolderName, ResultsSubFolderName)]" Platform="[ConfigurationsToBuild.FirstOrDefault.Substring(0, ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c))]" Publish="True" RunTitle="[testSpec.GetValue(Of String)(&quot;RunName&quot;)]" SearchPathRoot="[Path.Combine(BuildDirectory, BinariesFolderName)]" TestContainers="[localTestAssemblies]" TestSettings="[localSettings]" ToolPath="C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE" />
                             </TryCatch.Try>
                             <TryCatch.Catches>
                               <Catch x:TypeArguments="mtbwa:TestFailureException" sap2010:WorkflowViewState.IdRef="Catch`1_2">
@@ -592,7 +602,7 @@
                           <mtba:RunScript Arguments="[AdvancedTestSettings.GetValue(Of String)(&quot;PreActionScriptArguments&quot;, String.Empty)]" DisplayName="Run optional script before Test Runner" Enabled="True" FilePath="[AdvancedTestSettings.GetValue(Of String)(&quot;PreActionScriptPath&quot;, String.Empty)]" sap2010:WorkflowViewState.IdRef="RunScript_17" />
                           <TryCatch sap2010:WorkflowViewState.IdRef="TryCatch_7">
                             <TryCatch.Try>
-                              <mtbwa:MSTest Category="[testSpec.GetValue(Of String)(&quot;TestCaseFilter&quot;)]" Flavor="[ConfigurationsToBuild.FirstOrDefault.Substring(ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c) + 1)]" sap2010:WorkflowViewState.IdRef="MSTest_13" PathToResultsFilesRoot="[Path.Combine(BuildDirectory, TestResultsFolderName, ResultsSubFolderName)]" Platform="[ConfigurationsToBuild.FirstOrDefault.Substring(0, ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c))]" Publish="[AdvancedTestSettings.GetValue(Of Boolean)(&quot;PublishToTfs&quot;)]" RunTitle="[testSpec.GetValue(Of String)(&quot;RunName&quot;)]" SearchPathRoot="[Path.Combine(BuildDirectory, BinariesFolderName)]" TestContainers="[localTestAssemblies]" TestSettings="[localSettings]" ToolPath="C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE" />
+                              <mtbwa:MSTest Category="[testSpec.GetValue(Of String)(&quot;TestCaseFilter&quot;)]" Flavor="[ConfigurationsToBuild.FirstOrDefault.Substring(ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c) + 1)]" sap2010:WorkflowViewState.IdRef="MSTest_13" PathToResultsFilesRoot="[Path.Combine(BuildDirectory, TestResultsFolderName, ResultsSubFolderName)]" Platform="[ConfigurationsToBuild.FirstOrDefault.Substring(0, ConfigurationsToBuild.FirstOrDefault.IndexOf(&quot;|&quot;c))]" Publish="True" RunTitle="[testSpec.GetValue(Of String)(&quot;RunName&quot;)]" SearchPathRoot="[Path.Combine(BuildDirectory, BinariesFolderName)]" TestContainers="[localTestAssemblies]" TestSettings="[localSettings]" ToolPath="C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE" />
                             </TryCatch.Try>
                             <TryCatch.Catches>
                               <Catch x:TypeArguments="mtbwa:TestFailureException" sap2010:WorkflowViewState.IdRef="Catch`1_8">
@@ -840,7 +850,7 @@
                   </InvokeMethod>
                   <InvokeMethod DisplayName="Execute Stored Proc" sap2010:WorkflowViewState.IdRef="InvokeMethod_18" MethodName="ExecuteNonQuery">
                     <InvokeMethod.TargetObject>
-                      <InArgument x:TypeArguments="sds:SqlCommand">[New System.Data.SqlClient.SqlCommand("TEMP_SEND_REPORT @CheckInID = N'" &amp; ChangesetID &amp; "', @LUCBranch = N'" &amp; HttpUtility.UrlEncode(BranchID) &amp; "', @RunByUser = N'" &amp; BuildDetail.RequestedFor.Replace(" "c, "."c) &amp; "', @BuildID = " &amp; BuildID, con)]</InArgument>
+                      <InArgument x:TypeArguments="sds:SqlCommand">[New System.Data.SqlClient.SqlCommand("TEMP_SEND_REPORT @CheckInID = N'" &amp; ChangesetID &amp; "', @LUCBranch = N'" &amp; BranchID &amp; "', @RunByUser = N'" &amp; BuildDetail.RequestedFor.Replace(" "c, "."c) &amp; "', @BuildID = " &amp; BuildID, con)]</InArgument>
                     </InvokeMethod.TargetObject>
                   </InvokeMethod>
                   <InvokeMethod DisplayName="Close connection to database" sap2010:WorkflowViewState.IdRef="InvokeMethod_19" MethodName="Close">
@@ -872,7 +882,7 @@
         </TryCatch.Finally>
       </TryCatch>
     </mtbwa:AgentScope>
-    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
+    <sads:DebugSymbol.Symbol>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</sads:DebugSymbol.Symbol>
   </Sequence>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -889,18 +899,18 @@
       <sap2010:ViewStateData Id="RunScript_1" sap:VirtualizedContainerService.HintSize="2102,22" />
       <sap2010:ViewStateData Id="RunMSBuild_1" sap:VirtualizedContainerService.HintSize="2102,22" />
       <sap2010:ViewStateData Id="RunScript_2" sap:VirtualizedContainerService.HintSize="2102,22" />
-      <sap2010:ViewStateData Id="DeleteDirectory_2" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="DeleteDirectory_3" sap:VirtualizedContainerService.HintSize="464,22" />
+      <sap2010:ViewStateData Id="DeleteDirectory_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="DeleteDirectory_3" sap:VirtualizedContainerService.HintSize="200,22" />
       <sap2010:ViewStateData Id="CopyDirectory_1" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="If_26" sap:VirtualizedContainerService.HintSize="464,203" />
-      <sap2010:ViewStateData Id="CopyDirectory_2" sap:VirtualizedContainerService.HintSize="464,22" />
-      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="2102,513">
+      <sap2010:ViewStateData Id="CopyDirectory_2" sap:VirtualizedContainerService.HintSize="200,22" />
+      <sap2010:ViewStateData Id="Sequence_22" sap:VirtualizedContainerService.HintSize="222,332">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_36" sap:VirtualizedContainerService.HintSize="2102,475" />
       <sap2010:ViewStateData Id="DropBinaries_2" sap:VirtualizedContainerService.HintSize="2102,22" />
       <sap2010:ViewStateData Id="Assign_48" sap:VirtualizedContainerService.HintSize="242,59" />
       <sap2010:ViewStateData Id="InvokeForReason_5" sap:VirtualizedContainerService.HintSize="298,183">
@@ -921,6 +931,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_59" sap:VirtualizedContainerService.HintSize="298,59" />
       <sap2010:ViewStateData Id="Assign_30" sap:VirtualizedContainerService.HintSize="242,59" />
       <sap2010:ViewStateData Id="InvokeForReason_3" sap:VirtualizedContainerService.HintSize="298,183">
         <sap:WorkflowViewStateService.ViewState>
@@ -942,7 +953,7 @@
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="Assign_46" sap:VirtualizedContainerService.HintSize="242,59" />
       <sap2010:ViewStateData Id="InvokeProcess_4" sap:VirtualizedContainerService.HintSize="298,298" />
-      <sap2010:ViewStateData Id="Sequence_21" sap:VirtualizedContainerService.HintSize="2102,1792">
+      <sap2010:ViewStateData Id="Sequence_21" sap:VirtualizedContainerService.HintSize="2102,1891">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1040,7 +1051,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_18" sap:VirtualizedContainerService.HintSize="654,985" />
+      <sap2010:ViewStateData Id="If_18" sap:VirtualizedContainerService.HintSize="880,985" />
       <sap2010:ViewStateData Id="Sequence_10" sap:VirtualizedContainerService.HintSize="902,4216">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -1049,7 +1060,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="InvokeForReason_1" sap:VirtualizedContainerService.HintSize="924,4340" />
-      <sap2010:ViewStateData Id="RunScript_9" sap:VirtualizedContainerService.HintSize="698,22" />
+      <sap2010:ViewStateData Id="RunScript_9" sap:VirtualizedContainerService.HintSize="924,22" />
       <sap2010:ViewStateData Id="Sequence_6" sap:VirtualizedContainerService.HintSize="946,5331">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -1149,7 +1160,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_34" sap:VirtualizedContainerService.HintSize="654,985" />
+      <sap2010:ViewStateData Id="If_34" sap:VirtualizedContainerService.HintSize="880,985" />
       <sap2010:ViewStateData Id="Sequence_28" sap:VirtualizedContainerService.HintSize="902,4216">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -1158,7 +1169,7 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="InvokeForReason_7" sap:VirtualizedContainerService.HintSize="924,4340" />
-      <sap2010:ViewStateData Id="RunScript_18" sap:VirtualizedContainerService.HintSize="698,22" />
+      <sap2010:ViewStateData Id="RunScript_18" sap:VirtualizedContainerService.HintSize="924,22" />
       <sap2010:ViewStateData Id="Sequence_29" sap:VirtualizedContainerService.HintSize="946,5331">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -1186,9 +1197,9 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="If_21" sap:VirtualizedContainerService.HintSize="1650,734" />
-      <sap2010:ViewStateData Id="RunPublishSymbols_1" sap:VirtualizedContainerService.HintSize="1650,22" />
-      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="2124,9355">
+      <sap2010:ViewStateData Id="If_21" sap:VirtualizedContainerService.HintSize="2102,734" />
+      <sap2010:ViewStateData Id="RunPublishSymbols_1" sap:VirtualizedContainerService.HintSize="2102,22" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="2124,9416">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1204,7 +1215,7 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="404,20">
+      <sap2010:ViewStateData Id="Catch`1_1" sap:VirtualizedContainerService.HintSize="2128,20">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
@@ -1212,16 +1223,16 @@
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="ResetEnvironment_2" sap:VirtualizedContainerService.HintSize="200,22" />
-      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="2142,9573" />
-      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="2164,10193" />
-      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="2186,10441">
+      <sap2010:ViewStateData Id="TryCatch_1" sap:VirtualizedContainerService.HintSize="2142,9634" />
+      <sap2010:ViewStateData Id="AgentScope_1" sap:VirtualizedContainerService.HintSize="2164,10254" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="2186,10502">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="2226,10521" />
+      <sap2010:ViewStateData Id="TfsBuild.Process_1" sap:VirtualizedContainerService.HintSize="2226,10582" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
