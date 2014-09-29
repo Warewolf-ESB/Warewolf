@@ -84,70 +84,72 @@ this.ScenarioSetup(scenarioInfo);
 #line 9
      testRunner.Given("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
+  testRunner.And("I click \"EXPLORERFILTERCLEARBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
   testRunner.And("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
+#line 13
   testRunner.And("I click \"RIBBONSCHEDULE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
-  testRunner.And("I click \"SCHEDULERNEWBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
+  testRunner.And("I click \"SCHEDULERNEWBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 16
   testRunner.Then("\"SCHEDULERNEWBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 17
-  testRunner.And("I click \"SCHEDULERWORKFLOWSELECTORBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
+  testRunner.And("I click \"SCHEDULERWORKFLOWSELECTORBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
   testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_File and Folder - Wri" +
                     "te File_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
-  testRunner.And("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
-     testRunner.And("I type \"IntegrationTester\" in \"SCHEDULERUSERNAMEINPUT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
+     testRunner.And("I type \"IntegrationTester\" in \"SCHEDULERUSERNAMEINPUT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 22
   testRunner.And("I type \"CIScheduleTest\" in \"SCHEDULERNAMEINPUT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 23
-  testRunner.When("I click \"SCHEDULEREDITTRIGGERBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 24
-     testRunner.Then("\"TriggerEditDialog\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("I click \"SCHEDULEREDITTRIGGERBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 25
-  testRunner.And("I click point \"524,508\" on \"TriggerEditDialog\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+     testRunner.Then("\"TriggerEditDialog\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 26
-  testRunner.And("I type \"20\" in \"SCHEDULERHISTORYTOKEEPINPUT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("I click point \"524,508\" on \"TriggerEditDialog\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 27
+  testRunner.And("I type \"20\" in \"SCHEDULERHISTORYTOKEEPINPUT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 28
   testRunner.And("I send \"{TAB}{ENTER}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
-  testRunner.Given("I click \"SCHEDULERSAVEBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 33
-  testRunner.And("I click point \"199,264\" on \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.Given("I click \"SCHEDULERSAVEBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 34
-  testRunner.And("\"UI_MessageBox_AutoID,UI_OkButton_AutoID\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 35
-  testRunner.Given("I click \"UI_MessageBox_AutoID,UI_OkButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 36
-  testRunner.Then("\"SCHEDULERNEWBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 38
- testRunner.Given("I click \"UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,closeBtn\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 39
-  testRunner.And("I click \"UI_MessageBox_AutoID,UI_YesButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 40
   testRunner.And("I click point \"199,264\" on \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 41
+#line 35
   testRunner.And("\"UI_MessageBox_AutoID,UI_OkButton_AutoID\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 42
+#line 36
   testRunner.Given("I click \"UI_MessageBox_AutoID,UI_OkButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 37
+  testRunner.Then("\"SCHEDULERNEWBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 39
+ testRunner.Given("I click \"UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,closeBtn\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 40
+  testRunner.And("I click \"UI_MessageBox_AutoID,UI_YesButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 41
+  testRunner.And("I click point \"199,264\" on \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 42
+  testRunner.And("\"UI_MessageBox_AutoID,UI_OkButton_AutoID\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 43
+  testRunner.Given("I click \"UI_MessageBox_AutoID,UI_OkButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 44
   testRunner.And("I click \"SCHEDULERTAB,UI_SchedulerTabControl_AutoID,UI_SchedulerSettingsTab_AutoI" +
                     "D\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 44
+#line 45
   testRunner.And("\"SCHEDULERNAMEINPUT\" contains text \"CIScheduleTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
-  testRunner.And("I click \"SCHEDULERSAVEBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 47
-  testRunner.Given("I send \"I73573r0\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+  testRunner.And("I click \"SCHEDULERSAVEBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 48
+  testRunner.Given("I send \"I73573r0\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 49
   testRunner.And("I click point \"199,264\" on \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 50
-  testRunner.And("\"SCHEDULERSAVEBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 51
-  testRunner.And("I click \"SCHEDULERDELETEBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("\"SCHEDULERSAVEBUTTON\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 52
+  testRunner.And("I click \"SCHEDULERDELETEBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 53
   testRunner.And("I click \"SCHEDULERDELETECONFIRMATIONYESBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
