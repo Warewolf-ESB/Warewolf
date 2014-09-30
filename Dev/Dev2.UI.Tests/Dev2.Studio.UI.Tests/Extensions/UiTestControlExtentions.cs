@@ -77,16 +77,25 @@ namespace Dev2.Studio.UI.Tests.Extensions
             }
 
             var levelsDeep = 0;
-            while(parentCollection.Count > 0 && levelsDeep < 4)
+            while(parentCollection != null && (parentCollection.Count > 0 && levelsDeep < 4))
             {
                 levelsDeep++;
                 List<UITestControl> collectionToSearch = null;
                 try
                 {
-                    collectionToSearch = parentCollection
-                                    .SelectMany(c => c.GetChildren())
-                                    .Where(c => c is WpfControl)
-                                    .ToList();
+                    var uiTestControls = parentCollection.SelectMany(c =>
+                    {
+                        try
+                        {
+                            return c.GetChildren()??new UITestControlCollection();
+                        }
+                        catch(Exception)
+                        {
+                            return new UITestControlCollection();
+                        }
+                    });
+                    var testControls = uiTestControls.Where(c => c is WpfControl);
+                    collectionToSearch = testControls.ToList();
 
                     control = collectionToSearch
                         .FirstOrDefault(b => ((WpfControl)b).AutomationId.Equals(automationId));
@@ -341,7 +350,7 @@ namespace Dev2.Studio.UI.Tests.Extensions
                 Mouse.Click(control.GetParent());
                 boundingRect = control.BoundingRectangle;
             }
-            var point = new Point(boundingRect.X + boundingRect.Width / 2, boundingRect.Top + 5);
+            var point = new Point(boundingRect.X + boundingRect.Width / 2, boundingRect.Top + 7);
             return point;
         }
 
