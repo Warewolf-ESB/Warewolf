@@ -1,5 +1,5 @@
 
-<Source ID="ebba47dc-e5d4-4303-a203-09e2e9761d16" Version="1.0" Name="testingDBSrc" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+<Source ID="ebba47dc-e5d4-4303-a203-09e2e9761d16" Name="testingDBSrc" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=Dev2TestingDB;User ID=testuser;Password=test123;" ServerVersion="0.4.2.2" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
   <DisplayName>testingDBSrc</DisplayName>
   <Category>testingDBSrc</Category>
   <AuthorRoles>
@@ -19,8 +19,7 @@
   </BizRule>
   <WorkflowActivityDef>
   </WorkflowActivityDef>
-  <XamlDefinition>
-  </XamlDefinition>
+  <VersionInfo DateTimeStamp="2014-09-30T08:36:41.6068265+02:00" Reason="" User="" VersionNumber="2" ResourceId="ebba47dc-e5d4-4303-a203-09e2e9761d16" VersionId="81f4c591-ddf4-4871-a539-3b9fd3be41f8" />
   <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
     <SignedInfo>
       <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
@@ -30,9 +29,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Po8qXCKPN6SxZrLHlmrkWWO5TSI=</DigestValue>
+        <DigestValue>fb+51mOkbY2HB8i+6C0Yg0JqT+c=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>B6nrm94X47xFxBg0NKrRr52zb1zpxvXIqiKpdSgvfjYXUflqYqluKjWNFDOY3TA7CkvP7mW+nsy6/ZoIG42nx4MU6O+qxZd8v3p832PY4Si0yGI2AKFXaEj3lO+BQJ3ktMbx+PEzjlY7sH5UJFtL8HDInbbBr7SUo8Xarb3N+Wg=</SignatureValue>
+    <SignatureValue>iAJ6r0rcTbkz40IukIhEmeT0s/m0zsWcay0NJ0JT2wFeVOs/3psBkA6wnvf5EY5EADkJbUlHcEmr/3vl9CGgwhgbd/Nzq4aPFjfpbTQ41ZpLrP1ecrpe7VWwoW1mtlMEQenr6pXCZa74Bu6+A/phpehCvUfb97TPhzWL+igGUzE=</SignatureValue>
   </Signature>
 </Source>
