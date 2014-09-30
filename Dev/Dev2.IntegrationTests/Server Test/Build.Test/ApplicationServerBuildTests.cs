@@ -160,7 +160,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Build.Test
 
             var result = coms.ExecuteCommand<ExecuteMessage>(_connection, Guid.Empty);
 
-            StringAssert.Contains(result.Message.ToString(), expected, "Got [ " + result.Message + " ]");
+            StringAssert.Contains(result.Message.ToString(), expected);
 
         }
 
