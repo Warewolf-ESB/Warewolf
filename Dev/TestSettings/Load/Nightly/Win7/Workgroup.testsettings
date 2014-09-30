@@ -6,7 +6,7 @@
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
 	</Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="..\src\Dev\TestScripts\Load\Startup.bat" cleanupScript="..\src\Dev\TestScripts\Load\Cleanup.bat" />
+  <Scripts setupScript="TestScripts\Load\Startup.bat" cleanupScript="TestScripts\Load\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote">
     <TestTypeSpecific>

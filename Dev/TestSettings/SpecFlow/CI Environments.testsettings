@@ -8,11 +8,11 @@
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
     </Deployment>
   <NamingScheme baseName="UT" />
-    <Scripts setupScript="..\src\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\src\Dev\TestScripts\Acceptance\Cleanup.bat" />
+    <Scripts setupScript="TestScripts\Acceptance\Startup.bat" cleanupScript="TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote">
     <Timeouts testTimeout="180000" />
-    <Buckets size="100" />
+    <Buckets size="75" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
         <AssemblyResolution>

@@ -7,7 +7,7 @@
             <!--For Build Agents-->
         <DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
 	</Deployment>
-  <Scripts setupScript="..\src\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\src\Dev\TestScripts\Acceptance\Cleanup.bat" />
+  <Scripts setupScript="TestScripts\Acceptance\Startup.bat" cleanupScript="TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote">
     <Buckets size="10000" />
