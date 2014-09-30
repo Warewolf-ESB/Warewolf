@@ -12,7 +12,7 @@
         <DeploymentItem filename="Binaries\IronRuby.Libraries.Yaml.dll" />
         <DeploymentItem filename="Binaries\IronRuby.dll" />
     </Deployment>
-    <Scripts cleanupScript="TestScripts\Unit\Cleanup.bat" />
+    <Scripts cleanupScript="..\Dev\TestScripts\Unit\Cleanup.bat" />
     <RemoteController name="rsaklfsvrtfsbld" />
     <Execution location="Remote">
         <Buckets size="1000" />

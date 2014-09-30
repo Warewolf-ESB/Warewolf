@@ -7,7 +7,7 @@
             <!--For Build Agents-->
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
 	</Deployment>
-  <Scripts setupScript="TestScripts\Acceptance\Startup.bat" cleanupScript="TestScripts\Acceptance\Cleanup.bat" />
+  <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote">
     <Timeouts testTimeout="180000" />

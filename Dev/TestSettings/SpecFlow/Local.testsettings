@@ -8,7 +8,7 @@
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
     </Deployment>
   <NamingScheme baseName="UT" />
-    <Scripts setupScript="TestScripts\Acceptance\Startup.bat" cleanupScript="TestScripts\Acceptance\Cleanup.bat" />
+    <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution>
     <Timeouts testTimeout="180000" />

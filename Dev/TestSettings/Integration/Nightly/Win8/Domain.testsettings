@@ -10,7 +10,7 @@
         <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
 	</Deployment>
   <NamingScheme baseName="TestResults" appendTimeStamp="false" />
-  <Scripts setupScript="TestScripts\Integration\Startup.bat" cleanupScript="TestScripts\Integration\Cleanup.bat" />
+  <Scripts setupScript="..\Dev\TestScripts\Integration\Startup.bat" cleanupScript="..\Dev\TestScripts\Integration\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote" parallelTestCount="0">
     <Buckets size="1000" />

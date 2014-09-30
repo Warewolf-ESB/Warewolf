@@ -10,7 +10,7 @@
         <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
   </Deployment>
   <NamingScheme baseName="UI" appendTimeStamp="false" useDefault="false" />
-    <Scripts setupScript="TestScripts\UI\Startup.bat" cleanupScript="TestScripts\UI\Cleanup.bat" />
+    <Scripts setupScript="..\Dev\TestScripts\UI\Startup.bat" cleanupScript="..\Dev\TestScripts\UI\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote">
     <Hosts skipUnhostableTests="false" />
