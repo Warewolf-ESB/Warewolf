@@ -22,7 +22,7 @@ namespace Dev2.Studio.Views.Explorer
         }
 
 
-        void TreeViewDrop(object sender, System.Windows.DragEventArgs e)
+        void TreeViewDrop(object sender, DragEventArgs e)
         {
             TreeViewItem t = sender as TreeViewItem;
             IStudioResourceRepository rep = StudioResourceRepository.Instance;
@@ -38,6 +38,10 @@ namespace Dev2.Studio.Views.Explorer
                         try
                         {
                             ExplorerItemModel source = explorerItemModel as ExplorerItemModel;
+                            if (source != null && (source == destination || destination.IsVersion || source.IsVersion))
+                            {
+                                e.Handled = true;
+                            }
                             MoveItem(source, destination, rep);
                         }
                         finally { e.Handled = true; }
