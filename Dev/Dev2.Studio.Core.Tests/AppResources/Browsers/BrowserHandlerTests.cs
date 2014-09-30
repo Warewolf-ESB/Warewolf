@@ -18,21 +18,6 @@ namespace Dev2.Core.Tests.AppResources.Browsers
     [ExcludeFromCodeCoverage]
     public class BrowserHandlerTests
     {
-        static readonly string CefSharpDependancyLocation = Path.Combine(Environment.CurrentDirectory, "CefSharp.dll");
-
-        #region Class Init
-
-        [AssemblyInitialize]
-        public static void ResolveDependency(TestContext testContext)
-        {
-            if(File.Exists(CefSharpDependancyLocation))
-            {
-                Assembly.LoadFile(CefSharpDependancyLocation);
-            }
-        }
-
-        #endregion
-
         #region CTOR
 
         [TestMethod]
