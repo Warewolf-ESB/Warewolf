@@ -1,4 +1,16 @@
-ï»¿using System;
+
+/*
+*  Warewolf - The Easy Service Bus
+*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
@@ -15,13 +27,13 @@ namespace Microsoft.Win32.TaskScheduler
 	{
 		/// <summary>The task is compatible with the AT command.</summary>
 		AT,
-		/// <summary>The task is compatible with Task Scheduler 1.0 (Windows Serverâ„¢ 2003, WindowsÂ® XP, or WindowsÂ® 2000).</summary>
+		/// <summary>The task is compatible with Task Scheduler 1.0 (Windows Server™ 2003, Windows® XP, or Windows® 2000).</summary>
 		V1,
-		/// <summary>The task is compatible with Task Scheduler 2.0 (Windows Vistaâ„¢, Windows Serverâ„¢ 2008).</summary>
+		/// <summary>The task is compatible with Task Scheduler 2.0 (Windows Vista™, Windows Server™ 2008).</summary>
 		V2,
-		/// <summary>The task is compatible with Task Scheduler 2.1 (WindowsÂ® 7, Windows Serverâ„¢ 2008 R2).</summary>
+		/// <summary>The task is compatible with Task Scheduler 2.1 (Windows® 7, Windows Server™ 2008 R2).</summary>
 		V2_1,
-		/// <summary>The task is compatible with Task Scheduler 2.2 (WindowsÂ® 8.x, Windows Serverâ„¢ 2012).</summary>
+		/// <summary>The task is compatible with Task Scheduler 2.2 (Windows® 8.x, Windows Server™ 2012).</summary>
 		V2_2
 	}
 

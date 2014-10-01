@@ -1,4 +1,16 @@
-ï»¿using System;
+
+/*
+*  Warewolf - The Easy Service Bus
+*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.InteropServices;
@@ -348,7 +360,7 @@ namespace Microsoft.Win32.TaskScheduler
 		/// <list type="bullet">
 		///	<item><description>YYYY-MM-DDTHH:MM:SS format uses DateTimeKind.Unspecified and the time specified.</description></item>
 		///	<item><description>YYYY-MM-DDTHH:MM:SSZ format uses DateTimeKind.Utc and the time specified as the GMT time.</description></item>
-		///	<item><description>YYYY-MM-DDTHH:MM:SSÂ±HH:MM format uses DateTimeKind.Local and the time specified in that time zone.</description></item>
+		///	<item><description>YYYY-MM-DDTHH:MM:SS±HH:MM format uses DateTimeKind.Local and the time specified in that time zone.</description></item>
 		/// </list>
 		/// </para>
 		/// </remarks>
@@ -1457,8 +1469,8 @@ namespace Microsoft.Win32.TaskScheduler
 		/// <summary>
 		/// <para>Gets or sets The identifier of the user. For example, "MyDomain\MyName" or for a local account, "Administrator".</para>
 		/// <para>This property can be in one of the following formats:</para>
-		/// <para>â€¢ User name or SID: The task is started when the user logs on to the computer.</para>
-		/// <para>â€¢ NULL: The task is started when any user logs on to the computer.</para>
+		/// <para>• User name or SID: The task is started when the user logs on to the computer.</para>
+		/// <para>• NULL: The task is started when any user logs on to the computer.</para>
 		/// </summary>
 		/// <remarks>If you want a task to be triggered when any member of a group logs on to the computer rather than when a specific user logs on, then do not assign a value to the LogonTrigger.UserId property. Instead, create a logon trigger with an empty LogonTrigger.UserId property and assign a value to the principal for the task using the Principal.GroupId property.</remarks>
 		/// <exception cref="NotV1SupportedException">Not supported under Task Scheduler 1.0.</exception>
