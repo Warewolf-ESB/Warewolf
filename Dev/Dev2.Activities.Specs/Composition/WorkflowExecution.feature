@@ -148,6 +148,60 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
 
+
+
+Scenario: Executing Utility - Assign example workflow
+	  Given I have a workflow "Utility - Assign Test"
+	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Utility - Assign Test" is executed
+	  Then the workflow execution has "NO" error
+	   And the 'Assign (3)' in WorkFlow 'Utility - Assign' debug inputs as
+	  | # | Variable      | New Value                       |
+	  | 1 | [[Name]] =    | Bart                            |
+	  | 2 | [[Surname]] = | Simpson                         |
+	  | 3 | [[Info]] =    | I WILL NOT INSTIGATE REVOLUTION |
+	  And the 'Assign (3)' in Workflow 'Utility - Assign' debug outputs as    
+	  | # |                                               |
+	  | 1 | [[Name]]    = Bart                            |
+	  | 2 | [[Surname]] = Simpson                         |
+	  | 3 | [[Info]]    = I WILL NOT INSTIGATE REVOLUTION |
+	   And the 'Assign (2)' in WorkFlow 'Utility - Assign' debug inputs as
+	  |                                                                                                |
+	  | [[rec(1).set]] = [[Name]] [[Surname]]: [[Info]] = Bart Simpson I WILL NOT INSTIGATE REVOLUTION |
+	  And the 'Assign (2)' in Workflow 'Utility - Assign' debug outputs as
+	  | # |                                                               |
+	  | 1 | [[rec(1).set]] = Bart Simpson I WILL NOT INSTIGATE REVOLUTION |
+	 # And the 'Convert Case (1)' in Workflow 'Utility - Assign' debug outputs as
+	 # | # |                |
+	 # | 1 | [[in]] = HELLO |
+	 # And the 'Final Assign (3)' in Workflow 'Utility - Assign' debug outputs as
+	 # | # |                             |
+	 # | 1 | [[output]] = HELLO          |
+	 # | 2 | [[values(1).upper]] = HELLO |
+	 # | 3 | [[values(1).lower]] = hello |	  	 
+	 # And the 'WorkflowUsedBySpecs' in Workflow 'Utility - Assign' debug outputs as
+	 # |                           |
+	 # | [[output]] = HELLO        |
+	 # | [[values(1).up]] = HELLO  |
+	 # | [[values(1).low]] = hello |
+	 #
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	  
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
