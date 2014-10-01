@@ -75,8 +75,6 @@ Scenario: Drag resource multiple times from explorer and expected mappings are n
 	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
 	##Testing Row1 Vriable
 	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
-	Given I right click "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner)"
-	And I send "{TAB}{TAB}{TAB}{TAB}{ENTER}" to ""
 	Given I drag "EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID" onto "WORKSURFACE,StartSymbol"
 	Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent" is visible
 	##Testing Row1 Vriable
