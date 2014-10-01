@@ -47,9 +47,9 @@ namespace Dev2.Server.DataList.Translators
             {
                 result.Append(val.TheValue);
             }
-            catch(Exception e)
+            // ReSharper disable EmptyGeneralCatchClause
+            catch(Exception)
             {
-                Dev2Logger.Log.Error(e);
             }
             result.Append("</");
             result.Append(fName);
@@ -90,9 +90,9 @@ namespace Dev2.Server.DataList.Translators
                         {
                             result.Append(col.TheValue);
                         }
-                        catch(Exception e)
+                        // ReSharper disable EmptyGeneralCatchClause
+                        catch (Exception)
                         {
-                            Dev2Logger.Log.Error(e);
                         }
                         result.Append("</");
                         result.Append(fName);

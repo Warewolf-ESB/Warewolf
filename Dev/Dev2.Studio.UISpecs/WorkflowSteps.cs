@@ -549,7 +549,7 @@ namespace Dev2.Studio.UI.Specs
         {
             var newServerAutoId = "UI_DocManager_AutoID,UI_ExplorerPane_AutoID,UI_ExplorerControl_AutoID,ConnectUserControl,UI_ExplorerServerCbx_AutoID,U_UI_ExplorerServerCbx_AutoID_New Remote Server...";
             GivenIClick(newServerAutoId);
-            ThenIsVisibleWithinSeconds("WebBrowserWindow", 3);
+            ThenIsVisibleWithinSeconds("WebBrowserWindow", 10);
             var window = GetAControlStrict("WebBrowserWindow");
             //ENTER ADDRESS
             var serverDetailsRow = table.Rows[0];
@@ -737,7 +737,7 @@ namespace Dev2.Studio.UI.Specs
             var itemToDrag = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragItem, false, false, correcteddDragItemAutoIds);
             var dragDestinationItem = VisualTreeWalker.GetControlFromRoot(true, 0, startControlDragDestination, false, false, correctedDragDestinationAutoIds);
 
-            itemToDrag.Click();
+            //itemToDrag.Click();
             var clickablePoint = itemToDrag.GetClickablePoint();
             Mouse.StartDragging(itemToDrag, clickablePoint);
 
@@ -758,7 +758,9 @@ namespace Dev2.Studio.UI.Specs
             //SETUP SOURCE
             var controlToDrag = GetAControlStrict(dragItemAutoIds);
             //DRAG
-            Mouse.StartDragging(controlToDrag, new Point(5, 5));
+            controlToDrag.Click();
+            var clickablePoint = controlToDrag.GetClickablePoint();
+            Mouse.StartDragging(controlToDrag,clickablePoint);
             Mouse.StopDragging(dragStopPoint);
             Playback.Wait(100);
         }
