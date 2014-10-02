@@ -10420,47 +10420,55 @@ this.FeatureBackground();
 #line hidden
             TechTalk.SpecFlow.Table table578 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
+                        "=",
                         "Input Format",
+                        "=",
                         "Add Time",
                         "",
-                        "Output Format"});
+                        "Output Format",
+                        "="});
             table578.AddRow(new string[] {
-                        "System Date Time =  DateTime",
-                        "System Date Time Format = yyyy/MM/dd hh:mm:ss tt",
-                        "None",
-                        "0",
-                        "System Date Time Format = yyyy/MM/dd hh:mm:ss tt"});
+                        "System Date Time",
+                        "DateTime",
+                        "System Date Time Format",
+                        "MM/dd/yyyy hh:mm:ss tt",
+                        "\"\"",
+                        "\"\"",
+                        "System Date Time Format",
+                        "MM/dd/yyyy hh:mm:ss tt"});
 #line 3754
-   testRunner.And("the \'Date and Time\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table578, "And ");
+   testRunner.And("the \'Date and Time(1)\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table578, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table579 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table579.AddRow(new string[] {
                         "[[nowish]] = DateTime"});
 #line 3757
-   testRunner.And("the \'Date and Time\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table579, "And ");
+   testRunner.And("the \'Date and Time(1)\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table579, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table580 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
                         "Input Format",
+                        "=",
                         "Add Time",
                         "",
                         "Output Format"});
             table580.AddRow(new string[] {
-                        "Sunday, 23 July 78",
-                        "DW, dd MM yy",
-                        "None",
-                        "0",
-                        "mm/dd/yyyy 12h:min am/pm"});
+                        "[[nowish]] = DateTime",
+                        "System Date Time Format",
+                        "MM/dd/yyyy hh:mm:ss tt",
+                        "\"\"",
+                        "\"\"",
+                        "mm/dd/yy 12h:min am/pm"});
 #line 3760
-   testRunner.And("the \'Date and Time\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table580, "And ");
+  testRunner.And("the \'Date and Time(2)\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table580, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table581 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table581.AddRow(new string[] {
-                        "[[SomeTimeBack]]= DateTime"});
+                        "[[nowish]] = DateTime"});
 #line 3763
-   testRunner.And("the \'Date and Time\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table581, "And ");
+   testRunner.And("the \'Date and Time(2)\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table581, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table582 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
@@ -10469,20 +10477,20 @@ this.FeatureBackground();
                         "",
                         "Output Format"});
             table582.AddRow(new string[] {
-                        "[[nowish]] = DateTime",
-                        "System Date Time Format = yyyy/MM/dd hh:mm:ss tt",
-                        "None",
-                        "0",
-                        "mm/dd/yy 12h:min am/pm"});
+                        "Sunday, 23 July 78",
+                        "DW, dd MM yy",
+                        "Minutes",
+                        "46664",
+                        "mm/dd/yyyy 12h:min am/pm"});
 #line 3766
-   testRunner.And("the \'Date and Time\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table582, "And ");
+   testRunner.And("the \'Date and Time(3)\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table582, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table583 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table583.AddRow(new string[] {
-                        "[[nowish]]= DateTime"});
+                        "[[SomeTimeBack]] = DateTime"});
 #line 3769
-   testRunner.And("the \'Date and Time\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table583, "And ");
+   testRunner.And("the \'Date and Time(3)\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table583, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table584 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input",
@@ -10491,20 +10499,39 @@ this.FeatureBackground();
                         "",
                         "Output Format"});
             table584.AddRow(new string[] {
-                        "System Date Time =  DateTime",
-                        "System Date Time Format = yyyy/MM/dd hh:mm:ss tt",
-                        "None",
-                        "0",
-                        "\'Date format yyyy MM dd yields : \' yyyy MM dd"});
-#line 3773
-  testRunner.And("the \'Date and Time\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table584, "And ");
+                        "am",
+                        "am/pm",
+                        "\"\"",
+                        "\"\"",
+                        "mm/dd/yyyy 12h:min:ss.sp am/pm"});
+#line 3772
+  testRunner.And("the \'Date and Time(4)\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table584, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table585 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table585.AddRow(new string[] {
-                        "[[DateWithQuotedStrings]]= DateTime"});
-#line 3776
-   testRunner.And("the \'Date and Time\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table585, "And ");
+                        "[[TheDefaultDate]] = DateTime"});
+#line 3775
+   testRunner.And("the \'Date and Time(4)\' in Workflow \'Utility - Date and Time\' debug outputs as", ((string)(null)), table585, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table586 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input",
+                        "=",
+                        "Input Format",
+                        "=",
+                        "Add Time",
+                        "",
+                        "Output Format"});
+            table586.AddRow(new string[] {
+                        "System Date Time",
+                        "DateTime",
+                        "System Date Time Format",
+                        "MM/dd/yyyy hh:mm:ss tt",
+                        "\"\"",
+                        "\"\"",
+                        "\'Date format yyyy MM dd yields : \' yyyy MM dd"});
+#line 3778
+   testRunner.And("the \'Date and Time(5)\' in WorkFlow \'Utility - Date and Time\' debug inputs as", ((string)(null)), table586, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10523,152 +10550,152 @@ this.FeatureBackground();
 #line 3783
    testRunner.Given("I have a workflow \"Utility - System Information Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table586 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table587 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
 #line 3784
    testRunner.And("\"Utility - System Information Test\" contains \"Utility - System Information\" from " +
-                    "server \"localhost\" with mapping as", ((string)(null)), table586, "And ");
+                    "server \"localhost\" with mapping as", ((string)(null)), table587, "And ");
 #line 3786
    testRunner.When("\"Utility - System Information Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 3787
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table587 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table588 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "",
                         ""});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "1",
                         "[[DateTime]] =",
                         "Date & Time"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "2",
                         "[[OpSystem]]  =",
                         "Operating System"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "3",
                         "[[SP]] =",
                         "Service Pack"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "4",
                         "[[Bit]] =",
                         "32/64 Bit"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "5",
                         "[[DatTimeFormat]] =",
                         "Date & Time Format"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "6",
                         "[[DiskAvailable]] =",
                         "Disk Available (GB)"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "7",
                         "[[DiskTotal]]  =",
                         "Disk Total (GB)"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "8",
                         "[[RAMAvailable]] =",
-                        "RAM Available"});
-            table587.AddRow(new string[] {
+                        "RAM Available (MB)"});
+            table588.AddRow(new string[] {
                         "9",
                         "[[RAMTotal]]  =",
                         "RAM Total (MB)"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "10",
                         "[[CPUAvailable]] =",
                         "CPU Available"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "11",
                         "[[CPUTotal]]  =",
                         "CPU Total"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "12",
                         "[[Language]] =",
                         "Language"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "13",
                         "[[Region]] =",
                         "Region"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "14",
                         "[[UserRoles]] =",
                         "User Roles"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "15",
                         "[[UserName]] =",
                         "User Name"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "16",
                         "[[Domain]] =",
                         "Domain"});
-            table587.AddRow(new string[] {
+            table588.AddRow(new string[] {
                         "17",
                         "[[Agents]] =",
                         "Warewolf Agents"});
 #line 3788
    testRunner.And("the \'Gather System Information (17)\' in WorkFlow \'Utility - System Information\' d" +
-                    "ebug inputs as", ((string)(null)), table587, "And ");
+                    "ebug inputs as", ((string)(null)), table588, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table588 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table589 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "1",
                         "[[DateTime]]      =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "2",
                         "[[OpSystem]]      =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "3",
                         "[[SP]]            =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "4",
                         "[[Bit]]           =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "5",
                         "[[DatTimeFormat]] =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "6",
                         "[[DiskAvailable]] =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "7",
                         "[[DiskTotal]]     =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "8",
                         "[[RAMAvailable]]  =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "9",
                         "[[RAMTotal]]      =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "10",
                         "[[CPUAvailable]]  =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "11",
                         "[[CPUTotal]]      =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "12",
                         "[[Language]]      =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "13",
                         "[[Region]]        =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "14",
                         "[[UserRoles]]     =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "15",
                         "[[UserName]]      =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "16",
                         "[[Domain]]        =    String"});
-            table588.AddRow(new string[] {
+            table589.AddRow(new string[] {
                         "17",
                         "[[Agents]]        =    String"});
 #line 3807
   testRunner.And("the \'Gather System Information (17)\' in Workflow \'Utility - System Information\' d" +
-                    "ebug outputs as", ((string)(null)), table588, "And ");
+                    "ebug outputs as", ((string)(null)), table589, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10687,51 +10714,51 @@ this.FeatureBackground();
 #line 3829
    testRunner.Given("I have a workflow \"Utility - Web Request Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table589 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table590 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
 #line 3830
    testRunner.And("\"Utility - Web Request Test\" contains \"Utility - Web Request\" from server \"localh" +
-                    "ost\" with mapping as", ((string)(null)), table589, "And ");
+                    "ost\" with mapping as", ((string)(null)), table590, "And ");
 #line 3832
    testRunner.When("\"Utility - Web Request Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 3833
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table590 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table591 = new TechTalk.SpecFlow.Table(new string[] {
                         "URL",
                         "Header"});
-            table590.AddRow(new string[] {
+            table591.AddRow(new string[] {
                         "https://www.google.com/",
                         ""});
 #line 3834
-   testRunner.And("the \'Web Request\' in WorkFlow \'Utility - Web Request\' debug inputs as", ((string)(null)), table590, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table591 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
-            table591.AddRow(new string[] {
-                        "[[GoogleHome]] = String"});
-#line 3837
-   testRunner.And("the \'Web Request\' in Workflow \'Utility - Web Request\' debug outputs as", ((string)(null)), table591, "And ");
+   testRunner.And("the \'Web Request(1)\' in WorkFlow \'Utility - Web Request\' debug inputs as", ((string)(null)), table591, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table592 = new TechTalk.SpecFlow.Table(new string[] {
-                        "URL",
-                        "Header"});
-            table592.AddRow(new string[] {
-                        "http://maps.googleapis.com/maps/api/geocode/xml?address=[[BartsAddress]]&sensor=f" +
-                            "alse",
                         ""});
-#line 3840
-   testRunner.And("the \'Web Request\' in WorkFlow \'Utility - Web Request\' debug inputs as", ((string)(null)), table592, "And ");
+            table592.AddRow(new string[] {
+                        "[[GoogleHome]] = String"});
+#line 3837
+   testRunner.And("the \'Web Request(1)\' in Workflow \'Utility - Web Request\' debug outputs as", ((string)(null)), table592, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table593 = new TechTalk.SpecFlow.Table(new string[] {
-                        ""});
+                        "URL",
+                        "Header"});
             table593.AddRow(new string[] {
+                        "http://maps.googleapis.com/maps/api/geocode/xml?address=[[BartsAddress]]&sensor=f" +
+                            "alse = String",
+                        ""});
+#line 3840
+   testRunner.And("the \'Web Request(2)\' in WorkFlow \'Utility - Web Request\' debug inputs as", ((string)(null)), table593, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table594 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table594.AddRow(new string[] {
                         "[[GecodedAddress]] = String"});
 #line 3843
-   testRunner.And("the \'Web Request\' in Workflow \'Utility - Web Request\' debug outputs as", ((string)(null)), table593, "And ");
+   testRunner.And("the \'Web Request(2)\' in Workflow \'Utility - Web Request\' debug outputs as", ((string)(null)), table594, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10750,119 +10777,44 @@ this.FeatureBackground();
 #line 3848
    testRunner.Given("I have a workflow \"Utility - Assign Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table594 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table595 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
+            table595.AddRow(new string[] {
+                        "",
+                        "",
+                        "[[rec(*).set]]",
+                        "[[rec().set]]"});
+            table595.AddRow(new string[] {
+                        "",
+                        "",
+                        "[[hero(*).pushups]]",
+                        "[[hero().pushups]]"});
+            table595.AddRow(new string[] {
+                        "",
+                        "",
+                        "[[hero(*).name]]",
+                        "[[hero().name]]"});
 #line 3849
    testRunner.And("\"Utility - Assign Test\" contains \"Utility - Assign\" from server \"localhost\" with " +
-                    "mapping as", ((string)(null)), table594, "And ");
-#line 3851
+                    "mapping as", ((string)(null)), table595, "And ");
+#line 3854
    testRunner.When("\"Utility - Assign Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3852
+#line 3855
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table595 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Variable",
-                        "New Value"});
-            table595.AddRow(new string[] {
-                        "1",
-                        "[[Name]] =",
-                        "Bart"});
-            table595.AddRow(new string[] {
-                        "2",
-                        "[[Surname]] =",
-                        "Simpson"});
-            table595.AddRow(new string[] {
-                        "2",
-                        "[[Info]] =",
-                        "I WILL NOT INSTIGATE REVOLUTION"});
-#line 3853
-   testRunner.And("the \'Assign (3)\' in WorkFlow \'Utility - Assign\' debug inputs as", ((string)(null)), table595, "And ");
-#line hidden
             TechTalk.SpecFlow.Table table596 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
                         ""});
             table596.AddRow(new string[] {
-                        "1",
-                        "[[Name]] =    Bart"});
+                        "[[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION"});
             table596.AddRow(new string[] {
-                        "2",
-                        "[[Surname]] = Simpson"});
+                        "[[hero(1).pushups]] = All of them."});
             table596.AddRow(new string[] {
-                        "3",
-                        "[[Info]] =    I WILL NOT INSTIGATE REVOLUTION"});
-#line 3858
-   testRunner.And("the \'Assign (3)\' in Workflow \'Utility - Assign\' debug outputs as", ((string)(null)), table596, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table597 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Variable",
-                        "New Value"});
-            table597.AddRow(new string[] {
-                        "1",
-                        "[[rec(1).set]] =",
-                        "[[Name]] [[Surname]]: [[Info]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION"});
-#line 3863
-   testRunner.And("the \'Assign (2)\' in WorkFlow \'Utility - Assign\' debug inputs as", ((string)(null)), table597, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table598 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table598.AddRow(new string[] {
-                        "1",
-                        "[[rec(1).set]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION"});
-#line 3866
-   testRunner.And("the \'Assign (2)\' in Workflow \'Utility - Assign\' debug outputs as", ((string)(null)), table598, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table599 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Variable",
-                        "New Value"});
-            table599.AddRow(new string[] {
-                        "1",
-                        "[[sum]] =",
-                        "=23+19"});
-#line 3869
-    testRunner.And("the \'Assign (1)\' in WorkFlow \'Utility - Assign\' debug inputs as", ((string)(null)), table599, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table600 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table600.AddRow(new string[] {
-                        "1",
-                        "[[sum]] = 42"});
-#line 3872
-   testRunner.And("the \'Assign (1)\' in Workflow \'Utility - Assign\' debug outputs as", ((string)(null)), table600, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table601 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        "Variable",
-                        "New Value"});
-            table601.AddRow(new string[] {
-                        "1",
-                        "[[hero().name]] =",
-                        "Chuck Norris"});
-            table601.AddRow(new string[] {
-                        "2",
-                        "[[hero().pushups]] =",
-                        "All of them."});
-#line 3875
-    testRunner.And("the \'Assign (2)\' in WorkFlow \'Utility - Assign\' debug inputs as", ((string)(null)), table601, "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table602 = new TechTalk.SpecFlow.Table(new string[] {
-                        "#",
-                        ""});
-            table602.AddRow(new string[] {
-                        "1",
-                        "[[hero().name]] = Chuck Norris"});
-            table602.AddRow(new string[] {
-                        "2",
-                        "[[hero().pushups]] =  All of them."});
-#line 3879
-   testRunner.And("the \'Assign (2)\' in Workflow \'Utility - Assign\' debug outputs as", ((string)(null)), table602, "And ");
+                        "[[hero(1).name]] ="});
+#line 3857
+   testRunner.And("the \'Utility - Assign\' in Workflow \'Utility - Assign Test\' debug outputs as", ((string)(null)), table596, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -10874,48 +10826,48 @@ this.FeatureBackground();
         public virtual void ExecutingData_BaseConversionExampleWorkflow()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Data - Base Conversion example workflow", ((string[])(null)));
-#line 3885
+#line 3905
 this.ScenarioSetup(scenarioInfo);
 #line 7
 this.FeatureBackground();
-#line 3886
+#line 3906
    testRunner.Given("I have a workflow \"Data - Base Conversion Test\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-            TechTalk.SpecFlow.Table table603 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table597 = new TechTalk.SpecFlow.Table(new string[] {
                         "Input to Service",
                         "From Variable",
                         "Output from Service",
                         "To Variable"});
-#line 3887
+#line 3907
    testRunner.And("\"Data - Base Conversion Test\" contains \"Data - Base Conversion\" from server \"loca" +
-                    "lhost\" with mapping as", ((string)(null)), table603, "And ");
-#line 3889
+                    "lhost\" with mapping as", ((string)(null)), table597, "And ");
+#line 3909
    testRunner.When("\"Data - Base Conversion Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 3890
+#line 3910
    testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table604 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table598 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         "Convert",
                         "From",
                         "To"});
-            table604.AddRow(new string[] {
+            table598.AddRow(new string[] {
                         "1",
                         "[[Blob]] = 0100100100100000011101110110000101110011001000000110110101100001011011" +
                             "1001100111011011000110010101100100",
                         "Binary",
                         "Text"});
-#line 3891
-   testRunner.And("the \'Base Conversion (1)\' in WorkFlow \'Data - Base Conversion\' debug inputs as", ((string)(null)), table604, "And ");
+#line 3911
+   testRunner.And("the \'Base Conversion (1)\' in WorkFlow \'Data - Base Conversion\' debug inputs as", ((string)(null)), table598, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table605 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table599 = new TechTalk.SpecFlow.Table(new string[] {
                         "#",
                         ""});
-            table605.AddRow(new string[] {
+            table599.AddRow(new string[] {
                         "1",
                         "[[Blob]] = I was mangled"});
-#line 3894
-   testRunner.And("the \'Base Conversion (1)\' in Workflow \'Data - Base Conversion\' debug outputs as", ((string)(null)), table605, "And ");
+#line 3914
+   testRunner.And("the \'Base Conversion (1)\' in Workflow \'Data - Base Conversion\' debug outputs as", ((string)(null)), table599, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

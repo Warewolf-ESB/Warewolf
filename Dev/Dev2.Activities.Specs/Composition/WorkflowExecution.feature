@@ -3751,33 +3751,33 @@ Scenario: Executing Utility - Date and Time example workflow
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Utility - Date and Time Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Date and Time' in WorkFlow 'Utility - Date and Time' debug inputs as
-	  | Input                        | Input Format                                     | Add Time |   | Output Format                                    |
-	  | System Date Time =  DateTime | System Date Time Format = yyyy/MM/dd hh:mm:ss tt | None     | 0 | System Date Time Format = yyyy/MM/dd hh:mm:ss tt |
-	  And the 'Date and Time' in Workflow 'Utility - Date and Time' debug outputs as    
+	  And the 'Date and Time(1)' in WorkFlow 'Utility - Date and Time' debug inputs as
+	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format           | =                      |
+	  | System Date Time | DateTime | System Date Time Format | MM/dd/yyyy hh:mm:ss tt | ""       | "" | System Date Time Format | MM/dd/yyyy hh:mm:ss tt |
+	  And the 'Date and Time(1)' in Workflow 'Utility - Date and Time' debug outputs as    
+	  |                       |
+	  | [[nowish]] = DateTime |   
+	 And the 'Date and Time(2)' in WorkFlow 'Utility - Date and Time' debug inputs as
+	 | Input                 | Input Format            | =                      | Add Time |    | Output Format          |
+	 | [[nowish]] = DateTime | System Date Time Format | MM/dd/yyyy hh:mm:ss tt | ""       | "" | mm/dd/yy 12h:min am/pm |
+	  And the 'Date and Time(2)' in Workflow 'Utility - Date and Time' debug outputs as    
 	  |                       |
 	  | [[nowish]] = DateTime |  
-	  And the 'Date and Time' in WorkFlow 'Utility - Date and Time' debug inputs as
-	  | Input              | Input Format | Add Time |   | Output Format            |
-	  | Sunday, 23 July 78 | DW, dd MM yy | None     | 0 | mm/dd/yyyy 12h:min am/pm |	
-	  And the 'Date and Time' in Workflow 'Utility - Date and Time' debug outputs as    
-	  |                            |
-	  | [[SomeTimeBack]]= DateTime |
-	  And the 'Date and Time' in WorkFlow 'Utility - Date and Time' debug inputs as
-	  | Input                 | Input Format                                     | Add Time |   | Output Format          |
-	  | [[nowish]] = DateTime | System Date Time Format = yyyy/MM/dd hh:mm:ss tt | None     | 0 | mm/dd/yy 12h:min am/pm |	
-	  And the 'Date and Time' in Workflow 'Utility - Date and Time' debug outputs as    
-	  |                      |
-	  | [[nowish]]= DateTime |
-
-	 And the 'Date and Time' in WorkFlow 'Utility - Date and Time' debug inputs as
-	  | Input                        | Input Format                                     | Add Time |   | Output Format                                 |
-	  | System Date Time =  DateTime | System Date Time Format = yyyy/MM/dd hh:mm:ss tt | None     | 0 | 'Date format yyyy MM dd yields : ' yyyy MM dd |
-	  And the 'Date and Time' in Workflow 'Utility - Date and Time' debug outputs as    
-	  |                                     |
-	  | [[DateWithQuotedStrings]]= DateTime |  
-	 
-	 
+	  And the 'Date and Time(3)' in WorkFlow 'Utility - Date and Time' debug inputs as
+	  | Input              | Input Format | Add Time |       | Output Format            |
+	  | Sunday, 23 July 78 | DW, dd MM yy | Minutes  | 46664 | mm/dd/yyyy 12h:min am/pm |	
+	  And the 'Date and Time(3)' in Workflow 'Utility - Date and Time' debug outputs as    
+	  |                             |
+	  | [[SomeTimeBack]] = DateTime |  
+	 And the 'Date and Time(4)' in WorkFlow 'Utility - Date and Time' debug inputs as
+	  | Input | Input Format | Add Time |    | Output Format                  |
+	  | am    | am/pm        | ""       | "" | mm/dd/yyyy 12h:min:ss.sp am/pm |
+	  And the 'Date and Time(4)' in Workflow 'Utility - Date and Time' debug outputs as    
+	  |                               |
+	  | [[TheDefaultDate]] = DateTime |  
+	  And the 'Date and Time(5)' in WorkFlow 'Utility - Date and Time' debug inputs as
+	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format                                 |
+	  | System Date Time | DateTime | System Date Time Format | MM/dd/yyyy hh:mm:ss tt | ""       | "" | 'Date format yyyy MM dd yields : ' yyyy MM dd |
 
 Scenario: Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
@@ -3794,7 +3794,7 @@ Scenario: Executing Utility - Gather System Information example workflow
 	 | 5  | [[DatTimeFormat]] = | Date & Time Format  |
 	 | 6  | [[DiskAvailable]] = | Disk Available (GB) |
 	 | 7  | [[DiskTotal]]  =    | Disk Total (GB)     |
-	 | 8  | [[RAMAvailable]] =  | RAM Available       |
+	 | 8  | [[RAMAvailable]] =  | RAM Available (MB)  |
 	 | 9  | [[RAMTotal]]  =     | RAM Total (MB)      |
 	 | 10 | [[CPUAvailable]] =  | CPU Available       |
 	 | 11 | [[CPUTotal]]  =     | CPU Total           |
@@ -3831,55 +3831,75 @@ Scenario: Executing Utility - Web Request example workflow
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Utility - Web Request Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Web Request' in WorkFlow 'Utility - Web Request' debug inputs as
+	  And the 'Web Request(1)' in WorkFlow 'Utility - Web Request' debug inputs as
 	  | URL                     | Header |
 	  | https://www.google.com/ |        |
-	  And the 'Web Request' in Workflow 'Utility - Web Request' debug outputs as    
+	  And the 'Web Request(1)' in Workflow 'Utility - Web Request' debug outputs as    
 	  |                         |
 	  | [[GoogleHome]] = String |
-	  And the 'Web Request' in WorkFlow 'Utility - Web Request' debug inputs as
-	  | URL                                                                                   | Header |
-	  | http://maps.googleapis.com/maps/api/geocode/xml?address=[[BartsAddress]]&sensor=false |        |
-	  And the 'Web Request' in Workflow 'Utility - Web Request' debug outputs as    
+	  And the 'Web Request(2)' in WorkFlow 'Utility - Web Request' debug inputs as
+	  | URL                                                                                            | Header |
+	  | http://maps.googleapis.com/maps/api/geocode/xml?address=[[BartsAddress]]&sensor=false = String |        |
+	  And the 'Web Request(2)' in Workflow 'Utility - Web Request' debug outputs as    
 	  |                             |
 	  | [[GecodedAddress]] = String |
 
 Scenario: Executing Utility - Assign example workflow
 	  Given I have a workflow "Utility - Assign Test"
 	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  | Input to Service | From Variable | Output from Service | To Variable        |
+	  |                  |               | [[rec(*).set]]      | [[rec().set]]      |
+	  |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
+	  |                  |               | [[hero(*).name]]    | [[hero().name]]    |
 	  When "Utility - Assign Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Assign (3)' in WorkFlow 'Utility - Assign' debug inputs as
-	  | # | Variable      | New Value                       |
-	  | 1 | [[Name]] =    | Bart                            |
-	  | 2 | [[Surname]] = | Simpson                         |
-	  | 2 | [[Info]] =    | I WILL NOT INSTIGATE REVOLUTION |
-	  And the 'Assign (3)' in Workflow 'Utility - Assign' debug outputs as    
-	  | # |                                               |
-	  | 1 | [[Name]] =    Bart                            |
-	  | 2 | [[Surname]] = Simpson                         |
-	  | 3 | [[Info]] =    I WILL NOT INSTIGATE REVOLUTION |
-	  And the 'Assign (2)' in WorkFlow 'Utility - Assign' debug inputs as
-	  | # | Variable         | New Value                                                                      |
-	  | 1 | [[rec(1).set]] = | [[Name]] [[Surname]]: [[Info]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	  And the 'Assign (2)' in Workflow 'Utility - Assign' debug outputs as    
-	  | # |                                                                |
-	  | 1 | [[rec(1).set]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	   And the 'Assign (1)' in WorkFlow 'Utility - Assign' debug inputs as
-	  | # | Variable  | New Value |  
-	  | 1 | [[sum]] = | =23+19    |
-	  And the 'Assign (1)' in Workflow 'Utility - Assign' debug outputs as    
-	  | # |              |
-	  | 1 | [[sum]] = 42 |
-	   And the 'Assign (2)' in WorkFlow 'Utility - Assign' debug inputs as
-	  | # | Variable             | New Value    |
-	  | 1 | [[hero().name]] =    | Chuck Norris |
-	  | 2 | [[hero().pushups]] = | All of them. |
-	  And the 'Assign (2)' in Workflow 'Utility - Assign' debug outputs as    
-	  | # |                                    |
-	  | 1 | [[hero().name]] = Chuck Norris     | 
-	  | 2 | [[hero().pushups]] =  All of them. |
+	 # And the 'Assign (3)' in WorkFlow 'Utility - Assign Test' debug inputs as
+	  And the 'Utility - Assign' in Workflow 'Utility - Assign Test' debug outputs as    
+	  |                                                                   |
+	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+	  | [[hero(1).pushups]] = All of them.                                 |
+	  | [[hero(1).name]] =                                                |
+
+
+
+
+
+
+
+
+
+
+
+
+	#| # | Variable      | New Value                       |
+	#| 1 | [[Name]] =    | Bart                            |
+	#| 2 | [[Surname]] = | Simpson                         |
+	#| 2 | [[Info]] =    | I WILL NOT INSTIGATE REVOLUTION |
+	#And the 'Assign (3)' in Workflow 'Utility - Assign' debug outputs as    
+	#| # |                                               |
+	#| 1 | [[Name]] =    Bart                            |
+	#| 2 | [[Surname]] = Simpson                         |
+	#| 3 | [[Info]] =    I WILL NOT INSTIGATE REVOLUTION |
+	#And the 'Assign (2)' in WorkFlow 'Utility - Assign' debug inputs as
+	#| # | Variable         | New Value                                                                      |
+	#| 1 | [[rec(1).set]] = | [[Name]] [[Surname]]: [[Info]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+	#And the 'Assign (2)' in Workflow 'Utility - Assign' debug outputs as    
+	#| # |                                                                |
+	#| 1 | [[rec(1).set]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+	# And the 'Assign Sum (1)' in WorkFlow 'Utility - Assign' debug inputs as
+	#| # | Variable  | New Value |  
+	#| 1 | [[sum]] = | =23+19    |
+	#And the 'Assign Sum (1)' in Workflow 'Utility - Assign' debug outputs as    
+	#| # |              |
+	#| 1 | [[sum]] = 42 |
+	# And the 'Assign Records (2)' in WorkFlow 'Utility - Assign' debug inputs as
+	#| # | Variable             | New Value    |
+	#| 1 | [[hero().name]] =    | Chuck Norris |
+	#| 2 | [[hero().pushups]] = | All of them. |
+	#And the 'Assign Records (2)' in Workflow 'Utility - Assign' debug outputs as    
+	#| # |                                    |
+	#| 1 | [[hero().name]] = Chuck Norris     | 
+	#| 2 | [[hero().pushups]] =  All of them. |
 
 
 Scenario: Executing Data - Base Conversion example workflow
