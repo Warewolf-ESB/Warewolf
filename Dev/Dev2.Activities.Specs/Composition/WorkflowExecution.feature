@@ -3846,7 +3846,7 @@ Scenario: Executing Utility - Web Request example workflow
 
 Scenario: Executing Utility - Assign example workflow
 	  Given I have a workflow "Utility - Assign Test"
-	  And "Utility - Assign Test" contains "Utility - Web Request" from server "localhost" with mapping as
+	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Utility - Assign Test" is executed
 	  Then the workflow execution has "NO" error
@@ -3854,19 +3854,18 @@ Scenario: Executing Utility - Assign example workflow
 	  | # | Variable      | New Value                       |
 	  | 1 | [[Name]] =    | Bart                            |
 	  | 2 | [[Surname]] = | Simpson                         |
-	  | 2 | [[Indo]] =    | I WILL NOT INSTIGATE REVOLUTION |
+	  | 2 | [[Info]] =    | I WILL NOT INSTIGATE REVOLUTION |
 	  And the 'Assign (3)' in Workflow 'Utility - Assign' debug outputs as    
 	  | # |                                               |
 	  | 1 | [[Name]] =    Bart                            |
 	  | 2 | [[Surname]] = Simpson                         |
-	  | 3 | [[Indo]] =    I WILL NOT INSTIGATE REVOLUTION |
+	  | 3 | [[Info]] =    I WILL NOT INSTIGATE REVOLUTION |
 	  And the 'Assign (2)' in WorkFlow 'Utility - Assign' debug inputs as
 	  | # | Variable         | New Value                                                                      |
 	  | 1 | [[rec(1).set]] = | [[Name]] [[Surname]]: [[Info]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
 	  And the 'Assign (2)' in Workflow 'Utility - Assign' debug outputs as    
 	  | # |                                                                |
 	  | 1 | [[rec(1).set]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-
 	   And the 'Assign (1)' in WorkFlow 'Utility - Assign' debug inputs as
 	  | # | Variable  | New Value |  
 	  | 1 | [[sum]] = | =23+19    |
@@ -3883,15 +3882,23 @@ Scenario: Executing Utility - Assign example workflow
 	  | 2 | [[hero().pushups]] =  All of them. |
 
 
+Scenario: Executing Data - Base Conversion example workflow
+	  Given I have a workflow "Data - Base Conversion Test"
+	  And "Data - Base Conversion Test" contains "Data - Base Conversion" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Data - Base Conversion Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Base Conversion (1)' in WorkFlow 'Data - Base Conversion' debug inputs as
+	  | # | Convert                                                                                                             | From   | To   |
+	  | 1 | [[Blob]] = 01001001001000000111011101100001011100110010000001101101011000010110111001100111011011000110010101100100 | Binary | Text |
+	  And the 'Base Conversion (1)' in Workflow 'Data - Base Conversion' debug outputs as    
+	   | # |                          |
+	   | 1 | [[Blob]] = I was mangled |
+	 
 
 
 
-
-
-
-
-
-	  
+	 
 
 
 
