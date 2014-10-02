@@ -1,4 +1,14 @@
-﻿///////////////////////////////////////////////////////////////////////////////
+
+/*
+*  Warewolf - The Easy Service Bus
+*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU General Public License <http://www.gnu.org/licenses/gpl.html>
+*/
+///////////////////////////////////////////////////////////////////////////////
 // SAMPLE: Symmetric key encryption and decryption using Rijndael algorithm.
 // 
 // To run this sample, create a new Visual C# project using the Console

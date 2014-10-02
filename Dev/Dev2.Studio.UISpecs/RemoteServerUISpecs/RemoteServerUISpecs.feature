@@ -5,15 +5,15 @@
 
 
 Background: 
-       Given I click "EXPLORERFILTERCLEARBUTTON"
-	   And I click "EXPLORER,UI_localhost_AutoID"
-	   When I click "RIBBONSETTINGS"   
-	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
-	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
-	   And "SECURITYPUBLICADMINISTRATOR" is unchecked 
-	   And I click "SECURITYPUBLICADMINISTRATOR"  
-       And I click "SECURITYSAVE" 
-	   And all tabs are closed
+      Given I click "EXPLORERFILTERCLEARBUTTON"
+	  And I click "EXPLORER,UI_localhost_AutoID"
+	  When I click "RIBBONSETTINGS"   
+	  And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
+	  And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
+	  And "SECURITYPUBLICADMINISTRATOR" is unchecked 
+	  And I click "SECURITYPUBLICADMINISTRATOR"  
+      And I click "SECURITYSAVE" 
+	  And all tabs are closed
 
 
 @RemtoeServer
