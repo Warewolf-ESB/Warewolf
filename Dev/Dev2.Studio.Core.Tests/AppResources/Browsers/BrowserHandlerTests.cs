@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Activities.Statements;
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
-using System.Reflection;
 using CefSharp;
 using Dev2.Studio.Core.AppResources.Browsers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.IO;
 
 namespace Dev2.Core.Tests.AppResources.Browsers
 {
@@ -24,6 +21,7 @@ namespace Dev2.Core.Tests.AppResources.Browsers
         [ExpectedException(typeof(ArgumentNullException))]
         public void BrowserHandlerConstructorWithNullExpectedThrowsArgumentNullException()
         {
+            // ReSharper disable once ObjectCreationAsStatement
             new BrowserHandler(null);
         }
 
