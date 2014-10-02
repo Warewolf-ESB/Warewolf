@@ -409,12 +409,20 @@ namespace Dev2.Activities.Specs.Composition
                     var outputMapping = dataMappingViewModel.GetOutputString(dataMappingViewModel.Outputs);
 
                     var activity = new DsfWorkflowActivity();
+
+                    
                     remoteResourceModel.Outputs = outputMapping;
                     remoteResourceModel.Inputs = inputMapping;
                     var remoteServerId = remoteEnvironment.ID;
                     activity.ServiceServer = remoteServerId;
                     activity.EnvironmentID = remoteServerId;
-                    activity.ServiceUri = remoteEnvironment.Connection.AppServerUri.ToString();
+                    activity.IsWorkflow = true;
+                    if (remoteServerId != Guid.Empty)
+                    {
+                        activity.ServiceUri = remoteEnvironment.Connection.AppServerUri.ToString();
+                        activity.IsWorkflow = false;
+                    }
+
                     activity.ResourceID = remoteResourceModel.ID;
                     activity.ServiceName = remoteResourceModel.Category;
                     activity.DisplayName = remoteWf;
