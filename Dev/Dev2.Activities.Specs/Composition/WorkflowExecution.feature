@@ -150,55 +150,6 @@ Scenario: Workflow with an assign and remote workflow
 
 
 
-Scenario: Executing Utility - Assign example workflow
-	  Given I have a workflow "Utility - Assign Test"
-	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable      |
-	  When "Utility - Assign Test" is executed
-	  Then the workflow execution has "NO" error
-	   And the 'Assign (3)' in WorkFlow 'Utility - Assign' debug inputs as
-	  | # | Variable      | New Value                       |
-	  | 1 | [[Name]] =    | Bart                            |
-	  | 2 | [[Surname]] = | Simpson                         |
-	  | 3 | [[Info]] =    | I WILL NOT INSTIGATE REVOLUTION |
-	  And the 'Assign (3)' in Workflow 'Utility - Assign' debug outputs as    
-	  | # |                                               |
-	  | 1 | [[Name]]    = Bart                            |
-	  | 2 | [[Surname]] = Simpson                         |
-	  | 3 | [[Info]]    = I WILL NOT INSTIGATE REVOLUTION |
-	   And the 'Assign (2)' in WorkFlow 'Utility - Assign' debug inputs as
-	  |                                                                                                |
-	  | [[rec(1).set]] = [[Name]] [[Surname]]: [[Info]] = Bart Simpson I WILL NOT INSTIGATE REVOLUTION |
-	  And the 'Assign (2)' in Workflow 'Utility - Assign' debug outputs as
-	  | # |                                                               |
-	  | 1 | [[rec(1).set]] = Bart Simpson I WILL NOT INSTIGATE REVOLUTION |
-	 # And the 'Convert Case (1)' in Workflow 'Utility - Assign' debug outputs as
-	 # | # |                |
-	 # | 1 | [[in]] = HELLO |
-	 # And the 'Final Assign (3)' in Workflow 'Utility - Assign' debug outputs as
-	 # | # |                             |
-	 # | 1 | [[output]] = HELLO          |
-	 # | 2 | [[values(1).upper]] = HELLO |
-	 # | 3 | [[values(1).lower]] = hello |	  	 
-	 # And the 'WorkflowUsedBySpecs' in Workflow 'Utility - Assign' debug outputs as
-	 # |                           |
-	 # | [[output]] = HELLO        |
-	 # | [[values(1).up]] = HELLO  |
-	 # | [[values(1).low]] = hello |
-	 #
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -3748,3 +3699,202 @@ Scenario: Workflow with Assign Unique Tool and testing variables in Returnfield 
        |                     |
        | [[rec(1).unique]] = |
       
+
+Scenario: Executing Utility - Format Number example workflow
+	  Given I have a workflow "Utility - Format Number Test"
+	  And "Utility - Format Number Test" contains "Utility - Format Number" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Utility - Format Number Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Format Number' in WorkFlow 'Utility - Format Number' debug inputs as
+	  | Number  | Rounding | Rounding Value | Decimals to show |
+	  | 123.446 | Normal   | 2              | 2                |
+	  And the 'Format Number' in Workflow 'Utility - Format Number' debug outputs as    
+	  |                    |
+	  | [[Price]] = 123.45 |
+	   And the 'Format Number' in WorkFlow 'Utility - Format Number' debug inputs as
+	  | Number | Rounding | Rounding Value | Decimals to show |
+	  | 14649  | Up       | 2              | -3               |
+	  And the 'Format Number' in Workflow 'Utility - Format Number' debug outputs as    
+	  |                   |
+	  | [[PriceInK]] = 14 |
+	 
+Scenario: Executing Utility - Random example workflow
+	  Given I have a workflow "Utility - Random Test"
+	  And "Utility - Random Test" contains "Utility - Random" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Utility - Random Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Format Number' in WorkFlow 'Utility - Random' debug inputs as
+	  | Random  | From | To |
+	  | Numbers | 1    | 6  |
+	  And the 'Format Number' in Workflow 'Utility - Random' debug outputs as    
+	  |                      |
+	  | [[DiceRoll]] = Int32 |
+	    And the 'Format Number' in WorkFlow 'Utility - Random' debug inputs as
+	  | Random  | Length |
+	  | Letters | 7      |
+	  And the 'Format Number' in Workflow 'Utility - Random' debug outputs as    
+	  |                      |
+	  | [[Scrabble]] = Int32 |
+	     And the 'Format Number' in WorkFlow 'Utility - Random' debug inputs as
+	  | Random |
+	  | GUID   | 
+	  And the 'Format Number' in Workflow 'Utility - Random' debug outputs as    
+	  |                     |
+	  | [[License]] = Int32 |
+
+
+Scenario: Executing Utility - Date and Time example workflow
+	  Given I have a workflow "Utility - Date and Time Test"
+	  And "Utility - Date and Time Test" contains "Utility - Date and Time" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Utility - Date and Time Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Date and Time' in WorkFlow 'Utility - Date and Time' debug inputs as
+	  | Input                        | Input Format                                     | Add Time |   | Output Format                                    |
+	  | System Date Time =  DateTime | System Date Time Format = yyyy/MM/dd hh:mm:ss tt | None     | 0 | System Date Time Format = yyyy/MM/dd hh:mm:ss tt |
+	  And the 'Date and Time' in Workflow 'Utility - Date and Time' debug outputs as    
+	  |                       |
+	  | [[nowish]] = DateTime |  
+	  And the 'Date and Time' in WorkFlow 'Utility - Date and Time' debug inputs as
+	  | Input              | Input Format | Add Time |   | Output Format            |
+	  | Sunday, 23 July 78 | DW, dd MM yy | None     | 0 | mm/dd/yyyy 12h:min am/pm |	
+	  And the 'Date and Time' in Workflow 'Utility - Date and Time' debug outputs as    
+	  |                            |
+	  | [[SomeTimeBack]]= DateTime |
+	  And the 'Date and Time' in WorkFlow 'Utility - Date and Time' debug inputs as
+	  | Input                 | Input Format                                     | Add Time |   | Output Format          |
+	  | [[nowish]] = DateTime | System Date Time Format = yyyy/MM/dd hh:mm:ss tt | None     | 0 | mm/dd/yy 12h:min am/pm |	
+	  And the 'Date and Time' in Workflow 'Utility - Date and Time' debug outputs as    
+	  |                      |
+	  | [[nowish]]= DateTime |
+
+	 And the 'Date and Time' in WorkFlow 'Utility - Date and Time' debug inputs as
+	  | Input                        | Input Format                                     | Add Time |   | Output Format                                 |
+	  | System Date Time =  DateTime | System Date Time Format = yyyy/MM/dd hh:mm:ss tt | None     | 0 | 'Date format yyyy MM dd yields : ' yyyy MM dd |
+	  And the 'Date and Time' in Workflow 'Utility - Date and Time' debug outputs as    
+	  |                                     |
+	  | [[DateWithQuotedStrings]]= DateTime |  
+	 
+	 
+
+Scenario: Executing Utility - Gather System Information example workflow
+	  Given I have a workflow "Utility - System Information Test"
+	  And "Utility - System Information Test" contains "Utility - System Information" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Utility - System Information Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Gather System Information (17)' in WorkFlow 'Utility - System Information' debug inputs as
+	 | #  |                     |                     |
+	 | 1  | [[DateTime]] =      | Date & Time         |
+	 | 2  | [[OpSystem]]  =     | Operating System    |
+	 | 3  | [[SP]] =            | Service Pack        |
+	 | 4  | [[Bit]] =           | 32/64 Bit           |
+	 | 5  | [[DatTimeFormat]] = | Date & Time Format  |
+	 | 6  | [[DiskAvailable]] = | Disk Available (GB) |
+	 | 7  | [[DiskTotal]]  =    | Disk Total (GB)     |
+	 | 8  | [[RAMAvailable]] =  | RAM Available       |
+	 | 9  | [[RAMTotal]]  =     | RAM Total (MB)      |
+	 | 10 | [[CPUAvailable]] =  | CPU Available       |
+	 | 11 | [[CPUTotal]]  =     | CPU Total           |
+	 | 12 | [[Language]] =      | Language            |
+	 | 13 | [[Region]] =        | Region              |
+	 | 14 | [[UserRoles]] =     | User Roles          |
+	 | 15 | [[UserName]] =      | User Name           |
+	 | 16 | [[Domain]] =        | Domain              |
+	 | 17 | [[Agents]] =        | Warewolf Agents     |
+	 And the 'Gather System Information (17)' in Workflow 'Utility - System Information' debug outputs as    
+	   | #  |                               |
+	   | 1  | [[DateTime]]      =    String |
+	   | 2  | [[OpSystem]]      =    String |
+	   | 3  | [[SP]]            =    String |
+	   | 4  | [[Bit]]           =    String |
+	   | 5  | [[DatTimeFormat]] =    String |
+	   | 6  | [[DiskAvailable]] =    String |
+	   | 7  | [[DiskTotal]]     =    String |
+	   | 8  | [[RAMAvailable]]  =    String |
+	   | 9  | [[RAMTotal]]      =    String |
+	   | 10 | [[CPUAvailable]]  =    String |
+	   | 11 | [[CPUTotal]]      =    String |
+	   | 12 | [[Language]]      =    String |
+	   | 13 | [[Region]]        =    String |
+	   | 14 | [[UserRoles]]     =    String |
+	   | 15 | [[UserName]]      =    String |
+	   | 16 | [[Domain]]        =    String |
+	   | 17 | [[Agents]]        =    String |
+
+
+Scenario: Executing Utility - Web Request example workflow
+	  Given I have a workflow "Utility - Web Request Test"
+	  And "Utility - Web Request Test" contains "Utility - Web Request" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Utility - Web Request Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Web Request' in WorkFlow 'Utility - Web Request' debug inputs as
+	  | URL                     | Header |
+	  | https://www.google.com/ |        |
+	  And the 'Web Request' in Workflow 'Utility - Web Request' debug outputs as    
+	  |                         |
+	  | [[GoogleHome]] = String |
+	  And the 'Web Request' in WorkFlow 'Utility - Web Request' debug inputs as
+	  | URL                                                                                   | Header |
+	  | http://maps.googleapis.com/maps/api/geocode/xml?address=[[BartsAddress]]&sensor=false |        |
+	  And the 'Web Request' in Workflow 'Utility - Web Request' debug outputs as    
+	  |                             |
+	  | [[GecodedAddress]] = String |
+
+Scenario: Executing Utility - Assign example workflow
+	  Given I have a workflow "Utility - Assign Test"
+	  And "Utility - Assign Test" contains "Utility - Web Request" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  When "Utility - Assign Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Assign (3)' in WorkFlow 'Utility - Assign' debug inputs as
+	  | # | Variable      | New Value                       |
+	  | 1 | [[Name]] =    | Bart                            |
+	  | 2 | [[Surname]] = | Simpson                         |
+	  | 2 | [[Indo]] =    | I WILL NOT INSTIGATE REVOLUTION |
+	  And the 'Assign (3)' in Workflow 'Utility - Assign' debug outputs as    
+	  | # |                                               |
+	  | 1 | [[Name]] =    Bart                            |
+	  | 2 | [[Surname]] = Simpson                         |
+	  | 3 | [[Indo]] =    I WILL NOT INSTIGATE REVOLUTION |
+	  And the 'Assign (2)' in WorkFlow 'Utility - Assign' debug inputs as
+	  | # | Variable         | New Value                                                                      |
+	  | 1 | [[rec(1).set]] = | [[Name]] [[Surname]]: [[Info]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+	  And the 'Assign (2)' in Workflow 'Utility - Assign' debug outputs as    
+	  | # |                                                                |
+	  | 1 | [[rec(1).set]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+
+	   And the 'Assign (1)' in WorkFlow 'Utility - Assign' debug inputs as
+	  | # | Variable  | New Value |  
+	  | 1 | [[sum]] = | =23+19    |
+	  And the 'Assign (1)' in Workflow 'Utility - Assign' debug outputs as    
+	  | # |              |
+	  | 1 | [[sum]] = 42 |
+	   And the 'Assign (2)' in WorkFlow 'Utility - Assign' debug inputs as
+	  | # | Variable             | New Value    |
+	  | 1 | [[hero().name]] =    | Chuck Norris |
+	  | 2 | [[hero().pushups]] = | All of them. |
+	  And the 'Assign (2)' in Workflow 'Utility - Assign' debug outputs as    
+	  | # |                                    |
+	  | 1 | [[hero().name]] = Chuck Norris     | 
+	  | 2 | [[hero().pushups]] =  All of them. |
+
+
+
+
+
+
+
+
+
+
+	  
+
+
+
+
+
+
