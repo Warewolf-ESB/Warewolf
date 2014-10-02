@@ -1,4 +1,4 @@
-
+﻿
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -493,7 +493,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             //------------Execute Test---------------------------
             IntellisenseTextBox textBox = new IntellisenseTextBox();
             textBox.CreateVisualTree();
-            textBox.Text = "?????????";
+            textBox.Text = "أَبْجَدِي";
             var checkHasUnicodeInText = textBox.CheckHasUnicodeInText(textBox.Text);
             //------------Assert Results-------------------------
             Assert.IsTrue(checkHasUnicodeInText);
