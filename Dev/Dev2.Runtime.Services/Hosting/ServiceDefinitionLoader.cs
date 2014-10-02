@@ -293,7 +293,7 @@ namespace Dev2.Runtime.Hosting
                 var dif = endIdx - startIdx;
 
                 // we know a blank wf is larger then our max string size ;)
-                return (startIdx > 0 && dif > GlobalConstants.MAX_SIZE_FOR_STRING);
+                return (startIdx > 0 && dif > (GlobalConstants.MAX_SIZE_FOR_STRING - 1024));
             }
 
             return false;
