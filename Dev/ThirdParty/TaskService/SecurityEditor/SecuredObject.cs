@@ -1,4 +1,16 @@
-﻿using System;
+
+/*
+*  Warewolf - The Easy Service Bus
+*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System;
 using System.Security.AccessControl;
 
 namespace SecurityEditor
@@ -8,7 +20,7 @@ namespace SecurityEditor
 		===========												===========================						==	===	===
 		System.IO.Pipes.PipeSecurity							System.IO.Pipes.PipeStream						3.5	N
 		EventWaitHandleSecurity									System.Threading.EventWaitHandle				2	N
-		FileSystemSecurity										System.IO.DirectoryInfo, FileInfo				2	Y	Name
+		FileSystemSecurity										System.IO.DirectoryInfo,�FileInfo				2	Y	Name
 		FileSystemSecurity										System.IO.FileStream							2	N	Name
 		MutexSecurity											System.Threading.Mutex							2	N
 		ObjectSecurity<T>																						4	N

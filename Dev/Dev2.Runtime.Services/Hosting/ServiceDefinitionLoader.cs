@@ -1,4 +1,16 @@
-﻿using System;
+
+/*
+*  Warewolf - The Easy Service Bus
+*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Xml.Linq;
@@ -293,7 +305,7 @@ namespace Dev2.Runtime.Hosting
                 var dif = endIdx - startIdx;
 
                 // we know a blank wf is larger then our max string size ;)
-                return (startIdx > 0 && dif > GlobalConstants.MAX_SIZE_FOR_STRING);
+                return (startIdx > 0 && dif > (GlobalConstants.MAX_SIZE_FOR_STRING - 1024));
             }
 
             return false;

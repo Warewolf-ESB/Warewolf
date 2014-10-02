@@ -3,7 +3,7 @@
   <Description>These are default test settings for a remote UI test run.</Description>
   <Deployment>
 		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
-		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="StudiobinDebug" />
+		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
         
             <!--For Build Agents-->
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />

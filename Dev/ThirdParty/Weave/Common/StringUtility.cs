@@ -1,4 +1,16 @@
-﻿using System;
+
+/*
+*  Warewolf - The Easy Service Bus
+*  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +40,7 @@ namespace System
         public static readonly char[] RegularCharUnescapeCharacters = new char[] { '\'', '\\', '\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v' };
         public static readonly char[] RegularStringEscapeCharacters = new char[] { '"', '\\', '0', 'a', 'b', 'f', 'n', 'r', 't', 'v', 'x', 'u', 'U' };
         public static readonly char[] RegularStringUnescapeCharacters = new char[] { '"', '\0', '\a', '\b', '\f', '\n', '\r', '\t', '\v' };
-        public static readonly char[] WhitespaceChars = new char[] { '\t', '\n', '\v', '\f', '\r', ' ', '\x0085', '\x00a0', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '​', '\u2028', '\u2029', '　', '﻿' };
+        public static readonly char[] WhitespaceChars = new char[] { '\t', '\n', '\v', '\f', '\r', ' ', '\x0085', '\x00a0', '?', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '?', '?', '?', '?', '?', '\u2028', '\u2029', ' ', '?' };
         public static readonly char[] ControlChars = new char[] { '\0', '\a', '\b', '\f', '\r', '\v' };
         public static readonly char[] CaseInsensitiveRange = BuildCharacterRange(BuildCharacterRange(new char[256], 0, 0, 256), 65, 97, 26);
         public static readonly BooleanArray WhitespaceMask = new BooleanArray(WhitespaceChars);
