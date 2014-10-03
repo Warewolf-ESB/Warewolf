@@ -116,6 +116,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("WizardUiTests_WebServiceWizard")]
+        [Ignore]
         public void WizardUiTests_WebServiceWizard_CreateServiceAndSource_ExpectedServiceAndSourceCreated()
         {
             //Initialization
