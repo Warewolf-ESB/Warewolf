@@ -67,33 +67,7 @@ namespace Dev2.CodedUI.Tests
 
         #endregion New PBI Tests
 
-        //PBI 9461
-        [TestMethod]
-        public void ChangingResourceExpectedPopUpWarningWithShowAffected()
-        {
-            const string ResourceName = "NewForeachUpgradeDifferentExecutionTests";
-            // Open the workflow
-            ExplorerUIMap.DoubleClickWorkflow(ResourceName, "INTEGRATION TEST SERVICES");
-
-            //Edit the inputs and outputs
-            VariablesUIMap.CheckScalarInputOrOuput(0, Dev2MappingType.Input);
-            VariablesUIMap.CheckScalarInputOrOuput(0, Dev2MappingType.Output);
-
-            VariablesUIMap.CheckScalarInputOrOuput(0, Dev2MappingType.Input);
-
-            //Save the workflow
-            RibbonUIMap.ClickRibbonMenuItem("Save");
-            PopupDialogUIMap.WaitForDialog();
-
-            //Click the show affected button
-            ResourceChangedPopUpUIMap.ClickViewDependancies();
-            ResourceChangedPopUpUIMap.WaitForDependencyTab();
-
-            string activeTabName = TabManagerUIMap.GetActiveTabName();  
-            var result = activeTabName.Contains("ForEachUpgradeTest");
-            Assert.IsTrue(result, "Affected workflow not shown after show affected workflow button pressed.");
-        }
-
+       
         [TestMethod]
         public void UnsavedStar_UITest_WhenWorkflowIsChanged_ExpectStarIsShowing()
         {

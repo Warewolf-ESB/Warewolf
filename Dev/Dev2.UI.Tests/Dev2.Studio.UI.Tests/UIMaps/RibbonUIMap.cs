@@ -12,6 +12,7 @@
 
 using Dev2.Studio.UI.Tests;
 using Dev2.Studio.UI.Tests.UIMaps.DebugUIMapClasses;
+using Dev2.Studio.UI.Tests.Utils;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UITesting.WpfControls;
 using System;
@@ -150,8 +151,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.RibbonUIMapClasses
 
         public UITestControl ClickRibbonMenuItem(string itemName, int waitAmt = 100)
         {
-            var ribbonButtons = StudioWindow.GetChildren();
-            var control = ribbonButtons.FirstOrDefault(c => c.FriendlyName == itemName || c.GetChildren().Any(child => child.FriendlyName.Contains(itemName)));
+            var control = VisualTreeWalker.GetChildByAutomationIdPath(StudioWindow, itemName);
             if(control == null)
             {
                 var message = string.Format("Resource with name : [{0}] was not found", itemName);

@@ -167,10 +167,7 @@
     <Compile Include="Utils\Extensions\BaseEnumExtensions.cs" />
     <Compile Include="Tests\Debug\DebugUITests.cs" />
     <Compile Include="DeployUITests.cs" />
-    <Compile Include="SqlBulkInsertUITests.cs" />
     <Compile Include="DesignTimeErrorHandlingTests.cs" />
-    <Compile Include="RemoteServerUITests.cs" />
-    <Compile Include="MenuUITests.cs" />
     <Compile Include="FormatNumberUITests.cs" />
     <Compile Include="ExplorerUITests.cs" />
     <Compile Include="Utils\KeyboardCommands.cs" />
