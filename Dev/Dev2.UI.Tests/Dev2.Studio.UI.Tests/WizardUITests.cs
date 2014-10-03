@@ -30,6 +30,7 @@ namespace Dev2.Studio.UI.Tests.UIMaps
 // ReSharper restore CheckNamespace
 {
     [CodedUITest]
+    [Ignore]
     public class WizardUITests : UIMapBase
     {
 
