@@ -1,5 +1,5 @@
 
-<Service ID="9bbba03f-2352-4eee-bff7-05479ebbb3a7" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Utility - Comment" ResourceType="WorkflowService" IsValid="true">
+<Service ID="9bbba03f-2352-4eee-bff7-05479ebbb3a7" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Utility - Comment" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Utility - Comment</DisplayName>
   <Category>EXAMPLES\Utility - Comment</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -29,9 +29,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>k/KeFDfLBdNvxVW2QGK13pztcrM=</DigestValue>
+        <DigestValue>IAxyM7t79Ey4tdBVIl2ypcDP8AI=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>MwVVjtjkq8M9SY2n03CZisCTTB1Zz1iFQ41531/uQRkLea9mxd6l+qMBV3SYjIEW9Xu8X1AZvz2Mkl3dAejVDjRQya1go2Wi1oKiT0fdolyUhLchR0RA+2gG9EeOXY0TehUMrzZSYRSHdz/uO2+9okVHYLUhk+DJmRTUq+IIgdQ=</SignatureValue>
+    <SignatureValue>eD+h+h9IKIZcM2ZBAMid47yc7Zp329JQdU8EkDSqboQzuWP/xG577PJRg6G81mhAdmHnYQCDtokExfkJExK+JXlRAQRoWAtOEejFEpTJ8pi/IlNuw8ZpDUt0XoGtki+NhsH4FvOSys1ShFezc7SI8hvh46ia4i6DyRqLozKJXIY=</SignatureValue>
   </Signature>
 </Service>

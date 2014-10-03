@@ -1,5 +1,5 @@
 
-<Service ID="8dbfe7c6-d44b-4232-b243-c6812460e2eb" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="File and Folder - Zip" ResourceType="WorkflowService" IsValid="true">
+<Service ID="8dbfe7c6-d44b-4232-b243-c6812460e2eb" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="File and Folder - Zip" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>File and Folder - Zip</DisplayName>
   <Category>Examples\File and Folder - Zip</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -30,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>7ZXTViusWXlrV9KSN+BN3msN0E4=</DigestValue>
+        <DigestValue>CPg0oGYSfEw97YoqGoPZmIKIKGg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>J/Z8alWDG3jb+RaWbbOSqQVuY8j8D96mTlolIbBqPrvu+9YKZ0YK24JskSkBIOlS8q7te495gFRf8OcZXL+XtpSGuEZGgpnDlZwDWNczn6Mux3pqUCPej833R+U2xWRusyJjZ2FYC0mntUzXWdWo+YsGFQ6JSjY0QIO9jzCa47c=</SignatureValue>
+    <SignatureValue>IuYR7mfNRtBdzKKVrd8qxXRPKObLTYSui/l6fgKvPEj4SFcJDUyWenGqU6fXr66SJCil+Gn1jjge0guLp/FEJCfMbxLZHQjDLEsVjDI9r15drr7oXvlLi3fev8tSegdcxloCOYv+34UjR4RDycezYR6q9ksdMSckka0aJ76b6wg=</SignatureValue>
   </Signature>
 </Service>

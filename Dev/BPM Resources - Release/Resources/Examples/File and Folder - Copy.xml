@@ -1,5 +1,5 @@
 
-<Service ID="73ff08e0-e643-4af8-b0e5-fb7c52cc8c3b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="File and Folder - Copy" ResourceType="WorkflowService" IsValid="true">
+<Service ID="73ff08e0-e643-4af8-b0e5-fb7c52cc8c3b" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="File and Folder - Copy" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>File and Folder - Copy</DisplayName>
   <Category>Examples\File and Folder - Copy</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -30,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>zeLydt8Q6GOASxKc6uNC+t7h2No=</DigestValue>
+        <DigestValue>Zge/QlfhI4vvo1P8nSz2rWX5ll8=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>VTcX19JHOpIyzGEea6egPUJEwGTnc01BxqAQm/lwyrKNoZZI6NooP6IQOGFLCG6xnCoaHEklW1ceYbn9o8yXurjMCw5QZY6fFHqyOLuKmxTP50a1Hh2ByauJ/Vs7zMlZjwmjTHTHss7c0DfDqGKmnO/pAjwJy39wygOf/Is0DSM=</SignatureValue>
+    <SignatureValue>lpDyshR+xIj10nZH+TGBBo1Dn4b4T/rJCwqGb+UlM13ONC3D3DUXkAhaOhpSnjrcLhPUmvlXYVwF3EFI0qbEzv7ySdDqnIyXm0tyT5LYu9SXO3JL+6Y96zzEI01RH2y0+1O0EdZU3YRvHGulWRglwmEsMxuoUXDP5CF+U6gMtt0=</SignatureValue>
   </Signature>
 </Service>
