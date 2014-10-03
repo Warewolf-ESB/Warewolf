@@ -1,5 +1,5 @@
 
-<Service ID="105393fb-88a1-4e5d-a490-a164b5248170" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="File and Folder - Create" ResourceType="WorkflowService" IsValid="true">
+<Service ID="105393fb-88a1-4e5d-a490-a164b5248170" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="File and Folder - Create" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>File and Folder - Create</DisplayName>
   <Category>Examples\File and Folder - Create</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -30,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>xmy+bzHe7vNFe+cSzSgKC0PO9Xc=</DigestValue>
+        <DigestValue>R+nt9qQ5BW0JK2BDui1fjyot40c=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>CVBrkPgQVh3dDKtG3/edJrnFm70tRTrkFjnbk9cpKlb3WqtrYHCgQiSXtrIop64YQOtA4H5Ew2oJyolovZK4Zyj90bUTvmXj7Ks6vYMhWmzoMXN1KHgD4cVC2733rhJMZLyjojUt+MuVH3m7F3X5gnAElPXJ03cVzlsvI7e/mYM=</SignatureValue>
+    <SignatureValue>nd7KwAX4Dyz8SFlZgYnTtmUo5fiOdfgR7KuiglCoS1T3PAPTD+I587NAc4R96ChgedGQCbLUqbmgMycvaHOpx7mncUncic6tOlmv58fSyRt2WNZKz/4slzGngWnEyhxn7O1QbVKoE1WypCrGmmx3vWH4Sl5mlBoFIMWD+P/Zt18=</SignatureValue>
   </Signature>
 </Service>
