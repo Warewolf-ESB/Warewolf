@@ -19,8 +19,6 @@ REM * set TestDeploymentDir=C:\Users\INTEGR~1\AppData\Local\VSEQT\QTAgent\54371B
 REM * set AgentName=RSAKLFTST7X64-3
 REM ********************************************************************************************************************
 
-IF EXIST "C:\Program Files (x86)\12noon Display Changer\dc64.exe" "C:\Program Files (x86)\12noon Display Changer\dc64.exe" -width=1920 -height=1080
-
 REM ** Kill The Warewolf ;) **
 sc stop "Warewolf Server"
 taskkill /im "Warewolf Server.exe"
