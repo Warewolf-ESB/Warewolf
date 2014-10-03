@@ -1,4 +1,4 @@
-
+﻿
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -124,8 +124,8 @@ namespace Dev2.Common.Test
         [TestCategory("StringExtension_Text")]
         public void StringExtensions_Text_NotLatinCharacter_ShowMessageBox_TextMadeEmpty()
         {
-            //------------Setup for test--------------------------            
-            const string Text = "?????????";
+            //------------Setup for test-------------------------
+            const string Text = "أَبْجَدِي";
             //------------Execute Test---------------------------
             var checkHasUnicodeInText = Text.ContainsUnicodeCharacter();
             //------------Assert Results-------------------------
