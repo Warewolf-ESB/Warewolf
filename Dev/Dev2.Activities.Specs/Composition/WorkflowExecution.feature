@@ -3857,8 +3857,8 @@ Scenario: Executing Utility - Assign example workflow
 	  And the 'Utility - Assign' in Workflow 'Utility - Assign Test' debug outputs as    
 	  |                                                                   |
 	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	  | [[hero(1).pushups]] = All of them.                                 |
-	  | [[hero(1).name]] =                                                |
+	  | [[hero(1).pushups]] = All of them.                                |
+	  | [[hero(1).name]] =   Chuck Norris                                 |
 
 	#| # | Variable      | New Value                       |
 	#| 1 | [[Name]] =    | Bart                            |
@@ -3961,31 +3961,31 @@ Scenario: Executing Data - Case Conversion example workflow
 	   | 1 | [[sometext]] = 1mixed Up 5om3 |
 
 
-Scenario: Executing Data - Data Merge example workflow
-	  Given I have a workflow "Data - Data Merge Test"
-	  And "Data - Data Merge Test" contains "Data - Data Merge" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  |                  |               | FileContent         | [[FileContent]] |
-	  When "Data - Data Merge Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Data - Data Merge' in Workflow 'Data - Data Merge' debug outputs as    
-	    |                                                                |
-	    | [[FileContent]] = Brad           000005546854    brad@mail.com |
-	    | = Bob            000065548912bob@mail.com                      |
-	    | = Bill            003215464987bill@mail.com                    |
+#Scenario: Executing Data - Data Merge example workflow
+#	  Given I have a workflow "Data - Data Merge Test"
+#	  And "Data - Data Merge Test" contains "Data - Data Merge" from server "localhost" with mapping as
+#	  | Input to Service | From Variable | Output from Service | To Variable     |
+#	  |                  |               | FileContent         | [[FileContent]] |
+#	  When "Data - Data Merge Test" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Data - Data Merge' in Workflow 'Data - Data Merge' debug outputs as    
+#	    |                                                                |
+#	    | [[FileContent]] = Brad           000005546854    brad@mail.com |
+#	    | = Bob            000065548912bob@mail.com                      |
+#	    | = Bill            003215464987bill@mail.com                    |
 	   
 
-Scenario: Executing Data - Data Splitexample workflow
-	  Given I have a workflow "Data - Data Split Test"
-	  And "Data - Data Split Test" contains "Data - Data Split" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "Data - Data Split Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Data Split1 (3)' in WorkFlow 'Data - Data Split' debug inputs as
-	  | String to Split                                                                                           | Process Direction | Skip blank rows | # |                      | With     | Using | Include | Escape |
-	  | [[FileContent]] = Brad,5546854,brad@mail.com Bob 000065548912bob@mail.com  Bill 003215464987bill@mail.com | Forward           | No              | 1 | [[cust(*).name]]   = | Chars    | ,     | No      |        |
-	  |                                                                                                           | Forward           | No              | 2 | [[cust(*).number]] = | Chars    | ,     | No      |        |
-	  |                                                                                                           | Forward           | No              | 3 | [[cust(*).email]]  = | New Line |       | No      |        |  
+#Scenario: Executing Data - Data Splitexample workflow
+#	  Given I have a workflow "Data - Data Split Test"
+#	  And "Data - Data Split Test" contains "Data - Data Split" from server "localhost" with mapping as
+#	  | Input to Service | From Variable | Output from Service | To Variable     |
+#	  When "Data - Data Split Test" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Data Split1 (3)' in WorkFlow 'Data - Data Split' debug inputs as
+#	  | String to Split                                                                                           | Process Direction | Skip blank rows | # |                      | With     | Using | Include | Escape |
+#	  | [[FileContent]] = Brad,5546854,brad@mail.com Bob 000065548912bob@mail.com  Bill 003215464987bill@mail.com | Forward           | No              | 1 | [[cust(*).name]]   = | Chars    | ,     | No      |        |
+#	  |                                                                                                           | Forward           | No              | 2 | [[cust(*).number]] = | Chars    | ,     | No      |        |
+#	  |                                                                                                           | Forward           | No              | 3 | [[cust(*).email]]  = | New Line |       | No      |        |  
 
 #
 # |                                              |                   |                 | 2 | [[rec().b]] = | Index | 8     | No      |        |
@@ -4358,39 +4358,39 @@ Scenario: Executing Control Flow - Switch example workflow
 #	  |                        |
 #	  | [[Complete]] = Success |
 
-Scenario: Executing File and Folder - Read Folder File example workflow
-	  Given I have a workflow "File and Folder - Read Folder Test"
-	  And "File and Folder - Read Folder Test" contains "File and Folder - Read Folder" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "File and Folder - Read Folder Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Read Folder1' in WorkFlow 'File and Folder - Read Folder' debug inputs as
-	   | Input Path | Read            | Username | Password |
-	   | c:\users\  | Files & Folders | ""       | ""       |
-	  And the 'Read Folder1' in Workflow 'File and Folder - Read Folder' debug outputs as    
-	  |                    |
-	  | [[users]] = String |
-	  And the 'Read Folder2' in WorkFlow 'File and Folder - Read Folder' debug inputs as
-	   | Input Path | Read            | Username | Password |
-	   | c:\users\  | Files & Folders | ""       | ""       |
-	  And the 'Read Folder2' in Workflow 'File and Folder - Read Folder' debug outputs as    
-	  |                               |
-	  | [[server(1).users]] = String  |
-	  | [[server(2).users]] = String  |
-	  | [[server(3).users]] = String  |
-	  | [[server(4).users]] = String  |
-	  | [[server(5).users]] = String  |
-	  | [[server(6).users]] = String  |
-	  | [[server(7).users]] = String  |
-	  | [[server(8).users]] = String  |
-	  | [[server(9).users]] = String  |
-	  | [[server(10).users]] = String |
-	  | [[server(11).users]] = String |
-	  | [[server(12).users]] = String |
-	  | [[server(13).users]] = String |
-	  | [[server(14).users]] = String |
-	  | [[server(15).users]] = String |
-	  | [[server(16).users]] = String |
+#Scenario: Executing File and Folder - Read Folder File example workflow
+#	  Given I have a workflow "File and Folder - Read Folder Test"
+#	  And "File and Folder - Read Folder Test" contains "File and Folder - Read Folder" from server "localhost" with mapping as
+#	  | Input to Service | From Variable | Output from Service | To Variable     |
+#	  When "File and Folder - Read Folder Test" is executed
+#	  Then the workflow execution has "NO" error
+#	  And the 'Read Folder1' in WorkFlow 'File and Folder - Read Folder' debug inputs as
+#	   | Input Path | Read            | Username | Password |
+#	   | c:\users\  | Files & Folders | ""       | ""       |
+#	  And the 'Read Folder1' in Workflow 'File and Folder - Read Folder' debug outputs as    
+#	  |                    |
+#	  | [[users]] = String |
+#	  And the 'Read Folder2' in WorkFlow 'File and Folder - Read Folder' debug inputs as
+#	   | Input Path | Read            | Username | Password |
+#	   | c:\users\  | Files & Folders | ""       | ""       |
+#	  And the 'Read Folder2' in Workflow 'File and Folder - Read Folder' debug outputs as    
+#	  |                               |
+#	  | [[server(1).users]] = String  |
+#	  | [[server(2).users]] = String  |
+#	  | [[server(3).users]] = String  |
+#	  | [[server(4).users]] = String  |
+#	  | [[server(5).users]] = String  |
+#	  | [[server(6).users]] = String  |
+#	  | [[server(7).users]] = String  |
+#	  | [[server(8).users]] = String  |
+#	  | [[server(9).users]] = String  |
+#	  | [[server(10).users]] = String |
+#	  | [[server(11).users]] = String |
+#	  | [[server(12).users]] = String |
+#	  | [[server(13).users]] = String |
+#	  | [[server(14).users]] = String |
+#	  | [[server(15).users]] = String |
+#	  | [[server(16).users]] = String |
 	
 #Scenario: Executing File and Folder - Rename example workflow
 #	  Given I have a workflow "File and Folder - Rename Test"
