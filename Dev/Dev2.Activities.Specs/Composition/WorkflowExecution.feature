@@ -3857,8 +3857,8 @@ Scenario: Executing Utility - Assign example workflow
 	  And the 'Utility - Assign' in Workflow 'Utility - Assign Test' debug outputs as    
 	  |                                                                   |
 	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	  | [[hero(1).pushups]] = All of them.                                 |
-	  | [[hero(1).name]] =                                                |
+	  | [[hero(1).pushups]] = All of them.                                |
+	  | [[hero(1).name]] =   Chuck Norris                                 |
 
 	#| # | Variable      | New Value                       |
 	#| 1 | [[Name]] =    | Bart                            |

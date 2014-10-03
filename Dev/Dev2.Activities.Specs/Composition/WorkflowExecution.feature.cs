@@ -10812,7 +10812,7 @@ this.FeatureBackground();
             table596.AddRow(new string[] {
                         "[[hero(1).pushups]] = All of them."});
             table596.AddRow(new string[] {
-                        "[[hero(1).name]] ="});
+                        "[[hero(1).name]] =   Chuck Norris"});
 #line 3857
    testRunner.And("the \'Utility - Assign\' in Workflow \'Utility - Assign Test\' debug outputs as", ((string)(null)), table596, "And ");
 #line hidden
