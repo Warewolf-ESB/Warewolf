@@ -5,7 +5,13 @@
 	<s:Boolean x:Key="/Default/CodeEditing/Intellisense/CodeCompletion/IntelliSenseCompletingCharacters/CSharpCompletingCharacters/UpgradedFromVSSettings/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeEditing/TypingAssist/FormatBlockOnRBrace/@EntryValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeEditing/TypingAssist/FormatStatementOnSemicolon/@EntryValue">False</s:Boolean>
-	<s:Int64 x:Key="/Default/CodeInspection/ComplexityAnalysis/Threshold/@EntryValue">15</s:Int64>
+	<s:Int64 x:Key="/Default/CodeInspection/ComplexityAnalysis/Threshold/@EntryValue">20</s:Int64>
+	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/ClassTooBigMaximum/@EntryValue">35</s:Int64>
+	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/ExcessiveIndentationMaximum/@EntryValue">5</s:Int64>
+	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/MethodNameNotMeaningfulMinimum/@EntryValue">3</s:Int64>
+	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/MethodTooLongMaximum/@EntryValue">35</s:Int64>
+	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/TooManyChainedReferencesMaximum/@EntryValue">6</s:Int64>
+	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/TooManyMethodArgumentsMaximum/@EntryValue">8</s:Int64>	
 	<s:Boolean x:Key="/Default/CodeInspection/Highlighting/IdentifierHighlightingEnabled/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=AccessToForEachVariableInClosure/@EntryIndexedValue">ERROR</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=AccessToStaticMemberViaDerivedType/@EntryIndexedValue">ERROR</s:String>
