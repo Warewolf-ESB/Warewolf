@@ -1,5 +1,5 @@
 
-<Service ID="6275530a-86e7-4b07-ba47-cac4f7feeaab" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="File and Folder - Read File" ResourceType="WorkflowService" IsValid="true">
+<Service ID="6275530a-86e7-4b07-ba47-cac4f7feeaab" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="File and Folder - Read File" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>File and Folder - Read File</DisplayName>
   <Category>Examples\File and Folder - Read File</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -30,9 +30,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>62YxyZZeXbIfWjLzka91o1xbxXQ=</DigestValue>
+        <DigestValue>5b7t1XI0asIdQYd9Dl1mfGVLqAM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>a+Y3u6wvCKTrJ98MrIXsKrGQ1OOd0Lpeeizgf5mAGiIhwpgjoHxSXnDo9S1eB7Eit6CYr34kNDgL8gtAle8VCBjVJOJi+ABLqOsjTFTgpSbtBvDgNVKCz0Wahu9l1rbjOc3XR/ovo0d3ifA6Fj07HcRwWRvz/wP33780tv3Gc4c=</SignatureValue>
+    <SignatureValue>tQcIoxzT1aK2qV1Sv7gNpolQHwnDA2Lc7jCIUDCXyvR54f0RzFaPmvrT8092oU9TjuZLmU8Ug09KnRwbpibZddlp0SX+Il6kkLy2M8vsyjZj7DUQnm/QNvrRIfZw6fQrmd0nhVw7xzM5wzBb3YNXKodJdO82LQayBZaNWz8gD6A=</SignatureValue>
   </Signature>
 </Service>

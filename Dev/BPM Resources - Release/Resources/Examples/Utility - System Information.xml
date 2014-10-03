@@ -1,5 +1,5 @@
 
-<Service ID="68b7b87d-e11d-4bc6-962c-f45dfd763c9f" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Utility - System Information" ResourceType="WorkflowService" IsValid="true">
+<Service ID="68b7b87d-e11d-4bc6-962c-f45dfd763c9f" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Utility - System Information" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>Utility - System Information</DisplayName>
   <Category>Examples\Utility - System Information</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -46,9 +46,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>bzVleTEUX6FPl2EZvMW4DIUisDo=</DigestValue>
+        <DigestValue>Phuy/WEktGAs1ld7A833XbSXhFg=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>b2bpRwQyOfyV4S9DD3lu6cCffZ8n2ixrUBYCPiAs0qBUkSVmotrWBU5oQ88AjLlqBf6obXbOuzmlq3SZSj3RUl5IHGqc2q6tZVUzj2SRiP2mejd6bRNNgNvbKIZp5K5ax/iCCze8VAWG1xaaV7Y7nXouP1GVpVNq162tWcGbXq8=</SignatureValue>
+    <SignatureValue>EZBqz8Unhe7kOhidccNcxEA4cv6bvmgRAy6wmV7gbas32rtYu5INm+hSlZnAZq//js3hiKj9xzlbAIE0dBB5dsggoK7qvqUwfwQRzv/vX8zWB3OIUKr2Pa+yZvXbdET17KXTVQlWDDH6s5N7Rw3vlST3uW7aXyZwWzYAHqRWZms=</SignatureValue>
   </Signature>
 </Service>
