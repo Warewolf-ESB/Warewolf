@@ -47,9 +47,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                     "Z306a8df47193448e9dd2228d905d49cd",
                     "UI_ExplorerPane_AutoID",
                     "Uia.ExplorerView",
-                    "TheNavigationView",
-                    "FilterTextBox",
-                    "UI_DataListSearchtxt_AutoID");
+                    "UI_NavigationViewUserControl_AutoID",
+                    "UI_DatalistFilterTextBox_AutoID",
+                    "UI_TextBox_AutoID");
             }
             catch(UITestControlNotFoundException)
             //_explorerSearch = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
@@ -63,9 +63,9 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                     "Explorer",
                     "UI_ExplorerPane_AutoID",
                     "Uia.ExplorerView",
-                    "TheNavigationView",
-                    "FilterTextBox",
-                    "UI_DataListSearchtxt_AutoID");
+                    "UI_NavigationViewUserControl_AutoID",
+                    "UI_DatalistFilterTextBox_AutoID",
+                    "UI_TextBox_AutoID");
                 //    _explorerSearch = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "FilterTextBox", "UI_DataListSearchtxt_AutoID");
             }
             try
@@ -101,7 +101,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                     "Z306a8df47193448e9dd2228d905d49cd",
                     "UI_ExplorerPane_AutoID",
                     "Uia.ExplorerView",
-                    "TheNavigationView",
+                    "UI_NavigationViewUserControl_AutoID",
                     "UI_SourceServerRefreshbtn_AutoID");
             }
             catch(UITestControlNotFoundException)
@@ -116,7 +116,7 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                     "Explorer",
                     "UI_ExplorerPane_AutoID",
                     "Uia.ExplorerView",
-                    "TheNavigationView",
+                    "UI_NavigationViewUserControl_AutoID",
                     "UI_SourceServerRefreshbtn_AutoID");
                 //_explorerRefresh = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "UI_SourceServerRefreshbtn_AutoID");
             }
@@ -140,8 +140,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                     "Z306a8df47193448e9dd2228d905d49cd",
                     "UI_ExplorerPane_AutoID",
                     "Uia.ExplorerView",
-                    "TheNavigationView",
-                    "Navigation");
+                    "UI_NavigationViewUserControl_AutoID",
+                    "UI_ExplorerTree_AutoID");
             }
             catch(UITestControlNotFoundException)
             //_explorerTree = VisualTreeWalker.GetControlFromRoot(0, false, 0, "Uia.SplitPane", "Z306a8df47193448e9dd2228d905d49cd", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
@@ -155,8 +155,8 @@ namespace Dev2.CodedUI.Tests.UIMaps.ExplorerUIMapClasses
                     "Explorer",
                     "UI_ExplorerPane_AutoID",
                     "Uia.ExplorerView",
-                    "TheNavigationView",
-                    "Navigation");
+                    "UI_NavigationViewUserControl_AutoID",
+                    "UI_ExplorerTree_AutoID");
                 //_explorerTree = VisualTreeWalker.GetControlFromRoot(0, false, 1, "Uia.SplitPane", "Zf1166e575b5d43bb89f15f346eccb7b1", "Z3d0e8544bdbd4fbc8b0369ecfce4e928", "Explorer", "UI_ExplorerPane_AutoID", "Explorer", "TheNavigationView", "Navigation");
             }
         }

@@ -38,29 +38,6 @@ namespace Dev2.Studio.UI.Tests
         }
         #endregion
 
-        // Bug 8816
-        [TestMethod]
-        public void IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled()
-        {
-            // Click the Deploy button in the Ribbon
-            RibbonUIMap.ClickRibbonMenuItem("Deploy", 20000);
-
-            UITestControl deployTab = TabManagerUIMap.FindTabByName("Deploy");
-
-            // Make sure the Deploy button is disabled
-            Assert.IsFalse(DeployUIMap.IsDeployButtonEnabled(deployTab));
-
-            // Connect to a Destination Server
-            DeployUIMap.ChooseDestinationServer(deployTab, "localhost");
-
-            var result = DeployUIMap.IsDeployButtonEnabled(deployTab);
-
-            TabManagerUIMap.CloseTab("Deploy");
-
-            // Make sure its still disabled, as nothing has been chosen to deploy
-            Assert.IsFalse(result, "As we have not chosen anything to deploy, the Deploy button should still be disabled!");
-        }
-
         // Bug 8819
         [TestMethod]
         public void EnterFilterOnDestinationServer_Expected_DeployedItemsStillVisible()

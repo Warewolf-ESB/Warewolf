@@ -283,31 +283,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
             }
         }
 
-        //Bug 9339 + Bug 9378
-        [TestMethod]
-        public void SaveDecisionWithBlankFieldsExpectedDecisionSaved()
-        {
-            //Initialize
-            RibbonUIMap.CreateNewWorkflow();
-
-            UITestControl theTab = TabManagerUIMap.GetActiveTab();
-
-            VariablesUIMap.ClickScalarVariableName(0);
-            SendKeys.SendWait("VariableName");
-
-            ToolboxUIMap.DragControlToWorkflowDesigner(ToolType.Decision, WorkflowDesignerUIMap.GetPointUnderStartNode(theTab));
-
-            //Save the decision with blank fields
-            WizardsUIMap.WaitForWizard();
-            DecisionWizardUIMap.ClickDone();
-
-            //Assert can save blank decision
-            var decision = WorkflowDesignerUIMap.FindControlByAutomationId(theTab, "FlowDecisionDesigner");
-            Point point;
-            Assert.IsTrue(decision.TryGetClickablePoint(out point));
-            Assert.IsNotNull(point);
-        }
-
         [TestMethod]
         [Owner("Ashley Lewis")]
         [TestCategory("Decision_Intellisense")]
@@ -470,23 +445,6 @@ namespace Dev2.Studio.UI.Tests.UIMaps
         }
 
         #endregion
-
-        #region Server Wizard
-
-        [TestMethod]
-        public void ClickNewRemoteWarewolfServerExpectedRemoteWarewolfServerOpens()
-        {
-            ExplorerUIMap.ClickServerInServerDDL("New Remote Server...", false);
-            UITestControl uiTestControl = NewServerUIMap.UINewServerWindow;
-            if(uiTestControl == null)
-            {
-                Assert.Fail("Error - Clicking the remote warewolf button does not create the new server window");
-            }
-            Assert.AreEqual("New Server", WizardsUIMap.GetLeftTitleText());
-            Assert.AreEqual("localhost (http://localhost:3142/dsf)", WizardsUIMap.GetRightTitleText());
-            KeyboardCommands.SendEsc(100);
-        }
-
-        #endregion
+       
     }
 }
