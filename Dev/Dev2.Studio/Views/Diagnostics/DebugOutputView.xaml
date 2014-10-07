@@ -601,9 +601,9 @@
 
                                 <TextBlock Grid.Row="0"
                                            Grid.Column="1">
-                            <Run Text="{Binding Content.ActivityType, Converter={StaticResource EnumToStringConverter}}" />
-                            <Run Text=": " />
-                            </TextBlock>
+                                    <Run Text="{Binding Content.ActivityType, Converter={StaticResource EnumToStringConverter}}" />
+                                    <Run Text=": " />
+                                </TextBlock>
                                 <StackPanel Grid.Row="0"
                                             Grid.Column="2"
                                             Orientation="Horizontal">
@@ -622,9 +622,9 @@
                                 <TextBlock Grid.Row="1"
                                            Grid.Column="1"
                                            Style="{StaticResource VersionVisibility}">
-                            <Run Text="Version" />
-                            <Run Text=": " />
-                            </TextBlock>
+                                    <Run Text="Version" />
+                                    <Run Text=": " />
+                                </TextBlock>
                                 <TextBlock Grid.Row="1"
                                            Grid.Column="2"
                                            Text="{Binding Content.Version}"
@@ -634,9 +634,9 @@
                                 <TextBlock Grid.Row="2"
                                            Grid.Column="1"
                                            Style="{StaticResource ServerVisibility}">
-                            <Run Text="Server" />
-                            <Run Text=": " />
-                            </TextBlock>
+                                    <Run Text="Server" />
+                                    <Run Text=": " />
+                                </TextBlock>
                                 <TextBlock Grid.Row="2"
                                            Grid.Column="2"
                                            Text="{Binding Content.Server}"
@@ -645,9 +645,9 @@
                                 <TextBlock Grid.Row="3"
                                            Grid.Column="1"
                                            Style="{StaticResource TypeVisibility}">
-                            <Run Text="Type" />
-                            <Run Text=": " />
-                            </TextBlock>
+                                    <Run Text="Type" />
+                                    <Run Text=": " />
+                                </TextBlock>
                                 <TextBlock Grid.Row="3"
                                            Grid.Column="2"
                                        Text="{Binding Content.Name}" 
@@ -657,9 +657,9 @@
                                 <TextBlock Grid.Row="4"
                                            Grid.Column="1"
                                            Style="{StaticResource StartTimeVisibility}">
-                            <Run Text="Start Time" />
-                            <Run Text=": " />
-                            </TextBlock>
+                                    <Run Text="Start Time" />
+                                    <Run Text=": " />
+                                </TextBlock>
                                 <TextBlock Grid.Row="4"
                                            Grid.Column="2"
                                        Text="{Binding Content.StartTime, Converter={StaticResource DateTimeToStringConverter}}" 
@@ -669,9 +669,9 @@
                                 <TextBlock Grid.Row="4"
                                            Grid.Column="1"
                                            Style="{StaticResource EndTimeVisibility}">
-                            <Run Text="End Time" />
-                            <Run Text=": " />
-                            </TextBlock>
+                                    <Run Text="End Time" />
+                                    <Run Text=": " />
+                                </TextBlock>
                                 <TextBlock Grid.Row="4"
                                            Grid.Column="2"
                                        Text="{Binding Content.EndTime, Converter={StaticResource DateTimeToStringConverter}}" 
@@ -681,9 +681,9 @@
                                 <TextBlock Grid.Row="5"
                                            Grid.Column="1"
                                            Style="{StaticResource DurationVisibility}">
-                            <Run Text="Duration" />
-                            <Run Text=": " />
-                            </TextBlock>
+                                    <Run Text="Duration" />
+                                    <Run Text=": " />
+                                </TextBlock>
                                 <TextBlock Grid.Row="5"
                                            Grid.Column="2"
                                            Text="{Binding Content.Duration, Converter={StaticResource TimeSpanToStringConverter}}"
@@ -692,9 +692,9 @@
                                 <TextBlock Grid.Row="6"
                                            Grid.Column="1"
                                            Style="{StaticResource InputsVisibility}">
-                            <Run Text="Inputs" />
-                            <Run Text=": " />
-                            </TextBlock>
+                                    <Run Text="Inputs" />
+                                    <Run Text=": " />
+                                </TextBlock>
                                 <StackPanel Grid.Row="6"
                                             Grid.Column="2"
                                             Orientation="Horizontal"
@@ -709,9 +709,9 @@
                                 <TextBlock Grid.Row="7"
                                            Grid.Column="1"
                                            Style="{StaticResource OutputsVisibility}">
-                            <Run Text="Outputs" />
-                            <Run Text=": " />
-                            </TextBlock>
+                                    <Run Text="Outputs" />
+                                    <Run Text=": " />
+                                </TextBlock>
                                 <StackPanel Grid.Row="7"
                                             Grid.Column="2"
                                             Orientation="Horizontal"
