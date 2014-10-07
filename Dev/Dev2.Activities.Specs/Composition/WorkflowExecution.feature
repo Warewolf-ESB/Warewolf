@@ -2020,8 +2020,8 @@ Scenario: Workflow with Assign and Find Record index
       | # | variable     | value    |
       | # | [[rec(1).a]] | Warewolf |
 	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord" into result as "[[a]][[b]]"
-      | # | In Field     | #        | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
-      | # | [[rec().a]] | 1        | =          | Warewolf | YES                            | NO |
+      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
 	  When "WFWithAssignandFindRecordindex" is executed
 	  Then the workflow execution has "AN" error
 	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
@@ -2038,28 +2038,28 @@ Scenario: Workflow with Assign and Find Record index
 #
 
 #Bug 12180, 
-#Scenario: Workflow contains Assign and Find Record index executing with invalid result variable
-#      Given I have a workflow "WFWithAssignandFindRecordindex"
-#	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
-#      | # | variable     | value    |
-#      | # | [[rec(1).a]] | Warewolf |
-#	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord" into result as "[[a]]*]]"
-#      | # | In Field     | #        | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
-#      | # | [[rec().a]] | 1        | =          | Warewolf | YES                            | NO |
-#	  When "WFWithAssignandFindRecordindex" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-#	  | # | Variable       | New Value |
-#	  | 1 | [[rec(1).a]] = | Warewolf  | 
-#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
-#	  | # |                                  |
-#	  | 1 | [[rec(1).a]]         =  Warewolf |
-#	  And the 'FindRecord' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-#	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-#	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
-#	  And the 'FindRecord' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
-#	  |            |
-#	  
+Scenario: Workflow contains Assign and Find Record index executing with invalid result variable
+      Given I have a workflow "WFWithAssignandFindRecordindex1"
+	  And "WFWithAssignandFindRecordindex1" contains an Assign "Record" as
+      | # | variable     | value    |
+      | # | [[rec(1).a]] | Warewolf |
+	  And "WFWithAssignandFindRecordindex1" contains Find Record Index "FindRecord1" into result as "[[a]]*]]"
+      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
+	  When "WFWithAssignandFindRecordindex1" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex1' debug inputs as 
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = | Warewolf  | 
+	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex1' debug outputs as   
+	  | # |                                  |
+	  | 1 | [[rec(1).a]]         =  Warewolf |
+	  And the 'FindRecord1' in WorkFlow 'WFWithAssignandFindRecordindex1' debug inputs as 
+	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
+	  And the 'FindRecord1' in Workflow 'WFWithAssignandFindRecordindex1' debug outputs as   
+	  |            |
+	  
 
 	
 #Scenario Outline: Testing Count with two variables in Result field
