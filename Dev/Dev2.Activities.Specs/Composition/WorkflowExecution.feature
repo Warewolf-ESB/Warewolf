@@ -148,11 +148,6 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
 
-
-
-
-
-
 	  
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
@@ -4528,3 +4523,43 @@ Scenario: Executing Control Flow - Switch example workflow
 #	  | # |  |
 #	  |   |  |
 	   
+#BUG-17403
+#Scenario: Workflow Base Convert and Case Convert passing invalid variable through execution
+#	  Given I have a workflow "WorkflowWithBaseCase1"
+#	  And "WorkflowWithBaseCase1" contains an Assign "Assign1" as
+#	  | variable       | value    |
+#	  | [[a]]          | 1        |
+#	  | [[rec(1).a]]   | Warewolf |
+#	  | [[rec(2).a]]   | Test     |
+#	  | [[index(1).a]] | a$*      |
+#	  And "WorkflowWithBaseCase1" contains case convert "Case1" as
+#	  | Variable                  | Type  |
+#	  | [[rec([[index(1).a]]).a]] | UPPER |
+#	  And "WorkflowWithBaseCase1" contains Base convert "Base1" as
+#	  | Variable                  | From | To      |
+#	  | [[rec([[index(1).a]]).a]] | Text | Base 64 |
+#	  When "WorkflowWithBaseCase1" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Assign1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
+#	  | # | Variable         | New Value |
+#	  | 1 | [[a]] =          | 1         |
+#	  | 2 | [[rec(1).a]] =   | Warewolf  |
+#	  | 3 | [[rec(2).a]] =   | Test      |
+#	  | 4 | [[index(1).a]] = | a$*       |
+#	   And the 'Assign1' in Workflow 'WorkflowWithBaseCase1' debug outputs as   
+#	  | # |                            |
+#	  | 1 | [[a]]         =  1         |
+#	  | 2 | [[rec(1).a]]   =  Warewolf |
+#	  | 3 | [[rec(2).a]]  =  Test      |
+#	  | 4 | [[index(1).a]] =  a$*      |
+#	  And the 'Case1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
+#	  | # | Convert                   | To    |
+#	  | 1 | [[rec([[index(1).a]]).a]] | UPPER |
+#	  And the 'Case1' in Workflow 'WorkflowWithBaseCase1' debug outputs as  
+#	  | # |                     |
+#	  And the 'Base1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
+#	  | # | Convert                   | From | To      |
+#	  | 1 | [[rec([[index(1).a]]).a]] | Text | Base 64 |
+#      And the 'Base1' in Workflow 'WorkflowWithBaseCase1' debug outputs as  
+#	  | # |                     |
+#
