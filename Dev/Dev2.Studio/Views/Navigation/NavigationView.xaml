@@ -57,6 +57,7 @@
                   explorer:DragDropExtension.ScrollOnDragDrop="True"
                   ItemsSource="{Binding Path=ExplorerItemModels}"
                   AllowDrop="True"
+                  VirtualizingStackPanel.IsVirtualizing ="True"
                   Grid.Row="1"
                   Grid.ColumnSpan="2"
                   BorderThickness="0"

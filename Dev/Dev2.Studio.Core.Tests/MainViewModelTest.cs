@@ -29,11 +29,13 @@ using Dev2.Studio.Feedback.Actions;
 using Dev2.Studio.ViewModels;
 using Dev2.Studio.ViewModels.DependencyVisualization;
 using Dev2.Studio.ViewModels.Help;
+using Dev2.Studio.ViewModels.Navigation;
 using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.Util;
 using Dev2.Utilities;
+using Dev2.ViewModels.Deploy;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -1240,6 +1242,41 @@ namespace Dev2.Core.Tests
             var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object }, "");
             MainViewModel.Handle(msg);
             ResourceRepo.Verify(s => s.HasDependencies(FirstResource.Object), Times.Once());
+        }
+
+
+        [TestMethod]
+        public void DeleteResourceExpectThatFilterIsUpdated()
+        {
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object }, "", false);
+            var repo = MainViewModel.ExplorerViewModel.NavigationViewModel;
+            
+            PrivateObject p = new PrivateObject(repo,new PrivateType(typeof(NavigationViewModelBase)));
+            p.SetField("_studioResourceRepository", MockStudioResourceRepository.Object);
+            p.SetField("_searchFilter","bob");
+            MainViewModel.Handle(msg);
+
+            MockStudioResourceRepository.Verify(a=>a.Filter(It.IsAny<Func<IExplorerItemModel,bool>>()), Times.Once());
+        }
+
+        [TestMethod]
+        public void DeleteResourceExpectThatFilterIsNotUpdatedIfNoFilterExists()
+        {
+            CreateFullExportsAndVm();
+            SetupForDelete();
+            PopupController.Setup(s => s.Show()).Returns(MessageBoxResult.No);
+            var msg = new DeleteResourcesMessage(new List<IContextualResourceModel> { FirstResource.Object }, "", false);
+            var repo = MainViewModel.ExplorerViewModel.NavigationViewModel;
+
+            PrivateObject p = new PrivateObject(repo, new PrivateType(typeof(NavigationViewModelBase)));
+            p.SetField("_studioResourceRepository", MockStudioResourceRepository.Object);
+            p.SetField("_searchFilter", "");
+            MainViewModel.Handle(msg);
+
+            MockStudioResourceRepository.Verify(a => a.Filter(It.IsAny<Func<IExplorerItemModel, bool>>()), Times.Never());
         }
 
         [TestMethod]

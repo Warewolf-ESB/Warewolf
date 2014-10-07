@@ -186,6 +186,47 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(true, viewmodel.ExplorerItemModels[0].Children[0].Children[1].IsExplorerSelected);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("NavigationViewModel_UpdateWorkspaces")]
+        public void NavigationViewModel_UpdateWorkspaces_IfConnectedThenRefresh()
+        {
+            //Arrange
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment();
+            mockEnvironment.Setup(model => model.CanStudioExecute).Returns(true);
+            mockEnvironment.Setup(model => model.ID).Returns(Guid.Empty);
+            mockEnvironment.Setup(a => a.IsConnected).Returns(true);
+            var environmentRepository = GetEnvironmentRepository(mockEnvironment);
+            const string displayName = "localhost (https://localhost:3242/)";
+
+            ObservableCollection<IExplorerItemModel> explorerItemModels = new ObservableCollection<IExplorerItemModel>();
+            ExplorerItemModel server = new ExplorerItemModel { ResourceType = Common.Interfaces.Data.ResourceType.Server, DisplayName = displayName, IsExplorerExpanded = true, EnvironmentId = Guid.Empty };
+            ExplorerItemModel folder1 = new ExplorerItemModel { ResourceType = Common.Interfaces.Data.ResourceType.Folder, DisplayName = "Folder1", ResourcePath = "Folder1", IsExplorerExpanded = true, EnvironmentId = Guid.Empty };
+            ExplorerItemModel resource1 = new ExplorerItemModel { ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService, DisplayName = "Resource1", ResourcePath = "Resource1", IsExplorerExpanded = false, EnvironmentId = Guid.Empty };
+            ExplorerItemModel resource2 = new ExplorerItemModel { ResourceType = Common.Interfaces.Data.ResourceType.WorkflowService, DisplayName = "Resource2", ResourcePath = "Resource2", IsExplorerExpanded = false, IsExplorerSelected = true, EnvironmentId = Guid.Empty };
+            ExplorerItemModel folder2 = new ExplorerItemModel { ResourceType = Common.Interfaces.Data.ResourceType.Folder, DisplayName = "Folder2", ResourcePath = "Folder2", IsExplorerExpanded = false, EnvironmentId = Guid.Empty };
+
+            folder1.Children.Add(resource1);
+            folder1.Children.Add(resource2);
+            server.Children.Add(folder1);
+            server.Children.Add(folder2);
+            explorerItemModels.Add(server);
+
+            var mockStudioRepo = new Mock<IStudioResourceRepository>();
+            mockStudioRepo.SetupGet(p => p.ExplorerItemModels).Returns(explorerItemModels);
+
+            var viewmodel = new NavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, null, environmentRepository, mockStudioRepo.Object, new Mock<IConnectControlSingleton>().Object, () => { }) { SelectedItem = resource2 };
+
+            viewmodel.Environments.Add(mockEnvironment.Object);
+            viewmodel.ExplorerItemModels = explorerItemModels;
+            var connectControlSingletonMock = new Mock<IConnectControlSingleton>();
+            //Act
+            viewmodel.UpdateWorkspaces(connectControlSingletonMock.Object);
+            //Assert
+            connectControlSingletonMock.Verify(a=>a.Refresh(Guid.Empty),Times.Exactly(1));
+        }
+
+
         private static IEnvironmentRepository GetEnvironmentRepository(Mock<IEnvironmentModel> mockEnvironment)
         {
             var repo = new TestLoadEnvironmentRespository(mockEnvironment.Object) { IsLoaded = true };

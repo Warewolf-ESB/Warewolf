@@ -1,5 +1,6 @@
 ﻿using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.CustomControls.Connections;
@@ -56,7 +57,7 @@ namespace Dev2.Core.Tests.Deploy
             IExplorerItemModel resourceVm;
             var studioResourceRepository = CreateModels(isChecked, out environmentModel, out resourceVm);
 
-            var navVm = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IEnvironmentRepository>().Object, studioResourceRepository, true) { Environment = environmentModel };
+            var navVm = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IEnvironmentRepository>().Object, studioResourceRepository, true, new Mock<IConnectControlSingleton>().Object) { Environment = environmentModel };
             resourceVm.IsChecked = isChecked;
             deployStatsCalculator.DeploySummaryPredicateExisting(resourceVm, navVm);
         }

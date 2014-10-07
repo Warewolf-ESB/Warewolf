@@ -9,7 +9,6 @@ using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Models;
-using Dev2.Providers.Logs;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.ViewModels.Base;
@@ -26,6 +25,7 @@ namespace Dev2.ViewModels.Deploy
         protected internal IEventAggregator EventAggregator;
         Visibility _circularProgressBarVisibility;
         Visibility _refreshButtonVisibility;
+        IStudioResourceRepository _studioResourceRepository;
 
         protected NavigationViewModelBase(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, System.Action updateWorkSpaceItems)
             : this(eventPublisher, asyncWorker, environmentRepository, studioResourceRepository)
@@ -83,12 +83,19 @@ namespace Dev2.ViewModels.Deploy
             }
         }
 
+        // ReSharper disable once ConvertToAutoProperty
         public IStudioResourceRepository StudioResourceRepository
         {
-            get;
-            private set;
+            get
+            {
+                return _studioResourceRepository;
+            }
+            private set
+            {
+                _studioResourceRepository = value;
+            }
         }
-        
+
         /// <summary>
         /// Connects to a server considering the auxilliry connection field.
         /// </summary>
@@ -115,6 +122,7 @@ namespace Dev2.ViewModels.Deploy
                         {
                             Connect(environment);
                         }
+
                         environment.LoadResources();
                     }, () =>
                 {
@@ -174,6 +182,19 @@ namespace Dev2.ViewModels.Deploy
             {
                 DoFiltering(searhFilter);
             }
+        }
+
+        /// <summary>
+        ///     Called to filter the root treendode
+        /// </summary>
+        /// <author>Jurie.smit</author>
+        /// <date>2/25/2013</date>
+        public void UpdateSearchFilter()
+        {
+
+   
+                DoFiltering(_searchFilter);
+            
         }
 
         protected abstract void DoFiltering(string searhFilter);

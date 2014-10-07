@@ -233,11 +233,19 @@ namespace Dev2.Studio.ViewModels.Navigation
                 {
                     environments.Add(environment.ID);
                     connectControlSingleton.SetConnectionState(environment.ID, ConnectionEnumerations.ConnectedState.Busy);
-                    var loadResourcesAsync = LoadResourcesAsync(environment, expandedList, tmpSelected);
-
-                    if(loadResourcesAsync != null)
+                    if (!environment.IsConnected)
                     {
-                        loadTasks.Add(loadResourcesAsync);
+                        var loadResourcesAsync = LoadResourcesAsync(environment, expandedList, tmpSelected);
+
+                        if (loadResourcesAsync != null)
+                        {
+                            loadTasks.Add(loadResourcesAsync);
+                        }
+                    }
+                    else
+                    {
+                        var taskref = TaskRefresh(connectControlSingleton, environment);
+                        loadTasks.Add(taskref);
                     }
                 }
             }
@@ -251,11 +259,17 @@ namespace Dev2.Studio.ViewModels.Navigation
                 });
         }
 
+         Task TaskRefresh(IConnectControlSingleton connectControlSingleton, IEnvironmentModel environment)
+        {
+            var taskref = AsyncWorker.Start(()=>{}, () => connectControlSingleton.Refresh(environment.ID));
+            return taskref;
+        }
+
         protected override void DoFiltering(string searhFilter)
         {
             if(!string.IsNullOrEmpty(searhFilter))
             {
-                Filter(model => model.DisplayName.ToLower().Contains(searhFilter.ToLower()), true);
+                Filter(model => model.DisplayName.ToLower().Contains(searhFilter.ToLower()) || model.ResourceType == ResourceType.Version, true);
             }
             else
             {

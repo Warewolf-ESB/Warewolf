@@ -323,6 +323,7 @@ namespace Dev2.AppResources.Repositories
         public void RenameFolder(IExplorerItemModel item, string newName)
         {
 
+
             VerifyArgument.IsNotNull("item", item);
             VerifyArgument.IsNotNullOrWhitespace("newName", newName);
             Dev2Logger.Log.Info(String.Format("Rename Folder Resource: {0} New name :{1} Id:{2}", item.DisplayName, newName, item.EnvironmentId));

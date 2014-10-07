@@ -1,5 +1,4 @@
-﻿using System.Activities.Expressions;
-using System.Windows;
+﻿using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
@@ -1956,6 +1955,139 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsTrue(wasResourceRemoved);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_RenameCommand")]
+        public void ExplorerItemModel_SettingDisplayNameNonEmptyFolder_ChecksIfRenameWasSuccessful()
+        {
+            //------------Setup for test--------------------------
+            var aggregator = new Mock<EventAggregator>();
+            EventPublishers.Aggregator = aggregator.Object;
+            var mockStudioRepository = new Mock<IStudioResourceRepository>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            var resourceId = Guid.NewGuid();
+            var envID = Guid.Empty;
+
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
+            mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            mockEnvironment.Setup(model => model.ID).Returns(envID);
+            GetEnvironmentRepository(mockEnvironment);
+
+            const string displayName = "localhost";
+            ExplorerItemModel resourceItem;
+#pragma warning disable 168
+            var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
+#pragma warning restore 168
+            var folderItem = serverItem.Children[0];
+            var mainViewModel = new Mock<IMainViewModel>();
+            mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
+            CustomContainer.Register<IMainViewModel>(mainViewModel.Object);
+            //------------Execute Test---------------------------
+            Assert.IsFalse(folderItem.IsRenaming);
+            var previousName = folderItem.DisplayName;
+
+            folderItem.RenameCommand.Execute(null);
+
+            folderItem.DisplayName = "bob";
+            //------------Assert Results-------------------------
+            mockStudioRepository.Verify(a => a.RenameFolder(It.IsAny<ExplorerItemModel>(), It.IsAny<string>()));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_RenameCommand")]
+        public void ExplorerItemModel_SettingDisplayNameEmptyFolder_ChecksIfRenameWasSuccessful()
+        {
+            //------------Setup for test--------------------------
+            var aggregator = new Mock<EventAggregator>();
+            EventPublishers.Aggregator = aggregator.Object;
+            var mockStudioRepository = new Mock<IStudioResourceRepository>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            var resourceId = Guid.NewGuid();
+            var envID = Guid.Empty;
+
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
+            mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            mockEnvironment.Setup(model => model.ID).Returns(envID);
+            GetEnvironmentRepository(mockEnvironment);
+
+            const string displayName = "localhost";
+            ExplorerItemModel resourceItem;
+#pragma warning disable 168
+            var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
+#pragma warning restore 168
+            var folderItem = serverItem.Children[0];
+            folderItem.Children.Clear();
+            var mainViewModel = new Mock<IMainViewModel>();
+            mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
+            CustomContainer.Register<IMainViewModel>(mainViewModel.Object);
+            //------------Execute Test---------------------------
+            Assert.IsFalse(folderItem.IsRenaming);
+            var previousName = folderItem.DisplayName;
+
+            folderItem.RenameCommand.Execute(null);
+
+            folderItem.DisplayName = "bob";
+            //------------Assert Results-------------------------
+            mockStudioRepository.Verify(a => a.RenameFolder(It.IsAny<ExplorerItemModel>(), It.IsAny<string>()));
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_RenameCommand")]
+        public void ExplorerItemModel_SettingDuplicateDisplayNameEmptyFolder_FailsToRename()
+        {
+            //------------Setup for test--------------------------
+            var aggregator = new Mock<EventAggregator>();
+            EventPublishers.Aggregator = aggregator.Object;
+            var mockStudioRepository = new Mock<IStudioResourceRepository>();
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            var resourceId = Guid.NewGuid();
+            var envID = Guid.Empty;
+
+            var mockResourceModel = new Mock<IContextualResourceModel>();
+            mockResourceModel.Setup(model => model.ID).Returns(resourceId);
+            mockResourceModel.Setup(a => a.DisplayName).Returns("bob");
+            mockResourceModel.Setup(a => a.Category).Returns("dave\\bob");
+            mockResourceRepository.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false)).Returns(mockResourceModel.Object);
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            mockEnvironment.Setup(model => model.ID).Returns(envID);
+            GetEnvironmentRepository(mockEnvironment);
+
+            const string displayName = "localhost";
+            ExplorerItemModel resourceItem;
+#pragma warning disable 168
+            var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
+#pragma warning restore 168
+            var folderItem = serverItem.Children[0];
+            folderItem.Children.Clear();
+            var mainViewModel = new Mock<IMainViewModel>();
+            mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
+            CustomContainer.Register<IMainViewModel>(mainViewModel.Object);
+            // setup that the item already exists
+            mockStudioRepository.Setup(a => a.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(serverItem);
+            //------------Execute Test---------------------------
+            Assert.IsFalse(folderItem.IsRenaming);
+            var previousName = folderItem.DisplayName;
+
+            folderItem.RenameCommand.Execute(null);
+
+            folderItem.DisplayName = "bob";
+            //------------Assert Results-------------------------
+            mockStudioRepository.Verify(a => a.RenameFolder(It.IsAny<ExplorerItemModel>(), It.IsAny<string>()),Times.Never());
+            Assert.AreEqual(previousName,folderItem.DisplayName);
+
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
