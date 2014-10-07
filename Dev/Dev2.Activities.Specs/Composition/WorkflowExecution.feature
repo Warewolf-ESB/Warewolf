@@ -148,11 +148,6 @@ Scenario: Workflow with an assign and remote workflow
 	  | [[values(1).up]] = HELLO  |
 	  | [[values(1).low]] = hello |
 
-
-
-
-
-
 	  
 Scenario: Workflow with Assign Base Convert and Case Convert tools executing against the server
 	  Given I have a workflow "WorkflowWithAssignBaseConvertandCaseconvert"
@@ -2020,8 +2015,8 @@ Scenario: Workflow with Assign and Find Record index
       | # | variable     | value    |
       | # | [[rec(1).a]] | Warewolf |
 	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord" into result as "[[a]][[b]]"
-      | # | In Field     | #        | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
-      | # | [[rec().a]] | 1        | =          | Warewolf | YES                            | NO |
+      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
 	  When "WFWithAssignandFindRecordindex" is executed
 	  Then the workflow execution has "AN" error
 	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
@@ -2038,28 +2033,28 @@ Scenario: Workflow with Assign and Find Record index
 #
 
 #Bug 12180, 
-#Scenario: Workflow contains Assign and Find Record index executing with invalid result variable
-#      Given I have a workflow "WFWithAssignandFindRecordindex"
-#	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
-#      | # | variable     | value    |
-#      | # | [[rec(1).a]] | Warewolf |
-#	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord" into result as "[[a]]*]]"
-#      | # | In Field     | #        | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
-#      | # | [[rec().a]] | 1        | =          | Warewolf | YES                            | NO |
-#	  When "WFWithAssignandFindRecordindex" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-#	  | # | Variable       | New Value |
-#	  | 1 | [[rec(1).a]] = | Warewolf  | 
-#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
-#	  | # |                                  |
-#	  | 1 | [[rec(1).a]]         =  Warewolf |
-#	  And the 'FindRecord' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-#	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-#	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
-#	  And the 'FindRecord' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
-#	  |            |
-#	  
+Scenario: Workflow contains Assign and Find Record index executing with invalid result variable
+      Given I have a workflow "WFWithAssignandFindRecordindex1"
+	  And "WFWithAssignandFindRecordindex1" contains an Assign "Record" as
+      | # | variable     | value    |
+      | # | [[rec(1).a]] | Warewolf |
+	  And "WFWithAssignandFindRecordindex1" contains Find Record Index "FindRecord1" into result as "[[a]]*]]"
+      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
+	  When "WFWithAssignandFindRecordindex1" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex1' debug inputs as 
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = | Warewolf  | 
+	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex1' debug outputs as   
+	  | # |                                  |
+	  | 1 | [[rec(1).a]]         =  Warewolf |
+	  And the 'FindRecord1' in WorkFlow 'WFWithAssignandFindRecordindex1' debug inputs as 
+	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
+	  And the 'FindRecord1' in Workflow 'WFWithAssignandFindRecordindex1' debug outputs as   
+	  |            |
+	  
 
 	
 #Scenario Outline: Testing Count with two variables in Result field
@@ -4452,36 +4447,147 @@ Scenario: Executing Control Flow - Switch example workflow
 #	  | [[Result]] = String | 
 
 
-Scenario: Executing Scripting - Script example workflow
-	  Given I have a workflow "Scripting - Script Test"
-	  And "Scripting - Script Test" contains "Scripting - Script" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "Scripting - Script Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Script1' in WorkFlow 'Scripting - Script' debug inputs as	
-	  | Language | Script   |
-	  | Ruby     | sleep(5) | 
-	  And the 'Script1' in Workflow 'Scripting - Script' debug outputs as    
-	  |                |
-	  | [[Result]] = 5 | 
-	  And the 'Script2' in WorkFlow 'Scripting - Script' debug inputs as	
-	  | Language   | Script          |
-	  | JavaScript | String = String |
-	  And the 'Script2' in Workflow 'Scripting - Script' debug outputs as    
-	  |                |
-	  | [[Result]] = 1 | 
-	  And the 'Script3' in WorkFlow 'Scripting - Script' debug inputs as	
-	  | Language | Script          |
-	  | Python   | String = String |
-	  And the 'Script3' in Workflow 'Scripting - Script' debug outputs as    
-	  |                  |
-	  | [[Result]] = one | 
+#Scenario: Executing Scripting - Script example workflow
+#  Given I have a workflow "Scripting - Script Test"
+#  And "Scripting - Script Test" contains "Scripting - Script" from server "localhost" with mapping as
+#  | Input to Service | From Variable | Output from Service | To Variable     |
+#  When "Scripting - Script Test" is executed
+#  Then the workflow execution has "NO" error
+#  And the 'Script1' in WorkFlow 'Scripting - Script' debug inputs as	
+#  | Language | Script   |
+#  | Ruby     | sleep(5) | 
+#  And the 'Script1' in Workflow 'Scripting - Script' debug outputs as    
+#  |                |
+#  | [[Result]] = 5 | 
+#  And the 'Script2' in WorkFlow 'Scripting - Script' debug inputs as	
+#  | Language   | Script          |
+#  | JavaScript | String = String |
+#  And the 'Script2' in Workflow 'Scripting - Script' debug outputs as    
+#  |                |
+#  | [[Result]] = 1 | 
+#  And the 'Script3' in WorkFlow 'Scripting - Script' debug inputs as	
+#  | Language | Script          |
+#  | Python   | String = String |
+#  And the 'Script3' in Workflow 'Scripting - Script' debug outputs as    
+#  |                  |
+#  | [[Result]] = one | 
+#
 
-
-
-
-
+#After the BUG 17399,following 2 specs should be passed	  
+#Scenario: Gather System tool throws error when debug with 2 variables in one row 
+#	  Given I have a workflow "WorkflowW"
+#	  And "WorkflowW" contains an Assign "IndexVal" as
+#	  | variable | value   |
+#	  | [[a]]    | b       |
+#	   And "WorkflowW" contains Gather System Info "System info" as
+#	  | Variable   | Selected    |
+#	  | [[a]][[b]] | Date & Time |
+#	  When "WorkflowW" is executed
+#	  Then the workflow execution has "AN" error
+#	   And the 'IndexVal' in WorkFlow 'WorkflowW' debug inputs as
+#	  | # | Variable | New Value |
+#	  | 1 | [[a]] =  | b         |
+#	  And the 'IndexVal' in Workflow 'WorkflowW' debug outputs as  
+#	  | # |                 |
+#	  | 1 | [[a]] = b       |
+#	  And the 'System info' in WorkFlow 'WorkflowW' debug inputs as
+#	  | # |              |             |
+#	  | 1 | [[a]][[b]] = | Date & Time |
+#	 And the 'System info' in Workflow 'WorkflowW' debug outputs as    
+#	  | # |  |
+#	  |   |  |
+#	   
 
 	   
+	  
+#cenario: Gather System tool throws error when debug with invalid variableb
+#	  Given I have a workflow "WorkflowW1"
+#	  And "WorkflowW1" contains an Assign "IndexVal" as
+#	  | variable | value   |
+#	  | [[a]]    | b       |
+#	   And "WorkflowW1" contains Gather System Info "System info" as
+#	  | Variable         | Selected    |
+#	  | [[a]][[rec().a]] | Date & Time |
+#	  When "WorkflowW1" is executed
+#	  Then the workflow execution has "AN" error
+#	   And the 'IndexVal' in WorkFlow 'WorkflowW1' debug inputs as
+#	  | # | Variable | New Value |
+#	  | 1 | [[a]] =  | b         |
+#	  And the 'IndexVal' in Workflow 'WorkflowW1' debug outputs as  
+#	  | # |                 |
+#	  | 1 | [[a]] = b       |
+#	  And the 'System info' in WorkFlow 'WorkflowW1' debug inputs as
+#	  | # |                      |             |
+#	  | 1 | [[a]][[rec().a]]]] = | Date & Time |
+#	 And the 'System info' in Workflow 'WorkflowW1' debug outputs as    
+#	  | # |  |
+#	  |   |  |
+	   
+#BUG-17403
+#Scenario: Workflow Base Convert and Case Convert passing invalid variable through execution
+#	  Given I have a workflow "WorkflowWithBaseCase1"
+#	  And "WorkflowWithBaseCase1" contains an Assign "Assign1" as
+#	  | variable       | value    |
+#	  | [[a]]          | 1        |
+#	  | [[rec(1).a]]   | Warewolf |
+#	  | [[rec(2).a]]   | Test     |
+#	  | [[index(1).a]] | a$*      |
+#	  And "WorkflowWithBaseCase1" contains case convert "Case1" as
+#	  | Variable                  | Type  |
+#	  | [[rec([[index(1).a]]).a]] | UPPER |
+#	  And "WorkflowWithBaseCase1" contains Base convert "Base1" as
+#	  | Variable                  | From | To      |
+#	  | [[rec([[index(1).a]]).a]] | Text | Base 64 |
+#	  When "WorkflowWithBaseCase1" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Assign1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
+#	  | # | Variable         | New Value |
+#	  | 1 | [[a]] =          | 1         |
+#	  | 2 | [[rec(1).a]] =   | Warewolf  |
+#	  | 3 | [[rec(2).a]] =   | Test      |
+#	  | 4 | [[index(1).a]] = | a$*       |
+#	   And the 'Assign1' in Workflow 'WorkflowWithBaseCase1' debug outputs as   
+#	  | # |                            |
+#	  | 1 | [[a]]         =  1         |
+#	  | 2 | [[rec(1).a]]   =  Warewolf |
+#	  | 3 | [[rec(2).a]]  =  Test      |
+#	  | 4 | [[index(1).a]] =  a$*      |
+#	  And the 'Case1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
+#	  | # | Convert                   | To    |
+#	  | 1 | [[rec([[index(1).a]]).a]] | UPPER |
+#	  And the 'Case1' in Workflow 'WorkflowWithBaseCase1' debug outputs as  
+#	  | # |                     |
+#	  And the 'Base1' in WorkFlow 'WorkflowWithBaseCase1' debug inputs as
+#	  | # | Convert                   | From | To      |
+#	  | 1 | [[rec([[index(1).a]]).a]] | Text | Base 64 |
+#      And the 'Base1' in Workflow 'WorkflowWithBaseCase1' debug outputs as  
+#	  | # |                     |
+#
 
 
+#Bug - 17449
+#Scenario: Workflow Base Convert coverting same variable multiple times
+	# Given I have a workflow "WorkflowWithBase1"
+	# And "WorkflowWithBase1" contains an Assign "Assign1" as
+	# | variable | value |
+	# | [[test]] | data  |
+	# And "WorkflowWithBase1" contains Base convert "Base12" as
+	# | Variable | From   | To      |
+	# | [[test]] | Text   | Base 64 |
+	# | [[test]] | Base64 | Text    |
+	# When "WorkflowWithBase1" is executed
+	# Then the workflow execution has "NO" error
+	# And the 'Assign1' in WorkFlow 'WorkflowWithBase1' debug inputs as
+	# | # | Variable   | New Value |
+	# | 1 | [[test]] = | data      |
+	#  And the 'Assign1' in Workflow 'WorkflowWithBase1' debug outputs as   
+	# | # |                  |
+	# | 1 | [[test]] =  data |
+	# And the 'Base12' in WorkFlow 'WorkflowWithBase1' debug inputs as
+	# | # | Convert             | From   | To      |
+	# | 1 | [[test]] = data     | Text   | Base 64 |
+	# | 2 | [[test]] = ZGF0YQ== | Base64 | Text    |
+    #And the 'Base12' in Workflow 'WorkflowWithBase1' debug outputs as  
+	# | # |                     |
+	# | 1 | [[test]] = ZGF0YQ== |
+	# | 2 | [[test]] = data     |

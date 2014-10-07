@@ -3,7 +3,7 @@
 	As a math idiot
 	I want to be told the sum of two numbers
 
-@mytag
+@DeployTab
 Scenario: IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled12
 	   Given I have Warewolf running
 	   And all tabs are closed	
