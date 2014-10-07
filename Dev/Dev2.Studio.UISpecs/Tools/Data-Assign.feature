@@ -48,3 +48,33 @@ Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDr
 	Then "WORKSURFACE,StartSymbol" is visible within "1" seconds
 	And "WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Assign (2)(MultiAssignDesigner)" is visible
 		
+
+#Bug 17468
+#Scenario: Assign Tool large view Validation Messages
+#	Given I have Warewolf running
+#	And all tabs are closed
+#	And I click "EXPLORERFILTERCLEARBUTTON"
+#	And I click "EXPLORER,UI_localhost_AutoID"
+#	And I click "RIBBONNEWENDPOINT"
+#	And I double click "TOOLBOX,PART_SearchBox"
+#	And I send "Assign" to ""
+#	And I drag "TOOLASSIGN" onto "WORKSURFACE,StartSymbol"
+#	Given "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID,UI_TextBox_AutoID" is visible within "2" seconds
+#	#Adding Variables in Grid
+#	Given I type "[[a]]" in "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID,UI_TextBox_AutoID"
+#	And I send "{TAB}" to ""
+#	Given "VARIABLESCALAR,UI_Variable_a_AutoID,UI_NameTextBox_AutoID" is visible within "2" seconds
+#	And I send "Warewolf" to ""
+#	And I send "{TAB}" to ""
+#	And I send "[[b]]{TAB}" to ""
+#	And I send "[[a]] Test{TAB}" to ""
+#	And "VARIABLESCALAR,UI_Variable_b_AutoID" is visible within "1" seconds
+#	#LargeView
+#	When I double click point "5,5" on "WORKSURFACE,Assign (2)(MultiAssignDesigner)"
+#	#No ValidationError
+#	When I click "WORKSURFACE,Assign (2)(MultiAssignDesigner),DoneButton"
+#	Then "WORKSURFACE,UI_Error0_AutoID" is not visible
+#	##SmallView
+#	Then "WORKSURFACE,Assign (2)(MultiAssignDesigner),SmallViewContent" is visible
+
+	

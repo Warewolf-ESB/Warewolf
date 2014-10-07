@@ -4,7 +4,7 @@
 	I want to be told the sum of two numbers
 
 @DeployTab
-Scenario: IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled12
+Scenario: IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled
 	   Given I have Warewolf running
 	   And all tabs are closed	
 	   Given I click "RIBBONDEPLOY"
@@ -25,5 +25,3 @@ Scenario: IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabl
        ## Given "DEPLOYERROR" is not visible
 
 
-	
-	
