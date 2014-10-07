@@ -2,10 +2,10 @@
 Licensing Information
 =====================
 
-The Warewolf-ESB Git repository includes compiled binaries to make it easier to compile the codebase. This document details the licenses under which each library is licensed, and where you can downnload the source code if you wish.
+The Warewolf-ESB Git repository includes compiled binaries to make it easier to compile the codebase. This document details the licenses under which each library is licensed, and where you can downnload the source code if you wish. <br/>
 
 ##Open Source Binaries 
-Following are the third party Open Source libraries that Warewolf-ESB uses
+Following are the third party Open Source libraries that Warewolf-ESB uses <br/>
 DiffieHellman - [Apache License 2.0 (Apache)](http://www.apache.org/licenses/LICENSE-2.0) - [Source Code Repository](https://github.com/saftmeister/diffiehellman)  <br/>
 IronPython - [Apache License 2.0 (Apache)](http://www.apache.org/licenses/LICENSE-2.0) - [Source Code Repository](http://ironpython.codeplex.com/)  <br/>
 IronRuby - [Apache License 2.0 (Apache)](http://www.apache.org/licenses/LICENSE-2.0) - [Source Code Repository](http://ironruby.codeplex.com/)  <br/>
@@ -40,14 +40,32 @@ AeroWizard - [The MIT License](http://opensource.org/licenses/MIT) - [Source Cod
 
 
 ##Commercial Binaries 
-Following are the licensed Commercial Binaries that Warewolf-ESB uses
-Infragistics  - [Commercial License](http://www.infragistics.com/legal/license)
-Trackerbird - Commercial License
-Microsoft DLLs - Copyright Microsoft. All rights reserved.
-Microsoft.QualityTools.Testing.Fakes  - Copyright Microsoft. All rights reserved.
-Dotfuscator - Copyright Microsoft. All rights reserved.
-RibbonControlsLibrary - Copyright Microsoft. All rights reserved.
-System.Reactive - Copyright Microsoft. All rights reserved.
-System.Windows.Interactivity - Copyright Microsoft. All rights reserved.
-en-US.dll - Copyright Microsoft. All rights reserved.
+Following are the licensed Commercial Binaries that Warewolf-ESB uses. <br/>
+Infragistics  - [Commercial License](http://www.infragistics.com/legal/license) <br/>
+Trackerbird - Commercial License <br/>
+Microsoft DLLs - Copyright Microsoft. All rights reserved. <br/>
+Dotfuscator - Copyright Microsoft. All rights reserved. <br/>
+RibbonControlsLibrary - Copyright Microsoft. All rights reserved. <br/>
+System.Reactive - Copyright Microsoft. All rights reserved. <br/>
+System.Windows.Interactivity - Copyright Microsoft. All rights reserved. <br/>
+en-US.dll - Copyright Microsoft. All rights reserved. <br/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
