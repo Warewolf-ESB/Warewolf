@@ -617,7 +617,7 @@
                                     <TextBlock Text="(In Simulation Mode)"
                                                Style="{StaticResource SimulationModeVisibility}"
                                                Margin="5,0,0,0" />
-                            </StackPanel>
+                                </StackPanel>
 
                                 <TextBlock Grid.Row="1"
                                            Grid.Column="1"
@@ -704,7 +704,7 @@
                                                   Focusable="False"
                                                   ItemTemplate="{StaticResource DebugLinesTemplate}"
                                                   AutomationProperties.AutomationId="UI_DebugOutputInputPanel_AutoId" />
-                            </StackPanel>
+                                </StackPanel>
 
                                 <TextBlock Grid.Row="7"
                                            Grid.Column="1"
@@ -721,7 +721,7 @@
                                                   Focusable="False"
                                                   ItemTemplate="{StaticResource DebugLinesTemplate}"
                                                   AutomationProperties.AutomationId="UI_DebugOutputOutputPanel_AutoId" />
-                            </StackPanel>
+                                </StackPanel>
 
                                 <TextBlock Grid.Row="8"
                                            Grid.Column="1"
@@ -762,9 +762,9 @@
                                 <TextBlock Grid.Row="11"
                                            Grid.Column="1"
                                            Style="{StaticResource ErrorsVisibility}">
-                            <Run Text="Error" />
-                            <Run Text=": " />
-                            </TextBlock>
+                                    <Run Text="Error" />
+                                    <Run Text=": " />
+                                </TextBlock>
                                 <TextBlock Grid.Row="11"
                                            Grid.Column="2"
                                        Text="{Binding Content.ErrorMessage}" 
