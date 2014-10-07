@@ -495,7 +495,7 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>ROBOCOPY /A-:R "$(SolutionDir)Binaries\CefSharp"   "$(ProjectDir)bin\$(ConfigurationName)" /S
+    <PreBuildEvent>%windir%\system32\ROBOCOPY /A-:R "$(SolutionDir)Binaries\CefSharp"   "$(ProjectDir)bin\$(ConfigurationName)" /S
 REM Visual Studio expects 0 when successful
 set rce=%25errorlevel%25
 if %25rce%25==16 or %25rce%25==8 exit %25rce%25 else exit 0

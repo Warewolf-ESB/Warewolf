@@ -115,5 +115,11 @@ namespace Dev2.Activities.Designers2.Service
             public double Header { get; set; }
             public double Row { get; set; }
         }
+
+        // ReSharper disable once InconsistentNaming
+        void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            e.Row.Tag = e.Row.GetIndex();
+        }
     }
 }
