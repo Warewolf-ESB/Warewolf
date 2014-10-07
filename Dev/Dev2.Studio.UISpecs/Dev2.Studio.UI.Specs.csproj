@@ -75,10 +75,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DeployUISpec.feature</DependentUpon>
     </Compile>
-    <Compile Include="Sanity Test Suite\EXapmle Workflows.feature.cs">
+    <Compile Include="Sanity Test Suite\Example Workflows.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>EXapmle Workflows.feature</DependentUpon>
+      <DependentUpon>Example Workflows.feature</DependentUpon>
     </Compile>
     <Compile Include="Scheduler\SchedulerUISpecFlow.feature.cs">
       <AutoGen>True</AutoGen>
@@ -190,6 +190,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FileAndFolder-Zip.feature</DependentUpon>
     </Compile>
+    <Compile Include="Tools\Loop Construct-For Each.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Loop Construct-For Each.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Tools\Loop Construct-For Each1.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Loop Construct-For Each.feature</DependentUpon>
+    </Compile>
     <Compile Include="Tools\Recordset-Find.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -252,9 +262,9 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DeployUISpec.feature.cs</LastGenOutput>
     </None>
-    <None Include="Sanity Test Suite\EXapmle Workflows.feature">
+    <None Include="Sanity Test Suite\Example Workflows.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>EXapmle Workflows.feature.cs</LastGenOutput>
+      <LastGenOutput>Example Workflows.feature.cs</LastGenOutput>
     </None>
     <None Include="Scheduler\SchedulerUISpecFlow.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
@@ -348,6 +358,10 @@
     <None Include="Tools\FileAndFolder-Zip.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>FileAndFolder-Zip.feature.cs</LastGenOutput>
+    </None>
+    <None Include="Tools\Loop Construct-For Each.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>Loop Construct-For Each1.feature.cs</LastGenOutput>
     </None>
     <None Include="Tools\Recordset-Find.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
