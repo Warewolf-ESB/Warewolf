@@ -4563,3 +4563,31 @@ Scenario: Executing Control Flow - Switch example workflow
 #      And the 'Base1' in Workflow 'WorkflowWithBaseCase1' debug outputs as  
 #	  | # |                     |
 #
+
+
+#Bug - 17449
+#Scenario: Workflow Base Convert coverting same variable multiple times
+	# Given I have a workflow "WorkflowWithBase1"
+	# And "WorkflowWithBase1" contains an Assign "Assign1" as
+	# | variable | value |
+	# | [[test]] | data  |
+	# And "WorkflowWithBase1" contains Base convert "Base12" as
+	# | Variable | From   | To      |
+	# | [[test]] | Text   | Base 64 |
+	# | [[test]] | Base64 | Text    |
+	# When "WorkflowWithBase1" is executed
+	# Then the workflow execution has "NO" error
+	# And the 'Assign1' in WorkFlow 'WorkflowWithBase1' debug inputs as
+	# | # | Variable   | New Value |
+	# | 1 | [[test]] = | data      |
+	#  And the 'Assign1' in Workflow 'WorkflowWithBase1' debug outputs as   
+	# | # |                  |
+	# | 1 | [[test]] =  data |
+	# And the 'Base12' in WorkFlow 'WorkflowWithBase1' debug inputs as
+	# | # | Convert             | From   | To      |
+	# | 1 | [[test]] = data     | Text   | Base 64 |
+	# | 2 | [[test]] = ZGF0YQ== | Base64 | Text    |
+    #And the 'Base12' in Workflow 'WorkflowWithBase1' debug outputs as  
+	# | # |                     |
+	# | 1 | [[test]] = ZGF0YQ== |
+	# | 2 | [[test]] = data     |
