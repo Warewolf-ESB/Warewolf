@@ -28,6 +28,7 @@ namespace Dev2.Activities.Designers2.MultiAssign
             return DataGrid.GetFocusElement(0);
         }
 
+        // ReSharper disable once InconsistentNaming
         private void DataGrid_LoadingRow(System.Object sender, DataGridRowEventArgs e)
         {
             e.Row.Tag = e.Row.GetIndex();

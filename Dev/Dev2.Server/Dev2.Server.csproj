@@ -315,10 +315,10 @@
   <PropertyGroup>
     <PostBuildEvent>xcopy /Y /E /F /D "$(SolutionDir)BPM Resources - Release" "$(TargetDir)"
 
-IF $(ConfigurationName)==Release GOTO getReleaseResources
+IF $(ConfigurationName)==Release GOTO getWebs
 GOTO exit
 
-:getReleaseResources
+:getWebs
 xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\Properties" "$(TargetDir)Webs\Properties\"
 xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\Webs\wwwroot" "$(TargetDir)Webs\wwwroot\"
 
