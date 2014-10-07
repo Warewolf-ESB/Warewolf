@@ -5,7 +5,7 @@
 	<s:Boolean x:Key="/Default/CodeEditing/Intellisense/CodeCompletion/IntelliSenseCompletingCharacters/CSharpCompletingCharacters/UpgradedFromVSSettings/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeEditing/TypingAssist/FormatBlockOnRBrace/@EntryValue">False</s:Boolean>
 	<s:Boolean x:Key="/Default/CodeEditing/TypingAssist/FormatStatementOnSemicolon/@EntryValue">False</s:Boolean>
-	
+	<s:Int64 x:Key="/Default/CodeInspection/ComplexityAnalysis/Threshold/@EntryValue">20</s:Int64>
 	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/ClassTooBigMaximum/@EntryValue">35</s:Int64>
 	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/ExcessiveIndentationMaximum/@EntryValue">5</s:Int64>
 	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/MethodNameNotMeaningfulMinimum/@EntryValue">3</s:Int64>
