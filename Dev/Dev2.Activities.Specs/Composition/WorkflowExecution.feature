@@ -4452,36 +4452,79 @@ Scenario: Executing Control Flow - Switch example workflow
 #	  | [[Result]] = String | 
 
 
-Scenario: Executing Scripting - Script example workflow
-	  Given I have a workflow "Scripting - Script Test"
-	  And "Scripting - Script Test" contains "Scripting - Script" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable     |
-	  When "Scripting - Script Test" is executed
-	  Then the workflow execution has "NO" error
-	  And the 'Script1' in WorkFlow 'Scripting - Script' debug inputs as	
-	  | Language | Script   |
-	  | Ruby     | sleep(5) | 
-	  And the 'Script1' in Workflow 'Scripting - Script' debug outputs as    
-	  |                |
-	  | [[Result]] = 5 | 
-	  And the 'Script2' in WorkFlow 'Scripting - Script' debug inputs as	
-	  | Language   | Script          |
-	  | JavaScript | String = String |
-	  And the 'Script2' in Workflow 'Scripting - Script' debug outputs as    
-	  |                |
-	  | [[Result]] = 1 | 
-	  And the 'Script3' in WorkFlow 'Scripting - Script' debug inputs as	
-	  | Language | Script          |
-	  | Python   | String = String |
-	  And the 'Script3' in Workflow 'Scripting - Script' debug outputs as    
-	  |                  |
-	  | [[Result]] = one | 
+#Scenario: Executing Scripting - Script example workflow
+#  Given I have a workflow "Scripting - Script Test"
+#  And "Scripting - Script Test" contains "Scripting - Script" from server "localhost" with mapping as
+#  | Input to Service | From Variable | Output from Service | To Variable     |
+#  When "Scripting - Script Test" is executed
+#  Then the workflow execution has "NO" error
+#  And the 'Script1' in WorkFlow 'Scripting - Script' debug inputs as	
+#  | Language | Script   |
+#  | Ruby     | sleep(5) | 
+#  And the 'Script1' in Workflow 'Scripting - Script' debug outputs as    
+#  |                |
+#  | [[Result]] = 5 | 
+#  And the 'Script2' in WorkFlow 'Scripting - Script' debug inputs as	
+#  | Language   | Script          |
+#  | JavaScript | String = String |
+#  And the 'Script2' in Workflow 'Scripting - Script' debug outputs as    
+#  |                |
+#  | [[Result]] = 1 | 
+#  And the 'Script3' in WorkFlow 'Scripting - Script' debug inputs as	
+#  | Language | Script          |
+#  | Python   | String = String |
+#  And the 'Script3' in Workflow 'Scripting - Script' debug outputs as    
+#  |                  |
+#  | [[Result]] = one | 
+#
 
-
-
-
-
+#After the BUG 17399,following 2 specs should be passed	  
+#Scenario: Gather System tool throws error when debug with 2 variables in one row 
+#	  Given I have a workflow "WorkflowW"
+#	  And "WorkflowW" contains an Assign "IndexVal" as
+#	  | variable | value   |
+#	  | [[a]]    | b       |
+#	   And "WorkflowW" contains Gather System Info "System info" as
+#	  | Variable   | Selected    |
+#	  | [[a]][[b]] | Date & Time |
+#	  When "WorkflowW" is executed
+#	  Then the workflow execution has "AN" error
+#	   And the 'IndexVal' in WorkFlow 'WorkflowW' debug inputs as
+#	  | # | Variable | New Value |
+#	  | 1 | [[a]] =  | b         |
+#	  And the 'IndexVal' in Workflow 'WorkflowW' debug outputs as  
+#	  | # |                 |
+#	  | 1 | [[a]] = b       |
+#	  And the 'System info' in WorkFlow 'WorkflowW' debug inputs as
+#	  | # |              |             |
+#	  | 1 | [[a]][[b]] = | Date & Time |
+#	 And the 'System info' in Workflow 'WorkflowW' debug outputs as    
+#	  | # |  |
+#	  |   |  |
+#	   
 
 	   
-
-
+	  
+#cenario: Gather System tool throws error when debug with invalid variableb
+#	  Given I have a workflow "WorkflowW1"
+#	  And "WorkflowW1" contains an Assign "IndexVal" as
+#	  | variable | value   |
+#	  | [[a]]    | b       |
+#	   And "WorkflowW1" contains Gather System Info "System info" as
+#	  | Variable         | Selected    |
+#	  | [[a]][[rec().a]] | Date & Time |
+#	  When "WorkflowW1" is executed
+#	  Then the workflow execution has "AN" error
+#	   And the 'IndexVal' in WorkFlow 'WorkflowW1' debug inputs as
+#	  | # | Variable | New Value |
+#	  | 1 | [[a]] =  | b         |
+#	  And the 'IndexVal' in Workflow 'WorkflowW1' debug outputs as  
+#	  | # |                 |
+#	  | 1 | [[a]] = b       |
+#	  And the 'System info' in WorkFlow 'WorkflowW1' debug inputs as
+#	  | # |                      |             |
+#	  | 1 | [[a]][[rec().a]]]] = | Date & Time |
+#	 And the 'System info' in Workflow 'WorkflowW1' debug outputs as    
+#	  | # |  |
+#	  |   |  |
+	   
