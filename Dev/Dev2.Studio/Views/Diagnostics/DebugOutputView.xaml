@@ -491,15 +491,19 @@
                         <StackPanel Orientation="Vertical">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock VerticalAlignment="Top"
-                                               Text="{Binding Label}" Padding="{Binding Label, Converter={StaticResource PaddingThicknessConverter}}" />
+                                               Text="{Binding Label}" Padding="{Binding Label, Converter={StaticResource PaddingThicknessConverter}}" 
+                                               AutomationProperties.AutomationId="UI_Label_AutoID"/>
                                     <TextBlock VerticalAlignment="Top"
                                                Text="{Binding Variable}" Padding="{Binding Variable, Converter={StaticResource PaddingThicknessConverter}}"
-                                               Foreground="{StaticResource DebugItemVariableBrush}" />
+                                               Foreground="{StaticResource DebugItemVariableBrush}"
+                                               AutomationProperties.AutomationId="UI_Variable_AutoID" />
                                     <TextBlock Text="{Binding Operator}" Padding="{Binding Operator, Converter={StaticResource PaddingThicknessConverter}}"
-                                               VerticalAlignment="Top" />
+                                               VerticalAlignment="Top"
+                                               AutomationProperties.AutomationId="UI_Operator_AutoID" />
                                     <TextBlock Text="{Binding Value}" Padding="{Binding Value, Converter={StaticResource PaddingThicknessConverter}}"
                                                VerticalAlignment="Top"
-                                               Foreground="{StaticResource DebugItemValueBrush}" />
+                                               Foreground="{StaticResource DebugItemValueBrush}"
+                                               AutomationProperties.AutomationId="UI_Value_AutoID" />
                                 </StackPanel>
                                 <Button x:Name="MoreLink"
                                         Focusable="False"
