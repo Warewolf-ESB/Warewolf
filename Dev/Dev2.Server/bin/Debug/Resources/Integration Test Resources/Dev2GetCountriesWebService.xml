@@ -1,0 +1,23 @@
+
+<Source ID="8a5c2119-08f5-4a58-888e-bbc95b996e88" Version="1.0" Name="Dev2GetCountriesWebService" ResourceType="WebSource" IsValid="false" ConnectionString="Address=http://rsaklfsvrtfsbld/IntegrationTestSite/GetCountries.ashx;DefaultQuery=?extension=json&amp;prefix=a;AuthenticationType=Anonymous" Type="WebSource" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+  <DisplayName>Dev2GetCountriesWebService</DisplayName>
+  <Category>Integration Test Resources\Dev2GetCountriesWebService</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>Lifpcl/fJqraDzAzY2Ut3kZoCH4=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>sES4NqgKDS4gIgfFqygFryd2cZcWDQbWnSbYUZN2p98E3dC6S5wB7McNvXIALbf81vPMbVk6P7QJ6kv+c9UVhSgZozHk06N6F7Pj3RKmdLJQbfJYV8gqXjbUjGE3R0H5muM/uF44aAANydgprchTkiwc7YDySXt/3JVUts+5PrE=</SignatureValue>
+  </Signature>
+</Source>

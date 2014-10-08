@@ -37,7 +37,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         public void Plugins_PrimitiveTypes_WhenTestingVariousPrimitivesTypes_ExpectPASS()
         {
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/PrimitiveReturnTypeTest");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/PrimitiveReturnTypeTest");
             const string expected = @"<Result>PASS</Result>";
 
             //------------Execute Test---------------------------
@@ -53,7 +53,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [Owner("Ashley Lewis")]
         public void Plugins_PluginIntegrationTest_Execution_CorrectResponse()
         {
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/BUG_9966_RemotePlugins");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/BUG_9966_RemotePlugins");
             const string expected = @"<DataList><Message>Exception of type 'HgCo.WindowsLive.SkyDrive.LogOnFailedException' was thrown.</Message></DataList>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
@@ -65,7 +65,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestMethod]
         public void TestPluginReturnsXMLFromXML()
         {
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/PluginsReturningXMLfromXML");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/PluginsReturningXMLfromXML");
 
             const string expected = @"<DataList><Company_Departments index=""1""><DepartmentName>Dev</DepartmentName></Company_Departments><Company_Departments index=""2""><DepartmentName>Accounts</DepartmentName></Company_Departments><Company_Departments_Department_Employees index=""1""><PersonName>Brendon</PersonName><PersonSurename>Page</PersonSurename></Company_Departments_Department_Employees><Company_Departments_Department_Employees index=""2""><PersonName>Jayd</PersonName><PersonSurename>Page</PersonSurename></Company_Departments_Department_Employees><Company_Departments_Department_Employees index=""3""><PersonName>Bob</PersonName><PersonSurename>Soap</PersonSurename></Company_Departments_Department_Employees><Company_Departments_Department_Employees index=""4""><PersonName>Joe</PersonName><PersonSurename>Pants</PersonSurename></Company_Departments_Department_Employees><Company index=""1""><InlineRecordSet>
         RandomData
@@ -82,7 +82,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestMethod]
         public void TestPluginsReturningXMLFromComplexType()
         {
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/PluginsReturningXMLFromComplexType");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/PluginsReturningXMLFromComplexType");
             const string expected = @"<Departments index=""1""><Name>Dev</Name><EmployeesCapacity>4</EmployeesCapacity><EmployeesCount>2</EmployeesCount></Departments><Departments index=""2""><Name>Accounts</Name><EmployeesCapacity>4</EmployeesCapacity><EmployeesCount>2</EmployeesCount></Departments><Departments_Employees index=""1""><Name>Brendon</Name></Departments_Employees><Departments_Employees index=""2""><Name>Jayd</Name></Departments_Employees><Departments_Employees index=""3""><Name>Bob</Name></Departments_Employees><Departments_Employees index=""4""><Name>Jo</Name></Departments_Employees>";
 
             string responseData = TestHelper.PostDataToWebserver(postData);
@@ -94,7 +94,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         [TestMethod]
         public void TestPluginsReturningXMLFromJson()
         {
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/PluginsReturningXMLFromJson");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/PluginsReturningXMLFromJson");
             string expected = @"<DataList><PrimitiveRecordset index=""1""><PrimitiveRecordse>
         RandomData
     </PrimitiveRecordse></PrimitiveRecordset><PrimitiveRecordset index=""2""><PrimitiveRecordse>
