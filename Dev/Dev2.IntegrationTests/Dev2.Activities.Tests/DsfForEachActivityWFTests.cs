@@ -115,7 +115,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void ForEachAllToolsTest()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "MO/ForEachUpgradeTest");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/ForEachUpgradeTest");
             const string expected = "PASS";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
