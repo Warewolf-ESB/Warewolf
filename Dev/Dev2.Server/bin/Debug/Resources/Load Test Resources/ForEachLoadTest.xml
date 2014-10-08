@@ -1,7 +1,7 @@
 
 <Service ID="21f1a350-ccf1-4710-beec-e3a9407180d4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="ForEachLoadTest" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>ForEachLoadTest</DisplayName>
-  <Category>INTEGRATION TEST SERVICES\ForEachLoadTest</Category>
+  <Category>Load Test Resources\ForEachLoadTest</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
   <AuthorRoles>
   </AuthorRoles>
