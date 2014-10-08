@@ -3703,16 +3703,16 @@ Scenario: Executing Utility - Format Number example workflow
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Utility - Format Number Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Format Number' in WorkFlow 'Utility - Format Number' debug inputs as
+	  And the 'Format Number1' in WorkFlow 'Utility - Format Number' debug inputs as
 	  | Number  | Rounding | Rounding Value | Decimals to show |
 	  | 123.446 | Normal   | 2              | 2                |
-	  And the 'Format Number' in Workflow 'Utility - Format Number' debug outputs as    
+	  And the 'Format Number1' in Workflow 'Utility - Format Number' debug outputs as    
 	  |                    |
 	  | [[Price]] = 123.45 |
-	   And the 'Format Number' in WorkFlow 'Utility - Format Number' debug inputs as
+	   And the 'Format Number2' in WorkFlow 'Utility - Format Number' debug inputs as
 	  | Number | Rounding | Rounding Value | Decimals to show |
-	  | 14649  | Up       | 2              | -3               |
-	  And the 'Format Number' in Workflow 'Utility - Format Number' debug outputs as    
+	  | 14649  | Up       | -2             | -3               |
+	  And the 'Format Number2' in Workflow 'Utility - Format Number' debug outputs as    
 	  |                   |
 	  | [[PriceInK]] = 14 |
 	 

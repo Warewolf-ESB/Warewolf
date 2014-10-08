@@ -10181,14 +10181,14 @@ this.FeatureBackground();
                         "2",
                         "2"});
 #line 3706
-   testRunner.And("the \'Format Number\' in WorkFlow \'Utility - Format Number\' debug inputs as", ((string)(null)), table560, "And ");
+   testRunner.And("the \'Format Number1\' in WorkFlow \'Utility - Format Number\' debug inputs as", ((string)(null)), table560, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table561 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table561.AddRow(new string[] {
                         "[[Price]] = 123.45"});
 #line 3709
-   testRunner.And("the \'Format Number\' in Workflow \'Utility - Format Number\' debug outputs as", ((string)(null)), table561, "And ");
+   testRunner.And("the \'Format Number1\' in Workflow \'Utility - Format Number\' debug outputs as", ((string)(null)), table561, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table562 = new TechTalk.SpecFlow.Table(new string[] {
                         "Number",
@@ -10198,17 +10198,17 @@ this.FeatureBackground();
             table562.AddRow(new string[] {
                         "14649",
                         "Up",
-                        "2",
+                        "-2",
                         "-3"});
 #line 3712
-    testRunner.And("the \'Format Number\' in WorkFlow \'Utility - Format Number\' debug inputs as", ((string)(null)), table562, "And ");
+    testRunner.And("the \'Format Number2\' in WorkFlow \'Utility - Format Number\' debug inputs as", ((string)(null)), table562, "And ");
 #line hidden
             TechTalk.SpecFlow.Table table563 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
             table563.AddRow(new string[] {
                         "[[PriceInK]] = 14"});
 #line 3715
-   testRunner.And("the \'Format Number\' in Workflow \'Utility - Format Number\' debug outputs as", ((string)(null)), table563, "And ");
+   testRunner.And("the \'Format Number2\' in Workflow \'Utility - Format Number\' debug outputs as", ((string)(null)), table563, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
