@@ -43,6 +43,7 @@ using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using Microsoft.AspNet.SignalR.Client.Hubs;
 using ServiceStack.Messaging.Rcon;
+using ServiceStack.ServiceClient.Web;
 
 namespace Dev2.Network
 {
