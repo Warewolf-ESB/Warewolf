@@ -1,0 +1,46 @@
+
+<Service ID="61a24a17-f609-4934-8c6f-47c7d7e729c0" Version="1.0" Name="Bug_11463" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+  <Actions>
+    <Action Name="dbo_FetchPeople" Type="InvokeStoredProc" SourceID="6f46efe3-f4a9-464e-b173-9b931418f68b" SourceName="DemoDBSrc" SourceMethod="dbo.FetchPeople">
+      <Inputs>
+        <Input Name="pplCnt" Source="pplCnt" EmptyToNull="false" DefaultValue="" NativeType="System.Object" />
+      </Inputs>
+      <Outputs>
+        <Output OriginalName="ID" Name="ID" MapsTo="ID" Value="[[FetchPeople().ID]]" RecordsetName="dbo_FetchPeople" RecordsetAlias="FetchPeople" Recordset="FetchPeople" />
+        <Output OriginalName="Name" Name="Name" MapsTo="Name" Value="[[FetchPeople().Name]]" RecordsetName="dbo_FetchPeople" RecordsetAlias="FetchPeople" Recordset="FetchPeople" />
+        <Output OriginalName="Surname" Name="Surname" MapsTo="Surname" Value="[[FetchPeople().Surname]]" RecordsetName="dbo_FetchPeople" RecordsetAlias="FetchPeople" Recordset="FetchPeople" />
+        <Output OriginalName="Username" Name="Username" MapsTo="Username" Value="[[FetchPeople().Username]]" RecordsetName="dbo_FetchPeople" RecordsetAlias="FetchPeople" Recordset="FetchPeople" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:_x003C_Paths_x003E_k__BackingField><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">ID</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">ID</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[FetchPeople().ID]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">1__COMMA__2__COMMA__3__COMMA__4__COMMA__5</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Name</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Name</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[FetchPeople().Name]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Bob__COMMA__Jane__COMMA__Fred__COMMA__Greg__COMMA__Brad</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Surname</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Surname</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[FetchPeople().Surname]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Smith__COMMA__Jones__COMMA__Taylor__COMMA__Nixon__COMMA__Smith</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Username</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Username</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[FetchPeople().Username]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">Bob.Smith__COMMA__Jane.Jones__COMMA__Fred.Taylor__COMMA__Greg.Nixon__COMMA__Brad.Smith</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType></d1p1:_x003C_Paths_x003E_k__BackingField></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>Bug_11463</DisplayName>
+  <Category>Integration Test Resources\Bug_11463</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>7iVP/EtPB1MfjRUeRjKG2cdBjuI=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>N8m2sT8PxgzwzZA/xgwF0HexsbZE1nyPA3MBZWNHEu5OmYRCv26WqnZrsWzjM3H9g2a2LgveRfLyBE6DheKqzb8JBTG1KZUZ0PWQQoD9xspUPFlGWRBh0mnIpbjKTh4tXFecPRhVuUGFbTR16sOietXUMTD2s3Or+djX9/pqXHY=</SignatureValue>
+  </Signature>
+</Service>
