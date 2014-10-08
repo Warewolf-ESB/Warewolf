@@ -1137,6 +1137,7 @@ namespace Dev2.Studio.ViewModels
                     actionToDoOnDelete();
                 }
             }
+            ExplorerViewModel.NavigationViewModel.UpdateSearchFilter();
         }
 
         #endregion delete

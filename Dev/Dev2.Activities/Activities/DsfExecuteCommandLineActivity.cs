@@ -101,6 +101,8 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             _nativeActivityContext = context;
             var dataObject = _nativeActivityContext.GetExtension<IDSFDataObject>();
             var compiler = DataListFactory.CreateDataListCompiler();
@@ -252,11 +254,10 @@ namespace Dev2.Activities
                 _process.BeginOutputReadLine();
 
                 StringBuilder reader = outputReader;
-
-                _process.OutputDataReceived += (sender, args) => reader.AppendLine(args.Data);
-
+                DataReceivedEventHandler a = (sender, args) => reader.AppendLine(args.Data);
+                _process.OutputDataReceived += a;
                 errorReader = _process.StandardError;
-
+                
                 if(!ProcessHasStarted(processStarted, _process))
                 {
                     return false;
@@ -266,7 +267,7 @@ namespace Dev2.Activities
                     _process.PriorityClass = CommandPriority;
                 }
                 _process.StandardInput.Close();
-
+           
                 // bubble user termination down the chain ;)
                 while(!_process.HasExited && !executionToken.IsUserCanceled)
                 {
@@ -278,7 +279,7 @@ namespace Dev2.Activities
                         {
                             continue;
                         }
-
+                        _process.OutputDataReceived -= a;
                         _process.Kill();
                         throw new ApplicationException("The process required user input.");
                     }
@@ -292,7 +293,7 @@ namespace Dev2.Activities
                     // Nor does .CloseMainWindow() as people have claimed, hence the hand rolled process tree killer - WTF M$ ;(
                     KillProcessAndChildren(_process.Id);
                 }
-
+                _process.OutputDataReceived -= a;
                 _process.Close();
             }
             return true;
