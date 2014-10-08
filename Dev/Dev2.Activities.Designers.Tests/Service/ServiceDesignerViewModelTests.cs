@@ -438,11 +438,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             var friendlySourceName = CreateModelProperty("FriendlySourceName", "Hello");
             var type = CreateModelProperty("Type", "Workflow");
             var actionName = CreateModelProperty("ActionName", "dbo.pr_mydata");
-            var simulationMode = CreateModelProperty("SimulationMode", SimulationMode.OnDemand);
 
-            var vm = CreateServiceDesignerViewModel(Guid.NewGuid(), new[] { friendlySourceName.Object, type.Object, actionName.Object, simulationMode.Object });
 
-            Assert.IsTrue(vm.Properties.Count == 4);
+            var vm = CreateServiceDesignerViewModel(Guid.NewGuid(), new[] { friendlySourceName.Object, type.Object, actionName.Object });
+
+            Assert.IsTrue(vm.Properties.Count == 3);
         }
 
         #endregion

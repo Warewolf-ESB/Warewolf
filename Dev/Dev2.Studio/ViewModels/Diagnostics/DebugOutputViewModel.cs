@@ -69,7 +69,6 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         ICommand _expandAllCommand;
         bool _expandAllMode = true;
         bool _highlightError = true;
-        bool _highlightSimulation = true;
         bool _isRebuildingTree;
         ICommand _openItemCommand;
         ObservableCollection<IDebugTreeViewItemViewModel> _rootItems;
@@ -388,21 +387,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        /// <summary>
-        ///     Gets a value indicating whether [highligh simulation].
-        /// </summary>
-        /// <value>
-        ///     <c>true</c> if [highligh simulation]; otherwise, <c>false</c>.
-        /// </value>
-        public bool HighlightSimulation
-        {
-            get { return _highlightSimulation; }
-            set
-            {
-                _highlightSimulation = value;
-                NotifyOfPropertyChange(() => HighlightSimulation);
-            }
-        }
+
 
         /// <summary>
         ///     Gets a value indicating whether [highligh error].
