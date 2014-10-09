@@ -96,11 +96,11 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.And("I double click \"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_" +
                     "AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
- testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
-                    "gthDesigner)\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length1(RecordsLe" +
+                    "ngthDesigner)\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 16
  testRunner.When("I send \"{DELETE}\" to \"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesign" +
-                    "er),Length(RecordsLengthDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+                    "er),Length1(RecordsLengthDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 17
  testRunner.And("I click \"RIBBONSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
@@ -135,8 +135,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 31
  testRunner.And("I click \"UI_MessageBox_AutoID,UI_YesButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 32
- testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLen" +
-                    "gthDesigner)\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("\"WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length1(RecordsLe" +
+                    "ngthDesigner)\" is visible within \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 33
  testRunner.And("\"EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID,v.3*\" is" +
                     " visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

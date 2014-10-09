@@ -11,9 +11,9 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 	And I click "EXPLORER,UI_localhost_AutoID"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID"
-	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)" is visible within "2" seconds
+	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length1(RecordsLengthDesigner)" is visible within "2" seconds
 	#CreateNewVersion
-	When I send "{DELETE}" to "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)"
+	When I send "{DELETE}" to "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length1(RecordsLengthDesigner)"
 	And I click "RIBBONSAVE"
 	And I right click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID"
 	And I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
@@ -29,7 +29,7 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 	And I right click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length RENAME_AutoID,v.1*"
 	When I click "UI_RollbackContextMenuItem_AutoID"
 	And I click "UI_MessageBox_AutoID,UI_YesButton_AutoID"
-	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length(RecordsLengthDesigner)" is visible within "2" seconds
+	Then "WORKFLOWDESIGNER,Recordset - Records Length(FlowchartDesigner),Length1(RecordsLengthDesigner)" is visible within "2" seconds
 	And "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID,v.3*" is visible within "1" seconds
 	#CheckDeploy [does not have any versions showing up]
 	And I click "RIBBONDEPLOY"
