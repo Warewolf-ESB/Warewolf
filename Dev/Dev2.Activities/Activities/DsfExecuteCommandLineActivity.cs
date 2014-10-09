@@ -251,11 +251,11 @@ namespace Dev2.Activities
                 _process.StartInfo = processStartInfo;
                 var processStarted = _process.Start();
 
-                _process.BeginOutputReadLine();
+                //_process.BeginOutputReadLine();
 
                 StringBuilder reader = outputReader;
-                DataReceivedEventHandler a = (sender, args) => reader.AppendLine(args.Data);
-                _process.OutputDataReceived += a;
+                //DataReceivedEventHandler a = (sender, args) => reader.AppendLine(args.Data);
+                //_process.OutputDataReceived += a;
                 errorReader = _process.StandardError;
 
                 if (!ProcessHasStarted(processStarted, _process))
@@ -271,7 +271,14 @@ namespace Dev2.Activities
                 // bubble user termination down the chain ;)
                 while (!_process.HasExited && !executionToken.IsUserCanceled)
                 {
-                    if (!_process.HasExited)
+                    reader.Append(_process.StandardOutput.ReadToEnd());
+                    if(!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a=>a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
+                    {
+                        //reader.Append(_process.StandardOutput.ReadToEnd());
+                        _process.Kill();
+                    }
+
+                    else if (!_process.HasExited)
                     {
                         var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
 
@@ -279,7 +286,7 @@ namespace Dev2.Activities
                         {
                             continue;
                         }
-                        _process.OutputDataReceived -= a;
+                        //_process.OutputDataReceived -= a;
                         _process.Kill();
                         throw new ApplicationException("The process required user input.");
                     }
@@ -293,7 +300,8 @@ namespace Dev2.Activities
                     // Nor does .CloseMainWindow() as people have claimed, hence the hand rolled process tree killer - WTF M$ ;(
                     KillProcessAndChildren(_process.Id);
                 }
-                _process.OutputDataReceived -= a;
+                reader.Append(_process.StandardOutput.ReadToEnd());
+                //_process.OutputDataReceived -= a;
                 _process.Close();
             }
             return true;
