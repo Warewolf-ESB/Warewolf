@@ -3841,51 +3841,23 @@ Scenario: Executing Utility - Web Request example workflow
 	  |                             |
 	  | [[GecodedAddress]] = String |
 
-Scenario: Executing Utility - Assign example workflow
-	  Given I have a workflow "Utility - Assign Test"
-	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable        |
-	  |                  |               | [[rec(*).set]]      | [[rec().set]]      |
-	  |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
-	  |                  |               | [[hero(*).name]]    | [[hero().name]]    |
-	  When "Utility - Assign Test" is executed
-	  Then the workflow execution has "NO" error
-	 # And the 'Assign (3)' in WorkFlow 'Utility - Assign Test' debug inputs as
-	  And the 'Utility - Assign' in Workflow 'Utility - Assign Test' debug outputs as    
-	  |                                                                   |
-	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	  | [[hero(1).pushups]] = All of them.                                |
-	  | [[hero(1).name]] =   Chuck Norris                                 |
+#Scenario: Executing Utility - Assign example workflows
+#	  Given I have a workflow "Utility - Assign Test"
+#	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
+#	 | Input to Service | From Variable | Output from Service | To Variable        |
+#	 |                  |               | [[rec(*).set]]      | [[rec().set]]      |
+#	 |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
+#	 |                  |               | [[hero(*).name]]    | [[hero().name]]    |
+#	  When "Utility - Assign Test" is executed
+#	  Then the workflow execution has "NO" error
+#	 # And the 'Assign (3)' in WorkFlow 'Utility - Assign Test' debug inputs as
+#	  And the 'Utility - Assign' in Workflow 'Utility - Assign Test' debug outputs as    
+#	  |                                                                   |
+#	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+#	  | [[hero(1).pushups]] = All of them.                                |
+#	  | [[hero(1).name]] =   Chuck Norris                                 |
 
-	#| # | Variable      | New Value                       |
-	#| 1 | [[Name]] =    | Bart                            |
-	#| 2 | [[Surname]] = | Simpson                         |
-	#| 2 | [[Info]] =    | I WILL NOT INSTIGATE REVOLUTION |
-	#And the 'Assign (3)' in Workflow 'Utility - Assign' debug outputs as    
-	#| # |                                               |
-	#| 1 | [[Name]] =    Bart                            |
-	#| 2 | [[Surname]] = Simpson                         |
-	#| 3 | [[Info]] =    I WILL NOT INSTIGATE REVOLUTION |
-	#And the 'Assign (2)' in WorkFlow 'Utility - Assign' debug inputs as
-	#| # | Variable         | New Value                                                                      |
-	#| 1 | [[rec(1).set]] = | [[Name]] [[Surname]]: [[Info]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	#And the 'Assign (2)' in Workflow 'Utility - Assign' debug outputs as    
-	#| # |                                                                |
-	#| 1 | [[rec(1).set]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	# And the 'Assign Sum (1)' in WorkFlow 'Utility - Assign' debug inputs as
-	#| # | Variable  | New Value |  
-	#| 1 | [[sum]] = | =23+19    |
-	#And the 'Assign Sum (1)' in Workflow 'Utility - Assign' debug outputs as    
-	#| # |              |
-	#| 1 | [[sum]] = 42 |
-	# And the 'Assign Records (2)' in WorkFlow 'Utility - Assign' debug inputs as
-	#| # | Variable             | New Value    |
-	#| 1 | [[hero().name]] =    | Chuck Norris |
-	#| 2 | [[hero().pushups]] = | All of them. |
-	#And the 'Assign Records (2)' in Workflow 'Utility - Assign' debug outputs as    
-	#| # |                                    |
-	#| 1 | [[hero().name]] = Chuck Norris     | 
-	#| 2 | [[hero().pushups]] =  All of them. |
+	
 
 
 Scenario: Executing Data - Base Conversion example workflow
