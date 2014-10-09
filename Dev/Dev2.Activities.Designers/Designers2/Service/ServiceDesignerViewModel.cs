@@ -36,7 +36,6 @@ using Dev2.Providers.Errors;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services;
 using Dev2.Services.Events;
-using Dev2.Simulation;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.Interfaces;
@@ -382,7 +381,6 @@ namespace Dev2.Activities.Designers2.Service
         string ServiceUri { get { return GetProperty<string>(); } }
         string ServiceName { get { return GetProperty<string>(); } }
         string ActionName { get { return GetProperty<string>(); } }
-        SimulationMode SimulationMode { get { return GetProperty<SimulationMode>(); } }
         string FriendlySourceName { get { return GetProperty<string>(); } }
         string Type { get { return GetProperty<string>(); } }
         // ReSharper disable InconsistentNaming
@@ -745,7 +743,7 @@ namespace Dev2.Activities.Designers2.Service
             AddProperty("Source :", FriendlySourceName);
             AddProperty("Type :", Type);
             AddProperty("Procedure :", ActionName);
-            AddProperty("Simulation :", SimulationMode.ToString());
+     
         }
 
         void AddProperty(string key, string value)
