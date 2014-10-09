@@ -14,9 +14,12 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
+using Dev2.ConnectionHelpers;
 using Dev2.Models;
+using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.Studio.Core.Interfaces;
@@ -45,12 +48,14 @@ namespace Dev2.ViewModels.Deploy
         }
         ObservableCollection<IExplorerItemModel> _explorerItemModels;
         IAuthorizationService _authorizationService;
+        ICommand _refreshMenuCommand;
+        IConnectControlSingleton _connectControlSingleton;
 
-        public DeployNavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, bool target)
+        public DeployNavigationViewModel(IEventAggregator eventPublisher, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, IStudioResourceRepository studioResourceRepository, bool target, IConnectControlSingleton connectControlSingleton)
             : base(eventPublisher, asyncWorker, environmentRepository, studioResourceRepository)
         {
             _target = target;
-
+            ConnectControlSingleton = connectControlSingleton;
         }
 
         public IEnvironmentModel Environment
@@ -286,11 +291,40 @@ namespace Dev2.ViewModels.Deploy
             }
             return false;
         }
+        public ICommand RefreshMenuCommand
+        {
+            get
+            {
+                return _refreshMenuCommand ??
+                       (_refreshMenuCommand = new DelegateCommand(param => RefreshConnectControl()));
+            }
+        }
+        public void RefreshConnectControl()
+        {
+            ConnectControlSingleton.Refresh(_environment.ID);
+        }
+
+        // ReSharper disable ConvertToAutoProperty
+        public IConnectControlSingleton ConnectControlSingleton
+            // ReSharper restore ConvertToAutoProperty
+        {
+            get
+            {
+                return _connectControlSingleton;
+            }
+            private set
+            {
+                _connectControlSingleton = value;
+            }
+        }
 
         public void RefreshEnvironment()
         {
+            
             StudioResourceRepository.Load(_environment.ID, AsyncWorker);
             FilterEnvironments(_environment);
         }
+
+
     }
 }

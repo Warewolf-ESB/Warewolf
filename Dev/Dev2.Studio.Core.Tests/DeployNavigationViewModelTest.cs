@@ -15,6 +15,7 @@ using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Communication;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
 using Dev2.Models;
 using Dev2.Services.Security;
@@ -233,6 +234,8 @@ namespace Dev2.Core.Tests
 
         #region Refresh Environments Tests
 
+
+
         #endregion
 
         [TestMethod]
@@ -433,7 +436,7 @@ namespace Dev2.Core.Tests
         DeployNavigationViewModel CreateViewModel(IEnvironmentRepository environmentRepository, Mock<IResourceRepository> mockResourceRepository)
         {
             StudioResourceRepository studioResourceRepository = BuildExplorerItems(mockResourceRepository.Object);
-            var navigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, environmentRepository, studioResourceRepository, _target);
+            var navigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, environmentRepository, studioResourceRepository, _target, new Mock<IConnectControlSingleton>().Object);
             return navigationViewModel;
         }
 
@@ -458,6 +461,24 @@ namespace Dev2.Core.Tests
 
 
         }
+
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EnvironmentTreeViewModel_Disconnect")]
+        [TestMethod]
+        public void DeployNavigationViewModel_RefreshCommand_CallsConnectControlRefresh()
+        {
+            // base case
+            Init(false, true);
+         
+            PrivateObject pvt = new PrivateObject(_vm);
+            var con = new Mock<IConnectControlSingleton>();
+            pvt.SetField("_connectControlSingleton", con.Object);
+            _vm.RefreshMenuCommand.Execute(null);
+            con.Verify(a => a.Refresh(_vm.Environment.ID),Times.Once());
+
+
+        }
+
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("EnvironmentTreeViewModel_Disconnect")]
         [TestMethod]
