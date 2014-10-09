@@ -257,7 +257,7 @@ namespace Dev2.Activities
                 DataReceivedEventHandler a = (sender, args) => reader.AppendLine(args.Data);
                 _process.OutputDataReceived += a;
 
-                _process.Exited+= ProcessOnExited;
+           
                 errorReader = _process.StandardError;
                 
                 if (!ProcessHasStarted(processStarted, _process))
