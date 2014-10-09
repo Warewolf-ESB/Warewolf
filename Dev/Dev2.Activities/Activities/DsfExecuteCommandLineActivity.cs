@@ -257,7 +257,6 @@ namespace Dev2.Activities
                 DataReceivedEventHandler a = (sender, args) => reader.AppendLine(args.Data);
                 _process.OutputDataReceived += a;
 
-                _process.Exited+= ProcessOnExited;
                 errorReader = _process.StandardError;
                 
                 if(!ProcessHasStarted(processStarted, _process))
@@ -304,10 +303,6 @@ namespace Dev2.Activities
             return true;
         }
 
-        void ProcessOnExited(object sender, EventArgs eventArgs)
-        {
-           
-        }
 
         #region Overrides of NativeActivity<string>
 
