@@ -3750,13 +3750,13 @@ Scenario: Executing Utility - Date and Time example workflow
 	  Then the workflow execution has "NO" error
 	  And the 'Date and Time(1)' in WorkFlow 'Utility - Date and Time' debug inputs as
 	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format           | =                      |
-	  | System Date Time | DateTime | System Date Time Format | MM/dd/yyyy hh:mm:ss tt | ""       | "" | System Date Time Format | MM/dd/yyyy hh:mm:ss tt |
+	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |
 	  And the 'Date and Time(1)' in Workflow 'Utility - Date and Time' debug outputs as    
 	  |                       |
 	  | [[nowish]] = DateTime |   
 	 And the 'Date and Time(2)' in WorkFlow 'Utility - Date and Time' debug inputs as
 	 | Input                 | Input Format            | =                      | Add Time |    | Output Format          |
-	 | [[nowish]] = DateTime | System Date Time Format | MM/dd/yyyy hh:mm:ss tt | ""       | "" | mm/dd/yy 12h:min am/pm |
+	 | [[nowish]] = DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | mm/dd/yy 12h:min am/pm |
 	  And the 'Date and Time(2)' in Workflow 'Utility - Date and Time' debug outputs as    
 	  |                       |
 	  | [[nowish]] = DateTime |  
@@ -3774,7 +3774,7 @@ Scenario: Executing Utility - Date and Time example workflow
 	  | [[TheDefaultDate]] = DateTime |  
 	  And the 'Date and Time(5)' in WorkFlow 'Utility - Date and Time' debug inputs as
 	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format                                 |
-	  | System Date Time | DateTime | System Date Time Format | MM/dd/yyyy hh:mm:ss tt | ""       | "" | 'Date format yyyy MM dd yields : ' yyyy MM dd |
+	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | 'Date format yyyy MM dd yields : ' yyyy MM dd |
 
 Scenario: Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
