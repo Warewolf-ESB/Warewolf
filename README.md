@@ -15,3 +15,5 @@ Go to the community site: http://community.warewolf.io for :
 You can download the latest compiled release from http://warewolf.io
 
 Release notes are available at http://warewolf.io/release-notes.php
+
+**LICENCE:** Licensed under GNU Affero General Public License 3.0 or later
