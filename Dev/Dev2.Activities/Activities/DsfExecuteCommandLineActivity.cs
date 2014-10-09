@@ -256,10 +256,8 @@ namespace Dev2.Activities
                 StringBuilder reader = outputReader;
                 DataReceivedEventHandler a = (sender, args) => reader.AppendLine(args.Data);
                 _process.OutputDataReceived += a;
-
-           
                 errorReader = _process.StandardError;
-                
+
                 if (!ProcessHasStarted(processStarted, _process))
                 {
                     return false;
@@ -268,27 +266,28 @@ namespace Dev2.Activities
                 {
                     _process.PriorityClass = CommandPriority;
                 }
-                //_process.StandardInput.Close();
-           
+                _process.StandardInput.Close();
+
                 // bubble user termination down the chain ;)
                 while (!_process.HasExited && !executionToken.IsUserCanceled)
                 {
                     if (!_process.HasExited)
                     {
+                        var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
 
-                        if (_process.Threads.Cast<ProcessThread>().Any(thread => thread.ThreadState == System.Diagnostics.ThreadState.Wait
-                                                                 && thread.WaitReason == ThreadWaitReason.UserRequest))
+                        if (!isWaitingForUserInput)
                         {
-                            Thread.Sleep(2000);
-                            _process.OutputDataReceived -= a;
-                            _process.Kill();
-                            throw new ApplicationException("The process required user input.");
+                            continue;
                         }
+                        _process.OutputDataReceived -= a;
+                        _process.Kill();
+                        throw new ApplicationException("The process required user input.");
+                    }
                     Thread.Sleep(10);
                 }
 
                 // user termination exit ;)
-                    if (executionToken.IsUserCanceled)
+                if (executionToken.IsUserCanceled)
                 {
                     // darn .Kill() does not kill the process tree ;(
                     // Nor does .CloseMainWindow() as people have claimed, hence the hand rolled process tree killer - WTF M$ ;(
@@ -299,8 +298,6 @@ namespace Dev2.Activities
             }
             return true;
         }
-        }
-
         #region Overrides of NativeActivity<string>
 
         #endregion

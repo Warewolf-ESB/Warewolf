@@ -127,7 +127,23 @@ this.ScenarioSetup(scenarioInfo);
 #line 25
  testRunner.When("the command tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 26
- testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the result of the command tool will be \"Press any key to continue . . .\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 27
+ testRunner.And("the execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Command"});
+            table4.AddRow(new string[] {
+                        "pause"});
+#line 28
+ testRunner.And("the debug inputs as", ((string)(null)), table4, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table5.AddRow(new string[] {
+                        "[[result]] = Press any key to continue . . ."});
+#line 31
+ testRunner.And("the debug output as", ((string)(null)), table5, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -138,30 +154,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteABlankCmd()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute a blank cmd", ((string[])(null)));
-#line 28
+#line 35
 this.ScenarioSetup(scenarioInfo);
-#line 29
+#line 36
  testRunner.Given("I have this command script to execute \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 30
+#line 37
  testRunner.When("the command tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 31
+#line 38
  testRunner.Then("the result of the command tool will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 32
+#line 39
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
                         "Command"});
-            table4.AddRow(new string[] {
+            table6.AddRow(new string[] {
                         "\"\""});
-#line 33
- testRunner.And("the debug inputs as", ((string)(null)), table4, "And ");
+#line 40
+ testRunner.And("the debug inputs as", ((string)(null)), table6, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table5 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table5.AddRow(new string[] {
+            table7.AddRow(new string[] {
                         "[[result]] ="});
-#line 36
- testRunner.And("the debug output as", ((string)(null)), table5, "And ");
+#line 43
+ testRunner.And("the debug output as", ((string)(null)), table7, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -172,30 +188,30 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteInvalidCmd()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute invalid cmd", ((string[])(null)));
-#line 40
+#line 47
 this.ScenarioSetup(scenarioInfo);
-#line 41
+#line 48
  testRunner.Given("I have this command script to execute \"asdf\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 42
+#line 49
  testRunner.When("the command tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 43
+#line 50
  testRunner.Then("the result of the command tool will be \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 44
+#line 51
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table6 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
                         "Command"});
-            table6.AddRow(new string[] {
+            table8.AddRow(new string[] {
                         "asdf"});
-#line 45
- testRunner.And("the debug inputs as", ((string)(null)), table6, "And ");
+#line 52
+ testRunner.And("the debug inputs as", ((string)(null)), table8, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table7 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table7.AddRow(new string[] {
+            table9.AddRow(new string[] {
                         "[[result]] ="});
-#line 48
- testRunner.And("the debug output as", ((string)(null)), table7, "And ");
+#line 55
+ testRunner.And("the debug output as", ((string)(null)), table9, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -206,28 +222,28 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void ExecuteCmdWithNegativeRecordsetIndex()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute cmd with negative recordset index", ((string[])(null)));
-#line 52
+#line 59
 this.ScenarioSetup(scenarioInfo);
-#line 53
+#line 60
  testRunner.Given("I have this command script to execute \"dir [[my(-1).dir]]\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 54
+#line 61
  testRunner.When("the command tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 55
+#line 62
  testRunner.Then("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table8 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table10 = new TechTalk.SpecFlow.Table(new string[] {
                         "Command"});
-            table8.AddRow(new string[] {
+            table10.AddRow(new string[] {
                         "dir [[my(-1).dir]] ="});
-#line 56
- testRunner.And("the debug inputs as", ((string)(null)), table8, "And ");
+#line 63
+ testRunner.And("the debug inputs as", ((string)(null)), table10, "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table9 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table11 = new TechTalk.SpecFlow.Table(new string[] {
                         ""});
-            table9.AddRow(new string[] {
+            table11.AddRow(new string[] {
                         "[[result]] ="});
-#line 59
- testRunner.And("the debug output as", ((string)(null)), table9, "And ");
+#line 66
+ testRunner.And("the debug output as", ((string)(null)), table11, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

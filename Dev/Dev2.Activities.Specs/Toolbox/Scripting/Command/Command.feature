@@ -23,7 +23,14 @@ Scenario: Execute commands
 Scenario: Execute a command that requires user interaction like pause
 	Given I have this command script to execute "pause"
 	When the command tool is executed
-	Then the execution has "AN" error
+	Then the result of the command tool will be "Press any key to continue . . ."
+	And the execution has "NO" error
+	And the debug inputs as  
+	| Command |
+	| pause   |  
+	And the debug output as 
+	|                                               |
+	| [[result]] = Press any key to continue . . . |
 
 Scenario: Execute a blank cmd
 	Given I have this command script to execute ""
