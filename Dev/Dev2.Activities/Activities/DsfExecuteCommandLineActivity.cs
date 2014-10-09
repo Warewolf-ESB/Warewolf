@@ -237,11 +237,11 @@ namespace Dev2.Activities
         {
             outputReader = new StringBuilder();
             _process = new Process();
-            using(_process)
+            using (_process)
             {
                 var processStartInfo = CreateProcessStartInfo(val);
 
-                if(processStartInfo == null)
+                if (processStartInfo == null)
                 {
                     // ReSharper disable NotResolvedInText
                     throw new ArgumentNullException("processStartInfo");
@@ -258,24 +258,24 @@ namespace Dev2.Activities
                 _process.OutputDataReceived += a;
 
                 errorReader = _process.StandardError;
-                
-                if(!ProcessHasStarted(processStarted, _process))
+
+                if (!ProcessHasStarted(processStarted, _process))
                 {
                     return false;
                 }
-                if(!_process.HasExited)
+                if (!_process.HasExited)
                 {
                     _process.PriorityClass = CommandPriority;
                 }
                 //_process.StandardInput.Close();
-           
+
                 // bubble user termination down the chain ;)
-                while(!_process.HasExited && !executionToken.IsUserCanceled)
+                while (!_process.HasExited && !executionToken.IsUserCanceled)
                 {
-                    if(!_process.HasExited)
+                    if (!_process.HasExited)
                     {
 
-                        if(_process.Threads.Cast<ProcessThread>().Any(thread => thread.ThreadState == System.Diagnostics.ThreadState.Wait
+                        if (_process.Threads.Cast<ProcessThread>().Any(thread => thread.ThreadState == System.Diagnostics.ThreadState.Wait
                                                                  && thread.WaitReason == ThreadWaitReason.UserRequest))
                         {
                             Thread.Sleep(2000);
@@ -283,26 +283,22 @@ namespace Dev2.Activities
                             _process.Kill();
                             throw new ApplicationException("The process required user input.");
                         }
-
-
-                        
+                        Thread.Sleep(10);
                     }
-                    Thread.Sleep(10);
-                }
 
-                // user termination exit ;)
-                if(executionToken.IsUserCanceled)
-                {
-                    // darn .Kill() does not kill the process tree ;(
-                    // Nor does .CloseMainWindow() as people have claimed, hence the hand rolled process tree killer - WTF M$ ;(
-                    KillProcessAndChildren(_process.Id);
+                    // user termination exit ;)
+                    if (executionToken.IsUserCanceled)
+                    {
+                        // darn .Kill() does not kill the process tree ;(
+                        // Nor does .CloseMainWindow() as people have claimed, hence the hand rolled process tree killer - WTF M$ ;(
+                        KillProcessAndChildren(_process.Id);
+                    }
+                    _process.OutputDataReceived -= a;
+                    _process.Close();
                 }
-                _process.OutputDataReceived -= a;
-                _process.Close();
+                return true;
             }
-            return true;
         }
-
 
         #region Overrides of NativeActivity<string>
 

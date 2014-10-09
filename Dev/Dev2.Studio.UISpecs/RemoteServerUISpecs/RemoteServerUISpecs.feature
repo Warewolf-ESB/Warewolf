@@ -97,10 +97,10 @@ Scenario: Testing Remote Server Connection Creating Remote Workflow and Executin
 #	Given I have Warewolf running
 #	And all tabs are closed
 #	And I click "RIBBONNEWENDPOINT"
-#	A long wait has been put in here (5 seconds) it would be better to try for up to 5 seconds and then fail -  please look at plumbing that
- #   And I create a new remote connection "Azure" as
-  #     | Address                                    | AuthType | UserName | Password         |
-  #     | http://dev2-warewolf.cloudapp.net:3142/dsf | User     | dev2user | VisualService8us |
+#	#A long wait has been put in here (5 seconds) it would be better to try for up to 5 seconds and then fail -  please look at plumbing that
+#    And I create a new remote connection "Azure" as
+#     | Address                                    | AuthType | UserName | Password         |
+#     | http://dev2-warewolf.cloudapp.net:3142/dsf | User     | dev2user | VisualService8us |
 #   And I click "EXPLORERFILTERCLEARBUTTON"
 #	And I click "EXPLORER,UI_Azure (http://dev2-warewolf.cloudapp.net:3142/)_AutoID"   
 #	And I send "Call Nested Workflow" to "EXPLORERFILTER"

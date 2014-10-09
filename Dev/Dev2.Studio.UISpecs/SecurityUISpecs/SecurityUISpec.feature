@@ -4,18 +4,18 @@
 	I want to be able to setup permissions for my server
 	
 Background: 
-	   Given I click "EXPLORER,UI_localhost_AutoID"
-	   Given I click "RIBBONSETTINGS"   
-	   And "SECURITYPUBLICDEPLOYTO" is unchecked
-       And "SECURITYPUBLICDEPLOYFROM" is unchecked       
-       And "SECURITYPUBLICADMINISTRATOR" is unchecked  
-       And "SECURITYPUBLICVIEW" is unchecked
-       And "SECURITYPUBLICEXECUTE" is unchecked
-	   And "SECURITYPUBLICCONTRIBUTE" is unchecked
-       And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
-	   And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
-	   And I click "SECURITYSAVE" 
-	   Given all tabs are closed
+	  # Given I click "EXPLORER,UI_localhost_AutoID"
+	  # Given I click "RIBBONSETTINGS"   
+	  # And "SECURITYPUBLICDEPLOYTO" is unchecked
+      # And "SECURITYPUBLICDEPLOYFROM" is unchecked       
+      # And "SECURITYPUBLICADMINISTRATOR" is unchecked  
+      # And "SECURITYPUBLICVIEW" is unchecked
+      # And "SECURITYPUBLICEXECUTE" is unchecked
+	  # And "SECURITYPUBLICCONTRIBUTE" is unchecked
+      # And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
+	  # And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
+	  # And I click "SECURITYSAVE" 
+	  # Given all tabs are closed
 
 Scenario: Testing Different Server Permissions For Public
        Given all tabs are closed
@@ -554,3 +554,53 @@ Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
 #	   Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_BARNEY_AutoID,UI_Javascript Testing_AutoID" is visible
 #	   Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_REM"
 #       Then "DEPLOYDESTINATION,REM*,UI_Unautherized_DeployToText_AutoID" is visible
+
+
+#Scenario: Connected To Remote Server As Administrator And Expected Admin Rights
+	 #Given I have Warewolf running
+	 #And all tabs are closed
+	 #Given I click "EXPLORER,UI_localhost_AutoID"
+	 ###Connecting to Remote Server as Admin
+     #Given I create a new remote connection "RemAdmin" as
+     #  | Address                  | AuthType | UserName      | Password |
+     #  | http://TST7X64W:3142/dsf | User     | Administrator |          |
+	 #Given I click "EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID"
+	 ###Checking Remote Server Ribbon Icons When Connected as Admin 
+     #Then "RIBBONNEWENDPOINT" is visible
+	 #And I click "SECURITYSAVE"
+	 #Then "RIBBONDEPLOY" is visible
+	 #Then "RIBBONNEWDATABASECONNECTOR" is visible
+	 #Then "RIBBONNEWPLUGINCONNECTOR" is visible
+	 #Then "RIBBONSETTINGS" is visible
+	 #Then "RIBBONNEWWEBCONNECTOR" is visible
+	 #Then "RIBBONSCHEDULE" is visible      
+	 ###Checking Explorer Icons When Connecte as Admin      
+	 #Given I click "EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID,UI_Examples_AutoID,Expander"
+	 #Given "EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID,UI_CanEdit_AutoID" is visible
+	 #Given "EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID,UI_CanExecute_AutoID" is visible
+	 ##Checking Deploy UnAuthorized
+	 #Then I click "RIBBONDEPLOY"
+	 #Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_RemAdmin"
+	 #Then "DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is not visible
+	 #Then I click "DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID,UI_SourceServer_UI_Examples_AutoID_AutoID,Expander"
+	 #Then "DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID" is visible
+	 #Then "DEPLOYSOURCE,UI_SourceServer_UI_localhost_AutoID_AutoID,UI_SourceServer_UI_Examples_AutoID_AutoID,UI_SourceServer_UI_Recordset - Records Length_AutoID_AutoID," is visible
+	 #Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_RemAdmin"
+     #Then "DEPLOYDESTINATION,REM*,UI_Unautherized_DeployToText_AutoID" is not visible
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
