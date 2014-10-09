@@ -2006,54 +2006,56 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  |                         |
 	  | [[rec(1).a]] = Warewolf |
 	  | [[rec(2).a]] = Warewolf |
-	  | [[rec(3).a]] = 2        |
 
+	  | [[rec(3).a]] = 2        |
+#18251
 #The below 12 scenario should be passed after the bug 11994 is fixe
-Scenario: Workflow with Assign and Find Record index
-      Given I have a workflow "WFWithAssignandFindRecordindex"
-	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
-      | # | variable     | value    |
-      | # | [[rec(1).a]] | Warewolf |
-	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord" into result as "[[a]][[b]]"
-      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
-      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
-	  When "WFWithAssignandFindRecordindex" is executed
-	  Then the workflow execution has "AN" error
-	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-	  | # | Variable       | New Value |
-	  | 1 | [[rec(1).a]] = | Warewolf  | 
-	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
-	  | # |                                  |
-	  | 1 | [[rec(1).a]]         =  Warewolf |
-	  And the 'FindRecord' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
-	  And the 'FindRecord' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as
-	  ||   
+#Scenario: Workflow with Assign and Find Record index
+#      Given I have a workflow "WFWithAssignandFindRecordindex"
+#	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
+#      | # | variable     | value    |
+#      | # | [[rec(1).a]] | Warewolf |
+#	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
+#      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+#      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
+#	  When "WFWithAssignandFindRecordindex" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rec(1).a]] = | Warewolf  | 
+#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
+#	  | # |                                  |
+#	  | 1 | [[rec(1).a]]         =  Warewolf |
+#	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+#	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | NO                         | Yes                             |
+#	  And the 'FindRecord0' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as
+#	  | [[a]] = |
+#	  | [[b]] = |   
 #
 
 #Bug 12180, 
-Scenario: Workflow contains Assign and Find Record index executing with invalid result variable
-      Given I have a workflow "WFWithAssignandFindRecordindex1"
-	  And "WFWithAssignandFindRecordindex1" contains an Assign "Record" as
-      | # | variable     | value    |
-      | # | [[rec(1).a]] | Warewolf |
-	  And "WFWithAssignandFindRecordindex1" contains Find Record Index "FindRecord1" into result as "[[a]]*]]"
-      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
-      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
-	  When "WFWithAssignandFindRecordindex1" is executed
-	  Then the workflow execution has "AN" error
-	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex1' debug inputs as 
-	  | # | Variable       | New Value |
-	  | 1 | [[rec(1).a]] = | Warewolf  | 
-	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex1' debug outputs as   
-	  | # |                                  |
-	  | 1 | [[rec(1).a]]         =  Warewolf |
-	  And the 'FindRecord1' in WorkFlow 'WFWithAssignandFindRecordindex1' debug inputs as 
-	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
-	  And the 'FindRecord1' in Workflow 'WFWithAssignandFindRecordindex1' debug outputs as   
-	  |            |
+#Scenario: Workflow contains Assign and Find Record index executing with invalid result variable
+#      Given I have a workflow "WFWithAssignandFindRecordindex1"
+#	  And "WFWithAssignandFindRecordindex1" contains an Assign "Record" as
+#      | variable     | value    |
+#      | [[rec(1).a]] | Warewolf |
+#	  And "WFWithAssignandFindRecordindex1" contains Find Record Index "FindRecord1" into result as "[[a]]*]]"
+#      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+#      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
+#	  When "WFWithAssignandFindRecordindex1" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex1' debug inputs as 
+#	  | # | Variable       | New Value |
+#	  | 1 | [[rec(1).a]] = | Warewolf  | 
+#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex1' debug outputs as   
+#	  | # |                                  |
+#	  | 1 | [[rec(1).a]]         =  Warewolf |
+#	  And the 'FindRecord1' in WorkFlow 'WFWithAssignandFindRecordindex1' debug inputs as 
+#	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+#	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
+#	  And the 'FindRecord1' in Workflow 'WFWithAssignandFindRecordindex1' debug outputs as   
+#	  |            |
 	  
 
 	
@@ -3701,16 +3703,16 @@ Scenario: Executing Utility - Format Number example workflow
 	  | Input to Service | From Variable | Output from Service | To Variable      |
 	  When "Utility - Format Number Test" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Format Number' in WorkFlow 'Utility - Format Number' debug inputs as
+	  And the 'Format Number1' in WorkFlow 'Utility - Format Number' debug inputs as
 	  | Number  | Rounding | Rounding Value | Decimals to show |
 	  | 123.446 | Normal   | 2              | 2                |
-	  And the 'Format Number' in Workflow 'Utility - Format Number' debug outputs as    
+	  And the 'Format Number1' in Workflow 'Utility - Format Number' debug outputs as    
 	  |                    |
 	  | [[Price]] = 123.45 |
-	   And the 'Format Number' in WorkFlow 'Utility - Format Number' debug inputs as
+	   And the 'Format Number2' in WorkFlow 'Utility - Format Number' debug inputs as
 	  | Number | Rounding | Rounding Value | Decimals to show |
-	  | 14649  | Up       | 2              | -3               |
-	  And the 'Format Number' in Workflow 'Utility - Format Number' debug outputs as    
+	  | 14649  | Up       | -2             | -3               |
+	  And the 'Format Number2' in Workflow 'Utility - Format Number' debug outputs as    
 	  |                   |
 	  | [[PriceInK]] = 14 |
 	 
@@ -3748,13 +3750,13 @@ Scenario: Executing Utility - Date and Time example workflow
 	  Then the workflow execution has "NO" error
 	  And the 'Date and Time(1)' in WorkFlow 'Utility - Date and Time' debug inputs as
 	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format           | =                      |
-	  | System Date Time | DateTime | System Date Time Format | MM/dd/yyyy hh:mm:ss tt | ""       | "" | System Date Time Format | MM/dd/yyyy hh:mm:ss tt |
+	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | System Date Time Format | yyyy/MM/dd hh:mm:ss tt |
 	  And the 'Date and Time(1)' in Workflow 'Utility - Date and Time' debug outputs as    
 	  |                       |
 	  | [[nowish]] = DateTime |   
 	 And the 'Date and Time(2)' in WorkFlow 'Utility - Date and Time' debug inputs as
 	 | Input                 | Input Format            | =                      | Add Time |    | Output Format          |
-	 | [[nowish]] = DateTime | System Date Time Format | MM/dd/yyyy hh:mm:ss tt | ""       | "" | mm/dd/yy 12h:min am/pm |
+	 | [[nowish]] = DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | mm/dd/yy 12h:min am/pm |
 	  And the 'Date and Time(2)' in Workflow 'Utility - Date and Time' debug outputs as    
 	  |                       |
 	  | [[nowish]] = DateTime |  
@@ -3772,7 +3774,7 @@ Scenario: Executing Utility - Date and Time example workflow
 	  | [[TheDefaultDate]] = DateTime |  
 	  And the 'Date and Time(5)' in WorkFlow 'Utility - Date and Time' debug inputs as
 	  | Input            | =        | Input Format            | =                      | Add Time |    | Output Format                                 |
-	  | System Date Time | DateTime | System Date Time Format | MM/dd/yyyy hh:mm:ss tt | ""       | "" | 'Date format yyyy MM dd yields : ' yyyy MM dd |
+	  | System Date Time | DateTime | System Date Time Format | yyyy/MM/dd hh:mm:ss tt | ""       | "" | 'Date format yyyy MM dd yields : ' yyyy MM dd |
 
 Scenario: Executing Utility - Gather System Information example workflow
 	  Given I have a workflow "Utility - System Information Test"
@@ -3839,51 +3841,23 @@ Scenario: Executing Utility - Web Request example workflow
 	  |                             |
 	  | [[GecodedAddress]] = String |
 
-Scenario: Executing Utility - Assign example workflow
-	  Given I have a workflow "Utility - Assign Test"
-	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
-	  | Input to Service | From Variable | Output from Service | To Variable        |
-	  |                  |               | [[rec(*).set]]      | [[rec().set]]      |
-	  |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
-	  |                  |               | [[hero(*).name]]    | [[hero().name]]    |
-	  When "Utility - Assign Test" is executed
-	  Then the workflow execution has "NO" error
-	 # And the 'Assign (3)' in WorkFlow 'Utility - Assign Test' debug inputs as
-	  And the 'Utility - Assign' in Workflow 'Utility - Assign Test' debug outputs as    
-	  |                                                                   |
-	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	  | [[hero(1).pushups]] = All of them.                                |
-	  | [[hero(1).name]] =   Chuck Norris                                 |
+#Scenario: Executing Utility - Assign example workflows
+#	  Given I have a workflow "Utility - Assign Test"
+#	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
+#	 | Input to Service | From Variable | Output from Service | To Variable        |
+#	 |                  |               | [[rec(*).set]]      | [[rec().set]]      |
+#	 |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
+#	 |                  |               | [[hero(*).name]]    | [[hero().name]]    |
+#	  When "Utility - Assign Test" is executed
+#	  Then the workflow execution has "NO" error
+#	 # And the 'Assign (3)' in WorkFlow 'Utility - Assign Test' debug inputs as
+#	  And the 'Utility - Assign' in Workflow 'Utility - Assign Test' debug outputs as    
+#	  |                                                                   |
+#	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+#	  | [[hero(1).pushups]] = All of them.                                |
+#	  | [[hero(1).name]] =   Chuck Norris                                 |
 
-	#| # | Variable      | New Value                       |
-	#| 1 | [[Name]] =    | Bart                            |
-	#| 2 | [[Surname]] = | Simpson                         |
-	#| 2 | [[Info]] =    | I WILL NOT INSTIGATE REVOLUTION |
-	#And the 'Assign (3)' in Workflow 'Utility - Assign' debug outputs as    
-	#| # |                                               |
-	#| 1 | [[Name]] =    Bart                            |
-	#| 2 | [[Surname]] = Simpson                         |
-	#| 3 | [[Info]] =    I WILL NOT INSTIGATE REVOLUTION |
-	#And the 'Assign (2)' in WorkFlow 'Utility - Assign' debug inputs as
-	#| # | Variable         | New Value                                                                      |
-	#| 1 | [[rec(1).set]] = | [[Name]] [[Surname]]: [[Info]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	#And the 'Assign (2)' in Workflow 'Utility - Assign' debug outputs as    
-	#| # |                                                                |
-	#| 1 | [[rec(1).set]] = Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	# And the 'Assign Sum (1)' in WorkFlow 'Utility - Assign' debug inputs as
-	#| # | Variable  | New Value |  
-	#| 1 | [[sum]] = | =23+19    |
-	#And the 'Assign Sum (1)' in Workflow 'Utility - Assign' debug outputs as    
-	#| # |              |
-	#| 1 | [[sum]] = 42 |
-	# And the 'Assign Records (2)' in WorkFlow 'Utility - Assign' debug inputs as
-	#| # | Variable             | New Value    |
-	#| 1 | [[hero().name]] =    | Chuck Norris |
-	#| 2 | [[hero().pushups]] = | All of them. |
-	#And the 'Assign Records (2)' in Workflow 'Utility - Assign' debug outputs as    
-	#| # |                                    |
-	#| 1 | [[hero().name]] = Chuck Norris     | 
-	#| 2 | [[hero().pushups]] =  All of them. |
+	
 
 
 Scenario: Executing Data - Base Conversion example workflow
