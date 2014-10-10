@@ -24,7 +24,6 @@
       </WebTestRunConfiguration>
     </TestTypeSpecific>
     <AgentRule name="LocalMachineDefaultRole">
-      </DataCollectors>
     </AgentRule>
   </Execution>
   <Properties />
