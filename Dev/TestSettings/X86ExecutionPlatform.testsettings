@@ -4,7 +4,7 @@
   <Deployment enabled="false" />
   <NamingScheme baseName="UT" />
   <RemoteController name="rsaklfsvrtfsbld" />
-  <Execution>
+  <Execution hostProcessPlatform="X86">
     <Timeouts testTimeout="0" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
