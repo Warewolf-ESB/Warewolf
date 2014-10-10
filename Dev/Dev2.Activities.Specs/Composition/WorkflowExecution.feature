@@ -2008,57 +2008,55 @@ Scenario: Executing 2 ForEach's inside a ForEach which contains Assign only
 	  | [[rec(2).a]] = Warewolf |
 
 	  | [[rec(3).a]] = 2        |
-#18251
-#The below 12 scenario should be passed after the bug 11994 is fixe
-#Scenario: Workflow with Assign and Find Record index
-#      Given I have a workflow "WFWithAssignandFindRecordindex"
-#	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
-#      | # | variable     | value    |
-#      | # | [[rec(1).a]] | Warewolf |
-#	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
-#      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
-#      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
-#	  When "WFWithAssignandFindRecordindex" is executed
-#	  Then the workflow execution has "AN" error
-#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-#	  | # | Variable       | New Value |
-#	  | 1 | [[rec(1).a]] = | Warewolf  | 
-#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
-#	  | # |                                  |
-#	  | 1 | [[rec(1).a]]         =  Warewolf |
-#	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-#	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-#	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | NO                         | Yes                             |
-#	  And the 'FindRecord0' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as
-#	  | [[a]] = |
-#	  | [[b]] = |   
+
+
+Scenario: Workflow Assign and Find Record index tool with two variables in reult field expect error
+      Given I have a workflow "WFWithAssignandFindRecordindex"
+	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
+      | # | variable     | value    |
+      | # | [[rec(1).a]] | Warewolf |
+	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
+      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
+	  When "WFWithAssignandFindRecordindex" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = | Warewolf  | 
+	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
+	  | # |                                  |
+	  | 1 | [[rec(1).a]]         =  Warewolf |
+	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
+	
 #
 
 #Bug 12180, 
-#Scenario: Workflow contains Assign and Find Record index executing with invalid result variable
-#      Given I have a workflow "WFWithAssignandFindRecordindex1"
-#	  And "WFWithAssignandFindRecordindex1" contains an Assign "Record" as
-#      | variable     | value    |
-#      | [[rec(1).a]] | Warewolf |
-#	  And "WFWithAssignandFindRecordindex1" contains Find Record Index "FindRecord1" into result as "[[a]]*]]"
+#The below 12 scenario should be passed after the bug 11994 is fixed
+#Scenario: Workflow Assign and Find Record index
+#      Given I have a workflow "WFWithAssignandFindRecordindexTool"
+#	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
+#      | # | variable     | value    |
+#      | # | [[rec(1).a]] | Warewolf |
+#	  And "WFWithAssignandFindRecordindexTool" contains Find Record Index "FindRecord0" into result as "[[a]]*]]"
 #      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
 #      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
-#	  When "WFWithAssignandFindRecordindex1" is executed
+#	  When "WFWithAssignandFindRecordindexTool" is executed
 #	  Then the workflow execution has "AN" error
-#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex1' debug inputs as 
+#	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindexTool' debug inputs as 
 #	  | # | Variable       | New Value |
 #	  | 1 | [[rec(1).a]] = | Warewolf  | 
-#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex1' debug outputs as   
+#	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindexTool' debug outputs as   
 #	  | # |                                  |
 #	  | 1 | [[rec(1).a]]         =  Warewolf |
-#	  And the 'FindRecord1' in WorkFlow 'WFWithAssignandFindRecordindex1' debug inputs as 
+#	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindexTool' debug inputs as 
 #	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
 #	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
-#	  And the 'FindRecord1' in Workflow 'WFWithAssignandFindRecordindex1' debug outputs as   
-#	  |            |
-	  
+		 
 
-	
+
+	#The below 12 scenario should be passed after the bug 11994 is fixe
 #Scenario Outline: Testing Count with two variables in Result field
 #      Given I have a workflow "WorkflowforCount"
 #      And "WorkflowforCount" contains an Assign "Rec To Convert" as
@@ -4565,3 +4563,29 @@ Scenario: Executing Control Flow - Switch example workflow
 	# | # |                     |
 	# | 1 | [[test]] = ZGF0YQ== |
 	# | 2 | [[test]] = data     |
+
+
+
+Scenario: Workflow with Assign and Find Record index1234
+      Given I have a workflow "WFWithAssignandFindRecordindex"
+	  And "WFWithAssignandFindRecordindex" contains an Assign "Record" as
+      | # | variable     | value    |
+      | # | [[rec(1).a]] | Warewolf |
+	  And "WFWithAssignandFindRecordindex" contains Find Record Index "FindRecord0" into result as "[[a]][[b]]"
+      | # | In Field    | # | Match Type | Match    | Require All Matches To Be True | Require All Fields To Match |
+      | # | [[rec().a]] | 1 | =          | Warewolf | YES                            | NO                          |
+	  When "WFWithAssignandFindRecordindex" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'Record' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+	  | # | Variable       | New Value |
+	  | 1 | [[rec(1).a]] = | Warewolf  | 
+	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
+	  | # |                                  |
+	  | 1 | [[rec(1).a]]         =  Warewolf |
+	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
+	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
+	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
+	  And the 'FindRecord0' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as
+	  |         |
+	  | [[a]] = |
+	  | [[b]] = |   
