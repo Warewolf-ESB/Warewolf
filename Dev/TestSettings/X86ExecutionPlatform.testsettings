@@ -4,7 +4,7 @@
   <Deployment enabled="false" />
   <NamingScheme baseName="UT" />
   <RemoteController name="rsaklfsvrtfsbld" />
-  <Execution hostProcessPlatform="X86">
+  <Execution>
     <Timeouts testTimeout="0" />
     <TestTypeSpecific>
       <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
@@ -29,7 +29,7 @@
           <Configuration>
             <CodeCoverage xmlns="">
               <Regular>
-                <CodeCoverageItem binaryFile="Dev2.Studio.Core.dll" pdbFile="Dev2.Studio.Core.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Dev2.Studio.Core.dll" pdbFile="Dev2.Studio.Core.pdb" />
               </Regular>
             </CodeCoverage>
           </Configuration>

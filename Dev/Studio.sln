@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Studio", "Dev2.Studio\Dev2.Studio.csproj", "{62247A80-2266-4295-A8F6-A05507E2796E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.UndoFramework", "Dev2.UndoFramework\Dev2.UndoFramework.csproj", "{632E4898-1B1B-474C-A028-D13A5C914F11}"
@@ -15,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		Parallel.testsettings = Parallel.testsettings
 		Studio.vsmdi = Studio.vsmdi
+		TestSettings\X86ExecutionPlatform.testsettings = TestSettings\X86ExecutionPlatform.testsettings
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Activities.Tests", "Dev2.Activities.Tests\Dev2.Activities.Tests.csproj", "{2A8088A6-8F8D-42FD-B877-D809C494C561}"
@@ -92,129 +95,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 39
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = http://rsaklfsvrgendev:8080/tfs/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = ConsoleAppToTestExecuteCommandLineActivity\\ConsoleAppToTestExecuteCommandLineActivity.csproj
-		SccProjectName1 = ConsoleAppToTestExecuteCommandLineActivity
-		SccLocalPath1 = ConsoleAppToTestExecuteCommandLineActivity
-		SccProjectUniqueName2 = Dev2.Activities.Designers\\Dev2.Activities.Designers.csproj
-		SccProjectName2 = Dev2.Activities.Designers
-		SccLocalPath2 = Dev2.Activities.Designers
-		SccProjectUniqueName3 = Dev2.Common\\Dev2.Common.csproj
-		SccProjectName3 = Dev2.Common
-		SccLocalPath3 = Dev2.Common
-		SccProjectUniqueName4 = Dev2.Core.Tests\\Dev2.Core.Tests.csproj
-		SccProjectName4 = Dev2.Core.Tests
-		SccLocalPath4 = Dev2.Core.Tests
-		SccProjectUniqueName5 = Dev2.Data\\Dev2.Data.csproj
-		SccProjectName5 = Dev2.Data
-		SccLocalPath5 = Dev2.Data
-		SccProjectUniqueName6 = Dev2.Development.Languages\\Dev2.Development.Languages.csproj
-		SccProjectName6 = Dev2.Development.Languages
-		SccLocalPath6 = Dev2.Development.Languages
-		SccProjectUniqueName7 = Dev2.Infrastructure\\Dev2.Infrastructure.csproj
-		SccProjectName7 = Dev2.Infrastructure
-		SccLocalPath7 = Dev2.Infrastructure
-		SccProjectUniqueName8 = Dev2.Intellisense\\Dev2.Intellisense.csproj
-		SccProjectName8 = Dev2.Intellisense
-		SccLocalPath8 = Dev2.Intellisense
-		SccProjectUniqueName9 = Dev2.OutputLibraries\\Dev2.OutputLibraries.csproj
-		SccProjectName9 = Dev2.OutputLibraries
-		SccLocalPath9 = Dev2.OutputLibraries
-		SccProjectUniqueName10 = Dev2.Runtime.Configuration\\Dev2.Runtime.Configuration.csproj
-		SccProjectName10 = Dev2.Runtime.Configuration
-		SccLocalPath10 = Dev2.Runtime.Configuration
-		SccProjectUniqueName11 = Dev2.Services.Execution\\Dev2.Services.Execution.csproj
-		SccProjectName11 = Dev2.Services.Execution
-		SccLocalPath11 = Dev2.Services.Execution
-		SccProjectUniqueName12 = Dev2.Studio\\Dev2.Studio.csproj
-		SccProjectName12 = Dev2.Studio
-		SccLocalPath12 = Dev2.Studio
-		SccProjectUniqueName13 = Dev2.Studio.Core.Tests\\Dev2.Studio.Core.Tests.csproj
-		SccProjectName13 = Dev2.Studio.Core.Tests
-		SccLocalPath13 = Dev2.Studio.Core.Tests
-		SccProjectUniqueName14 = Dev2.UndoFramework.Tests\\Dev2.UndoFramework.Tests.csproj
-		SccProjectName14 = Dev2.UndoFramework.Tests
-		SccLocalPath14 = Dev2.UndoFramework.Tests
-		SccProjectUniqueName15 = Dev2.Activities\\Dev2.Activities.csproj
-		SccProjectName15 = Dev2.Activities
-		SccLocalPath15 = Dev2.Activities
-		SccProjectUniqueName16 = Dev2.Activities.Tests\\Dev2.Activities.Tests.csproj
-		SccProjectName16 = Dev2.Activities.Tests
-		SccLocalPath16 = Dev2.Activities.Tests
-		SccProjectUniqueName17 = Dev2.Core\\Dev2.Core.csproj
-		SccProjectName17 = Dev2.Core
-		SccLocalPath17 = Dev2.Core
-		SccProjectUniqueName18 = Dev2.CustomControls\\Dev2.CustomControls.csproj
-		SccProjectName18 = Dev2.CustomControls
-		SccLocalPath18 = Dev2.CustomControls
-		SccProjectUniqueName19 = Dev2.Diagnostics\\Dev2.Diagnostics.csproj
-		SccProjectName19 = Dev2.Diagnostics
-		SccLocalPath19 = Dev2.Diagnostics
-		SccProjectUniqueName20 = Dev2.Infrastructure.Tests\\Dev2.Infrastructure.Tests.csproj
-		SccProjectName20 = Dev2.Infrastructure.Tests
-		SccLocalPath20 = Dev2.Infrastructure.Tests
-		SccProjectUniqueName21 = Dev2.Network\\Dev2.Network.csproj
-		SccProjectName21 = Dev2.Network
-		SccLocalPath21 = Dev2.Network
-		SccProjectUniqueName22 = Dev2.Runtime\\Dev2.Runtime.csproj
-		SccProjectName22 = Dev2.Runtime
-		SccLocalPath22 = Dev2.Runtime
-		SccProjectUniqueName23 = Dev2.Runtime.Services\\Dev2.Runtime.Services.csproj
-		SccProjectName23 = Dev2.Runtime.Services
-		SccLocalPath23 = Dev2.Runtime.Services
-		SccProjectUniqueName24 = Dev2.Services.Sql\\Dev2.Services.Sql.csproj
-		SccProjectName24 = Dev2.Services.Sql
-		SccLocalPath24 = Dev2.Services.Sql
-		SccProjectUniqueName25 = Dev2.Studio.Core\\Dev2.Studio.Core.csproj
-		SccProjectName25 = Dev2.Studio.Core
-		SccLocalPath25 = Dev2.Studio.Core
-		SccProjectUniqueName26 = Dev2.UndoFramework\\Dev2.UndoFramework.csproj
-		SccProjectName26 = Dev2.UndoFramework
-		SccLocalPath26 = Dev2.UndoFramework
-		SccProjectUniqueName27 = Dev2.Util\\Dev2.Util.csproj
-		SccProjectName27 = Dev2.Util
-		SccLocalPath27 = Dev2.Util
-		SccProjectUniqueName28 = Dev2.Common.Test\\Dev2.Common.Tests.csproj
-		SccProjectName28 = Dev2.Common.Test
-		SccLocalPath28 = Dev2.Common.Test
-		SccProjectUniqueName29 = Dev2.Activities.Designers.Tests\\Dev2.Activities.Designers.Tests.csproj
-		SccProjectName29 = Dev2.Activities.Designers.Tests
-		SccLocalPath29 = Dev2.Activities.Designers.Tests
-		SccProjectUniqueName30 = Dev2.Data.Tests\\Dev2.Data.Tests.csproj
-		SccProjectName30 = Dev2.Data.Tests
-		SccLocalPath30 = Dev2.Data.Tests
-		SccProjectUniqueName31 = Dev2.Instrumentation\\Dev2.Instrumentation.csproj
-		SccProjectName31 = Dev2.Instrumentation
-		SccLocalPath31 = Dev2.Instrumentation
-		SccProjectUniqueName32 = Dev2.TaskScheduler.Wrappers\\Dev2.TaskScheduler.Wrappers.csproj
-		SccProjectName32 = Dev2.TaskScheduler.Wrappers
-		SccLocalPath32 = Dev2.TaskScheduler.Wrappers
-		SccProjectUniqueName33 = Dev2.Scheduler\\Dev2.Scheduler.csproj
-		SccProjectName33 = Dev2.Scheduler
-		SccLocalPath33 = Dev2.Scheduler
-		SccProjectUniqueName34 = Dev2.TaskScheduler.Wrappers.Test\\Dev2.TaskScheduler.Wrappers.Tests.csproj
-		SccProjectName34 = Dev2.TaskScheduler.Wrappers.Test
-		SccLocalPath34 = Dev2.TaskScheduler.Wrappers.Test
-		SccProjectUniqueName35 = Dev2.Scheduler.Test\\Dev2.Scheduler.Tests.csproj
-		SccProjectName35 = Dev2.Scheduler.Test
-		SccLocalPath35 = Dev2.Scheduler.Test
-		SccProjectUniqueName36 = Dev2.Crypto.HashGenerator\\Dev2.Crypto.HashGenerator.csproj
-		SccProjectName36 = Dev2.Crypto.HashGenerator
-		SccLocalPath36 = Dev2.Crypto.HashGenerator
-		SccProjectUniqueName37 = Dev2.CustomControls.Tests\\Dev2.CustomControls.Tests.csproj
-		SccProjectName37 = Dev2.CustomControls.Tests
-		SccLocalPath37 = Dev2.CustomControls.Tests
-		SccProjectUniqueName38 = Dev2.Common.Interfaces\\Dev2.Common.Interfaces.csproj
-		SccProjectName38 = Dev2.Common.Interfaces
-		SccLocalPath38 = Dev2.Common.Interfaces
-	EndGlobalSection
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = Studio.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -693,6 +573,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = Studio.vsmdi
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 04ac71e6-ff81-4985-b90e-34f731c329ef
