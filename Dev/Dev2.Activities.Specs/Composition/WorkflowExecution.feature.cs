@@ -6061,16 +6061,6 @@ this.FeatureBackground();
                         "",
                         "YES",
                         "NO"});
-            table338.AddRow(new string[] {
-                        "In Field(s)",
-                        "[[rec(1).a]] = Warewolf",
-                        "1",
-                        "=",
-                        "Warewolf",
-                        "",
-                        "",
-                        "YES",
-                        "NO"});
 #line 2029
    testRunner.And("the \'FindRecord0\' in WorkFlow \'WFWithAssignandFindRecordindex\' debug inputs as", ((string)(null)), table338, "And ");
 #line hidden
