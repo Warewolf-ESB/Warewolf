@@ -387,25 +387,21 @@ namespace Dev2.Core.Tests
         public void DeactivateWithCloseExpectBuildWithEmptyDebugWriterWriteMessage()
         {
             CreateFullExportsAndVm();
-            EventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
-                .Verifiable();
+            
 
             MainViewModel.Dispose();
 
-            EventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(1));
         }
 
         [TestMethod]
         public void DeactivateWithCloseAndTwoTabsExpectBuildTwiceWithEmptyDebugWriterWriteMessage()
         {
             CreateFullExportsAndVm();
-            EventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
-                .Verifiable();
+
             AddAdditionalContext();
 
             MainViewModel.Dispose();
 
-            EventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(2));
         }
 
         #endregion

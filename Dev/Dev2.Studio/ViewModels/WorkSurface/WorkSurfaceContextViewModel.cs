@@ -695,10 +695,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 ExecuteMessage saveResult = resource.Environment.ResourceRepository.SaveToServer(resource);
                 DispatchServerDebugMessage(saveResult, resource);
                 resource.IsWorkflowSaved = true;
+                StudioResourceRepository.RefreshVersionHistory(resource.Environment.ID, resource.ID);
             }
-            StudioResourceRepository.RefreshVersionHistory(resource.Environment.ID, resource.ID);
-            Dev2Logger.Log.Info("Publish message of type - " + typeof(UpdateDeployMessage));
-            EventPublisher.Publish(new UpdateDeployMessage());
             return true;
         }
 

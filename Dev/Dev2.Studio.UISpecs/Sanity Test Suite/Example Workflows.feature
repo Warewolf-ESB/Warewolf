@@ -8,8 +8,10 @@ Scenario: Testing Example Workflows
 	Given I have Warewolf running
 	And all tabs are closed	
 	And I click "EXPLORER,UI_localhost_AutoID"
-	And I click "EXPLORERFILTERCLEARBUTTON"
+	
 	# Utility - Tools
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Utility" to "EXPLORERFILTER"
     And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Comment_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Comment_AutoID"
 	Then "WORKFLOWDESIGNER,Utility - Comment(FlowchartDesigner)" is visible within "10" seconds
@@ -64,7 +66,15 @@ Scenario: Testing Example Workflows
 	And I send "{F6}" to ""
 	And all tabs are closed
 	
+	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Assign_AutoID"
+	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Assign_AutoID"
+	Then "WORKFLOWDESIGNER,Utility - Assign(FlowchartDesigner)" is visible within "10" seconds
+	And I send "{F6}" to ""
+	And all tabs are closed
+
 	##Control Flow - Tools
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Control Flow" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Control Flow - Decision_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Control Flow - Decision_AutoID"
 	Then "WORKFLOWDESIGNER,Control Flow: Decision(FlowchartDesigner)" is visible within "10" seconds
@@ -84,7 +94,8 @@ Scenario: Testing Example Workflows
 	And all tabs are closed
 	
 	##Loop Constructs - Tools
-	
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Loop Constructs" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Loop Constructs - For Each_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Loop Constructs - For Each_AutoID"
 	Then "WORKFLOWDESIGNER,Loop Constructs - For Each(FlowchartDesigner)" is visible within "10" seconds
@@ -92,11 +103,8 @@ Scenario: Testing Example Workflows
 	And all tabs are closed
 	
      ## Data - Tools
-    And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Assign_AutoID"
-	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Assign_AutoID"
-	Then "WORKFLOWDESIGNER,Utility - Assign(FlowchartDesigner)" is visible within "10" seconds
-	And I send "{F6}" to ""
-	And all tabs are closed
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Data - " to "EXPLORERFILTER"
 	
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Find Index_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Find Index_AutoID"
@@ -129,7 +137,8 @@ Scenario: Testing Example Workflows
 	And all tabs are closed
 	
 	## Recordset - Tools
-	
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Recordset" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Unique Records_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Unique Records_AutoID"
     Then "WORKFLOWDESIGNER,Recordset - Unique Records(FlowchartDesigner)" is visible within "10" seconds
@@ -173,6 +182,8 @@ Scenario: Testing Example Workflows
 	And all tabs are closed
 	
 	# File and Folder - Tools
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "File and Folder" to "EXPLORERFILTER"
 	 And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_File and Folder - Rename_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_File and Folder - Rename_AutoID"
 	Then "WORKFLOWDESIGNER,File and Folder - Rename(FlowchartDesigner)" is visible within "10" seconds
@@ -237,6 +248,8 @@ Scenario: Testing Example Workflows
 
 	 
 	## Scripting - Tools
+		And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Scripting" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Scripting - CMD Line_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Scripting - CMD Line_AutoID"
 	Then "WORKFLOWDESIGNER,Scripting - CMD Line(FlowchartDesigner)" is visible within "10" seconds

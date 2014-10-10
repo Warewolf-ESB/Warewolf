@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.DirectoryServices.AccountManagement;
 using System.Net;
 using System.Net.Http;
@@ -36,6 +37,7 @@ using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
 using Dev2.ExtMethods;
 using Dev2.Messages;
+using Dev2.Providers.Logs;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.Interfaces;
@@ -83,7 +85,8 @@ namespace Dev2.Network
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
-
+            //HubConnection.TraceLevel = TraceLevels.All;
+            //HubConnection.TraceWriter = new Dev2LoggingTextWriter();
             InitializeEsbProxy();
             _asyncWorker = worker;
 
