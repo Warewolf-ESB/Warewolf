@@ -19,6 +19,7 @@ using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
+using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
 using Dev2.Models;
@@ -35,7 +36,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
-
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Deploy
@@ -307,6 +307,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+
         public DeployNavigationViewModel Source
         {
             get
@@ -455,8 +456,8 @@ namespace Dev2.Studio.ViewModels.Deploy
             _targetStats = new ObservableCollection<DeployStatsTO>();
             _sourceStats = new ObservableCollection<DeployStatsTO>();
 
-            Target = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, StudioResourceRepository, true);
-            Source = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, StudioResourceRepository, false);
+            Target = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, StudioResourceRepository, true, ConnectControlSingleton.Instance);
+            Source = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, StudioResourceRepository, false, ConnectControlSingleton.Instance);
 
             SetupPredicates();
             SetupCommands();

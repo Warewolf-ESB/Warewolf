@@ -18,25 +18,6 @@
     <Grid>
         <Grid.Resources>
             <converters:IsValidDateTimeConverter x:Key="IsValidDateTimeConverter" />
-            <Style x:Key="SimulationModeVisibility">
-                <Style.Setters>
-                    <Setter Property="FrameworkElement.Visibility"
-                            Value="Collapsed" />
-                </Style.Setters>
-
-                <Style.Triggers>
-                    <MultiDataTrigger>
-                        <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding Content.IsSimulation}"
-                                       Value="True" />
-                        </MultiDataTrigger.Conditions>
-                        <MultiDataTrigger.Setters>
-                            <Setter Property="FrameworkElement.Visibility"
-                                    Value="Visible" />
-                        </MultiDataTrigger.Setters>
-                    </MultiDataTrigger>
-                </Style.Triggers>
-            </Style>
 
             <Style x:Key="VersionVisibility">
                 <Style.Setters>
@@ -44,18 +25,7 @@
                             Value="Collapsed" />
                 </Style.Setters>
 
-                <Style.Triggers>
-                    <MultiDataTrigger>
-                        <MultiDataTrigger.Conditions>
-                            <Condition Binding="{Binding DataContext.ShowVersion, ElementName=DebugOutput}"
-                                       Value="True" />
-                        </MultiDataTrigger.Conditions>
-                        <MultiDataTrigger.Setters>
-                            <Setter Property="FrameworkElement.Visibility"
-                                    Value="Visible" />
-                        </MultiDataTrigger.Setters>
-                    </MultiDataTrigger>
-                </Style.Triggers>
+
             </Style>
 
             <Style x:Key="ServerVisibility">
@@ -373,9 +343,6 @@
                     BorderThickness="1"
                     Padding="2">
                 <StackPanel>
-                    <CheckBox IsChecked="{Binding ShowVersion}"
-                              Content="Version"
-                              AutomationProperties.AutomationId="UI_DebugOutputShowVersionOption_AutoID" />
                     <CheckBox IsChecked="{Binding ShowType}"
                               Content="Type"
                               AutomationProperties.AutomationId="UI_DebugOutputShowTypeOption_AutoID" />
@@ -391,12 +358,6 @@
                     <CheckBox IsChecked="{Binding ShowOutputs}"
                               Content="Outputs"
                               AutomationProperties.AutomationId="UI_DebugOutputShowOutputsOption_AutoID" />
-                    <CheckBox IsChecked="{Binding HighlightSimulation}"
-                              Content="Highlight Simulation"
-                              AutomationProperties.AutomationId="UI_DebugOutputHilightSimulationOption_AutoID" />
-                    <CheckBox IsChecked="{Binding HighlightError}"
-                              Content="Highlight Errors"
-                              AutomationProperties.AutomationId="UI_DebugOutputHilightSimulationOption_AutoID" />
                     <StackPanel Orientation="Horizontal">
                         <TextBox Width="20"
                                  Text="{Binding DepthMax, Mode=TwoWay, UpdateSourceTrigger=LostFocus, Converter={StaticResource IntEnsureMinConverter}, ConverterParameter=0}" />
@@ -614,9 +575,7 @@
                                             HorizontalAlignment="Left"
                                             Focusable="False"
                                         IsEnabled="{Binding Content.ActivityType, Converter={StaticResource EnumToBoolConverterActivityTypeWorkflow}}" />
-                                    <TextBlock Text="(In Simulation Mode)"
-                                               Style="{StaticResource SimulationModeVisibility}"
-                                               Margin="5,0,0,0" />
+
                             </StackPanel>
 
                                 <TextBlock Grid.Row="1"

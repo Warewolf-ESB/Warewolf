@@ -14,6 +14,7 @@ using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Models;
@@ -398,7 +399,7 @@ namespace Dev2.Core.Tests
 
         static DeployNavigationViewModel CreateDeployNavigationViewModel(IEnvironmentModel environmentModel, IEventAggregator eventAggregator, IAsyncWorker asyncWorker, IEnvironmentRepository environmentRepository, StudioResourceRepository studioResourceRepository)
         {
-            DeployNavigationViewModel navigationViewModel = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, studioResourceRepository, true)
+            DeployNavigationViewModel navigationViewModel = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, studioResourceRepository, true, new Mock<IConnectControlSingleton>().Object)
             {
                 Environment = environmentModel
             };

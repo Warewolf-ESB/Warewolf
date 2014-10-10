@@ -656,17 +656,6 @@
         <Style.Triggers>
             <MultiDataTrigger>
                 <MultiDataTrigger.Conditions>
-                    <Condition Binding="{Binding DataContext.HighlightSimulation, ElementName=DebugOutput}"
-                               Value="True" />
-                    <Condition Binding="{Binding Content.IsSimulation}"
-                               Value="True" />
-                </MultiDataTrigger.Conditions>
-                <Setter Property="Panel.Background"
-                        Value="LightYellow" />
-            </MultiDataTrigger>
-
-            <MultiDataTrigger>
-                <MultiDataTrigger.Conditions>
                     <Condition Binding="{Binding DataContext.HighlightError, ElementName=DebugOutput}"
                                Value="True" />
                     <Condition Binding="{Binding Content.HasError}"

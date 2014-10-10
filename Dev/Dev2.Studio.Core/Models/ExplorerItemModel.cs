@@ -218,13 +218,14 @@ namespace Dev2.Models
             get { return _displayName; }
             set
             {
+                bool renamed = true;
                 if(!String.IsNullOrEmpty(_displayName)
                     && ResourceType != ResourceType.Server
                     && Children.All(model => model.DisplayName != value))
                 {
-                    Rename(value);
+                    renamed= Rename(value);
                 }
-                _displayName = value;
+               if(renamed)  _displayName = value;
                 IsRenaming = false;
                 OnPropertyChanged();
             }
@@ -1256,11 +1257,24 @@ namespace Dev2.Models
             }
         }
 
-        private void Rename(string newName)
+        private string GetRenamePath(string existingPath, string newName)
+        {
+            if (!existingPath.Contains("\\"))
+                return newName;
+            return  existingPath.Substring(0, 1+existingPath.LastIndexOf('\\')) + newName;
+        }
+
+        private bool Rename(string newName)
         {
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
             if(ResourceType == ResourceType.Folder)
             {
+                var itemExists = null != _studioResourceRepository.FindItem(a => a.ResourceType == ResourceType.Folder && a.ResourcePath == GetRenamePath(ResourcePath, newName));
+                if ((Children.Count == 0) && itemExists)
+                {
+                    EventPublishers.Aggregator.Publish(new DisplayMessageBoxMessage("Error Renaming Folder", "You are not allowed to Rename an empty folder to an existing folder name", MessageBoxImage.Warning));
+                    return false;
+                }
                 _studioResourceRepository.RenameFolder(this, newName);
             }
             else
@@ -1292,6 +1306,7 @@ namespace Dev2.Models
                         }
                     }
                 }
+            return true;
         }
 
         public void RefreshName(string newName)
