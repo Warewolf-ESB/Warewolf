@@ -81,7 +81,7 @@
 /Dev/Dev2.Server/bin/Debug/Resources/SqlServers/DemoDB.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Hello World.xml
 ################################################################################
-# Files
+# Build Output Files
 ################################################################################
 /Dev/Dev2.AcceptanceTesting.v12.suo
 /Dev/IntegrationTests.v12.suo
@@ -6983,3 +6983,8 @@
 /Dev/Build New DLL Configu/Build New DLL Configu/obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
 /Dev/Build New DLL Configu/Build New DLL Configu/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
 /Dev/Build New DLL Configu/Build New DLL Config.v12.suo
+/Dev/Dev2.Activities.Designers/obj/x86/Debug/build.force
+/Dev/Dev2.IntegrationTests/obj/x86/Debug/build.force
+/Dev/Dev2.Intellisense/obj/x86/Debug/build.force
+/Dev/Dev2.Activities.Specs/obj/x86/Debug/TempPE/Composition.WorkflowExecution2.feature.cs.dll
+/Dev/Dev2.CustomControls/obj/x86/Debug/Dev2.CustomControls_MarkupCompile.i.lref
