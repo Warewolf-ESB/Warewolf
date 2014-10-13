@@ -391,7 +391,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.RemoteInvokerID = Guid.Empty.ToString();
                 dataObject.EnvironmentID = Guid.Empty;
                 dataObject.ResourceID = oldResourceId;
-                compiler.ClearErrors(dataObject.DataListID);
             }
         }
 

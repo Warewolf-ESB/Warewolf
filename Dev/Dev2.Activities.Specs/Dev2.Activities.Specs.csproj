@@ -139,7 +139,7 @@
     <Compile Include="BaseTypes\FileToolsBase.cs" />
     <Compile Include="BaseTypes\RecordSetBase.cs" />
     <Compile Include="Composition\DBSource\XmlFetch.cs" />
-    <Compile Include="Composition\WorkflowExecution.feature.cs">
+    <Compile Include="Composition\WorkflowExecution2.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>WorkflowExecution.feature</DependentUpon>
@@ -432,7 +432,7 @@
     <None Include="App.config" />
     <None Include="Composition\WorkflowExecution.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>WorkflowExecution.feature.cs</LastGenOutput>
+      <LastGenOutput>WorkflowExecution2.feature.cs</LastGenOutput>
     </None>
     <None Include="Default.srprofile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

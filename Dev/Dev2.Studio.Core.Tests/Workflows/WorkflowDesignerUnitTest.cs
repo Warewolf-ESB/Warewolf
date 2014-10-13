@@ -1873,7 +1873,6 @@ namespace Dev2.Core.Tests.Workflows
             #region setup event aggregator
 
             var eventAggregator = new Mock<IEventAggregator>();
-            eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateDeployMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>())).Verifiable();
@@ -1890,7 +1889,6 @@ namespace Dev2.Core.Tests.Workflows
             //------------Execute Test---------------------------
             wd.Handle(saveUnsavedWorkflowMessage);
             //------------Assert Results-------------------------
-            eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<UpdateDeployMessage>()), Times.Once());
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>()), Times.Once());
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Never());
@@ -1965,7 +1963,6 @@ namespace Dev2.Core.Tests.Workflows
             #region setup event aggregator
 
             var eventAggregator = new Mock<IEventAggregator>();
-            eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateDeployMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>())).Verifiable();
@@ -1982,7 +1979,6 @@ namespace Dev2.Core.Tests.Workflows
             //------------Execute Test---------------------------
             wd.Handle(saveUnsavedWorkflowMessage);
             //------------Assert Results-------------------------
-            eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<UpdateDeployMessage>()), Times.Once());
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<RemoveResourceAndCloseTabMessage>()), Times.Once());
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Once());
