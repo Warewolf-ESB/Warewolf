@@ -1018,7 +1018,7 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Sprint12\11714Nested").FirstOrDefault();
+            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\11714Nested").FirstOrDefault();
             if(resource == null)
             {
                 // ReSharper disable NotResolvedInText
