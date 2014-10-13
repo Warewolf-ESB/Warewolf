@@ -3368,14 +3368,14 @@ Scenario: Executing workflow of different versions
 
 
 #Bug 12050
-Scenario: Workflow with 2 Assigns testing variable that hasn't been assigned
+Scenario Outline: Workflow with 2 Assigns testing variable that hasn't been assigned
       Given I have a workflow "WFTOTestBlanvValues"
 	  And "WFTOTestBlanvValues" contains an Assign "Record1" as
-      | # | variable  | value    |
-      | # | [[Value]] | Warewolf | 
+      | variable  | value    |
+      | [[Value]] | Warewolf | 
 	  And "WFTOTestBlanvValues" contains an Assign "Record2" as
-      | # | variable    | value      |
-      | # | [[rec().a]] | [[Value1]] |
+      | variable    | value   |
+      | [[rec().a]] | '<Val>' |
 	  When "WFTOTestBlanvValues" is executed
 	  Then the workflow execution has "AN" error
 	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
@@ -3385,11 +3385,40 @@ Scenario: Workflow with 2 Assigns testing variable that hasn't been assigned
 	  | # |                          |
 	  | 1 | [[Value]]    =  Warewolf |
 	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
-	  | # | Variable      | New Value    |
-	  | 1 | [[rec().a]] = | [[Value1]] = |
+	  | # | Variable      | New Value |
+	  | 1 | [[rec().a]] = | <Val> =   |
 	  And the 'Record2' in Workflow 'WFTOTestBlanvValues' debug outputs as   
 	  | # |                |
 	  | 1 | [[rec(1).a]] = |
+Examples: 
+     | No | Val            |
+     | 1  | [[Value1]]Tezt |
+    # | 2  | [[Value1]]     |
+
+#18263
+#Scenario: Workflow with 2 Assigns testing variable that hasn't been assigned23
+#      Given I have a workflow "WFTOTestBlanvValues2"
+#	  And "WFTOTestBlanvValues2" contains an Assign "Record1" as
+#      | variable  | value    |
+#      | [[Value]] | Warewolf | 
+#	  And "WFTOTestBlanvValues2" contains an Assign "Record2" as
+#      | variable    | value          |
+#      | [[rec().a]] | [[Value1]]Tezt |
+#	  When "WFTOTestBlanvValues2" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues2' debug inputs as 
+#	  | # | Variable    | New Value |
+#	  | 1 | [[Value]] = | Warewolf  | 
+#	  And the 'Record1' in Workflow 'WFTOTestBlanvValues2' debug outputs as   
+#	  | # |                          |
+#	  | 1 | [[Value]]    =  Warewolf |
+#	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues2' debug inputs as 
+#	  | # | Variable      | New Value             |
+#	  | 1 | [[rec().a]] = | [[Value1]]Tezt = Tezt |
+#	  And the 'Record2' in Workflow 'WFTOTestBlanvValues2' debug outputs as   
+#	  | # |                     |
+#	  | 1 | [[rec(1).a]] = Tezt |
+
 
 
 Scenario: Workflow with Assign Base Convert and Case Convert testing variable that hasn't been assigned
