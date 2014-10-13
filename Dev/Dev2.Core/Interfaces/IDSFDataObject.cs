@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Principal;
+using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
@@ -29,7 +30,7 @@ namespace Dev2
         string ServiceName { get; set; }
         string ParentWorkflowInstanceId { get; set; }
         string ParentServiceName { get; set; }
-        string DataList { get; set; }
+        StringBuilder DataList { get; set; }
         bool WorkflowResumeable { get; set; }
         bool IsDebug { get; set; }
         Guid WorkspaceID { get; set; }

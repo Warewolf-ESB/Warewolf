@@ -108,7 +108,7 @@ namespace Dev2.Common.Interfaces.Data
         bool IsValid { get; set; }
         List<IErrorInfo> Errors { get; set; }
 
-        string DataList { get; set; }
+        StringBuilder DataList { get; set; }
 
         [JsonIgnore]
         string Inputs { get; set; }

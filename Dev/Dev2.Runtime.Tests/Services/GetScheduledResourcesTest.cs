@@ -72,7 +72,7 @@ namespace Dev2.Tests.Runtime.Services
             var esb = new GetScheduledResources();
             var result = esb.CreateServiceEntry();
             Assert.AreEqual(esb.HandlesType(), result.Name);
-            Assert.AreEqual("<DataList></DataList>", result.DataListSpecification);
+            Assert.AreEqual("<DataList></DataList>", result.DataListSpecification.ToString());
             Assert.AreEqual(1, result.Actions.Count);
 
             var serviceAction = result.Actions[0];

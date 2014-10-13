@@ -152,7 +152,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public void ReadDataList(XElement xml)
         {
-            DataList = xml.ElementStringSafe("DataList");
+            DataList = xml.ElementSafeStringBuilder("DataList");
         }
 
         public void SetIsNew(XElement xml)
@@ -268,7 +268,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public bool ReloadActions { get; set; }
 
         [JsonIgnore]
-        public string DataList { get; set; }
+        public StringBuilder DataList { get; set; }
 
         [JsonIgnore]
         public string Inputs { get; set; }

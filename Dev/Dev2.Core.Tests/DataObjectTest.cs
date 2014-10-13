@@ -13,16 +13,16 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
-using Dev2.Diagnostics;
-using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Web;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // ReSharper disable InconsistentNaming
+// ReSharper disable MethodTooLong
 namespace Dev2.Tests
 {
     [TestClass]
@@ -150,7 +150,7 @@ namespace Dev2.Tests
 
             dataObject.BookmarkExecutionCallbackID = Guid.NewGuid();
             dataObject.CurrentBookmarkName = "def";
-            dataObject.DataList = "<x/>";
+            dataObject.DataList = new StringBuilder("<x/>");
             dataObject.DataListID = Guid.NewGuid();
             dataObject.DatalistInMergeDepth = enTranslationDepth.Data;
             dataObject.DatalistInMergeID = Guid.NewGuid();

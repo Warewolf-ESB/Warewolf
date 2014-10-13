@@ -534,7 +534,10 @@ namespace Dev2.Runtime.ESB.Control
                 return result;
             }
 
-            result = resource.DataList;
+            if(resource.DataList != null)
+            {
+                result = resource.DataList.ToString();
+            }
 
             // Handle services ;)
             if(result == "<DataList />" && resource.ResourceType != ResourceType.WorkflowService)
@@ -568,7 +571,7 @@ namespace Dev2.Runtime.ESB.Control
                 return result;
             }
 
-            result = resource.DataList;
+            result = resource.DataList.ToString();
 
             // Handle services ;)
             if(result == "<DataList />" && resource.ResourceType != ResourceType.WorkflowService)

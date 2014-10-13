@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -295,7 +296,7 @@ namespace Dev2.DynamicServices
 
         public string ParentWorkflowXmlData { get; set; }
 
-        public string DataList { get; set; }
+        public StringBuilder DataList { get; set; }
 
         public ExecutionOrigin ExecutionOrigin { get; set; }
         public string ExecutionOriginDescription { get; set; }

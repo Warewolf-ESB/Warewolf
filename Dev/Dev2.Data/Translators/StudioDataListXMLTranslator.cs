@@ -24,7 +24,7 @@ using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
 using Dev2.DataList.Contract.Translators;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Server.DataList.Translators
 {
     internal sealed class StudioDataListXMLTranslator : IDataListTranslator

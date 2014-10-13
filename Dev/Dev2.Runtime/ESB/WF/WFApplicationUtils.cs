@@ -206,24 +206,16 @@ namespace Dev2.Runtime.ESB.WF
         /// <returns></returns>
         public string FindServiceShape(Guid workspaceId, Guid resourceId)
         {
-            var result = "<DataList></DataList>";
+            const string EmptyDataList = "<DataList></DataList>";
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId);
 
             if(resource == null)
             {
-                return result;
+                return EmptyDataList;
             }
 
-            result = resource.DataList;
-
-
-
-            if(string.IsNullOrEmpty(result))
-            {
-                result = "<DataList></DataList>";
-            }
-
-            return result;
+            var serviceShape = resource.DataList.ToString();
+            return string.IsNullOrEmpty(serviceShape) ? EmptyDataList : serviceShape;
         }
     }
 }

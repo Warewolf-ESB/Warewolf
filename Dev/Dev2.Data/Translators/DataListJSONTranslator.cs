@@ -34,8 +34,8 @@ namespace Dev2.Server.DataList.Translators
     /// </summary>
     internal sealed class DataListJsonTranslator : IDataListTranslator
     {
-        private DataListFormat _format;
-        private Encoding _encoding;
+        private readonly DataListFormat _format;
+        private readonly Encoding _encoding;
 
         public DataListFormat Format
         {
@@ -176,22 +176,22 @@ namespace Dev2.Server.DataList.Translators
 
             int keyCnt = 0;
             errors = new ErrorResultTO();
-            string error;
 
             TranslatorUtils tu = new TranslatorUtils();
             ErrorResultTO invokeErrors;
 
-            IBinaryDataList targetDL = tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
+            IBinaryDataList targetDl = tu.TranslateShapeToObject(filterShape, false, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
-            IList<string> itemKeys = targetDL.FetchAllUserKeys();
+            IList<string> itemKeys = targetDl.FetchAllUserKeys();
             StringBuilder result = new StringBuilder("{");
 
             foreach(string key in itemKeys)
             {
                 IBinaryDataListEntry entry;
                 IBinaryDataListEntry tmpEntry;
-                if(payload.TryGetEntry(key, out entry, out error) && targetDL.TryGetEntry(key, out tmpEntry, out error))
+                string error;
+                if(payload.TryGetEntry(key, out entry, out error) && targetDl.TryGetEntry(key, out tmpEntry, out error))
                 {
 
                     if(entry.IsRecordset)
