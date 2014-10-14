@@ -182,15 +182,21 @@ namespace Dev2.Tests
         public void Dev2LanuageParser_Parse_Valid_ExpectCache()
         {
             //------------Setup for test--------------------------
-            const string dl = "<ADL><rec><val/></rec></ADL>";
-            const string payload = "[[rec().val]]";
-            var dev2LanuageParser = new Dev2DataLanguageParser();
             PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
-            var cache = p.GetStaticField("PayloadCache") as Dictionary<Tuple<string,string>, IList<IIntellisenseResult>>;
-            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true, false);
-            Assert.IsNotNull(cache);
-            Assert.AreEqual(cache.Count,1);
-            
+            var cache = p.GetStaticField("PayloadCache") as Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
+            if(cache != null)
+            {
+                cache.Clear();
+            }
+                const string dl = "<ADL><rec><val/></rec></ADL>";
+                const string payload = "[[rec().val]]";
+                var dev2LanuageParser = new Dev2DataLanguageParser();
+
+                IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true, false);
+                Assert.IsNotNull(cache);
+                Assert.AreEqual(cache.Count,1);
+           
+
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
