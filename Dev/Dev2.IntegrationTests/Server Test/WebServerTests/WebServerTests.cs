@@ -389,7 +389,14 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
                                 }
                                 else
                                 {
-                                    StringAssert.StartsWith(responseData, request.Item2, "The request did not return the correct png image file.");
+                                    try
+                                    {
+                                        StringAssert.StartsWith(responseData, request.Item2);
+                                    }
+                                    catch(AssertFailedException)
+                                    {
+                                        Assert.Fail("The request did not return the correct png image file.");
+                                    }
                                 }
                                 break;
                             case AssertType.Contains:
