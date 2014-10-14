@@ -75,8 +75,9 @@ namespace Dev2.Tests
                 var intillisenseParts = bdl.FetchIntellisenseParts();
 
                 //------------Execute Test---------------------------
+                // ReSharper disable once RedundantAssignment
                 var parts = dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
-
+                parts = dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
                 //------------Assert Results-------------------------
                 Assert.AreEqual(1, parts.Count);
                 StringAssert.Contains(parts[0].Message, "Recordset name [[rec(&&,]] contains invalid character(s)");
@@ -126,7 +127,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             var dev2LanuageParser = new Dev2DataLanguageParser();
             PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
-            var cache = p.GetStaticField("ExpressionCache") as Dictionary<string, IList<IIntellisenseResult>>;
+            var cache = p.GetStaticField("_expressionCache") as Dictionary<string, IList<IIntellisenseResult>>;
 
             Assert.IsNotNull(cache);
             cache.Clear();
@@ -140,11 +141,12 @@ namespace Dev2.Tests
             var intillisenseParts = bdl.FetchIntellisenseParts();
             //------------Execute Test---------------------------
             dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
+            dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
             //------------Assert Results-------------------------
             Assert.IsNotNull(cache);
             Assert.AreEqual(1,cache.Count);
+            cache.Clear();    
                 
-        
         }
 
         [TestMethod]
@@ -155,7 +157,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             var dev2LanuageParser = new Dev2DataLanguageParser();
             PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
-            var cache = p.GetStaticField("PayloadCache") as Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
+            var cache = p.GetStaticField("_payloadCache") as Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
 
             Assert.IsNotNull(cache);
             cache.Clear();
@@ -183,19 +185,19 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
-            var cache = p.GetStaticField("PayloadCache") as Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
+            var cache = p.GetStaticField("_payloadCache") as Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
             if(cache != null)
             {
                 cache.Clear();
             }
-                const string dl = "<ADL><rec><val/></rec></ADL>";
-                const string payload = "[[rec().val]]";
-                var dev2LanuageParser = new Dev2DataLanguageParser();
+            const string dl = "<ADL><rec><val/></rec></ADL>";
+            const string payload = "[[rec().val]]";
+            var dev2LanuageParser = new Dev2DataLanguageParser();
 
-                IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true, false);
-                Assert.IsNotNull(cache);
-                Assert.AreEqual(cache.Count,1);
-           
+            IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true, false);
+            Assert.IsNotNull(cache);
+            Assert.AreEqual(cache.Count,1);
+            
 
             //------------Execute Test---------------------------
 
@@ -209,9 +211,9 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             const string dl = "<ADL><rec><val/></rec></ADL>";
             const string payload = "[[rec().val]]";
-            var dev2LanuageParser = new Dev2DataLanguageParser();
+  
             PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
-            var cache = p.GetStaticField("ExpressionCache") as Dictionary<string, IList<IIntellisenseResult>>;
+            var cache = p.GetStaticField("_expressionCache") as Dictionary<string, IList<IIntellisenseResult>>;
             Assert.IsNotNull(cache);
             cache.Clear();
             Assert.AreEqual(cache.Count, 0);

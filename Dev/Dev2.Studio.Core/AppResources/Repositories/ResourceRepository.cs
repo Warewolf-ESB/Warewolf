@@ -1015,7 +1015,6 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         public DbColumnList GetDatabaseTableColumns(DbSource dbSource, DbTable dbTable)
         {
             var comController = new CommunicationController { ServiceName = "GetDatabaseColumnsForTableService" };
-
             comController.AddPayloadArgument("Database", _serializer.Serialize(dbSource));
             comController.AddPayloadArgument("TableName", _serializer.Serialize(dbTable.TableName));
             comController.AddPayloadArgument("Schema", _serializer.Serialize(dbTable.Schema));
