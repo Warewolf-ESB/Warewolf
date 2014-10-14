@@ -53,7 +53,13 @@ namespace Dev2.Activities.Designers2.Core
         public bool IsInputPathFocused
         {
             get { return (bool)GetValue(IsInputPathFocusedProperty); }
-            set { SetValue(IsInputPathFocusedProperty, value); }
+            set
+            {
+                if(IsInputPathFocusedProperty != null)
+                {
+                    SetValue(dp: IsInputPathFocusedProperty, value: value);
+                }
+            }
         }
 
         public static readonly DependencyProperty IsInputPathFocusedProperty =
@@ -62,7 +68,13 @@ namespace Dev2.Activities.Designers2.Core
         public bool IsOutputPathFocused
         {
             get { return (bool)GetValue(IsOutputPathFocusedProperty); }
-            set { SetValue(IsOutputPathFocusedProperty, value); }
+            set
+            {
+                if(IsOutputPathFocusedProperty != null)
+                {
+                    SetValue(dp: IsOutputPathFocusedProperty, value: value);
+                }
+            }
         }
 
         public static readonly DependencyProperty IsOutputPathFocusedProperty =
@@ -106,11 +118,11 @@ namespace Dev2.Activities.Designers2.Core
 
 
             string pathValue;
-            bool isVariable = false;
+          //  bool isVariable = false;
             if (errors.Count == 0)
             {
                 pathValue = path;
-                isVariable = true;
+               // isVariable = true;
             }
             else
             {
@@ -138,8 +150,8 @@ namespace Dev2.Activities.Designers2.Core
                 }
                 else
                 {
-                    if (!isVariable)
-                    {
+                   // if (!isVariable)
+                  //  {
                         Uri uriResult;
                         var isValid = Uri.TryCreate(pathValue, UriKind.Absolute, out uriResult)
                             ? ValidUriSchemes.Contains(uriResult.Scheme)
@@ -149,7 +161,7 @@ namespace Dev2.Activities.Designers2.Core
                         {
                             errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = "Please supply a valid " + label });
                         }
-                    }
+                   // }
                 }
             }
 
@@ -178,6 +190,7 @@ namespace Dev2.Activities.Designers2.Core
 
         protected virtual string ValidateFileContent(string content, string label, Action onError, bool contentIsRequired = true)
         {
+
 
             var errors = new List<IActionableErrorInfo>();
             RuleSet fileActivityRuleSet = new RuleSet();

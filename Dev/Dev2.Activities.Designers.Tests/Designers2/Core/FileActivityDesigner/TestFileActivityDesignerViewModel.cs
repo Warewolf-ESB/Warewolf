@@ -66,9 +66,49 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             base.ValidateOutputPath();
         }
 
+        public void TestValidateFileContent(string content, string label)
+        {
+            base.ValidateFileContent(content, label);
+        }
+
+        public void TestValidateArchivePassword(string password, string label)
+        {
+            base.ValidateArchivePassword(password, label);
+        }
+
         public void TestValidateInputAndOutputPaths()
         {
             base.ValidateInputAndOutputPaths();
         }
+
+
+
+        public string TestValidateFileContent(string content, string label, Action onError, bool contentIsRequired)
+        {
+            return base.ValidateFileContent(content, label, onError, contentIsRequired);
+        }
+
+        public int ValidateFileContentHitCount { get; private set; }
+        public void TestValidateBaseFileContent(string content, string label)
+        {
+            ValidateFileContentHitCount++;
+            base.ValidateFileContent(content, label);
+        }
+
+
+        public string TestValidateArchivePassword(string password, string label, Action onError, bool contentIsRequired)
+        {
+            return base.ValidateArchivePassword(password, label, onError, contentIsRequired);
+        }
+
+
+        public int ValidateArchivePasswordCount { get; private set; }
+        public void TestValidateBaseArchivePassword(string password, string label)
+        {
+            ValidateArchivePasswordCount++;
+            base.ValidateArchivePassword(password, label);
+        }
+
+
     }
 }
