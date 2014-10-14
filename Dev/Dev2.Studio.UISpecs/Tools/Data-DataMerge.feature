@@ -24,12 +24,12 @@ Scenario: DataMerge Large View Invalid Variables Expected Error On done Button
 	#Opening Larger View
 	Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Merge (2)(DataMergeDesigner)"
 	##Bug12561 #Checking Validation Errors For Invalid Input Variable
-	##And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Merge (2)(DataMergeDesigner),DoneButton"
-	##Given "WORKSURFACE,UI_Error0_AutoID" is visible
-	##Given I type "[[rec(1).a]]" in "WORKSURFACE,Data Merge (2)(DataMergeDesigner),LargeViewContent,LargeDataGrid,UI_DataGridCell_AutoID,UI__Row1_InputVariable_AutoID"
-	##And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Merge (2)(DataMergeDesigner),DoneButton"
-	#Given "WORKSURFACE,Data Merge (2)(DataMergeDesigner),SmallViewContent" is visible
-	#Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Merge (2)(DataMergeDesigner)"
+	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Merge (2)(DataMergeDesigner),DoneButton"
+	Given "WORKSURFACE,UI_Error0_AutoID" is visible
+	Given I type "[[rec(1).a]]" in "WORKSURFACE,Data Merge (2)(DataMergeDesigner),LargeViewContent,LargeDataGrid,UI_DataGridCell_AutoID,UI__Row1_InputVariable_AutoID"
+	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Merge (2)(DataMergeDesigner),DoneButton"
+	Given "WORKSURFACE,Data Merge (2)(DataMergeDesigner),SmallViewContent" is visible
+	Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Merge (2)(DataMergeDesigner)"
 	#Checking Validation Error For Invalid Using Number
 	Given I type "%" in "WORKSURFACE,Data Merge (2)(DataMergeDesigner),LargeViewContent,LargeDataGrid,UI__At_Row1_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Merge (2)(DataMergeDesigner),DoneButton"

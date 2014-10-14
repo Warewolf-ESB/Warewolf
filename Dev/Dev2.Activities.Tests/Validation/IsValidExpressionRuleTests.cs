@@ -110,6 +110,28 @@ namespace Dev2.Tests.Activities.Validation
             Assert.AreEqual("MyVar -  [[a_b]] does not exist in your variable list", errorInfo.Message);
         }
 
+
+
+        [TestMethod]
+        [Owner("Tshepo Ntlhokoa")]
+        [TestCategory("IsValidExpressionRule_Check")]
+        public void IsValidExpressionRule_Check_ExpressionWithPlainTextIsValid_ReturnsNoError()
+        {
+            //------------Setup for test--------------------------
+            const string trueString = "True";
+            const string noneString = "None";
+            var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+
+            var rule = new IsValidExpressionRule(() => "[[var]]%", datalist) { LabelText = "MyRecSet" };
+            //------------Execute Test---------------------------
+            var errorInfo = rule.Check();
+            //------------Assert Results-------------------------
+            Assert.IsNull(errorInfo);
+        }
+
+
+
+
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("IsValidExpressionRule_Check")]

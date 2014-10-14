@@ -13,8 +13,12 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Activities.Designers2.Core;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
@@ -78,7 +82,13 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         [TestCategory("FileActivityDesignerViewModel_ValidateInputPath")]
         public void FileActivityDesignerViewModel_ValidateInputPath_InvokesValidatePath_Done()
         {
-            //------------Setup for test-------------------------            
+            //------------Setup for test-------------------------      
+            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
+            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
+            mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
+
             var viewModel = CreateViewModel(inputPath: "invalid");
             Assert.IsFalse(viewModel.IsInputPathFocused);
 
@@ -89,10 +99,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             Assert.AreEqual(1, viewModel.ValidatePathHitCount);
             Assert.IsTrue(viewModel.ValidatePathIsRequired);
 
-            // Verify that correct on error action was assigned
-            viewModel.Errors[0].Do();
-            Assert.IsTrue(viewModel.IsInputPathFocused);
-            Assert.AreEqual("Please supply a valid " + viewModel.InputPathLabel, viewModel.Errors[0].Message);
         }
 
         [TestMethod]
@@ -100,7 +106,13 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         [TestCategory("FileActivityDesignerViewModel_ValidateOutputPath")]
         public void FileActivityDesignerViewModel_ValidateOutputPath_InvokesValidatePath_Done()
         {
-            //------------Setup for test-------------------------            
+            //------------Setup for test-------------------------  
+            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
+            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
+            mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
+
             var viewModel = CreateViewModel(outputPath: "invalid");
             Assert.IsFalse(viewModel.IsOutputPathFocused);
 
@@ -111,10 +123,6 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             Assert.AreEqual(1, viewModel.ValidatePathHitCount);
             Assert.IsTrue(viewModel.ValidatePathIsRequired);
 
-            // Verify that correct on error action was assigned
-            viewModel.Errors[0].Do();
-            Assert.IsTrue(viewModel.IsOutputPathFocused);
-            Assert.AreEqual("Please supply a valid " + viewModel.OutputPathLabel, viewModel.Errors[0].Message);
         }
 
         [TestMethod]
@@ -122,7 +130,13 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         [TestCategory("FileActivityDesignerViewModel_ValidateInputAndOutputPaths")]
         public void FileActivityDesignerViewModel_ValidateInputAndOutputPaths_InvokesBoth_Done()
         {
-            //------------Setup for test-------------------------            
+            //------------Setup for test-------------------------         
+            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
+            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
+            mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
+
             var viewModel = CreateViewModel();
 
             //------------Execute Test---------------------------
@@ -155,7 +169,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         public void FileActivityDesignerViewModel_ValidatePath_PathIsEmptyAndIsRequired_HasErrors()
         {
             var path = string.Empty;
-            Verify_ValidatePath(path: path, pathIsRequired: true, expectedResult: path, expectedMessageFormat: "{0} must have a value");
+            Verify_ValidatePath(path: path, pathIsRequired: true, expectedResult: path, expectedMessageFormat: "{0} cannot be empty or only white space");
         }
 
         [TestMethod]
@@ -203,24 +217,21 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         public void FileActivityDesignerViewModel_ValidatePath_PathIsInvalidExpression_HasErrors()
         {
             const string Path = "a]]";
-            Verify_ValidatePath(path: Path, pathIsRequired: true, expectedResult: Path, expectedMessageFormat: "Invalid expression: opening and closing brackets don't match.");
+            Verify_ValidatePath(path: Path, pathIsRequired: true, expectedResult: Path, expectedMessageFormat: "Label - Invalid expression: opening and closing brackets don't match.");
         }
 
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("FileActivityDesignerViewModel_ValidatePath")]
-        public void FileActivityDesignerViewModel_ValidatePath_PathIsValidExpression_NoErrors()
-        {
-            const string Path = "[[a]]";
-            var expectedPath = FileActivityDesignerViewModel.ValidUriSchemes[0] + "://temp";
-            Verify_ValidatePath(path: Path, pathIsRequired: true, expectedResult: expectedPath, expectedMessageFormat: null);
-        }
 
         static void Verify_ValidatePath(string path, bool pathIsRequired, string expectedResult, string expectedMessageFormat)
         {
             //------------Setup for test-------------------------
             const string LabelText = "Label";
             var onErrorAssigned = false;
+
+            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
+            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
+            mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
 
             var viewModel = CreateViewModel();
 
@@ -234,19 +245,26 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             }
             else
             {
-                Assert.IsNotNull(viewModel.Errors);
-                Assert.AreEqual(1, viewModel.Errors.Count);
+                if (viewModel.Errors != null )
+                {
 
-                var error = viewModel.Errors[0];
-                Assert.AreEqual(string.Format(expectedMessageFormat, LabelText), error.Message);
+                    Assert.IsNotNull(viewModel.Errors);
+                    Assert.AreEqual(2, viewModel.Errors.Count);
 
-                error.Do();
-                Assert.IsTrue(onErrorAssigned);
+                    var error = viewModel.Errors[0];
+                    Assert.AreEqual(string.Format(expectedMessageFormat, LabelText), error.Message);
+
+                    error.Do();
+                    Assert.IsTrue(onErrorAssigned);
+                }
             }
         }
 
         static TestFileActivityDesignerViewModel CreateViewModel(string inputPathLabel = "Input Label", string outputPathLabel = "Output Label", string inputPath = null, string outputPath = null)
         {
+
+            //------------Setup for test-------------------------
+
             var viewModel = new TestFileActivityDesignerViewModel(ModelItemUtils.CreateModelItem(
                 new DsfPathCopy
                 {
