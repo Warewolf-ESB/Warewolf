@@ -551,7 +551,8 @@ namespace Dev2.Runtime.ESB.Control
             {
                 return EmptyDataList;
             }
-
+            result.Replace(GlobalConstants.SerializableResourceQuote, "\"");
+            result.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
             return result;
         }
 
