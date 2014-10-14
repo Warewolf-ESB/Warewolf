@@ -214,7 +214,8 @@ namespace Dev2.Runtime.ESB.WF
                 return EmptyDataList;
             }
 
-            var serviceShape = resource.DataList.ToString();
+            var serviceShape = resource.DataList.Replace(GlobalConstants.SerializableResourceQuote,"\"").ToString();
+            serviceShape = serviceShape.Replace(GlobalConstants.SerializableResourceSingleQuote,"\'");
             return string.IsNullOrEmpty(serviceShape) ? EmptyDataList : serviceShape;
         }
     }

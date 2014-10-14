@@ -125,7 +125,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             var fieldName = t.FieldName;
                             fieldName = DataListUtil.IsValueRecordset(fieldName) ? DataListUtil.ReplaceRecordsetIndexWithBlank(fieldName) : fieldName;
-                            var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+                            var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors).ToString();
                             if(!string.IsNullOrEmpty(datalist))
                             {
                                 var isValidExpr = new IsValidExpressionRule(() => fieldName, datalist)

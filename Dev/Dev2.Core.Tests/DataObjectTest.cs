@@ -110,7 +110,7 @@ namespace Dev2.Tests
             var result = dataObject.RawPayload;
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(string.Empty, result, "RawPayload did not return and empty string");
+            Assert.AreEqual(string.Empty, result.ToString(), "RawPayload did not return and empty string");
         }
 
         [TestMethod]

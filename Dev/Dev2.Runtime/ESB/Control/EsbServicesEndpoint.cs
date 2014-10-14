@@ -475,7 +475,7 @@ namespace Dev2.Runtime.ESB.Control
                 errors.MergeErrors(invokeErrors);
             }
 
-            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, theShape, out invokeErrors);
+            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(), theShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
             dataObject.RawPayload = new StringBuilder();
 
@@ -575,6 +575,7 @@ namespace Dev2.Runtime.ESB.Control
             if(resource.DataList != null)
             {
                 result = resource.DataList;
+
             }
 
             // Handle services ;)
@@ -589,7 +590,8 @@ namespace Dev2.Runtime.ESB.Control
             {
                 return EmptyDataList;
             }
-
+            result.Replace(GlobalConstants.SerializableResourceQuote, "\"");
+            result.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
             return result;
         }
 

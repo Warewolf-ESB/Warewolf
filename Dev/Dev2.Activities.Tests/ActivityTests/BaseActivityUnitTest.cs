@@ -153,7 +153,7 @@ namespace ActivityUnitTests
             {
                 Compiler = DataListFactory.CreateDataListCompiler();
 
-                ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+                ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
                 if(dataObject != null)
                 {
                     dataObject.DataListID = ExecutionId;
@@ -234,7 +234,7 @@ namespace ActivityUnitTests
 
             Compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid exId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            Guid exId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
 
 
             if(errors.HasErrors())
@@ -286,7 +286,7 @@ namespace ActivityUnitTests
 
             Compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid exId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            Guid exId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
 
 
             if(errors.HasErrors())
@@ -330,7 +330,7 @@ namespace ActivityUnitTests
             CurrentDl = dataListShape;
 
             Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
             IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionId, out errors);
 
             var result = ExecuteProcess(null, true, null, isRemoteInvoke);
@@ -353,7 +353,7 @@ namespace ActivityUnitTests
             CurrentDl = dataListShape;
             User = user;
             Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
             IBinaryDataList dl = Compiler.FetchBinaryDataList(ExecutionId, out errors);
             var result = ExecuteProcess(null, true);
             inputResults = activity.GetDebugInputs(dl);

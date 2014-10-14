@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Util;
@@ -487,7 +488,7 @@ namespace Dev2.DataList
                 var compiler = DataListFactory.CreateDataListCompiler();
 
                 ErrorResultTO invokeErrors;
-                var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, DataList, out invokeErrors);
+                var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty.ToStringBuilder(), DataList.ToStringBuilder(), out invokeErrors);
                 var dl = compiler.FetchBinaryDataList(dlID, out invokeErrors);
                 IDictionary<Tuple<string, string>, string> tmp = new Dictionary<Tuple<string, string>, string>();
 

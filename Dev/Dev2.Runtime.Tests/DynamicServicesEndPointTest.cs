@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
@@ -98,7 +99,7 @@ namespace Dev2.Tests.Runtime
         {
             IDataListCompiler comp = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlId = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, ServiceShape, out errors);
+            Guid dlId = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, ServiceShape.ToStringBuilder(), out errors);
 
             IDSFDataObject dataObj = new DsfDataObject(string.Empty, dlId) { WorkspaceID = _workspaceId, DataListID = dlId, ServiceName = ServiceName };
             EsbServicesEndpoint endPoint = new EsbServicesEndpoint();
@@ -149,7 +150,7 @@ namespace Dev2.Tests.Runtime
         {
             IDataListCompiler comp = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlId = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, ServiceShape, out errors);
+            Guid dlId = comp.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), ServiceShape.ToStringBuilder(), out errors);
             var resource = ResourceCatalog.Instance.GetResource(_workspaceId, ServiceName);
             IDSFDataObject dataObj = new DsfDataObject(string.Empty, dlId) { WorkspaceID = _workspaceId, DataListID = dlId, ServiceName = ServiceName, ResourceID = resource.ResourceID };
             EsbServicesEndpoint endPoint = new EsbServicesEndpoint();

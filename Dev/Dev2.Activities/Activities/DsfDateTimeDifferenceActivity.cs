@@ -128,7 +128,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 toUpsert.IsDebug = dataObject.IsDebugMode();
                 IDev2IteratorCollection colItr = Dev2ValueObjectFactory.CreateIteratorCollection();
-                var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+                var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors).ToString();
                 if(!string.IsNullOrEmpty(datalist))
                 {
                     ValidateInput(datalist, allErrors, Input1);

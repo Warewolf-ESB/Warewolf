@@ -85,18 +85,6 @@ namespace Dev2.Server.DataList.Translators
             return base.ConvertTo(input, shape, out errors);
         }
 
-        /// <summary>
-        /// Converts the and only map inputs.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <param name="shape">The shape.</param>
-        /// <param name="errors">The errors.</param>
-        /// <returns></returns>
-        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, StringBuilder shape, out ErrorResultTO errors)
-        {
-            return base.ConvertAndOnlyMapInputs(input, shape, out errors);
-        }
-
         #region Private Methods
 
         #endregion

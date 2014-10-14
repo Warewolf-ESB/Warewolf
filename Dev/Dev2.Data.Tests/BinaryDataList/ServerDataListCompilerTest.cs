@@ -15,7 +15,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -46,8 +48,8 @@ namespace Dev2.Data.Tests.BinaryDataList
     {
         private readonly IEnvironmentModelDataListCompiler _sdlc = DataListFactory.CreateServerDataListCompiler();
 
-        const string _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
-        const string _dataListWellformedData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
+        readonly StringBuilder _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>".ToStringBuilder();
+         const string _dataListWellformedData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
 
         private static readonly DataListFormat xmlFormat = DataListFormat.CreateFormat(GlobalConstants._XML);
 
@@ -67,7 +69,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            var dl = new StringBuilder("<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>");
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -117,7 +119,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            var dl = new StringBuilder("<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>");
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -167,7 +169,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            var dl = new StringBuilder("<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>");
             const string dlData = "<DataList><idx>1</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -211,7 +213,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            var dl = new StringBuilder("<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>");
             const string dlData = "<DataList><idx></idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -255,7 +257,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            var dl = new StringBuilder("<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>");
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -303,7 +305,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            var dl = new StringBuilder("<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>");
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -353,7 +355,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            var dl = new StringBuilder("<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>");
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -397,7 +399,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            var dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>".ToStringBuilder();
             const string dlData = "<DataList><idx>1</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -447,7 +449,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            var dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>".ToStringBuilder();
             const string dlData = "<DataList><idx></idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -497,7 +499,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            var dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>".ToStringBuilder();
             const string dlData = "<DataList><idx>abc</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -524,7 +526,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>";
+            var dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2></DataList>".ToStringBuilder();
             const string dlData = "<DataList><idx>abc</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -552,7 +554,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             string error;
-            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            var dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>".ToStringBuilder();
             const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -576,7 +578,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             string error;
-            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            var dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>".ToStringBuilder();
             const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -601,7 +603,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             string error;
-            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            var dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>".ToStringBuilder();
             const string dlData = "<DataList><scalar1>rs1(1).f1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -626,7 +628,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             string error;
-            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            var dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>".ToStringBuilder();
             const string dlData = "<DataList><scalar1>rs1(1).f1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>rs1(1).f1</f1></rs2><scalar2/></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -651,7 +653,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             string error;
-            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            var dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>".ToStringBuilder();
             const string dlData = "<DataList><scalar1>rs1(1).f1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>scalar1</f1></rs2><scalar2/></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -675,7 +677,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            var dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>".ToStringBuilder();
             const string dlData = "<DataList><scalar1>rs1(1).f1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>scalar1</f1></rs2><scalar2/></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -698,7 +700,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            var dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>".ToStringBuilder();
             const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -722,7 +724,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            var dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>".ToStringBuilder();
             const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -746,7 +748,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            var dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>".ToStringBuilder();
             const string dlData = "<DataList><scalar1>rs1(1).f1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -770,7 +772,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             //------------Setup for test--------------------------
             ErrorResultTO errors;
-            const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
+            var dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>".ToStringBuilder();
             const string dlData = "<DataList><scalar1>rs1(1).f1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>scalar1</f1></rs2><scalar2/></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
@@ -921,7 +923,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
 
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "[[[[scalar2]]1]]", out errors);
 
@@ -938,7 +940,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1></scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "[[rs1(*).f1]] some cool static data ;)", out errors);
@@ -956,7 +958,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>even more static data ;)</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "[[rs1(*).f1]] some cool static data ;) [[scalar1]]", out errors);
@@ -974,7 +976,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>even more static data ;)</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "[[scalar1]] [[rs1(*).f1]] some cool static data ;)", out errors);
@@ -993,7 +995,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>even more static data ;)</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>recordset data ;)</f1a></rs2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "[[rs2(1).f1a]] [[rs1(*).f1]] some cool static data ;)", out errors);
@@ -1015,7 +1017,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><rs1><f1>f1.1</f1><f2>f2.1</f2></rs1><rs1><f1>f1.2</f1><f2>f2.2</f2></rs1></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             //------------Execute Test---------------------------
@@ -1036,11 +1038,11 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             var dataListTranslatedPayloadTo = _sdlc.ConvertFrom(null, dlID, DataList.Contract.enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._XML), out errors);
-            string myDate = dataListTranslatedPayloadTo.FetchAsString();
+            string myDate = dataListTranslatedPayloadTo.FetchAsString().ToString();
 
             if(myDate != string.Empty)
             {
@@ -1068,7 +1070,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");
@@ -1092,7 +1094,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");
@@ -1116,7 +1118,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             IBinaryDataListItem toUpsert = Dev2BinaryDataListFactory.CreateBinaryItem("test_upsert_value", "scalar2");
@@ -1142,7 +1144,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             data = (TestHelper.ConvertStringToByteArray(_dataListWellformedData));
@@ -1179,10 +1181,10 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
-            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>", out errors);
+            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>".ToStringBuilder(), out errors);
 
             const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs2().f1a]]"" Recordset=""rs1"" /></Inputs>";
             const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""f1a"" Value=""[[rs1(*).f1]]"" Recordset=""rs2"" /></Outputs>";
@@ -1215,8 +1217,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
-            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
+            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>".ToStringBuilder(), out errors);
             const string inputs = @"<Inputs><Input Name=""scalar2"" Source=""[[rs2(**).f1a]]"" /></Inputs>";
             //------------Execute Test---------------------------
             _sdlc.ShapeForSubExecution(null, dlID, childID, inputs, "", out errors);
@@ -1235,10 +1237,10 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><rs1><f1/><f2/></rs1><rs1a><f2a/></rs1a></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><rs1><f1/><f2/></rs1><rs1a><f2a/></rs1a></DataList>".ToStringBuilder(), out errors);
             string error;
 
-            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1><rs1a><f2a/></rs1a><rs2><f1a/></rs2></DataList>", out errors);
+            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1><rs1a><f2a/></rs1a><rs2><f1a/></rs2></DataList>".ToStringBuilder(), out errors);
 
             string inputs = string.Empty;
             const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""f1a"" Value=""[[rs1(*).f1]]"" Recordset=""rs2"" /><Output Name=""f2a"" MapsTo=""f2a"" Value=""[[rs1a(*).f2]]"" Recordset=""rs2"" /></Outputs>";
@@ -1302,7 +1304,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs2().f1a]]"" Recordset=""rs1"" /><Input Name=""scalar1"" Source=""[[scalar2]]"" /></Inputs>";
@@ -1329,7 +1331,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs2(*).f1a]]"" Recordset=""rs1"" /><Input Name=""scalar1"" Source=""[[scalar2]]"" /></Inputs>";
@@ -1358,7 +1360,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
             const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs2(*).f1a]]"" Recordset=""rs1"" /><Input Name=""scalar1"" Source="""" DefaultValue=""Default_Scalar""/></Inputs>";
@@ -1391,7 +1393,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
 
             const string inputs = @"<Inputs><Input Name=""scalar1"" Source="""" DefaultValue=""""><Validator Type=""Required"" /></Input></Inputs>";
 
@@ -1420,11 +1422,11 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string strData0 = "<DataList><dbo_proc_get_Rows><Column1>ZZZ</Column1></dbo_proc_get_Rows></DataList>";
             const string strShape0 = "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0, out errors);
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0.ToStringBuilder(), out errors);
             // Create child list to branch from -- Emulate Input shaping
             const string strData = "<DataList><dbo_proc_get_Rows><BigID>1</BigID><Column1>1</Column1><Column2>1</Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID>2</BigID><Column1>2</Column1><Column2>2</Column2></dbo_proc_get_Rows></DataList>";
             data = (TestHelper.ConvertStringToByteArray(strData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>".ToStringBuilder(), out errors);
             // Set ParentID
             _sdlc.SetParentUID(dlID, parentID, out errors);
 
@@ -1441,7 +1443,7 @@ namespace Dev2.Data.Tests.BinaryDataList
                                             DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags),
                                             out tmpErrors);
 
-            var resultStr = results.FetchAsString();
+            var resultStr = results.FetchAsString().ToString();
 
             StringAssert.Contains(resultStr, expected);
 
@@ -1460,11 +1462,11 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string strData0 = "<DataList><dbo_proc_get_Rows><Column1>ZZZ</Column1></dbo_proc_get_Rows></DataList>";
             const string strShape0 = "<DataList><scalar/><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0, out errors);
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0.ToStringBuilder(), out errors);
             // Create child list to branch from -- Emulate Input shaping
             const string strData = "<DataList><dbo_proc_get_Rows><BigID>1</BigID><Column1>1</Column1><Column2>1</Column2></dbo_proc_get_Rows><dbo_proc_get_Rows><BigID>2</BigID><Column1>2</Column1><Column2>2</Column2></dbo_proc_get_Rows></DataList>";
             data = (TestHelper.ConvertStringToByteArray(strData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>".ToStringBuilder(), out errors);
             // Set ParentID
             _sdlc.SetParentUID(dlID, parentID, out errors);
 
@@ -1481,7 +1483,7 @@ namespace Dev2.Data.Tests.BinaryDataList
                                             DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags),
                                             out tmpErrors);
 
-            var resultStr = results.FetchAsString();
+            var resultStr = results.FetchAsString().ToString();
             StringAssert.Contains(resultStr, expected);
         }
 
@@ -1498,11 +1500,11 @@ namespace Dev2.Data.Tests.BinaryDataList
             // Create parent dataList
             const string strData0 = "<DataList><nullFlag/><result/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             // Create child list to branch from -- Emulate Input shaping
             const string strData = "<DataList><nullFlag></nullFlag><dbo_NullReturnsZZZ_NotNullReturnsAAA><result>ZZZ</result></dbo_NullReturnsZZZ_NotNullReturnsAAA></DataList>";
             data = (TestHelper.ConvertStringToByteArray(strData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><dbo_NullReturnsZZZ_NotNullReturnsAAA><result/></dbo_NullReturnsZZZ_NotNullReturnsAAA></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><dbo_NullReturnsZZZ_NotNullReturnsAAA><result/></dbo_NullReturnsZZZ_NotNullReturnsAAA></DataList>".ToStringBuilder(), out errors);
             // Set ParentID
             _sdlc.SetParentUID(dlID, parentID, out errors);
 
@@ -1541,11 +1543,11 @@ namespace Dev2.Data.Tests.BinaryDataList
             // Create parent dataList
             const string strData0 = "<DataList><nullFlag/><result/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             // Create child list to branch from -- Emulate Input shaping
             const string strData = "<DataList><nullFlag></nullFlag></DataList>";
             data = (TestHelper.ConvertStringToByteArray(strData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>".ToStringBuilder(), out errors);
             // Set ParentID
             _sdlc.SetParentUID(dlID, parentID, out errors);
 
@@ -1589,11 +1591,11 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             var format = DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags);
 
-            Guid parentID = _sdlc.ConvertTo(null, format, pdata, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid parentID = _sdlc.ConvertTo(null, format, pdata, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             // Create child list to branch from -- Emulate Input shaping
             const string dataListWellformedComplexData = "<DataList><scalar1>c1</scalar1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>c2</scalar2></DataList>";
             var data = (TestHelper.ConvertStringToByteArray(dataListWellformedComplexData));
-            Guid dlID = _sdlc.ConvertTo(null, format, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, format, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
 
             const string outputs = @"<Outputs><Output Name=""f1a"" MapsTo=""[[rs1().f1]]"" Value=""[[rs1().f1]]"" Recordset=""rs2"" /><Output Name=""scalar2"" MapsTo=""scalar2"" Value=""[[scalar1]]"" /></Outputs>";
 
@@ -1630,10 +1632,10 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             // Create parent dataList
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             // Create child list to branch from -- Emulate Input shaping
             data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             // Set ParentID
             _sdlc.SetParentUID(dlID, parentID, out errors);
 
@@ -1670,10 +1672,10 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             // Create parent dataList
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             // Create child list to branch from -- Emulate Input shaping
             data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             // Set ParentID
             _sdlc.SetParentUID(dlID, parentID, out errors);
 
@@ -1709,7 +1711,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             var data = (TestHelper.ConvertStringToByteArray("<DataList><rs1><f1>r1f1.1</f1><f2>r1f2.1</f2></rs1><rs1><f1>r1f1.2</f1><f2>r1f2.2</f2></rs1><rs2><f1>r2f1.1</f1><f2>r2f2.1</f2></rs2><rs2><f1>r2f1.2</f1><f2>r2f2.2</f2></rs2></DataList>"));
-            var dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><rs1><f1/><f2/></rs1><rs2><f1/><f2/></rs2></DataList>", out errors);
+            var dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><rs1><f1/><f2/></rs1><rs2><f1/><f2/></rs2></DataList>".ToStringBuilder(), out errors);
 
             const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs1(*).f1]]"" Recordset=""rs2"" /><Input Name=""f2"" Source=""[[rs1(*).f2]]"" Recordset=""rs2"" /></Inputs>";
 
@@ -1782,7 +1784,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             //------------Execute Test---------------------------
             _sdlc.Evaluate(null, dlID, enActionType.Internal, "[[rs1([[junk]]).f1]]", out errors);
@@ -1798,7 +1800,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
             const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.Internal, "[[rs1([[scalar1]]).f1]]", out errors);
             //------------Assert---------------------------
@@ -1815,7 +1817,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
             const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.Internal, "[[rs1(1).f1]]", out errors);
             //------------Assert---------------------------
@@ -1832,7 +1834,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
             const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.Internal, "[[rs1(8).f1]]", out errors);
             //------------Assert---------------------------
@@ -1849,7 +1851,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
             const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1>1</f1></rs2><scalar2/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.CalculateSubstitution, "[[scalar1]]", out errors);
             //------------Assert---------------------------
@@ -1866,7 +1868,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1/></rs2><scalar2/></DataList>";
             const string dlData = "<DataList><scalar1>1</scalar1><rs1><f1>11.112</f1></rs1><scalar2/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.CalculateSubstitution, "[[rs1().f1]]", out errors);
             //------------Assert---------------------------
@@ -1884,7 +1886,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
@@ -1909,7 +1911,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
@@ -1968,7 +1970,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
@@ -1991,7 +1993,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
@@ -2013,7 +2015,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><idx/><rec><a/></rec><rec2><a/><b/></rec2></DataList>";
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
             payload.Add("[[rec2().b]]", "six vitamins");
@@ -2034,7 +2036,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><idx/><rec><a/></rec><rec2><a/><b/></rec2></DataList>";
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
             payload.Add("[[rec2().b]]", "six vitamins");
@@ -2053,7 +2055,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             Guid shapeID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, new List<IDev2Definition>(), out errors);
             //-------------Assert---------------------------------
@@ -2069,7 +2071,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             Guid shapeID = _sdlc.Shape(null, dlID, enDev2ArgumentType.Output, new List<IDev2Definition>(), out errors);
             //-------------Assert---------------------------------
@@ -2085,7 +2087,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             var id = _sdlc.Shape(null, dlID, enDev2ArgumentType.Input, "", out errors);
             //------------Assert Results-------------------------
@@ -2116,11 +2118,11 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             const string strData0 = "<DataList><nullFlag/><result/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             // Create child list to branch from -- Emulate Input shaping
             const string strData = "<DataList><nullFlag></nullFlag></DataList>";
             data = (TestHelper.ConvertStringToByteArray(strData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>".ToStringBuilder(), out errors);
             // Set ParentID
             _sdlc.SetParentUID(dlID, parentID, out errors);
             //------------Execute Test---------------------------
@@ -2153,10 +2155,10 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             const string strData0 = "<DataList><nullFlag/><result/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             const string strData = "<DataList><nullFlag></nullFlag></DataList>";
             data = (TestHelper.ConvertStringToByteArray(strData));
-            Guid rightId = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>", out errors);
+            Guid rightId = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>".ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             Guid shapeId = _sdlc.Merge(null, leftId, rightId, enDataListMergeTypes.Intersection, DataList.Contract.enTranslationDepth.Shape, false, out errors);
             //------------Assert Results-------------------------
@@ -2173,7 +2175,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             const string strData0 = "<DataList><nullFlag/><result/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             Guid shapeId = _sdlc.Merge(null, leftId, Guid.Empty, enDataListMergeTypes.Intersection, DataList.Contract.enTranslationDepth.Shape, false, out errors);
             //------------Assert Results-------------------------
@@ -2190,7 +2192,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             const string strData = "<DataList><nullFlag></nullFlag></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData));
-            Guid rightId = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>", out errors);
+            Guid rightId = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>".ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             Guid shapeId = _sdlc.Merge(null, Guid.Empty, rightId, enDataListMergeTypes.Intersection, DataList.Contract.enTranslationDepth.Shape, false, out errors);
             //------------Assert Results-------------------------
@@ -2207,10 +2209,10 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             const string strData0 = "<DataList><nullFlag/><result/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             const string strData = "<DataList><nullFlag></nullFlag></DataList>";
             data = (TestHelper.ConvertStringToByteArray(strData));
-            Guid rightId = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>", out errors);
+            Guid rightId = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><nullFlag/><result/></DataList>".ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             var shapeId = _sdlc.ConditionalMerge(null, DataListMergeFrequency.Always, leftId, rightId, DataListMergeFrequency.Always, enDataListMergeTypes.Intersection, DataList.Contract.enTranslationDepth.Shape);
             //------------Assert Results-------------------------
@@ -2226,7 +2228,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             const string strData0 = "<DataList><nullFlag/><result/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            Guid leftId = _sdlc.ConvertTo(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             var shapeId = _sdlc.ConditionalMerge(null, DataListMergeFrequency.Always, leftId, Guid.NewGuid(), DataListMergeFrequency.Always, enDataListMergeTypes.Intersection, DataList.Contract.enTranslationDepth.Shape);
             //------------Assert Results-------------------------
@@ -2265,7 +2267,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             const string strData0 = "<DataList><nullFlag/><result/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid id = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            Guid id = _sdlc.ConvertTo(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             var isSuccessful = _sdlc.DeleteDataListByID(id, true);
             //------------Assert Results-------------------------
@@ -2292,7 +2294,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             const string strData0 = "<DataList><nullFlag/><result/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid id = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            Guid id = _sdlc.ConvertTo(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             //------------Execute Test---------------------------
             var shapeId = _sdlc.PopulateDataList(null, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), "", "", id, out errors);
             //------------Assert Results-------------------------
@@ -2310,9 +2312,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string strData0 = "<DataList><nullFlag/><result/></DataList>";
             const string strData1 = "<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1.1</f1a></rs2><rs2><f1a>rs2.f1.2</f1a></rs2><rs2><f1a>rs2.f1.3</f1a></rs2><scalar2>scalar</scalar2></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
-            Guid id = _sdlc.ConvertTo(null, xmlFormat, data, strData0, out errors);
+            Guid id = _sdlc.ConvertTo(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             const string strShape0 = "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>";
-            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0, out errors);
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0.ToStringBuilder(), out errors);
             _sdlc.SetParentUID(id, parentID, out errors);
             //------------Execute Test---------------------------
             var shapeId = _sdlc.PopulateDataList(null, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), strData0, strData1, id, out errors);
@@ -2331,7 +2333,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string strData0 = "<DataList><nullFlag/><result/></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
             //------------Execute Test---------------------------
-            Guid id = _sdlc.ConvertAndOnlyMapInputs(null, xmlFormat, data, strData0, out errors);
+            Guid id = _sdlc.ConvertAndOnlyMapInputs(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             //------------Assert Results-------------------------
             Assert.AreNotEqual(Guid.Empty, id);
             Assert.IsFalse(errors.HasErrors());
@@ -2347,7 +2349,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string strData0 = "<DataList><nullFlag//></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
             //------------Execute Test---------------------------
-            Guid id = _sdlc.ConvertAndOnlyMapInputs(null, xmlFormat, data, strData0, out errors);
+            Guid id = _sdlc.ConvertAndOnlyMapInputs(null, xmlFormat, data, strData0.ToStringBuilder(), out errors);
             //------------Assert Results-------------------------
             Assert.AreEqual(Guid.Empty, id);
             Assert.IsTrue(errors.HasErrors());
@@ -2363,7 +2365,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string strData0 = "<DataList><nullFlag//></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(strData0));
             //------------Execute Test---------------------------
-            Guid id = _sdlc.ConvertAndOnlyMapInputs(null, DataListFormat.CreateFormat(GlobalConstants._DECISION_STACK), data, strData0, out errors);
+            Guid id = _sdlc.ConvertAndOnlyMapInputs(null, DataListFormat.CreateFormat(GlobalConstants._DECISION_STACK), data, strData0.ToStringBuilder(), out errors);
             //------------Assert Results-------------------------
             Assert.AreEqual(Guid.Empty, id);
             Assert.IsTrue(errors.HasErrors());
@@ -2380,7 +2382,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
             //------------Execute Test---------------------------
-            Guid shapeId = _sdlc.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._DECISION_STACK), data, dl, out errors);
+            Guid shapeId = _sdlc.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._DECISION_STACK), data, dl.ToStringBuilder(), out errors);
             //------------Assert Results-------------------------
             Assert.AreEqual(Guid.Empty, shapeId);
             Assert.IsTrue(errors.HasErrors());
@@ -2400,14 +2402,14 @@ namespace Dev2.Data.Tests.BinaryDataList
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
             dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
-            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns((IDataListTranslator)null);
             var binaryDataList = new Mock<IBinaryDataList>();
             dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
             //------------Execute Test---------------------------
-            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData, xmlFormat, out errors);
+            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData.ToStringBuilder(), xmlFormat, out errors);
             //------------Assert Results-------------------------
-            Assert.AreEqual(string.Empty, shape);
+            Assert.AreEqual(string.Empty, shape.ToString());
             Assert.IsTrue(errors.HasErrors());
         }
 
@@ -2425,14 +2427,14 @@ namespace Dev2.Data.Tests.BinaryDataList
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
             dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
-            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns((IDataListTranslator)null);
             var binaryDataList = new Mock<IBinaryDataList>();
             dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
             //------------Execute Test---------------------------
-            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData, xmlFormat, out errors);
+            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData.ToStringBuilder(), xmlFormat, out errors);
             //------------Assert Results-------------------------
-            Assert.AreEqual(string.Empty, shape);
+            Assert.AreEqual(string.Empty, shape.ToString());
             Assert.IsTrue(errors.HasErrors());
         }
 
@@ -2450,16 +2452,16 @@ namespace Dev2.Data.Tests.BinaryDataList
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
             dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
-            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var translator = new Mock<IDataListTranslator>();
-            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Throws(new Exception());
+            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<StringBuilder>(), out errors)).Throws(new Exception());
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
             var binaryDataList = new Mock<IBinaryDataList>();
             dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
             //------------Execute Test---------------------------
-            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData, xmlFormat, out errors);
+            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData.ToStringBuilder(), xmlFormat, out errors);
             //------------Assert Results-------------------------
-            Assert.AreEqual(string.Empty, shape);
+            Assert.AreEqual(string.Empty, shape.ToString());
             Assert.IsTrue(errors.HasErrors());
         }
 
@@ -2477,16 +2479,16 @@ namespace Dev2.Data.Tests.BinaryDataList
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
             dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
-            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var translator = new Mock<IDataListTranslator>();
-            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Returns("<DataList><PASSED/></DataList>");
+            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<StringBuilder>(), out errors)).Returns("<DataList><PASSED/></DataList>".ToStringBuilder());
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
             var binaryDataList = new Mock<IBinaryDataList>();
             dataListServer.Setup(m => m.ReadDatalist(It.IsAny<Guid>(), out errors)).Returns(binaryDataList.Object);
             //------------Execute Test---------------------------
-            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData, xmlFormat, out errors);
+            var shape = sdlc.ConvertAndFilter(null, shapeId, dlData.ToStringBuilder(), xmlFormat, out errors);
             //------------Assert Results-------------------------
-            Assert.AreEqual("<DataList><PASSED/></DataList>", shape);
+            Assert.AreEqual("<DataList><PASSED/></DataList>", shape.ToString());
             Assert.IsFalse(errors.HasErrors());
         }
 
@@ -2518,7 +2520,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var binaryDataList = new Mock<IBinaryDataList>();
             translator.Setup(m => m.ConvertToDataTable(binaryDataList.Object, "", out errors, PopulateOptions.IgnoreBlankRows)).Returns(new DataTable("TBA"));
             // ReSharper disable ImplicitlyCapturedClosure
-            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Returns("<DataList><PASSED/></DataList>");
+            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<StringBuilder>(), out errors)).Returns("<DataList><PASSED/></DataList>".ToStringBuilder);
             // ReSharper restore ImplicitlyCapturedClosure
             dataListServer.Setup(m => m.GetTranslator(DataListFormat.CreateFormat(GlobalConstants._DATATABLE, EmitionTypes.XML, ""))).Returns(translator.Object);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
@@ -2541,7 +2543,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var binaryDataList = new Mock<IBinaryDataList>();
             translator.Setup(m => m.ConvertToDataTable(binaryDataList.Object, "", out errors, PopulateOptions.IgnoreBlankRows)).Throws(new Exception());
             // ReSharper disable ImplicitlyCapturedClosure
-            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<string>(), out errors)).Returns("<DataList><PASSED/></DataList>");
+            translator.Setup(m => m.ConvertAndFilter(It.IsAny<IBinaryDataList>(), It.IsAny<StringBuilder>(), out errors)).Returns("<DataList><PASSED/></DataList>".ToStringBuilder);
             // ReSharper restore ImplicitlyCapturedClosure
             dataListServer.Setup(m => m.GetTranslator(DataListFormat.CreateFormat(GlobalConstants._DATATABLE, EmitionTypes.XML, ""))).Returns(translator.Object);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
@@ -2563,9 +2565,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             DataListServer dataListServer = new DataListServer(DataListPersistenceProviderFactory.CreateMemoryProvider());
             dataListServer.AddTranslator(new DataListXMLTranslator());
             var sdlc = new ServerDataListCompiler(dataListServer);
-            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             const string strShape0 = "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>";
-            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0, out errors);
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0.ToStringBuilder(), out errors);
             _sdlc.SetParentUID(dlID, parentID, out errors);
             //------------Execute Test---------------------------
             Guid shapeID = sdlc.InternalShape(null, dlID, new List<IDev2Definition> { new Dev2Definition { Name = "[[scalar1]]", IsRequired = true, Value = "None", DefaultValue = "BB" } }, enDev2ArgumentType.DB_ForEach, out errors);
@@ -2585,9 +2587,9 @@ namespace Dev2.Data.Tests.BinaryDataList
             DataListServer dataListServer = new DataListServer(DataListPersistenceProviderFactory.CreateMemoryProvider());
             dataListServer.AddTranslator(new DataListXMLTranslator());
             var sdlc = new ServerDataListCompiler(dataListServer);
-            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             const string strShape0 = "<DataList><dbo_proc_get_Rows><BigID/><Column1/><Column2/></dbo_proc_get_Rows></DataList>";
-            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0, out errors);
+            Guid parentID = _sdlc.ConvertTo(null, xmlFormat, data, strShape0.ToStringBuilder(), out errors);
             _sdlc.SetParentUID(dlID, parentID, out errors);
             //------------Execute Test---------------------------
             Guid shapeID = sdlc.InternalShape(null, dlID, new List<IDev2Definition> { new Dev2Definition { Name = "[[scalar1]]", IsRequired = true, Value = "None", DefaultValue = "BB" } }, enDev2ArgumentType.Output_Append_Style, out errors);
@@ -2626,7 +2628,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
             dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
-            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var translator = new Mock<IDataListTranslator>();
             var e = new ErrorResultTO();
             e.AddError("What is crypto currency");
@@ -2638,7 +2640,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var translatedPayloadTO = sdlc.ConvertFrom(null, shapeId, DataList.Contract.enTranslationDepth.Data, xmlFormat, out errors);
             //------------Assert Results-------------------------
             Assert.IsNotNull(translatedPayloadTO);
-            Assert.AreEqual(dl, translatedPayloadTO.FetchAsString());
+            Assert.AreEqual(dl, translatedPayloadTO.FetchAsString().ToString());
             Assert.IsTrue(errors.HasErrors());
         }
 
@@ -2656,7 +2658,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
             dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
-            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var translator = new Mock<IDataListTranslator>();
             translator.Setup(m => m.ConvertFrom(It.IsAny<IBinaryDataList>(), out errors)).Returns(new DataListTranslatedPayloadTO(dl));
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
@@ -2666,7 +2668,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var translatedPayloadTO = sdlc.ConvertFrom(null, shapeId, DataList.Contract.enTranslationDepth.Data, xmlFormat, out errors);
             //------------Assert Results-------------------------
             Assert.IsNotNull(translatedPayloadTO);
-            Assert.AreEqual(dl, translatedPayloadTO.FetchAsString());
+            Assert.AreEqual(dl, translatedPayloadTO.FetchAsString().ToString());
             Assert.IsFalse(errors.HasErrors());
         }
 
@@ -2684,7 +2686,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
             dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
-            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var translator = new Mock<IDataListTranslator>();
             translator.Setup(m => m.ConvertFrom(It.IsAny<IBinaryDataList>(), out errors)).Throws(new Exception());
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
@@ -2711,7 +2713,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(new DataListXMLTranslator());
             dataListServer.Setup(m => m.WriteDataList(It.IsAny<Guid>(), It.IsAny<IBinaryDataList>(), out errors)).Returns(true);
             var sdlc = new ServerDataListCompiler(dataListServer.Object);
-            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid shapeId = sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var translator = new Mock<IDataListTranslator>();
             translator.Setup(m => m.ConvertFrom(It.IsAny<IBinaryDataList>(), out errors)).Throws(new Exception());
             dataListServer.Setup(m => m.GetTranslator(xmlFormat)).Returns(translator.Object);
@@ -2734,7 +2736,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><va>9</va></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             //------------Execute Test---------------------------
             IBinaryDataListEntry result = _sdlc.Evaluate(null, dlID, enActionType.User, "!~calculation~![[va]]*[[va]]!~~calculation~!", out errors, true);
@@ -2754,10 +2756,10 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><scalar2>scalar</scalar2></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder(), out errors);
             string error;
 
-            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>", out errors);
+            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>".ToStringBuilder(), out errors);
 
             const string inputs = @"<Inputs><Input Name=""f1"" Source=""[[rs2().f1a]]"" Recordset=""rs1"" /></Inputs>";
             const string outputs = @"<Outputs><Output Name=""f1b"" MapsTo=""f1b"" Value=""[[rs1(*).f1]]"" Recordset=""rs2"" /></Outputs>";
@@ -2817,7 +2819,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
@@ -2848,7 +2850,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
@@ -2888,7 +2890,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
@@ -2929,7 +2931,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
@@ -2960,7 +2962,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2><va/></DataList>";
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var payload = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
             payload.IsDebug = true;
             payload.Add("[[rec2().b]]", new List<string> { "One", "Two" });
@@ -2988,7 +2990,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2><va/></DataList>";
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var payload = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
             payload.IsDebug = true;
             payload.Add("[[rec2(*).b]]", new List<string> { "One", "Two" });
@@ -3016,7 +3018,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><idx/><rec><a/></rec><rec2><b/></rec2><va/></DataList>";
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var payload = Dev2DataListBuilderFactory.CreateStringListDataListUpsertBuilder();
             payload.IsDebug = true;
             payload.Add("[[va]]", new List<string> { "One", "Two" });
@@ -3045,7 +3047,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><rec2><b>One Vitamin</b></rec2><rec2><b>Two Vitamins</b></rec2></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;
@@ -3074,7 +3076,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><rec2><b>One Vitamin</b></rec2><rec2><b>Two Vitamins</b></rec2></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
             payload.IsDebug = true;
@@ -3103,7 +3105,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><rec2><b>One Vitamin</b></rec2><rec2><b>Two Vitamins</b></rec2></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
             payload.IsDebug = true;
@@ -3132,7 +3134,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><rec2><b>One Vitamin</b></rec2><rec2><b>Two Vitamins</b></rec2></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(true);
             payload.IsDebug = true;
@@ -3160,7 +3162,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dl = "<DataList><idx/><rec><a/></rec><rec2><a/><b/></rec2><va/></DataList>";
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder();
             payload.IsDebug = true;
             payload.Add("[[rec()]]", "[[rec()]]");
@@ -3183,8 +3185,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             ErrorResultTO errors;
             byte[] data = (TestHelper.ConvertStringToByteArray("<DataList><scalar1>scalar3</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><rs2><f1a>rs2.f1</f1a></rs2><Dev2WebServer>Dev2System.Dev2WebServer</Dev2WebServer></DataList>"));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><Dev2WebServer/></DataList>", out errors);
-            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>", out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, "<DataList><scalar1/><scalar3/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><Dev2WebServer/></DataList>".ToStringBuilder(), out errors);
+            Guid childID = _sdlc.ConvertTo(null, xmlFormat, TestHelper.ConvertStringToByteArray(string.Empty), "<DataList><rs1><f1/></rs1></DataList>".ToStringBuilder(), out errors);
             const string inputs = @"<Inputs><Input Name=""Dev2WebServer"" Source=""[[rs2(*).f1a]]"" /></Inputs>";
             //------------Execute Test---------------------------
             _sdlc.ShapeForSubExecution(null, dlID, childID, inputs, "", out errors);
@@ -3207,7 +3209,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string dlData = "<DataList><idx>*</idx><rec><a>1</a></rec><rec><a>2</a></rec><rec><a>3</a></rec><va>87</va></DataList>";
 
             byte[] data = (TestHelper.ConvertStringToByteArray(dlData));
-            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl, out errors);
+            Guid dlID = _sdlc.ConvertTo(null, xmlFormat, data, dl.ToStringBuilder(), out errors);
 
             var payload = Dev2DataListBuilderFactory.CreateStringDataListUpsertBuilder(false);
             payload.IsDebug = true;

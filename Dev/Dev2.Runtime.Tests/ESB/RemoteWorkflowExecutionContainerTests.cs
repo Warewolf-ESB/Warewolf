@@ -16,6 +16,7 @@ using System.Net;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
@@ -161,7 +162,7 @@ namespace Dev2.Tests.Runtime.ESB
         {
             ErrorResultTO errors;
             var compiler = DataListFactory.CreateDataListCompiler();
-            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataListData, dataListShape, out errors);
+            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataListData.ToStringBuilder(), dataListShape.ToStringBuilder(), out errors);
 
             var dataObj = new Mock<IDSFDataObject>();
             dataObj.Setup(d => d.DataListID).Returns(dataListID);
