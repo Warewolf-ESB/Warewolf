@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.ESB
             dataObj.Setup(d => d.DataListID).Returns(dataListID);
             dataObj.Setup(d => d.EnvironmentID).Returns(_connection.ResourceID);
             dataObj.Setup(d => d.ServiceName).Returns("Test");
-            dataObj.Setup(d => d.RemoteInvokeResultShape).Returns("<ADL><NumericGUID></NumericGUID></ADL>");
+            dataObj.Setup(d => d.RemoteInvokeResultShape).Returns(new StringBuilder("<ADL><NumericGUID></NumericGUID></ADL>"));
 
             var sa = new ServiceAction();
             var workspace = new Mock<IWorkspace>();

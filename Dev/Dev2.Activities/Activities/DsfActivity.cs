@@ -15,6 +15,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
+using System.Text;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -386,7 +387,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ParentInstanceID = _previousInstanceId;
                 dataObject.ParentServiceName = parentServiceName;
                 dataObject.ServiceName = serviceName;
-                dataObject.RemoteInvokeResultShape = string.Empty; // reset targnet shape ;)
+                dataObject.RemoteInvokeResultShape = new StringBuilder(); // reset targnet shape ;)
                 dataObject.RunWorkflowAsync = false;
                 dataObject.RemoteInvokerID = Guid.Empty.ToString();
                 dataObject.EnvironmentID = Guid.Empty;

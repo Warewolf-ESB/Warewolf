@@ -133,7 +133,7 @@ namespace Dev2.Tests
             IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "foo");
 
             //------------Execute Test---------------------------
-            var result = dataObject.RawPayload;
+            var result = dataObject.RawPayload.ToString();
 
             //------------Assert Results-------------------------
             StringAssert.Contains(result, "foo");
@@ -178,10 +178,10 @@ namespace Dev2.Tests
             dataObject.ParentServiceName = "xxx";
             dataObject.ParentThreadID = 2;
             dataObject.ParentWorkflowInstanceId = "1233";
-            dataObject.RawPayload = "<raw>a</raw>";
+            dataObject.RawPayload = new StringBuilder("<raw>a</raw>");
             dataObject.RemoteDebugItems = new List<IDebugState>();
             dataObject.RemoteInvoke = false;
-            dataObject.RemoteInvokeResultShape = "<x/>";
+            dataObject.RemoteInvokeResultShape = new StringBuilder("<x/>");
             dataObject.RemoteInvokerID = "999";
             dataObject.RemoteServiceType = "NA";
             dataObject.ResourceID = Guid.NewGuid();
@@ -377,7 +377,7 @@ namespace Dev2.Tests
             StringAssert.Contains(dataObjct.WorkflowInstanceId.ToString(), instID.ToString());
             Assert.IsTrue(dataObjct.IsDataListScoped);
             StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
-            StringAssert.Contains(dataObjct.RawPayload, xmlStr);
+            StringAssert.Contains(dataObjct.RawPayload.ToString(), xmlStr);
 
             // Default Data Merge Checks
             StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), Guid.Empty.ToString());
@@ -438,7 +438,7 @@ namespace Dev2.Tests
             StringAssert.Contains(dataObjct.WorkflowInstanceId.ToString(), instID.ToString());
             Assert.IsTrue(dataObjct.IsDataListScoped);
             StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
-            StringAssert.Contains(dataObjct.RawPayload, xmlStr);
+            StringAssert.Contains(dataObjct.RawPayload.ToString(), xmlStr);
 
             // Default Data Merge Checks
             StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), Guid.Empty.ToString());
@@ -497,7 +497,7 @@ namespace Dev2.Tests
             StringAssert.Contains(dataObjct.WorkflowInstanceId.ToString(), instID.ToString());
             Assert.IsTrue(dataObjct.IsDataListScoped);
             StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
-            StringAssert.Contains(dataObjct.RawPayload, xmlStr);
+            StringAssert.Contains(dataObjct.RawPayload.ToString(), xmlStr);
 
             // Default Data Merge Checks
             StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), Guid.Empty.ToString());
@@ -567,7 +567,7 @@ namespace Dev2.Tests
             StringAssert.Contains(dataObjct.WorkflowInstanceId.ToString(), instID.ToString());
             Assert.IsTrue(dataObjct.IsDataListScoped);
             StringAssert.Contains(dataObjct.ServiceName, "MyTestService");
-            StringAssert.Contains(dataObjct.RawPayload, xmlStr);
+            StringAssert.Contains(dataObjct.RawPayload.ToString(), xmlStr);
 
             // Data Merge Checks
             StringAssert.Contains(dataObjct.DatalistOutMergeID.ToString(), mergeIDOut.ToString());

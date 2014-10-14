@@ -61,8 +61,8 @@ namespace Dev2
         Guid DataListID { get; set; }
         bool IsDataListScoped { get; set; }
         bool ForceDeleteAtNextNativeActivityCleanup { get; set; }
-        string RawPayload { get; set; }
-        string RemoteInvokeResultShape { get; set; }
+        StringBuilder RawPayload { get; set; }
+        StringBuilder RemoteInvokeResultShape { get; set; }
         bool RemoteInvoke { get; set; }
         string RemoteInvokerID { get; set; }
         IList<IDebugState> RemoteDebugItems { get; set; }

@@ -123,7 +123,7 @@ namespace Dev2.Server.DataList.Translators
 
         }
 
-        public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(byte[] input, StringBuilder targetShape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var payload = Encoding.UTF8.GetString(input);
@@ -131,7 +131,7 @@ namespace Dev2.Server.DataList.Translators
             IBinaryDataList result = null;
 
             // build shape
-            if(String.IsNullOrEmpty(targetShape))
+            if(String.IsNullOrEmpty(targetShape.ToString()))
             {
                 errors.AddError("Null payload shape");
             }
@@ -254,7 +254,7 @@ namespace Dev2.Server.DataList.Translators
 
         }
 
-        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(object input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -266,7 +266,7 @@ namespace Dev2.Server.DataList.Translators
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -276,7 +276,7 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
-        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
+        public StringBuilder ConvertAndFilter(IBinaryDataList input, StringBuilder filterShape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -294,14 +294,14 @@ namespace Dev2.Server.DataList.Translators
         /// </summary>
         /// <param name="shape"></param>
         /// <param name="error"></param>
-        private IBinaryDataList BuildTargetShape(string shape, out string error)
+        private IBinaryDataList BuildTargetShape(StringBuilder shape, out string error)
         {
             IBinaryDataList result = null;
             error = null;
             try
             {
                 XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(shape);
+                xDoc.LoadXml(shape.ToString());
                 if(xDoc.DocumentElement != null)
                 {
                     var children = xDoc.DocumentElement.ChildNodes;

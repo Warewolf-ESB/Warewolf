@@ -12,6 +12,7 @@
 
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 
 namespace Dev2.DataList.Contract.TO {
     public class DataListTranslatedPayloadTO {
@@ -34,11 +35,12 @@ namespace Dev2.DataList.Contract.TO {
         /// Fetches as string.
         /// </summary>
         /// <returns></returns>
-        public string FetchAsString() {
-            string result = string.Empty;
+        public StringBuilder FetchAsString()
+        {
+            var result = new StringBuilder();
 
             if (_payloadS != null) {
-                result = _payloadS;
+                result = new StringBuilder(_payloadS);
             }
 
             return result;

@@ -128,7 +128,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
 
             // Create tmpDL
-            var tmpId = dataListCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), result, DataObject.RemoteInvokeResultShape, out invokeErrors);
+            var tmpId = dataListCompiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), result, DataObject.RemoteInvokeResultShape.ToString(), out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             // Merge Result into Local DL ;)

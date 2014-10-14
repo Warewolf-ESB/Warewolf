@@ -40,19 +40,19 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             Dev2Logger.Log.Info("Save Resource Service");
             StringBuilder resourceDefinition;
-            string workspaceIDString = string.Empty;
+            string workspaceIdString = string.Empty;
 
             values.TryGetValue("ResourceXml", out resourceDefinition);
             StringBuilder tmp;
             values.TryGetValue("WorkspaceID", out tmp);
             if(tmp != null)
             {
-                workspaceIDString = tmp.ToString();
+                workspaceIdString = tmp.ToString();
             }
-            Guid workspaceID;
-            if(!Guid.TryParse(workspaceIDString, out workspaceID))
+            Guid workspaceId;
+            if(!Guid.TryParse(workspaceIdString, out workspaceId))
             {
-                workspaceID = theWorkspace.ID;
+                workspaceId = theWorkspace.ID;
             }
 
             if(resourceDefinition == null || resourceDefinition.Length == 0)
@@ -70,7 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 compiledResources = new ServiceDefinitionLoader().GenerateServiceGraph(resourceDefinition);
                 if(compiledResources.Count == 0)
                 {
-                    CompileMessageRepo.Instance.AddMessage(workspaceID, new List<ICompileMessageTO>
+                    CompileMessageRepo.Instance.AddMessage(workspaceId, new List<ICompileMessageTO>
                     {
                         new CompileMessageTO
                         {
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             catch(Exception err)
             {
                 Dev2Logger.Log.Error(err);
-                CompileMessageRepo.Instance.AddMessage(workspaceID, new List<ICompileMessageTO>
+                CompileMessageRepo.Instance.AddMessage(workspaceId, new List<ICompileMessageTO>
                 {
                     new CompileMessageTO
                     {
@@ -101,7 +101,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(compiledResources != null)
             {
-                var saveResult = ResourceCatalog.Instance.SaveResource(workspaceID, resourceDefinition,null,"Save","");
+                var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition,null,"Save");
                 res.SetMessage(saveResult.Message + " " + DateTime.Now);
             }
 
@@ -118,10 +118,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public DynamicService CreateServiceEntry()
         {
             DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction();
-            sa.Name = HandlesType();
-            sa.ActionType = enActionType.InvokeManagementDynamicService;
-            sa.SourceMethod = HandlesType();
+            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
             return newDs;
