@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using Dev2.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.Parsers;
@@ -116,6 +116,151 @@ namespace Dev2.Tests
             {
                 Assert.Fail();
             }
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Dev2LanuageParser_Parse")]
+        public void Dev2LanuageParser_ParseExpressionIntoParts_WhenValid_ExpectCache()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
+            var cache = p.GetStaticField("ExpressionCache") as Dictionary<string, IList<IIntellisenseResult>>;
+
+            Assert.IsNotNull(cache);
+            cache.Clear();
+            Assert.AreEqual(cache.Count, 0);
+            const string data = @"[[rec(*).a]]";
+            const string dl = "<DataList><rec><a/></rec></DataList>";
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            var intillisenseParts = bdl.FetchIntellisenseParts();
+            //------------Execute Test---------------------------
+            dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(cache);
+            Assert.AreEqual(1,cache.Count);
+                
+        
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Dev2LanuageParser_Parse")]
+        public void Dev2LanuageParser_ParseExpressionIntoParts_WhenInValid_ExpectNoCache()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
+            var cache = p.GetStaticField("PayloadCache") as Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
+
+            Assert.IsNotNull(cache);
+            cache.Clear();
+            Assert.AreEqual(cache.Count, 0);
+            const string data = @"[[rec(*123).a]]";
+            const string dl = "<DataList><rec><a/></rec></DataList>";
+            var compiler = DataListFactory.CreateDataListCompiler();
+            ErrorResultTO errors;
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            var intillisenseParts = bdl.FetchIntellisenseParts();
+            //------------Execute Test---------------------------
+            dev2LanuageParser.ParseExpressionIntoParts(data, intillisenseParts);
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(cache);
+            Assert.AreEqual(cache.Count, 0);
+
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Dev2LanuageParser_Parse")]
+        public void Dev2LanuageParser_Parse_Valid_ExpectCache()
+        {
+            //------------Setup for test--------------------------
+            PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
+            var cache = p.GetStaticField("PayloadCache") as Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
+            if(cache != null)
+            {
+                cache.Clear();
+            }
+                const string dl = "<ADL><rec><val/></rec></ADL>";
+                const string payload = "[[rec().val]]";
+                var dev2LanuageParser = new Dev2DataLanguageParser();
+
+                IList<IIntellisenseResult> results = ParseDataLanguageForIntellisense(payload, dl, true, false);
+                Assert.IsNotNull(cache);
+                Assert.AreEqual(cache.Count,1);
+           
+
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+        }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Dev2LanuageParser_Parse")]
+        public void Dev2LanuageParser_Parse_IValid_ExpectNoCache()
+        {
+            //------------Setup for test--------------------------
+            const string dl = "<ADL><rec><val/></rec></ADL>";
+            const string payload = "[[rec().val]]";
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
+            var cache = p.GetStaticField("ExpressionCache") as Dictionary<string, IList<IIntellisenseResult>>;
+            Assert.IsNotNull(cache);
+            cache.Clear();
+            Assert.AreEqual(cache.Count, 0);
+            ParseDataLanguageForIntellisense(payload, dl, true, false);
+            Assert.IsNotNull(cache);
+            Assert.AreEqual(cache.Count, 0);
+
+            //------------Execute Test---------------------------
+
+            //------------Assert Results-------------------------
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Dev2LanuageParser_Wrap")]
+        public void Dev2LanuageParser_Wrap_ExceptionClearsCache()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            Dictionary<string,string> data = new Dictionary<string, string> { { "a", "b" } };
+
+            try
+            {
+                // ReSharper disable CSharpWarnings::CS0162
+                dev2LanuageParser.WrapAndClear(() => { throw new Exception(); }, data);
+                // ReSharper restore CSharpWarnings::CS0162
+                Assert.Fail("y u no throw exception");
+            }
+            catch(Exception)
+            {
+                
+                Assert.AreEqual(data.Count,0);
+            }
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("Dev2LanuageParser_Wrap")]
+        public void Dev2LanuageParser_Wrap_ValidDoesNothing()
+        {
+            //------------Setup for test--------------------------
+            var dev2LanuageParser = new Dev2DataLanguageParser();
+            Dictionary<string, string> data = new Dictionary<string, string> { { "a", "b" } };
+
+            dev2LanuageParser.WrapAndClear(() => "bob", data);
+
+            Assert.AreEqual(data.Count, 1);
+
         }
 
         [TestMethod]

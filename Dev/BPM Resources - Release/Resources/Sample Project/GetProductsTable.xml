@@ -1,5 +1,5 @@
 
-<Service ID="e95ec3e4-d480-439a-81da-5797ad100ef5" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="GetProductsTable" ResourceType="WorkflowService" IsValid="true">
+<Service ID="e95ec3e4-d480-439a-81da-5797ad100ef5" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="GetProductsTable" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>GetProductsTable</DisplayName>
   <Category>Sample Project\GetProductsTable</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -37,9 +37,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>WZsEwYiXNgIr1w1USUT/w9ZzG0w=</DigestValue>
+        <DigestValue>PkhaJFon6hA7sMkIJRkD2Vv+3v0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>BzLb2qhXeqLt5z9NWB8xuM1A13iqaHz/86orTqLDanOau5mHHp4Rej3BpL9wEFuNXqECpIAAX3WXtD11Q1687RvuiggcbxP73q5kRPje/ZVSV8uNEkTbiOjtpAHn8kZ39nuI1QODdvgYmBns9rnou9ibJHlczGRsyoVzBgoIt7I=</SignatureValue>
+    <SignatureValue>vOYlFD/OzuMpYrtxjZJQUcZ2norHdQLy9BtnfjHQ+nkrYV2Mvv2csjolF+bH1MippTkRidH1xIXVXPPnf+/PcIfyoThHh11YLJv5y84mny7qWwrkIdrvS889oTQtnlUELnSioxcucuK81VtzO2lwGdTwo7X4phV2sJl1l4crEks=</SignatureValue>
   </Signature>
 </Service>
