@@ -17,4 +17,12 @@ Scenario:CopyTool Large View And Invalid Variables Expected Error On Done Button
 	#BuG12561 Passing Invalid Recordset Variable in  File or Folder Field And Checking Validation on Done
 	Given I type "[[rec@(1).a]]" in "WORKSURFACE,Create(CreateDesigner),LargeViewContent,UI__FileNametxt_AutoID"
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Create(CreateDesigner),DoneButton"
-	#BUg 12561 Given "WORKSURFACE,UI_Error0_AutoID" is visible
+	#BUg 12561
+	Given "WORKSURFACE,UI_Error0_AutoID" is visible
+	Given I type "[[rec(1).a]]" in "WORKSURFACE,Create(CreateDesigner),LargeViewContent,UI__FileNametxt_AutoID"
+	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Create(CreateDesigner),DoneButton"
+	Given "WORKSURFACE,UI_Error0_AutoID" is invisible within "1" seconds
+	Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Create(CreateDesigner)"
+	Given I type "[[rec@(1).a]]" in "WORKSURFACE,Create(CreateDesigner),LargeViewContent,UI__FileNametxt_AutoID"
+	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Create(CreateDesigner),DoneButton"
+	Given "WORKSURFACE,UI_Error0_AutoID" is visible
