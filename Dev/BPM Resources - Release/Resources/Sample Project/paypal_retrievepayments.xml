@@ -1,5 +1,5 @@
 
-<Service ID="a02db4b3-c350-45a7-b0fa-7420f3940dc1" Version="1.0" Name="paypal_retrievepayments" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="a02db4b3-c350-45a7-b0fa-7420f3940dc1" Version="1.0" Name="paypal_retrievepayments" ResourceType="WebService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="paypal_retrievepayments" Type="InvokeWebService" SourceID="53d118fe-0f6b-4ef7-8c96-bd85f08b3c7b" SourceName="paypalpayment" SourceMethod="" RequestUrl="" RequestMethod="Get" JsonPath="$.payments[*]">
       <RequestHeaders><![CDATA[authorization: Bearer [[authToken]];Content-Type: application/json;Accept: application/json;]]></RequestHeaders>
@@ -85,9 +85,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>yEQHb/mg7JTNsVm9wwRq+lz1DJ0=</DigestValue>
+        <DigestValue>zEOYqiKJk63KuhQ8UmJkMjiXss0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>m4kYkwdgYTiZ+rY1y9BP5V5KHA1suDQZ4LnA3W1yCalBS0YWtQu1VRnYarU2SxlFk/WSv44Y3tSux6QHDQ6UL7gqVJT+heI40MjtZ0gcZSTwKU+/hZiDUzPI+wHIGEpTXFqrBscNGBn3RjI3u/lGYlooGrL3HASXaXYVTXWDvd0=</SignatureValue>
+    <SignatureValue>N68Wv76gUUKFd7nT2CFFdP5iYc+DdII9MYE3fZcB5c0tyOimVZNkIzK+KQmnT5phame/w0hH6fJ8LIlUZr7V8mmz2Da8zaSOSytTRjT5LW2/t91gHGn1PFecmIZJkPDEVeAXKtk2HF0nO7McoHkaoBquCqljR9bl2C77ySQQsz0=</SignatureValue>
   </Signature>
 </Service>

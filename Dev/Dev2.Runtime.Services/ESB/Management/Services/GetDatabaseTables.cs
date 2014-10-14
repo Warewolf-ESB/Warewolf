@@ -117,6 +117,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         var tableName = row["TABLE_NAME"] as string;
                         var schema = row["TABLE_SCHEMA"] as string;
+                        tableName = '[' + tableName + ']';
                         var dbTable = tables.Items.Find(table => table.TableName == tableName && table.Schema == schema);
                         if(dbTable == null)
                         {

@@ -1,5 +1,5 @@
 
-<Service ID="7c4cea10-d06e-4248-b041-c60af21a2f6e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Double Roll and Check" ResourceType="WorkflowService" Category="MY CATEGORY">
+<Service ID="7c4cea10-d06e-4248-b041-c60af21a2f6e" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Double Roll and Check" ResourceType="WorkflowService" Category="MY CATEGORY" ServerVersion="0.4.2.2">
   <DisplayName>Double Roll and Check</DisplayName>
   <Category>MY CATEGORY\Double Roll and Check</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -35,9 +35,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>SaRAwyRnZ08ZXMYbGbbyUgSUxQE=</DigestValue>
+        <DigestValue>Q4jBhUxmzKJGvG8G2300qJur44c=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>bPnGl+qnIwAEm5bODzJT28Hqn9SAseSRrdsaXxKJ0Jfr/zesHpHGY6AAryYYd+xXUOcOhBzSpnCpyg8cbnulS5zZsCqb+4pFl/2X8QHDjEe1fHgz/mJMttCo4T94zL4/VUEMH0bNt3Iwkj4Zr7UHZZ8YSecxWAhzxm/lUrmv74w=</SignatureValue>
+    <SignatureValue>iQ8PZ53Pv/ua7NqZyjfu1Qd7oahzejhQZh2I3T0jMR820aHVxYr+0nHPl5A85Jgsk+J4Hu6D5xh0WkIZHxEO0cN7LI5885dCzkSjO6UA5w4V9EhCIumDV+LN74Gu/zS4A1Q8i2838acYzCKHDFiMENx4Y9dQTaTUCqGshoJ5diw=</SignatureValue>
   </Signature>
 </Service>

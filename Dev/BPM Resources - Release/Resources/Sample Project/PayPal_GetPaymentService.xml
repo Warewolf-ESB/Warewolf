@@ -1,5 +1,5 @@
 
-<Service ID="69262eb5-3544-45d3-a016-acb7699340c9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="PayPal_GetPaymentService" ResourceType="WorkflowService" IsValid="true">
+<Service ID="69262eb5-3544-45d3-a016-acb7699340c9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="PayPal_GetPaymentService" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>PayPal_GetPaymentService</DisplayName>
   <Category>Sample Project\PayPal_GetPaymentService</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -84,9 +84,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>Ia88BQEETdnuHGt/NasPIjmCnKs=</DigestValue>
+        <DigestValue>FdQVM6xw2bQSOgnRHEQ6uPk0yN0=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>qZdPU1x8QoIPw+4SOKsMLW4EMccgAGj7s0ZMR3/73VIfWsMaB+/ZnnYSYmrFqmPBSV0D/a00C12K2PjoT+gFspfBnVbQuXd/R3WUA7qRm+OVBS0UneXsmY/ccbMIBJ9zf9o1x9m3dcGIky9o/m5IzK5+zyigaHgy1mZxZmwT3Hg=</SignatureValue>
+    <SignatureValue>cAwz2e5AYlMSJllYcoeRziwDDv09empZ1tTco18ENalLLvdoxGDUSY6gtADj91L4RA2oJ/BfaFHPVvmmRm2St2eWxlWREoUniV4dZitMa0MLHXPARfWhmdVeMYneeVrKW0cXIxUd0+4X2fHxhrpMEgq1CA/e42g7Wr/dX0cIHqc=</SignatureValue>
   </Signature>
 </Service>

@@ -16,7 +16,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.DynamicServices;
 using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
@@ -118,7 +117,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(string.IsNullOrEmpty(value));
             var result = JsonConvert.DeserializeObject<DbTableList>(value);
             Assert.IsTrue(result.Items.Count > 2);
-            var duplicateTables = result.Items.FindAll(table => table.TableName.Contains("City"));
+            var duplicateTables = result.Items.FindAll(table => table.TableName.Contains("[City]"));
             Assert.AreEqual(2, duplicateTables.Count);
             var dboCityTable = duplicateTables.Find(table => table.Schema == "dbo");
             var warewolfCityTable = duplicateTables.Find(table => table.Schema == "Warewolf");
@@ -128,14 +127,36 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual("Warewolf", warewolfCityTable.Schema);
         }
 
-        DbSource CreateDev2TestingDbSource()
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("GetDatabaseTables_Execute")]
+        public void GetDatabaseTables_Execute_InValidDatabaseName()
+        {
+            //------------Setup for test--------------------------
+            var dbSource = CreateDev2TestingDbSource(true);
+            ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource);
+            string someJsonData = JsonConvert.SerializeObject(dbSource);
+            var esb = new GetDatabaseTables();
+            var mockWorkspace = new Mock<IWorkspace>();
+            mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
+            //------------Execute Test---------------------------
+            var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Database", new StringBuilder(someJsonData) } }, mockWorkspace.Object);
+            //------------Assert Results-------------------------
+            var value = actual.ToString();
+            Assert.IsFalse(string.IsNullOrEmpty(value));
+            var result = JsonConvert.DeserializeObject<DbTableList>(value);
+            Assert.IsTrue(result.HasErrors);
+            Assert.IsTrue(value.Contains("Invalid database sent"));
+        }
+
+        DbSource CreateDev2TestingDbSource(bool emptyDBName=false)
         {
             var dbSource = new DbSource
             {
                 ResourceID = Guid.NewGuid(),
                 ResourceName = "Dev2TestingDB",
                 ResourcePath = "Test",
-                DatabaseName = "Dev2TestingDB",
+                DatabaseName = emptyDBName?"": "Dev2TestingDB",
                 Server = "RSAKLFSVRGENDEV",
                 AuthenticationType = AuthenticationType.User,
                 ServerType = enSourceType.SqlDatabase,

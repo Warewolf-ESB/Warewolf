@@ -11,8 +11,10 @@
 
 
 using System;
+using System.Collections.Generic;
 using Caliburn.Micro;
 using Dev2.Data.Binary_Objects;
+using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
@@ -44,6 +46,13 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         [TestInitialize]
         public void Init()
         {
+            PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
+            var cache = p.GetStaticField("ExpressionCache") as Dictionary<string, IList<IIntellisenseResult>>;
+            Assert.IsNotNull(cache);
+            cache.Clear();
+            var cache2 = p.GetStaticField("PayloadCache") as Dictionary<Tuple<string,string>, IList<IIntellisenseResult>>;
+            Assert.IsNotNull(cache2);
+            cache2.Clear();
             Monitor.Enter(DataListSingletonTest.DataListSingletonTestGuard);
 
             var testEnvironmentModel = ResourceModelTest.CreateMockEnvironment();
