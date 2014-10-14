@@ -1,5 +1,5 @@
 
-<Service ID="147a1131-5c0c-4861-836b-a0d16af4f8a4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="GetCategoryTable" ResourceType="WorkflowService" IsValid="true">
+<Service ID="147a1131-5c0c-4861-836b-a0d16af4f8a4" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="GetCategoryTable" ResourceType="WorkflowService" IsValid="true" ServerVersion="0.4.2.2">
   <DisplayName>GetCategoryTable</DisplayName>
   <Category>Sample Project\GetCategoryTable</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -33,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>4+fl/wyk/dOm1FriHVmgvmaJmuA=</DigestValue>
+        <DigestValue>wV1bj3mb5J0B7tkllGCTo/scneA=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>NF1v9EeLTn4CjdBt2eq0x+kjUsb0QcrjYn/LHGJU6q7nfu1kgcCdn0V1BqDLBFoEUdLla0YfyHqYJM784UobMrRFXYffZRp8a17iQQ52W8P2NMewGhjifXwPy1J2wBXDrF3XrxuztQ0/wcfmo8a16rBt+aBHE3YuumADB67gclU=</SignatureValue>
+    <SignatureValue>naf0zI/0HaEe7rAcCyrgb9FCIeeL+Qq/p+IefhT/l/P6cvXYbpzhprfdCZGgbo+OwZfzN0Qgl3Xe4lMpzB+o3PWYR64+aYmNi7rtSCMRpxAq+96nFsEKCKxekvtbrxdAhZZTtQ0L+Zuh4XN8bRDQ7GrdFAd34ZGx5ySA86J/rQc=</SignatureValue>
   </Signature>
 </Service>

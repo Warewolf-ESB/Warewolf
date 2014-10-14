@@ -1989,8 +1989,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void PublishMessages(IContextualResourceModel resourceModel)
         {
-            Dev2Logger.Log.Info("Publish message of type - " + typeof(UpdateDeployMessage));
-            EventPublisher.Publish(new UpdateDeployMessage());
             Dev2Logger.Log.Info("Publish message of type - " + typeof(UpdateResourceMessage));
             EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
 

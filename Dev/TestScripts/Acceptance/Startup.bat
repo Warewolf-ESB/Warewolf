@@ -26,7 +26,7 @@ taskkill /im "Warewolf Server.exe"
 REM  Wait 10 seconds ;)
 ping -n 10 127.0.0.1 > nul
 
-REM ** Start Warewolf server from deployed binaries built in debug config**
+REM ** Start Warewolf server from deployed subdirectory **
 START "%DeploymentDirectory%\Server\Warewolf Server.exe" /D %DeploymentDirectory%\Server "Warewolf Server.exe"
 
 REM  Wait 20 seconds ;)

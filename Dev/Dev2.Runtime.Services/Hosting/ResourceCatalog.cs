@@ -1087,8 +1087,11 @@ namespace Dev2.Runtime.Hosting
                         ResourceSaved(resource);
                     }
                 }
-                CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
-                SavedResourceCompileMessage(workspaceID, resource, result.Message);
+                if (workspaceID == GlobalConstants.ServerWorkspaceID)
+                {
+                    CompileTheResourceAfterSave(workspaceID, resource, contents, beforeAction);
+                    SavedResourceCompileMessage(workspaceID, resource, result.Message);
+                }
             }
 
             return result;

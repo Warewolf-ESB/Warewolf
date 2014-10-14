@@ -23,7 +23,6 @@ using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
 using Dev2.Models;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -42,7 +41,6 @@ namespace Dev2.Studio.ViewModels.Deploy
 // ReSharper restore CheckNamespace
 {
     public class DeployViewModel : BaseWorkSurfaceViewModel,
-        IHandle<UpdateDeployMessage>,
         IHandle<SelectItemInDeployMessage>,
         IHandle<EnvironmentDeletedMessage>
     {
@@ -875,12 +873,6 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion Dispose Handling
 
         #region IHandle
-
-        public void Handle(UpdateDeployMessage message)
-        {
-            Dev2Logger.Log.Info(message.GetType().Name);
-            RefreshEnvironments();
-        }
 
         public void Handle(SelectItemInDeployMessage message)
         {

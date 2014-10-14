@@ -383,7 +383,21 @@ function WebSourceViewModel(saveContainerID, environment, resourceID) {"),
                         switch(request.Item3)
                         {
                             case AssertType.StartsWith:
-                                StringAssert.StartsWith(responseData, request.Item2, "Expected [ " + request.Item2 + "] but got [ " + responseData + " ]");
+                                if(!request.Item1.EndsWith(".png"))
+                                {
+                                    StringAssert.StartsWith(responseData, request.Item2, "Expected [ " + request.Item2 + "] but got [ " + responseData + " ]");
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        StringAssert.StartsWith(responseData, request.Item2);
+                                    }
+                                    catch(AssertFailedException)
+                                    {
+                                        Assert.Fail("The request did not return the correct png image file.");
+                                    }
+                                }
                                 break;
                             case AssertType.Contains:
                                 StringAssert.Contains(responseData, request.Item2, "Expected [ " + request.Item2 + "] but got [ " + responseData + " ]");
