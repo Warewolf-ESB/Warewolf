@@ -11755,6 +11755,178 @@ this.FeatureBackground();
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Executing Workflow Service and Decision tool expected bubling out error in workfl" +
+            "ow service")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void ExecutingWorkflowServiceAndDecisionToolExpectedBublingOutErrorInWorkflowService()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Executing Workflow Service and Decision tool expected bubling out error in workfl" +
+                    "ow service", ((string[])(null)));
+#line 4814
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4815
+   testRunner.Given("I have a workflow \"Utility - Assign\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table659 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+            table659.AddRow(new string[] {
+                        "",
+                        "",
+                        "[[rec(*).set]]",
+                        "[[rec().set]]"});
+            table659.AddRow(new string[] {
+                        "",
+                        "",
+                        "[[hero(*).pushups]]",
+                        "[[hero().pushups]]"});
+            table659.AddRow(new string[] {
+                        "",
+                        "",
+                        "[[hero(*).name]]",
+                        "[[hero().name]]"});
+#line 4816
+   testRunner.And("\"Utility - Assign Test\" contains \"Utility - Assign\" from server \"localhost\" with " +
+                    "mapping as", ((string)(null)), table659, "And ");
+#line 4821
+   testRunner.When("\"Utility - Assign Test\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4822
+   testRunner.Then("the workflow execution has \"NO\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table660 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table660.AddRow(new string[] {
+                        "[[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION"});
+            table660.AddRow(new string[] {
+                        "[[hero(1).pushups]] = All of them."});
+            table660.AddRow(new string[] {
+                        "[[hero(1).name]] =   Chuck Norris"});
+#line 4823
+   testRunner.And("the \'Utility - Assign\' in Workflow \'Utility - Assign\' debug outputs as", ((string)(null)), table660, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Error from workflow service is expected to buble out")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "WorkflowExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowExecution")]
+        public virtual void ErrorFromWorkflowServiceIsExpectedToBubleOut()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Error from workflow service is expected to buble out", ((string[])(null)));
+#line 4830
+this.ScenarioSetup(scenarioInfo);
+#line 7
+this.FeatureBackground();
+#line 4831
+   testRunner.Given("I have a workflow \"TestAssignWithRemote123\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+            TechTalk.SpecFlow.Table table661 = new TechTalk.SpecFlow.Table(new string[] {
+                        "variable",
+                        "value"});
+            table661.AddRow(new string[] {
+                        "[[inputData]]",
+                        "hello"});
+#line 4832
+   testRunner.And("\"TestAssignWithRemote123\" contains an Assign \"AssignData\" as", ((string)(null)), table661, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table662 = new TechTalk.SpecFlow.Table(new string[] {
+                        "Input to Service",
+                        "From Variable",
+                        "Output from Service",
+                        "To Variable"});
+            table662.AddRow(new string[] {
+                        "input",
+                        "[[inputData]]",
+                        "output",
+                        "[[output]]"});
+            table662.AddRow(new string[] {
+                        "",
+                        "",
+                        "values(*).upper",
+                        "[[values().&up]]"});
+            table662.AddRow(new string[] {
+                        "",
+                        "",
+                        "values(*).lower",
+                        "[[values().low]]"});
+#line 4835
+   testRunner.And("\"TestAssignWithRemote123\" contains \"WorkflowUsedBySpecs\" from server \"Remote Conn" +
+                    "ection Integration\" with mapping as", ((string)(null)), table662, "And ");
+#line 4840
+   testRunner.When("\"TestAssignWithRemote123\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 4841
+   testRunner.Then("the workflow execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            TechTalk.SpecFlow.Table table663 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        "Variable",
+                        "New Value"});
+            table663.AddRow(new string[] {
+                        "1",
+                        "[[inputData]] =",
+                        "hello"});
+#line 4842
+   testRunner.And("the \'AssignData\' in WorkFlow \'TestAssignWithRemote123\' debug inputs as", ((string)(null)), table663, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table664 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table664.AddRow(new string[] {
+                        "1",
+                        "[[inputData]] = hello"});
+#line 4845
+   testRunner.And("the \'AssignData\' in Workflow \'TestAssignWithRemote123\' debug outputs as", ((string)(null)), table664, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table665 = new TechTalk.SpecFlow.Table(new string[] {
+                        ""});
+            table665.AddRow(new string[] {
+                        "[[inputData]] = hello"});
+#line 4848
+    testRunner.And("the \'WorkflowUsedBySpecs\' in WorkFlow \'TestAssignWithRemote123\' debug inputs as", ((string)(null)), table665, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table666 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table666.AddRow(new string[] {
+                        "1",
+                        "[[in]] = hello"});
+#line 4851
+   testRunner.And("the \'Setup Assign (1)\' in Workflow \'WorkflowUsedBySpecs\' debug outputs as", ((string)(null)), table666, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table667 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table667.AddRow(new string[] {
+                        "1",
+                        "[[in]] = HELLO"});
+#line 4854
+   testRunner.And("the \'Convert Case (1)\' in Workflow \'WorkflowUsedBySpecs\' debug outputs as", ((string)(null)), table667, "And ");
+#line hidden
+            TechTalk.SpecFlow.Table table668 = new TechTalk.SpecFlow.Table(new string[] {
+                        "#",
+                        ""});
+            table668.AddRow(new string[] {
+                        "1",
+                        "[[output]] = HELLO"});
+            table668.AddRow(new string[] {
+                        "2",
+                        "[[values(1).upper]] = HELLO"});
+            table668.AddRow(new string[] {
+                        "3",
+                        "[[values(1).lower]] = hello"});
+#line 4857
+   testRunner.And("the \'Final Assign (3)\' in Workflow \'WorkflowUsedBySpecs\' debug outputs as", ((string)(null)), table668, "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
