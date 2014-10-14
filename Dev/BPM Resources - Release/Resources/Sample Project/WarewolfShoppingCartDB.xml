@@ -1,5 +1,5 @@
 
-<Source ID="c5d6f18a-f0a1-45ab-824a-f61bdcd26d62" Version="1.0" Name="WarewolfShoppingCartDB" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=WarewolfShoppingCatalog;Integrated Security=SSPI;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="c5d6f18a-f0a1-45ab-824a-f61bdcd26d62" Version="1.0" Name="WarewolfShoppingCartDB" ResourceType="DbSource" IsValid="false" ServerType="SqlDatabase" Type="SqlDatabase" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=WarewolfShoppingCatalog;Integrated Security=SSPI;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <DisplayName>WarewolfShoppingCartDB</DisplayName>
   <Category>Sample Project\WarewolfShoppingCartDB</Category>
   <AuthorRoles>
@@ -28,9 +28,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>1HtY0sV62jIXtbWxjpwXunL62yU=</DigestValue>
+        <DigestValue>5fcKmvc/1wT1zsCTTgfB5RON2tM=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>ATQcWEcIMtRVI0TttQDGVbB5Yc+hOa8nb/jumR9sS3mEF72iLrhlbPgtkmPVdxkGkDR6QOme7p0NMoYqRLEi61p9fjAgRocDDmqACYn3N3FChqcVA6c7Zno/ejeEcc8IFsxXcZqIXaG0J8walNRiUYdCeLAB8vOFmf2FV1QwzpA=</SignatureValue>
+    <SignatureValue>Wlr8t7sozyIhIYpi5NAlB8oNy2rvDsoeAGfVXuTn+KOjpAmIKGfDQBYWpaybvcPUTgEgYM3n5DW5WEnphGOxUo8IpabRxgkjznBppIvAdutA3r2wlBxG0CSSZVacoq+3CivY+G2GHrdfDB8XiJVxlFFw9QmUiOSxErkcUwN1AiM=</SignatureValue>
   </Signature>
 </Source>
