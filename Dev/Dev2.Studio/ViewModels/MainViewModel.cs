@@ -97,7 +97,6 @@ namespace Dev2.Studio.ViewModels
         private bool _disposed;
 
         private AuthorizeCommand<string> _newResourceCommand;
-        private ICommand _addStudioShortcutsPageCommand;
         private ICommand _addLanguageHelpPageCommand;
         private ICommand _deployAllCommand;
         private ICommand _deployCommand;
@@ -258,16 +257,6 @@ namespace Dev2.Studio.ViewModels
                     return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
                 }
                 return ActiveItem.ViewInBrowserCommand;
-            }
-        }
-
-
-        public ICommand AddStudioShortcutsPageCommand
-        {
-            get
-            {
-                return _addStudioShortcutsPageCommand ??
-                       (_addStudioShortcutsPageCommand = new DelegateCommand(param => AddShortcutKeysWorkSurface()));
             }
         }
 
@@ -863,18 +852,6 @@ namespace Dev2.Studio.ViewModels
             if(workSurfaceContextViewModel != null)
             {
                 ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(uriToDisplay);
-            }
-        }
-
-        public void AddShortcutKeysWorkSurface()
-        {
-            var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
-            ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.ShortcutKeys
-                                                             , new[] { new Tuple<string, object>("Uri", path) });
-            WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Shortcut Keys" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
-            if(workSurfaceContextViewModel != null)
-            {
-                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path);
             }
         }
 

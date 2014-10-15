@@ -765,18 +765,6 @@ namespace Dev2.Core.Tests
             WindowManager.Verify(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null), Times.Once());
         }
 
-        [TestMethod]
-        public void AddStudioShortcutsPageCommandExpectsShortKeysActive()
-        {
-            CreateFullExportsAndVm();
-            MainViewModel.AddStudioShortcutsPageCommand.Execute(null);
-            var shortkeyUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
-            var helpctx = MainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-            Assert.IsNotNull(helpctx);
-            // ReSharper disable PossibleNullReferenceException
-            Assert.IsTrue(helpctx.Uri == shortkeyUri);
-            // ReSharper restore PossibleNullReferenceException
-        }
 
         [TestMethod]
         [Owner("Ashley Lewis")]
