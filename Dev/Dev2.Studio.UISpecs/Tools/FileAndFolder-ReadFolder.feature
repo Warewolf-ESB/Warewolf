@@ -16,10 +16,24 @@ Scenario:ReadFolder Tool Large View And Invalid Variables Expected Error On Done
 	Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesigner)"
 	#BuG12561 Passing Invalid Recordset Variable in  File or Folder Field And Checking Validation on Done
 	Given I type "[[rec@(1).a]]" in "WORKSURFACE,Read Folder(ReadFolderDesigner),LargeViewContent,UI__Directorytxt_AutoID"
-	#And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read File(ReadFileDesigner),DoneButton"
-	#BUg 12561
-	#Given "WORKSURFACE,UI_Error0_AutoID" is visible
-	And I send "{TAB}{TAB}{TAB}{TAB}{TAB}" to ""
-	And I send "Testware" to ""
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesigner),DoneButton"
-    Given "WORKSURFACE,UI_Error0_AutoID" is visible
+	Given "WORKSURFACE,UI_Error0_AutoID" is visible
+	Given I type "[[Var#]]" in "WORKSURFACE,Read Folder(ReadFolderDesigner),LargeViewContent,UI__Directorytxt_AutoID"
+	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesigner),DoneButton"
+	Given "WORKSURFACE,UI_Error0_AutoID" is visible
+	#Fixing the Bad Variable and expected validation disappear when click on done
+	Given I type "[[rec(1).a]]" in "WORKSURFACE,Read Folder(ReadFolderDesigner),LargeViewContent,UI__Directorytxt_AutoID"
+	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesigner),DoneButton"
+	Given "WORKSURFACE,UI_Error0_AutoID" is invisible within "1" seconds
+	Given "WORKSURFACE,Read Folder(ReadFolderDesigner),SmallViewContent" is visible
+	Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesigner)"
+	#Clicking on Done button without password and expected validation message
+	Given I type "TestingDelete" in "WORKSURFACE,Read Folder(ReadFolderDesigner),LargeViewContent,UI__UserNametxt_AutoID"
+	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesigner),DoneButton"
+	Given "WORKSURFACE,UI_Error0_AutoID" is visible
+	Given I send "{TAB}" to "WORKSURFACE,Read Folder(ReadFolderDesigner),LargeViewContent,UI__UserNametxt_AutoID"
+	Given I send "Password" to ""
+	#Clicking on Done button with Username and password expected no validation message
+	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Read Folder(ReadFolderDesigner),DoneButton"
+	Given "WORKSURFACE,UI_Error0_AutoID" is invisible within "1" seconds
+	Given "WORKSURFACE,Read Folder(ReadFolderDesigner),SmallViewContent" is visible

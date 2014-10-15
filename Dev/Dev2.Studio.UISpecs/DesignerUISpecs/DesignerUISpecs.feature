@@ -83,3 +83,6 @@ Scenario: Drag resource multiple times from explorer and expected mappings are n
 	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
 	##Testing Row1 Vriable
 	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
+
+
+

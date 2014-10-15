@@ -99,6 +99,7 @@ namespace Dev2.Activities.Designers2.Core
 
             ProcessModelItemCollection(0, mi => result.AddRange(ValidateCollectionItem(mi)));
 
+            //Errors = result.Count == 0 ? 0 : result;
             Errors = result.Count == 0 ? null : result;
         }
 

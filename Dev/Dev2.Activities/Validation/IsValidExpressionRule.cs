@@ -45,16 +45,16 @@ namespace Dev2.Validation
         {
             var value = GetValue();
 
-            if(string.IsNullOrEmpty(value))
+            if (string.IsNullOrEmpty(value))
             {
                 return null;
             }
 
             var result = value.TryParseVariables(out _outputValue, DoError, LabelText, _variableValue, _inputs);
 
-            if(result != null)
+            if (result != null)
             {
-                if(string.Equals(value, _outputValue))
+                if (string.Equals(value, _outputValue))
                 {
                     _outputValue = _variableValue;
                 }
@@ -65,20 +65,24 @@ namespace Dev2.Validation
 
             var results = parser.ParseDataLanguageForIntellisense(value, _datalist);
 
-            if(DataListUtil.IsEvaluated(value) && !DataListUtil.IsValueRecordset(value))
+            if (DataListUtil.IsEvaluated(value) && !DataListUtil.IsValueRecordset(value))
             {
-                var intellisenseResult = parser.ValidateName(DataListUtil.RemoveLanguageBrackets(value), "");
-                if(intellisenseResult != null && intellisenseResult.Type == enIntellisenseResultType.Error)
+                var validRegions = Dev2.DataList.Contract.DataListCleaningUtils.SplitIntoRegions(value);
+                foreach (var region in validRegions)
                 {
-                    results.Add(intellisenseResult);
+                    var intellisenseResult = parser.ValidateName(DataListUtil.RemoveLanguageBrackets(region), "");
+                    if (intellisenseResult != null && intellisenseResult.Type == enIntellisenseResultType.Error)
+                    {
+                        results.Add(intellisenseResult);
+                    }
                 }
             }
 
             var error = results.FirstOrDefault(r => r.Type == enIntellisenseResultType.Error);
 
-            if(error != null)
+            if (error != null)
             {
-                if(string.Equals(value, _outputValue))
+                if (string.Equals(value, _outputValue))
                 {
                     _outputValue = _variableValue;
                 }
