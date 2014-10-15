@@ -83,3 +83,59 @@ Scenario: Drag resource multiple times from explorer and expected mappings are n
 	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
 	##Testing Row1 Vriable
 	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
+
+#Bug 18272
+#Scenario: Draging out the TAB is expected not to shutdown the studio 
+#	Given I have Warewolf running
+#	And all tabs are closed	
+#	And restarted the Studio and Server
+#	And "EXPLORER,UI_localhost_AutoID" is visible within "20" seconds
+#	And I click "EXPLORER,UI_localhost_AutoID"
+#	And I click new "Workflow"
+#	#Opening StartPage
+#	And I double click point "968,51" on "MouseOverBorder"
+#	#Opening Hello World workflow
+#	Given I send "Hello World" to "EXPLORERFILTER"
+#	And I double click "EXPLORERFOLDERS,UI_Hello World_AutoID" 
+#	#Dragging hello World tab 
+#	#Given I drag click point "60,2" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID" to "WORKSURFACE"
+#    #And I drag "ACTIVETAB" onto "WORKSURFACE"
+#	Then "RIBBONNEWENDPOINT" is visible
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+	
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

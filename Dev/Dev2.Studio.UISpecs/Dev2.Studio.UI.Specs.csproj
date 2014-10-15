@@ -231,12 +231,6 @@
       <DependentUpon>Utility-Comment.feature</DependentUpon>
     </Compile>
     <Compile Include="WorkflowSteps.cs" />
-    <Compile Include="Connect Control\Connect Control1.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Connect Control.feature</DependentUpon>
-    </Compile>
-    <Compile Include="Connect Control\ConnectControlSteps.cs" />
     <Compile Include="ContextForTests.cs" />
     <Compile Include="SecurityUISpecs\SecurityUISpec.feature.cs">
       <AutoGen>True</AutoGen>
@@ -253,10 +247,6 @@
     </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Connect Control\Connect Control.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>Connect Control1.feature.cs</LastGenOutput>
     </None>
     <None Include="DeployUISpecs\DeployUISpec.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
