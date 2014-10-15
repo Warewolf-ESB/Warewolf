@@ -483,12 +483,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     Copy(GetDebugInputs(dataList), _debugState.Inputs);
                 }
-                catch(DebugCopyException err)
+                catch(Exception err)
                 {
                     Dev2Logger.Log.Error("DispatchDebugState", err);
+                    AddErrorToDataList(err, compiler, dataObject);
                     _debugState.ErrorMessage = err.Message;
                     _debugState.HasError = true;
-                    _debugState.Inputs.Add(err.Item);
+                    var debugError = err as DebugCopyException;
+                    if (debugError != null)
+                    {
+                        _debugState.Inputs.Add(debugError.Item);
+                    }
                 }
 
                 if(dataObject.RemoteServiceType == "Workflow" && act != null && !_debugState.HasError)
@@ -539,6 +544,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     catch(Exception e)
                     {
                         Dev2Logger.Log.Error("Debug Dispatch Error", e);
+                        AddErrorToDataList(e,compiler,dataObject);
                         _debugState.ErrorMessage = e.Message;
                         _debugState.HasError = true;
                     }
@@ -591,6 +597,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     _debugState = null;
                 }
             }
+        }
+
+        void AddErrorToDataList(Exception err, IDataListCompiler compiler, IDSFDataObject dataObject)
+        {
+            var errorString = err.Message;
+            var errorResultTO = new ErrorResultTO();
+            errorResultTO.AddError(errorString);
+            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeDataListReady(), out errorsTo);
         }
 
         protected void InitializeDebug(IDSFDataObject dataObject)

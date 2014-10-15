@@ -2028,7 +2028,6 @@ Scenario: Workflow Assign and Find Record index tool with two variables in reult
 	  | 1 | [[rec(1).a]]         =  Warewolf |
 	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
 	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
 	
 #
 
