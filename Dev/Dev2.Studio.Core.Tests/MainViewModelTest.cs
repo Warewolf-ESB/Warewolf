@@ -1053,42 +1053,6 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
-        public void StartFeedbackCommandCommandExpectsFeedbackInvoked()
-        {
-            CreateFullExportsAndVm();
-            FeedbackInvoker.Setup(
-                i => i.InvokeFeedback(It.IsAny<EmailFeedbackAction>(), It.IsAny<RecorderFeedbackAction>()))
-                .Verifiable();
-            MainViewModel.StartFeedbackCommand.Execute(null);
-            FeedbackInvoker.Verify(
-                i => i.InvokeFeedback(It.IsAny<EmailFeedbackAction>(), It.IsAny<RecorderFeedbackAction>()),
-                Times.Once());
-        }
-
-        [TestMethod]
-        public void StartStopRecordedFeedbackCommandExpectsFeedbackStartedWhenNotInProgress()
-        {
-            CreateFullExportsAndVm();
-            FeedbackInvoker.Setup(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>())).Verifiable();
-            MainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
-            FeedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Once());
-        }
-
-        [TestMethod]
-        public void StartStopRecordedFeedbackCommandExpectsFeedbackStppedtInProgress()
-        {
-            CreateFullExportsAndVm();
-            var mockAction = new Mock<IAsyncFeedbackAction>();
-            mockAction.Setup(a => a.StartFeedback()).Verifiable();
-            FeedbackInvoker.SetupGet(i => i.CurrentAction).Returns(mockAction.Object);
-            MainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
-            FeedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Never());
-
-            // PBI 9598 - 2013.06.10 - TWR : added null parameter
-            mockAction.Verify(a => a.FinishFeedBack(It.IsAny<IEnvironmentModel>()), Times.Once());
-        }
-
-        [TestMethod]
         public void DeployAllCommandWithoutCurrentResourceExpectsDeplouViewModelActive()
         {
             CreateFullExportsAndVmWithEmptyRepo();

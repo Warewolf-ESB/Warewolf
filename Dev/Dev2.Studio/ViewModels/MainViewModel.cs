@@ -104,9 +104,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _exitCommand;
         private AuthorizeCommand _settingsCommand;
         private AuthorizeCommand _schedulerCommand;
-        private ICommand _startFeedbackCommand;
         private ICommand _showCommunityPageCommand;
-        private ICommand _startStopRecordedFeedbackCommand;
         private readonly bool _createDesigners;
         private ICommand _showStartPageCommand;
         bool _hasActiveConnection;
@@ -289,20 +287,6 @@ namespace Dev2.Studio.ViewModels
         public ICommand ShowCommunityPageCommand
         {
             get { return _showCommunityPageCommand ?? (_showCommunityPageCommand = new DelegateCommand(param => ShowCommunityPage())); }
-        }
-
-        public ICommand StartFeedbackCommand
-        {
-            get { return _startFeedbackCommand ?? (_startFeedbackCommand = new DelegateCommand(param => StartFeedback())); }
-        }
-
-        public ICommand StartStopRecordedFeedbackCommand
-        {
-            get
-            {
-                return _startStopRecordedFeedbackCommand ??
-                       (_startStopRecordedFeedbackCommand = new DelegateCommand(param => StartStopRecordedFeedback()));
-            }
         }
 
         public ICommand DeployAllCommand
