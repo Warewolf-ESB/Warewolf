@@ -119,7 +119,7 @@
             <!--<Setter Property="Width" Value="74"/>
             <Setter Property="Height" Value="74"/>-->
             <Setter Property="Focusable" Value="False"/>
-            <Setter Property="Margin" Value="1"></Setter>
+            <Setter Property="Margin" Value="1,1,1,-3"></Setter>
             <Setter Property="Background" Value="{StaticResource BrushTransparent}"/>
             <Setter Property="BorderBrush" Value="{StaticResource ButtonNormalBorder}"/>
             <Setter Property="BorderThickness" Value="0"/>
@@ -216,8 +216,8 @@
         
         <Style x:Key="ImageStyleRibbon" TargetType="{x:Type Image}">
             <Setter Property="Margin" Value="1"/>
-            <Setter Property="Width" Value="40"/>
-            <Setter Property="Height" Value="40"/>
+            <Setter Property="Width" Value="35"/>
+            <Setter Property="Height" Value="35"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
@@ -239,11 +239,17 @@
         <Style x:Key="TextBlockStyleRibbonHeader" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource TextBlockStyleRibbon}">
             <Setter Property="FontSize" Value="{StaticResource DefaultFontSize}"/>
             <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Margin" Value="0,-3,0,0"/>
+            <Setter Property="Margin" Value="0,-2,0,0"/>
             <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
-            <Setter Property="Padding" Value="0,0,0,0"/>           
+            <Setter Property="Padding" Value="0,0,0,0"/>       
         </Style>
-        
+
+        <Style x:Key="TextBlockStyleRibbonItemHeader" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="Foreground" Value="{StaticResource DisabledForegroundBrush}"/>
+        </Style>
+
     </Window.Resources>
     
     <Window.Triggers>
@@ -298,8 +304,8 @@
                     BorderBrush="{StaticResource BrushAccentColor}">
                 <Grid>
                     <Button Command="{Binding ShowStartPageCommand}"
-                            Height="60"
-                            Width="60"
+                            Height="50"
+                            Width="50"
                             HorizontalAlignment="Center"
                             Style="{DynamicResource ButtonStyleRibbon}"
                             Template="{StaticResource InsigniaTemplate}">
@@ -314,114 +320,123 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Border Grid.Row="1">
-                                    <TextBlock Text="Workflow"
-                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
-                                </Border>
+
                                 <!--ToolTip="New Workflow"-->
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Command="{Binding NewResourceCommand}"
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding NewResourceCommand}"
                                             CommandParameter="Workflow"
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                            <Grid>
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Workflow-32}"
                                                    ToolTip="New Workflow (Ctrl+W)"
                                                    />
-                                            <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
                                                    Visibility="{Binding NewResourceCommand.UnauthorizedVisibility}"/>
-                                        </Grid>
-                                    </Button>
-                                    <Button Command="{Binding SaveCommand}"
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="New" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding SaveCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabSaveBtn_AutoID"
                                            >
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                            <Grid>
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Save-32}"
                                                    ToolTip="Save (Ctrl+S)"
                                                    />
-                                             <Image
+                                                <Image
                                                    Style="{StaticResource AuthNoneIconRibbonStyle}"
                                                    Visibility="{Binding SaveCommand.UnauthorizedVisibility}"/>
-                                        </Grid>
-                                    </Button>
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="Save" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding DeployCommand}"
+                                                Style="{DynamicResource ButtonStyleRibbon}"
+                                                AutomationProperties.AutomationId="UI_RibbonHomeTabDeployBtn_AutoID">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto" />
+                                                    <RowDefinition Height="*" />
+                                                </Grid.RowDefinitions>
 
-                                    <Button Command="{Binding DeployCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}"
-                                            AutomationProperties.AutomationId="UI_RibbonHomeTabDeployBtn_AutoID">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto" />
-                                                <RowDefinition Height="*" />
-                                            </Grid.RowDefinitions>
-
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
-                                                   Source="{StaticResource Deploy-32}"
-                                                   ToolTip="Deploy (Ctrl+D)"
-                                                   />
-                                        </Grid>
-                                    </Button>
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
+                                                       Source="{StaticResource Deploy-32}"
+                                                       ToolTip="Deploy (Ctrl+D)"
+                                                       />
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="Deploy" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </Border>
 
-                        <!--Services-->
+                        <!--Data Connectors-->
                         <Border Style="{StaticResource BorderStyleRibbon}">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Border Grid.Row="1">
-                                    <TextBlock Text="Services"
-                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
-                                </Border>
-                                
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Command="{Binding NewResourceCommand}"
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding NewResourceCommand}"
                                             CommandParameter="DatabaseService"
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabDBServiceBtn_AutoID">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                            <Grid>
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource DatabaseService-32}"
                                                    ToolTip="New Database Service (Ctrl+Shift+D)"
                                                    />
-                                            <Image
+                                                <Image
                                                    Style="{StaticResource AuthNoneIconRibbonStyle}"
                                                    Visibility="{Binding NewResourceCommand.UnauthorizedVisibility}"/>
-                                        </Grid>                                       
-                                    </Button>
-                                    <Button Command="{Binding NewResourceCommand}"
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="DB" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding NewResourceCommand}"
                                             CommandParameter="ResourceService"
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabPluginServiceBtn_AutoID">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                            <Grid>
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource PluginService-32}"
                                                    ToolTip="New Plugin Service (Ctrl+Shift+P)"
                                                    />
-                                            <Image
+                                                <Image
                                                    Style="{StaticResource AuthNoneIconRibbonStyle}"
                                                    Visibility="{Binding NewResourceCommand.UnauthorizedVisibility}"/>
-                                        </Grid>
-                                    </Button>
-                                    <Button Command="{Binding NewResourceCommand}"
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="DLL" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding NewResourceCommand}"
                                             CommandParameter="WebService"
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWebServiceBtn_AutoID">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                            <Grid>
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource WebService-32}"
                                                    ToolTip="New Web Service (Ctrl+Shift+W)"
                                                    />
-                                            <Image
+                                                <Image
                                                    Style="{StaticResource AuthNoneIconRibbonStyle}"
                                                    Visibility="{Binding NewResourceCommand.UnauthorizedVisibility}"/>
-                                        </Grid>
-                                    </Button>
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="Web" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -433,66 +448,67 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Border Grid.Row="1">
-                                    <TextBlock Text="Execute"
-                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
-                                </Border>
-                                <StackPanel Orientation="Horizontal"> 
-                                    <Button Command="{Binding SchedulerCommand}"
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding SchedulerCommand}"
                                             CommandParameter="Scheduler"
                                             Style="{DynamicResource ButtonStyleRibbon}"
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabSchedulerBtn_AutoID">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                            <Grid>
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource TaskScheduler-32}"
                                                    ToolTip="Scheduler"
                                                    />
-                                            <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
                                                    Visibility="{Binding SchedulerCommand.UnauthorizedVisibility}"/>
-                                        </Grid>
-                                    </Button>
-                                    <Button Command="{Binding DebugCommand}"
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="Task" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding DebugCommand}"
                                             AutomationProperties.AutomationId="UI_RibbonDebugBtn_AutoID"
                                             Style="{DynamicResource ButtonStyleRibbon}">
-                                        <Grid>
+                                            <Grid>
 
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{Binding ActiveItem.DebugOutputViewModel.DebugImage,Converter={StaticResource NullToDebugImageConverter},FallbackValue=pack://application:\,\,\,\/Warewolf\ Studio\;component/Images/ExecuteDebugStart-32.png}"
                                                    ToolTip="{Binding ActiveItem.DebugOutputViewModel.DebugText,Converter={StaticResource NullToDebugRibbonButtonTextConverter},FallbackValue=Debug}" />
-                                            
-                                            <Image
+
+                                                <Image
                                                    Style="{StaticResource AuthNoneIconRibbonStyle}"
                                                    Visibility="{Binding DebugCommand.UnauthorizedVisibility}"/>
-                                        </Grid>
-                                    </Button>                                    
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="Debug" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </Border>                                              
 
                         <!--Settings-->
                         <Border Style="{StaticResource BorderStyleRibbon}">
-                            <Grid>
+                            <Grid HorizontalAlignment="Center">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Border Grid.Row="1">
-                                    <TextBlock Text="Settings"
-                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
-                                </Border>
                                 <StackPanel Grid.Row="0"
                                             Orientation="Horizontal">
-                                    <Button Command="{Binding SettingsCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}"
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding SettingsCommand}"
+                                            Style="{DynamicResource ButtonStyleRibbon}" HorizontalAlignment="Center" VerticalAlignment="Center"
                                             AutomationProperties.AutomationId="UI_RibbonHomeManageSecuritySettingsBtn_AutoID">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                            <Grid>
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource Settings-32}"
                                                    ToolTip="Manage Settings" />
-                                            <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
+                                                <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
                                                    Visibility="{Binding SettingsCommand.UnauthorizedVisibility}" />
-                                        </Grid>
-                                    </Button>                                          
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="Settings" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </Border>
@@ -504,98 +520,45 @@
                                     <RowDefinition Height="Auto" />
                                     <RowDefinition Height="*" />
                                 </Grid.RowDefinitions>
-                                <Border Grid.Row="1">
-                                    <TextBlock Text="Help"
-                                               Style="{StaticResource TextBlockStyleRibbonHeader}" />
-                                </Border>
                                 <StackPanel Orientation="Horizontal">
-                                    <Button Command="{Binding StartFeedbackCommand}"
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding ShowCommunityPageCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
-                                                   Source="{StaticResource HelpFeedback-32}"
-                                                   ToolTip="Feedback" />
-                                        </Grid>
-                                    </Button>
-                                    <Button Command="{Binding ShowCommunityPageCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                            <Grid>
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpCommunity-32}"
-                                                   ToolTip="Community" />
-                                        </Grid>
-                                    </Button>
-                                    <Button Command="{Binding AddStudioShortcutsPageCommand}"
+                                                   ToolTip="Help" />
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="Help" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding AddLanguageHelpPageCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
-                                                   Source="{StaticResource HelpShortcutKeys-32}"
-                                                   ToolTip="Shortcut Keys" />
-                                        </Grid>
-                                    </Button>
-                                    <Button Command="{Binding AddLanguageHelpPageCommand}"
-                                            Style="{DynamicResource ButtonStyleRibbon}">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                            <Grid>
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpLanguage-32}"
-                                                   ToolTip="Warewolf Language Help" />
-                                        </Grid>
-                                    </Button>
-                                    <Button Command="{Binding DisplayAboutDialogueCommand}"
+                                                   ToolTip="Warewolf Syntax Help" />
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="Syntax" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Vertical">
+                                        <Button Command="{Binding DisplayAboutDialogueCommand}"
                                             Style="{DynamicResource ButtonStyleRibbon}">
-                                        <Grid>
-                                            <Image Style="{StaticResource ImageStyleRibbon}"
+                                            <Grid>
+                                                <Image Style="{StaticResource ImageStyleRibbon}"
                                                    Source="{StaticResource HelpAbout-32}"
                                                    ToolTip="About" />
-                                        </Grid>
-                                    </Button>
+                                            </Grid>
+                                        </Button>
+                                        <TextBlock Text="About" Style="{StaticResource TextBlockStyleRibbonItemHeader}"/>
+                                    </StackPanel>
                                 </StackPanel>
                             </Grid>
                         </Border>
                         
                     </StackPanel>
-
-                    <Button BorderThickness="2"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Top"
-                            Height="22"
-                            Focusable="False"
-                            Visibility="{Binding FeedBackRecorder.IsRecorderAvailable, Converter={StaticResource BoolToVisConverter}}"
-                            Style="{StaticResource ContentLinkButton}"
-                            Command="{Binding StartStopRecordedFeedbackCommand}"
-                            AutomationProperties.AutomationId="MainView_StartStopFeedbackRecording">
-                        <Grid>
-                            <Border Background="Red"
-                                    Style="{StaticResource FlashingFrameworkElement}"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}" />
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="Start recording feedback"
-                                           VerticalAlignment="Center"
-                                           Margin="5,0,5,0"
-                                           Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
-                                <TextBlock Text="Stop recording feedback"
-                                           VerticalAlignment="Center"
-                                           Margin="5,0,5,0"
-                                           Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
-                                           Style="{StaticResource FlashingFrameworkElement}" />
-                                <Image Source="{StaticResource HelpRecordFeedback-32}"
-                                       Height="16"
-                                       Width="16"
-                                       VerticalAlignment="Center"
-                                       Margin="0,0,5,0"
-                                       Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterNegative}}" />
-                                <Image Source="{StaticResource HelpRecordFeedback-32}"
-                                       Height="16"
-                                       Width="16"
-                                       VerticalAlignment="Center"
-                                       Margin="0,0,5,0"
-                                       Visibility="{Binding FeedbackInvoker.CurrentAction, Converter={StaticResource RecorderFeedbackActionTypeToVisibilityConverterPositive}}"
-                                       Style="{StaticResource FlashingFrameworkElement}" />
-                            </StackPanel>
-                        </Grid>
-                    </Button>
                 </Grid>
             </Border>
 
