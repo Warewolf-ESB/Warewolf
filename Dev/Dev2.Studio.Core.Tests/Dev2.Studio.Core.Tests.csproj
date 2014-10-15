@@ -184,6 +184,7 @@
     <Compile Include="AppResources\Converters\SchedulerMultiBoolToVisibilityConverterTests.cs" />
     <Compile Include="AppResources\Converters\MultipleBoolToEnabledConverterTests.cs" />
     <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
+    <Compile Include="Controller\FlowControllerTests.cs" />
     <Compile Include="CustomContainerTests.cs" />
     <Compile Include="DeployNavigationViewModelTest.cs" />
     <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
