@@ -667,24 +667,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        private void StartStopRecordedFeedback()
-        {
-            var currentRecordFeedbackAction = FeedbackInvoker.CurrentAction as IAsyncFeedbackAction;
-
-            //start feedback
-            if(currentRecordFeedbackAction == null)
-            {
-                var recorderFeedbackAction = new RecorderFeedbackAction();
-                FeedbackInvoker.InvokeFeedback(recorderFeedbackAction);
-            }
-            //stop feedback
-            else
-            {
-                // PBI 9598 - 2013.06.10 - TWR : added environment parameter
-                currentRecordFeedbackAction.FinishFeedBack(ActiveEnvironment);
-            }
-        }
-
         private void DisplayResourceWizard(IContextualResourceModel resourceModel, bool isedit)
         {
             if(resourceModel == null)
