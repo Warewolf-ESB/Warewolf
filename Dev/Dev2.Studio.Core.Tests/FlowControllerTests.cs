@@ -168,6 +168,84 @@ namespace Dev2.Core.Tests
             flowController.Protected().Verify("StartSwitchDropWizard", Times.Once(), ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>());
         }
 
+
+      
+
+
+        [TestMethod]
+        [TestCategory("FlowController_UnitTest")]
+        [Description("Handling a configure switch new expression message with isnew true")]
+        [Owner("Robin van den Heever")]
+        // ReSharper disable InconsistentNaming
+        public void FlowController_HandleConfigureSwitchExpressionMessageAndIsNewTrue()
+        // ReSharper restore InconsistentNaming
+        {
+            #region setup first Mock ModelItem
+
+            var env = EnviromentRepositoryTest.CreateMockEnvironment();
+
+            var crm = new Mock<IContextualResourceModel>();
+            crm.Setup(r => r.Environment).Returns(env.Object);
+            crm.Setup(r => r.ResourceName).Returns("Test");
+            crm.Setup(res => res.WorkflowXaml).Returns(new StringBuilder(StringResourcesTest.xmlServiceDefinition));
+
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var testAct = new DsfFlowSwitchActivity { ExpressionText = "Not Null Test Value" };
+
+            var prop = new Mock<ModelProperty>();
+            prop.Setup(p => p.ComputedValue).Returns(testAct);
+            properties.Add("Expression", prop);
+
+            propertyCollection.Protected().Setup<ModelProperty>("Find", "Expression", true).Returns(prop.Object);
+
+            var source = new Mock<ModelItem>();
+            source.Setup(s => s.Properties).Returns(propertyCollection.Object);
+
+            var returnModelItem = new Mock<ModelItem>();
+            returnModelItem.Setup(item => item.GetCurrentValue()).Returns("[[Var1]]");
+            returnModelItem.Setup(item => item.ToString()).Returns("[[Var1]]");
+            #endregion
+
+            #region setup switch Mock ModelItem
+
+            var decisionProperties = new Dictionary<string, Mock<ModelProperty>>();
+            var decisionPropertyCollection = new Mock<ModelPropertyCollection>();
+
+            var decisionProp = new Mock<ModelProperty>();
+            decisionProp.Setup(p => p.ComputedValue).Returns("[[Var]]");
+            decisionProp.Setup(p => p.Value).Returns(returnModelItem.Object);
+            decisionProperties.Add("ExpressionText", decisionProp);
+
+            decisionPropertyCollection.Protected().Setup<ModelProperty>("Find", "ExpressionText", true).Returns(decisionProp.Object);
+
+            var decisionModelItem = new Mock<ModelItem>();
+            decisionModelItem.Setup(s => s.Properties).Returns(decisionPropertyCollection.Object);
+
+            prop.Setup(p => p.Value).Returns(decisionModelItem.Object);
+
+            #endregion
+
+            #region setup Environment Model
+
+            env.Setup(c => c.Connection).Returns(new Mock<IEnvironmentConnection>().Object);
+
+            #endregion
+
+            #region setup Start Decision Wizard
+
+            var flowController = new Mock<FlowController>(new Mock<IPopupController>().Object);
+            flowController.Protected().Setup("StartSwitchDropWizard", ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>()).Verifiable();
+
+            #endregion
+            
+            flowController.Object.Handle(new ConfigureSwitchExpressionMessage { ModelItem = source.Object, EnvironmentModel = env.Object, IsNew = false });
+
+            flowController.Protected().Verify("StartSwitchDropWizard", Times.Once(), ItExpr.IsAny<IEnvironmentModel>(), ItExpr.IsAny<string>());
+        }
+
+
+
         [TestMethod]
         [TestCategory("FlowController_UnitTest")]
         [Description("Handling a configure decision expression message with isnew true will not display the decision wizard")]
