@@ -487,7 +487,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     Dev2Logger.Log.Error("DispatchDebugState", err);
                     AddErrorToDataList(err, compiler, dataObject);
-                    _debugState.ErrorMessage = err.Message;
+                    var errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                    _debugState.ErrorMessage = errorMessage;
                     _debugState.HasError = true;
                     var debugError = err as DebugCopyException;
                     if (debugError != null)
@@ -545,7 +546,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         Dev2Logger.Log.Error("Debug Dispatch Error", e);
                         AddErrorToDataList(e,compiler,dataObject);
-                        _debugState.ErrorMessage = e.Message;
+                        errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                        _debugState.ErrorMessage = errorMessage;
                         _debugState.HasError = true;
                     }
                 }
@@ -604,7 +606,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var errorString = err.Message;
             var errorResultTO = new ErrorResultTO();
             errorResultTO.AddError(errorString);
-            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeDataListReady(), out errorsTo);
+            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeUserReady(), out errorsTo);
         }
 
         protected void InitializeDebug(IDSFDataObject dataObject)

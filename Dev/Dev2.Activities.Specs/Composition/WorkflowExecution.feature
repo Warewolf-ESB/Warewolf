@@ -4837,7 +4837,7 @@ Scenario: Error from workflow service is expected to buble out
 	  |                  |               | values(*).upper     | [[values().&up]] |
 	  |                  |               | values(*).lower     | [[values().low]] |
 	  When "TestAssignWithRemote123" is executed
-	  Then the workflow execution has "AN" error
+	  Then the "TestAssignWithRemote123" workflow execution has "AN" error
 	  And the 'AssignData' in WorkFlow 'TestAssignWithRemote123' debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |
