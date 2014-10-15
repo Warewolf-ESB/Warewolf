@@ -48,6 +48,7 @@ namespace Dev2.Tests.Activities.Validation
             Assert.IsNull(x.Check());
         }
 
+        
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("IsValidCalculateRule_Check")]
@@ -58,6 +59,16 @@ namespace Dev2.Tests.Activities.Validation
             Assert.IsNull(x.Check());
         }
 
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("IsValidCalculateRule_Check")]
+        public void IsValidCalculateRule_Check_NonCalculationString()
+        {
+
+            var x = new IsValidCalculateRule(() => "a");
+            Assert.IsNull(x.Check());
+        }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]

@@ -4810,21 +4810,52 @@ Scenario: Executing Control Flow - Switch example workflow
 #	  |         |
 	
 
-
-
-#Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
-#	  Given I have a workflow "ErrorInWorkflowService"
-#	  And "ErrorInWorkflowService Test" contains "Utility - Assign" from server "localhost" with mapping as
-#	  | Input to Service | From Variable | Output from Service | To Variable        |
-#	  |                  |               | [[rec(*).set]]      | [[rec().set]]      |
-#	  |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
-#	  |                  |               | [[hero(*).name]]    | [[hero().name]]    |
-#	  When "ErrorInWorkflowService Test" is executed
-#	  Then the workflow execution has "NO" error
-#	  And the 'Utility - Assign' in Workflow 'ErrorInWorkflowService' debug outputs as    
-#	  |                                                                   |
-#	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-#	  | [[hero(1).pushups]] = All of them.                                |
-#	  | [[hero(1).name]] =   Chuck Norris                                 |
-	  
-	  
+Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
+	  Given I have a workflow "Utility - Assign"
+	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable        |
+	  |                  |               | [[rec(*).set]]      | [[rec().set]]      |
+	  |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
+	  |                  |               | [[hero(*).name]]    | [[hero().name]]    |
+	  When "Utility - Assign Test" is executed
+	  Then the workflow execution has "NO" error
+	  And the 'Utility - Assign' in Workflow 'Utility - Assign' debug outputs as    
+	  |                                                                   |
+	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+	  | [[hero(1).pushups]] = All of them.                                |
+	  | [[hero(1).name]] =   Chuck Norris                                 |
+	
+#Bug - 17484	  
+Scenario: Error from workflow service is expected to buble out
+	  Given I have a workflow "TestAssignWithRemote123"
+	  And "TestAssignWithRemote123" contains an Assign "AssignData" as
+	  | variable      | value |
+	  | [[inputData]] | hello |
+	  And "TestAssignWithRemote123" contains "WorkflowUsedBySpecs" from server "Remote Connection Integration" with mapping as
+	  | Input to Service | From Variable | Output from Service | To Variable      |
+	  | input            | [[inputData]] | output              | [[output]]       |
+	  |                  |               | values(*).upper     | [[values().&up]] |
+	  |                  |               | values(*).lower     | [[values().low]] |
+	  When "TestAssignWithRemote123" is executed
+	  Then the workflow execution has "AN" error
+	  And the 'AssignData' in WorkFlow 'TestAssignWithRemote123' debug inputs as
+	  | # | Variable        | New Value |
+	  | 1 | [[inputData]] = | hello     |
+	  And the 'AssignData' in Workflow 'TestAssignWithRemote123' debug outputs as    
+	  | # |                       |
+	  | 1 | [[inputData]] = hello |
+	   And the 'WorkflowUsedBySpecs' in WorkFlow 'TestAssignWithRemote123' debug inputs as
+	  |                       |
+	  | [[inputData]] = hello |
+	  And the 'Setup Assign (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
+	  | # |                |
+	  | 1 | [[in]] = hello |
+	  And the 'Convert Case (1)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
+	  | # |                |
+	  | 1 | [[in]] = HELLO |
+	  And the 'Final Assign (3)' in Workflow 'WorkflowUsedBySpecs' debug outputs as
+	  | # |                             |
+	  | 1 | [[output]] = HELLO          |
+	  | 2 | [[values(1).upper]] = HELLO |
+	  | 3 | [[values(1).lower]] = hello |	  	 
+	 
