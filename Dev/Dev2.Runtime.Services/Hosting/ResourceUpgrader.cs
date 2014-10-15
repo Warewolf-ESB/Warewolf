@@ -54,19 +54,13 @@ namespace Dev2.Runtime.Hosting
             var asm = Assembly.GetExecutingAssembly();
             var versionResource = new VersionResource();
             var fileName = asm.Location;
-
             string message = "Getting Version for: " + fileName;
             Console.Write(message);
             Dev2Logger.Log.Info(message);
-
+            
             versionResource.LoadFrom(fileName);
 
             Version v = new Version(versionResource.FileVersion);
-
-            message = "Got Version for: " + fileName;
-            Console.Write(message);
-            Dev2Logger.Log.Info(message);
-
             return v;
         }
 
