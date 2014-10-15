@@ -24,17 +24,17 @@ namespace Dev2.Providers.Validation.Rules
             VerifyArgument.IsNotNull("baseRule", baseRule);
             _baseRule = baseRule;
             _check = _baseRule.Check;
-           
+
         }
 
         public ComposableRule<T> And(Rule<T> andRule)
         {
-            
+
             VerifyArgument.IsNotNull("andRule", andRule);
             var b = _check;
-            _check = ()=>
+            _check = () =>
                 {
-                    var a= b();
+                    var a = b();
 
                     if (a != null)
                         return a;
@@ -52,15 +52,18 @@ namespace Dev2.Providers.Validation.Rules
                 {
                     var a = b();
                     if (a == null)
-                        return null;
-                    return orRule.Check();
+                    {
+                        return orRule.Check();
+                    }
+                    return a;
+
                 };
             return this;
         }
 
         public override IActionableErrorInfo Check()
         {
-            return  _check();
+            return _check();
         }
     }
 }

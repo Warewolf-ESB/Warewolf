@@ -200,9 +200,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch(propertyName)
             {
                 case "OutputVariable":
-                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable, datalist, "1");
-                    ruleSet.Add(outputExprRule);
-                    ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
+                    if (!string.IsNullOrEmpty(OutputVariable))
+                    {
+                        var outputExprRule = new IsValidExpressionRule(() => OutputVariable, datalist, "0");
+                        ruleSet.Add(outputExprRule);
+                        ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
+                    }
+                    ruleSet.Add(new IsStringEmptyRule(() => OutputVariable));
                     break;
 
                 case "At":
