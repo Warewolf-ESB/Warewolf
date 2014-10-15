@@ -12,6 +12,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,6 +95,7 @@ namespace Dev2.Providers.Logs
         }
     }
 
+    [ExcludeFromCodeCoverage]
     public class Dev2LoggingTextWriter : TextWriter
     {
         #region Overrides of TextWriter
