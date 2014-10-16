@@ -35,6 +35,8 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
+using ServiceStack.Common.Extensions;
+
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.Deploy
@@ -432,6 +434,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                     NotifyOfPropertyChange(() => ServersAreNotTheSame);
                 }
                 Target.Environment = _selectedDestinationServer;
+                CalculateStats();
             }
         }
 
@@ -439,6 +442,11 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             NotifyOfPropertyChange(() => SelectedDestinationServer);
             DestinationServerHasDropped = !SelectedDestinationServer.IsConnected;
+            if(args.IsConnected && SelectedSourceServer.IsConnected)
+            {
+               
+            }
+            
         }
 
         #endregion
