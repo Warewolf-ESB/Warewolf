@@ -142,7 +142,7 @@ namespace Dev2.Data.Translators
             return tmp;
         }
 
-        public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(byte[] input, StringBuilder targetShape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var payload = Encoding.UTF8.GetString(input);
@@ -283,7 +283,7 @@ namespace Dev2.Data.Translators
 
         }
 
-        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(object input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -295,7 +295,7 @@ namespace Dev2.Data.Translators
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -338,7 +338,7 @@ namespace Dev2.Data.Translators
             return result;
         }
 
-        public string ConvertAndFilter(IBinaryDataList payload, string filterShape, out ErrorResultTO errors)
+        public StringBuilder ConvertAndFilter(IBinaryDataList payload, StringBuilder filterShape, out ErrorResultTO errors)
         {
             if(payload == null)
             {
@@ -446,7 +446,7 @@ namespace Dev2.Data.Translators
 
             result.Append("</" + RootTag + ">");
 
-            return result.ToString();
+            return result;
         }
 
         public DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions)

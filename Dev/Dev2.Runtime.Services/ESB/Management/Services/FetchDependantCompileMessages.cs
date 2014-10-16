@@ -36,8 +36,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            string serviceID = null;
-            string workspaceID = null;
+            string serviceId = null;
+            string workspaceId = null;
 
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var result = new ExecuteMessage { HasError = false };
@@ -46,19 +46,19 @@ namespace Dev2.Runtime.ESB.Management.Services
             values.TryGetValue("ServiceID", out tmp);
             if(tmp != null)
             {
-                serviceID = tmp.ToString();
+                serviceId = tmp.ToString();
             }
             values.TryGetValue("WorkspaceID", out tmp);
             if(tmp != null)
             {
-                workspaceID = tmp.ToString();
+                workspaceId = tmp.ToString();
             }
             values.TryGetValue("FilterList", out tmp);
             if(tmp != null)
             {
             }
 
-            if(string.IsNullOrEmpty(serviceID) || string.IsNullOrEmpty(workspaceID))
+            if(string.IsNullOrEmpty(serviceId) || string.IsNullOrEmpty(workspaceId))
             {
                 throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");
             }
@@ -66,8 +66,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             Guid wGuid;
             Guid sGuid;
 
-            Guid.TryParse(workspaceID, out wGuid);
-            Guid.TryParse(serviceID, out sGuid);
+            Guid.TryParse(workspaceId, out wGuid);
+            Guid.TryParse(serviceId, out sGuid);
 
 
             var thisService = ResourceCatalog.Instance.GetResource(wGuid, sGuid);
@@ -114,7 +114,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><ServiceID ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><FilterList ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ServiceID ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><FilterList ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
             ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 

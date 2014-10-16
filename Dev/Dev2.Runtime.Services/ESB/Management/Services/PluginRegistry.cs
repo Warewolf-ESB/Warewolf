@@ -198,7 +198,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService pluginMetaDataService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><AssemblyLocation ColumnIODirection=\"Input\"/><ProtectionLevel ColumnIODirection=\"Input\"/><NameSpace ColumnIODirection=\"Input\"/><MethodName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            DynamicService pluginMetaDataService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><AssemblyLocation ColumnIODirection=\"Input\"/><ProtectionLevel ColumnIODirection=\"Input\"/><NameSpace ColumnIODirection=\"Input\"/><MethodName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
             ServiceAction pluginMetaDataAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
 

@@ -12,7 +12,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.DataListCache;
@@ -37,11 +39,11 @@ namespace Dev2.Data.Tests.BinaryDataList
         private static readonly DataListFormat XmlFormatWithoutSystemTags = DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags);
         private static readonly DataListFormat XmlFormatInputsOnly = DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only);
 
-        const string DataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>";
+        readonly StringBuilder _dataListWellformed = "<DataList><scalar1/><rs1><f1/><f2/></rs1><scalar2/></DataList>".ToStringBuilder();
         const string DataListWellformedData = "<DataList><scalar1>s1</scalar1><rs1><f1>f1.1</f1></rs1><rs1><f1>f1.2</f1></rs1><scalar2/></DataList>";
-        const string DataListWellformedMult = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>";
-        const string DataListMalformed = "<DataList><scalar1/><rs1><f1/><f2/><f3/><scalar2/></DataList>";
-        const string DataListWellformedDescAttributes = "<DataList><scalar1 Description=\"Test scalar description\"/><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\"/></rs1><scalar2/></DataList>";
+        readonly StringBuilder _dataListWellformedMult = "<DataList><scalar1/><rs1><f1/><f2/></rs1><rs2><f1a/></rs2><scalar2/></DataList>".ToStringBuilder();
+        readonly StringBuilder _dataListMalformed = "<DataList><scalar1/><rs1><f1/><f2/><f3/><scalar2/></DataList>".ToStringBuilder();
+        readonly StringBuilder _dataListWellformedDescAttributes = "<DataList><scalar1 Description=\"Test scalar description\"/><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\"/></rs1><scalar2/></DataList>".ToStringBuilder();
         const string DataListWellformedDataWithDesc = "<DataList><scalar1 Description=\"Test scalar description\"/>s1</scalar1><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\">f1.1</f1></rs1><rs1 Description=\"Test recordset desciption\"><f1 Description=\"Test field1 desciption\">f1.2</f1></rs1><scalar2/></DataList>";
 
         /// <summary>
@@ -100,7 +102,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(DataListWellformedData));
-            IBinaryDataList obj = xmlConverter.ConvertTo(data, DataListWellformed, out errors);
+            IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformed, out errors);
 
             IBinaryDataListEntry entry;
             if(obj.TryGetEntry("rs1", out entry, out error))
@@ -131,7 +133,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             string error;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(DataListWellformedData));
-            IBinaryDataList obj = xmlConverter.ConvertTo(data, DataListWellformedMult, out errors);
+            IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedMult, out errors);
 
             IBinaryDataListEntry entry;
 
@@ -164,7 +166,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(DataListWellformedData));
-            IBinaryDataList obj = xmlConverter.ConvertTo(data, DataListWellformedDescAttributes, out errors);
+            IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedDescAttributes, out errors);
 
             IBinaryDataListEntry entry;
 
@@ -196,7 +198,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(DataListWellformedDataWithDesc));
-            IBinaryDataList obj = xmlConverter.ConvertTo(data, DataListWellformedDescAttributes, out errors);
+            IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedDescAttributes, out errors);
 
             IList<IBinaryDataListEntry> scalars = obj.FetchScalarEntries();
             IList<IBinaryDataListEntry> recordsets = obj.FetchRecordsetEntries();
@@ -215,7 +217,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
             byte[] data = (TestHelper.ConvertStringToByteArray(""));
-            IBinaryDataList obj = xmlConverter.ConvertTo(data, DataListWellformedDescAttributes, out errors);
+            IBinaryDataList obj = xmlConverter.ConvertTo(data, _dataListWellformedDescAttributes, out errors);
 
             IList<IBinaryDataListEntry> scalars = obj.FetchScalarEntries();
             IList<IBinaryDataListEntry> recordsets = obj.FetchRecordsetEntries();
@@ -231,8 +233,8 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             ErrorResultTO errors;
             IDataListTranslator xmlConverter = Dls.GetTranslator(XmlFormat);
-            byte[] data = (TestHelper.ConvertStringToByteArray(DataListMalformed));
-            xmlConverter.ConvertTo(data, DataListMalformed, out errors);
+            byte[] data = (TestHelper.ConvertStringToByteArray(_dataListMalformed.ToString()));
+            xmlConverter.ConvertTo(data, _dataListMalformed, out errors);
 
             // convert fails, hence no datalist cleanup ;)
 
@@ -269,7 +271,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             DataListTranslatedPayloadTO tmp = xmlConverter.ConvertFrom(dl, out errors);
 
-            string result = tmp.FetchAsString();
+            string result = tmp.FetchAsString().ToString();
 
             Assert.AreEqual("<DataList><rs1><f1>rec1.f1.vale</f1><f2>rec1.f2.vale</f2><f3>rec1.f3.vale</f3></rs1><rs1><f1>rec2.f1.vale</f1><f2>rec2.f2.vale</f2><f3>rec2.f3.vale</f3></rs1><scalar1>scalar1Value</scalar1></DataList>", result);
 
@@ -307,7 +309,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             DataListTranslatedPayloadTO tmp = xmlConverter.ConvertFrom(dl, out errors);
 
-            string result = tmp.FetchAsString();
+            string result = tmp.FetchAsString().ToString();
 
             Assert.AreEqual("<DataList><scalar1>scalar1Value</scalar1></DataList>", result);
 
@@ -325,7 +327,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             const string shape = "<ADL><rs2><f2/></rs2><scalar1/></ADL>";
             var data = TestHelper.ConvertStringToByteArray(payload);
 
-            var tmp = xmlConverter.ConvertTo(data, shape, out errors);
+            var tmp = xmlConverter.ConvertTo(data, shape.ToStringBuilder(), out errors);
             var recordsets = tmp.FetchRecordsetEntries();
             var scalars = tmp.FetchScalarEntries();
 
@@ -362,7 +364,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             DataListTranslatedPayloadTO tmp = xmlConverter.ConvertFrom(dl, out errors);
 
-            string result = tmp.FetchAsString();
+            string result = tmp.FetchAsString().ToString();
 
             Assert.AreEqual("<DataList><rs1><f1>rec1.f1.vale</f1><f2>rec1.f2.vale</f2><f3>rec1.f3.vale</f3></rs1><rs1><f1>rec2.f1.vale</f1><f2>rec2.f2.vale</f2><f3>rec2.f3.vale</f3></rs1><scalar1>scalar1Value</scalar1></DataList>", result);
 
@@ -381,7 +383,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             var payload = xmlConverter.ConvertFrom(dl1, out errors);
 
-            string actual = payload.FetchAsString();
+            string actual = payload.FetchAsString().ToString();
             const string expected = "Travis Is \"Cool\"&amp;>'nstuff'<";
 
             StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
@@ -406,7 +408,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             var payload = xmlConverter.ConvertFrom(dl1, out errors);
 
             //------------Assert Results-------------------------
-            string actual = payload.FetchAsString();
+            string actual = payload.FetchAsString().ToString();
             const string expected = "Travis Is &quot;Cool&quot;&amp;&gt;&apos;nstuff&apos;&lt;";
 
             StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
@@ -427,12 +429,12 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             //------------Execute Test---------------------------
             ErrorResultTO errors;
-            var actual = xmlConverter.ConvertAndFilter(dl1, "<root><cake/></root>", out errors);
+            var actual = xmlConverter.ConvertAndFilter(dl1, "<root><cake/></root>".ToStringBuilder(), out errors);
 
             //------------Assert Results-------------------------
             const string expected = "Travis Is &quot;Cool&quot;&amp;&gt;&apos;nstuff&apos;&lt;";
 
-            StringAssert.Contains(actual, expected, "Not all XML special characters are escaped i.e \"'><&");
+            StringAssert.Contains(actual.ToString(), expected, "Not all XML special characters are escaped i.e \"'><&");
         }
 
         [TestMethod]
@@ -452,13 +454,13 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             //------------Execute Test---------------------------
             ErrorResultTO errors;
-            var actual = xmlConverter.ConvertAndFilter(dl1, "<root><rs><val/></rs></root>", out errors);
+            var actual = xmlConverter.ConvertAndFilter(dl1, "<root><rs><val/></rs></root>".ToStringBuilder(), out errors);
             actual = actual.Replace("\r", "").Replace("\n", "");
 
             //------------Assert Results-------------------------
             const string expected = "<rs index=\"1\"><val>1</val></rs>";
 
-            StringAssert.Contains(actual, expected, "rowID attribute not present");
+            StringAssert.Contains(actual.ToString(), expected, "rowID attribute not present");
         }
 
         [TestMethod]
@@ -479,13 +481,13 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             //------------Execute Test---------------------------
             ErrorResultTO errors;
-            var actual = xmlConverter.ConvertAndFilter(dl1, "<root><rs><val/></rs></root>", out errors);
+            var actual = xmlConverter.ConvertAndFilter(dl1, "<root><rs><val/></rs></root>".ToStringBuilder(), out errors);
             actual = actual.Replace("\r", "").Replace("\n", "");
 
             //------------Assert Results-------------------------
             const string expected = "<rs index=\"1\"><val>1</val></rs><rs index=\"3\"><val>3</val></rs>";
 
-            StringAssert.Contains(actual, expected, "rowID attribute not present");
+            StringAssert.Contains(actual.ToString(), expected, "rowID attribute not present");
         }
 
         #endregion
@@ -505,7 +507,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             ErrorResultTO errors;
             var xmlConverter = Dls.GetTranslator(XmlFormat);
-            var bdl = xmlConverter.ConvertTo(data, targetShape, out errors);
+            var bdl = xmlConverter.ConvertTo(data, targetShape.ToStringBuilder(), out errors);
 
             var recordsets = bdl.FetchRecordsetEntries();
 
@@ -542,7 +544,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 
             ErrorResultTO errors;
             var xmlConverter = Dls.GetTranslator(XmlFormatWithoutSystemTags);
-            var bdl = xmlConverter.ConvertTo(data, targetShape, out errors);
+            var bdl = xmlConverter.ConvertTo(data, targetShape.ToStringBuilder(), out errors);
 
             var scalars = bdl.FetchScalarEntries();
             Assert.AreEqual(1, scalars.Count, "ConvertTo did not convert the payload value to a scalar.");

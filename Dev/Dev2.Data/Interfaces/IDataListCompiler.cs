@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
@@ -66,7 +67,7 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <param name="withData"></param>
         /// <returns></returns>
-        string GenerateWizardDataListFromDefs(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool withData = false);
+        StringBuilder GenerateWizardDataListFromDefs(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool withData = false);
 
         /// <summary>
         /// Generates the data list from defs
@@ -76,7 +77,7 @@ namespace Dev2.DataList.Contract
         /// <param name="pushToServer">if set to <c>true</c> [push to server]. the GUID is returned</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        string GenerateDataListFromDefs(string definitions, enDev2ArgumentType typeOf, bool pushToServer, out ErrorResultTO errors);
+        StringBuilder GenerateDataListFromDefs(string definitions, enDev2ArgumentType typeOf, bool pushToServer, out ErrorResultTO errors);
 
         /// <summary>
         /// Generates the data list from defs.
@@ -86,7 +87,7 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <param name="withData">if set to <c>true</c> [with data].</param>
         /// <returns></returns>
-        string GenerateDataListFromDefs(IList<IDev2Definition> definitions, bool pushToServer, out ErrorResultTO errors, bool withData = false);
+        StringBuilder GenerateDataListFromDefs(IList<IDev2Definition> definitions, bool pushToServer, out ErrorResultTO errors, bool withData = false);
 
         /// <summary>
         /// Generates the serializable defs from data list.
@@ -128,7 +129,7 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
         /// <returns></returns>
-        string ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool flipGeneration = false);
+        StringBuilder ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool flipGeneration = false);
 
         /// <summary>
         /// Shapes the dev2 definitions to data list.
@@ -138,7 +139,7 @@ namespace Dev2.DataList.Contract
         /// <param name="pushToServer">if set to <c>true</c> [push automatic server].</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        string ShapeDev2DefinitionsToDataList(IList<IDev2Definition> definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors);
+        StringBuilder ShapeDev2DefinitionsToDataList(IList<IDev2Definition> definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors);
 
         /// <summary>
         /// Fetches the binary data list.
@@ -327,7 +328,7 @@ namespace Dev2.DataList.Contract
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ConvertTo(DataListFormat typeOf, string payload, string shape, out ErrorResultTO errors);
+        Guid ConvertTo(DataListFormat typeOf, StringBuilder payload, StringBuilder shape, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts from selected Type to binary
@@ -337,7 +338,7 @@ namespace Dev2.DataList.Contract
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ConvertTo(DataListFormat typeOf, byte[] payload, string shape, out ErrorResultTO errors);
+        Guid ConvertTo(DataListFormat typeOf, byte[] payload, StringBuilder shape, out ErrorResultTO errors);
 
 
         /// <summary>
@@ -348,7 +349,7 @@ namespace Dev2.DataList.Contract
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ConvertTo(DataListFormat typeOf, object payload, string shape, out ErrorResultTO errors);
+        Guid ConvertTo(DataListFormat typeOf, object payload, StringBuilder shape, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts the and only map inputs.
@@ -358,7 +359,7 @@ namespace Dev2.DataList.Contract
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ConvertAndOnlyMapInputs(DataListFormat typeOf, string payload, string shape, out ErrorResultTO errors);
+        Guid ConvertAndOnlyMapInputs(DataListFormat typeOf, StringBuilder payload, StringBuilder shape, out ErrorResultTO errors);
 
         /// <summary>
         /// Populates the data list.
@@ -379,7 +380,7 @@ namespace Dev2.DataList.Contract
         /// <param name="depth">The depth.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        string ConvertFrom(Guid curDlid, DataListFormat typeOf, enTranslationDepth depth, out ErrorResultTO errors);
+        StringBuilder ConvertFrom(Guid curDlid, DataListFormat typeOf, enTranslationDepth depth, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts the and filter.
@@ -389,7 +390,7 @@ namespace Dev2.DataList.Contract
         /// <param name="filterShape">The filter shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        string ConvertAndFilter(Guid curDlid, DataListFormat typeOf, string filterShape, out ErrorResultTO errors);
+        StringBuilder ConvertAndFilter(Guid curDlid, DataListFormat typeOf, StringBuilder filterShape, out ErrorResultTO errors);
 
         DataTable ConvertToDataTable(IBinaryDataList input, string recsetName, out ErrorResultTO errors, PopulateOptions populateOptions = PopulateOptions.IgnoreBlankRows);
 
@@ -399,7 +400,7 @@ namespace Dev2.DataList.Contract
         /// <typeparam name="T"></typeparam>
         /// <param name="payload">The payload.</param>
         /// <returns></returns>
-        T ConvertFromJsonToModel<T>(string payload);
+        T ConvertFromJsonToModel<T>(StringBuilder payload);
 
         /// <summary>
         /// Converts the model to json.
@@ -407,7 +408,7 @@ namespace Dev2.DataList.Contract
         /// <typeparam name="T"></typeparam>
         /// <param name="payload">The payload.</param>
         /// <returns></returns>
-        string ConvertModelToJson<T>(T payload);
+        StringBuilder ConvertModelToJson<T>(T payload);
 
         /// <summary>
         /// Pushes the system model to data list.

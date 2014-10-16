@@ -50,8 +50,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             try
             {
-                var securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(securitySettings);
-                if(securitySettingsTO == null)
+                var securitySettingsTo = serializer.Deserialize<SecuritySettingsTO>(securitySettings);
+                if(securitySettingsTo == null)
                 {
                     throw new InvalidDataException("The security settings are not valid.");
                 }
@@ -70,10 +70,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        public static void Write(SecuritySettingsTO securitySettingsTO)
+        public static void Write(SecuritySettingsTO securitySettingsTo)
         {
-            VerifyArgument.IsNotNull("securitySettingsTO", securitySettingsTO);
-            var securitySettings = new Dev2JsonSerializer().SerializeToBuilder(securitySettingsTO);
+            VerifyArgument.IsNotNull("securitySettingsTO", securitySettingsTo);
+            var securitySettings = new Dev2JsonSerializer().SerializeToBuilder(securitySettingsTo);
             Write(securitySettings);
         }
 
@@ -111,7 +111,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var dynamicService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<DataList><SecuritySettings ColumnIODirection=\"Input\"></SecuritySettings><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = new StringBuilder("<DataList><SecuritySettings ColumnIODirection=\"Input\"></SecuritySettings><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var serviceAction = new ServiceAction

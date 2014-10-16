@@ -11,6 +11,7 @@
 
 
 using System;
+using System.Text;
 using Dev2.Common;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.Extensions;
@@ -47,7 +48,7 @@ namespace Dev2.DataList.Contract.Network
             if(datalistData != null)
             {
                 ErrorResultTO tmpErrors;
-                Datalist = translator.ConvertTo(datalistData, "", out tmpErrors);
+                Datalist = translator.ConvertTo(datalistData, new StringBuilder(), out tmpErrors);
             }
 
             Errors = ErrorResultTOExtensionMethods.FromByteArray(reader.ReadByteArray());

@@ -149,11 +149,11 @@ namespace Dev2.Data.SystemTemplates.Models
         /// </summary>
         /// <param name="val">The val.</param>
         /// <returns></returns>
-        public static string RemoveDummyOptionsFromModel(string val)
+        public static string RemoveDummyOptionsFromModel(StringBuilder val)
         {
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            string tmp = val.Replace(@"""EvaluationFn"":""Choose...""", @"""EvaluationFn"":""Choose""");
+            var tmp = val.Replace(@"""EvaluationFn"":""Choose...""", @"""EvaluationFn"":""Choose""");
 
             // Hydrate and remove Choose options ;)
 
@@ -177,7 +177,7 @@ namespace Dev2.Data.SystemTemplates.Models
             }
 
 
-            return tmp;
+            return tmp.ToString();
 
         }
 

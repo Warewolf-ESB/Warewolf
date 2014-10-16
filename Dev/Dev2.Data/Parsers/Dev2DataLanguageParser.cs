@@ -33,8 +33,8 @@ namespace Dev2.Data.Parsers
     {
         private const string CdataStart = "<![CDATA[";
         private const string CdataEnd = "]]>";
-        private static volatile Dictionary<Tuple<string, string>, IList<IIntellisenseResult>> PayloadCache = new Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>(1000);
-        private static volatile Dictionary<string, IList<IIntellisenseResult>> ExpressionCache = new Dictionary<string, IList<IIntellisenseResult>>(1000);
+        private static volatile Dictionary<Tuple<string, string>, IList<IIntellisenseResult>> _payloadCache = new Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>(1000);
+        private static volatile Dictionary<string, IList<IIntellisenseResult>> _expressionCache = new Dictionary<string, IList<IIntellisenseResult>>(1000);
 
 
         #region Public Methods
@@ -56,17 +56,17 @@ namespace Dev2.Data.Parsers
                    return new List<IIntellisenseResult>();
                }
                var canCache = Regex.Matches(expression, "\\[\\[").Count == 1;
-               if (canCache && ExpressionCache.ContainsKey(expression))
+               if (canCache && _expressionCache.ContainsKey(expression))
                {
-                   return ExpressionCache[expression];
+                   return _expressionCache[expression];
                }
 
 
                IList<IIntellisenseResult> result = PartsGeneration(expression, dataListParts, true);
                if (result != null && canCache && !(result.Any(a => a.Type == enIntellisenseResultType.Error)))
-                   ExpressionCache.Add(expression, result);
+                   _expressionCache.Add(expression, result);
                return result;
-           }, ExpressionCache);
+           }, _expressionCache);
         }
 
 
@@ -88,20 +88,21 @@ namespace Dev2.Data.Parsers
                 {
                     return new List<IIntellisenseResult>();
                 }
-                if (PayloadCache.ContainsKey(key))
+                if (_payloadCache.ContainsKey(key))
                 {
-                    return PayloadCache[key];
+                    return _payloadCache[key];
                 }
                 IList<IDev2DataLanguageIntellisensePart> parts = DataListFactory.GenerateIntellisensePartsFromDataList(dataList, filterTo);
 
                 IList<IIntellisenseResult> result = PartsGeneration(payload, parts, addCompleteParts, isFromIntellisense);
                 if (result != null && result.Count > 0 && !(result.Any(a => a.Type == enIntellisenseResultType.Error)))
-                    PayloadCache.Add(key, result);
+                    _payloadCache.Add(key, result);
                 return result;
-            }, PayloadCache);
+            }, _payloadCache);
 
         }
 
+        // ReSharper disable once InconsistentNaming
         public T WrapAndClear<T, U>(Func<T> runFunc, Dictionary<U, T> clearIfException)
         {
             try

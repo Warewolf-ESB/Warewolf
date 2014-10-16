@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.AreEqual(ExpectedName, result.Actions[0].Name);
             Assert.AreEqual(ExpectedName, result.Actions[0].SourceMethod);
             Assert.AreEqual(enActionType.InvokeManagementDynamicService, result.Actions[0].ActionType);
-            Assert.AreEqual("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.Actions[0].DataListSpecification);
+            Assert.AreEqual("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", result.Actions[0].DataListSpecification.ToString());
         }
     }
 }

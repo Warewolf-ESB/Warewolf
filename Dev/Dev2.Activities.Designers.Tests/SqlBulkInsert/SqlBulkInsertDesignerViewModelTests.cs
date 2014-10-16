@@ -56,6 +56,24 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             //------------Assert Results-------------------------
         }
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Constructor")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void SqlBulkInsertDesignerViewModel_Constructor_ModelItem()
+        {
+            //------------Setup for test--------------------------
+
+            //------------Execute Test---------------------------
+            // ReSharper disable ObjectCreationAsStatement
+            var x = CreateModelItem();
+            var vm = new SqlBulkInsertDesignerViewModel(x);
+            Assert.AreEqual(x,vm.ModelItem);
+            // ReSharper restore ObjectCreationAsStatement
+
+            //------------Assert Results-------------------------
+        }
+
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -139,7 +157,35 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 
             Assert.IsFalse(propertyChanged);
         }
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("SqlBulkInsertDesignerViewModel_Properties")]
+        public void SqlBulkInsertDesignerViewModel_Properties()
+        {
+            //------------Setup for test--------------------------
+            var modelItem = CreateModelItem();
+ 
+            const int DatabaseCount = 2;
+            var databases = CreateDatabases(DatabaseCount);
 
+            //------------Execute Test---------------------------
+            var viewModel = CreateViewModel(modelItem, databases);
+            viewModel.IsTimeoutFocused = true;
+            Assert.IsTrue(viewModel.IsTimeoutFocused);
+            
+            viewModel.IsSelectedDatabaseFocused = true;
+            Assert.IsTrue(viewModel.IsSelectedDatabaseFocused);
+            
+            viewModel.IsResultFocused = true;
+            Assert.IsTrue(viewModel.IsResultFocused);
+
+            Assert.IsFalse(viewModel.IsTableSelected);
+            
+            viewModel.IsTimeoutFocused = true;
+            Assert.IsTrue(viewModel.IsTimeoutFocused);
+            viewModel.IsBatchSizeFocused = true;
+            Assert.IsTrue(viewModel.IsBatchSizeFocused);
+        }
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -228,7 +274,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var selectedDatabase = databases.Keys.First();
             var selectedTables = databases[selectedDatabase];
             var selectedTable = selectedTables.Items[1];
-
+            selectedTable.Columns.Add(new DbColumn {ColumnName = "monkey see"});
             var initialDatabase = databases.Keys.Skip(1).First();
             var initialTable = databases[initialDatabase].Items[3];
             initialTable.TableName = selectedTable.TableName;
@@ -236,7 +282,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", initialDatabase);
             modelItem.SetProperty("TableName", initialTable.FullName);
-            modelItem.SetProperty("InputMappings", initialTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList());
+            modelItem.SetProperty("InputMappings", initialTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c, InputColumn = "monkey see" }).ToList());
 
             var viewModel = CreateViewModel(modelItem, databases);
 
@@ -253,7 +299,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             VerifyTables(selectedTables, viewModel.Tables.ToList());
 
             var actual = viewModel.InputMappings.Select(m => m.OutputColumn).ToList();
-
+            Assert.AreEqual(viewModel.InputMappings[2].InputColumn, "[[Db0_Table_1(*).monkeysee]]");
             VerifyColumns(selectedTable.Columns, actual);
         }
 
@@ -440,7 +486,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             var modelItem = CreateModelItem();
             modelItem.SetProperty("Database", selectedDatabase);
             modelItem.SetProperty("TableName", selectedTable.FullName);
-            modelItem.SetProperty("InputMappings", selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c }).ToList());
+            modelItem.SetProperty("InputMappings", selectedTable.Columns.Select(c => new DataColumnMapping { OutputColumn = c ,InputColumn = "bob the"}).ToList());
 
             var viewModel = CreateViewModel(modelItem, databases);
 

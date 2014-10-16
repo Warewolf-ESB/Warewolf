@@ -16,6 +16,7 @@ using System.Net;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.ServiceModel;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices.Objects;
@@ -161,13 +162,13 @@ namespace Dev2.Tests.Runtime.ESB
         {
             ErrorResultTO errors;
             var compiler = DataListFactory.CreateDataListCompiler();
-            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataListData, dataListShape, out errors);
+            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), dataListData.ToStringBuilder(), dataListShape.ToStringBuilder(), out errors);
 
             var dataObj = new Mock<IDSFDataObject>();
             dataObj.Setup(d => d.DataListID).Returns(dataListID);
             dataObj.Setup(d => d.EnvironmentID).Returns(_connection.ResourceID);
             dataObj.Setup(d => d.ServiceName).Returns("Test");
-            dataObj.Setup(d => d.RemoteInvokeResultShape).Returns("<ADL><NumericGUID></NumericGUID></ADL>");
+            dataObj.Setup(d => d.RemoteInvokeResultShape).Returns(new StringBuilder("<ADL><NumericGUID></NumericGUID></ADL>"));
 
             var sa = new ServiceAction();
             var workspace = new Mock<IWorkspace>();

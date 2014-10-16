@@ -231,7 +231,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 </string_NewDataSet>
 
 </ADL>";
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
 
         [TestMethod]
@@ -254,7 +254,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 </dbo_spGetCountries>
 
 </ADL>";
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
 
         [TestMethod]
@@ -274,7 +274,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 <r1></r1>
 
 </ADL>";
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
 
         [TestMethod]
@@ -294,7 +294,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 <isUpper></isUpper>
 
 </ADL>";
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
 
         [TestMethod]
@@ -316,7 +316,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 </dbo_NullReturnsZZZ_NotNullReturnsAAA>
 
 </ADL>";
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
 
         [TestMethod]
@@ -336,7 +336,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 <Prefix></Prefix>
 
 </ADL>";
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
 
         [TestMethod]
@@ -359,7 +359,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 </prefix>
 
 </ADL>";
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
 
         [TestMethod]
@@ -386,7 +386,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 </dbo_proc_GetAllMapLocations2>
 
 </ADL>";
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
 
         [TestMethod]
@@ -411,7 +411,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 </dbo_proc_GetAllMapLocations>
 
 </ADL>";
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
 
         [TestMethod]
@@ -909,7 +909,7 @@ namespace Dev2.Data.Tests.BinaryDataList
 </string_NewDataSet>
 
 </ADL>";
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
     }
 }

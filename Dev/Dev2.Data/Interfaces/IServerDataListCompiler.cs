@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums;
@@ -239,7 +240,7 @@ namespace Dev2.Server.Datalist
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ConvertTo(NetworkContext ctx, DataListFormat typeOf, byte[] payload, string shape, out ErrorResultTO errors);
+        Guid ConvertTo(NetworkContext ctx, DataListFormat typeOf, byte[] payload, StringBuilder shape, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts to.
@@ -250,7 +251,7 @@ namespace Dev2.Server.Datalist
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ConvertTo(NetworkContext ctx, DataListFormat typeOf, object payload, string shape, out ErrorResultTO errors);
+        Guid ConvertTo(NetworkContext ctx, DataListFormat typeOf, object payload, StringBuilder shape, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts to selected Type from binary
@@ -272,7 +273,7 @@ namespace Dev2.Server.Datalist
         /// <param name="typeOf">The type of.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        string ConvertAndFilter(NetworkContext ctx, Guid curDLID, string filterShape, DataListFormat typeOf, out ErrorResultTO errors);
+        StringBuilder ConvertAndFilter(NetworkContext ctx, Guid curDLID, StringBuilder filterShape, DataListFormat typeOf, out ErrorResultTO errors);
 
         /// <summary>
         /// Converts the and only map inputs.
@@ -283,7 +284,7 @@ namespace Dev2.Server.Datalist
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        Guid ConvertAndOnlyMapInputs(NetworkContext ctx, DataListFormat tyoeOf, byte[] payload, string shape, out ErrorResultTO errors);
+        Guid ConvertAndOnlyMapInputs(NetworkContext ctx, DataListFormat tyoeOf, byte[] payload, StringBuilder shape, out ErrorResultTO errors);
 
         /// <summary>
         /// Fetches the translator types.

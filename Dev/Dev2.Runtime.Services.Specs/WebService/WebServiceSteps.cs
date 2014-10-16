@@ -144,7 +144,7 @@ namespace Dev2.Runtime.Services.Specs.WebService
             ErrorResultTO errors;
             var result = compiler.ConvertFrom(dataListID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
             Assert.IsNotNull(result);
-            var resultXml = XElement.Parse(result);
+            var resultXml = XElement.Parse(result.ToString());
             var dataElements = resultXml.Elements().Where(element => !element.Name.LocalName.StartsWith("Dev2System") && element.Name.LocalName == "results");
             using(var dataSet = new DataSet())
             {

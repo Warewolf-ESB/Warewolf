@@ -483,12 +483,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     Copy(GetDebugInputs(dataList), _debugState.Inputs);
                 }
-                catch(DebugCopyException err)
+                catch(Exception err)
                 {
                     Dev2Logger.Log.Error("DispatchDebugState", err);
-                    _debugState.ErrorMessage = err.Message;
+                    AddErrorToDataList(err, compiler, dataObject);
+                    var errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                    _debugState.ErrorMessage = errorMessage;
                     _debugState.HasError = true;
-                    _debugState.Inputs.Add(err.Item);
+                    var debugError = err as DebugCopyException;
+                    if (debugError != null)
+                    {
+                        _debugState.Inputs.Add(debugError.Item);
+                    }
                 }
 
                 if(dataObject.RemoteServiceType == "Workflow" && act != null && !_debugState.HasError)
@@ -539,7 +545,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     catch(Exception e)
                     {
                         Dev2Logger.Log.Error("Debug Dispatch Error", e);
-                        _debugState.ErrorMessage = e.Message;
+                        AddErrorToDataList(e,compiler,dataObject);
+                        errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                        _debugState.ErrorMessage = errorMessage;
                         _debugState.HasError = true;
                     }
                 }
@@ -591,6 +599,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     _debugState = null;
                 }
             }
+        }
+
+        void AddErrorToDataList(Exception err, IDataListCompiler compiler, IDSFDataObject dataObject)
+        {
+            var errorString = err.Message;
+            var errorResultTO = new ErrorResultTO();
+            errorResultTO.AddError(errorString);
+            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeUserReady(), out errorsTo);
         }
 
         protected void InitializeDebug(IDSFDataObject dataObject)
