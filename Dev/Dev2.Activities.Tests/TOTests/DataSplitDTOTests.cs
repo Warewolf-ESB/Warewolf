@@ -309,6 +309,23 @@ namespace Dev2.Tests.Activities.TOTests
             Verify_RuleSet(dto, "OutputVariable", null);
         }
 
+
+
+        [TestMethod]
+        [Owner("Robin van den Heever")]
+        [TestCategory("DataSplitDTO_GetRuleSet")]
+        public void DataSplitDTO_GetRuleSetOutputVariable_IsNotNullOrEmpty_ValidateRulesReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataSplitDTO { OutputVariable = "[[h&]]", At = "1" };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "OutputVariable", "Variable name [[h&]] contains invalid character(s)");
+        }
+
+
+
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
@@ -428,6 +445,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Execute Test---------------------------
             Verify_RuleSet(dto, "At", null);
         }
+
 
         static void Verify_RuleSet(DataSplitDTO dto, string propertyName, string expectedErrorMessage)
         {
