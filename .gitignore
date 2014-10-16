@@ -5,6 +5,7 @@
 ################################################################################
 /Dev/Dev2.Server/bin/x86/Debug
 /Dev/Dev2.Server/bin/Debug/Workspaces
+Dev/TestResults
 ################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
 ################################################################################
@@ -6621,8 +6622,6 @@
 /Dev/SFTPServer/obj/x86/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
 /Dev/SFTPServer/obj/x86/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
 /Dev/SFTPServer/obj/x86/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
-/Dev/TestResults/Dev2.AcceptanceTesting.TE.Tests.mdf
-/Dev/TestResults/Dev2.AcceptanceTesting.TE.Tests_log.ldf
 /Dev/Dev2.CustomControls/obj/Debug/Dev2.CustomControls_MarkupCompile.i.lref
 /Dev/Dev2.Runtime.Configuration/obj/Debug/Dev2.Runtime.Configuration_MarkupCompile.i.cache
 /Dev/Dev2.Runtime.Configuration/obj/Debug/Dev2.Runtime.Configuration_MarkupCompile.i.lref
@@ -7065,8 +7064,6 @@
 /Dev/Dev2.UI.Tests/Dev2.Studio.UI.Tests/obj/Debug/Dev2.Studio.UI.Tests.csprojResolveAssemblyReference.cache
 /Dev/Dev2.UI.Tests/Dev2.Studio.UI.Tests/obj/Debug/Dev2.Studio.UITests.dll
 /Dev/Dev2.UI.Tests/Dev2.Studio.UI.Tests/obj/Debug/Dev2.Studio.UITests.pdb
-Dev/TestResults
-
 /Dev/Dev2.Studio.Core.Tests/bin/Debug/Microsoft.Owin.dll
 /Dev/Dev2.Studio.Core.Tests/bin/Debug/Microsoft.Owin.Security.dll
 /Dev/Dev2.Studio.Core.Tests/bin/Debug/Microsoft.Owin.Security.xml
