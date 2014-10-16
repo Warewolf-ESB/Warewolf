@@ -7067,3 +7067,17 @@
 /Dev/Dev2.UI.Tests/Dev2.Studio.UI.Tests/obj/Debug/Dev2.Studio.UITests.pdb
 Dev/TestResults
 
+/Dev/Dev2.Studio.Core.Tests/bin/Debug/Microsoft.Owin.dll
+/Dev/Dev2.Studio.Core.Tests/bin/Debug/Microsoft.Owin.Security.dll
+/Dev/Dev2.Studio.Core.Tests/bin/Debug/Microsoft.Owin.Security.xml
+/Dev/Dev2.Studio.Core.Tests/bin/Debug/Microsoft.Owin.xml
+/Dev/Dev2.IntegrationTests/bin/debug/Microsoft.Owin.Security.dll
+/Dev/Dev2.IntegrationTests/bin/debug/Microsoft.Owin.Security.xml
+/Dev/Dev2.Activities.Specs/bin/Debug/Microsoft.Owin.dll
+/Dev/Dev2.Activities.Specs/bin/Debug/Microsoft.Owin.Security.dll
+/Dev/Dev2.Activities.Specs/bin/Debug/Microsoft.Owin.Security.xml
+/Dev/Dev2.Activities.Specs/bin/Debug/Microsoft.Owin.xml
+/Dev/Dev2.LoadTests/bin/Debug/Microsoft.Owin.dll
+/Dev/Dev2.LoadTests/bin/Debug/Microsoft.Owin.Security.dll
+/Dev/Dev2.LoadTests/bin/Debug/Microsoft.Owin.Security.xml
+/Dev/Dev2.LoadTests/bin/Debug/Microsoft.Owin.xml
