@@ -485,6 +485,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                     }
                 }
             }
+            if (checkStateChangedArgs != null && checkStateChangedArgs.UpdateStats)
             CalculateStats();
         }
 
