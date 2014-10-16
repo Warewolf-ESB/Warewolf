@@ -24,7 +24,7 @@ namespace Dev2.Integration.Tests
     public class AppTests
     {
         private static string deployDir;
-        const string ServerProcessName = "Warewolf Server";
+        const string ServerProcessName = "Warewolf Server.exe";
         const string StudioProcessName = "Warewolf Studio";
 
         [ClassInitialize]
@@ -151,9 +151,10 @@ namespace Dev2.Integration.Tests
                 }
             }
             // ReSharper disable EmptyGeneralCatchClause
-            catch
+            catch(Exception e)
             // ReSharper restore EmptyGeneralCatchClause
             {
+                Assert.Fail(e.Message);
             }
 
             const string expected = "Critical Failure: Webserver failed to startException has been thrown by the target of an invocation.";

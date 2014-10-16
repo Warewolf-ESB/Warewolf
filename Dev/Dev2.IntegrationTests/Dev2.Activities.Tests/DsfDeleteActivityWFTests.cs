@@ -34,7 +34,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void DeleteRecordUsingRecordsetWithNumericIndex()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/DeleteRecordUsingRecordsetWithNumericIndex");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/DeleteRecordUsingRecordsetWithNumericIndex");
             const string expected = @"<DeleteResult>Success</DeleteResult><Customers index=""2""><FirstName>Wallis</FirstName><LastName>Buchan</LastName></Customers><Customers index=""3""><FirstName>Trevor</FirstName><LastName>Williams-Ros</LastName></Customers><Customers index=""4""><FirstName>Travis</FirstName><LastName>Frisinger</LastName></Customers><Customers index=""5""><FirstName>Urie</FirstName><LastName>Smit</LastName></Customers><Customers index=""6""><FirstName>Brendon</FirstName><LastName>Page</LastName></Customers><Customers index=""7""><FirstName>Massimo</FirstName><LastName>Guerrera</LastName></Customers><Customers index=""8""><FirstName>Ashley</FirstName><LastName>Lewis</LastName></Customers><Customers index=""9""><FirstName>Sashen</FirstName><LastName>Naidoo</LastName></Customers><Customers index=""10""><FirstName>Michael</FirstName><LastName>Cullen</LastName></Customers>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -46,7 +46,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void DeleteRecordUsingRecsetWithBlankIndex()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/DeleteRecordUsingRecsetWithBlankIndex");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/DeleteRecordUsingRecsetWithBlankIndex");
             const string expected = @"<DeleteResult>Success</DeleteResult><Customers index=""1""><FirstName>Barney</FirstName><LastName>Buchan</LastName></Customers><Customers index=""2""><FirstName>Wallis</FirstName><LastName>Buchan</LastName></Customers><Customers index=""3""><FirstName>Trevor</FirstName><LastName>Williams-Ros</LastName></Customers><Customers index=""4""><FirstName>Travis</FirstName><LastName>Frisinger</LastName></Customers><Customers index=""5""><FirstName>Urie</FirstName><LastName>Smit</LastName></Customers><Customers index=""6""><FirstName>Brendon</FirstName><LastName>Page</LastName></Customers><Customers index=""7""><FirstName>Massimo</FirstName><LastName>Guerrera</LastName></Customers><Customers index=""8""><FirstName>Ashley</FirstName><LastName>Lewis</LastName></Customers><Customers index=""9""><FirstName>Sashen</FirstName><LastName>Naidoo</LastName></Customers>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -57,7 +57,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void DeleteRecordUsingRecordsetWithStarIndex()
         {
-            string PostData = String.Format("{0}{1}", WebserverURI, "INTEGRATION TEST SERVICES/DeleteRecordUsingRecordsetWithStarIndex");
+            string PostData = String.Format("{0}{1}", WebserverURI, "Integration Test Resources/DeleteRecordUsingRecordsetWithStarIndex");
             const string expected = @"<DeleteResult>Success</DeleteResult>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);

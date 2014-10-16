@@ -26,7 +26,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests
         [TestMethod]
         public void RelativeUriResource_TestMethod()
         {
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, _workflowName);
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/" + _workflowName);
             string actualResult = TestHelper.PostDataToWebserver(postData);
             int result = actualResult.IndexOf("http://localhost", StringComparison.OrdinalIgnoreCase);
             Assert.AreEqual(result, -1);
