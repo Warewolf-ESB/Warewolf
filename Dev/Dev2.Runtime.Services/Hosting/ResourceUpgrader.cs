@@ -15,7 +15,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
+using log4net.Repository.Hierarchy;
 using Vestris.ResourceLib;
 
 namespace Dev2.Runtime.Hosting
@@ -53,7 +55,6 @@ namespace Dev2.Runtime.Hosting
             var versionResource = new VersionResource();
             var fileName = asm.Location;
             versionResource.LoadFrom(fileName);
-
             Version v = new Version(versionResource.FileVersion);
             return v;
         }

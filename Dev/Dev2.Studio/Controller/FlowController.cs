@@ -146,16 +146,20 @@ namespace Dev2.Studio.Controller
             }
 
             var expressionText = expression.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
-            var ds = DataListConstants.DefaultSwitch;
-
-
+            
+            Dev2Switch ds;
             if(expressionText != null && expressionText.Value != null)
             {
+                ds = new Dev2Switch();
                 var val = Utilities.ActivityHelper.ExtractData(expressionText.Value.ToString());
                 if(!string.IsNullOrEmpty(val))
                 {
                     ds.SwitchVariable = val;
                 }
+            }
+            else
+            {
+                ds = DataListConstants.DefaultSwitch;
             }
 
             var displayName = args.ModelItem.Properties[GlobalConstants.DisplayNamePropertyText];

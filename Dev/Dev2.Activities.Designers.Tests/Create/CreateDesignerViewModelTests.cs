@@ -11,8 +11,12 @@
 
 
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Create
@@ -48,6 +52,11 @@ namespace Dev2.Activities.Designers.Tests.Create
         public void CreateDesignerViewModel_Validate_CorrectFieldsAreValidated()
         {
             //------------Setup for test-------------------------
+            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
+            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
+            mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
             var viewModel = CreateViewModel();
 
             //------------Execute Test---------------------------

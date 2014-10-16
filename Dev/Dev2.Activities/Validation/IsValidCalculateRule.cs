@@ -39,17 +39,16 @@ namespace Dev2.Validation
             if (DataListUtil.IsCalcEvaluation(value, out calculationExpression))
             {
                 value = calculationExpression;
+                Token[] tokens;
+                _syntaxBuilder.Build(value, false, out tokens);
+
+                if (_syntaxBuilder.EventLog != null && _syntaxBuilder.HasEventLogs)
+                {
+
+                    return new ActionableErrorInfo(DoError) { Message = "Syntax Error An error occurred while parsing { " + value + " } It appears to be malformed" };
+                }
             }
-            Token[] tokens;
-            _syntaxBuilder.Build(value, false, out tokens);
-
-            if (_syntaxBuilder.EventLog != null && _syntaxBuilder.HasEventLogs)
-            {
-
-                return new ActionableErrorInfo(DoError) { Message = "Syntax Error An error occurred while parsing { " + value + " } It appears to be malformed" };
-            }
-
-
+            
             return null;
         }
     }

@@ -322,7 +322,7 @@
     </Compile>
     <Compile Include="TestResourceStrings.Designer.cs" />
     <Compile Include="DebugProviderTests.cs" />
-    <Compile Include="FlowControllerTests.cs" />
+    <Compile Include="Controller\FlowControllerTests.cs" />
     <Compile Include="UtilsTests\FrameWorkElementExtensionsTests.cs" />
     <Compile Include="Utils\AsyncWorkerTests.cs" />
     <Compile Include="ViewModelTests\ConnectControlViewModelTests.cs" />
