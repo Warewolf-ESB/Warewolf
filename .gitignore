@@ -5,7 +5,9 @@
 ################################################################################
 /Dev/Dev2.Server/bin/x86/Debug
 /Dev/Dev2.Server/bin/Debug/Workspaces
-Dev/TestResults
+/Dev/TestResults
+/TestResults
+/bin
 ################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
 ################################################################################
