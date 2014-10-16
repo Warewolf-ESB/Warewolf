@@ -305,7 +305,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
                 {
 
                     Assert.IsNotNull(viewModel.Errors);
-                    Assert.AreEqual(2, viewModel.Errors.Count);
+                    Assert.AreEqual(1, viewModel.Errors.Count);
 
                     var error = viewModel.Errors[0];
                     Assert.AreEqual(string.Format(ExpectedMessageFormat), error.Message);

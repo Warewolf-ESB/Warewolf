@@ -7078,3 +7078,5 @@ Dev/TestResults
 /Dev/Dev2.LoadTests/bin/Debug/Microsoft.Owin.Security.dll
 /Dev/Dev2.LoadTests/bin/Debug/Microsoft.Owin.Security.xml
 /Dev/Dev2.LoadTests/bin/Debug/Microsoft.Owin.xml
+/Dev/Dev2.Studio.Core.Tests/obj/x86/Debug/TempPE/TestResourceStringsTest.Designer.cs.dll
+/Dev/Dev2.Studio.Core.Tests/obj/x86/Debug/TempPE/StringResourcesTest1.Designer.cs.dll
