@@ -381,34 +381,7 @@ namespace Dev2.Core.Tests
 
         #endregion
 
-        #region Deactivate
-
-        [TestMethod]
-        public void DeactivateWithCloseExpectBuildWithEmptyDebugWriterWriteMessage()
-        {
-            CreateFullExportsAndVm();
-            EventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
-                .Verifiable();
-
-            MainViewModel.Dispose();
-
-            EventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(1));
-        }
-
-        [TestMethod]
-        public void DeactivateWithCloseAndTwoTabsExpectBuildTwiceWithEmptyDebugWriterWriteMessage()
-        {
-            CreateFullExportsAndVm();
-            EventAggregator.Setup(e => e.Publish(It.IsAny<UpdateDeployMessage>()))
-                .Verifiable();
-            AddAdditionalContext();
-
-            MainViewModel.Dispose();
-
-            EventAggregator.Verify(e => e.Publish(It.IsAny<UpdateDeployMessage>()), Times.Exactly(2));
-        }
-
-        #endregion
+        
 
         #region Add Work Surface
 
@@ -2403,73 +2376,6 @@ namespace Dev2.Core.Tests
 
         }
 
-        //
-        //        [TestMethod]
-        //        [Owner("Tshepo Ntlhokoa")]
-        //        [TestCategory("MainViewModel_AddWorkSurfaceContext")]
-        //        public void MainViewModel_AddWorkSurfaceContext_AddTheSameResourceACoupleOfTimes_ReloadResourceIsWillBeCalledOnce()
-        //        {
-        //            var resourceId = Guid.NewGuid();
-        //            var serverId = Guid.NewGuid();
-        //            var environmentId = Guid.NewGuid();
-        //            var workspaceId = Guid.NewGuid();
-        //
-        //            var resourceModel = new Mock<IContextualResourceModel>();
-        //            resourceModel.Setup(r => r.ResourceType).Returns(ResourceType.WorkflowService);
-        //            resourceModel.SetupGet(r => r.ID).Returns(resourceId);
-        //            resourceModel.SetupGet(r => r.ServerID).Returns(serverId);
-        //            resourceModel.SetupGet(r => r.ResourceName).Returns("My_Resource_Name");
-        //
-        //            var environmentModel = new Mock<IEnvironmentModel>();
-        //            environmentModel.SetupGet(e => e.ID).Returns(environmentId);
-        //
-        //            var environmentConnection = new Mock<IEnvironmentConnection>();
-        //            environmentConnection.SetupGet(env => env.WorkspaceID).Returns(workspaceId);
-        //
-        //            environmentModel.SetupGet(e => e.Connection).Returns(environmentConnection.Object);
-        //
-        //            var resourceRepository = new Mock<IResourceRepository>();
-        //            resourceRepository.Setup(repository => repository.ReloadResource(It.IsAny<Guid>(), It.IsAny<ResourceType>(), It.IsAny<IEqualityComparer<IResourceModel>>(), It.IsAny<bool>())).Returns(() =>
-        //            {
-        //                Thread.Sleep(100);
-        //                return new List<IResourceModel>();
-        //            });
-        //            environmentModel.SetupGet(e => e.ResourceRepository).Returns(resourceRepository.Object);
-        //            resourceModel.SetupGet(r => r.Environment).Returns(environmentModel.Object);
-        //
-        //            var environmentRepository = new Mock<IEnvironmentRepository>();
-        //            environmentModel.Setup(c => c.CanStudioExecute).Returns(false);
-        //            environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
-        //            environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
-        //            environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
-        //            var thread = new Thread(() =>
-        //            {
-        //                var vm = new MainViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, environmentRepository.Object, new Mock<IVersionChecker>().Object, false, new Mock<IBrowserPopupController>().Object, new Mock<IPopupController>().Object, new Mock<IWindowManager>().Object, new Mock<IWebController>().Object, new Mock<IFeedbackInvoker>().Object);
-        //                int callCount = 0;
-        //                vm.GetWorkSurfaceContextViewModel = (r, c) =>
-        //                {
-        //                    callCount++;
-        //                    return new Mock<IWorkSurfaceContextViewModel>().Object;
-        //                };
-        //
-        //                var workspaceItemRepository = new Mock<IWorkspaceItemRepository>();
-        //                workspaceItemRepository.SetupGet(p => p.WorkspaceItems).Returns(new List<IWorkspaceItem>());
-        //
-        //                vm.GetWorkspaceItemRepository = () => workspaceItemRepository.Object;
-        //
-        //                var tasks = new List<Task>
-        //                {
-        //                    Task.Factory.StartNew(() => vm.AddWorkSurfaceContext(resourceModel.Object)), Task.Factory.StartNew(() => vm.AddWorkSurfaceContext(resourceModel.Object)), Task.Factory.StartNew(() => vm.AddWorkSurfaceContext(resourceModel.Object)), Task.Factory.StartNew(() => vm.AddWorkSurfaceContext(resourceModel.Object)), Task.Factory.StartNew(() => vm.AddWorkSurfaceContext(resourceModel.Object)), Task.Factory.StartNew(() => vm.AddWorkSurfaceContext(resourceModel.Object)), Task.Factory.StartNew(() => vm.AddWorkSurfaceContext(resourceModel.Object))
-        //                };
-        //
-        //                Task.WaitAll(tasks.ToArray());
-        //
-        //                Assert.AreEqual(1, callCount, callCount.ToString(CultureInfo.InvariantCulture));
-        //            });
-        //            thread.Start();
-        //        }
-
-
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("MainViewModel_AddWorkSurfaceContext")]
@@ -2508,37 +2414,7 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(c => c.Source).Returns(environmentModel.Object);
             environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
             environmentRepository.Setup(c => c.All()).Returns(new[] { environmentModel.Object });
-            //            new Thread(() =>
-            //            {
-            //                var vm = new MainViewModel(new Mock<IEventAggregator>().Object,
-            //                                     AsyncWorkerTests.CreateSynchronousAsyncWorker().Object,
-            //                                     environmentRepository.Object,
-            //                                     new Mock<IVersionChecker>().Object,
-            //                                     false,
-            //                                     new Mock<IBrowserPopupController>().Object,
-            //                                     new Mock<IPopupController>().Object,
-            //                                     new Mock<IWindowManager>().Object,
-            //                                     new Mock<IWebController>().Object,
-            //                                     new Mock<IFeedbackInvoker>().Object);
-            //
-            //                var workspaceItemRepository = new Mock<IWorkspaceItemRepository>();
-            //                workspaceItemRepository.SetupGet(p => p.WorkspaceItems).Returns(new List<IWorkspaceItem>());
-            //
-            //                vm.GetWorkspaceItemRepository = () => workspaceItemRepository.Object;
-            //
-            //                // will force a flip ;)
-            //                resourceModel.Object.IsWorkflowSaved = false;
-            //
-            //                var tasks = new List<Task>
-            //                {
-            //                    Task.Factory.StartNew(() => vm.AddWorkSurfaceContext(resourceModel.Object))
-            //                };
-            //
-            //                Task.WaitAll(tasks.ToArray());
-            //
-            //                Assert.IsTrue(resourceModel.Object.IsWorkflowSaved);
-            //            });
-
+          
         }
 
         [TestMethod]
@@ -2671,7 +2547,6 @@ namespace Dev2.Core.Tests
             localhost.Setup(e => e.ID).Returns(Guid.Empty);
             localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
             var environmentRepository = new Mock<IEnvironmentRepository>();
-            //environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
             environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });
             environmentRepository.Setup(c => c.Source).Returns(localhost.Object);
             var eventPublisher = new Mock<IEventAggregator>();
@@ -2694,7 +2569,6 @@ namespace Dev2.Core.Tests
             localhost.Setup(e => e.ID).Returns(Guid.Empty);
             localhost.Setup(e => e.IsConnected).Returns(true); // so that we load resources
             var environmentRepository = new Mock<IEnvironmentRepository>();
-            //environmentRepository.Setup(c => c.ReadSession()).Returns(new[] { Guid.NewGuid() });
             environmentRepository.Setup(c => c.All()).Returns(new[] { localhost.Object });
             environmentRepository.Setup(c => c.Source).Returns(localhost.Object);
             var eventPublisher = new Mock<IEventAggregator>();

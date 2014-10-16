@@ -117,6 +117,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         var tableName = row["TABLE_NAME"] as string;
                         var schema = row["TABLE_SCHEMA"] as string;
+                        tableName = '[' + tableName + ']';
                         var dbTable = tables.Items.Find(table => table.TableName == tableName && table.Schema == schema);
                         if(dbTable == null)
                         {
@@ -161,7 +162,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var ds = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<DataList><Database ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = new StringBuilder("<DataList><Database ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var sa = new ServiceAction

@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Dev2.Common;
 using Dev2.Data.Decision;
 using Dev2.Data.Decisions.Operations;
@@ -39,10 +40,10 @@ namespace Dev2.Data.Tests.SystemTemplates
             Dev2DecisionStack dds = new Dev2DecisionStack { TheStack = new List<Dev2Decision>(), Mode = Dev2DecisionMode.OR, FalseArmText = "False", TrueArmText = "True", DisplayText = "Is True" };
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            string result = dlc.ConvertModelToJson(dds);
+            var result = dlc.ConvertModelToJson(dds);
             const string expected = @"{""TheStack"":[],""TotalDecisions"":0,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":""True"",""FalseArmText"":""False"",""DisplayText"":""Is True""}";
 
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace Dev2.Data.Tests.SystemTemplates
         {
             var dlc = DataListFactory.CreateDataListCompiler();
 
-            const string payload = @"{""TheStack"":[],""TotalDecisions"":0,""Version"":""1.0.0"",""ModelName"":""Dev2DecisionStack""}";
+            var payload = new StringBuilder(@"{""TheStack"":[],""TotalDecisions"":0,""Version"":""1.0.0"",""ModelName"":""Dev2DecisionStack""}");
 
             Dev2DecisionStack dds = dlc.ConvertFromJsonToModel<Dev2DecisionStack>(payload);
 
@@ -73,7 +74,7 @@ namespace Dev2.Data.Tests.SystemTemplates
 
             dds.AddModelItem(new Dev2Decision { Col1 = "[[A]]", Col2 = string.Empty, Col3 = string.Empty, EvaluationFn = enDecisionType.IsNumeric });
 
-            string result = dlc.ConvertModelToJson(dds);
+            var result = dlc.ConvertModelToJson(dds);
 
             Dev2DecisionStack convertedResult = dlc.ConvertFromJsonToModel<Dev2DecisionStack>(result);
 
@@ -87,11 +88,11 @@ namespace Dev2.Data.Tests.SystemTemplates
         [TestMethod]
         public void CanConvertModelItemWithChooseToModelWithChoose_ExpectValidModel()
         {
-            string data = @"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":"""",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":0,""EvaluationFn"":""Choose...""}],""TotalDecisions"":2,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}";
-            data = Dev2DecisionStack.RemoveDummyOptionsFromModel(data);
+            StringBuilder data = new StringBuilder(@"{""TheStack"":[{""Col1"":""[[A]]"",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":1,""EvaluationFn"":""IsNumeric""}, {""Col1"":"""",""Col2"":"""",""Col3"":"""",""PopulatedColumnCount"":0,""EvaluationFn"":""Choose...""}],""TotalDecisions"":2,""ModelName"":""Dev2DecisionStack"",""Mode"":""OR"",""TrueArmText"":null,""FalseArmText"":null}");
+            var returnData = new StringBuilder(Dev2DecisionStack.RemoveDummyOptionsFromModel(data));
             IDataListCompiler dlc = DataListFactory.CreateDataListCompiler();
 
-            Dev2DecisionStack dds = dlc.ConvertFromJsonToModel<Dev2DecisionStack>(data);
+            Dev2DecisionStack dds = dlc.ConvertFromJsonToModel<Dev2DecisionStack>(returnData);
 
             Assert.AreEqual(1, dds.TotalDecisions);
         }

@@ -23,7 +23,7 @@ Scenario: Correcting errors on sql bulk insert clicking Done shows small view (u
 	Given "WORKSURFACE,UI_Error2_AutoID" is visible
 	#Correcting The Error
 	Given I click point "151,42" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner)"
-	And I send "GetCities{ENTER}" to ""
+	And I send "testingDBSrc{ENTER}" to ""
 	Given I click point "148,75" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner)"
 	And I send "dbo.City{ENTER}" to ""
 	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),SQL Bulk Insert(SqlBulkInsertDesigner),DoneButton"

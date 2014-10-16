@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -234,14 +235,14 @@ namespace Dev2.Runtime.ServiceModel
             var services = ResourceCatalog.Instance.GetDynamicObjects(resource);
 
             var tmp = services.FirstOrDefault();
-            var result = "<DataList></DataList>";
+            var result = new StringBuilder("<DataList></DataList>");
 
             if(tmp != null)
             {
                 result = tmp.DataListSpecification;
             }
 
-            using(var sr = new StringReader(result))
+            using(var sr = new StringReader(result.ToString()))
             {
 
                 var dataListSpec = XElement.Load(sr);
@@ -274,10 +275,10 @@ namespace Dev2.Runtime.ServiceModel
                 if(xAttribute != null)
                 {
                     var value = xAttribute.Value;
-                    enDev2ColumnArgumentDirection columnIODirection;
-                    if(Enum.TryParse(value, true, out columnIODirection))
+                    enDev2ColumnArgumentDirection columnIoDirection;
+                    if(Enum.TryParse(value, true, out columnIoDirection))
                     {
-                        return columnIODirection == enDev2ColumnArgumentDirection.Input || columnIODirection == enDev2ColumnArgumentDirection.Both;
+                        return columnIoDirection == enDev2ColumnArgumentDirection.Input || columnIoDirection == enDev2ColumnArgumentDirection.Both;
                     }
                 }
             }

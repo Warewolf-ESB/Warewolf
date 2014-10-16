@@ -28,7 +28,9 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// <summary>
     /// Find a resource by its id
     /// </summary>
+    // ReSharper disable InconsistentNaming
     public class FindResourcesByID : IEsbManagementEndpoint
+        // ReSharper restore InconsistentNaming
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -68,12 +70,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var findResourcesByIDAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
+            var findResourcesByIdAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
 
-            var findResourcesByIDService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><GuidCsv ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
-            findResourcesByIDService.Actions.Add(findResourcesByIDAction);
+            var findResourcesByIdService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><GuidCsv ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            findResourcesByIdService.Actions.Add(findResourcesByIdAction);
 
-            return findResourcesByIDService;
+            return findResourcesByIdService;
         }
 
         public string HandlesType()

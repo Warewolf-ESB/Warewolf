@@ -17,6 +17,7 @@ using System.Linq;
 using System.Windows.Input;
 using Caliburn.Micro;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Util;
@@ -934,7 +935,7 @@ namespace Dev2.Studio.ViewModels.DataList
             IBinaryDataList result = null;
             var allErrors = new ErrorResultTO();
             Guid dlGuid = compiler.ConvertTo(
-                DataListFormat.CreateFormat(GlobalConstants._Studio_XML), xmlDataList, xmlDataList, out errors);
+                DataListFormat.CreateFormat(GlobalConstants._Studio_XML), xmlDataList.ToStringBuilder(), xmlDataList.ToStringBuilder(), out errors);
 
             if(!errors.HasErrors())
             {
@@ -962,7 +963,7 @@ namespace Dev2.Studio.ViewModels.DataList
             Guid dlGuid = compiler.PushBinaryDataList(binaryDataList.UID, binaryDataList, out errors);
             string result = compiler.ConvertFrom(dlGuid,
                                                   DataListFormat.CreateFormat(GlobalConstants._Studio_XML),
-                                                  enTranslationDepth.Shape, out errors);
+                                                  enTranslationDepth.Shape, out errors).ToString();
 
             return result;
         }

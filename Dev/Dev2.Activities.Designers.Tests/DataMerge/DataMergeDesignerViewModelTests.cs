@@ -199,7 +199,7 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             var mi = ModelItemUtils.CreateModelItem(new DsfDataMergeActivity());
             mi.SetProperty("DisplayName", "Merge");
 
-            var dto = new DataMergeDTO("", DataMergeDTO.MergeTypeIndex, "a]]", 0, "ab", "Left");
+            var dto = new DataMergeDTO("a&]]", DataMergeDTO.MergeTypeIndex, "", 0, "ab", "Left");
 
             // ReSharper disable PossibleNullReferenceException
             var miCollection = mi.Properties["MergeCollection"].Collection;
@@ -219,13 +219,13 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             viewModel.Validate();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(2, viewModel.Errors.Count);
+            Assert.AreEqual(4, viewModel.Errors.Count);
 
-            StringAssert.Contains(viewModel.Errors[0].Message, "'Using' - Invalid expression: opening and closing brackets don't match");
-            Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsAtFocused");
+            StringAssert.Contains(viewModel.Errors[0].Message, "'Input' - Invalid expression: opening and closing brackets don't match.");
+            Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsFieldNameFocused");
 
-            StringAssert.Contains(viewModel.Errors[1].Message, "'Padding' must be a single character");
-            Verify_IsFocused(dtoModelItem, viewModel.Errors[1].Do, "IsPaddingFocused");
+            StringAssert.Contains(viewModel.Errors[1].Message, "'Using' cannot be empty");
+            Verify_IsFocused(dtoModelItem, viewModel.Errors[1].Do, "IsAtFocused");
         }
 
         void Verify_IsFocused(ModelItem modelItem, Action doError, string isFocusedPropertyName)

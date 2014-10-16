@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Xml;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
@@ -60,7 +61,7 @@ namespace Dev2.Data.Translators
         /// <param name="includeSysTags">Includes the system tags when building the DataList</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public IBinaryDataList TranslateShapeToObject(string shape, bool includeSysTags, out ErrorResultTO errors)
+        public IBinaryDataList TranslateShapeToObject(StringBuilder shape, bool includeSysTags, out ErrorResultTO errors)
         {
             IBinaryDataList result = null;
             errors = new ErrorResultTO();
@@ -68,7 +69,7 @@ namespace Dev2.Data.Translators
             try
             {
                 XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(shape);
+                xDoc.LoadXml(shape.ToString());
                 string error;
                 if(xDoc.DocumentElement != null)
                 {

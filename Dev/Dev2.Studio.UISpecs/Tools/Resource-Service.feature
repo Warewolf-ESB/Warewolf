@@ -9,6 +9,7 @@ Scenario: Drag Service to design surface and checking Workflows are not showing 
 	Given all tabs are closed
     And I click "EXPLORER,UI_localhost_AutoID"
 	Given I click new "Workflow"
+	When I send "service" to "TOOLBOX,PART_SearchBox"
 	Given I drag "TOOLSERVICES" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
 	# Below Step needs plumbing 
 	#And "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID" is invisible within "2" seconds

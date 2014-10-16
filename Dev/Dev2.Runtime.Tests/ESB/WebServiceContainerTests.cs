@@ -16,6 +16,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.DataList.Contract;
 using Dev2.DynamicServices;
@@ -28,7 +29,6 @@ using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Tests.Runtime.ESB
@@ -97,7 +97,7 @@ namespace Dev2.Tests.Runtime.ESB
 
             Assert.IsNotNull(result);
 
-            var resultXml = XElement.Parse(result);
+            var resultXml = XElement.Parse(result.ToString());
 
             var expectedRoot = (XElement)WebServiceWithInputsResponseXml.FirstNode;
             foreach(var actualNode in resultXml.Elements())
@@ -120,14 +120,14 @@ namespace Dev2.Tests.Runtime.ESB
             var container = CreateWebServiceContainer(WebServiceWithoutInputsXml, WebSourceWithoutInputsXml, WebServiceWithoutInputsResponse);
 
             ErrorResultTO errors;
-            var dataListID = container.Execute(out errors);
+            var dataListId = container.Execute(out errors);
             var compiler = DataListFactory.CreateDataListCompiler();
 
-            var result = compiler.ConvertFrom(dataListID, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
+            var result = compiler.ConvertFrom(dataListId, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
 
             Assert.IsNotNull(result);
 
-            var resultXml = XElement.Parse(result);
+            var resultXml = XElement.Parse(result.ToString());
 
             var expectedRoot = WebServiceWithoutInputsResponseXml;
             foreach(var actualNode in resultXml.Elements())
@@ -160,10 +160,10 @@ namespace Dev2.Tests.Runtime.ESB
         {
             ErrorResultTO errors;
             var compiler = DataListFactory.CreateDataListCompiler();
-            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "", "<DataList></DataList>", out errors);
+            var dataListId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "", "<DataList></DataList>".ToStringBuilder(), out errors);
 
             var dataObj = new Mock<IDSFDataObject>();
-            dataObj.Setup(d => d.DataListID).Returns(dataListID);
+            dataObj.Setup(d => d.DataListID).Returns(dataListId);
 
             var serviceExecution = new WebserviceExecution(dataObj.Object, true);
             var webService = new WebService { Method = new ServiceMethod() };
@@ -185,10 +185,10 @@ namespace Dev2.Tests.Runtime.ESB
         {
             ErrorResultTO errors;
             var compiler = DataListFactory.CreateDataListCompiler();
-            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "", "<DataList></DataList>", out errors);
+            var dataListId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "".ToStringBuilder(), "<DataList></DataList>".ToStringBuilder(), out errors);
 
             var dataObj = new Mock<IDSFDataObject>();
-            dataObj.Setup(d => d.DataListID).Returns(dataListID);
+            dataObj.Setup(d => d.DataListID).Returns(dataListId);
 
             var workspace = new Mock<IWorkspace>();
             var esbChannel = new Mock<IEsbChannel>();

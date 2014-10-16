@@ -1,5 +1,5 @@
 
-<Service ID="0000e549-3d39-442e-adb4-e694ffdd74b0" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Roll Dice for Players" ResourceType="WorkflowService" Category="MY CATEGORY">
+<Service ID="0000e549-3d39-442e-adb4-e694ffdd74b0" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Roll Dice for Players" ResourceType="WorkflowService" Category="MY CATEGORY" ServerVersion="0.4.2.2">
   <DisplayName>Roll Dice for Players</DisplayName>
   <Category>MY CATEGORY\Roll Dice for Players</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
@@ -40,9 +40,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>IGUnfMOWqsI2Pix1oVJRWlGZPAg=</DigestValue>
+        <DigestValue>oC2TBYzJIHVQz6Qqli1Tts0HbAw=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>owtLEA0CXY+R2xXYkBd1hZ6B8KUi+6goOrCjFVqZwk3v6qvNc2C13rjX3f0H6l5o7PR3S6EvAU1+WZTYPhBB1QkvwEPvdKBtW2Pm4SGTM8HAhbXi/8l1HjlHZ3+IiwEDNpmboqOIl0swlYw2jYsEMTUaCzwmLN7IHMtMV+GMh/A=</SignatureValue>
+    <SignatureValue>X77Ryha1mem24tsIveXDzBgOMyFgsEAlbum/Two+c55KUzjohWb8ab/cLQi0Kj2fFkPOb34srRAdvV1+dqmSsoWpH3Dulco2y5uBKBqaWVmHdNpieKA3iS+QBNsGaqxPJi6qHqGJah1CqPIU/ewWlgISZINZF/k/u3tFUayZ4k0=</SignatureValue>
   </Signature>
 </Service>

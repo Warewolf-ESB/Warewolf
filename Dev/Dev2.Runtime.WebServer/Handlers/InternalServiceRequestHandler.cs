@@ -147,7 +147,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     return new StringBuilder("Completed Debug");
                 }
 
-                var result = new StringBuilder(compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors));
+                var result = compiler.ConvertFrom(dlID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out errors);
                 compiler.ForceDeleteDataListByID(dlID);
                 return result;
             }

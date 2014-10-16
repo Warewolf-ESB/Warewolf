@@ -789,7 +789,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 try
                 {
-                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
+                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"').ToStringBuilder());
                     foreach (var decision in dds.TheStack)
                     {
                         var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };
@@ -1989,8 +1989,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void PublishMessages(IContextualResourceModel resourceModel)
         {
-            Dev2Logger.Log.Info("Publish message of type - " + typeof(UpdateDeployMessage));
-            EventPublisher.Publish(new UpdateDeployMessage());
             Dev2Logger.Log.Info("Publish message of type - " + typeof(UpdateResourceMessage));
             EventPublisher.Publish(new UpdateResourceMessage(resourceModel));
 

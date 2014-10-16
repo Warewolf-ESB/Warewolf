@@ -799,7 +799,7 @@ namespace Dev2.Data.Util
         /// <param name="defs">The defs.</param>
         /// <param name="withData">if set to <c>true</c> [with data].</param>
         /// <returns></returns>
-        public static string GenerateDataListFromDefs(IList<IDev2Definition> defs, bool withData = false)
+        public static StringBuilder GenerateDataListFromDefs(IList<IDev2Definition> defs, bool withData = false)
         {
             StringBuilder result = new StringBuilder("<" + AdlRoot + ">");
 
@@ -847,7 +847,7 @@ namespace Dev2.Data.Util
             result.Append(Environment.NewLine);
             result.Append("</" + AdlRoot + ">");
 
-            return result.ToString();
+            return result;
         }
 
         /// <summary>
@@ -857,7 +857,7 @@ namespace Dev2.Data.Util
         /// <param name="typeOf">The type of.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public static string ShapeDefinitionsToDataList(IList<IDev2Definition> defs, enDev2ArgumentType typeOf, out ErrorResultTO errors)
+        public static StringBuilder ShapeDefinitionsToDataList(IList<IDev2Definition> defs, enDev2ArgumentType typeOf, out ErrorResultTO errors)
         {
             StringBuilder result = new StringBuilder();
 
@@ -893,7 +893,7 @@ namespace Dev2.Data.Util
                 result.Append(string.Concat("</", AdlRoot, ">"));
             }
 
-            return result.ToString();
+            return result;
         }
 
         /// <summary>
@@ -905,7 +905,7 @@ namespace Dev2.Data.Util
         /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
         /// <param name="isDbService"></param>
         /// <returns></returns>
-        public static string ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false, bool isDbService = false)
+        public static StringBuilder ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false, bool isDbService = false)
         {
             StringBuilder result = new StringBuilder();
             IList<IDev2Definition> defs = null;
@@ -954,7 +954,7 @@ namespace Dev2.Data.Util
                 result.Append(string.Concat("</", AdlRoot, ">"));
             }
 
-            return result.ToString();
+            return result;
         }
 
 

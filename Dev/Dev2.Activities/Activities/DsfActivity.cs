@@ -15,6 +15,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
+using System.Text;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -341,7 +342,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         if(dataObject.IsDebugMode())
                         {
                             //Dont remove this it is here to fix the data not being returned correctly
-                            string testData = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors);
+                            string testData = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors).ToString();
                             if(string.IsNullOrEmpty(testData))
                             {
 
@@ -386,12 +387,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 dataObject.ParentInstanceID = _previousInstanceId;
                 dataObject.ParentServiceName = parentServiceName;
                 dataObject.ServiceName = serviceName;
-                dataObject.RemoteInvokeResultShape = string.Empty; // reset targnet shape ;)
+                dataObject.RemoteInvokeResultShape = new StringBuilder(); // reset targnet shape ;)
                 dataObject.RunWorkflowAsync = false;
                 dataObject.RemoteInvokerID = Guid.Empty.ToString();
                 dataObject.EnvironmentID = Guid.Empty;
                 dataObject.ResourceID = oldResourceId;
-                compiler.ClearErrors(dataObject.DataListID);
             }
         }
 
@@ -488,8 +488,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            string inputDlString = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors, true);
-            string inputDlShape = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors);
+            var inputDlString = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors, true);
+            var inputDlShape = compiler.GenerateWizardDataListFromDefs(InputMapping, enDev2ArgumentType.Input, false, out errors);
             if(!errors.HasErrors())
             {
                 Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), inputDlString, inputDlShape, out errors);
@@ -518,8 +518,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors;
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
 
-            string outputDlString = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
-            string outputDlShape = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors);
+            var outputDlString = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors, true);
+            var outputDlShape = compiler.GenerateWizardDataListFromDefs(OutputMapping, enDev2ArgumentType.Output, false, out errors);
             if(!errors.HasErrors())
             {
                 Guid dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), outputDlString, outputDlShape, out errors);

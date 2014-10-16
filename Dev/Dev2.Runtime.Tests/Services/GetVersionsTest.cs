@@ -99,7 +99,7 @@
                 //------------Execute Test---------------------------
                 var a = getVersions.CreateServiceEntry();
                 //------------Assert Results-------------------------
-                var b = a.DataListSpecification;
+                var b = a.DataListSpecification.ToString();
                 Assert.AreEqual(@"<DataList><ResourceType ColumnIODirection=""Input""/><Roles ColumnIODirection=""Input""/><ResourceId ColumnIODirection=""Input""/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>", b);
             }
         }

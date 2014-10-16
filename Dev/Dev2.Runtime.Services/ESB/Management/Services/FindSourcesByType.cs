@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var findSourcesByTypeAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
-            var findSourcesByTypeService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><Type ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            var findSourcesByTypeService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Type ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
             findSourcesByTypeService.Actions.Add(findSourcesByTypeAction);
 
             return findSourcesByTypeService;

@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="On X86 Execution Platform" id="3264dd0f-6fc1-4cb9-b44f-c649fef29609" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These setting force mstest to execute these tests as an X86 process.</Description>
-  <Deployment enabled="false" />
-  <NamingScheme baseName="UT" />
+  <Deployment enabled="false" />  
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution>
     <Timeouts testTimeout="0" />

@@ -40,6 +40,7 @@ namespace Dev2.Runtime.WebServer
             // This value must be no more than 1/3 of the DisconnectTimeout value.
             GlobalHost.Configuration.KeepAlive = TimeSpan.FromSeconds(20);
 
+            GlobalHost.Configuration.DefaultMessageBufferSize = 2000;
             var startOptions = new StartOptions();
             foreach(var endpoint in endpoints)
             {

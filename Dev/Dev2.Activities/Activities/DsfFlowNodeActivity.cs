@@ -14,6 +14,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -151,7 +152,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
             var allErrors = new ErrorResultTO();
 
-            string val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText);
+            var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText));
 
             try
             {
@@ -187,7 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(JsonSerializationException)
             {
-                Dev2Switch ds = new Dev2Switch { SwitchVariable = val };
+                Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
                 DebugItem itemToAdd = new DebugItem();
                 ErrorResultTO errors;
                 IBinaryDataListEntry expressionsEntry = compiler.Evaluate(dataList.UID, enActionType.User, ds.SwitchVariable, false, out errors);
@@ -267,7 +268,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             string resultString = _theResult.ToString();
             DebugItem itemToAdd = new DebugItem();
             IDataListCompiler c = DataListFactory.CreateDataListCompiler();
-            string val = Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText);
+            var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(ExpressionText));
 
             try
             {

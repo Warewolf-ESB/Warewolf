@@ -239,6 +239,7 @@
                      ToolTip="{x:Static help:HelpTextResources.UnzipToolTipArchivePassword}"
                      attachedProperties:PasswordBoxAssistant.BindPassword="true"
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.ArchivePassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          attachedProperties:FocusSetter.IsFocused="{Binding ArchivePasswordExists, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ArchivePasswordtxt_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.UnzipHelpArchivePassword}"
