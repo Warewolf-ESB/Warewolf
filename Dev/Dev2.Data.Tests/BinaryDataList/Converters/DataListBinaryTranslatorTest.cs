@@ -9,11 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System.Text;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.BinaryDataList.Converters
 {
     /// <summary>
@@ -60,7 +61,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             ErrorResultTO errors;
 
             //------------Execute Test---------------------------
-            compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._BINARY), string.Empty, string.Empty, out errors);
+            compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._BINARY), new StringBuilder(), new StringBuilder(), out errors);
 
             //------------Assert Results-------------------------
             var theErrors = errors.FetchErrors();

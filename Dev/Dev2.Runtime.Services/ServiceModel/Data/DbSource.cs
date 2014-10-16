@@ -74,6 +74,18 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public string Password { get; set; }
 
+        public new string DataList
+        {
+            get
+            {
+                return base.DataList.ToString();
+            }
+            set
+            {
+                base.DataList = value.ToStringBuilder();
+            }
+        }
+
         #endregion
 
         #region ConnectionString

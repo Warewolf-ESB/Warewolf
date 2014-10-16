@@ -13,6 +13,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Factories;
@@ -323,7 +324,7 @@ namespace Dev2.Tests
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
             string defstring = ParserStrings.dlOutputMappingOutMapping;
             ErrorResultTO errors;
-            string acctual = dataListCompiler.GenerateWizardDataListFromDefs(defstring, enDev2ArgumentType.Output, false, out errors, true);
+            var acctual = dataListCompiler.GenerateWizardDataListFromDefs(defstring, enDev2ArgumentType.Output, false, out errors, true);
 
             Assert.IsTrue(acctual.Contains(@"<ADL><required></required><validationClass></validationClass><cssClass>[[cssClass]]</cssClass><Dev2customStyle></Dev2customStyle>
 </ADL>"));
@@ -335,7 +336,7 @@ namespace Dev2.Tests
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
             string defstring = ParserStrings.dlInputMapping;
             ErrorResultTO errors;
-            string acctual = dataListCompiler.GenerateWizardDataListFromDefs(defstring, enDev2ArgumentType.Input, false, out errors, true);
+            var acctual = dataListCompiler.GenerateWizardDataListFromDefs(defstring, enDev2ArgumentType.Input, false, out errors, true);
 
             Assert.IsTrue(acctual.Contains(@"<ADL><reg></reg><asdfsad>registration223</asdfsad><number></number>
 </ADL>"));
@@ -347,7 +348,7 @@ namespace Dev2.Tests
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
             string defstring = ParserStrings.dlOutputMappingOutMapping;
             ErrorResultTO errors;
-            string acctual = dataListCompiler.GenerateDataListFromDefs(defstring, enDev2ArgumentType.Output, false, out errors);
+            var acctual = dataListCompiler.GenerateDataListFromDefs(defstring, enDev2ArgumentType.Output, false, out errors);
 
             Assert.IsTrue(acctual.Contains(@"<ADL><required/><validationClass/><cssClass/><Dev2customStyle/>
 </ADL>"));
@@ -359,7 +360,7 @@ namespace Dev2.Tests
             var dataListCompiler = DataListFactory.CreateDataListCompiler();
             string defstring = ParserStrings.dlInputMapping;
             ErrorResultTO errors;
-            string acctual = dataListCompiler.GenerateDataListFromDefs(defstring, enDev2ArgumentType.Input, false, out errors);
+            var acctual = dataListCompiler.GenerateDataListFromDefs(defstring, enDev2ArgumentType.Input, false, out errors);
 
             Assert.IsTrue(acctual.Contains(@"<ADL><reg/><asdfsad/><number/>
 </ADL>"));

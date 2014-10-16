@@ -47,6 +47,18 @@ namespace Dev2.Runtime.ServiceModel.Data
         /// </summary>
         public string TestToAddress { get; set; }
 
+        public new string DataList
+        {
+            get
+            {
+                return base.DataList.ToString();
+            }
+            set
+            {
+                base.DataList = value.ToStringBuilder();
+            }
+        }
+
         #endregion
 
         #region CTOR

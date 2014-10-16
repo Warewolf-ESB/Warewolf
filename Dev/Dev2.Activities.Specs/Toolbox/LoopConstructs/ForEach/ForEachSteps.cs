@@ -324,7 +324,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         /// <param name="workspaceID">The workspace unique identifier.</param>
         /// <param name="resourceID">Name of the service.</param>
         /// <returns></returns>
-        public string FindServiceShape(Guid workspaceID, Guid resourceID)
+        public StringBuilder FindServiceShape(Guid workspaceID, Guid resourceID)
         {
             return null;
         }

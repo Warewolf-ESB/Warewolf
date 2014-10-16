@@ -13,12 +13,15 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.BinaryDataList.Converters
 {
     [TestClass]
@@ -63,7 +66,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             ErrorResultTO errors;
 
             //------------Execute Test---------------------------
-            compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty, string.Empty, out errors);
+            compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), new StringBuilder(), new StringBuilder(), out errors);
 
             //------------Assert Results-------------------------
             var theErrors = errors.FetchErrors();
@@ -78,7 +81,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             Guid tmp = CreateDataList(enDev2ColumnArgumentDirection.Input);
             ErrorResultTO errors;
 
-            string result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+            var result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
 
             const string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Input"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></DataList>";
 
@@ -86,7 +89,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
 
             _compiler.ForceDeleteDataListByID(tmp);
 
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
             Assert.IsFalse(res);
         }
 
@@ -96,7 +99,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             Guid tmp = CreateDataList(enDev2ColumnArgumentDirection.Output);
             ErrorResultTO errors;
 
-            string result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+            var result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
 
             const string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Output"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></DataList>";
 
@@ -104,7 +107,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
 
             _compiler.ForceDeleteDataListByID(tmp);
 
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
             Assert.IsFalse(res);
         }
 
@@ -114,13 +117,13 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             Guid tmp = CreateDataList(enDev2ColumnArgumentDirection.Both);
             ErrorResultTO errors;
 
-            string result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+            var result = _compiler.ConvertFrom(tmp, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
 
             const string expected = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></DataList>";
 
             _compiler.ForceDeleteDataListByID(tmp);
 
-            Assert.AreEqual(expected, result);
+            Assert.AreEqual(expected, result.ToString());
         }
 
         #endregion
@@ -130,7 +133,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
         public void Can_Create_BinaryDataList_With_ColumnIODirection_Input()
         {
             ErrorResultTO errors;
-            const string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Input"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></DataList>";
+            var shape = new StringBuilder(@"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Input"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /></DataList>");
 
 
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), shape, shape, out errors);
@@ -162,7 +165,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
         public void Can_Create_BinaryDataList_With_ColumnIODirection_Output()
         {
             ErrorResultTO errors;
-            const string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Output"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></DataList>";
+            var shape = new StringBuilder(@"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Output"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Output"" /></DataList>");
 
 
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), shape, shape, out errors);
@@ -194,7 +197,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
         public void Can_Create_BinaryDataList_With_ColumnIODirection_Both()
         {
             ErrorResultTO errors;
-            const string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></DataList>";
+            var shape = new StringBuilder(@"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></DataList>");
 
 
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), shape, shape, out errors);
@@ -225,7 +228,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
         public void Can_Create_BinaryDataList_With_Blank_IsEditable_Blank_Expected_All_IsEditable_Properties_Are_True()
         {
             ErrorResultTO errors;
-            const string shape = @"<DataList><recset Description="""" ColumnIODirection=""Both"" ><f1 Description="""" ColumnIODirection=""Both"" /><f2 Description="""" ColumnIODirection=""Both"" /><f3 Description="""" ColumnIODirection=""Both"" /><f4 Description="""" ColumnIODirection=""Both"" /><f5 Description="""" ColumnIODirection=""Both"" /></recset><myScalar Description="""" ColumnIODirection=""Both"" /></DataList>";
+            var shape = new StringBuilder(@"<DataList><recset Description="""" ColumnIODirection=""Both"" ><f1 Description="""" ColumnIODirection=""Both"" /><f2 Description="""" ColumnIODirection=""Both"" /><f3 Description="""" ColumnIODirection=""Both"" /><f4 Description="""" ColumnIODirection=""Both"" /><f5 Description="""" ColumnIODirection=""Both"" /></recset><myScalar Description="""" ColumnIODirection=""Both"" /></DataList>");
 
 
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), shape, shape, out errors);
@@ -259,7 +262,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
         public void Can_Create_BinaryDataList_With_ColumnIODirection_InvalidDirection_Yield_Both()
         {
             ErrorResultTO errors;
-            const string shape = @"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""MalformedDirection"" /></DataList>";
+            var shape = new StringBuilder(@"<DataList><recset Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ><f1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f3 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f4 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><f5 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /></recset><myScalar Description="""" IsEditable=""True"" ColumnIODirection=""MalformedDirection"" /></DataList>");
 
 
             Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), shape, shape, out errors);
@@ -290,10 +293,10 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
         public void Can_Create_BinaryDataList_With_No_ColumnDirection()
         {
             ErrorResultTO errors;
-            const string shape = @"<DataList><recset Description="""" IsEditable=""True""  ><f1 Description="""" IsEditable=""True""  /><f2 Description="""" IsEditable=""True""  /><f3 Description="""" IsEditable=""True""  /><f4 Description="""" IsEditable=""True""  /><f5 Description="""" IsEditable=""True""  /></recset><myScalar Description="""" IsEditable=""True"" /></DataList>";
+            var shape = new StringBuilder(@"<DataList><recset Description="""" IsEditable=""True""  ><f1 Description="""" IsEditable=""True""  /><f2 Description="""" IsEditable=""True""  /><f3 Description="""" IsEditable=""True""  /><f4 Description="""" IsEditable=""True""  /><f5 Description="""" IsEditable=""True""  /></recset><myScalar Description="""" IsEditable=""True"" /></DataList>");
 
 
-            Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty, shape, out errors);
+            Guid tmp = _compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty.ToStringBuilder(), shape, out errors);
             IBinaryDataList bdl = _compiler.FetchBinaryDataList(tmp, out errors);
             _compiler.DeleteDataListByID(tmp);
 

@@ -175,7 +175,7 @@ namespace Dev2.Server.DataList.Translators
         }
 
         // api level
-        public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(byte[] input, StringBuilder targetShape, out ErrorResultTO errors)
         {
             return ConvertTo(input, targetShape, out errors, false);
         }
@@ -188,13 +188,13 @@ namespace Dev2.Server.DataList.Translators
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
             return ConvertTo(input, shape, out errors, true);
         }
 
         // internal to impl api methods
-        private IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors, bool onlyMapInputs)
+        private IBinaryDataList ConvertTo(byte[] input, StringBuilder targetShape, out ErrorResultTO errors, bool onlyMapInputs)
         {
             errors = new ErrorResultTO();
             string payload = Encoding.UTF8.GetString(input);
@@ -275,7 +275,7 @@ namespace Dev2.Server.DataList.Translators
             return result;
         }
 
-        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(object input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -363,7 +363,7 @@ namespace Dev2.Server.DataList.Translators
             }
         }
 
-        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
+        public StringBuilder ConvertAndFilter(IBinaryDataList input, StringBuilder filterShape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }

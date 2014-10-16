@@ -12,6 +12,7 @@
 
 using System.Diagnostics.CodeAnalysis;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.DataList.Contract;
 using Dev2.ViewModels.Workflow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -47,8 +48,8 @@ namespace Dev2.Core.Tests.UtilsTests
             const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
 
             //------------Execute Test---------------------------
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Data, Shape, out errors);
-            var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            var dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Data.ToStringBuilder(), Shape.ToStringBuilder(), out errors);
+            var bdl = compiler.FetchBinaryDataList(dlId, out errors);
 
             var result = converter.CreateListToBindTo(bdl);
 
@@ -75,8 +76,8 @@ namespace Dev2.Core.Tests.UtilsTests
             const string Shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Both"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
 
             //------------Execute Test---------------------------
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Data, Shape, out errors);
-            var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            var dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Data.ToStringBuilder(), Shape.ToStringBuilder(), out errors);
+            var bdl = compiler.FetchBinaryDataList(dlId, out errors);
 
             var result = converter.CreateListToBindTo(bdl);
 
@@ -103,8 +104,8 @@ namespace Dev2.Core.Tests.UtilsTests
             const string Shape = @"<DataList><scalar Description="""" IsEditable=""True"" ColumnIODirection=""Input"" ></scalar></DataList>";
 
             //------------Execute Test---------------------------
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Data, Shape, out errors);
-            var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            var dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Data.ToStringBuilder(), Shape.ToStringBuilder(), out errors);
+            var bdl = compiler.FetchBinaryDataList(dlId, out errors);
 
             var result = converter.CreateListToBindTo(bdl);
 
@@ -130,8 +131,8 @@ namespace Dev2.Core.Tests.UtilsTests
             const string Shape = @"<DataList><scalar Description="""" IsEditable=""True"" ColumnIODirection=""Both"" ></scalar></DataList>";
 
             //------------Execute Test---------------------------
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Data, Shape, out errors);
-            var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            var dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Data.ToStringBuilder(), Shape.ToStringBuilder(), out errors);
+            var bdl = compiler.FetchBinaryDataList(dlId, out errors);
 
             var result = converter.CreateListToBindTo(bdl);
 
@@ -157,8 +158,8 @@ namespace Dev2.Core.Tests.UtilsTests
             const string Shape = @"<DataList><scalar Description="""" IsEditable=""True"" ColumnIODirection=""None"" ></scalar></DataList>";
 
             //------------Execute Test---------------------------
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Data, Shape, out errors);
-            var bdl = compiler.FetchBinaryDataList(dlID, out errors);
+            var dlId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Data.ToStringBuilder(), Shape.ToStringBuilder(), out errors);
+            var bdl = compiler.FetchBinaryDataList(dlId, out errors);
 
             var result = converter.CreateListToBindTo(bdl);
 

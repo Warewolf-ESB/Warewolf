@@ -11,6 +11,7 @@
 
 
 using System;
+using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
@@ -41,13 +42,13 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
 
-            const string dataList = @"<DataList>
+            var dataList = new StringBuilder(@"<DataList>
   <result Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
   <val1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
   <val2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
-</DataList>";
+</DataList>");
 
-            const string payload = "<DataList><val1>1</val1><val2>2</val2><result>5</result></DataList>";
+            var payload = new StringBuilder("<DataList><val1>1</val1><val2>2</val2><result>5</result></DataList>");
 
             //------------Execute Test---------------------------
             var result = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), payload, dataList, out errors);
@@ -90,15 +91,15 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
 
-            const string dataList = @"<DataList>
+            var dataList = new StringBuilder(@"<DataList>
   <result Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
   <rs Description="""" IsEditable=""True"" ColumnIODirection=""Input"" >
         <val1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
         <val2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
   </rs>
-</DataList>";
+</DataList>");
 
-            const string payload = "<DataList><rs><val1>1</val1><val2>2</val2></rs><rs><val1>3</val1><val2>4</val2></rs></DataList>";
+            var payload = new StringBuilder("<DataList><rs><val1>1</val1><val2>2</val2></rs><rs><val1>3</val1><val2>4</val2></rs></DataList>");
 
             //------------Execute Test---------------------------
             var result = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), payload, dataList, out errors);
@@ -138,15 +139,15 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
 
-            const string dataList = @"<DataList>
+            var dataList = new StringBuilder(@"<DataList>
   <result Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
   <rs Description="""" IsEditable=""True"" ColumnIODirection=""Input"" >
         <val1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
         <val2 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
   </rs>
-</DataList>";
+</DataList>");
 
-            const string payload = "<DataList><rs><val1>1</val1><val2>2</val2></rs><rs><val1>3</val1><val2>4</val2></rs><result>99</result></DataList>";
+            var payload = new StringBuilder("<DataList><rs><val1>1</val1><val2>2</val2></rs><rs><val1>3</val1><val2>4</val2></rs><result>99</result></DataList>");
 
             //------------Execute Test---------------------------
             var result = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), payload, dataList, out errors);
@@ -193,15 +194,15 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
 
-            const string dataList = @"<DataList>
+            var dataList = new StringBuilder(@"<DataList>
   <result Description="""" IsEditable=""True"" ColumnIODirection=""Both"" />
   <rs Description="""" IsEditable=""True"" ColumnIODirection=""Both"" >
         <val1 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" />
         <val2 Description="""" IsEditable=""True"" ColumnIODirection=""Both"" />
   </rs>
-</DataList>";
+</DataList>");
 
-            const string payload = "<DataList><rs><val1>1</val1><val2>2</val2></rs><rs><val1>3</val1><val2>4</val2></rs><result>99</result></DataList>";
+            var payload = new StringBuilder("<DataList><rs><val1>1</val1><val2>2</val2></rs><rs><val1>3</val1><val2>4</val2></rs><result>99</result></DataList>");
 
             //------------Execute Test---------------------------
             var result = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), payload, dataList, out errors);
@@ -249,15 +250,15 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
 
-            const string dataList = @"<DataList>
+            var dataList = new StringBuilder(@"<DataList>
   <result Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
   <rs Description="""" IsEditable=""True"" ColumnIODirection=""Input"" >
         <val1 Description="""" IsEditable=""True"" ColumnIODirection=""Input"" />
         <val2 Description="""" IsEditable=""True"" ColumnIODirection=""Output"" />
   </rs>
-</DataList>";
+</DataList>");
 
-            const string payload = "<DataList><rs><val1>1</val1><val2>2</val2></rs><rs><val1>3</val1><val2>4</val2></rs></DataList>";
+            var payload = new StringBuilder("<DataList><rs><val1>1</val1><val2>2</val2></rs><rs><val1>3</val1><val2>4</val2></rs></DataList>");
 
             //------------Execute Test---------------------------
             var result = compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML), payload, dataList, out errors);

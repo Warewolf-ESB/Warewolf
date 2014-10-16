@@ -49,13 +49,13 @@ namespace Dev2.Data.Translators
             throw new NotImplementedException();
         }
 
-        public IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
 
 
-        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
+        public StringBuilder ConvertAndFilter(IBinaryDataList input, StringBuilder filterShape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -127,7 +127,7 @@ namespace Dev2.Data.Translators
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -264,7 +264,7 @@ namespace Dev2.Data.Translators
         }
 
 
-        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(object input, StringBuilder shape, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
 

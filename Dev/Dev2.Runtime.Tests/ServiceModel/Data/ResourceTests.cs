@@ -400,8 +400,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
-            Assert.IsFalse(String.IsNullOrEmpty(resource.DataList));
-            var expected = resource.DataList.Replace(Environment.NewLine, "").Replace(" ", "");
+            Assert.IsFalse(String.IsNullOrEmpty(resource.DataList.ToString()));
+            var expected = resource.DataList.Replace(Environment.NewLine, "").Replace(" ", "").ToString();
             var actual = dataList.Replace(" ", "");
             Assert.AreEqual(expected, actual);
         }
@@ -431,8 +431,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
-            Assert.IsFalse(String.IsNullOrEmpty(resource.DataList));
-            Assert.AreEqual("<DataList />", resource.DataList);
+            Assert.IsFalse(String.IsNullOrEmpty(resource.DataList.ToString()));
+            Assert.AreEqual("<DataList />", resource.DataList.ToString());
             inputs = inputs.Replace(Environment.NewLine, "").Replace(" ", "");
             outputs = outputs.Replace(Environment.NewLine, "").Replace(" ", "");
             var actual = resource.Inputs.Replace(Environment.NewLine, "").Replace(" ", "");
@@ -451,8 +451,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
-            Assert.IsFalse(String.IsNullOrEmpty(resource.DataList));
-            Assert.AreEqual("<DataList />", resource.DataList);
+            Assert.IsFalse(String.IsNullOrEmpty(resource.DataList.ToString()));
+            Assert.AreEqual("<DataList />", resource.DataList.ToString());
             Assert.IsFalse(String.IsNullOrEmpty(resource.Inputs));
             Assert.IsFalse(String.IsNullOrEmpty(resource.Outputs));
         }

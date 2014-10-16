@@ -73,7 +73,7 @@ namespace Dev2.DynamicServices.Objects.Base
         public string Category { get; set; }
         public string Tags { get; set; }
         public string OutputSpecification { get; set; }
-        public string DataListSpecification { get; set; }
+        public StringBuilder DataListSpecification { get; set; }
         public string HelpLink { get; set; }
 
         public bool IsCompiled

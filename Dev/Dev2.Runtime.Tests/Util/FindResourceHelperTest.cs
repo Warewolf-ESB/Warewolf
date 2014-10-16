@@ -12,6 +12,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
@@ -92,7 +93,7 @@ namespace Dev2.Tests.Runtime.Util
                 Outputs = "outputs",
                 ResourceID = id,
                 IsNewResource = false,
-                DataList = "abc",
+                DataList = new StringBuilder("abc"),
                 IsValid = true,
                 ResourcePath = "Category",
                 ResourceName = "Workflow",

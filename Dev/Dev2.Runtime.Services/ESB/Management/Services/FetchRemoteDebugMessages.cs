@@ -36,24 +36,24 @@ namespace Dev2.Runtime.ESB.Management.Services
 
          
             Dev2Logger.Log.Info("Fetch Remote Debug Messages");
-            string invokerID = null;
+            string invokerId = null;
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
 
             StringBuilder tmp;
             values.TryGetValue("InvokerID", out tmp);
             if(tmp != null)
             {
-                invokerID = tmp.ToString();
+                invokerId = tmp.ToString();
             }
 
-            if(string.IsNullOrEmpty(invokerID))
+            if(string.IsNullOrEmpty(invokerId))
             {
                 throw new InvalidDataContractException("Null or empty ServiceID or WorkspaceID");
             }
 
             Guid iGuid;
             // RemoteDebugMessageRepo
-            Guid.TryParse(invokerID, out iGuid);
+            Guid.TryParse(invokerId, out iGuid);
 
             if(iGuid != Guid.Empty)
             {
@@ -73,7 +73,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder( "<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
             ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 

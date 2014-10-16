@@ -865,7 +865,7 @@ namespace Dev2.Server.Datalist
             return returnVal;
         }
 
-        public Guid ConvertAndOnlyMapInputs(NetworkContext ctx, DataListFormat typeOf, byte[] payload, string shape, out ErrorResultTO errors)
+        public Guid ConvertAndOnlyMapInputs(NetworkContext ctx, DataListFormat typeOf, byte[] payload, StringBuilder shape, out ErrorResultTO errors)
         {
             // _repo
             Guid returnVal = Guid.Empty;
@@ -909,7 +909,7 @@ namespace Dev2.Server.Datalist
             return returnVal;
         }
 
-        public Guid ConvertTo(NetworkContext ctx, DataListFormat typeOf, object payload, string shape, out ErrorResultTO errors)
+        public Guid ConvertTo(NetworkContext ctx, DataListFormat typeOf, object payload, StringBuilder shape, out ErrorResultTO errors)
         {
             // _repo
             Guid returnVal = Guid.Empty;
@@ -953,7 +953,7 @@ namespace Dev2.Server.Datalist
             return returnVal;
         }
 
-        public Guid ConvertTo(NetworkContext ctx, DataListFormat typeOf, byte[] payload, string shape, out ErrorResultTO errors)
+        public Guid ConvertTo(NetworkContext ctx, DataListFormat typeOf, byte[] payload, StringBuilder shape, out ErrorResultTO errors)
         {
 
             // _repo
@@ -1041,9 +1041,9 @@ namespace Dev2.Server.Datalist
             return returnVal;
         }
 
-        public string ConvertAndFilter(NetworkContext ctx, Guid curDLID, string filterShape, DataListFormat typeOf, out ErrorResultTO errors)
+        public StringBuilder ConvertAndFilter(NetworkContext ctx, Guid curDLID, StringBuilder filterShape, DataListFormat typeOf, out ErrorResultTO errors)
         {
-            string res = string.Empty;
+            var res = new StringBuilder();
             ErrorResultTO allErrors = new ErrorResultTO();
             string error;
 
@@ -1351,7 +1351,7 @@ namespace Dev2.Server.Datalist
             Guid result = Guid.Empty;
             errors = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
-            string theShape = DataListUtil.GenerateDataListFromDefs(definitions);
+            var theShape = DataListUtil.GenerateDataListFromDefs(definitions);
             byte[] empty = new byte[0];
 
             // always an internal XML format ;)
