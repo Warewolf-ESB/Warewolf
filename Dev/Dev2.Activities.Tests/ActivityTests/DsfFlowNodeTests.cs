@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System.Text;
 using ActivityUnitTests;
 using Dev2.Common;
 using Dev2.Data.Decision;
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<ADL><var/></ADL>";
             TestData = "<root><var>\"</var></root>";
             ErrorResultTO errors;
-            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
 
             IList<string> getDatalistID = new List<string> { exeID.ToString() };
 
@@ -81,7 +81,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<ADL><var/></ADL>";
             TestData = "<root><var>\"something \"data\" \"</var></root>";
             ErrorResultTO errors;
-            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
 
             IList<string> getDatalistID = new List<string> { exeID.ToString() };
 
@@ -108,7 +108,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<ADL><vars><var></var></vars></ADL>";
             TestData = "<root><vars><var>\"something \"data\" \"</var></vars><vars><var>\"somthing \"data\" \"</var></vars></root>";
             ErrorResultTO errors;
-            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
 
             IList<string> getDatalistID = new List<string> { exeID.ToString() };
 
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<ADL><vars><var></var></vars></ADL>";
             TestData = "<root><vars><var>\"something \"data\" \"</var></vars><vars><var>\"somthing \"data\" \"</var></vars></root>";
             ErrorResultTO errors;
-            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
 
             IList<string> getDatalistID = new List<string> { exeID.ToString() };
 
@@ -162,7 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<ADL><vars><var></var></vars></ADL>";
             TestData = "<root><vars><var>\"something \"data\" \"</var></vars><vars><var>\"something \"data\" \"</var></vars></root>";
             ErrorResultTO errors;
-            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
 
             IList<string> getDatalistID = new List<string> { exeID.ToString() };
 
@@ -189,7 +189,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<ADL><vars><var></var></vars></ADL>";
             TestData = "<root><vars><var>something \"data\"</var></vars><vars><var>something \"data\"</var></vars></root>";
             ErrorResultTO errors;
-            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
 
             IList<string> getDatalistID = new List<string> { exeID.ToString() };
 
@@ -212,7 +212,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             ErrorResultTO errors;
 
             IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
-            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            Guid exeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(TestData), new StringBuilder(CurrentDl), out errors);
             IList<string> getDatalistID = new List<string> { exeID.ToString() };
 
             var dev2DataListDecisionHandler = new Dev2DataListDecisionHandler();
@@ -374,7 +374,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors;
-            dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, shape, out errors);
+            dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(data), new StringBuilder(shape), out errors);
 
             // we need to set this now ;)
             dataObject.ParentThreadID = 1;

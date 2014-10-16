@@ -455,7 +455,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     Dev2Logger.Log.Error(errors.MakeDisplayReady());
                 }
 
-                return result;
+                return result.ToString();
             }
 
             Dev2Logger.Log.Error(errors.MakeDisplayReady());

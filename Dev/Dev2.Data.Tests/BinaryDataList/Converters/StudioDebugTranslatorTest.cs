@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System.Text;
 using Dev2.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -41,7 +41,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             ErrorResultTO errors;
 
             //------------Execute Test---------------------------
-            compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), string.Empty, string.Empty, out errors);
+            compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), new StringBuilder(), new StringBuilder(), out errors);
 
             //------------Assert Results-------------------------
             var theErrors = errors.FetchErrors();
@@ -59,8 +59,8 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
 
-            const string data = "<DataList></DataList>";
-            const string shape = @"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>";
+            var data = new StringBuilder("<DataList></DataList>");
+            var shape = new StringBuilder(@"<DataList><rec Description="""" IsEditable=""True"" ColumnIODirection=""None"" ><a Description="""" IsEditable=""True"" ColumnIODirection=""Input"" /><b Description="""" IsEditable=""True"" ColumnIODirection=""None"" /></rec></DataList>");
 
             //------------Execute Test---------------------------
             var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), data, shape, out errors);

@@ -215,7 +215,7 @@ namespace Dev2.Runtime.ESB.Control
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
             {
-                string theShape;
+                StringBuilder theShape;
 
                 try
                 {
@@ -239,7 +239,7 @@ namespace Dev2.Runtime.ESB.Control
                 // ReSharper restore UnusedVariable
 #pragma warning restore 168
                 errors.MergeErrors(invokeErrors);
-                dataObject.RawPayload = string.Empty;
+                dataObject.RawPayload = new StringBuilder();
 
                 // We need to create the parentID around the system ;)
                 dataObject.ParentThreadID = Thread.CurrentThread.ManagedThreadId;
@@ -394,7 +394,7 @@ namespace Dev2.Runtime.ESB.Control
                 {
                     fetchRemoteResource.DataList = fetchRemoteResource.DataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "'");
                     var remoteDataList = fetchRemoteResource.DataList;
-                    dataObject.RemoteInvokeResultShape = remoteDataList;
+                    dataObject.RemoteInvokeResultShape = new StringBuilder(remoteDataList);
                 }
             }
         }
@@ -402,7 +402,7 @@ namespace Dev2.Runtime.ESB.Control
         void ExecuteRequestAsync(IDSFDataObject dataObject, IDataListCompiler compiler, IEsbServiceInvoker invoker, bool isLocal, Guid oldID, out ErrorResultTO invokeErrors)
         {
             var clonedDataObject = dataObject.Clone();
-            var dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
+            StringBuilder dl1 = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Data, out invokeErrors);
             var shapeOfData = FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID);
             var executionContainer = invoker.GenerateInvokeContainer(clonedDataObject, clonedDataObject.ServiceName, isLocal, oldID);
             if(executionContainer != null)
@@ -462,7 +462,7 @@ namespace Dev2.Runtime.ESB.Control
             ErrorResultTO invokeErrors;
             errors = new ErrorResultTO();
 
-            string theShape;
+            StringBuilder theShape;
 
             if(IsServiceWorkflow(dataObject.WorkspaceID, dataObject.ResourceID))
             {
@@ -475,9 +475,9 @@ namespace Dev2.Runtime.ESB.Control
                 errors.MergeErrors(invokeErrors);
             }
 
-            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, theShape, out invokeErrors);
+            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), new StringBuilder(), theShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
-            dataObject.RawPayload = string.Empty;
+            dataObject.RawPayload = new StringBuilder();
 
 
             IList<KeyValuePair<enDev2ArgumentType, IList<IDev2Definition>>> remainingMappings = null;
@@ -513,7 +513,7 @@ namespace Dev2.Runtime.ESB.Control
             var compiler = DataListFactory.CreateDataListCompiler();
             var convertFrom = compiler.ConvertFrom(curDlid, DataListFormat.CreateFormat(GlobalConstants._XML), enTranslationDepth.Data, out errors);
             var jsonSerializerSettings = new JsonSerializerSettings();
-            var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom, jsonSerializerSettings);
+            var deserializeObject = JsonConvert.DeserializeObject<T>(convertFrom.ToString(), jsonSerializerSettings);
             return deserializeObject;
         }
 
@@ -524,33 +524,39 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="resourceId">Name of the service.</param>
         /// <returns></returns>
-        public string FindServiceShape(Guid workspaceId, Guid resourceId)
+        public StringBuilder FindServiceShape(Guid workspaceId, Guid resourceId)
         {
-            var result = "<DataList></DataList>";
+            var result = new StringBuilder();
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceId);
 
             if(resource == null)
             {
-                return result;
+                return EmptyDataList;
             }
 
-            result = resource.DataList;
+            if(resource.DataList != null)
+            {
+                result = resource.DataList;
+            }
 
             // Handle services ;)
-            if(result == "<DataList />" && resource.ResourceType != ResourceType.WorkflowService)
+            if(result.ToString() == "<DataList />" && resource.ResourceType != ResourceType.WorkflowService)
             {
                 ErrorResultTO errors;
                 result = GlueInputAndOutputMappingSegments(resource.Outputs, resource.Inputs, out errors);
             }
 
 
-            if(string.IsNullOrEmpty(result))
+            if(string.IsNullOrEmpty(result.ToString()))
             {
-                result = "<DataList></DataList>";
+                return EmptyDataList;
             }
-
+            result.Replace(GlobalConstants.SerializableResourceQuote, "\"");
+            result.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
             return result;
         }
+
+        static readonly StringBuilder EmptyDataList = new StringBuilder("<DataList></DataList>");
 
         /// <summary>
         /// Finds the service shape.
@@ -558,31 +564,35 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="resourceName">Name of the service.</param>
         /// <returns></returns>
-        public string FindServiceShape(Guid workspaceId, string resourceName)
+        public StringBuilder FindServiceShape(Guid workspaceId, string resourceName)
         {
-            var result = "<DataList></DataList>";
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceName) ?? ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, resourceName);
-
+            StringBuilder result = new StringBuilder();
             if(resource == null)
             {
-                return result;
+                return EmptyDataList;
             }
 
-            result = resource.DataList;
+            if(resource.DataList != null)
+            {
+                result = resource.DataList;
+
+            }
 
             // Handle services ;)
-            if(result == "<DataList />" && resource.ResourceType != ResourceType.WorkflowService)
+            if(result.ToString() == "<DataList />" && resource.ResourceType != ResourceType.WorkflowService)
             {
                 ErrorResultTO errors;
                 result = GlueInputAndOutputMappingSegments(resource.Outputs, resource.Inputs, out errors);
             }
 
 
-            if(string.IsNullOrEmpty(result))
+            if(string.IsNullOrEmpty(result.ToString()))
             {
-                result = "<DataList></DataList>";
+                return EmptyDataList;
             }
-
+            result.Replace(GlobalConstants.SerializableResourceQuote, "\"");
+            result.Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
             return result;
         }
 
@@ -596,15 +606,15 @@ namespace Dev2.Runtime.ESB.Control
         public string FetchExecutionPayload(IDSFDataObject dataObj, DataListFormat targetFormat, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            var targetShape = FindServiceShape(dataObj.WorkspaceID, dataObj.ResourceID);
-            var result = string.Empty;
+            var targetShape = FindServiceShape(dataObj.WorkspaceID, dataObj.ResourceID).ToString();
+            var result = new StringBuilder();
 
             if(!string.IsNullOrEmpty(targetShape))
             {
                 string translatorShape = ManipulateDataListShapeForOutput(targetShape);
                 IDataListCompiler compiler = DataListFactory.CreateDataListCompiler();
                 ErrorResultTO invokeErrors;
-                result = compiler.ConvertAndFilter(dataObj.DataListID, targetFormat, translatorShape, out invokeErrors);
+                result = compiler.ConvertAndFilter(dataObj.DataListID, targetFormat, new StringBuilder(translatorShape), out invokeErrors);
                 errors.MergeErrors(invokeErrors);
             }
             else
@@ -612,7 +622,7 @@ namespace Dev2.Runtime.ESB.Control
                 errors.AddError("Could not locate service shape for " + dataObj.ServiceName);
             }
 
-            return result;
+            return result.ToString();
         }
 
         /// <summary>
@@ -625,7 +635,7 @@ namespace Dev2.Runtime.ESB.Control
         /// <returns></returns>
         public Guid CorrectDataList(IDSFDataObject dataObject, Guid workspaceId, out ErrorResultTO errors, IDataListCompiler compiler)
         {
-            string theShape;
+            StringBuilder theShape;
             ErrorResultTO invokeErrors;
             errors = new ErrorResultTO();
 
@@ -635,7 +645,7 @@ namespace Dev2.Runtime.ESB.Control
                 theShape = FindServiceShape(workspaceId, dataObject.ResourceID);
                 dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dataObject.RawPayload, theShape, out invokeErrors);
                 errors.MergeErrors(invokeErrors);
-                dataObject.RawPayload = string.Empty;
+                dataObject.RawPayload = new StringBuilder();
             }
 
             // force all items to exist in the DL ;)
@@ -715,7 +725,7 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="errors">The errors.</param>
         /// <param name="isDbService"></param>
         /// <returns></returns>
-        string ShapeMappingsToTargetDataList(string inputs, string outputs, out ErrorResultTO errors, bool isDbService)
+        StringBuilder ShapeMappingsToTargetDataList(string inputs, string outputs, out ErrorResultTO errors, bool isDbService)
         {
             errors = new ErrorResultTO();
             ErrorResultTO invokeErrors;
@@ -724,7 +734,7 @@ namespace Dev2.Runtime.ESB.Control
             var iDL = DataListUtil.ShapeDefinitionsToDataList(inputs, enDev2ArgumentType.Input, out invokeErrors, isDbService: isDbService);
             errors.MergeErrors(invokeErrors);
 
-            var result = GlueInputAndOutputMappingSegments(iDL, oDL, out invokeErrors);
+            var result = GlueInputAndOutputMappingSegments(iDL.ToString(), oDL.ToString(), out invokeErrors);
             errors.MergeErrors(invokeErrors);
             return result;
         }
@@ -736,7 +746,7 @@ namespace Dev2.Runtime.ESB.Control
         /// <param name="outputFragment">The output fragment.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        string GlueInputAndOutputMappingSegments(string inputFragment, string outputFragment, out ErrorResultTO errors)
+        StringBuilder GlueInputAndOutputMappingSegments(string inputFragment, string outputFragment, out ErrorResultTO errors)
         {
 
             errors = new ErrorResultTO();
@@ -779,8 +789,12 @@ namespace Dev2.Runtime.ESB.Control
                     Dev2Logger.Log.Error(e);
                 }
             }
-
-            return "<DataList>" + outputFragment + inputFragment + "</DataList>";
+            StringBuilder result = new StringBuilder();
+            result.Append("<DataList>");
+            result.Append(outputFragment);
+            result.Append(inputFragment);
+            result.Append("</DataList>");
+            return result;
         }
 
 

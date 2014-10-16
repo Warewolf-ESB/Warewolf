@@ -137,6 +137,16 @@ namespace Dev2.Common.Common
             }
         }
 
+        public static bool IsNullOrEmpty(this StringBuilder sb)
+        {
+            return sb == null || string.IsNullOrEmpty(sb.ToString());
+        }
+
+        public static StringBuilder ToStringBuilder(this string str)
+        {
+            return new StringBuilder(str);
+        }
+
         /// <summary>
         /// Encodes for XML document.
         /// </summary>

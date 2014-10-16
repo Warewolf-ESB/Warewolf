@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <TestSettings name="Nightly Unit Test in windows 8 domain environment" id="3264dd0f-6fc1-4cb9-b44f-c649fef29605" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Description>These are default test settings for a local test run.</Description>
-  <Deployment enabled="false" />
   <Scripts cleanupScript="..\Dev\TestScripts\Unit\Cleanup.bat" />
   <RemoteController name="rsaklfsvrtfsbld" />
   <Execution location="Remote">
@@ -24,9 +23,10 @@
       </WebTestRunConfiguration>
     </TestTypeSpecific>
     <AgentRule name="Run in Win 8 Domain Testing Environment Pool">
-        <SelectionCriteria>
-            <AgentProperty name="Pool" value="Win8 Domain" />
-        </SelectionCriteria>
+      <SelectionCriteria>
+        <AgentProperty name="Pool" value="Win8 Domain" />
+      </SelectionCriteria>
     </AgentRule>
   </Execution>
+  <Properties />
 </TestSettings>

@@ -16,7 +16,6 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using Dev2.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.Binary_Objects;
@@ -59,8 +58,9 @@ namespace Dev2.Server.DataList.Translators
             {
                 result.Append(val.TheValue);
             }
-            // ReSharper disable EmptyGeneralCatchClause
+                // ReSharper disable EmptyGeneralCatchClause
             catch(Exception)
+                // ReSharper restore EmptyGeneralCatchClause
             {
             }
             result.Append("</");
@@ -118,7 +118,7 @@ namespace Dev2.Server.DataList.Translators
             }
         }
 
-        internal static IBinaryDataList BuildBinaryDataList(byte[] input, string targetShape, ErrorResultTO errors, string payload)
+        internal static IBinaryDataList BuildBinaryDataList(byte[] input, StringBuilder targetShape, ErrorResultTO errors, string payload)
         {
             IBinaryDataList result = null;
             // build shape
@@ -230,14 +230,14 @@ namespace Dev2.Server.DataList.Translators
         /// <param name="shape">The shape.</param>
         /// <param name="error">The error.</param>
         /// <returns></returns>
-        internal static IBinaryDataList BuildTargetShape(string shape, out string error)
+        internal static IBinaryDataList BuildTargetShape(StringBuilder shape, out string error)
         {
             IBinaryDataList result = null;
             error = null;
             try
             {
                 XmlDocument xDoc = new XmlDocument();
-                xDoc.LoadXml(shape);
+                xDoc.LoadXml(shape.ToString());
                 if(xDoc.DocumentElement != null)
                 {
                     XmlNodeList children = xDoc.DocumentElement.ChildNodes;
@@ -335,7 +335,7 @@ namespace Dev2.Server.DataList.Translators
             return result;
         }
 
-        public string ConvertAndFilter(IBinaryDataList payload, string filterShape, out ErrorResultTO errors)
+        public StringBuilder ConvertAndFilter(IBinaryDataList payload, StringBuilder filterShape, out ErrorResultTO errors)
         {
             if(payload == null)
             {
@@ -376,10 +376,10 @@ namespace Dev2.Server.DataList.Translators
 
             result.Append("</" + RootTag + ">");
 
-            return result.ToString();
+            return result;
         }
 
-        public IBinaryDataList ConvertTo(byte[] input, string targetShape, out ErrorResultTO errors, bool onlyMatchInputs = false)
+        public IBinaryDataList ConvertTo(byte[] input, StringBuilder targetShape, out ErrorResultTO errors, bool onlyMatchInputs = false)
         {
             errors = new ErrorResultTO();
             var payload = Encoding.UTF8.GetString(input);
@@ -390,7 +390,7 @@ namespace Dev2.Server.DataList.Translators
 
         }
 
-        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(object input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -413,7 +413,7 @@ namespace Dev2.Server.DataList.Translators
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }

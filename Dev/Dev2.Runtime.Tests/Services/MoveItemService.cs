@@ -156,7 +156,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var a = MoveItem.CreateServiceEntry();
             //------------Assert Results-------------------------
-            var b = a.DataListSpecification;
+            var b = a.DataListSpecification.ToString();
             Assert.AreEqual("<DataList><itemToMove ColumnIODirection=\"Input\"/><newPath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", b);
         }
     }

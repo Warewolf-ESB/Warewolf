@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Data.Util;
 using Dev2.DataList.Contract;
@@ -293,7 +294,7 @@ namespace Dev2.Services.Execution
                     errors.MergeErrors(invokeErrors);
 
                     // Push formatted data into a datalist using the shape from the service action outputs
-                    var shapeDataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload, dlShape, out invokeErrors);
+                    var shapeDataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), formattedPayload.ToStringBuilder(), dlShape, out invokeErrors);
                     errors.MergeErrors(invokeErrors);
 
                     // This merge op is killing the alias data....

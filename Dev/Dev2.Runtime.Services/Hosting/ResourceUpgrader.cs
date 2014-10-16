@@ -9,15 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Xml.Linq;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
-using log4net.Repository.Hierarchy;
 using Vestris.ResourceLib;
 
 namespace Dev2.Runtime.Hosting

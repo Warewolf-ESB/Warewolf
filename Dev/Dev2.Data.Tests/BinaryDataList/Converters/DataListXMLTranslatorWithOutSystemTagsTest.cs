@@ -11,11 +11,13 @@
 
 
 using System.Diagnostics.CodeAnalysis;
+using System.Text;
 using Dev2.Common;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+// ReSharper disable InconsistentNaming
 namespace Dev2.Data.Tests.BinaryDataList.Converters
 {
     [TestClass]
@@ -32,8 +34,8 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
             var format = DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags);
-            const string data = "<root><person><fname>bob</fname><lname>smith</lname></person><person><fname>sara</fname><lname>jones</lname></person></root>";
-            const string shape = "<root><person><fname/><lname/></person></root>";
+            StringBuilder data = new StringBuilder("<root><person><fname>bob</fname><lname>smith</lname></person><person><fname>sara</fname><lname>jones</lname></person></root>");
+            StringBuilder shape = new StringBuilder("<root><person><fname/><lname/></person></root>");
             var dlID = compiler.ConvertTo(format, data, shape, out errors);
 
             var bdl = compiler.FetchBinaryDataList(dlID, out errors);
@@ -50,7 +52,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             //------------Assert Results-------------------------
             const string expected = "<DataList><person><fname>sara</fname><lname>jones</lname></person></DataList>";
 
-            StringAssert.Contains(result, expected);
+            StringAssert.Contains(result.ToString(), expected);
         }
 
         [TestMethod]
@@ -63,7 +65,7 @@ namespace Dev2.Data.Tests.BinaryDataList.Converters
             ErrorResultTO errors;
 
             //------------Execute Test---------------------------
-            compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, string.Empty, out errors);
+            compiler.ConvertAndOnlyMapInputs(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), new StringBuilder(), new StringBuilder(), out errors);
 
             //------------Assert Results-------------------------
             var theErrors = errors.FetchErrors();

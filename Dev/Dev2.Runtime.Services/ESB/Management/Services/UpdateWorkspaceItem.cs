@@ -42,9 +42,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 isLocal = tmp.ToString();
             }
 
-            bool IsLocalSave;
+            bool isLocalSave;
 
-            bool.TryParse(isLocal, out IsLocalSave);
+            bool.TryParse(isLocal, out isLocalSave);
 
             var res = new ExecuteMessage { HasError = false};
 
@@ -67,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     }
                     else
                     {
-                        theWorkspace.Update(workspaceItem, IsLocalSave);
+                        theWorkspace.Update(workspaceItem, isLocalSave);
                         res.SetMessage("Workspace item updated " + DateTime.Now);
                     }
                 }
@@ -86,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            var workspaceItemService = new DynamicService { Name = HandlesType(), DataListSpecification = "<DataList><IsLocalSave ColumnIODirection=\"Input\"/><ItemXml ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>" };
+            var workspaceItemService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><IsLocalSave ColumnIODirection=\"Input\"/><ItemXml ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
             var workspaceItemAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             workspaceItemService.Actions.Add(workspaceItemAction);
