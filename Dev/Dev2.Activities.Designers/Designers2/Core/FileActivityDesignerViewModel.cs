@@ -115,24 +115,13 @@ namespace Dev2.Activities.Designers2.Core
             IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => path, DataListSingleton.ActiveDataList.Resource.DataList);
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
-
+             
 
             string pathValue;
-          //  bool isVariable = false;
-            if (errors.Count == 0)
-            {
-                pathValue = path;
-               // isVariable = true;
-            }
-            else
-            {
-                errors.AddError(path.TryParseVariables(out pathValue, onError, variableValue: ValidUriSchemes[0] + "://temp"));
-            }
-
+            path.TryParseVariables(out pathValue, onError, variableValue: ValidUriSchemes[0] + "://temp");
 
             if (errors.Count == 0)
             {
-
                 IsStringEmptyOrWhiteSpaceRule isStringEmptyOrWhiteSpaceRuleUserName = new IsStringEmptyOrWhiteSpaceRule(() => path)
                 {
                     LabelText = label,
@@ -145,13 +134,10 @@ namespace Dev2.Activities.Designers2.Core
                 var pathBlankError = isStringEmptyOrWhiteSpaceRuleUserName.Check();
                 if (pathBlankError != null)
                 {
-                    //errors.Add(pathBlankError);
                     errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = label + " must have a value" });
                 }
                 else
                 {
-                   // if (!isVariable)
-                  //  {
                         Uri uriResult;
                         var isValid = Uri.TryCreate(pathValue, UriKind.Absolute, out uriResult)
                             ? ValidUriSchemes.Contains(uriResult.Scheme)
@@ -161,13 +147,10 @@ namespace Dev2.Activities.Designers2.Core
                         {
                             errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = "Please supply a valid " + label });
                         }
-                   // }
                 }
             }
 
-
             UpdateErrors(errors);
-
             return pathValue;
         }
 
@@ -185,7 +168,7 @@ namespace Dev2.Activities.Designers2.Core
 
 
         public static readonly DependencyProperty FileHasContentProperty =
-    DependencyProperty.Register("HasContent", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
+    DependencyProperty.Register("FileHasContent", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
 
         protected virtual string ValidateFileContent(string content, string label, Action onError, bool contentIsRequired = true)
@@ -207,17 +190,17 @@ namespace Dev2.Activities.Designers2.Core
 
         protected virtual void ValidateArchivePassword(string password, string label)
         {
-            ArchivePasswordValue = ValidateArchivePassword(password, label, () => PasswordExists = true);
+            ArchivePasswordValue = ValidateArchivePassword(password, label, () => ArchivePasswordExists = true);
         }
 
-        public bool PasswordExists
+        public bool ArchivePasswordExists
         {
-            get { return (bool)GetValue(PasswordExistsProperty); }
-            set { SetValue(PasswordExistsProperty, value); }
+            get { return (bool)GetValue(ArchivePasswordExistsProperty); }
+            set { SetValue(ArchivePasswordExistsProperty, value); }
         }
 
-        public static readonly DependencyProperty PasswordExistsProperty =
-DependencyProperty.Register("HasPassword", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
+        public static readonly DependencyProperty ArchivePasswordExistsProperty =
+DependencyProperty.Register("ArchivePasswordExists", typeof(bool), typeof(FileActivityDesignerViewModel), new PropertyMetadata(false));
 
 
 
