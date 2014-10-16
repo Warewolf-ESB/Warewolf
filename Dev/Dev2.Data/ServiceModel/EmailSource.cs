@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 
@@ -51,7 +52,8 @@ namespace Dev2.Runtime.ServiceModel.Data
         {
             get
             {
-                return base.DataList.ToString();
+                var stringBuilder = base.DataList;
+                return stringBuilder != null ? stringBuilder.ToString() : null;
             }
             set
             {
