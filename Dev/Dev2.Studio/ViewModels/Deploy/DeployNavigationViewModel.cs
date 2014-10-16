@@ -243,8 +243,7 @@ namespace Dev2.ViewModels.Deploy
                     Iterate(model => model.IsChecked = false);
                     Iterate(model => model.IsOverwrite = false);
                 }
-                if(ExplorerItemModels.Count>1)
-                    ExplorerItemModels.RemoveAt(1);
+
             }
         }
 
