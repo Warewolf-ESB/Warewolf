@@ -1482,7 +1482,7 @@ namespace Dev2.Models
             _isChecked = value;
 
             UpdateChildren(updateChildren);
-            UpdateParent(updateParent);
+
 
             // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("IsChecked");
@@ -1492,6 +1492,7 @@ namespace Dev2.Models
             {
                 OnCheckedStateChangedAction.Invoke(checkStateChangedArgs);
             }
+            UpdateParent(updateParent);
         }
 
         void UpdateParent(bool updateParent)
@@ -1499,6 +1500,10 @@ namespace Dev2.Models
             if(updateParent && Parent != null)
             {
                 Parent.VerifyCheckState();
+                if (OnCheckedStateChangedAction != null)
+                {
+                    OnCheckedStateChangedAction.Invoke(new CheckStateChangedArgs(false,false,ResourceId,ResourceType,true));
+                }
             }
         }
 
