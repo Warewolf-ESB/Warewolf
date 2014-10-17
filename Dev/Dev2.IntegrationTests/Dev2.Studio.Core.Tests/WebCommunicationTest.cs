@@ -33,7 +33,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
             WebCommunicationResponse webCommResp = new WebCommunicationResponse();
             WebCommunication webRequest = new WebCommunication();
             webCommResp.Content = "tabIndex";
-            var uri = String.Format("{0}{1}", webserverURI, "SYSTEM/TabIndexInject");
+            var uri = String.Format("{0}{1}", webserverURI, "Integration Test Resources/TabIndexInject");
             IWebCommunicationResponse actual = webRequest.Get(uri);
 
             // Assert
@@ -46,7 +46,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
             WebCommunicationResponse webCommResp = new WebCommunicationResponse();
             WebCommunication webRequest = new WebCommunication();
             webCommResp.Content = "tabIndex";
-            var uri = String.Format("{0}{1}", webserverURI, "SYSTEM/TabIndexInject");
+            var uri = String.Format("{0}{1}", webserverURI, "Integration Test Resources/TabIndexInject");
             const string data = "Dev2tabIndex=1";
             IWebCommunicationResponse actual = webRequest.Post(uri, data);
             XElement serializedActual = XElement.Parse(actual.Content);

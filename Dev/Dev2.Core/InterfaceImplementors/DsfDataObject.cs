@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Security.Principal;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -158,7 +159,7 @@ namespace Dev2.DynamicServices
                     ServiceName = ExtractValue(xe, "Service");
 
                     // finally set raw payload
-                    RawPayload = xmldata;
+                    RawPayload = new StringBuilder(xmldata);
                 }
 
             }
@@ -176,7 +177,7 @@ namespace Dev2.DynamicServices
 
             if(!IsDebug && !string.IsNullOrEmpty(rawPayload))
             {
-                RawPayload = rawPayload;
+                RawPayload = new StringBuilder(rawPayload);
             }
 
         }
@@ -243,12 +244,12 @@ namespace Dev2.DynamicServices
         public Guid DataListID { get; set; }
         public ServiceAction ExecuteAction { get; set; }
 
-        private string _rawPayload;
-        public string RawPayload
+        private StringBuilder _rawPayload;
+        public StringBuilder RawPayload
         {
             get
             {
-                return _rawPayload ?? string.Empty;
+                return _rawPayload ?? new StringBuilder();
             }
             set
             {
@@ -258,7 +259,7 @@ namespace Dev2.DynamicServices
         public EmitionTypes ReturnType { get; set; }
 
         // Remote workflow additions ;)
-        public string RemoteInvokeResultShape { get; set; }
+        public StringBuilder RemoteInvokeResultShape { get; set; }
         public bool RemoteInvoke { get; set; }
         public string RemoteInvokerID { get; set; }
         public IList<IDebugState> RemoteDebugItems { get; set; }
@@ -295,7 +296,7 @@ namespace Dev2.DynamicServices
 
         public string ParentWorkflowXmlData { get; set; }
 
-        public string DataList { get; set; }
+        public StringBuilder DataList { get; set; }
 
         public ExecutionOrigin ExecutionOrigin { get; set; }
         public string ExecutionOriginDescription { get; set; }

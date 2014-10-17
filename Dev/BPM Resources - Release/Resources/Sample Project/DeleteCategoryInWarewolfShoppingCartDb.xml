@@ -1,5 +1,5 @@
 
-<Service ID="3e726c4f-2e1b-4149-bc6b-ef17609c036c" Version="1.0" Name="DeleteCategoryInWarewolfShoppingCartDb" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Service ID="3e726c4f-2e1b-4149-bc6b-ef17609c036c" Version="1.0" Name="DeleteCategoryInWarewolfShoppingCartDb" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <Actions>
     <Action Name="dbo_spDeleteCategory" Type="InvokeStoredProc" SourceID="c5d6f18a-f0a1-45ab-824a-f61bdcd26d62" SourceName="WarewolfShoppingCartDB" SourceMethod="dbo.spDeleteCategory">
       <Inputs>
@@ -33,9 +33,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>GrhS11HaPDGTGkpd4u7Rtp5oawU=</DigestValue>
+        <DigestValue>6m1zLNdJZbeHdkyVkeiqve5nQUY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>fKCWAbbi1Cc40ltTskQOCwryJsbnXsPTTB1k85Hhb5EUgthB7BeKsulbCY5hBBdI+PDKaVeI3AW0U3GrMxxnOw2BMsnTlyzcr0DEbqp1WPcs+N8c/crBycrg6ahwVUc2XU7/dc+KaialKlTRmjAtbTpUwJ0XzDsdaeoKl+q7z30=</SignatureValue>
+    <SignatureValue>Ihw0Z90Mb9z3xa4y++61utveIXsmpJ4nkaIPr6+fGppoCUkDZo/s6uziXrcAWv7CDrqomOhSW0y6ngsZNKWjeMJpkb3h1VLjHIsJajcI/Vfj4gwljDHQmCb/5rdtY3928GDobe8aDq0q1S/OCwcRdODlniWxOROATX/WUlTRYCU=</SignatureValue>
   </Signature>
 </Service>

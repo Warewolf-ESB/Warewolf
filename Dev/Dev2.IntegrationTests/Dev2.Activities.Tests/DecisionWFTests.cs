@@ -55,7 +55,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void MultipleDecision_Expected_TestReturnsInfoAsPass()
         {
-            string serviceName = "BARNEY/Decision Testing";
+            string serviceName = "Integration Test Resources/Decision Testing";
             string expected = "Decision: PASS";
             string reponseData = TestHelper.PostDataToWebserver(string.Format("{0}{1}", _webServerURI, serviceName));
             StringAssert.Contains(reponseData, expected);

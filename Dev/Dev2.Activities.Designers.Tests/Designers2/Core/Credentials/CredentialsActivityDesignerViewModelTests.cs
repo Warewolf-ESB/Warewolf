@@ -13,8 +13,12 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Providers.Errors;
+using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.Studio.Core.Interfaces.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
@@ -51,7 +55,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameIsNotBlankAndPasswordIsBlank_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword(userName: "aaaa", password: "", isPasswordError: true, expectedMessageFormat: "Password must have a value");
+            Verify_ValidateUserNameAndPassword(userName: "aaaa", password: "", isPasswordError: true, expectedMessageFormat: "Password cannot be empty or only white space");
         }
 
         [TestMethod]
@@ -59,7 +63,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameIsBlankAndPasswordIsNotBlank_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword(userName: "", password: "xxx", isPasswordError: false, expectedMessageFormat: "Username must have a value");
+            Verify_ValidateUserNameAndPassword(userName: "", password: "xxx", isPasswordError: false, expectedMessageFormat: "Username cannot be empty or only white space");
         }
 
         [TestMethod]
@@ -75,7 +79,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_UserNameIsInvalidExpression_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword(userName: "a]]", password: "", isPasswordError: false, expectedMessageFormat: "Invalid expression: opening and closing brackets don't match.");
+            Verify_ValidateUserNameAndPassword(userName: "a]]", password: "", isPasswordError: false, expectedMessageFormat: "Username - Invalid expression: opening and closing brackets don't match.");
         }
 
         [TestMethod]
@@ -83,7 +87,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         [TestCategory("CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword")]
         public void CredentialsActivityDesignerViewModel_ValidateUserNameAndPassword_PasswordIsInvalidExpression_HasErrors()
         {
-            Verify_ValidateUserNameAndPassword(userName: "afaf", password: "a]]", isPasswordError: true, expectedMessageFormat: "Invalid expression: opening and closing brackets don't match.");
+            Verify_ValidateUserNameAndPassword(userName: "afaf", password: "a]]", isPasswordError: true, expectedMessageFormat: "Password - Invalid expression: opening and closing brackets don't match.");
         }
 
         // ReSharper disable UnusedParameter.Local
@@ -91,6 +95,11 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Credentials
         // ReSharper restore UnusedParameter.Local
         {
             //------------Setup for test-------------------------
+            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
+            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
+            mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
+            DataListSingleton.SetDataList(mockDataListViewModel.Object);
             const string LabelText = "Password";
 
             var viewModel = CreateViewModel(userName, password);

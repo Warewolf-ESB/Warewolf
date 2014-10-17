@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
             var res = rolbackTo.CreateServiceEntry();
             //------------Assert Results-------------------------
-            Assert.AreEqual("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", res.DataListSpecification);
+            Assert.AreEqual("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>", res.DataListSpecification.ToString());
             Assert.AreEqual(enActionType.InvokeManagementDynamicService, res.Actions.First().ActionType);
             Assert.AreEqual(res.Actions.First().SourceMethod,rolbackTo.HandlesType());
         }

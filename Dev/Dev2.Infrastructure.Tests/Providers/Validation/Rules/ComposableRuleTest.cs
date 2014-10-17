@@ -119,7 +119,18 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         {
             //------------Setup for test--------------------------
             var cr = new ComposableRule<string>(new Rule1(() => "")).Or(new Rule1(() => "1"));
-            Assert.IsNull(cr.Check());
+            Assert.IsNotNull(cr.Check());
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ComposeAbleRule_Or")]
+        public void ComposeAbleRule_Or_FirstConditionSatisfied()
+        {
+            //------------Setup for test--------------------------
+            var cr = new ComposableRule<string>(new Rule1(() => "1")).Or(new Rule1(() => ""));
+            Assert.IsNotNull(cr.Check());
 
         }
 
@@ -143,6 +154,18 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         {
             //------------Setup for test--------------------------
             var cr = new ComposableRule<string>(new Rule1(() => "")).Or(new Rule1(() => "d")).Or(new Rule2(() => "2"));
+            Assert.IsNotNull(cr.Check());
+
+        }
+
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ComposeAbleRule_Or")]
+        public void ComposeAbleRule_Or_ConditionSatisfied_Three_NullReturned()
+        {
+            //------------Setup for test--------------------------
+            var cr = new ComposableRule<string>(new Rule1(() => "1")).Or(new Rule1(() => "1")).Or(new Rule2(() => "2"));
             Assert.IsNull(cr.Check());
 
         }

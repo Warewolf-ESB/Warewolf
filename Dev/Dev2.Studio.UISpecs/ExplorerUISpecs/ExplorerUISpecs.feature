@@ -49,8 +49,6 @@ Scenario: CreateNewVersionANDRenameANDMakeOldVersionCurrentANDCheckDeployANDDele
 	And I right click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID"
 	And I click "UI_ToggleVersionHistoryContextMenuItem_AutoID"
 	Then "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID,v.2*" is invisible within "1" seconds
-	And I close Studio
-	And I close Server
 
 
 #Bug 12166

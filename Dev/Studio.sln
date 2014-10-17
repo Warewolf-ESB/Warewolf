@@ -94,6 +94,23 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Crypto.HashGenerator",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nightly", "Nightly", "{69C361C3-10E4-4875-BA36-3BAF1E74CE05}"
+	ProjectSection(SolutionItems) = preProject
+		TestSettings\Remote UnitTestWithCoverage\Nightly\Win2k8.testsettings = TestSettings\Remote UnitTestWithCoverage\Nightly\Win2k8.testsettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win8", "Win8", "{55A3D7AA-6A71-4617-ACB7-EA474373180C}"
+	ProjectSection(SolutionItems) = preProject
+		TestSettings\Remote UnitTestWithCoverage\Nightly\Win8\Domain.testsettings = TestSettings\Remote UnitTestWithCoverage\Nightly\Win8\Domain.testsettings
+		TestSettings\Remote UnitTestWithCoverage\Nightly\Win8\Workgroup.testsettings = TestSettings\Remote UnitTestWithCoverage\Nightly\Win8\Workgroup.testsettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Win7", "Win7", "{1E05ADD2-70C4-4F45-A9B5-8041D5708F96}"
+	ProjectSection(SolutionItems) = preProject
+		TestSettings\Remote UnitTestWithCoverage\Nightly\Win7\Workgroup.testsettings = TestSettings\Remote UnitTestWithCoverage\Nightly\Win7\Workgroup.testsettings
+		TestSettings\Remote UnitTestWithCoverage\Nightly\Win7\x86.testsettings = TestSettings\Remote UnitTestWithCoverage\Nightly\Win7\x86.testsettings
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -573,6 +590,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{69C361C3-10E4-4875-BA36-3BAF1E74CE05} = {9BD7DD42-D245-449E-84F9-DBD97A5A7002}
+		{55A3D7AA-6A71-4617-ACB7-EA474373180C} = {69C361C3-10E4-4875-BA36-3BAF1E74CE05}
+		{1E05ADD2-70C4-4F45-A9B5-8041D5708F96} = {69C361C3-10E4-4875-BA36-3BAF1E74CE05}
 	EndGlobalSection
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = Studio.vsmdi

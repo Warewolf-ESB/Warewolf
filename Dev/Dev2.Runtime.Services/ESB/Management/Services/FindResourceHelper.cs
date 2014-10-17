@@ -41,7 +41,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(resource.DataList != null)
             {
-                datalist = resource.DataList.Replace("\"", GlobalConstants.SerializableResourceQuote).Replace("'", GlobalConstants.SerializableResourceSingleQuote);
+                var replace = resource.DataList.Replace("\"", GlobalConstants.SerializableResourceQuote);
+                datalist = replace.Replace("'", GlobalConstants.SerializableResourceSingleQuote).ToString();
             }
 
             return new SerializableResource

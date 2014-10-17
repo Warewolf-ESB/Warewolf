@@ -396,11 +396,14 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
                     var oldColumn = oldColumns.FirstOrDefault(c => c.OutputColumn.ColumnName == mapping.OutputColumn.ColumnName);
                     if(oldColumn != null)
                     {
-                        mapping.InputColumn = oldColumn.InputColumn;
+                        if(oldColumn.InputColumn != null)
+                        {
+                            mapping.InputColumn = oldColumn.InputColumn.Replace("[", "").Replace("]", "").Replace(" ", "");
+                        }
                     }
                     if(string.IsNullOrEmpty(mapping.InputColumn))
                     {
-                        mapping.InputColumn = string.Format("[[{0}(*).{1}]]", selectedTable.TableName, mapping.OutputColumn.ColumnName);
+                        mapping.InputColumn = string.Format("[[{0}(*).{1}]]", selectedTable.TableName.Replace("[", "").Replace("]", "").Replace(" ", ""), mapping.OutputColumn.ColumnName.Replace("[", "").Replace("]", "").Replace(" ", ""));
                     }
 
                     ModelItemCollection.Add(mapping);

@@ -10,6 +10,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Text;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Communication;
 using Dev2.DataList.Contract;
@@ -57,7 +58,7 @@ namespace Dev2
         /// <param name="workspaceId">The workspace unique identifier.</param>
         /// <param name="resourceId">Name of the service.</param>
         /// <returns></returns>
-        string FindServiceShape(Guid workspaceId, Guid resourceId);
+        StringBuilder FindServiceShape(Guid workspaceId, Guid resourceId);
 
         /// <summary>
         /// Shapes for sub request.

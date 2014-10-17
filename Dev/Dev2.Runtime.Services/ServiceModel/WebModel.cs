@@ -11,6 +11,7 @@
 
 
 using System;
+using System.Text;
 using Dev2.Common;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.DataList.Contract;
@@ -43,7 +44,7 @@ namespace Dev2.Runtime.ServiceModel
                 ErrorResultTO errors;
 
                 // remove the silly Choose... from the string
-                args = Dev2DecisionStack.RemoveDummyOptionsFromModel(args);
+                args = Dev2DecisionStack.RemoveDummyOptionsFromModel(new StringBuilder(args));
                 // remove [[]], &, !
                 args = Dev2DecisionStack.RemoveNaughtyCharsFromModel(args);
                 

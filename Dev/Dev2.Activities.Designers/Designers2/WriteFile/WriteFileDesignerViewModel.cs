@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
 using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Core;
 
@@ -17,6 +17,9 @@ namespace Dev2.Activities.Designers2.WriteFile
 {
     public class WriteFileDesignerViewModel : FileActivityDesignerViewModel
     {
+
+        public ModelItem Modelitem;
+
         public WriteFileDesignerViewModel(ModelItem modelItem)
             : base(modelItem, string.Empty, "File Name")
         {
@@ -27,15 +30,21 @@ namespace Dev2.Activities.Designers2.WriteFile
             {
                 Overwrite = true;
             }
+
+            Modelitem = modelItem;
         }
 
         public override void Validate()
         {
             Errors = null;
+            string content = FileContents;
             ValidateUserNameAndPassword();
             ValidateOutputPath();
+            ValidateFileContent(content, "Contents");
+            
         }
 
+        string FileContents { set { SetProperty(value); } get { return GetProperty<string>(); } }
         bool Overwrite { set { SetProperty(value); } get { return GetProperty<bool>(); } }
         bool AppendTop { set { SetProperty(value); } get { return GetProperty<bool>(); } }
         bool AppendBottom { set { SetProperty(value); } get { return GetProperty<bool>(); } }

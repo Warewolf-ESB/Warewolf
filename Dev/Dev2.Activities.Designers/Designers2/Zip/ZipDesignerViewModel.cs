@@ -70,10 +70,14 @@ namespace Dev2.Activities.Designers2.Zip
         public override void Validate()
         {
             Errors = null;
+            string password = ArchivePassword;
             ValidateUserNameAndPassword();
             ValidateDestinationUsernameAndPassword();
-            ValidateInputPath();
+            ValidateInputAndOutputPaths();
+            ValidateArchivePassword(password, "Archive Password");
         }
+
+        string ArchivePassword { set { SetProperty(value); } get { return GetProperty<string>(); } }
 
     }
 }

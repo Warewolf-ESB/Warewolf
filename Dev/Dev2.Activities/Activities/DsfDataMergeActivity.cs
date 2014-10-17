@@ -148,7 +148,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     var fieldName = row.InputVariable;
                     var splitIntoRegions = DataListCleaningUtils.FindAllLanguagePieces(fieldName);
-                    var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errorResultTo);
+                    var datalist = compiler.ConvertFrom(dataObject.DataListID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errorResultTo).ToString();
                     if(!string.IsNullOrEmpty(datalist))
                     {
                         foreach(var region in splitIntoRegions)

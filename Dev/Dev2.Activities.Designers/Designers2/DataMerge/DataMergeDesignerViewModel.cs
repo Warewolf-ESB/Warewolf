@@ -100,6 +100,11 @@ namespace Dev2.Activities.Designers2.DataMerge
                 yield break;
             }
 
+            foreach (var error in dto.GetRuleSet("Input", GetDatalistString()).ValidateRules("'Input'", () => mi.SetProperty("IsFieldNameFocused", true)))
+            {
+                yield return error;
+            }
+
             foreach(var error in dto.GetRuleSet("At", GetDatalistString()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
             {
                 yield return error;

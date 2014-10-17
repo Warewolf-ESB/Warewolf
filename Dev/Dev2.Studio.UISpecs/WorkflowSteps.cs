@@ -655,20 +655,6 @@ namespace Dev2.Studio.UI.Specs
             pointsToClick.ForEach(control.DoubleClick);
         }
 
-        [Given(@"I close Studio")]
-        [Then(@"I close Studio")]
-        public void GivenICloseStudio()
-        {
-            Bootstrap.KillStudio();
-        }
-
-        [Given(@"I close Server")]
-        [Then(@"I close Server")]
-        public void GivenICloseServer()
-        {
-            Bootstrap.KillServer();
-        }
-
         [Given(@"I start Server as ""(.*)"" with password ""(.*)""")]
         public void GivenIStartServerAsWithPassword(string userName, string password)
         {
@@ -1081,6 +1067,7 @@ namespace Dev2.Studio.UI.Specs
             return replace;
         }
 
+        [Given(@"restarted the Studio and Server")]
         [When(@"restart the Studio and Server")]
         [Then(@"restart the Studio and Server")]
         public void WhenRestartTheStudioAndServer()
