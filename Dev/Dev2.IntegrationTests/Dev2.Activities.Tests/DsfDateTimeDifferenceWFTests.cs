@@ -33,7 +33,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void Test_DateTimeDifference_Simple()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/DateTimeDifference_Simple_Test");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/DateTimeDifference_Simple_Test");
             string expected = @"<MyDayOfBirth>1988/10/14 08:32:21 AM</MyDayOfBirth>    <Today>2012/10/08 09:43:05 AM</Today>    <DateFormat>yyyy/mm/dd 12h:min:ss am/pm</DateFormat>    <MyAgeInYears>23</MyAgeInYears>    <MyAgeInMonths>288</MyAgeInMonths>    <MyAgeInDays>8760</MyAgeInDays>    <MyAgeInWeeks>1251</MyAgeInWeeks>    <MyAgeInHours>210241</MyAgeInHours>    <MyAgeInMinutes>12614470</MyAgeInMinutes>    <MyAgeInSeconds>756868244</MyAgeInSeconds>    <MyAgeInSplitSeconds>756868244000</MyAgeInSplitSeconds>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);
@@ -49,7 +49,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         [TestMethod]
         public void Test_DateTimeDifference_Complex()
         {
-            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/DateTimeDifference_Complex_Test");
+            string PostData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/DateTimeDifference_Complex_Test");
             const string expected = @"<DataList><MyDayOfBirth>1988/10/14 08:32:21 AM</MyDayOfBirth><DateFormat>yyyy/mm/dd 12h:min:ss am/pm</DateFormat><MyAgeInYears>27</MyAgeInYears><TenThousandDaysAlive>2016/03/01 08:32:21 AM</TenThousandDaysAlive>";
 
             string ResponseData = TestHelper.PostDataToWebserver(PostData);

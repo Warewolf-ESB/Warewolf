@@ -36,13 +36,13 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void Calculate_Activity_StaticValueSum_Expected_CorrectlySummed()
         // ReSharper restore InconsistentNaming
         {
-            string postData = string.Format("{0}{1}", _webServerUri, "INTEGRATION TEST SERVICES/Calculate_ScalarDataListItems_Multiplication");
+            string postData = string.Format("{0}{1}", _webServerUri, "Integration Test Resources/Calculate_ScalarDataListItems_Multiplication");
 
             const string Expected = @"57.4456264653803";
 
             string actual = TestHelper.PostDataToWebserver(postData);
 
-            Assert.IsTrue(actual.Contains(Expected));
+            Assert.IsTrue(actual.Contains(Expected), actual + " does not contain " + Expected);
         }
 
         #endregion Calculate Static Values Tests
@@ -54,7 +54,7 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
         public void Calculate_Activity_RecordSetEvaluation_Expected_RecordSetResolutionCorrectlyEvaluated()
         // ReSharper restore InconsistentNaming
         {
-            string postData = string.Format("{0}{1}", _webServerUri, "INTEGRATION TEST SERVICES/Calculate_RecordSet_Subtract");
+            string postData = string.Format("{0}{1}", _webServerUri, "Integration Test Resources/Calculate_RecordSet_Subtract");
             const string Expected = @"<result>920</result>";
 
             string actual = TestHelper.PostDataToWebserver(postData);
