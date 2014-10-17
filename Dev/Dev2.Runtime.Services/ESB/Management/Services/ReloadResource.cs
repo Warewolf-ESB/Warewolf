@@ -76,6 +76,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                         case "Source":
                             serviceType = enDynamicServiceObjectType.Source;
                             break;
+                        case "Server":
+                            serviceType = enDynamicServiceObjectType.Source;
+                            break;
                         default:
                             throw new Exception("Unexpected resource type '" + resourceType + "'.");
                     }
