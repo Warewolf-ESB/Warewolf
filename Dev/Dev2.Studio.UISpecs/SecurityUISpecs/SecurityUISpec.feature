@@ -460,97 +460,97 @@ Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
 
 		
 #PBi 12200
-#Scenario:Testing Remote Server Deploy Rights
-# #Test-1 Set server permission Deploy To
-#       Given all tabs are closed
-#       Given I click "EXPLORER,UI_localhost_AutoID" 
-#       And I click "RIBBONSETTINGS"   
-#       And I click "SECURITYPUBLICDEPLOYTO"
-#       And I click "SECURITYSAVE"
-#	   Given I create a new remote connection "REM" as
-#       | Address               | AuthType | UserName | Password |
-#       | http://localhost:3142 | Public   |          |          |
-#	   #Checking Explorer Can't See Any Resources Under Remote Server
-#       Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" is not visible
-#	   Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Calculate_AutoID" is not visible
-#       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
-#	   #Ribbon Icons
-#       Then "RIBBONNEWENDPOINT" is disabled
-#       Then "RIBBONSETTINGS" is disabled
-#       Then "RIBBONNEWDATABASECONNECTOR" is disabled
-#       Then "RIBBONSCHEDULE" is disabled            
-#       Then "RIBBONNEWPLUGINCONNECTOR" is disabled
-#       Then "RIBBONNEWWEBCONNECTOR" is disabled
-#       Then "RIBBONDEPLOY" is visible
-#	   #Checking Deploy Validaion Message "UnAuthorized"
-#       Then I click "RIBBONDEPLOY"
-#       Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_REM"
-#       Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
-# #Test-2 Set server permission Deploy From
-#      Given all tabs are closed
-#       And I click "EXPLORER,UI_localhost_AutoID" 
-#       And I click "RIBBONSETTINGS"   
-#       And I click "SECURITYPUBLICADMINISTRATOR"  
-#       And "SECURITYPUBLICVIEW" is unchecked
-#       And "SECURITYPUBLICEXECUTE" is unchecked
-#       And "SECURITYPUBLICDEPLOYTO" is unchecked
-#       And I click "SECURITYSAVE" 
-#	   #Exploer Icons
-#       Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" is not visible
-#	   Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Calculate_AutoID" is not visible
-#       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
-#	   #Ribbon Icons
-#       Then "RIBBONNEWENDPOINT" is disabled
-#       Then "RIBBONSETTINGS" is disabled
-#       Then "RIBBONNEWDATABASECONNECTOR" is disabled
-#       Then "RIBBONSCHEDULE" is disabled                   
-#       Then "RIBBONNEWPLUGINCONNECTOR" is disabled
-#       Then "RIBBONNEWWEBCONNECTOR" is disabled
-#       Then "RIBBONDEPLOY" is visible
-#	   #Checking Deploy UnAuthorized
-#       Then I click "RIBBONDEPLOY"
-#       Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_REM"
-#       Then "DEPLOYDESTINATION,REM*,UI_Unautherized_DeployToText_AutoID" is visible
-#	   Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_REM"
-#       Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is visible
-##Test-3 Set server permission Deploy From and Specific Resource View
-#        Given all tabs are closed
-#       Given I click "EXPLORER,UI_localhost_AutoID" 
-#       And I click "RIBBONSETTINGS"   
-#       And I click "SECURITYPUBLICADMINISTRATOR"  
-#       And "SECURITYPUBLICEXECUTE" is unchecked
-#       And "SECURITYPUBLICDEPLOYTO" is unchecked
-#	   #SetUp Resource Permissions Contribute for "Public" Specific Group
-#	   Given I click "SETTINGSRESOURECESELECT"
-#       And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
-#	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
-#	   And I send "{TAB}" to ""
-#	   And I send "Public" to ""
-#       And I click "SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID"
-#       And I click "SECURITYSAVE"
-#	   #Checking Explorer Resources
-#	   And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Calculate_AutoID" is not visible
-#	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Javascript Testing_AutoID" is not visible
-#	   And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" is visible
-#	   #Checking Resource Icons
-#	   Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
-#       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
-#       #Opening Resource
-#	   Given I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"      
-#       Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "3" seconds
-#	   #Ribbon Icons
-#       Then "RIBBONNEWENDPOINT" is disabled
-#       Then "RIBBONSETTINGS" is disabled
-#       Then "RIBBONNEWDATABASECONNECTOR" is disabled
-#       Then "RIBBONSCHEDULE" is disabled            
-#       Then "RIBBONNEWPLUGINCONNECTOR" is disabled
-#       Then "RIBBONNEWWEBCONNECTOR" is disabled
-#       Then "RIBBONDEPLOY" is visible
-#	   #Checking Deploy UnAuthorized
-#       Then I click "RIBBONDEPLOY"
-#       Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_REM"
-#       Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is not visible
-#	   Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" is visible
-#	   Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_BARNEY_AutoID,UI_Javascript Testing_AutoID" is visible
-#	   Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_REM"
-#       Then "DEPLOYDESTINATION,REM*,UI_Unautherized_DeployToText_AutoID" is visible
+Scenario:Testing Remote Server Deploy Rights
+ #Test-1 Set server permission Deploy To
+       Given all tabs are closed
+       Given I click "EXPLORER,UI_localhost_AutoID" 
+       And I click "RIBBONSETTINGS"   
+       And I click "SECURITYPUBLICDEPLOYTO"
+       And I click "SECURITYSAVE"
+	   Given I create a new remote connection "REM" as
+       | Address               | AuthType | UserName | Password |
+       | http://localhost:3142 | Public   |          |          |
+	   #Checking Explorer Can't See Any Resources Under Remote Server
+       Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" is not visible
+	   Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Calculate_AutoID" is not visible
+       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
+	   #Ribbon Icons
+       Then "RIBBONNEWENDPOINT" is disabled
+       Then "RIBBONSETTINGS" is disabled
+       Then "RIBBONNEWDATABASECONNECTOR" is disabled
+       Then "RIBBONSCHEDULE" is disabled            
+       Then "RIBBONNEWPLUGINCONNECTOR" is disabled
+       Then "RIBBONNEWWEBCONNECTOR" is disabled
+       Then "RIBBONDEPLOY" is visible
+	   #Checking Deploy Validaion Message "UnAuthorized"
+       Then I click "RIBBONDEPLOY"
+       Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_REM"
+       Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
+ #Test-2 Set server permission Deploy From
+      Given all tabs are closed
+       And I click "EXPLORER,UI_localhost_AutoID" 
+       And I click "RIBBONSETTINGS"   
+       And I click "SECURITYPUBLICADMINISTRATOR"  
+       And "SECURITYPUBLICVIEW" is unchecked
+       And "SECURITYPUBLICEXECUTE" is unchecked
+       And "SECURITYPUBLICDEPLOYTO" is unchecked
+       And I click "SECURITYSAVE" 
+	   #Exploer Icons
+       Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" is not visible
+	   Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Calculate_AutoID" is not visible
+       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
+	   #Ribbon Icons
+       Then "RIBBONNEWENDPOINT" is disabled
+       Then "RIBBONSETTINGS" is disabled
+       Then "RIBBONNEWDATABASECONNECTOR" is disabled
+       Then "RIBBONSCHEDULE" is disabled                   
+       Then "RIBBONNEWPLUGINCONNECTOR" is disabled
+       Then "RIBBONNEWWEBCONNECTOR" is disabled
+       Then "RIBBONDEPLOY" is visible
+	   #Checking Deploy UnAuthorized
+       Then I click "RIBBONDEPLOY"
+       Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_REM"
+       Then "DEPLOYDESTINATION,REM*,UI_Unautherized_DeployToText_AutoID" is visible
+	   Then I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_REM"
+       Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is visible
+#Test-3 Set server permission Deploy From and Specific Resource View
+        Given all tabs are closed
+       Given I click "EXPLORER,UI_localhost_AutoID" 
+       And I click "RIBBONSETTINGS"   
+       And I click "SECURITYPUBLICADMINISTRATOR"  
+       And "SECURITYPUBLICEXECUTE" is unchecked
+       And "SECURITYPUBLICDEPLOYTO" is unchecked
+	   #SetUp Resource Permissions Contribute for "Public" Specific Group
+	   Given I click "SETTINGSRESOURECESELECT"
+       And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "Public" to ""
+       And I click "SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID"
+       And I click "SECURITYSAVE"
+	   #Checking Explorer Resources
+	   And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Examples_AutoID,UI_Utility - Calculate_AutoID" is not visible
+	   Then "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Javascript Testing_AutoID" is not visible
+	   And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" is visible
+	   #Checking Resource Icons
+	   Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
+       Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is visible
+       #Opening Resource
+	   Given I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"      
+       Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "3" seconds
+	   #Ribbon Icons
+       Then "RIBBONNEWENDPOINT" is disabled
+       Then "RIBBONSETTINGS" is disabled
+       Then "RIBBONNEWDATABASECONNECTOR" is disabled
+       Then "RIBBONSCHEDULE" is disabled            
+       Then "RIBBONNEWPLUGINCONNECTOR" is disabled
+       Then "RIBBONNEWWEBCONNECTOR" is disabled
+       Then "RIBBONDEPLOY" is visible
+	   #Checking Deploy UnAuthorized
+       Then I click "RIBBONDEPLOY"
+       Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_REM"
+       Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is not visible
+	   Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_BARNEY_AutoID,UI_Decision Testing_AutoID" is visible
+	   Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_BARNEY_AutoID,UI_Javascript Testing_AutoID" is visible
+	   Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_REM"
+       Then "DEPLOYDESTINATION,REM*,UI_Unautherized_DeployToText_AutoID" is visible
