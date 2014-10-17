@@ -1,4 +1,4 @@
-
+﻿
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -149,7 +149,6 @@ namespace Dev2.Runtime.ESB.Management.Services
                        
                         if(c.ResourceID != Guid.Empty)
                         {
-                            var res = ResourceCatalog.Instance.GetResource(workspaceId,c.ResourceID);
                       
                             results.Add(c.ResourceID.ToString());
                         }
