@@ -70,12 +70,12 @@ namespace Dev2.Studio.UI.Specs.DeployUISpecs
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled12")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "DeployFeature")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("DeployTab")]
-        public virtual void IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled()
+        public virtual void IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled12()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("IsDeployButtonEnabledWithNothingToDeploy_Expected_DeployButtonIsDisabled12", new string[] {
                         "DeployTab"});
 #line 7
 this.ScenarioSetup(scenarioInfo);
