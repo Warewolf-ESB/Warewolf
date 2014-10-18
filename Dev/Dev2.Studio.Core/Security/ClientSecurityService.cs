@@ -52,19 +52,7 @@ namespace Dev2.Security
                 return;
             }
             var modifiedPermissions = obj.ModifiedPermissions;
-            foreach(var modifiedPermission in modifiedPermissions)
-            {
-                var foundPermission = Permissions.FirstOrDefault(perm =>
-                    modifiedPermission.IsServer == perm.IsServer
-                    && modifiedPermission.ResourceID == perm.ResourceID
-                    && modifiedPermission.WindowsGroup == perm.WindowsGroup);
-
-                if(foundPermission != null)
-                {
-                    foundPermission.Permissions = modifiedPermission.Permissions;
-
-                }
-            }
+            _permissions = modifiedPermissions;
             RaisePermissionsModified(new PermissionsModifiedEventArgs(new List<WindowsGroupPermission>(modifiedPermissions)));
             RaisePermissionsChanged();
         }

@@ -21,6 +21,8 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Security;
+using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -30,6 +32,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FindResource : IEsbManagementEndpoint
     {
+        private IAuthorizationService _authorizationService;
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
@@ -50,13 +54,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 type = tmp.ToString();
             }
-            Dev2Logger.Log.Info("Find Resource. ResourceName:"+resourceName);
-            // BUG 7850 - TWR - 2013.03.11 - ResourceCatalog refactor
+            Dev2Logger.Log.Info("Find Resource. ResourceName: "+resourceName);
             var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, resourceName, type, string.Empty);
 
             IList<SerializableResource> resourceList = resources.Select(new FindResourceHelper().SerializeResourceForStudio).ToList();
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(resourceList);
             }
             catch (Exception err)
@@ -65,7 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw;
             }
         }
-
+        
         public DynamicService CreateServiceEntry()
         {
             var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };

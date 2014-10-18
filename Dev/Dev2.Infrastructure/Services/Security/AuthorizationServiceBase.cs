@@ -25,7 +25,7 @@ namespace Dev2.Services.Security
 {
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
-        readonly ISecurityService _securityService;
+        protected readonly ISecurityService _securityService;
         readonly bool _isLocalConnection;
 
         public Func<bool> AreAdministratorsMembersOfWarewolfAdministrators;
@@ -190,7 +190,7 @@ namespace Dev2.Services.Security
             return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
         }
 
-        protected IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
+        protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
             var serverPermissions = _securityService.Permissions;
             var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();

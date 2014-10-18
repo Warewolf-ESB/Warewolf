@@ -13,12 +13,15 @@
 using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Providers.Errors;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
+// ReSharper disable CheckNamespace
 namespace Dev2.Data.ServiceModel
+// ReSharper restore CheckNamespace
 {
 
     /// <summary>
@@ -99,5 +102,10 @@ namespace Dev2.Data.ServiceModel
 
 
         public IVersionInfo VersionInfo { get; set; }
+
+        /// <summary>
+        /// Gets or sets the permissions of the resource
+        /// </summary>
+        public Permissions Permissions { get; set; }
     }
 }
