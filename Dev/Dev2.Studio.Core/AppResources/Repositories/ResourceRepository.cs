@@ -751,6 +751,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 resource.VersionInfo = data.VersionInfo;
                 resource.IconPath = GetIconPath(data.ResourceType);
                 resource.Category = data.ResourceCategory;
+                resource.UserPermissions = data.Permissions;
                 resource.Tags = string.Empty;
                 resource.Comment = string.Empty;
                 resource.ServerResourceType = data.ResourceType.ToString();
@@ -1189,12 +1190,12 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         void ReceivePermissionsModified(IEnumerable<WindowsGroupPermission> modifiedPermissions)
         {
             var windowsGroupPermissions = modifiedPermissions as IList<WindowsGroupPermission> ?? modifiedPermissions.ToList();
-            var exclusionResourceIds = _environmentModel.AuthorizationService.SecurityService.Permissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer).Select(permission => permission.ResourceID);
-            var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
-            UpdateServerBasedOnPermissions(windowsGroupPermissions, exclusionResourceIds, serverPermissions);
+//            var exclusionResourceIds = _environmentModel.AuthorizationService.SecurityService.Permissions.Where(permission => permission.ResourceID != Guid.Empty && !permission.IsServer).Select(permission => permission.ResourceID);
+//            var serverPermissions = _environmentModel.AuthorizationService.GetResourcePermissions(Guid.Empty);
+//            UpdateServerBasedOnPermissions(windowsGroupPermissions, exclusionResourceIds, serverPermissions);
             UpdateResourcesBasedOnPermissions(windowsGroupPermissions);
 
-            RefreshServer(serverPermissions);
+            //RefreshServer(serverPermissions);
         }
 
         void RefreshServer(Permissions serverPermissions)
@@ -1240,9 +1241,9 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     try
                     {
                         var resourceId = resourceModel.ID;
-                        var resourcePermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resourceId);
-                        resourceModel.UserPermissions = resourcePermissions;
-                        StudioResourceRepository.UpdateItem(resourceId, (a => { a.Permissions = resourcePermissions; }), _environmentModel.ID);
+                        //var resourcePermissions = _environmentModel.AuthorizationService.GetResourcePermissions(resourceId);
+                        resourceModel.UserPermissions = permission.Permissions;
+                        StudioResourceRepository.UpdateItem(resourceId, (a => { a.Permissions = permission.Permissions; }), _environmentModel.ID);
                     }
                     catch(SystemException exception)
                     {

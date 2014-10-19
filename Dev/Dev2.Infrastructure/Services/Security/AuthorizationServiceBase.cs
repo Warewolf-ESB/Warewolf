@@ -245,7 +245,7 @@ namespace Dev2.Services.Security
                         // if that fails, check Administrators group membership in the Warewolf Administrators group
                         if(!isInRole)
                         {
-                            SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
+                            var sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
                             var windowsPrincipal = principal as WindowsPrincipal;
                             var windowsIdentity = principal.Identity as WindowsIdentity;
                             if(windowsPrincipal != null)

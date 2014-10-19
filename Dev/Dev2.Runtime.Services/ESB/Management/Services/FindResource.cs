@@ -21,8 +21,6 @@ using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.Security;
-using Dev2.Services.Security;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -32,7 +30,6 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// </summary>
     public class FindResource : IEsbManagementEndpoint
     {
-        private IAuthorizationService _authorizationService;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {

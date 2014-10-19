@@ -93,31 +93,38 @@ namespace Dev2.Studio.ViewModels.Help
         {
             Uri = uri;
 
-            if(HelpViewWrapper == null)
+            if (HelpViewWrapper == null)
             {
                 IsViewAvailable = false;
             }
             else
             {
                 IsViewAvailable = true;
-
-                if(_network.HasConnection(uri))
-                {
-                    HelpViewWrapper.Navigate(Uri);
-                    HelpViewWrapper.WebBrowser.Navigated += (sender, args) => SuppressJavaScriptsErrors(HelpViewWrapper.WebBrowser);
-                    HelpViewWrapper.WebBrowser.LoadCompleted += (sender, args) =>
+                _network.HasConnectionAsync(uri).ContinueWith(task =>
                     {
-                        HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                        HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                    };
-                }
-                else
-                {
-                    ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
-                    HelpViewWrapper.Navigate(ResourcePath);
-                    HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                    HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                }
+                        if (task.Result)
+                        {
+
+                            HelpViewWrapper.Navigate(Uri);
+                            HelpViewWrapper.WebBrowser.Navigated += (sender, args) => SuppressJavaScriptsErrors(HelpViewWrapper.WebBrowser);
+                            HelpViewWrapper.WebBrowser.LoadCompleted +=(sender, args) => Execute.OnUIThread(() =>
+                                                                                                            {
+                                                                                                                HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                                                                                                                HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+                                                                                                            });
+                        }
+                        else
+                        {
+                            ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
+                            Execute.OnUIThread(() =>
+                                               {
+                                                   HelpViewWrapper.Navigate(ResourcePath);
+                                                   HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                                                   HelpViewWrapper.WebBrowserVisibility = Visibility.Visible; 
+                                               });
+                            
+                        }
+                    });
             }
         }
 
