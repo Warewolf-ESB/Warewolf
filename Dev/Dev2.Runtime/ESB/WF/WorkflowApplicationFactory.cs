@@ -539,6 +539,7 @@ namespace Dev2.Runtime.ESB.WF
 
             private UnhandledExceptionAction OnUnhandledException(WorkflowApplicationUnhandledExceptionEventArgs args)
             {
+                ExecutableServiceRepository.Instance.Remove(this);
                 _waitHandle.Set();
                 ExecutionStatusCallbackDispatcher.Instance.Post(_result.ExecutionCallbackID, ExecutionStatusCallbackMessageType.ErrorCallback);
                 return UnhandledExceptionAction.Abort;

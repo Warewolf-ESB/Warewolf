@@ -167,22 +167,5 @@ namespace Dev2.Runtime.WebServer.Controllers
                 ? ProcessRequest<WebPostRequestHandler>(requestVariables)
                 : ProcessRequest<WebGetRequestHandler>(requestVariables);
         }
-
-        [HttpGet]
-        [HttpPost]
-        [Route("services/{__name__}/instances/{__instanceid__}/bookmarks/{__bookmark__}")]
-        public HttpResponseMessage BookmarkWorkflow(string __name__, string __instanceid__, string __bookmark__)
-        {
-            var requestVariables = new NameValueCollection
-            {
-                { "servicename", __name__ }, 
-                { "instanceid", __instanceid__ },
-                { "bookmark", __bookmark__ }
-            };
-
-            return Request.Method == HttpMethod.Post
-                ? ProcessRequest<WebPostRequestHandler>(requestVariables)
-                : ProcessRequest<WebGetRequestHandler>(requestVariables);
-        }
     }
 }

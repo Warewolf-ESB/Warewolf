@@ -28,7 +28,7 @@ namespace Dev2.Integration.Tests.Load_Tests
         [Ignore]
         public void FileWith10kPrimes_Expect10kRecordsetEntries_in_Under_5Seconds()
         {
-            string path = ServerSettings.WebserverURI + "ML-TESTING/LargeDataTest";
+            string path = ServerSettings.WebserverURI + "Load Test Resources/LargeDataTest";
 
             DateTime start = DateTime.Now;
             string result = TestHelper.PostDataToWebserver(path);
@@ -55,7 +55,7 @@ namespace Dev2.Integration.Tests.Load_Tests
         public void FileWith200kLine_Expect200kRecordsetEntries_In_Under_25Seconds()
         {
 
-            string path = ServerSettings.WebserverURI + "DataSplit200kEntryFile_Expect_Sub5SecondProcess";
+            string path = ServerSettings.WebserverURI + "Load Test Resources/DataSplit200kEntryFile_Expect_Sub5SecondProcess";
 
             DateTime start = DateTime.Now;
             TestHelper.PostDataToWebserver(path);
