@@ -3,9 +3,11 @@
   <Description>These are default test settings for a remote acceptance test run.</Description>
     <Deployment>
 		<DeploymentItem filename="Dev2.Server\bin\Debug\" outputDirectory="Server" />
+		<DeploymentItem filename="Dev2.Studio\bin\Debug\" outputDirectory="Studio" />
         
             <!--For Build Agents-->
         <DeploymentItem filename="..\bin\Server\" outputDirectory="Server" />
+        <DeploymentItem filename="..\bin\Studio\" outputDirectory="Studio" />
     </Deployment>
   <NamingScheme baseName="UT" />
     <Scripts setupScript="..\Dev\TestScripts\Acceptance\Startup.bat" cleanupScript="..\Dev\TestScripts\Acceptance\Cleanup.bat" />
