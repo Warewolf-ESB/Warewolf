@@ -97,7 +97,6 @@ namespace Dev2.Studio.ViewModels
         private bool _disposed;
 
         private AuthorizeCommand<string> _newResourceCommand;
-        private ICommand _addStudioShortcutsPageCommand;
         private ICommand _addLanguageHelpPageCommand;
         private ICommand _deployAllCommand;
         private ICommand _deployCommand;
@@ -105,9 +104,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _exitCommand;
         private AuthorizeCommand _settingsCommand;
         private AuthorizeCommand _schedulerCommand;
-        private ICommand _startFeedbackCommand;
         private ICommand _showCommunityPageCommand;
-        private ICommand _startStopRecordedFeedbackCommand;
         private readonly bool _createDesigners;
         private ICommand _showStartPageCommand;
         bool _hasActiveConnection;
@@ -261,16 +258,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-
-        public ICommand AddStudioShortcutsPageCommand
-        {
-            get
-            {
-                return _addStudioShortcutsPageCommand ??
-                       (_addStudioShortcutsPageCommand = new DelegateCommand(param => AddShortcutKeysWorkSurface()));
-            }
-        }
-
         public ICommand AddLanguageHelpPageCommand
         {
             get
@@ -300,20 +287,6 @@ namespace Dev2.Studio.ViewModels
         public ICommand ShowCommunityPageCommand
         {
             get { return _showCommunityPageCommand ?? (_showCommunityPageCommand = new DelegateCommand(param => ShowCommunityPage())); }
-        }
-
-        public ICommand StartFeedbackCommand
-        {
-            get { return _startFeedbackCommand ?? (_startFeedbackCommand = new DelegateCommand(param => StartFeedback())); }
-        }
-
-        public ICommand StartStopRecordedFeedbackCommand
-        {
-            get
-            {
-                return _startStopRecordedFeedbackCommand ??
-                       (_startStopRecordedFeedbackCommand = new DelegateCommand(param => StartStopRecordedFeedback()));
-            }
         }
 
         public ICommand DeployAllCommand
@@ -694,24 +667,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        private void StartStopRecordedFeedback()
-        {
-            var currentRecordFeedbackAction = FeedbackInvoker.CurrentAction as IAsyncFeedbackAction;
-
-            //start feedback
-            if(currentRecordFeedbackAction == null)
-            {
-                var recorderFeedbackAction = new RecorderFeedbackAction();
-                FeedbackInvoker.InvokeFeedback(recorderFeedbackAction);
-            }
-            //stop feedback
-            else
-            {
-                // PBI 9598 - 2013.06.10 - TWR : added environment parameter
-                currentRecordFeedbackAction.FinishFeedBack(ActiveEnvironment);
-            }
-        }
-
         private void DisplayResourceWizard(IContextualResourceModel resourceModel, bool isedit)
         {
             if(resourceModel == null)
@@ -863,18 +818,6 @@ namespace Dev2.Studio.ViewModels
             if(workSurfaceContextViewModel != null)
             {
                 ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(uriToDisplay);
-            }
-        }
-
-        public void AddShortcutKeysWorkSurface()
-        {
-            var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
-            ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.ShortcutKeys
-                                                             , new[] { new Tuple<string, object>("Uri", path) });
-            WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Shortcut Keys" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
-            if(workSurfaceContextViewModel != null)
-            {
-                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path);
             }
         }
 

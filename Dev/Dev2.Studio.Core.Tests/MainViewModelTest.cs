@@ -742,18 +742,6 @@ namespace Dev2.Core.Tests
             WindowManager.Verify(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null), Times.Once());
         }
 
-        [TestMethod]
-        public void AddStudioShortcutsPageCommandExpectsShortKeysActive()
-        {
-            CreateFullExportsAndVm();
-            MainViewModel.AddStudioShortcutsPageCommand.Execute(null);
-            var shortkeyUri = FileHelper.GetFullPath(StringResources.Uri_Studio_Shortcut_Keys_Document);
-            var helpctx = MainViewModel.ActiveItem.WorkSurfaceViewModel as HelpViewModel;
-            Assert.IsNotNull(helpctx);
-            // ReSharper disable PossibleNullReferenceException
-            Assert.IsTrue(helpctx.Uri == shortkeyUri);
-            // ReSharper restore PossibleNullReferenceException
-        }
 
         [TestMethod]
         [Owner("Ashley Lewis")]
@@ -1039,42 +1027,6 @@ namespace Dev2.Core.Tests
                 Assert.Fail("The resource passed in was null");
             }
             MockStudioResourceRepository.Verify(repository => repository.AddResouceItem(It.IsAny<IContextualResourceModel>()), Times.Never());
-        }
-
-        [TestMethod]
-        public void StartFeedbackCommandCommandExpectsFeedbackInvoked()
-        {
-            CreateFullExportsAndVm();
-            FeedbackInvoker.Setup(
-                i => i.InvokeFeedback(It.IsAny<EmailFeedbackAction>(), It.IsAny<RecorderFeedbackAction>()))
-                .Verifiable();
-            MainViewModel.StartFeedbackCommand.Execute(null);
-            FeedbackInvoker.Verify(
-                i => i.InvokeFeedback(It.IsAny<EmailFeedbackAction>(), It.IsAny<RecorderFeedbackAction>()),
-                Times.Once());
-        }
-
-        [TestMethod]
-        public void StartStopRecordedFeedbackCommandExpectsFeedbackStartedWhenNotInProgress()
-        {
-            CreateFullExportsAndVm();
-            FeedbackInvoker.Setup(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>())).Verifiable();
-            MainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
-            FeedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Once());
-        }
-
-        [TestMethod]
-        public void StartStopRecordedFeedbackCommandExpectsFeedbackStppedtInProgress()
-        {
-            CreateFullExportsAndVm();
-            var mockAction = new Mock<IAsyncFeedbackAction>();
-            mockAction.Setup(a => a.StartFeedback()).Verifiable();
-            FeedbackInvoker.SetupGet(i => i.CurrentAction).Returns(mockAction.Object);
-            MainViewModel.StartStopRecordedFeedbackCommand.Execute(null);
-            FeedbackInvoker.Verify(i => i.InvokeFeedback(It.IsAny<RecorderFeedbackAction>()), Times.Never());
-
-            // PBI 9598 - 2013.06.10 - TWR : added null parameter
-            mockAction.Verify(a => a.FinishFeedBack(It.IsAny<IEnvironmentModel>()), Times.Once());
         }
 
         [TestMethod]

@@ -3332,7 +3332,7 @@ namespace Dev2.Core.Tests.ModelTests
             item.Children[0].ResourceType = ResourceType.WebService;
             item.Children[0].ResourcePath = "bob\\dave\\item";
             item.Children[0].SetIsChecked(null, true, true);
-            Assert.IsFalse(updateStats);
+            Assert.IsTrue(updateStats);
 
         }
 
