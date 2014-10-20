@@ -105,13 +105,18 @@ namespace Dev2.Studio.ViewModels.Help
                         if (task.Result)
                         {
 
-                            HelpViewWrapper.Navigate(Uri);
+                            
                             HelpViewWrapper.WebBrowser.Navigated += (sender, args) => SuppressJavaScriptsErrors(HelpViewWrapper.WebBrowser);
                             HelpViewWrapper.WebBrowser.LoadCompleted +=(sender, args) => Execute.OnUIThread(() =>
                                                                                                             {
                                                                                                                 HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
                                                                                                                 HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
                                                                                                             });
+                            Execute.OnUIThread(() =>
+                            {
+                                HelpViewWrapper.Navigate(Uri);
+                            });
+                            
                         }
                         else
                         {

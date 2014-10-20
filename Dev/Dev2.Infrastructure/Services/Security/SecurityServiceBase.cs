@@ -42,6 +42,18 @@ namespace Dev2.Services.Security
                     _permissionsLock.ExitReadLock();
                 }
             }
+            set
+            {
+                _permissionsLock.EnterReadLock();
+                try
+                {
+                    _permissions = value.ToList();
+                }
+                finally
+                {
+                    _permissionsLock.ExitReadLock();
+                }
+            }
         }
 
         public TimeSpan TimeOutPeriod { get; set; }
