@@ -1,5 +1,5 @@
 ![warewolf logo](http://www.warewolf.io/images/warewolf-logo.png)
-Licensing Information.
+Licensing Information
 =====================
 
 The Warewolf-ESB Git repository includes compiled binaries to make it easier to compile the codebase. This document details the licenses under which each library is licensed, and where you can downnload the source code if you wish. <br/>
