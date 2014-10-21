@@ -1064,6 +1064,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.Context.Services.Subscribe<ViewStateService>(ViewStateServiceSubscribe);
 
                 _wd.View.PreviewDrop += ViewPreviewDrop;
+              
                 _wd.View.PreviewMouseDown += ViewPreviewMouseDown;
                 _wd.View.Measure(new Size(2000, 2000));
 
@@ -1604,6 +1605,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         void ViewPreviewDrop(object sender, DragEventArgs e)
         {
+  
             bool dropOccured = true;
             SetLastDroppedPoint(e);
             DataObject = e.Data.GetData(typeof(ExplorerItemModel));
@@ -1796,8 +1798,16 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 PreventCommandFromBeingExecuted(e);
             }
+            if(e.Command == ApplicationCommands.Paste)
+            {
+                PreventPasteIfRemote(e);
+            }
         }
 
+        void PreventPasteIfRemote(CanExecuteRoutedEventArgs canExecuteRoutedEventArgs)
+        {
+            var x = canExecuteRoutedEventArgs.Source;
+        }
 
         /// <summary>
         ///     Handler attached to intercept checks for executing the delete command
