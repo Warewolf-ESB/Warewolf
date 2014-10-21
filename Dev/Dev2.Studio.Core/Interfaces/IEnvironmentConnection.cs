@@ -16,6 +16,7 @@ using System.Security.Principal;
 using System.Text;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Threading;
@@ -64,5 +65,6 @@ namespace Dev2.Studio.Core.Interfaces
         Action<IExplorerItem> ItemAddedMessageAction { get; set; }
         IAsyncWorker AsyncWorker { get; }
         IPrincipal Principal { get; }
+        Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
     }
 }

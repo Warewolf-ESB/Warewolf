@@ -68,6 +68,7 @@ namespace Dev2.Runtime.Hosting
         static volatile ResourceCatalog _instance;
         static readonly object SyncRoot = new Object();
         public Action<IResource> ResourceSaved;
+        public Action<Guid, IList<ICompileMessageTO>> SendResourceMessages;
         /// <summary>
         /// Gets the instance.
         /// </summary>
@@ -1218,11 +1219,14 @@ namespace Dev2.Runtime.Hosting
                 if(messages != null)
                 {
                     var keys = _workspaceResources.Keys.ToList();
+                    CompileMessageRepo.Instance.AddMessage(workspaceID, messages); //Sends the message for the resource being saved
+                    
+                    var dependsMessageList = new List<ICompileMessageTO>();
                     keys.ForEach(workspace =>
                     {
-                        CompileMessageRepo.Instance.AddMessage(workspace, messages); //Sends the message for the resource being saved
-                        UpdateDependantResourceWithCompileMessages(workspace, resource, messages);
+                        dependsMessageList.AddRange(UpdateDependantResourceWithCompileMessages(workspace, resource, messages));       
                     });
+                    SendResourceMessages(resource.ResourceID, dependsMessageList);
                 }
             }
         }
@@ -1254,9 +1258,10 @@ namespace Dev2.Runtime.Hosting
         }
 
         //Sends the messages for effected resources
-        void UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<ICompileMessageTO> messages)
+        List<ICompileMessageTO> UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<ICompileMessageTO> messages)
         {
-            var dependants = Instance.GetDependentsAsResourceForTrees(workspaceID, resource.ResourceID);
+            var resourceId = resource.ResourceID;
+            var dependants = Instance.GetDependentsAsResourceForTrees(workspaceID, resourceId);
             var dependsMessageList = new List<ICompileMessageTO>();
             foreach(var dependant in dependants)
             {
@@ -1278,6 +1283,7 @@ namespace Dev2.Runtime.Hosting
                 }
             }
             CompileMessageRepo.Instance.AddMessage(workspaceID, dependsMessageList);
+            return dependsMessageList;
         }
 
         void UpdateResourceXml(Guid workspaceID, IResource effectedResource, IList<ICompileMessageTO> compileMessagesTO)
@@ -1852,8 +1858,14 @@ namespace Dev2.Runtime.Hosting
 
         public void Dispose()
         {
-            _workspaceLocks.Clear();
-            _workspaceResources.Clear();
+            lock(_loadLock)
+            {
+                _workspaceLocks.Clear();
+            }
+            lock (_loadLock)
+            {
+                _workspaceResources.Clear();
+            }
         }
     }
 

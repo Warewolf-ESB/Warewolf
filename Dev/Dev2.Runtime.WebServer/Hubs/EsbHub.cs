@@ -9,12 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -26,6 +26,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -116,6 +117,10 @@ namespace Dev2.Runtime.WebServer.Hubs
             if(ResourceCatalog.Instance.ResourceSaved == null)
             {
                 ResourceCatalog.Instance.ResourceSaved = null;
+            }            
+            if(ResourceCatalog.Instance.SendResourceMessages == null)
+            {
+                ResourceCatalog.Instance.SendResourceMessages = null;
             }
             ResourceCatalog.Instance.Dispose();
             return base.OnDisconnected();
@@ -135,13 +140,21 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         protected void SetupEvents()
         {
-            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
             ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
             ServerExplorerRepository.Instance.MessageSubscription(this);
             if(ResourceCatalog.Instance.ResourceSaved == null)
             {
                 ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
+            }            
+            if(ResourceCatalog.Instance.SendResourceMessages == null)
+            {
+                ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
             }
+        }
+
+        void SendResourceMessages(Guid resourceId, IList<ICompileMessageTO> compileMessageTos)
+        {
+            SendResourcesAffectedMemo(resourceId,compileMessageTos);
         }
 
         #endregion
@@ -217,7 +230,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                             {
                                 user = Context.User.Identity.Name;
                                 // set correct principle ;)
-                                System.Threading.Thread.CurrentPrincipal = Context.User;
+                                Thread.CurrentPrincipal = Context.User;
                                 Dev2Logger.Log.Debug("Execute Command Invoked For [ " + user + " ] For Service [ " + request.ServiceName + " ]");
                             }
 
@@ -278,6 +291,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => (m.MessageType == CompileMessageType.MappingChange || m.MessageType == CompileMessageType.MappingIsRequiredChanged)), CoalesceMappingChangedErrors);
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
+
         }
 
         #region CoalesceMappingChangedErrors
@@ -307,6 +321,22 @@ namespace Dev2.Runtime.WebServer.Hubs
             var hubCallerConnectionContext = Clients;
 
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
+            
+            CompileMessageRepo.Instance.ClearObservable();
+            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
+        }
+
+        public void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
+        {
+            var msgs = new CompileMessageList();
+            msgs.Dependants = new List<string>();
+            messages.ToList().ForEach(s => msgs.Dependants.Add(s.ServiceName));
+            msgs.MessageList = messages;
+            msgs.ServiceID = resourceId;
+            var serializedMemo = _serializer.Serialize(msgs);
+            var hubCallerConnectionContext = Clients;
+
+            hubCallerConnectionContext.All.ReceiveResourcesAffectedMemo(serializedMemo);
             
             CompileMessageRepo.Instance.ClearObservable();
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
