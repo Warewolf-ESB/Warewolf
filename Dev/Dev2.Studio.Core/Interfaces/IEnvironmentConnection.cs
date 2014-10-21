@@ -11,13 +11,16 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Network;
 using System.Security.Principal;
 using System.Text;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Security;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 
@@ -64,5 +67,7 @@ namespace Dev2.Studio.Core.Interfaces
         Action<IExplorerItem> ItemAddedMessageAction { get; set; }
         IAsyncWorker AsyncWorker { get; }
         IPrincipal Principal { get; }
+        event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
+        Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
     }
 }

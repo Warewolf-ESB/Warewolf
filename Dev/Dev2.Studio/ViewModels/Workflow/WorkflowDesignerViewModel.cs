@@ -214,13 +214,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string GetWorkflowLink()
         {
-            if (!String.IsNullOrEmpty(_resourceModel.DataList))
-            {
-                _workflowInputDataViewModel.DebugTo.DataList = _resourceModel.DataList;
-            }
-            _workflowLink = "";
             if (_workflowInputDataViewModel != null)
             {
+                if (!String.IsNullOrEmpty(_resourceModel.DataList))
+                {
+                    _workflowInputDataViewModel.DebugTo.DataList = _resourceModel.DataList;
+                }
+                _workflowLink = "";
                 _workflowInputDataViewModel.LoadWorkflowInputs();
                 _workflowInputDataViewModel.SetXmlData();
                 var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();

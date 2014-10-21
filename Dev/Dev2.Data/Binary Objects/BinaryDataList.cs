@@ -424,7 +424,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
             TryGetEntry(GlobalConstants.ErrorPayload, out entry, out error);
             if(entry != null)
             {
-                result = entry.FetchScalar().TheValue;
+                try
+                {
+                    result = entry.FetchScalar().TheValue;
+                }
+                catch(Exception)
+                {
+                    result = string.Empty;
+                }
 
                 if(!returnAsXml)
                 {

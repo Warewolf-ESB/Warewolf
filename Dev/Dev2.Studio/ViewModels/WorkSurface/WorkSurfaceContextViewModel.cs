@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Activities.Presentation.View;
 using System.Diagnostics.CodeAnalysis;
@@ -21,9 +20,10 @@ using Caliburn.Micro;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
+using Dev2.Data.ServiceModel.Messages;
+using Dev2.Diagnostics;
 using Dev2.Factory;
 using Dev2.Messages;
 using Dev2.Providers.Events;
@@ -48,7 +48,6 @@ using Dev2.Studio.ViewModels.Workflow;
 using Dev2.Utils;
 using Dev2.Webs;
 using Dev2.Workspaces;
-using Dev2.Diagnostics;
 
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface
@@ -81,7 +80,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         AuthorizeCommand _quickDebugCommand;
         AuthorizeCommand _quickViewInBrowserCommand;
 
-        bool _hasMappingChange;
         readonly IEnvironmentModel _environmentModel;
         readonly IPopupController _popupController;
         readonly Action<IContextualResourceModel, bool> _saveDialogAction;
@@ -102,7 +100,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 {
                     return null;
                 }
-                return ContextualResourceModel.Environment;
+
+                var environmentModel = ContextualResourceModel.Environment;
+               
+                return environmentModel;
             }
         }
 
@@ -154,25 +155,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     return;
                 }
 
-                _workSurfaceViewModel = value;
-                if(_workSurfaceViewModel == null)
-                {
-                    if(ContextualResourceModel != null)
-                    {
-                        ContextualResourceModel.OnDesignValidationReceived -= ValidationMemoReceived;
-                    }
-                }
+                _workSurfaceViewModel = value;               
                 NotifyOfPropertyChange(() => WorkSurfaceViewModel);
 
                 var isWorkFlowDesigner = _workSurfaceViewModel is IWorkflowDesignerViewModel;
                 if(isWorkFlowDesigner)
                 {
                     var workFlowDesignerViewModel = (IWorkflowDesignerViewModel)_workSurfaceViewModel;
-                    ContextualResourceModel = workFlowDesignerViewModel.ResourceModel;
-                    if(ContextualResourceModel != null)
-                    {
-                        ContextualResourceModel.OnDesignValidationReceived += ValidationMemoReceived;
-                    }
+                    ContextualResourceModel = workFlowDesignerViewModel.ResourceModel;                    
                 }
 
                 if(WorkSurfaceViewModel != null)
@@ -180,19 +170,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     WorkSurfaceViewModel.ConductWith(this);
                 }
             }
-        }
-
-        void ValidationMemoReceived(object sender, DesignValidationMemo designValidationMemo)
-        {
-            if(designValidationMemo.IsValid)
-            {
-                return;
-            }
-            if(designValidationMemo.Errors.Find(info => info.FixType == FixType.ReloadMapping) != null)
-            {
-                _hasMappingChange = true;
-            }
-        }
+        }      
 
         #endregion public properties
 
@@ -230,6 +208,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                     // MUST use connection server event publisher - debug events are published from the server!
                     DebugOutputViewModel = new DebugOutputViewModel(_environmentModel.Connection.ServerEvents, EnvironmentRepository.Instance, new DebugOutputFilterStrategy());
                     _environmentModel.IsConnectedChanged += EnvironmentModelOnIsConnectedChanged();
+                    _environmentModel.Connection.ReceivedResourceAffectedMessage += OnReceivedResourceAffectedMessage;
                 }
             }
 
@@ -243,6 +222,19 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             _popupController = popupController;
             _saveDialogAction = saveDialogAction;
 
+        }
+
+        void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList compileMessageList)
+        {
+            var numberOfDependants = compileMessageList.Dependants;
+            if (resourceId == ContextualResourceModel.ID && numberOfDependants.Count>0)
+            {
+                var showResourceChangedUtil = ResourceChangeHandlerFactory.Create(EventPublisher);
+                Execute.OnUIThread(() =>
+                {
+                    showResourceChangedUtil.ShowResourceChanged(ContextualResourceModel, numberOfDependants);
+                });
+            }
         }
 
         EventHandler<ConnectedEventArgs> EnvironmentModelOnIsConnectedChanged()
@@ -687,35 +679,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             DisplaySaveResult(result, resource);
             if(!isLocalSave)
             {
-                if(_hasMappingChange)
-                {
-                    CheckForServerMessages(resource);
-                    _hasMappingChange = false;
-                }
                 ExecuteMessage saveResult = resource.Environment.ResourceRepository.SaveToServer(resource);
                 DispatchServerDebugMessage(saveResult, resource);
                 resource.IsWorkflowSaved = true;
                 StudioResourceRepository.RefreshVersionHistory(resource.Environment.ID, resource.ID);
             }
             return true;
-        }
-
-        void CheckForServerMessages(IContextualResourceModel resource)
-        {
-            if(resource == null)
-            {
-                return;
-            }
-
-            var compileMessageList = StudioCompileMessageRepoFactory.Create().GetCompileMessagesFromServer(resource);
-
-            if(compileMessageList == null || compileMessageList.Count == 0)
-            {
-                return;
-            }
-
-            var showResourceChangedUtil = ResourceChangeHandlerFactory.Create(EventPublisher);
-            showResourceChangedUtil.ShowResourceChanged(resource, compileMessageList.Dependants);
         }
 
         void DisplaySaveResult(ExecuteMessage result, IContextualResourceModel resource)
@@ -812,18 +781,18 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             if(_environmentModel != null)
             {
                 _environmentModel.IsConnectedChanged -= EnvironmentModelOnIsConnectedChanged();
+
+                if (_environmentModel.Connection != null)
+                {
+                    // ReSharper disable DelegateSubtraction
+                    _environmentModel.Connection.ReceivedResourceAffectedMessage-=OnReceivedResourceAffectedMessage;
+                }
             }
 
             if(DebugOutputViewModel != null)
             {
                 DebugOutputViewModel.Dispose();
             }
-
-            if(ContextualResourceModel != null)
-            {
-                ContextualResourceModel.OnDesignValidationReceived -= ValidationMemoReceived;
-            }
-
             var model = DataListViewModel as SimpleBaseViewModel;
             if(model != null)
             {
