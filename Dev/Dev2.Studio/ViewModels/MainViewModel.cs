@@ -723,13 +723,13 @@ namespace Dev2.Studio.ViewModels
 
         #region Public Methods
 
-        public virtual void ShowStartPage()
+        public virtual async void ShowStartPage()
         {
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if(workSurfaceContextViewModel != null)
             {
-                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(Version.CommunityPageUri);
+                await ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(Version.CommunityPageUri);
             }
         }
 
@@ -808,7 +808,7 @@ namespace Dev2.Studio.ViewModels
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 
-        public void AddHelpTabWorkSurface(string uriToDisplay)
+        public async void AddHelpTabWorkSurface(string uriToDisplay)
         {
             if(!string.IsNullOrWhiteSpace(uriToDisplay))
                 ActivateOrCreateUniqueWorkSurface<HelpViewModel>
@@ -817,11 +817,11 @@ namespace Dev2.Studio.ViewModels
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Help" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if(workSurfaceContextViewModel != null)
             {
-                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(uriToDisplay);
+                await ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(uriToDisplay);
             }
         }
 
-        public void AddLanguageHelpWorkSurface()
+        public async void AddLanguageHelpWorkSurface()
         {
             var path = FileHelper.GetFullPath(StringResources.Uri_Studio_Language_Reference_Document);
             ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.LanguageHelp
@@ -829,7 +829,7 @@ namespace Dev2.Studio.ViewModels
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Language Help" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if(workSurfaceContextViewModel != null)
             {
-                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path);
+                await ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path);
             }
         }
 
