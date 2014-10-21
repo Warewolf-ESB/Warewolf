@@ -25,6 +25,7 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Security;
@@ -77,7 +78,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 var item = _serializer.Serialize(addedItem);
                 var hubCallerConnectionContext = Clients;
                 hubCallerConnectionContext.All.ItemAddedMessage(item);
-            }
+            }           
         }
 
         #endregion
@@ -91,6 +92,12 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
         {
+            ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
+            ServerExplorerRepository.Instance.MessageSubscription(this);
+            if(ResourceCatalog.Instance.SendResourceMessages == null)
+            {
+                ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
+            }
             var user = Context.User;
             var permissionsMemo = new PermissionsModifiedMemo
             {
@@ -98,7 +105,12 @@ namespace Dev2.Runtime.WebServer.Hubs
                 ServerID = HostSecurityProvider.Instance.ServerID
             };
             var serializedMemo = _serializer.Serialize(permissionsMemo);
-            Clients.Caller.SendPermissionsMemo(serializedMemo);
+            Clients.Caller.SendPermissionsMemo(serializedMemo);        
+        }
+
+        void SendResourceMessages(Guid resourceId, IList<ICompileMessageTO> compileMessageTos)
+        {
+            SendResourcesAffectedMemo(resourceId,compileMessageTos);
         }
 
         public async Task AddDebugWriter(Guid workspaceId)
@@ -106,7 +118,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             var task = new Task(() => DebugDispatcher.Instance.Add(workspaceId, this));
             task.Start();
             await task;
-        }
+}
 
         /// <summary>
         ///     Fetches the execute payload fragment.
@@ -239,6 +251,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         {
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => (m.MessageType == CompileMessageType.MappingChange || m.MessageType == CompileMessageType.MappingIsRequiredChanged)), CoalesceMappingChangedErrors);
             WriteEventProviderClientMessage<DesignValidationMemo>(messages.Where(m => m.MessageType == CompileMessageType.ResourceSaved), CoalesceResourceSavedErrors);
+
         }
 
         #region CoalesceMappingChangedErrors
@@ -271,6 +284,18 @@ namespace Dev2.Runtime.WebServer.Hubs
 
             CompileMessageRepo.Instance.ClearObservable();
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
+        }
+
+        public void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
+        {
+            var msgs = new CompileMessageList { Dependants = new List<string>() };
+            messages.ToList().ForEach(s => msgs.Dependants.Add(s.ServiceName));
+            msgs.MessageList = messages;
+            msgs.ServiceID = resourceId;
+            var serializedMemo = _serializer.Serialize(msgs);
+            var hubCallerConnectionContext = Clients;
+
+            hubCallerConnectionContext.All.ReceiveResourcesAffectedMemo(serializedMemo);
         }
 
         public void SendDebugState(DebugState debugState)
@@ -361,9 +386,14 @@ namespace Dev2.Runtime.WebServer.Hubs
             {
                 authorizationServiceBase.Dispose();
             }
-            if(ResourceCatalog.Instance.ResourceSaved == null)
+
+            if (ResourceCatalog.Instance.ResourceSaved == null)
             {
                 ResourceCatalog.Instance.ResourceSaved = null;
+            }
+            if (ResourceCatalog.Instance.SendResourceMessages == null)
+            {
+                ResourceCatalog.Instance.SendResourceMessages = null;
             }
             ResourceCatalog.Instance.Dispose();
             return base.OnDisconnected();
@@ -389,6 +419,10 @@ namespace Dev2.Runtime.WebServer.Hubs
             if(ResourceCatalog.Instance.ResourceSaved == null)
             {
                 ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
+            }
+            if(ResourceCatalog.Instance.SendResourceMessages == null)
+            {
+                ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
             }
         }
 

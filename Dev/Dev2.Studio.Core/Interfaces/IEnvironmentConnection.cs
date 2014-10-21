@@ -17,6 +17,7 @@ using System.Security.Principal;
 using System.Text;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Network;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Security;
@@ -67,5 +68,6 @@ namespace Dev2.Studio.Core.Interfaces
         IAsyncWorker AsyncWorker { get; }
         IPrincipal Principal { get; }
         event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
+        Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage { get; set; }
     }
 }

@@ -11,6 +11,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
 using System.Net;
 using System.Net.Http;
 using System.Net.Security;
@@ -30,6 +31,7 @@ using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.ConnectionHelpers;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
 using Dev2.ExtMethods;
@@ -41,7 +43,6 @@ using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
-using ServiceStack.ServiceClient.Web;
 
 namespace Dev2.Network
 {
@@ -114,6 +115,7 @@ namespace Dev2.Network
             {
                 EsbProxy = HubConnection.CreateHubProxy("esb");
                 EsbProxy.On<string>("SendMemo", OnMemoReceived);
+                EsbProxy.On<string>("ReceiveResourcesAffectedMemo", OnReceiveResourcesAffectedMemo);
                 EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
                 EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
                 EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIdReceived);
@@ -121,6 +123,16 @@ namespace Dev2.Network
                 EsbProxy.On<string>("ItemUpdatedMessage", OnItemUpdatedMessageReceived);
                 EsbProxy.On<string>("ItemDeletedMessage", OnItemDeletedMessageReceived);
                 EsbProxy.On<string>("ItemAddedMessage", OnItemAddedMessageReceived);
+            }
+        }
+
+        public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage {get;set;}
+        void OnReceiveResourcesAffectedMemo(string objString)
+        {
+            var obj = _serializer.Deserialize<CompileMessageList>(objString);
+            if (ReceivedResourceAffectedMessage != null)
+            {
+                ReceivedResourceAffectedMessage(obj.ServiceID,obj);
             }
         }
 
