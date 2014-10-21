@@ -18,7 +18,7 @@ Scenario: SequenceSmallViewControlFlowNotAllowedWorkflowOtherAllowedLargeViewCon
 	And I send "workflow" to "TOOLBOX,PART_SearchBox"
 	And I drag "TOOLWORKFLOW" to point "5,5" on "WORKSURFACE,Sequence(SequenceDesigner),SmallViewContent,UI__DropPoint_AutoID"
 	And I type "decision" in "RESOURCEPICKERFILTER"
-	And I click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	And I click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
 	And I click "RESOURCEPICKEROKBUTTON"
 	When I double click point "5,5" on "WORKSURFACE,Sequence(SequenceDesigner)"
 	Then "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,Count Records(CountRecordsDesigner)" is visible
@@ -32,7 +32,7 @@ Scenario: SequenceSmallViewControlFlowNotAllowedWorkflowOtherAllowedLargeViewCon
 	And I send "workflow" to "TOOLBOX,PART_SearchBox"
 	And I drag "TOOLWORKFLOW" to point "5,5" on "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,sacd:VerticalConnector_1"
 	And I type "javascript" in "RESOURCEPICKERFILTER"
-	And I click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Javascript Testing_AutoID"
+	And I click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Javascript Testing_AutoID"
 	And I click "RESOURCEPICKEROKBUTTON"
 	Then "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,Length(RecordsLengthDesigner)" is visible
 	And "WORKSURFACE,Sequence(SequenceDesigner),LargeViewContent,UI__ActivitiesPresenter_AutoID,BARNEY\Javascript Testing(ServiceDesigner)" is visible

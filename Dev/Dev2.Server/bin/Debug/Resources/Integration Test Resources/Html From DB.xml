@@ -1,0 +1,57 @@
+
+<Service ID="c7bf731b-b84a-4a37-9195-ac21a9f6a5c7" Version="1.0" Name="Html From DB" ResourceType="DbService" IsValid="false" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
+  <Actions>
+    <Action Name="dbo_FetchHtmlFragment" Type="InvokeStoredProc" SourceID="ebba47dc-e5d4-4303-a203-09e2e9761d16" SourceName="testingDBSrc" SourceMethod="dbo.FetchHtmlFragment">
+      <Inputs />
+      <Outputs>
+        <Output OriginalName="TheFragment" Name="TheFragment" MapsTo="TheFragment" Value="[[dbo_FetchHtmlFragment().TheFragment]]" RecordsetName="dbo_FetchHtmlFragment" RecordsetAlias="dbo_FetchHtmlFragment" Recordset="dbo_FetchHtmlFragment" />
+      </Outputs>
+      <OutputDescription><![CDATA[<z:anyType xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:d1p1="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph.Ouput" i:type="d1p1:OutputDescription" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><d1p1:DataSourceShapes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"><d2p1:anyType i:type="d1p1:DataSourceShape"><d1p1:_x003C_Paths_x003E_k__BackingField><d2p1:anyType xmlns:d5p1="http://schemas.datacontract.org/2004/07/Dev2.Converters.Graph.DataTable" i:type="d5p1:DataTablePath"><_x003C_ActualPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">TheFragment</_x003C_ActualPath_x003E_k__BackingField><_x003C_DisplayPath_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">TheFragment</_x003C_DisplayPath_x003E_k__BackingField><_x003C_OutputExpression_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">[[dbo_FetchHtmlFragment().TheFragment]]</_x003C_OutputExpression_x003E_k__BackingField><_x003C_SampleData_x003E_k__BackingField xmlns="http://schemas.datacontract.org/2004/07/Unlimited.Framework.Converters.Graph">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/&gt;
+&lt;meta name="gwt:property" content="locale=en_US"&gt;
+&lt;meta http-equiv="X-UA-Compatible" content="IE=9"&gt;
+&lt;link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico?1377077150"/&gt;
+
+&lt;link rel="alternate" title="SonarQube Alerts" href="/feeds/projects/Alert" type="application/atom+xml"&gt;
+
+&lt;title&gt;SonarQube&lt;/title&gt;
+
+&lt;link href="/stylesheets/sonar.css?1377077154" media="all" rel="stylesheet" type="text/css" /&gt;&lt;script src="/javascripts/sonar.js?1377077154" type="text/javascript"&gt;&lt;/script&gt;
+&lt;!--[if lte IE 8]&gt;&lt;script src="/javascripts/protovis-msie.js?1377077154" type="text/javascript"&gt;&lt;/script&gt;&lt;![endif]--&gt;
+&lt;script&gt;var baseUrl = ';
+var $j = jQuery.noConflict();
+&lt;/script&gt;</_x003C_SampleData_x003E_k__BackingField></d2p1:anyType></d1p1:_x003C_Paths_x003E_k__BackingField></d2p1:anyType></d1p1:DataSourceShapes><d1p1:Format>ShapedXML</d1p1:Format></z:anyType>]]></OutputDescription>
+    </Action>
+  </Actions>
+  <AuthorRoles />
+  <Comment />
+  <Tags />
+  <HelpLink />
+  <UnitTestTargetWorkflowService />
+  <BizRule />
+  <WorkflowActivityDef />
+  <XamlDefinition />
+  <DataList />
+  <TypeOf>InvokeStoredProc</TypeOf>
+  <DisplayName>Html From DB</DisplayName>
+  <Category>Integration Test Resources\Html From DB</Category>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
+    <SignedInfo>
+      <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" />
+      <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" />
+      <Reference URI="">
+        <Transforms>
+          <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
+        </Transforms>
+        <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <DigestValue>14SPcQCAlHMSYiemE1qZH3opdHI=</DigestValue>
+      </Reference>
+    </SignedInfo>
+    <SignatureValue>bAPvtkIvxaqhcOHv4FKdp+c/lEDAsFeg0n0fDkmu1BdU8TGeGF/riYBsfqFm6mmE5NOW8vtP1tPPyK2syryT2zLmKRvevjUe5GSARzIoDqoKIiIJi13UN88MbS94F9BlpLzdwA5HzsLBRRWtXT+6+i9mqhNZqIphU6qm4wtK3UA=</SignatureValue>
+  </Signature>
+</Service>

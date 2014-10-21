@@ -9,9 +9,9 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System.Activities.Expressions;
+using System.Activities.Statements;
 using System.Windows;
+using System.Windows.Media;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
@@ -1954,7 +1954,7 @@ namespace Dev2.Core.Tests.ModelTests
 #pragma warning restore 168
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
-            CustomContainer.Register<IMainViewModel>(mainViewModel.Object);
+            CustomContainer.Register(mainViewModel.Object);
             //------------Execute Test---------------------------
             Assert.IsFalse(resourceItem.IsRenaming);
             var previousName = resourceItem.DisplayName;
@@ -1998,7 +1998,7 @@ namespace Dev2.Core.Tests.ModelTests
             var folderItem = serverItem.Children[0];
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
-            CustomContainer.Register<IMainViewModel>(mainViewModel.Object);
+            CustomContainer.Register(mainViewModel.Object);
             //------------Execute Test---------------------------
             Assert.IsFalse(folderItem.IsRenaming);
             var previousName = folderItem.DisplayName;
@@ -2042,7 +2042,7 @@ namespace Dev2.Core.Tests.ModelTests
             folderItem.Children.Clear();
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
-            CustomContainer.Register<IMainViewModel>(mainViewModel.Object);
+            CustomContainer.Register(mainViewModel.Object);
             //------------Execute Test---------------------------
             Assert.IsFalse(folderItem.IsRenaming);
             var previousName = folderItem.DisplayName;
@@ -2086,7 +2086,7 @@ namespace Dev2.Core.Tests.ModelTests
             folderItem.Children.Clear();
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
-            CustomContainer.Register<IMainViewModel>(mainViewModel.Object);
+            CustomContainer.Register(mainViewModel.Object);
             // setup that the item already exists
             mockStudioRepository.Setup(a => a.FindItem(It.IsAny<Func<IExplorerItemModel, bool>>())).Returns(serverItem);
             //------------Execute Test---------------------------
@@ -2236,7 +2236,7 @@ namespace Dev2.Core.Tests.ModelTests
             var serverItem = SetupExplorerItemModelWithFolderAndOneChildMockedStudioRepository(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem, mockStudioRepository.Object);
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
-            CustomContainer.Register<IMainViewModel>(mainViewModel.Object);
+            CustomContainer.Register(mainViewModel.Object);
 #pragma warning restore 168
             //------------Execute Test---------------------------
             Assert.IsFalse(resourceItem.IsRenaming);
@@ -2335,7 +2335,7 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(a => a.ResourceName).Returns(resourceItem.DisplayName);
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
-            CustomContainer.Register<IMainViewModel>(mainViewModel.Object);
+            CustomContainer.Register(mainViewModel.Object);
             //------------Execute Test---------------------------
             Assert.IsFalse(resourceItem.IsRenaming);
 
@@ -2395,7 +2395,7 @@ namespace Dev2.Core.Tests.ModelTests
             mockResourceModel.Setup(a => a.ResourceName).Returns(resourceItem.DisplayName);
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
-            CustomContainer.Register<IMainViewModel>(mainViewModel.Object);
+            CustomContainer.Register(mainViewModel.Object);
             //------------Execute Test---------------------------
             Assert.IsFalse(resourceItem.IsRenaming);
 
@@ -3305,6 +3305,58 @@ namespace Dev2.Core.Tests.ModelTests
         }
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_SetIsChecked")]
+        public void ExplorerItemModel_SetIsChecked_ResourcePathFolder()
+        {
+            ExplorerItemModel exp;
+            bool updateStats = false;
+            var item = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.NewGuid(), Guid.NewGuid(), new Mock<IConnectControlSingleton>().Object, out exp);
+            ExplorerItemModel.OnCheckedStateChangedAction = a => { updateStats = a.UpdateStats; };
+            item.SetIsChecked(null, true, false);
+            Assert.IsTrue(updateStats);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_SetIsChecked")]
+        public void ExplorerItemModel_SetIsChecked_ResourcePathIsInFolder()
+        {
+            ExplorerItemModel exp;
+            bool updateStats = false;
+            var item = SetupExplorerItemModelWithFolderAndOneChild("bob\\dave", Guid.NewGuid(), Guid.NewGuid(), new Mock<IConnectControlSingleton>().Object, out exp);
+            ExplorerItemModel.OnCheckedStateChangedAction = a =>
+            {
+                updateStats = a.UpdateStats;
+            };
+            item.Children[0].ResourceType = ResourceType.WebService;
+            item.Children[0].ResourcePath = "bob\\dave\\item";
+            item.Children[0].SetIsChecked(null, true, true);
+            Assert.IsTrue(updateStats);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_SetIsChecked")]
+        public void ExplorerItemModel_SetIsChecked_ResourcePathInRoot()
+        {
+            ExplorerItemModel exp;
+            bool updateStats = false;
+            var item = SetupExplorerItemModelWithFolderAndOneChild("bob\\dave", Guid.NewGuid(), Guid.NewGuid(), new Mock<IConnectControlSingleton>().Object, out exp);
+            ExplorerItemModel.OnCheckedStateChangedAction = a =>
+            {
+                updateStats =  a.UpdateStats;
+            };
+            item.Children[0].ResourceType = ResourceType.WebService;
+            item.Children[0].ResourcePath = "bob";
+            item.Children[0].SetIsChecked(null, true, true);
+            Assert.IsTrue(updateStats);
+
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
         [TestCategory("ExplorerItemModel_RemoveCommand")]
         public void ExplorerItemModel_RemoveCommand_ExpectRemoveCalled()
         {
@@ -3814,10 +3866,10 @@ namespace Dev2.Core.Tests.ModelTests
             explorerItemModel.Parent = parent.Object;
             var popupController = new Mock<IPopupController>();
             popupController.Setup(p => p.ShowRollbackVersionMessage(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register<IPopupController>(popupController.Object);
+            CustomContainer.Register(popupController.Object);
             var mainViewModel = new Mock<IMainViewModel>();
             mainViewModel.Setup(p => p.IsWorkFlowOpened(It.IsAny<IContextualResourceModel>())).Returns(true);
-            CustomContainer.Register<IMainViewModel>(mainViewModel.Object);
+            CustomContainer.Register(mainViewModel.Object);
             //------------Execute Test---------------------------
             explorerItemModel.RollbackCommand.Execute(null);
             //------------Assert Result--------------------------
@@ -3863,7 +3915,7 @@ namespace Dev2.Core.Tests.ModelTests
             explorerItemModel.Parent = parent.Object;
             var popupController = new Mock<IPopupController>();
             popupController.Setup(p => p.ShowDeleteVersionMessage(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register<IPopupController>(popupController.Object);
+            CustomContainer.Register(popupController.Object);
             //------------Execute Test---------------------------
             explorerItemModel.RollbackCommand.Execute(null);
             //------------Assert Result--------------------------
@@ -3893,7 +3945,7 @@ namespace Dev2.Core.Tests.ModelTests
             explorerItemModel.Parent = parent.Object;
             var popupController = new Mock<IPopupController>();
             popupController.Setup(p => p.ShowDeleteVersionMessage(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
-            CustomContainer.Register<IPopupController>(popupController.Object);
+            CustomContainer.Register(popupController.Object);
             //------------Execute Test---------------------------
             explorerItemModel.DeleteVersionCommand.Execute(null);
             //------------Assert Results-------------------------
@@ -4239,7 +4291,22 @@ namespace Dev2.Core.Tests.ModelTests
             //------------Assert Results-------------------------
             Assert.IsFalse(isVersion);
         }
-        
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("CheckStateChangedArgs_Ctor")]
+        public void CheckStateChangedArgs_Ctor_CheckAllFieldsAreSet_ExpectSuccess()
+        {
+            //------------Setup for test--------------------------
+            var guid = Guid.NewGuid();
+            var checkStateChangedArgs = new CheckStateChangedArgs(true,false,guid,ResourceType.Message,false);
+            Assert.IsTrue(checkStateChangedArgs.PreviousState);
+            Assert.IsFalse(checkStateChangedArgs.NewState);
+            Assert.AreEqual(checkStateChangedArgs.ResourceId,guid);
+            Assert.AreEqual(ResourceType.Message,checkStateChangedArgs.ResourceType);
+            Assert.IsFalse(checkStateChangedArgs.UpdateStats);
+
+        }
 
         static void IsServer(ResourceType type, bool result, Guid id)
         {

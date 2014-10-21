@@ -507,7 +507,7 @@ namespace Dev2.AppResources.Repositories
             {
                 if(item.ResourceType == ResourceType.ServerSource)
                 {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Server, ResourceModelEqualityComparer.Current, true);
+                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
                 }
                 else if(item.ResourceType >= ResourceType.DbSource)
                 {
