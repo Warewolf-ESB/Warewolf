@@ -345,10 +345,13 @@ namespace Dev2.Runtime.ESB.Control
                         _doNotWipeDataList = true;
                         SetRemoteExecutionDataList(dataObject, executionContainer);
                     }
+                    
                     executionContainer.InstanceOutputDefinition = outputDefs;
                     result = executionContainer.Execute(out invokeErrors);
                     errors.MergeErrors(invokeErrors);
-
+                    string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+                    invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+                    errors.MergeErrors(invokeErrors);
                     // If Web-service or Plugin, skip the final shaping junk ;)
                     if(SubExecutionRequiresShape(workspaceId, dataObject.ServiceName))
                     {

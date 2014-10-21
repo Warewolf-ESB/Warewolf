@@ -27,10 +27,10 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
     {
         const string AssertNotNull = "AssertNotNull";
 
-        const string WebServerTestSmall = "WebServerTestSmallString";
-        const string WebServerTestLarge = "WebServerTestLargeString";
+        const string WebServerTestSmall = "Integration Test Resources/WebServerTestSmallString";
+        const string WebServerTestLarge = "Integration Test Resources/WebServerTestLargeString";
 
-        const string WebServerTest = "WebServerTest";
+        const string WebServerTest = "Integration Test Resources/WebServerTest";
         const string WebServerTestExpectedXml = "<DataList><Text>Of resolve to gravity thought my prepare chamber so</Text><Args></Args></DataList>";
         const string WebServerTestExpectedJson = "{\"Text\":\"Of resolve to gravity thought my prepare chamber so\",\"Args\":\"\"}";
 
@@ -102,7 +102,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
         {
             VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
             {
-                new Tuple<string, string, AssertType>("DATABASE/CaseSP", @"<InnerError>Can only execute workflows from web browser</InnerError>", AssertType.Contains)
+                new Tuple<string, string, AssertType>("Integration Test Resources/CaseSP", @"<InnerError>Can only execute workflows from web browser</InnerError>", AssertType.Contains)
             });
         }
 
@@ -114,7 +114,7 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
             const string Expected = "{ \"FatalError\": \"An internal error occurred while executing the service request\",\"errors\": [ \"Can only execute workflows from web browser\"]}";
             VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
             {
-                new Tuple<string, string, AssertType>("DATABASE/CaseSP.json", Expected, AssertType.Equals)
+                new Tuple<string, string, AssertType>("Integration Test Resources/CaseSP.json", Expected, AssertType.Equals)
             });
         }
 
@@ -182,25 +182,6 @@ namespace Dev2.Integration.Tests.Dev2_Application_Server_Tests.WebServerTests
             VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
             {
                 new Tuple<string, string, AssertType>(WebServerTest + "?" + postData + "?", expected, AssertType.Equals)
-            });
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServer_ServicesPost")]
-        public void WebServer_ServicesPost_Bookmarks_ResultAsXml()
-        {
-            //------------Setup for test--------------------------
-            var instanceID = Guid.NewGuid();
-            const string Bookmark = "bkmk";
-            const string Input = "hello";
-            var postData = string.Format("<DataList><Text></Text><Args></Args><Input>{0}</Input></DataList>", Input);
-            const string Expected = "<DataList><Text></Text><Args></Args></DataList>"; // expect no result because there isn't a bookmark to be resumed!
-
-            VerifyRequest(ServicesEndPoints, new List<Tuple<string, string, AssertType>>
-            {
-                new Tuple<string, string, AssertType>(String.Format("{0}/instances/{1}/bookmarks/{2}?{3}?",
-                    WebServerTest, instanceID, Bookmark , postData), Expected, AssertType.Equals)
             });
         }
 

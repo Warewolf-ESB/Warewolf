@@ -23,6 +23,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Threading;
 using Dev2.Util;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -476,6 +477,21 @@ namespace Dev2.Core.Tests
             _vm.RefreshMenuCommand.Execute(null);
             con.Verify(a => a.Refresh(_vm.Environment.ID),Times.Once());
 
+
+        }
+
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DeployNavigationViewMode_Update")]
+        [TestMethod]
+        public void DeployNavigationViewMode_Update_FiltersAndCallsStudio()
+        {
+            // base case
+            Init(false, true);
+            var studio = new Mock<IStudioResourceRepository>();
+            PrivateObject p = new PrivateObject(_vm, new PrivateType( typeof(NavigationViewModelBase)));
+            p.SetField("_studioResourceRepository", studio.Object);
+            _vm.Update();
+           studio.Verify(a=>a.Load(It.IsAny<Guid>(),It.IsAny<IAsyncWorker>()));
 
         }
 

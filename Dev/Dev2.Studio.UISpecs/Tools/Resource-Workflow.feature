@@ -17,7 +17,7 @@ Scenario: Drag Workflow to design surface and checking services are not showing 
 	Given "RESOURCEPICKERFOLDERS" is invisible within "2" seconds
 	Given I click point "324,11" on "UI_SelectServiceWindow_AutoID"
 	And I drag "TOOLWORKFLOW" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
-	And I double click "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID,UI_Decision Testing_AutoID"
+	And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
 	And I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	And "WORKSURFACE,BARNEY\Decision Testing(ServiceDesigner)" is visible within "2" seconds
 
