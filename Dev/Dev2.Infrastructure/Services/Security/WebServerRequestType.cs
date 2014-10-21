@@ -43,6 +43,7 @@ namespace Dev2.Services.Security
         EsbExecuteCommand,
         EsbAddItemMessage,
         EsbSendMemo,
+        EsbSendResourcesAffectedMemo,
         EsbSendDebugState,
         EsbWrite,
 
