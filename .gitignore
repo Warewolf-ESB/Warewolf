@@ -7082,3 +7082,5 @@ Dev/TestResults
 /Dev/Dev2.Studio.Core.Tests/obj/x86/Debug/TempPE/StringResourcesTest1.Designer.cs.dll
 /Dev/Dev2.Server.Tests/obj/Debug/build.force
 /Dev/Dev2.OuputConfigFiles/obj/x86/Debug/Dev2.OuputConfigFiles.csprojResolveAssemblyReference.cache
+/Dev/Dev2.Studio/obj/x86/Debug/TempPE/Help.HelpTextResources.Designer.cs.dll
+/Dev/Dev2.Studio/obj/x86/Debug/TempPE/Properties.Resources.Designer.cs.dll
