@@ -40,6 +40,7 @@ using Dev2.Runtime.WebServer;
 using Dev2.Services.Security.MoqInstallerActions;
 using Dev2.Workspaces;
 
+
 // ReSharper disable InconsistentNaming
 namespace Dev2
 {
@@ -50,6 +51,7 @@ namespace Dev2
     /// </summary>
     sealed class ServerLifecycleManager : IDisposable
     {
+   
         #region Constants
 
         const string DefaultConfigFileName = "LifecycleConfig.xml";
