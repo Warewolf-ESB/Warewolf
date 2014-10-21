@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -1880,6 +1881,7 @@ namespace Dev2
                         {
                             WriteLine(string.Format("Web server listening at {0}", endpoint.Url));
                         }
+                        SetStarted();
                     }
                     catch(Exception e)
                     {
@@ -1932,7 +1934,24 @@ namespace Dev2
         }
 
         #endregion Output Handling
+        static void SetStarted()
+        {
+            try
+            {
 
+
+
+                if (File.Exists(".\\ServerStarted"))
+                {
+                    File.Delete(".\\ServerStarted");
+                }
+                File.WriteAllText(".\\ServerStarted", DateTime.Now.Ticks.ToString(CultureInfo.InvariantCulture));
+            }
+            catch (Exception err)
+            {
+                Dev2Logger.Log.Error(err);
+            }
+        }
         static void LogException(Exception ex)
         {
             Dev2Logger.Log.Error("Dev2.ServerLifecycleManager", ex);
