@@ -82,7 +82,7 @@ namespace Dev2.Server.DataList.Translators
         /// An array of bytes that represent the datalist in the standard format.
         /// </returns>
         /// <exception cref="System.ArgumentNullException">input</exception>
-        public IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
 
             errors = new ErrorResultTO();
@@ -104,7 +104,7 @@ namespace Dev2.Server.DataList.Translators
             return result;
         }
 
-        public IBinaryDataList ConvertTo(object input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(object input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -116,7 +116,7 @@ namespace Dev2.Server.DataList.Translators
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertAndOnlyMapInputs(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }
@@ -126,7 +126,7 @@ namespace Dev2.Server.DataList.Translators
             throw new NotImplementedException();
         }
 
-        public string ConvertAndFilter(IBinaryDataList input, string filterShape, out ErrorResultTO errors)
+        public StringBuilder ConvertAndFilter(IBinaryDataList input, StringBuilder filterShape, out ErrorResultTO errors)
         {
             throw new NotImplementedException();
         }

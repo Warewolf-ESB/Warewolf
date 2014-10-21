@@ -11,6 +11,7 @@
 
 using System;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.Enums;
 using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;
@@ -68,7 +69,7 @@ namespace Dev2.Tests
             const string dl = "<DataList><rec><a/></rec></DataList>";
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty.ToStringBuilder(), dl.ToStringBuilder(), out errors);
             var bdl = compiler.FetchBinaryDataList(dlID, out errors);
             if(bdl != null)
             {
@@ -100,7 +101,7 @@ namespace Dev2.Tests
             const string dl = "<DataList><rec><a/></rec></DataList>";
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty.ToStringBuilder(), dl.ToStringBuilder(), out errors);
             var bdl = compiler.FetchBinaryDataList(dlID, out errors);
             if(bdl != null)
             {
@@ -136,7 +137,7 @@ namespace Dev2.Tests
             const string dl = "<DataList><rec><a/></rec></DataList>";
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty.ToStringBuilder(), dl.ToStringBuilder(), out errors);
             var bdl = compiler.FetchBinaryDataList(dlID, out errors);
             var intillisenseParts = bdl.FetchIntellisenseParts();
             //------------Execute Test---------------------------
@@ -166,7 +167,7 @@ namespace Dev2.Tests
             const string dl = "<DataList><rec><a/></rec></DataList>";
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty.ToStringBuilder(), dl.ToStringBuilder(), out errors);
             var bdl = compiler.FetchBinaryDataList(dlID, out errors);
             var intillisenseParts = bdl.FetchIntellisenseParts();
             //------------Execute Test---------------------------
@@ -277,7 +278,7 @@ namespace Dev2.Tests
             const string dl = "<DataList><rec><a/></rec></DataList>";
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty.ToStringBuilder(), dl.ToStringBuilder(), out errors);
             var bdl = compiler.FetchBinaryDataList(dlID, out errors);
             if(bdl != null)
             {
@@ -308,7 +309,7 @@ namespace Dev2.Tests
             const string dl = "<DataList><rec><a/></rec></DataList>";
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, dl, out errors);
+            var dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty.ToStringBuilder(), dl.ToStringBuilder(), out errors);
             var bdl = compiler.FetchBinaryDataList(dlID, out errors);
             if(bdl != null)
             {

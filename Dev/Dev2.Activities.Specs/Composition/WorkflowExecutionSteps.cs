@@ -122,6 +122,24 @@ namespace Dev2.Activities.Specs.Composition
             }
         }
 
+        [Then(@"the ""(.*)"" workflow execution has ""(.*)"" error")]
+        public void ThenTheWorkflowExecutionHasError(string workflowName, string hasError)
+        {
+            Dictionary<string, Activity> activityList;
+            string parentWorkflowName;
+            TryGetValue("activityList", out activityList);
+            TryGetValue("parentWorkflowName", out parentWorkflowName);
+            var debugStates = Get<List<IDebugState>>("debugStates");
+
+            if(hasError == "AN")
+            {
+                var innerWfHasErrorState = debugStates.FirstOrDefault(state => state.HasError && state.DisplayName.Equals(workflowName));
+                var parentWfhasErrorState = debugStates.FirstOrDefault(state => state.HasError && state.DisplayName.Equals(parentWorkflowName));
+                Assert.IsNotNull(innerWfHasErrorState);
+                Assert.IsNotNull(parentWfhasErrorState);
+            }
+        }
+
         [Given(@"I have server a ""(.*)"" with workflow ""(.*)""")]
         public void GivenIHaveAWorkflowOnServer(string serverName, string workflow)
         {
@@ -1018,7 +1036,7 @@ namespace Dev2.Activities.Specs.Composition
             IEnvironmentModel environmentModel = EnvironmentRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.LoadResources();
-            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Sprint12\11714Nested").FirstOrDefault();
+            var resource = environmentModel.ResourceRepository.Find(a => a.Category == @"Acceptance Testing Resources\11714Nested").FirstOrDefault();
             if(resource == null)
             {
                 // ReSharper disable NotResolvedInText

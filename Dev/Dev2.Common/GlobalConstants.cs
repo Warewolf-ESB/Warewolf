@@ -319,7 +319,7 @@ or type_desc LIKE '%Procedure%'";
 
 
         // Limit WF execution
-        public static int MaxWorkflowsToExecute = 10;
+        public static int MaxWorkflowsToExecute = 50;
         public static int MaxNumberOfWorkflowWaits = 10000;
         public static int WorkflowWaitTime = 60;
         public const string ExplorerItemModelFormat = "Dev2.Models.ExplorerItemModel";

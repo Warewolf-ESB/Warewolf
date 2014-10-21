@@ -12,11 +12,11 @@
 
 using Dev2.Activities;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
-using Dev2.Diagnostics;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
 using Dev2.Simulation;
@@ -200,9 +200,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             var compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors;
-            dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _simulationShape, out errors);
+            dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _simulationShape.ToStringBuilder(), out errors);
 
-            var simulationDataID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _simulationData, _simulationShape, out errors);
+            var simulationDataID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _simulationData, _simulationShape.ToStringBuilder(), out errors);
             var simulationDataList = compiler.FetchBinaryDataList(simulationDataID, out errors);
 
             #region Setup simulation repository
@@ -272,9 +272,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             var compiler = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO errors;
-            dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _simulationShape, out errors);
+            dataObject.DataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, _simulationShape.ToStringBuilder(), out errors);
 
-            var simulationDataID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _simulationData, _simulationShape, out errors);
+            var simulationDataID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), _simulationData, _simulationShape.ToStringBuilder(), out errors);
             compiler.FetchBinaryDataList(simulationDataID, out errors);
 
             #region Setup simulation repository

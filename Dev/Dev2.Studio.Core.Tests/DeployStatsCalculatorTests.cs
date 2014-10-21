@@ -18,7 +18,6 @@ using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Environments;
 using Dev2.Core.Tests.Utils;
 using Dev2.Models;
-using Dev2.Providers.Events;
 using Dev2.Services.Security;
 using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
@@ -42,7 +41,7 @@ namespace Dev2.Core.Tests
     [ExcludeFromCodeCoverage]
     public class DeployStatsCalculatorTests
     {
-        Action<System.Action, DispatcherPriority> _Invoke = new Action<System.Action, DispatcherPriority>((a, b) => { });
+        readonly Action<System.Action, DispatcherPriority> _Invoke = (a, b) => { };
         #region Class Members
 
         static readonly DeployStatsCalculator DeployStatsCalculator = new DeployStatsCalculator();
@@ -74,25 +73,17 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
 
-            var serverItemModel = new ExplorerItemModel();
-            serverItemModel.DisplayName = "localhost";
-            serverItemModel.ResourceType = ResourceType.Server;
-            serverItemModel.EnvironmentId = environmentModel.ID;
-            serverItemModel.ResourcePath = "";
-            serverItemModel.ResourceId = Guid.NewGuid();
+            var serverItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = ResourceType.Server, EnvironmentId = environmentModel.ID, ResourcePath = "", ResourceId = Guid.NewGuid() };
             rootItem = serverItemModel;
-            ExplorerItemModel workflowsFolder = new ExplorerItemModel();
-            workflowsFolder.DisplayName = "WORKFLOWS";
-            workflowsFolder.ResourceType = ResourceType.Folder;
-            workflowsFolder.ResourcePath = "WORKFLOWS";
-            workflowsFolder.EnvironmentId = mockEnvironmentModel.Object.ID;
-            workflowsFolder.ResourceId = Guid.NewGuid();
+            ExplorerItemModel workflowsFolder = new ExplorerItemModel { DisplayName = "WORKFLOWS", ResourceType = ResourceType.Folder, ResourcePath = "WORKFLOWS", EnvironmentId = mockEnvironmentModel.Object.ID, ResourceId = Guid.NewGuid() };
             serverItemModel.Children.Add(workflowsFolder);
 
             var studioResourceRepository = new StudioResourceRepository(serverItemModel, _Invoke);
             resourceModel.Setup(model => model.Category).Returns("WORKFLOWS\\" + resourceModel.Object.DisplayName);
             TestEnvironmentRespository testEnvironmentRespository = new TestEnvironmentRespository(environmentModel);
+            // ReSharper disable ObjectCreationAsStatement
             new EnvironmentRepository(testEnvironmentRespository);
+            // ReSharper restore ObjectCreationAsStatement
             IEnvironmentModel internalEnvironmentModel = environmentModel;
             studioResourceRepository.GetCurrentEnvironment = () => internalEnvironmentModel.ID;
             studioResourceRepository.AddResouceItem(resourceModel.Object);
@@ -124,41 +115,24 @@ namespace Dev2.Core.Tests
         {
             List<string> exclusionCategories = new List<string> { "Website", "Human Interface Workflow", "Webpage" };
             List<string> blankCategories = new List<string>();
+            var conn = new Mock<IConnectControlSingleton>().Object;
+            var studio = new Mock<IStudioResourceRepository>().Object;
 
-
+           
             List<ExplorerItemModel> items = new List<ExplorerItemModel>();
-            var vm1 = new ExplorerItemModel();
-            vm1.ResourcePath = "Services";
-            vm1.ResourceType = ResourceType.DbService;
-            vm1.IsChecked = true;
-            var vm2 = new ExplorerItemModel();
-            vm2.ResourceType = ResourceType.WorkflowService;
-            vm2.ResourcePath = "Workflows";
-            vm2.IsChecked = true;
-            var vm3 = new ExplorerItemModel();
-            vm3.ResourcePath = "Test";
-            vm3.ResourceType = ResourceType.Folder;
-            vm3.IsChecked = true;
-            var vm4 = new ExplorerItemModel();
-            vm4.ResourceType = ResourceType.Server;
-            vm4.IsChecked = false;
+            var vm1 = new ExplorerItemModel(conn,studio) { ResourcePath = "Services", ResourceType = ResourceType.DbService, IsChecked = true };
+            var vm2 = new ExplorerItemModel(conn, studio) { ResourceType = ResourceType.WorkflowService, ResourcePath = "Workflows", IsChecked = true };
+            var vm3 = new ExplorerItemModel(conn, studio) { ResourcePath = "Test", ResourceType = ResourceType.Folder, IsChecked = true };
+            var vm4 = new ExplorerItemModel(conn, studio) { ResourceType = ResourceType.Server, IsChecked = false };
 
             items.Add(vm1);
             items.Add(vm2);
             items.Add(vm3);
             items.Add(vm4);
 
-            Dictionary<string, Func<IExplorerItemModel, bool>> predicates = new Dictionary<string, Func<IExplorerItemModel, bool>>();
-            predicates.Add("Services", n => DeployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(n, ResourceType.DbService | ResourceType.PluginService | ResourceType.WebService, blankCategories, exclusionCategories));
-            predicates.Add("Workflows", n => DeployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(n, ResourceType.WorkflowService, blankCategories, exclusionCategories));
-            predicates.Add("Sources", n => DeployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(n, ResourceType.DbSource | ResourceType.PluginSource | ResourceType.WebSource | ResourceType.ServerSource | ResourceType.EmailSource, blankCategories, exclusionCategories));
-            predicates.Add("Unknown", n => DeployStatsCalculator.SelectForDeployPredicate(n));
+            Dictionary<string, Func<IExplorerItemModel, bool>> predicates = new Dictionary<string, Func<IExplorerItemModel, bool>> { { "Services", n => DeployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(n, ResourceType.DbService | ResourceType.PluginService | ResourceType.WebService, blankCategories, exclusionCategories) }, { "Workflows", n => DeployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(n, ResourceType.WorkflowService, blankCategories, exclusionCategories) }, { "Sources", n => DeployStatsCalculator.SelectForDeployPredicateWithTypeAndCategories(n, ResourceType.DbSource | ResourceType.PluginSource | ResourceType.WebSource | ResourceType.ServerSource | ResourceType.EmailSource, blankCategories, exclusionCategories) }, { "Unknown", n => DeployStatsCalculator.SelectForDeployPredicate(n) } };
 
-            ObservableCollection<DeployStatsTO> expected = new ObservableCollection<DeployStatsTO>();
-            expected.Add(new DeployStatsTO("Services", "1"));
-            expected.Add(new DeployStatsTO("Workflows", "1"));
-            expected.Add(new DeployStatsTO("Sources", "0"));
-            expected.Add(new DeployStatsTO("Unknown", "0"));
+            ObservableCollection<DeployStatsTO> expected = new ObservableCollection<DeployStatsTO> { new DeployStatsTO("Services", "1"), new DeployStatsTO("Workflows", "1"), new DeployStatsTO("Sources", "0"), new DeployStatsTO("Unknown", "0") };
 
             const int expectedDeployItemCount = 2;
             int actualDeployItemCount;
@@ -170,6 +144,23 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(expectedDeployItemCount, actualDeployItemCount);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DeployStatsCalculator_Calculate")]
+        public void DeployStatsCalculator_Calculate_HasFolders_Expect_NoFoldersCounted()
+        {
+            //------------Setup for test--------------------------
+
+
+            var conn = new Mock<IConnectControlSingleton>().Object;
+            var studio = new Mock<IStudioResourceRepository>().Object;
+            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel(conn,studio){ResourceType = ResourceType.Folder,IsChecked = true};
+            IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel().Object;
+            bool actual = DeployStatsCalculator.DeploySummaryPredicateNew(navigationItemViewModel, environmentModel);
+            Assert.IsFalse(actual);
+
+            
+        }
         #endregion CalculateStats
 
         #region SelectForDeployPredicate
@@ -185,7 +176,9 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SelectForDeployPredicate_UncheckedNavigationItemViewModel_Expected_False()
         {
-            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel();
+            var conn = new Mock<IConnectControlSingleton>().Object;
+            var studio = new Mock<IStudioResourceRepository>().Object;
+            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel(conn,studio);
 
             bool actual = DeployStatsCalculator.SelectForDeployPredicate(navigationItemViewModel);
 
@@ -195,7 +188,9 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SelectForDeployPredicate_NullResourceModelOnNavigationItemViewModel_Expected_False()
         {
-            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel();
+            var conn = new Mock<IConnectControlSingleton>().Object;
+            var studio = new Mock<IStudioResourceRepository>().Object;
+            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel(conn,studio);
             bool actual = DeployStatsCalculator.SelectForDeployPredicate(navigationItemViewModel);
 
             Assert.IsFalse(actual);
@@ -204,9 +199,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SelectForDeployPredicate_ValidNavigationItemViewModel_Expected_True()
         {
-            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel();
-
-            navigationItemViewModel.IsChecked = true;
+            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, new Mock<IStudioResourceRepository>().Object) { IsChecked = true , ResourcePath = "bob"};
 
             bool actual = DeployStatsCalculator.SelectForDeployPredicate(navigationItemViewModel);
 
@@ -460,9 +453,7 @@ namespace Dev2.Core.Tests
             environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>()).Object;
 
             var navigationViewModel = CreateDeployNavigationViewModel(environmentModel, studioResourceRepository);
-            ExplorerItemModel explorerItemModel = new ExplorerItemModel();
-            explorerItemModel.DisplayName = "localhost";
-            explorerItemModel.ResourceType = ResourceType.Server;
+            ExplorerItemModel explorerItemModel = new ExplorerItemModel { DisplayName = "localhost", ResourceType = ResourceType.Server };
             explorerItemModel.Children.Add(resourceVm);
             navigationViewModel.ExplorerItemModels.Add(explorerItemModel);
             navigationViewModel.Environment = environmentModel;
@@ -590,9 +581,8 @@ namespace Dev2.Core.Tests
         {
 
             Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock(Studio.Core.AppResources.Enums.ResourceType.WorkflowService);
-            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel();
-
-            navigationItemViewModel.IsChecked = true;
+       
+            ExplorerItemModel navigationItemViewModel = new ExplorerItemModel { ResourcePath = "bob", IsChecked = true };
             IEnvironmentModel environmentModel = Dev2MockFactory.SetupEnvironmentModel(resourceModel, new List<IResourceModel>(), new List<IResourceModel>()).Object;
 
             bool actual = DeployStatsCalculator.DeploySummaryPredicateNew(navigationItemViewModel, environmentModel);

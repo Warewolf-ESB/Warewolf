@@ -77,8 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             DynamicService registeredAssemblyService = new DynamicService
                 {
                     Name = HandlesType(),
-                    DataListSpecification =
-                        "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                    DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
                 };
 
             ServiceAction registeredAssemblyAction = new ServiceAction

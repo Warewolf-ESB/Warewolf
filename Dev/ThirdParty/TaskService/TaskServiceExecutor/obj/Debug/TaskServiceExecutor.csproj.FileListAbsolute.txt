@@ -1,7 +1,0 @@
-C:\Development\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TaskServiceExecutor\bin\Debug\TaskServiceExecutor.exe
-C:\Development\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TaskServiceExecutor\bin\Debug\TaskServiceExecutor.pdb
-C:\Development\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TaskServiceExecutor\obj\Debug\TaskServiceExecutor.csprojResolveAssemblyReference.cache
-C:\Development\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TaskServiceExecutor\obj\Debug\TaskServiceExecutor.exe
-C:\Development\DEV2 SCRUM Project\Branches\Mo\ThirdParty\TaskService\TaskServiceExecutor\obj\Debug\TaskServiceExecutor.pdb
-C:\Development\DEV2 SCRUM Project\Branches\Mo\Binaries\TaskServiceExecutor.exe
-C:\Development\DEV2 SCRUM Project\Branches\Mo\Binaries\TaskServiceExecutor.pdb

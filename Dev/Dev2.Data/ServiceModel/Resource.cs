@@ -17,6 +17,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml.Linq;
+using System.Xml.Serialization;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -152,7 +153,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public void ReadDataList(XElement xml)
         {
-            DataList = xml.ElementStringSafe("DataList");
+            DataList = xml.ElementSafeStringBuilder("DataList");
         }
 
         public void SetIsNew(XElement xml)
@@ -259,6 +260,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string AuthorRoles { get; set; }
 
         [JsonIgnore]
+        [XmlIgnore]
         public IList<IResourceForTree> Dependencies { get; set; }
 
         public bool IsValid { get; set; }
@@ -268,7 +270,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         public bool ReloadActions { get; set; }
 
         [JsonIgnore]
-        public string DataList { get; set; }
+        public StringBuilder DataList { get; set; }
 
         [JsonIgnore]
         public string Inputs { get; set; }
@@ -278,7 +280,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         [JsonIgnore]
         public bool IsNewResource { get; set; }
-
         #endregion
 
         #region GetResourceTypeFromString

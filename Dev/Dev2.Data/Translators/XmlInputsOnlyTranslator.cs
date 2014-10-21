@@ -18,7 +18,7 @@ using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
 using Dev2.DataList.Contract.TO;
 
-// ReSharper disable once CheckNamespace
+// ReSharper disable CheckNamespace
 namespace Dev2.Server.DataList.Translators
 {
     internal sealed class XmlInputsOnlyTranslator : StudioTranslator, IDataListTranslator
@@ -80,7 +80,7 @@ namespace Dev2.Server.DataList.Translators
         /// <returns>
         /// An array of bytes that represent the datalist in the standard format.
         /// </returns>
-        public IBinaryDataList ConvertTo(byte[] input, string shape, out ErrorResultTO errors)
+        public IBinaryDataList ConvertTo(byte[] input, StringBuilder shape, out ErrorResultTO errors)
         {
             return base.ConvertTo(input, shape, out errors);
         }

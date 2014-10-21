@@ -15,6 +15,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.DataList.Contract;
 using Dev2.Data.Binary_Objects;
 using Dev2.DataList.Contract;
@@ -1649,7 +1650,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>", "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>".ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
             try
             {
@@ -1687,7 +1688,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>", "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>".ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
             string error;
@@ -1752,7 +1753,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>", "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>".ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
             string error;
@@ -1825,7 +1826,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>", "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>".ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
 
@@ -1854,7 +1855,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
 
@@ -1881,7 +1882,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
 
@@ -1911,7 +1912,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
@@ -1972,7 +1973,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
@@ -1999,7 +2000,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
 
@@ -2025,7 +2026,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
@@ -2053,7 +2054,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs><scalarValue/></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/></rs><scalarValue/></xml>".ToStringBuilder(), out errors);
 
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
@@ -2080,7 +2081,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
 
@@ -2107,7 +2108,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
 
@@ -2156,7 +2157,7 @@ namespace Dev2.Data.Tests.BinaryDataList
                         </ADL>";
 
 
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), Data, Shape, out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), Data.ToStringBuilder(), Shape.ToStringBuilder(), out errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
 
@@ -2201,7 +2202,7 @@ namespace Dev2.Data.Tests.BinaryDataList
                         </ADL>";
 
 
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), Data, Shape, out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), Data.ToStringBuilder(), Shape.ToStringBuilder(), out errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
 
@@ -2225,7 +2226,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
@@ -2254,7 +2255,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
             IBinaryDataList bdl = compiler.FetchBinaryDataList(dlID, out errors);
 
@@ -2284,7 +2285,7 @@ namespace Dev2.Data.Tests.BinaryDataList
             //------------Setup for test--------------------------
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>", "<xml><rs><val/></rs></xml>", out errors);
+            Guid dlID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>1</val></rs><rs><val>1</val></rs><rs><val>1</val></rs></xml>".ToStringBuilder(), "<xml><rs><val/></rs></xml>".ToStringBuilder(), out errors);
 
             //------------Execute Test---------------------------
 
@@ -2320,8 +2321,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             const string InputDefs = @"<Inputs><Input Name=""val"" Source=""[[rs(*).val]]"" Recordset=""rs"" /><Input Name=""val2"" Source=""[[rs(*).val2]]"" Recordset=""rs"" /></Inputs>";
             const string OutputDefs = @"<Outputs><Output Name=""val"" MapsTo=""[[rs(*).val]]"" Value=""[[rs().val]]"" Recordset=""rs"" /><Output Name=""val2"" MapsTo=""[[rs(*).val2]]"" Value=""[[rs().val2]]"" Recordset=""rs"" /></Outputs>";
-            var oldID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>val_value</val><val2>val2_value</val2></rs></xml>", "<xml><rs><val/><val2/></rs></xml>", out errors);
-            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val2/><val/></rs></xml>", out errors);
+            var oldID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>val_value</val><val2>val2_value</val2></rs></xml>", "<xml><rs><val/><val2/></rs></xml>".ToStringBuilder(), out errors);
+            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val2/><val/></rs></xml>".ToStringBuilder(), out errors);
 
             //------------Execute Test---------------------------
             compiler.ShapeForSubExecution(oldID, shapeID, InputDefs, OutputDefs, out errors); // this triggers the aliasing ;)
@@ -2358,8 +2359,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             const string InputDefs = @"<Inputs><Input Name=""val"" Source=""[[rs(*).val]]"" Recordset=""rs"" /></Inputs>";
             const string OutputDefs = @"<Outputs><Output Name=""result"" MapsTo=""[[rs(*).result]]"" Value=""[[rs().result]]"" Recordset=""rs"" /></Outputs>";
-            var oldID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>val_value</val><result></result></rs></xml>", "<xml><rs><val/><result/></rs></xml>", out errors);
-            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><result/><val/></rs></xml>", out errors);
+            var oldID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>val_value</val><result></result></rs></xml>".ToStringBuilder(), "<xml><rs><val/><result/></rs></xml>".ToStringBuilder(), out errors);
+            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><result/><val/></rs></xml>".ToStringBuilder(), out errors);
 
             //------------Execute Test---------------------------
             compiler.ShapeForSubExecution(oldID, shapeID, InputDefs, OutputDefs, out errors); // this triggers the aliasing ;)
@@ -2392,8 +2393,8 @@ namespace Dev2.Data.Tests.BinaryDataList
             ErrorResultTO errors;
             const string InputDefs = @"<Inputs><Input Name=""val"" Source=""[[rs(*).val]]"" Recordset=""rs"" /><Input Name=""val2"" Source=""[[rs(*).val2]]"" Recordset=""rs"" /></Inputs>";
             const string OutputDefs = @"<Outputs><Output Name=""val"" MapsTo=""[[rs(*).val]]"" Value=""[[rs().val]]"" Recordset=""rs"" /><Output Name=""val2"" MapsTo=""[[rs(*).val2]]"" Value=""[[rs().val2]]"" Recordset=""rs"" /></Outputs>";
-            var oldID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>val_value</val><val2>val2_value</val2></rs></xml>", "<xml><rs><val/><val2/></rs></xml>", out errors);
-            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, "<xml><rs><val/><val2/></rs></xml>", out errors);
+            var oldID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "<xml><rs><val>val_value</val><val2>val2_value</val2></rs></xml>".ToStringBuilder(), "<xml><rs><val/><val2/></rs></xml>".ToStringBuilder(), out errors);
+            var shapeID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), "<xml><rs><val/><val2/></rs></xml>".ToStringBuilder(), out errors);
 
             //------------Execute Test---------------------------
             compiler.ShapeForSubExecution(oldID, shapeID, InputDefs, OutputDefs, out errors); // this triggers the aliasing ;)

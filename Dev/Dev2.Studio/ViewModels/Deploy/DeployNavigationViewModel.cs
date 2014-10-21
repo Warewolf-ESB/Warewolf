@@ -107,14 +107,14 @@ namespace Dev2.ViewModels.Deploy
                 Iterate(model => model.IsExplorerExpanded = true);
             }
 
-            foreach(ExplorerItemModel explorerItemModel in ExplorerItemModels)
+            foreach(var explorerItemModel in ExplorerItemModels)
             {
                 explorerItemModel.IsExplorerExpanded = true;
             }
         }
         public void Update()
         {
-
+            StudioResourceRepository.Load(_environment.ID, AsyncWorker);
             FilterEnvironments(Environment, false);
 
         }

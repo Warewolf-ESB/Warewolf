@@ -2028,7 +2028,6 @@ Scenario: Workflow Assign and Find Record index tool with two variables in reult
 	  | 1 | [[rec(1).a]]         =  Warewolf |
 	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
 	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	  | In Field(s) | [[rec(1).a]] = Warewolf | 1 | = | Warewolf |  |     | YES                         | NO                             |
 	
 #
 
@@ -4838,7 +4837,7 @@ Scenario: Error from workflow service is expected to buble out
 	  |                  |               | values(*).upper     | [[values().&up]] |
 	  |                  |               | values(*).lower     | [[values().low]] |
 	  When "TestAssignWithRemote123" is executed
-	  Then the workflow execution has "AN" error
+	  Then the "TestAssignWithRemote123" workflow execution has "AN" error
 	  And the 'AssignData' in WorkFlow 'TestAssignWithRemote123' debug inputs as
 	  | # | Variable        | New Value |
 	  | 1 | [[inputData]] = | hello     |

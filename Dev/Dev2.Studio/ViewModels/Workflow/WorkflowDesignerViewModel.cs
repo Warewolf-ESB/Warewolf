@@ -214,13 +214,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string GetWorkflowLink()
         {
-            if (!String.IsNullOrEmpty(_resourceModel.DataList))
-            {
-                _workflowInputDataViewModel.DebugTo.DataList = _resourceModel.DataList;
-            }
-            _workflowLink = "";
             if (_workflowInputDataViewModel != null)
             {
+                if (!String.IsNullOrEmpty(_resourceModel.DataList))
+                {
+                    _workflowInputDataViewModel.DebugTo.DataList = _resourceModel.DataList;
+                }
+                _workflowLink = "";
                 _workflowInputDataViewModel.LoadWorkflowInputs();
                 _workflowInputDataViewModel.SetXmlData();
                 var buildWebPayLoad = _workflowInputDataViewModel.BuildWebPayLoad();
@@ -789,7 +789,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 IDataListCompiler c = DataListFactory.CreateDataListCompiler();
                 try
                 {
-                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"'));
+                    var dds = c.ConvertFromJsonToModel<Dev2DecisionStack>(decisionValue.Replace('!', '\"').ToStringBuilder());
                     foreach (var decision in dds.TheStack)
                     {
                         var getCols = new[] { decision.Col1, decision.Col2, decision.Col3 };

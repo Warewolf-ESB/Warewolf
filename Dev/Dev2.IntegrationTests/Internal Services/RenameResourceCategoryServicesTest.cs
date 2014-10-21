@@ -36,10 +36,10 @@ namespace Dev2.Integration.Tests.Internal_Services
         [Owner("Huggs")]
         public void RenameResourceCategoryService_WithValidArguments_ExpectSuccessResult()
         {
-            string postData = string.Format("{0}{1}?{2}", _webServerURI, "RenameResourceCategoryService", "OldCategory=Bugs&NewCategory=TestCategory&ResourceType=WorkflowService");
+            string postData = string.Format("{0}{1}?{2}", _webServerURI, "RenameResourceCategoryService", "OldCategory=Integration Test Resources\\TestCategory&NewCategory=Integration Test Resources\\RenameCategoryTest&ResourceType=WorkflowService");
             string actual = TestHelper.PostDataToWebserver(postData);
             Assert.IsFalse(string.IsNullOrEmpty(actual));
-            Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", actual);
+            Assert.AreEqual("<CompilerMessage>Updated Category from 'Integration Test Resources\\TestCategory' to 'Integration Test Resources\\RenameCategoryTest'</CompilerMessage>", actual);
         }
         
     }

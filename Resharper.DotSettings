@@ -12,6 +12,7 @@
 	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/MethodTooLongMaximum/@EntryValue">35</s:Int64>
 	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/TooManyChainedReferencesMaximum/@EntryValue">6</s:Int64>
 	<s:Int64 x:Key="/Default/CodeInspection/CleanCode/TooManyMethodArgumentsMaximum/@EntryValue">8</s:Int64>	
+	<s:String x:Key="/Default/CodeInspection/Highlighting/AnalysisEnabled/@EntryValue">SOLUTION</s:String>	
 	<s:Boolean x:Key="/Default/CodeInspection/Highlighting/IdentifierHighlightingEnabled/@EntryValue">True</s:Boolean>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=AccessToForEachVariableInClosure/@EntryIndexedValue">ERROR</s:String>
 	<s:String x:Key="/Default/CodeInspection/Highlighting/InspectionSeverities/=AccessToStaticMemberViaDerivedType/@EntryIndexedValue">ERROR</s:String>

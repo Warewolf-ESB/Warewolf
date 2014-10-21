@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var dynamicService = new DynamicService
             {
                 Name = HandlesType(),
-                DataListSpecification = "<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>"
+                DataListSpecification = new StringBuilder("<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
             var serviceAction = new ServiceAction
