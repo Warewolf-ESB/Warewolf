@@ -90,7 +90,8 @@ this.ScenarioSetup(scenarioInfo);
 #line 12
  testRunner.And("I send \"InnerWF\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 13
- testRunner.And("I double click \"EXPLORERFOLDERS,UI_TestCategory_AutoID,UI_InnerWF_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I double click \"EXPLORERFOLDERS,UI_Integration Test Resources_AutoID,UI_InnerWF_A" +
+                    "utoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
  testRunner.And("I click \"VARIABLESCALAR,UI_Variable_result_AutoID,UI_IsInputCheckbox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
