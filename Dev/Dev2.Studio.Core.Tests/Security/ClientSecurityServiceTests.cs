@@ -49,7 +49,7 @@ namespace Dev2.Core.Tests.Security
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("ClientSecurityService_EnvironmentConnection")]
-        public void ClientSecurityService_EnvironmentConnection_NetworkStateChangedToOnline_DoesInvokeRead()
+        public void ClientSecurityService_EnvironmentConnection_NetworkStateChangedToOnline_DoesNotInvokeRead()
         {
             Verify_EnvironmentConnection_NetworkStateChanged(NetworkState.Offline, NetworkState.Online);
         }
@@ -93,10 +93,8 @@ namespace Dev2.Core.Tests.Security
             //------------Assert Results-------------------------
             if(toState == NetworkState.Online)
             {
-                connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID, dataListID));
-                Assert.IsNotNull(actualRequest);
-                var actualPayload = serializer.Deserialize<EsbExecuteRequest>(actualRequest);
-                Assert.AreEqual("SecurityReadService", actualPayload.ServiceName);
+                connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID, dataListID), Times.Never());
+                Assert.IsNull(actualRequest);
             }
             else
             {
@@ -163,10 +161,8 @@ namespace Dev2.Core.Tests.Security
             readTask.Wait();
 
             //------------Assert Results-------------------------
-            connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID, dataListID));
-            Assert.IsNotNull(actualRequest);
-            var actualPayload = serializer.Deserialize<EsbExecuteRequest>(actualRequest);
-            Assert.AreEqual("SecurityReadService", actualPayload.ServiceName);
+            connection.Verify(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), workspaceID, dataListID),Times.Never());
+            Assert.IsNull(actualRequest);
         }
 
         [TestMethod]
@@ -250,6 +246,7 @@ namespace Dev2.Core.Tests.Security
             var permissionsModifiedMemo = new PermissionsModifiedMemo();
             permissionsModifiedMemo.ModifiedPermissions = changedPermissions;
             //------------Execute Test---------------------------
+            connection.Raise(environmentConnection => environmentConnection.PermissionsModified += null, null,changedPermissions);
             eventPublisher.Publish(permissionsModifiedMemo);
             //------------Assert Results-------------------------
             var updateResourcePermission = clientSecurityService.Permissions.FirstOrDefault(permission => permission.ResourceID == resourceID);
