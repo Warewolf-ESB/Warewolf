@@ -9,15 +9,12 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
-using System;
-using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Caliburn.Micro;
 using Dev2.Common;
-using Dev2.Providers.Logs;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Helpers;
@@ -80,44 +77,58 @@ namespace Dev2.Studio.ViewModels.Help
             OnViewisLoaded(HelpViewWrapper);
         }
 
-        public void OnViewisLoaded(IHelpViewWrapper viewWrapper)
+        public async void OnViewisLoaded(IHelpViewWrapper viewWrapper)
         {
             HelpViewWrapper = viewWrapper;
             if(!IsViewAvailable)
             {
-                LoadBrowserUri(Uri);
+                await LoadBrowserUri(Uri);
             }
         }
 
-        public void LoadBrowserUri(string uri)
+        public async Task LoadBrowserUri(string uri)
         {
             Uri = uri;
 
-            if(HelpViewWrapper == null)
+            if (HelpViewWrapper == null)
             {
                 IsViewAvailable = false;
             }
             else
             {
                 IsViewAvailable = true;
+                //_network.HasConnectionAsync(uri).ContinueWith(task =>
+                //{
+                    //var hasConnection = task.Result;
+                    var hasConnection = await _network.HasConnectionAsync(uri);
+                    if (hasConnection)
+                        {
 
-                if(_network.HasConnection(uri))
-                {
-                    HelpViewWrapper.Navigate(Uri);
-                    HelpViewWrapper.WebBrowser.Navigated += (sender, args) => SuppressJavaScriptsErrors(HelpViewWrapper.WebBrowser);
-                    HelpViewWrapper.WebBrowser.LoadCompleted += (sender, args) =>
-                    {
-                        HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                        HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                    };
-                }
-                else
-                {
-                    ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
-                    HelpViewWrapper.Navigate(ResourcePath);
-                    HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                    HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                }
+                            
+                            HelpViewWrapper.WebBrowser.Navigated += (sender, args) => SuppressJavaScriptsErrors(HelpViewWrapper.WebBrowser);
+                            HelpViewWrapper.WebBrowser.LoadCompleted +=(sender, args) => Execute.OnUIThread(() =>
+                                                                                                            {
+                                                                                                                HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                                                                                                                HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+                                                                                                            });
+                            Execute.OnUIThread(() =>
+                            {
+                                HelpViewWrapper.Navigate(Uri);
+                            });
+                            
+                        }
+                        else
+                        {
+                            ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
+                            Execute.OnUIThread(() =>
+                                               {
+                                                   HelpViewWrapper.Navigate(ResourcePath);
+                                                   HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                                                   HelpViewWrapper.WebBrowserVisibility = Visibility.Visible; 
+                                               });
+                            
+                        }
+                //});
             }
         }
 
