@@ -32,6 +32,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.DynamicServices.Objects.Base;
@@ -2959,7 +2960,11 @@ namespace Dev2.Tests.Runtime.Hosting
             element.Add(new XElement("a"));
             element.Add(new XElement("b"));
             var s = xElement.ToString();
-
+            var messages = new CompileMessageList();
+            rc.SendResourceMessages += (guid, tos) =>
+            {
+                messages.MessageList = tos;
+            };
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
@@ -2976,7 +2981,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("false", isValid);
             Assert.AreEqual(CompileMessageType.MappingChange, messageType);
             Assert.IsNotNull(depresource);
-            var messages = CompileMessageRepo.Instance.FetchMessages(workspaceID, depresource.ResourceID, new List<string>());
             var message = messages.MessageList[0];
             Assert.AreEqual(workspaceID, message.WorkspaceID);
             Assert.AreEqual(depresource.ResourceID, message.ServiceID);
@@ -3027,7 +3031,11 @@ namespace Dev2.Tests.Runtime.Hosting
             element.Add(new XElement("a"));
             element.Add(new XElement("b"));
             var s = xElement.ToString();
-
+            var messages = new CompileMessageList();
+            rc.SendResourceMessages += (guid, tos) =>
+            {
+                messages.MessageList = tos;
+            };
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             //------------Execute Test---------------------------
@@ -3044,7 +3052,6 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual("false", isValid);
             Assert.AreEqual(CompileMessageType.MappingChange, messageType);
             Assert.IsNotNull(depresource);
-            var messages = CompileMessageRepo.Instance.FetchMessages(workspaceID, depresource.ResourceID, new List<string>());
             var message = messages.MessageList[0];
             Assert.AreEqual(workspaceID, message.WorkspaceID);
             Assert.AreEqual(depresource.ResourceID, message.ServiceID);

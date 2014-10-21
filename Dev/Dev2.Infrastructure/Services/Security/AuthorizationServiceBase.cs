@@ -25,7 +25,8 @@ namespace Dev2.Services.Security
 {
     public abstract class AuthorizationServiceBase : DisposableObject, IAuthorizationService
     {
-        readonly ISecurityService _securityService;
+        // ReSharper disable once InconsistentNaming
+        protected readonly ISecurityService _securityService;
         readonly bool _isLocalConnection;
 
         public Func<bool> AreAdministratorsMembersOfWarewolfAdministrators;
@@ -95,14 +96,12 @@ namespace Dev2.Services.Security
         }
         public event EventHandler PermissionsChanged;
         private EventHandler<PermissionsModifiedEventArgs> _permissionsModifedHandler;
+        readonly object _getPermissionsLock = new object();
         public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified
         {
             add
             {
-                if(_permissionsModifedHandler == null)
-                {
-                    _permissionsModifedHandler += value;
-                }
+               _permissionsModifedHandler += value;
             }
             remove
             {
@@ -117,6 +116,22 @@ namespace Dev2.Services.Security
             var groupPermissions = GetGroupPermissions(ClaimsPrincipal.Current, resourceId.ToString()).ToList();
             var result = groupPermissions.Aggregate(Permissions.None, (current, gp) => current | gp.Permissions);
             return result;
+        }
+
+        public List<WindowsGroupPermission> GetPermissions(IPrincipal user)
+        {
+            lock (_getPermissionsLock)
+            {
+
+
+                var serverPermissions = _securityService.Permissions;
+                var resourcePermissions = serverPermissions.Where(p => IsInRole(user, p) && !p.IsServer).ToList();
+                var serverPermissionsForUser = serverPermissions.Where(p => IsInRole(user, p) && (p.IsServer || p.ResourceID == Guid.Empty)).ToList();
+                var groupPermissions = new List<WindowsGroupPermission>();
+                groupPermissions.AddRange(resourcePermissions);
+                groupPermissions.AddRange(serverPermissionsForUser);
+                return groupPermissions;
+            }
         }
 
         public virtual void Remove(Guid resourceId)
@@ -190,7 +205,7 @@ namespace Dev2.Services.Security
             return groupPermissions.Any(p => (p.Permissions & contextPermissions) != 0);
         }
 
-        protected IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
+        protected virtual IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
             var serverPermissions = _securityService.Permissions;
             var resourcePermissions = serverPermissions.Where(p => IsInRole(principal, p) && p.Matches(resource) && !p.IsServer).ToList();
@@ -245,7 +260,7 @@ namespace Dev2.Services.Security
                         // if that fails, check Administrators group membership in the Warewolf Administrators group
                         if(!isInRole)
                         {
-                            SecurityIdentifier sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
+                            var sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
                             var windowsPrincipal = principal as WindowsPrincipal;
                             var windowsIdentity = principal.Identity as WindowsIdentity;
                             if(windowsPrincipal != null)

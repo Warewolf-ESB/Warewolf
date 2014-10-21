@@ -103,7 +103,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(changedPermissions);
-            Assert.AreEqual(2, changedPermissions.Count);
+            Assert.AreEqual(3, changedPermissions.Count);
         }
 
         [TestMethod]
@@ -142,7 +142,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(changedPermissions);
-            Assert.AreEqual(0, changedPermissions.Count);
+            Assert.AreEqual(3, changedPermissions.Count);
         }
 
         [TestMethod]

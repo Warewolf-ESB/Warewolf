@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -43,10 +42,46 @@ namespace Dev2.Runtime.WebServer.Hubs
     {
         static readonly ConcurrentDictionary<Guid, StringBuilder> MessageCache = new ConcurrentDictionary<Guid, StringBuilder>();
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
+
         public EsbHub()
         {
-
         }
+
+        public EsbHub(Server server)
+            : base(server)
+        {
+        }
+
+        #region Implementation of IDebugWriter
+
+        /// <summary>
+        ///     Writes the given state.
+        ///     <remarks>
+        ///         This must implement the one-way (fire and forget) message exchange pattern.
+        ///     </remarks>
+        /// </summary>
+        /// <param name="debugState">The state to be written.</param>
+        public void Write(IDebugState debugState)
+        {
+            SendDebugState(debugState as DebugState);
+        }
+
+        #endregion
+
+        #region Implementation of IExplorerRepositorySync
+
+        public void AddItemMessage(IExplorerItem addedItem)
+        {
+            if(addedItem != null)
+            {
+                addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
+                var item = _serializer.Serialize(addedItem);
+                var hubCallerConnectionContext = Clients;
+                hubCallerConnectionContext.All.ItemAddedMessage(item);
+            }           
+        }
+
+        #endregion
 
         void ResourceSaved(IResource resource)
         {
@@ -57,99 +92,20 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
         {
-            var permissionsMemo = new PermissionsModifiedMemo
-                {
-                    ModifiedPermissions = permissionsModifiedEventArgs.ModifiedWindowsGroupPermissions,
-                    ServerID = HostSecurityProvider.Instance.ServerID
-                };
-            var serializedMemo = _serializer.Serialize(permissionsMemo);
-            var hubCallerConnectionContext = Clients;
-            hubCallerConnectionContext.All.SendPermissionsMemo(serializedMemo);
-        }
-
-        public EsbHub(Server server)
-            : base(server)
-        {
-        }
-
-        public async Task AddDebugWriter(Guid workspaceId)
-        {
-            var task = new Task(() => DebugDispatcher.Instance.Add(workspaceId, this));
-            task.Start();
-            await task;
-        }
-
-        #region Overrides of Hub
-
-        /// <summary>
-        /// Called when the connection connects to this hub instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Threading.Tasks.Task"/>
-        /// </returns>
-        public override Task OnConnected()
-        {
-            ConnectionActions();
-            return base.OnConnected();
-        }
-
-
-        /// <summary>
-        /// Called when the connection reconnects to this hub instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Threading.Tasks.Task"/>
-        /// </returns>
-        public override Task OnReconnected()
-        {
-            ConnectionActions();
-            return base.OnReconnected();
-        }
-
-        public override Task OnDisconnected()
-        {
-            ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
-            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
-            if(authorizationServiceBase != null)
-            {
-                authorizationServiceBase.Dispose();
-            }
-            if(ResourceCatalog.Instance.ResourceSaved == null)
-            {
-                ResourceCatalog.Instance.ResourceSaved = null;
-            }            
-            if(ResourceCatalog.Instance.SendResourceMessages == null)
-            {
-                ResourceCatalog.Instance.SendResourceMessages = null;
-            }
-            ResourceCatalog.Instance.Dispose();
-            return base.OnDisconnected();
-        }
-
-
-        void ConnectionActions()
-        {
-            SetupEvents();
-
-            var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
-            var hubCallerConnectionContext = Clients;
-            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
-            user.SendWorkspaceID(workspaceId);
-            user.SendServerID(HostSecurityProvider.Instance.ServerID);
-        }
-
-        protected void SetupEvents()
-        {
             ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
             ServerExplorerRepository.Instance.MessageSubscription(this);
-            if(ResourceCatalog.Instance.ResourceSaved == null)
-            {
-                ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
-            }            
             if(ResourceCatalog.Instance.SendResourceMessages == null)
             {
                 ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
             }
+            var user = Context.User;
+            var permissionsMemo = new PermissionsModifiedMemo
+            {
+                ModifiedPermissions = ServerAuthorizationService.Instance.GetPermissions(user),
+                ServerID = HostSecurityProvider.Instance.ServerID
+            };
+            var serializedMemo = _serializer.Serialize(permissionsMemo);
+            Clients.Caller.SendPermissionsMemo(serializedMemo);        
         }
 
         void SendResourceMessages(Guid resourceId, IList<ICompileMessageTO> compileMessageTos)
@@ -157,11 +113,15 @@ namespace Dev2.Runtime.WebServer.Hubs
             SendResourcesAffectedMemo(resourceId,compileMessageTos);
         }
 
-        #endregion
-
+        public async Task AddDebugWriter(Guid workspaceId)
+        {
+            var task = new Task(() => DebugDispatcher.Instance.Add(workspaceId, this));
+            task.Start();
+            await task;
+}
 
         /// <summary>
-        /// Fetches the execute payload fragment.
+        ///     Fetches the execute payload fragment.
         /// </summary>
         /// <param name="receipt">The receipt.</param>
         /// <returns></returns>
@@ -193,7 +153,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         }
 
         /// <summary>
-        /// Executes the command.
+        ///     Executes the command.
         /// </summary>
         /// <param name="envelope">The envelope.</param>
         /// <param name="endOfStream">if set to <c>true</c> [end of stream].</param>
@@ -221,12 +181,12 @@ namespace Dev2.Runtime.WebServer.Hubs
                         if(endOfStream)
                         {
                             MessageCache.TryRemove(messageId, out sb);
-                            EsbExecuteRequest request = _serializer.Deserialize<EsbExecuteRequest>(sb);
+                            var request = _serializer.Deserialize<EsbExecuteRequest>(sb);
 
                             var user = string.Empty;
                             // ReSharper disable ConditionIsAlwaysTrueOrFalse
                             if(Context.User.Identity != null)
-                            // ReSharper restore ConditionIsAlwaysTrueOrFalse
+                                // ReSharper restore ConditionIsAlwaysTrueOrFalse
                             {
                                 user = Context.User.Identity.Name;
                                 // set correct principle ;)
@@ -250,11 +210,11 @@ namespace Dev2.Runtime.WebServer.Hubs
 
                                 // always place requesting user in here ;)
                                 var future = new FutureReceipt
-                                            {
-                                                PartID = q,
-                                                RequestID = messageId,
-                                                User = user
-                                            };
+                                {
+                                    PartID = q,
+                                    RequestID = messageId,
+                                    User = user
+                                };
 
                                 var value = processRequest.Substring(startIdx, len);
 
@@ -321,15 +281,14 @@ namespace Dev2.Runtime.WebServer.Hubs
             var hubCallerConnectionContext = Clients;
 
             hubCallerConnectionContext.All.SendMemo(serializedMemo);
-            
+
             CompileMessageRepo.Instance.ClearObservable();
             CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
 
         public void SendResourcesAffectedMemo(Guid resourceId, IList<ICompileMessageTO> messages)
         {
-            var msgs = new CompileMessageList();
-            msgs.Dependants = new List<string>();
+            var msgs = new CompileMessageList { Dependants = new List<string>() };
             messages.ToList().ForEach(s => msgs.Dependants.Add(s.ServiceName));
             msgs.MessageList = messages;
             msgs.ServiceID = resourceId;
@@ -337,9 +296,6 @@ namespace Dev2.Runtime.WebServer.Hubs
             var hubCallerConnectionContext = Clients;
 
             hubCallerConnectionContext.All.ReceiveResourcesAffectedMemo(serializedMemo);
-            
-            CompileMessageRepo.Instance.ClearObservable();
-            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
         }
 
         public void SendDebugState(DebugState debugState)
@@ -353,7 +309,7 @@ namespace Dev2.Runtime.WebServer.Hubs
         }
 
         void WriteEventProviderClientMessage<TMemo>(IEnumerable<ICompileMessageTO> messages, Action<TMemo, ICompileMessageTO> coalesceErrors)
-           where TMemo : IMemo, new()
+            where TMemo : IMemo, new()
         {
             var messageArray = messages.ToArray();
             if(messageArray.Length == 0)
@@ -372,7 +328,6 @@ namespace Dev2.Runtime.WebServer.Hubs
         void WriteEventProviderClientMessage<TMemo>(IEnumerable<IGrouping<Guid, ICompileMessageTO>> groupings, Action<TMemo, ICompileMessageTO> coalesceErrors)
             where TMemo : IMemo, new()
         {
-
             var memo = new TMemo { ServerID = HostSecurityProvider.Instance.ServerID };
 
             foreach(var grouping in groupings)
@@ -397,33 +352,77 @@ namespace Dev2.Runtime.WebServer.Hubs
             SendMemo(memo as Memo);
         }
 
-        #region Implementation of IDebugWriter
+        #region Overrides of Hub
 
         /// <summary>
-        /// Writes the given state.
-        /// <remarks>
-        /// This must implement the one-way (fire and forget) message exchange pattern.
-        /// </remarks>
+        ///     Called when the connection connects to this hub instance.
         /// </summary>
-        /// <param name="debugState">The state to be written.</param>
-        public void Write(IDebugState debugState)
+        /// <returns>
+        ///     A <see cref="T:System.Threading.Tasks.Task" />
+        /// </returns>
+        public override Task OnConnected()
         {
-            SendDebugState(debugState as DebugState);
+            ConnectionActions();
+            return base.OnConnected();
         }
 
-
-        #endregion
-
-        #region Implementation of IExplorerRepositorySync
-
-        public void AddItemMessage(IExplorerItem addedItem)
+        /// <summary>
+        ///     Called when the connection reconnects to this hub instance.
+        /// </summary>
+        /// <returns>
+        ///     A <see cref="T:System.Threading.Tasks.Task" />
+        /// </returns>
+        public override Task OnReconnected()
         {
-            if(addedItem != null)
+            ConnectionActions();
+            return base.OnReconnected();
+        }
+
+        public override Task OnDisconnected()
+        {
+            ServerAuthorizationService.Instance.PermissionsModified -= PermissionsHaveBeenModified;
+            var authorizationServiceBase = ServerAuthorizationService.Instance as AuthorizationServiceBase;
+            if(authorizationServiceBase != null)
             {
-                addedItem.ServerId = HostSecurityProvider.Instance.ServerID;
-                var item = _serializer.Serialize(addedItem);
-                var hubCallerConnectionContext = Clients;
-                hubCallerConnectionContext.All.ItemAddedMessage(item);
+                authorizationServiceBase.Dispose();
+            }
+
+            if (ResourceCatalog.Instance.ResourceSaved == null)
+            {
+                ResourceCatalog.Instance.ResourceSaved = null;
+            }
+            if (ResourceCatalog.Instance.SendResourceMessages == null)
+            {
+                ResourceCatalog.Instance.SendResourceMessages = null;
+            }
+            ResourceCatalog.Instance.Dispose();
+            return base.OnDisconnected();
+        }
+
+        void ConnectionActions()
+        {
+            SetupEvents();
+
+            var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
+            var hubCallerConnectionContext = Clients;
+            var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
+            user.SendWorkspaceID(workspaceId);
+            user.SendServerID(HostSecurityProvider.Instance.ServerID);
+            PermissionsHaveBeenModified(null,null);
+        }
+
+        protected void SetupEvents()
+        {
+            CompileMessageRepo.Instance.AllMessages.Subscribe(OnCompilerMessageReceived);
+            ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
+            ServerExplorerRepository.Instance.MessageSubscription(this);
+            if(ResourceCatalog.Instance.ResourceSaved == null)
+            {
+                ResourceCatalog.Instance.ResourceSaved += ResourceSaved;
+            }
+            if(ResourceCatalog.Instance.SendResourceMessages == null)
+            {
+                ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
             }
         }
 
