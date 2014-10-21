@@ -774,7 +774,7 @@ namespace Dev2.Studio.ViewModels
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if(workSurfaceContextViewModel != null)
             {
-                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(Version.CommunityPageUri);
+                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(Version.CommunityPageUri).Wait();
             }
         }
 
@@ -862,7 +862,7 @@ namespace Dev2.Studio.ViewModels
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Help" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if(workSurfaceContextViewModel != null)
             {
-                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(uriToDisplay);
+                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(uriToDisplay).Wait();
             }
         }
 
@@ -874,7 +874,7 @@ namespace Dev2.Studio.ViewModels
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Shortcut Keys" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if(workSurfaceContextViewModel != null)
             {
-                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path);
+                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path).Wait();
             }
         }
 
@@ -886,7 +886,7 @@ namespace Dev2.Studio.ViewModels
             WorkSurfaceContextViewModel workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Language Help" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if(workSurfaceContextViewModel != null)
             {
-                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path);
+                ((HelpViewModel)workSurfaceContextViewModel.WorkSurfaceViewModel).LoadBrowserUri(path).Wait();
             }
         }
 

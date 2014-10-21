@@ -11,6 +11,7 @@
 
 
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Messages;
@@ -64,20 +65,22 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("HelpViewModel_OnViewLoaded")]
-        public void HelpViewModel_LoadBrowserUri_HasNoInternetConnection_NavigatesToOnDiskResource()
+        public async Task HelpViewModel_LoadBrowserUri_HasNoInternetConnection_NavigatesToOnDiskResource()
         {
             //------------Setup for test--------------------------
             const string uri = "http://community.warewolf.io/";
             var networkHelper = new Mock<INetworkHelper>();
-            networkHelper.Setup(m => m.HasConnection(It.IsAny<string>()))
-                .Returns(false);
+            var task = new Task<bool>(() => false);
+            task.RunSynchronously();
+            networkHelper.Setup(m => m.HasConnectionAsync(It.IsAny<string>()))
+                .Returns(task);
             var helpViewWrapper = new Mock<IHelpViewWrapper>(); 
             helpViewWrapper.Setup(m => m.Navigate(It.IsAny<string>())).Verifiable();
             var helpViewModel = new HelpViewModel(networkHelper.Object,helpViewWrapper.Object, false);
             HelpView helpView = new HelpView();
             helpViewWrapper.SetupGet(m => m.HelpView).Returns(helpView);
             //------------Execute Test---------------------------
-            helpViewModel.LoadBrowserUri(uri);
+            await helpViewModel.LoadBrowserUri(uri);
             //------------Assert Results-------------------------
             helpViewWrapper.Verify(m => m.Navigate(It.IsAny<string>()), Times.Once());
             Assert.IsNotNull(helpViewModel.Uri);
@@ -87,13 +90,15 @@ namespace Dev2.Core.Tests.ViewModelTests
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("HelpViewModel_OnViewLoaded")]
-        public void HelpViewModel_LoadBrowserUri_HasInternetConnection_NavigatesToUrl()
+        public async Task HelpViewModel_LoadBrowserUri_HasInternetConnection_NavigatesToUrl()
         {
             //------------Setup for test--------------------------
             const string uri = "http://community.warewolf.io/";
             var networkHelper = new Mock<INetworkHelper>();
-            networkHelper.Setup(m => m.HasConnection(It.IsAny<string>()))
-                .Returns(true);
+            var task = new Task<bool>(() => true);
+            task.RunSynchronously();
+            networkHelper.Setup(m => m.HasConnectionAsync(It.IsAny<string>()))
+                .Returns(task);
             var helpViewWrapper = new Mock<IHelpViewWrapper>();
             WebBrowser webBrowser = new WebBrowser();   
             helpViewWrapper.SetupGet(m => m.WebBrowser).Returns(webBrowser);
@@ -102,7 +107,7 @@ namespace Dev2.Core.Tests.ViewModelTests
             HelpView helpView = new HelpView();
             helpViewWrapper.SetupGet(m => m.HelpView).Returns(helpView);
             //------------Execute Test---------------------------
-            helpViewModel.LoadBrowserUri(uri);
+            await helpViewModel.LoadBrowserUri(uri);
             //------------Assert Results-------------------------
             helpViewWrapper.Verify(m => m.Navigate(It.IsAny<string>()), Times.Once());
             Assert.IsNotNull(helpViewModel.Uri);
