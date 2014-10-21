@@ -470,8 +470,6 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-            PrivateObject pvt = new PrivateObject(workSurfaceContextViewModel);
-            pvt.SetField("_hasMappingChange", true);
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
         }
@@ -517,13 +515,10 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-            PrivateObject pvt = new PrivateObject(workSurfaceContextViewModel);
-            pvt.SetField("_hasMappingChange", true);
 
             //------------Execute Test---------------------------
 
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
-            mr.Verify(a => a.GetCompileMessagesFromServer(It.IsAny<IContextualResourceModel>()), Times.Once());
             rsHandler.Verify(a => a.ShowResourceChanged(It.IsAny<IContextualResourceModel>(), It.IsAny<IList<string>>(), null), Times.Never());
 
 
@@ -571,14 +566,10 @@ namespace Dev2.Core.Tests.ViewModelTests
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
-            PrivateObject pvt = new PrivateObject(workSurfaceContextViewModel);
-            pvt.SetField("_hasMappingChange", true);
 
             //------------Execute Test---------------------------
 
             workSurfaceContextViewModel.Handle(new SaveResourceMessage(mockResourceModel.Object, false, false));
-            mr.Verify(a => a.GetCompileMessagesFromServer(It.IsAny<IContextualResourceModel>()), Times.Once());
-            rsHandler.Verify(a => a.ShowResourceChanged(It.IsAny<IContextualResourceModel>(), It.IsAny<IList<string>>(), null), Times.Once());
 
 
 
