@@ -16,11 +16,15 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Data.ServiceModel;
 using Dev2.Providers.Errors;
+using Dev2.Runtime.Security;
+using Dev2.Services.Security;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FindResourceHelper
     {
+        private IAuthorizationService _authorizationService;
+
         /// <summary>
         /// Strips for ship.
         /// </summary>
@@ -30,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
 
             // convert the fliping errors due to json issues in c# ;(
-            List<ErrorInfo> errors = new List<ErrorInfo>();
+            var errors = new List<ErrorInfo>();
             var parseErrors = resource.Errors;
             if(parseErrors != null)
             {
@@ -53,12 +57,26 @@ namespace Dev2.Runtime.ESB.Management.Services
                 ResourceID = resource.ResourceID,
                 VersionInfo = resource.VersionInfo,
                 ResourceName = resource.ResourceName,
+                Permissions = AuthorizationService.GetResourcePermissions(resource.ResourceID),
                 ResourceType = resource.ResourceType,
                 IsValid = resource.IsValid,
                 DataList = datalist,
                 Errors = errors,
                 IsNewResource = resource.IsNewResource
             };
+        }
+
+
+        internal IAuthorizationService AuthorizationService
+        {
+            get
+            {
+                return _authorizationService ?? (_authorizationService = ServerAuthorizationService.Instance);
+            }
+            set
+            {
+                _authorizationService = value;
+            }
         }
     }
 }
