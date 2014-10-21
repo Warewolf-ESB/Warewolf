@@ -653,7 +653,7 @@ namespace Dev2.Runtime.ESB.Control
 
             // force all items to exist in the DL ;)
             theShape = FindServiceShape(workspaceId, dataObject.ResourceID);
-            var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, theShape, out invokeErrors);
+            var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), new StringBuilder(), theShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             // Add left to right
