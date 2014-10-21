@@ -30,6 +30,7 @@ namespace Dev2.Common
          {
              SystemEvents.TimeChanged += (sender, args) =>
              {
+                 // ReSharper disable once ConvertToLambdaExpression
                  CultureInfo.CurrentCulture.ClearCachedData();
              };
             
