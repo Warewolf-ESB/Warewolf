@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ServiceModel
             var result = new PluginSource { ResourceID = Guid.Empty, ResourceType = ResourceType.PluginSource };
             try
             {
-                var xmlStr = Resources.ReadXml(workspaceId, ResourceType.PluginSource, resourceId);
+                var xmlStr = Resources.ReadXml(workspaceId, resourceId);
                 if(!string.IsNullOrEmpty(xmlStr))
                 {
                     var xml = XElement.Parse(xmlStr);

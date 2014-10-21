@@ -33,26 +33,12 @@ namespace Dev2.Runtime.ServiceModel
     {
         #region Static RootFolders/Elements
 
-        public static volatile Dictionary<ResourceType, string> RootFolders = new Dictionary<ResourceType, string>
-        {
-            { ResourceType.Unknown, "Resources" },
-            { ResourceType.Server, "Resources" },
-            { ResourceType.DbService, "Resources" },
-            { ResourceType.DbSource, "Resources" },
-            { ResourceType.PluginService, "Resources" },
-            { ResourceType.PluginSource, "Resources" },
-            { ResourceType.EmailSource, "Resources" },
-            { ResourceType.WebSource, "Resources" },
-            { ResourceType.WebService, "Resources" },
-            { ResourceType.WorkflowService, "Resources" },
-        };
-
         #endregion
 
         #region Sources
 
         // POST: Service/Resources/Sources
-        public ResourceList Sources(string args, Guid workspaceId, Guid dataListId)
+        public ResourceList Sources(string args, Guid workspaceId)
         {
             var result = new ResourceList();
             try
@@ -68,7 +54,7 @@ namespace Dev2.Runtime.ServiceModel
             return result;
         }
         // POST: Service/Resources/Services
-        public ResourceList Services(string args, Guid workspaceId, Guid dataListId)
+        public ResourceList Services(string args, Guid workspaceId)
         {
             var result = new ResourceList();
             try
@@ -95,16 +81,20 @@ namespace Dev2.Runtime.ServiceModel
         #region PathsAndNames
 
         // POST: Service/Resources/PathsAndNames
-        public string PathsAndNames(string args, Guid workspaceId, Guid dataListId)
+        public string PathsAndNames(string args, Guid workspaceId)
         {
             args = args.Replace("\\\\", "\\");
             args = args.Replace("root", "");
             var explorerItem = ServerExplorerRepository.Instance.Load(workspaceId);
-            var folders = explorerItem.Descendants().Where(item => item.ResourceType == ResourceType.Folder
+            var descendants = explorerItem.Descendants().ToArray();
+            // ReSharper disable once MaximumChainedReferences
+            var folders = descendants.Where(item => item.ResourceType == ResourceType.Folder
                                         && (args == "" ? item.ResourcePath == item.DisplayName : GetResourceParent(item.ResourcePath) == args))
                                             .Select(item => item.DisplayName);
             var paths = new SortedSet<string>(folders);
-            var resources = explorerItem.Descendants().Where(item => (item.ResourceType > ResourceType.Unknown && item.ResourceType < ResourceType.ServerSource)
+
+            // ReSharper disable once MaximumChainedReferences
+            var resources = descendants.Where(item => (item.ResourceType > ResourceType.Unknown && item.ResourceType <= ResourceType.ServerSource)
                                         && (args == "" ? item.ResourcePath == item.DisplayName : GetResourceParent(item.ResourcePath) == args))
                                             .Select(item => item.DisplayName);
             var names = new SortedSet<string>(resources);
@@ -126,7 +116,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Paths
 
         // POST: Service/Resources/Paths
-        public string Paths(string args, Guid workspaceId, Guid dataListId)
+        public string Paths(Guid workspaceId)
         {
             var result = new SortedSet<string>(new CaseInsensitiveStringComparer());
 
@@ -174,12 +164,12 @@ namespace Dev2.Runtime.ServiceModel
 
         #region ReadXml
 
-        public static string ReadXml(Guid workspaceId, ResourceType resourceType, string resourceId)
+        public static string ReadXml(Guid workspaceId, string resourceId)
         {
             return ReadXml(workspaceId, "Resources", resourceId);
         }
 
-        public static string ReadXml(Guid workspaceId, string directoryName, string resourceId)
+        static string ReadXml(Guid workspaceId, string directoryName, string resourceId)
         {
             var result = String.Empty;
             Guid id;
@@ -218,7 +208,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        public string DataListInputVariables(string resourceId, Guid workspaceId, Guid dataListId)
+        public string DataListInputVariables(string resourceId, Guid workspaceId)
         {
             Guid rsId;
             if(!Guid.TryParse(resourceId, out rsId))
@@ -290,12 +280,15 @@ namespace Dev2.Runtime.ServiceModel
     public class PathsAndNamesTO
 // ReSharper restore InconsistentNaming
     {
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public SortedSet<string> Names { get; set; }
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public SortedSet<string> Paths { get; set; }
     }
 
     public class DataListVariable
     {
+        // ReSharper disable once UnusedAutoPropertyAccessor.Global
         public string Name { get; set; }
     }
 
