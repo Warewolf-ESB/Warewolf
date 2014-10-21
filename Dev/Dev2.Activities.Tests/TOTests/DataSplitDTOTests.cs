@@ -312,7 +312,7 @@ namespace Dev2.Tests.Activities.TOTests
 
 
         [TestMethod]
-        [Owner("Trevor Williams-Ros")]
+        [Owner("Robin van den Heever")]
         [TestCategory("DataSplitDTO_GetRuleSet")]
         public void DataSplitDTO_GetRuleSetOutputVariable_IsNotNullOrEmpty_ValidateRulesReturnsFalse()
         {

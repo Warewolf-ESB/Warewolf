@@ -210,7 +210,8 @@ namespace Dev2.Runtime.ESB.Control
             var compiler = DataListFactory.CreateDataListCompiler();
 
             var principle = Thread.CurrentPrincipal;
-            Dev2Logger.Log.Info("EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE [ " + dataObject.ServiceName + " ]");
+            var name = principle.Identity.Name;
+            Dev2Logger.Log.Info("EXECUTION USER CONTEXT IS [ " + name + " ] FOR SERVICE [ " + dataObject.ServiceName + " ]");
 
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)

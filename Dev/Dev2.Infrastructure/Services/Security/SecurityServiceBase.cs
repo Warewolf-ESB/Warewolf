@@ -22,7 +22,7 @@ namespace Dev2.Services.Security
     {
         readonly ReaderWriterLockSlim _permissionsLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
-        readonly List<WindowsGroupPermission> _permissions = new List<WindowsGroupPermission>();
+        protected List<WindowsGroupPermission> _permissions = new List<WindowsGroupPermission>();
 
         public event EventHandler PermissionsChanged;
 
@@ -36,6 +36,18 @@ namespace Dev2.Services.Security
                 try
                 {
                     return _permissions;
+                }
+                finally
+                {
+                    _permissionsLock.ExitReadLock();
+                }
+            }
+            set
+            {
+                _permissionsLock.EnterReadLock();
+                try
+                {
+                    _permissions = value.ToList();
                 }
                 finally
                 {
@@ -104,8 +116,8 @@ namespace Dev2.Services.Security
         {
             if(oldPermissions != null && newPermissions != null)
             {
-                var permissionsDiff = newPermissions.Except(oldPermissions, new WindowsGroupPermissionEqualityComparer());
-                RaisePermissionsModified(new PermissionsModifiedEventArgs(permissionsDiff.ToList()));
+               // var permissionsDiff = newPermissions.Except(oldPermissions, new WindowsGroupPermissionEqualityComparer());
+                RaisePermissionsModified(new PermissionsModifiedEventArgs(newPermissions.ToList()));
             }
         }
 

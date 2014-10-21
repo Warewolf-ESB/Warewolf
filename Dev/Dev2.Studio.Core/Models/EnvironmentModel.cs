@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Network;
 using Dev2.AppResources.Repositories;
@@ -70,12 +69,11 @@ namespace Dev2.Studio.Core.Models
             _studioRepo = studioResourceRepository;
             ID = id; // The resource ID
             Connection = environmentConnection;
-            PermissionsModifiedService = new PermissionsModifiedService(Connection.ServerEvents);
             // MUST subscribe to Guid.Empty as memo.InstanceID is NOT set by server!
             ResourceRepository = resourceRepository ?? new ResourceRepository(this);
         }
 
-
+       
 
         #endregion
 
@@ -156,7 +154,6 @@ namespace Dev2.Studio.Core.Models
                 return Name + " (" + Connection.WebServerUri + ")";
             }
         }
-        public PermissionsModifiedService PermissionsModifiedService { get; set; }
 
         #endregion
 
@@ -267,6 +264,10 @@ namespace Dev2.Studio.Core.Models
             if(e.ToState == NetworkState.Connecting || e.ToState == NetworkState.Offline)
             {
                 _studioRepo.Disconnect(ID);
+                if(AuthorizationService != null)
+                {
+                    AuthorizationService.PermissionsChanged -= OnAuthorizationServicePermissionsChanged;
+                }
             }
             if(e.ToState == NetworkState.Online)
             {

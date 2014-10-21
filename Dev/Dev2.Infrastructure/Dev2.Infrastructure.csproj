@@ -165,9 +165,7 @@
     <Compile Include="Services\Security\MoqInstallerActions\MoqInstallerActions.cs" />
     <Compile Include="Services\Security\MoqInstallerActions\WarewolfSecurityOperations.cs" />
     <Compile Include="Services\Security\MoqInstallerActions\WarewolfSecurityOperationsImpl.cs" />
-    <Compile Include="Services\Security\PermissionsModifiedService.cs" />
     <Compile Include="Services\Security\IAuthorizationService.cs" />
-    <Compile Include="Services\Security\IPermissionsModifiedService.cs" />
     <Compile Include="Services\Security\ISecurityService.cs" />
     <Compile Include="Services\Security\ReasonAttribute.cs" />
     <Compile Include="Services\Security\SecurityServiceBase.cs" />
