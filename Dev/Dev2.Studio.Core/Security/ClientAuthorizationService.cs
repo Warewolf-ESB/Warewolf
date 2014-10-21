@@ -47,13 +47,14 @@ namespace Dev2.Security
         protected override IEnumerable<WindowsGroupPermission> GetGroupPermissions(IPrincipal principal, string resource)
         {
             var serverPermissions = _securityService.Permissions;
-
+            var serverOnlyPermissions = serverPermissions.Where(permission => permission.IsServer || permission.ResourceID==Guid.Empty);
+            
             Guid resourceId;
             if (Guid.TryParse(resource, out resourceId))
             {
                 if (resourceId == Guid.Empty)
                 {
-                    return serverPermissions.Where(permission => permission.IsServer);
+                    return serverOnlyPermissions;
                 }
                 var resourcePermissions = serverPermissions.Where(p => p.Matches(resource) && !p.IsServer).ToList();
                 if (resourcePermissions.Any())
@@ -61,7 +62,7 @@ namespace Dev2.Security
                     return resourcePermissions;
                 }
             }
-            return serverPermissions;
+            return serverOnlyPermissions;
         }
 
         public override bool IsAuthorized(AuthorizationContext context, string resource)
