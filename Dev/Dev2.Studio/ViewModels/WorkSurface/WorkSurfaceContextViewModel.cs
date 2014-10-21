@@ -226,10 +226,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         void OnReceivedResourceAffectedMessage(Guid resourceId, CompileMessageList compileMessageList)
         {
-            if (resourceId == ContextualResourceModel.ID)
+            var numberOfDependants = compileMessageList.Dependants;
+            if (resourceId == ContextualResourceModel.ID && numberOfDependants.Count>0)
             {
                 var showResourceChangedUtil = ResourceChangeHandlerFactory.Create(EventPublisher);
-                Execute.OnUIThread(() => { showResourceChangedUtil.ShowResourceChanged(ContextualResourceModel, compileMessageList.Dependants); });
+                Execute.OnUIThread(() =>
+                {
+                    showResourceChangedUtil.ShowResourceChanged(ContextualResourceModel, numberOfDependants);
+                });
             }
         }
 
