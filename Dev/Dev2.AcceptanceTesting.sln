@@ -83,9 +83,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Explorer.Specs", "Dev2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{20848FEE-00A7-4B96-9FA1-80F2890E37AB}"
 	ProjectSection(SolutionItems) = preProject
-		TestSettings\SpecFlow\CI Environments.testsettings = TestSettings\SpecFlow\CI Environments.testsettings
-		TestSettings\SpecFlow\Local.testsettings = TestSettings\SpecFlow\Local.testsettings
-		TestSettings\SpecFlow\Sandbox.testsettings = TestSettings\SpecFlow\Sandbox.testsettings
+		TestSettings\Acceptance\CI Environments.testsettings = TestSettings\Acceptance\CI Environments.testsettings
+		TestSettings\Acceptance\First CI Environment.testsettings = TestSettings\Acceptance\First CI Environment.testsettings
+		TestSettings\Acceptance\Local.testsettings = TestSettings\Acceptance\Local.testsettings
+		TestSettings\Acceptance\Sandbox.testsettings = TestSettings\Acceptance\Sandbox.testsettings
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Integration.Tests", "Dev2.IntegrationTests\Dev2.Integration.Tests.csproj", "{2C7F0E32-C4C4-422D-A767-92F3B3510392}"

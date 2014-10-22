@@ -234,6 +234,7 @@
     </Compile>
     <Compile Include="Dev2.Activities.Tests\RecursiveEvaluationTest.cs" />
     <Compile Include="Dev2.Activities.Tests\WorkflowInputMapping.cs" />
+    <Compile Include="InitialiseAssembly.cs" />
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DecisionWFTests.cs" />
     <Compile Include="Dev2.Activities.Tests\DsfBaseConvertActivityWFTests.cs" />
