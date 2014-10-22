@@ -581,7 +581,7 @@ namespace Dev2.Studio.UI.Specs
                         Keyboard.SendKeys(serverDetailsRow["Password"]);
                         //CLICK TEST
                         window.Click(new Point(350, 200));
-                        Playback.Wait(5000);
+                        Playback.Wait(10000);
                         break;
                     }
                 case "Windows":
