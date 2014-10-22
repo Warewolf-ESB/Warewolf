@@ -92,12 +92,6 @@ namespace Dev2.Runtime.WebServer.Hubs
 
         void PermissionsHaveBeenModified(object sender, PermissionsModifiedEventArgs permissionsModifiedEventArgs)
         {
-            ServerAuthorizationService.Instance.PermissionsModified += PermissionsHaveBeenModified;
-            ServerExplorerRepository.Instance.MessageSubscription(this);
-            if(ResourceCatalog.Instance.SendResourceMessages == null)
-            {
-                ResourceCatalog.Instance.SendResourceMessages += SendResourceMessages;
-            }
             var user = Context.User;
             var permissionsMemo = new PermissionsModifiedMemo
             {
@@ -118,7 +112,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             var task = new Task(() => DebugDispatcher.Instance.Add(workspaceId, this));
             task.Start();
             await task;
-}
+        }
 
         /// <summary>
         ///     Fetches the execute payload fragment.
