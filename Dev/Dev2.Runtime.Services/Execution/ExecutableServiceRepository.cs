@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,6 +54,7 @@ namespace Dev2.Runtime.Execution
 
         public void Add(IExecutableService service)
         {
+            ClearNullExecutions();
             var parent = GetParent(service.WorkspaceID, service.ParentID);
             if(parent == null)
             {
@@ -66,10 +66,24 @@ namespace Dev2.Runtime.Execution
             }
         }
 
+        void ClearNullExecutions()
+        {
+            if(_activeExecutions != null && _activeExecutions.Count>0)
+            {
+                for (var i = _activeExecutions.Count-1; i>=0; i--)
+                {
+                    if (_activeExecutions[i] == null)
+                    {
+                        _activeExecutions.RemoveAt(i);
+                    }
+                }
+            }
+        }
+
         public bool Remove(IExecutableService service)
         {
             var exists = _activeExecutions.Remove(service);
-
+                
             foreach(var executableService in _activeExecutions)
             {
                 exists = executableService.AssociatedServices.Remove(service);
@@ -84,7 +98,7 @@ namespace Dev2.Runtime.Execution
 
         private IExecutableService GetParent(Guid workspaceID, Guid parentID)
         {
-            var service = _activeExecutions.ToList().FirstOrDefault(e => e.ID == parentID && e.WorkspaceID == workspaceID);
+            var service = _activeExecutions.ToList().FirstOrDefault(e => e!=null &&e.ID == parentID && e.WorkspaceID == workspaceID);
             return service;
         }
 
