@@ -33,12 +33,13 @@ Scenario: Testing Different Server Permissions For Public
        Given I create a new remote connection "REM" as
        | Address               | AuthType | UserName | Password |
        | http://localhost:3142 | Public   |          |          |
-	   # Dragging remote server resource to local design surface
-	   And I click "EXPLORER,UI_localhost_AutoID" 
+	   # Dragging remote server resource to local design surface when I have view only permission
+	   Given I click "EXPLORER,UI_localhost_AutoID" 
 	   And I click "RIBBONNEWENDPOINT"
+	   Given I send "Decision Testing" to "EXPLORERFILTER"
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
        Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
-	   #Checking Explorer Icons
+	  #Checking Explorer Icons
        Then I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID"   
        Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
        Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
@@ -56,6 +57,7 @@ Scenario: Testing Different Server Permissions For Public
        Then "RIBBONSCHEDULE" is disabled
 	   Given all tabs are closed
   #Test-2 Set server permission execute
+       Given I click "EXPLORERFILTERCLEARBUTTON"
        Given I click "EXPLORER,UI_localhost_AutoID" 
        And I click "RIBBONSETTINGS"   
        And I click "SECURITYPUBLICADMINISTRATOR"  
@@ -65,7 +67,8 @@ Scenario: Testing Different Server Permissions For Public
        And "SECURITYPUBLICDEPLOYFROM" is unchecked
        And I click "SECURITYPUBLICEXECUTE"
        And I click "SECURITYSAVE"
-	   # Dragging remote server resource to local design surface
+	   # Dragging remote server resource to local design surface when I have Execute only permission
+	   Given I send "Decision Testing" to "EXPLORERFILTER"
 	   And I click "EXPLORER,UI_localhost_AutoID" 
 	   And I click "RIBBONNEWENDPOINT"
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
@@ -89,6 +92,7 @@ Scenario: Testing Different Server Permissions For Public
        Then "RIBBONNEWENDPOINT" is disabled
  #Test-3 Set server permission Contribute
        Given all tabs are closed
+	   Given I click "EXPLORERFILTERCLEARBUTTON"
        Given I click "EXPLORER,UI_localhost_AutoID" 
        And I click "RIBBONSETTINGS"   
        And I click "SECURITYPUBLICADMINISTRATOR"  
@@ -98,9 +102,10 @@ Scenario: Testing Different Server Permissions For Public
        And "SECURITYPUBLICDEPLOYFROM" is unchecked
        And I click "SECURITYPUBLICCONTRIBUTE"
        And I click "SECURITYSAVE"
-	   # Dragging Remote Resource to local design surface
+	   # Dragging Remote Resource to local design surface when I have Contribute only permission
 	   And I click "EXPLORER,UI_localhost_AutoID" 
 	   And I click "RIBBONNEWENDPOINT"
+	   Given I send "Decision Testing" to "EXPLORERFILTER"
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
        Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is visible within "3" seconds
        #Checking Explorer Icons
@@ -118,7 +123,8 @@ Scenario: Testing Different Server Permissions For Public
        Then "RIBBONNEWENDPOINT" is visible
        Then "RIBBONSCHEDULE" is disabled
  #Test-4 Set server permission Deploy To
-        Given all tabs are closed
+       Given all tabs are closed
+	   Given I click "EXPLORERFILTERCLEARBUTTON"
        Given I click "EXPLORER,UI_localhost_AutoID" 
        And I click "RIBBONSETTINGS"   
        And I click "SECURITYPUBLICADMINISTRATOR"  
@@ -128,16 +134,15 @@ Scenario: Testing Different Server Permissions For Public
        And "SECURITYPUBLICDEPLOYFROM" is unchecked
        And I click "SECURITYPUBLICDEPLOYTO"
        And I click "SECURITYSAVE"
-	   # Dragging remote server resource to local design surface
+	   # Dragging remote server resource to local design surface when I have Deploy To only permission
 	   And I click "EXPLORER,UI_localhost_AutoID" 
 	   And I click "RIBBONNEWENDPOINT"
+	   Given I send "Decision Testing" to "EXPLORERFILTER"
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
        Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	   #Checking Explorer Icons
        Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
        And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible      
-       Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
-	   And I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
 	   #Ribbon Icons
        Then "RIBBONNEWENDPOINT" is disabled
        Then "RIBBONSETTINGS" is disabled
@@ -151,7 +156,8 @@ Scenario: Testing Different Server Permissions For Public
        Given I click "ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServercbx_AutoID_REM"
        Then "DEPLOYSOURCE,UI_SourceServer_UI_REM (http://localhost:3142/)_AutoID_AutoID,UI_Unautherized_DeployFrom_AutoID" is visible
  #Test-5 Set server permission Deploy From
-      Given all tabs are closed
+       Given all tabs are closed
+	   Given I click "EXPLORERFILTERCLEARBUTTON"
        And I click "EXPLORER,UI_localhost_AutoID" 
        And I click "RIBBONSETTINGS"   
        And I click "SECURITYPUBLICADMINISTRATOR"  
@@ -161,9 +167,10 @@ Scenario: Testing Different Server Permissions For Public
        And "SECURITYPUBLICDEPLOYFROM" is unchecked
        And I click "SECURITYPUBLICDEPLOYFROM"
        And I click "SECURITYSAVE" 
-	   # Dragging remote server resource to local design surface
+	   # Dragging remote server resource to local design surface when I have Deploy From only permission
 	   And I click "EXPLORER,UI_localhost_AutoID" 
 	   And I click "RIBBONNEWENDPOINT"
+	   Given I send "Decision Testing" to "EXPLORERFILTER"
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
        Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	   #Exploer Icons
