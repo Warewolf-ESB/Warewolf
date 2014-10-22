@@ -156,8 +156,8 @@ this.FeatureBackground();
     testRunner.Given("I drag \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resou" +
                     "rces_AutoID,UI_Decision Testing_AutoID\" onto \"WORKSURFACE,StartSymbol\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 42
-       testRunner.Given("\"WORKFLOWDESIGNER,BARNEY\\Decision Testing(ServiceDesigner)\" is invisible within \"" +
-                    "3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("\"WORKFLOWDESIGNER,Integration Test Resources\\Decision Testing(ServiceDesigner)\" i" +
+                    "s invisible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 44
        testRunner.Then("I click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 45
@@ -173,8 +173,8 @@ this.FeatureBackground();
        testRunner.Given("I double click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Te" +
                     "st Resources_AutoID,UI_Decision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 50
-       testRunner.Given("\"WORKFLOWDESIGNER,Integration Test Resources\\Decision Testing(ServiceDesigner)\" i" +
-                    "s visible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("\"WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)\" is visible within \"3\" seco" +
+                    "nds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 52
        testRunner.Then("\"RIBBONDEBUG\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 53

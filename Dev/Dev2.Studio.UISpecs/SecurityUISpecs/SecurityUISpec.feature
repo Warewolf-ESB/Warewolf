@@ -39,7 +39,7 @@ Scenario: Testing Different Server Permissions For Public
 	   And I click "RIBBONNEWENDPOINT"
 	   Given I send "Decision Testing" to "EXPLORERFILTER"
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
-       Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
+       Given "WORKFLOWDESIGNER,Integration Test Resources\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	  #Checking Explorer Icons
        Then I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID"   
        Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
@@ -47,7 +47,7 @@ Scenario: Testing Different Server Permissions For Public
        Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
 	   #Opening Resouurce from Explorer
        Given I double click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"      
-       Given "WORKFLOWDESIGNER,Integration Test Resources\Decision Testing(ServiceDesigner)" is visible within "3" seconds
+       Given "WORKFLOWDESIGNER,Decision Testing(FlowchartDesigner)" is visible within "3" seconds
 	   #Checking Ribbon Icons
        Then "RIBBONDEBUG" is visible
        Then "RIBBONNEWDATABASECONNECTOR" is disabled
