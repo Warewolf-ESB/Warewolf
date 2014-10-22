@@ -372,15 +372,6 @@
     <EmbeddedResource Include="Server Test\Workspace\XML\TestDecisionUnsigned.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\WorkspaceItem.xml" />
     <None Include="App.config" />
-    <None Include="DeploymentScripts\Deploy.cmd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="DeploymentScripts\DeployCleanup.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="DeploymentScripts\Startup.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
     <None Include="packages.config" />
     <None Include="Resources\DeleteWorkflowTest.xml" />
     <EmbeddedResource Include="TestData\Test.zip">
@@ -466,10 +457,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DeploymentScripts\AutomatedStart.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DeploymentScripts\AutomatedStart.pdb" />
     <EmbeddedResource Include="Server Test\Workspace\XML\Google_Address_Lookup.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\BUG_10638_Result.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\Bug_10528_Result.xml" />
