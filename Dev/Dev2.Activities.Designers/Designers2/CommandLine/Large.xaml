@@ -70,7 +70,7 @@
                                 FilterType="All" 
                                 WrapInBrackets="False" 
                                 HorizontalScrollBarVisibility="Auto"
-                                ToolTip="{x:Static help:HelpTextResources.CommandLineToolTipCMD}"
+                                ToolTip="{x:Static help:HelpTextResources.CMDLineToolTipCMD}"
                                 Text="{Binding Path=ModelItem.CommandFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Cmdtxt_AutoID}"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
@@ -82,7 +82,7 @@
                     </interfaceImplementors:CompositeIntellisenseProvider>
                 </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CommandLineHelpCMD}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CMDLineHelpCMD}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.CommandFileName"
@@ -103,10 +103,10 @@
                   DisplayMemberPath="Value"
                   SelectedValuePath="Key"
                   SelectedValue="{Binding Path=ModelItem.CommandPriority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"            
-                  ToolTip="{x:Static help:HelpTextResources.CommandLineHelpPriorityType}"
+                  ToolTip="{x:Static help:HelpTextResources.CMDLineToolTipPrioritytype}"
                   AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_CmdPriority_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CommandLineHelpPriorityType}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CMDLineHelpPrioritytype}"
                                  DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </ComboBox>
@@ -120,11 +120,11 @@
                                 DefaultText="[[Result]]" 
                                 WrapInBrackets="True" 
                                 Text="{Binding Path=ModelItem.CommandResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                ToolTip="{x:Static help:HelpTextResources.CommandLineToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.CMDLineToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CommandLineHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CMDLineHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.CommandResult"

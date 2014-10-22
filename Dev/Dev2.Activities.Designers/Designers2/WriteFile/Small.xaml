@@ -79,11 +79,11 @@
                                  FilterType="All"
                                  WrapInBrackets="False"
                                  Text="{Binding Path=ModelItem.FileContents, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 ToolTip="{x:Static help:HelpTextResources.WriteFileToolTipContent}"
+                                 ToolTip="{x:Static help:HelpTextResources.WriteFileToolTipContents}"
                                  Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Contentstxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.WriteFileHelpContent}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.WriteFileHelpContents}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.FileContents"
@@ -103,7 +103,8 @@
                                 WrapInBrackets="True"
                                 Text="{Binding Path=ModelItem.Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}"
+                                ToolTip="{x:Static help:HelpTextResources.WriteFileToolTipResult}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.WriteFileHelpResult}"
                                  DataContext="{Binding}" />

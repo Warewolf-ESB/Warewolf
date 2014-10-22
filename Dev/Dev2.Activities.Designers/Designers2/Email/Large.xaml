@@ -222,7 +222,8 @@
                   SelectedValue="{Binding ModelItem.Priority, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding Priorities}"
                   Style="{StaticResource ActivityComboBoxStyle}"
-                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" >
+                  ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}" 
+                  ToolTip="{x:Static help:HelpTextResources.EmailToolTipPriorityType}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpPriorityType}"
                                  DataContext="{Binding}" />
@@ -270,7 +271,8 @@
                                     Text="{Binding ModelItem.Attachments,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                     attachedProperties:FocusSetter.IsFocused="{Binding IsAttachmentsFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AttachmentsTxt_AutoID}">
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_AttachmentsTxt_AutoID}"
+                                    ToolTip="{x:Static help:HelpTextResources.EmailToolTipAttachments}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.EmailHelpAttachments}"
                                      DataContext="{Binding}" />
