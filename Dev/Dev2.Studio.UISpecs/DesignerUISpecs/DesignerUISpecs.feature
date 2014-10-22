@@ -9,15 +9,18 @@ Scenario: ChangeWorkflowMappingsAlertsAffectedOnSave
 	And all tabs are closed
 	And I click "EXPLORERFILTERCLEARBUTTON"
 	And I click "EXPLORER,UI_localhost_AutoID"
+	##Searching Workflow with the name "InnerWF" in explorer search
 	And I send "InnerWF" to "EXPLORERFILTER"
+	##Opening WF from explorer
 	And I double click "EXPLORERFOLDERS,UI_Integration Test Resources_AutoID,UI_InnerWF_AutoID"
+	#Changing 'InnerWF' mappings and save, expected popup message as dependency workflows affected
 	And I click "VARIABLESCALAR,UI_Variable_result_AutoID,UI_IsInputCheckbox_AutoID"
 	When I click "RIBBONSAVE"
 	Then "UI_DeleteResourceNoBtn_AutoID" is visible within "2" seconds
 	When I click "UI_ResourceChangedWarningDialog_AutoID,UI_ShowAffectedWorkflowsButton_AutoID"
 	Given I double click point "500,96" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,myScrollViewer"
 	Given I double click point "482,121" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,myScrollViewer"
-	#Given I double click point "280,240" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,myScrollViewer"
+	Given I double click point "649,200" on "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,myScrollViewer"
 	Then "WORKFLOWDESIGNER,ServiceExecutionTest(FlowchartDesigner)" is visible within "4" seconds
 	#Then InnerWf1 should have error icon
 	#Then "WORKFLOWDESIGNER,ServiceExecutionTest(FlowchartDesigner),InnerWF(ServiceDesigner)[0],SmallViewContent,UI_FixErrors_AutoID,UI_ErrorsAdorner_AutoID" is visible within "2" seconds
@@ -25,6 +28,7 @@ Scenario: ChangeWorkflowMappingsAlertsAffectedOnSave
 	#And "WORKFLOWDESIGNER,ServiceExecutionTest(FlowchartDesigner),InnerWF(ServiceDesigner)[2],SmallViewContent,UI_FixErrors_AutoID,UI_ErrorsAdorner_AutoID" is visible within "2" seconds
 	And "WORKFLOWDESIGNER,ServiceExecutionTest(FlowchartDesigner),InnerWF(ServiceDesigner)[3],SmallViewContent,UI_FixErrors_AutoID,UI_ErrorsAdorner_AutoID" is visible within "2" seconds
 	
+
 
 
 ##Test will be Open once Ashley Setup an Automation ID's for Grid Rows
@@ -70,19 +74,19 @@ Scenario: Drag resource multiple times from explorer and expected mappings are n
 	Given I drag "EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID" onto "WORKSURFACE,StartSymbol"
 	Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent" is visible
 	##Testing Row1 Vriable
-	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
+	Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_ActivityGridRow_0_AutoID,UI_DataGridCell_AutoID[1]" contains text "[[rec().set]]"
+	#Testing Row1 Vriable
+	Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_ActivityGridRow_1_AutoID,UI_DataGridCell_AutoID[1]" contains text "[[hero().pushups]]"
+	#Testing Row1 Vriable
+	Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_ActivityGridRow_2_AutoID,UI_DataGridCell_AutoID[1]" contains text "[[hero().name]]"
+	Given I drag "EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID" onto "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner)"
+	Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner)[1],LargeViewContent" is visible
 	##Testing Row1 Vriable
-	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
-	##Testing Row1 Vriable
-	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
-	Given I drag "EXPLORER,UI_localhost_AutoID,UI_Examples_AutoID,UI_Utility - Assign_AutoID" onto "WORKSURFACE,StartSymbol"
-	Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent" is visible
-	##Testing Row1 Vriable
-	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
-	##Testing Row1 Vriable
-	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
-	##Testing Row1 Vriable
-	#Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner),LargeViewContent,OutputsDataGrid,UI_DataGridCell_AutoID" contains text "[[rec().set]]"
+	Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner)[1],LargeViewContent,OutputsDataGrid,UI_ActivityGridRow_0_AutoID,UI_DataGridCell_AutoID[1]" contains text "[[rec().set]]"
+	#Testing Row1 Vriable
+	Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner)[1],LargeViewContent,OutputsDataGrid,UI_ActivityGridRow_1_AutoID,UI_DataGridCell_AutoID[1]" contains text "[[hero().pushups]]"
+	#Testing Row1 Vriable
+	Given "WORKSURFACE,Examples\Utility - Assign(ServiceDesigner)[1],LargeViewContent,OutputsDataGrid,UI_ActivityGridRow_2_AutoID,UI_DataGridCell_AutoID[1]" contains text "[[hero().name]]"
 
 #Bug 18272
 #Scenario: Draging out the TAB is expected not to shutdown the studio 
