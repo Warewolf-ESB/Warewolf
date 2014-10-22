@@ -41,6 +41,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //------------Setup for test--------------------------
             var response = new HttpResponseMessage();
+            response.RequestMessage = new HttpRequestMessage();
 
             //------------Execute Test---------------------------
             var webServerResponse = new WebServerResponse(response);
