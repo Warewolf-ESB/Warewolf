@@ -109,7 +109,6 @@ Scenario: Testing Different Server Permissions For Public
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
        Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is visible within "3" seconds
        #Checking Explorer Icons
-	   And I send "Decision Testing" to "EXPLORERFILTER"
 	   Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID" 
 	   Then I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"       
        Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanEdit_AutoID" is visible
@@ -142,7 +141,6 @@ Scenario: Testing Different Server Permissions For Public
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
        Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	   #Checking Explorer Icons
-	   And I send "Decision Testing" to "EXPLORERFILTER"
        Given I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
        And "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible      
 	   #Ribbon Icons
@@ -176,7 +174,6 @@ Scenario: Testing Different Server Permissions For Public
 	   Given I drag "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID" onto "WORKSURFACE,StartSymbol"
        Given "WORKFLOWDESIGNER,BARNEY\Decision Testing(ServiceDesigner)" is invisible within "3" seconds
 	   #Exploer Icons
-	    And I send "Decision Testing" to "EXPLORERFILTER"
        And I click "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
        Then "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_NotAutherized_AutoID" is visible
        Given "EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID,UI_CanExecute_AutoID" is not visible
