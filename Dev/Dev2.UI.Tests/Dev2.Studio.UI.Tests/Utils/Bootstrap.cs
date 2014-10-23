@@ -144,16 +144,8 @@ namespace Dev2.Studio.UI.Tests.Utils
         /// <summary>
         /// Tear downs this instance.
         /// </summary>
-        public static void Teardown()
+        public static void Teardown(bool studioOnly = false)
         {
-            //Don't touch the server or studio for local runs on a developers desk he might be debugging!
-            var studioProc = TryGetProcess(StudioProcName);
-            var serverProc = TryGetProcess(ServerProcName);
-            if(serverProc != null && studioProc != null)
-            {
-                return;
-            }
-
             if(!EnableLocalRestart && (Environment.CurrentDirectory.Contains(BuildDirectory) && IsLocal))
             {
                 return;
@@ -161,8 +153,11 @@ namespace Dev2.Studio.UI.Tests.Utils
 
             if(File.Exists(ServerLocation) && File.Exists(StudioLocation))
             {
-                //Server was deployed and started, stop it now.
-                KillServer();
+                if (!studioOnly)
+                {
+                    //Server was deployed and started, stop it now.
+                    KillServer();
+                }
 
                 //Studio was deployed and started, stop it now.
                 KillStudio();
@@ -340,13 +335,6 @@ namespace Dev2.Studio.UI.Tests.Utils
                     }
                 }
             }
-        }
-
-        // Click here to force exit all processes 
-        [AssemblyCleanup]
-        public static void RunTeardown()
-        {
-            Teardown();
         }
 
         public static ManagementObjectCollection TryGetProcess(string procName)
