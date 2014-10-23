@@ -319,6 +319,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
        And I click "SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID"
        And I click "SECURITYSAVE"
 	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID" 
+	   Given I click "EXPLORER,UI_localhost_AutoID" 
+	   Given I click "EXPLORER,UI_TestingPermisions (http://localhost:3142/)_AutoID" 
 	   And I click "EXPLORERCONNECTBUTTON"
 	   #Checking Resource Icon in Explorer 
 	   Given I send "Decision Testing" to "EXPLORERFILTER"

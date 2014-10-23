@@ -39,7 +39,7 @@ namespace Dev2.Studio.UI.Tests.Tests.VariableList
         public void MyTestCleanup()
         {
             TabManagerUIMap.CloseAllTabs();
-            Halt();
+            
         }
 
         [TestMethod]
