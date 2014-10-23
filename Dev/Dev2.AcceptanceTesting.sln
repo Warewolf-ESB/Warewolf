@@ -19,8 +19,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common", "Dev2.Common\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Common.Interfaces", "Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj", "{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Composition", "Dev2.Composition\Dev2.Composition.csproj", "{B91813C8-499C-4D65-A0D4-57C7FA5F5413}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Core", "Dev2.Core\Dev2.Core.csproj", "{6007C1F1-CE38-474A-A88C-0C05A77BC415}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Core.Tests", "Dev2.Core.Tests\Dev2.Core.Tests.csproj", "{6A65D99B-61C5-4376-B4F7-71A503F9351F}"
@@ -229,20 +227,6 @@ Global
 		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|x64.ActiveCfg = Release|Any CPU
 		{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}.Release|x86.ActiveCfg = Release|Any CPU
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Debug|x86.ActiveCfg = Debug|x86
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Debug|x86.Build.0 = Debug|x86
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Release|x64.ActiveCfg = Release|Any CPU
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Release|x86.ActiveCfg = Release|x86
-		{B91813C8-499C-4D65-A0D4-57C7FA5F5413}.Release|x86.Build.0 = Release|x86
 		{6007C1F1-CE38-474A-A88C-0C05A77BC415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6007C1F1-CE38-474A-A88C-0C05A77BC415}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6007C1F1-CE38-474A-A88C-0C05A77BC415}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
