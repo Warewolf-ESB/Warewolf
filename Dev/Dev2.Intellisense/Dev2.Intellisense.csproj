@@ -104,6 +104,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Helper\FileSystemQuery.cs" />
     <Compile Include="Helper\IFileSystemQuery.cs" />
     <Compile Include="Helper\IShareCollectionFactory.cs" />

@@ -137,6 +137,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
     <Compile Include="Common\Dev2Random.cs" />
     <Compile Include="Common\Field.cs" />

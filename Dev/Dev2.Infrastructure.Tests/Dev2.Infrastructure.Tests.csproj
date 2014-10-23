@@ -120,6 +120,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Collections\ObservableReadOnlyListTests.cs" />
     <Compile Include="Communication\FutureRecieptTest.cs" />
     <Compile Include="Communication\JsonSerializerTest.cs" />

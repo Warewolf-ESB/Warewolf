@@ -92,6 +92,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Dev2.Studio.Core\AppResources\Converters\BooleanInvertConverter.cs">
       <Link>Converters\BooleanInvertConverter.cs</Link>
     </Compile>

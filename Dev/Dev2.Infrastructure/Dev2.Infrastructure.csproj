@@ -106,6 +106,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Collections\ObservableCollectionThreadSafe.cs" />
     <Compile Include="Collections\ObservableDictionary.cs" />
     <Compile Include="Communication\EsbExecuteRequest.cs" />

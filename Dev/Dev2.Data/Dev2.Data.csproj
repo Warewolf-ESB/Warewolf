@@ -121,6 +121,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Audit\ComplexExpressionAuditor.cs" />
     <Compile Include="BackgroundDispatcher.cs" />
     <Compile Include="Binary Objects\BinaryDataList.cs" />

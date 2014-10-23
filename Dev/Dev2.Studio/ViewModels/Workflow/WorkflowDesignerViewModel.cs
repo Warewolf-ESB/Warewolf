@@ -1842,10 +1842,12 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void ModelItemPropertyChanged(ModelChangedEventArgs e)
         {
+#pragma warning disable 618
             var navigationItemViewModel = DataObject as ExplorerItemModel;
 
-            // ReSharper disable once CSharpWarnings::CS0618
+            // ReSharper disable CSharpWarnings::CS0618
             ModelProperty modelProperty = e.PropertiesChanged.FirstOrDefault(mp => mp.Name == "Handler");
+            // ReSharper restore CSharpWarnings::CS0618
 
             if(navigationItemViewModel != null && modelProperty != null)
             {
@@ -1865,6 +1867,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
             DataObject = null;
+#pragma warning restore 618
         }
 
         void UpdateForRemote(DsfActivity d, IContextualResourceModel resource)

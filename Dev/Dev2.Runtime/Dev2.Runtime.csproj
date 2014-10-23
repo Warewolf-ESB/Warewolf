@@ -134,6 +134,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="ESB\Control\EsbServiceInvoker.cs" />
     <Compile Include="ESB\Control\IEsbServiceInvoker.cs" />
     <Compile Include="ESB\Control\ServiceLocator.cs" />

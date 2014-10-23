@@ -73,6 +73,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="AppSettings.cs" />
     <Compile Include="ExtensionMethods\DependencyObjectExtensionMethods.cs" />
     <Compile Include="ExtensionMethods\FrameWorkElementExtensions.cs" />
