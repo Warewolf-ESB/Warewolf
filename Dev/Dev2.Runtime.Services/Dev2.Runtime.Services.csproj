@@ -133,6 +133,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Compiler\CompileRules\DBService_IsRequiredChangeRule.cs" />
     <Compile Include="Compiler\CompileRules\PluginService_IsRequiredChangeRule.cs" />
     <Compile Include="Compiler\CompileRules\WebService_IsRequiredChangeRule.cs" />

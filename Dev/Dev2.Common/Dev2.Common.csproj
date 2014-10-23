@@ -87,6 +87,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Common\DeleteHelper.cs" />
     <Compile Include="Common\DirectoryHelper.cs" />
     <Compile Include="Common\ExtensionMethods.cs" />

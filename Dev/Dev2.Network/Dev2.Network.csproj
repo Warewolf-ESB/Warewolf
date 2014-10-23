@@ -71,6 +71,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="INetworkChannel.cs" />
     <Compile Include="Messaging\Messages\NetworkMessageAction.cs" />
     <Compile Include="Messaging\Messages\NetworkMessageResult.cs" />

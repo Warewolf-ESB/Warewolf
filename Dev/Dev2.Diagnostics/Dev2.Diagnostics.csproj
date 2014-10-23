@@ -76,6 +76,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Debug\DebugDispatcher.cs" />
     <Compile Include="Debug\DebugItem.cs" />
     <Compile Include="Debug\DebugItemResult.cs" />

@@ -211,6 +211,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="ActivityDesigners\ActivityDesignerHelper.cs" />
     <Compile Include="ActivityDesigners\DsfBaseConvertActivityDesigner.xaml.cs">
       <DependentUpon>DsfBaseConvertActivityDesigner.xaml</DependentUpon>

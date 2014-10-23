@@ -82,6 +82,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="DirectoryHelper.cs" />
     <Compile Include="EventInfo.cs" />
     <Compile Include="ClientSchedulerFactory.cs" />

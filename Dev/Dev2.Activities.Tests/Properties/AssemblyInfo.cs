@@ -19,11 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Dev2.Activities.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Warewolf")]
-[assembly: AssemblyProduct("Business Design Studio")]
-[assembly: AssemblyCopyright("Copyright © Warewolf 2013")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
@@ -42,5 +38,3 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("0.2.8.0")]
-[assembly: AssemblyFileVersion("0.2.8.0")]
