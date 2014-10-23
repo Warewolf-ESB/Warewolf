@@ -122,9 +122,7 @@ namespace Dev2.Services.Security
         {
             lock (_getPermissionsLock)
             {
-
-
-                var serverPermissions = _securityService.Permissions;
+                var serverPermissions = _securityService.Permissions.ToList();
                 var resourcePermissions = serverPermissions.Where(p => IsInRole(user, p) && !p.IsServer).ToList();
                 var serverPermissionsForUser = serverPermissions.Where(p => IsInRole(user, p) && (p.IsServer || p.ResourceID == Guid.Empty)).ToList();
                 var groupPermissions = new List<WindowsGroupPermission>();
