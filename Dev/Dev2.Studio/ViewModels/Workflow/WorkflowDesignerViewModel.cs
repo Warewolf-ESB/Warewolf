@@ -181,7 +181,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="popupController">Injected popup controller</param>
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
+        // ReSharper disable TooManyDependencies
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, bool createDesigner = true, bool liteInit = false)
+            // ReSharper restore TooManyDependencies
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
