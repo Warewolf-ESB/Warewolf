@@ -42,8 +42,7 @@
                   IsEditable="False"
                   SelectedValue="{Binding SelectedForeachType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding ForeachTypes}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachType_AutoID}"
-                  ToolTip="{x:Static help:HelpTextResources.ForEachToolTipForEachType}">
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachType_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpForEachType}"
                                  DataContext="{Binding}" />

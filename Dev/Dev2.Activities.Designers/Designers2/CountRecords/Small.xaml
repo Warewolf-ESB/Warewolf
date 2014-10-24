@@ -41,14 +41,14 @@
                                 Grid.Row="0"
                                 DefaultText="[[Recordset()]]"
                                 FilterType="RecordsetsOnly"
-                                ToolTip="{x:Static help:HelpTextResources.CountToolTipRecordset}"
+                                ToolTip="{x:Static help:HelpTextResources.CountRecordsToolTipRecordset}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=RecordsetNameValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus,
                                 Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Recorsettxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CountHelpRecordset}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CountRecordsHelpRecordset}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="RecordsetNameValue"
@@ -66,7 +66,7 @@
                                 Grid.Column="1"
                                 Margin="0,2,1,2"
                                 DefaultText="[[Count]]"
-                                ToolTip="{x:Static help:HelpTextResources.CountToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.CountRecordsToolTipResult}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding Path=ModelItem.CountNumber, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -74,7 +74,7 @@
                                 AllowMultilinePaste="False"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CountHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CountRecordsHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.CountNumber"

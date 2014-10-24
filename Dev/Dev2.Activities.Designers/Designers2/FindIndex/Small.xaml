@@ -69,8 +69,7 @@
                   ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                   ItemsSource="{Binding Path=IndexList}"
                   SelectedValue="{Binding Path=SelectedIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Indextcbx_AutoID}"
-                  ToolTip="{x:Static help:HelpTextResources.FindIndexToolTipIndexType}">
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Indextcbx_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.FindIndexHelpIndexType}"
                                  DataContext="{Binding}" />
@@ -118,8 +117,7 @@
                   ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                   ItemsSource="{Binding Path=DirectionList}"
                   SelectedValue="{Binding Path=SelectedDirection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directioncbx_AutoID}"
-                  ToolTip="{x:Static help:HelpTextResources.FindIndexToolTipDirectionType}">
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Directioncbx_AutoID}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.FindIndexHelpDirectiontype}"
                                  DataContext="{Binding}" />

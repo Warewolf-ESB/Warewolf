@@ -17,8 +17,7 @@
                                MaxHeight="Infinity"
                                Padding="7"
                                mc:Ignorable="d"
-                               d:DataContext="{d:DesignInstance local:SequenceDesignerViewModel}"
-                               ToolTip="{x:Static help:HelpTextResources.SequenceTooltipSequence}">
+                               d:DataContext="{d:DesignInstance local:SequenceDesignerViewModel}">
     <core:ActivityDesignerTemplate.Resources>
         <ResourceDictionary x:Name="TheResources"
                             Source="pack://application:,,,/Dev2.Activities.Designers;component/Themes/ActivityResources.xaml" />
@@ -33,7 +32,7 @@
                                     x:Name="ActivitiesPresenter"
                                     AllowedItemType="{x:Type sa:Activity}"
                                     HintText="Add New Activity"
-                                    ToolTip="{x:Static help:HelpTextResources.SequenceTooltipSequence}"
+                                    ToolTip="{x:Static help:HelpTextResources.SequenceTooltipSeqence}"
                                     IsDefaultContainer="true">
             <sap:WorkflowItemsPresenter.Items>
                 <Binding Path="ModelItem.Activities"/>
@@ -53,7 +52,7 @@
                 </ItemsPanelTemplate>
             </sap:WorkflowItemsPresenter.ItemsPanel>
             <i:Interaction.Behaviors>
-        <help:HelpSetter Text="{x:Static help:HelpTextResources.SequenceHelpSequence}"
+        <help:HelpSetter Text="{x:Static help:HelpTextResources.SequenceHelpSeqence}"
                          DataContext="{Binding}" />
     </i:Interaction.Behaviors>
             <AutomationProperties.AutomationId>

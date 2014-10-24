@@ -54,7 +54,7 @@
                                 MinHeight="53"
                                 FilterType="All" 
                                 WrapInBrackets="False" 
-                                ToolTip="{x:Static help:HelpTextResources.CMDLineToolTipCMD}"
+                                ToolTip="{x:Static help:HelpTextResources.CommandLineToolTipCMD}"
                                 Text="{Binding Path=ModelItem.CommandFileName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Cmdtxt_AutoID}"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True">
@@ -65,7 +65,7 @@
                     </interfaceImplementors:CompositeIntellisenseProvider>
                 </ui:IntellisenseTextBox.IntellisenseProvider>
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CMDLineHelpCMD}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CommandLineHelpCMD}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.CommandFileName"
@@ -83,11 +83,11 @@
                                 DefaultText="[[Result]]" 
                                 WrapInBrackets="True" 
                                 Text="{Binding Path=ModelItem.CommandResult, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                                ToolTip="{x:Static help:HelpTextResources.CMDLineToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.CommandLineToolTipResult}"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Resulttxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.CMDLineHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.CommandLineHelpResult}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.CommandResult"
