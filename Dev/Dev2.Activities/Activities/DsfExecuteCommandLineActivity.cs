@@ -101,6 +101,8 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
+            _debugInputs = new List<DebugItem>();
+            _debugOutputs = new List<DebugItem>();
             _nativeActivityContext = context;
             var dataObject = _nativeActivityContext.GetExtension<IDSFDataObject>();
             var compiler = DataListFactory.CreateDataListCompiler();
@@ -235,11 +237,11 @@ namespace Dev2.Activities
         {
             outputReader = new StringBuilder();
             _process = new Process();
-            using(_process)
+            using (_process)
             {
                 var processStartInfo = CreateProcessStartInfo(val);
 
-                if(processStartInfo == null)
+                if (processStartInfo == null)
                 {
                     // ReSharper disable NotResolvedInText
                     throw new ArgumentNullException("processStartInfo");
@@ -249,36 +251,42 @@ namespace Dev2.Activities
                 _process.StartInfo = processStartInfo;
                 var processStarted = _process.Start();
 
-                _process.BeginOutputReadLine();
+                //_process.BeginOutputReadLine();
 
                 StringBuilder reader = outputReader;
-
-                _process.OutputDataReceived += (sender, args) => reader.AppendLine(args.Data);
-
+                //DataReceivedEventHandler a = (sender, args) => reader.AppendLine(args.Data);
+                //_process.OutputDataReceived += a;
                 errorReader = _process.StandardError;
 
-                if(!ProcessHasStarted(processStarted, _process))
+                if (!ProcessHasStarted(processStarted, _process))
                 {
                     return false;
                 }
-                if(!_process.HasExited)
+                if (!_process.HasExited)
                 {
                     _process.PriorityClass = CommandPriority;
                 }
                 _process.StandardInput.Close();
 
                 // bubble user termination down the chain ;)
-                while(!_process.HasExited && !executionToken.IsUserCanceled)
+                while (!_process.HasExited && !executionToken.IsUserCanceled)
                 {
-                    if(!_process.HasExited)
+                    reader.Append(_process.StandardOutput.ReadToEnd());
+                    if(!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a=>a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
+                    {
+                        //reader.Append(_process.StandardOutput.ReadToEnd());
+                        _process.Kill();
+                    }
+
+                    else if (!_process.HasExited)
                     {
                         var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
 
-                        if(!isWaitingForUserInput)
+                        if (!isWaitingForUserInput)
                         {
                             continue;
                         }
-
+                        //_process.OutputDataReceived -= a;
                         _process.Kill();
                         throw new ApplicationException("The process required user input.");
                     }
@@ -286,18 +294,18 @@ namespace Dev2.Activities
                 }
 
                 // user termination exit ;)
-                if(executionToken.IsUserCanceled)
+                if (executionToken.IsUserCanceled)
                 {
                     // darn .Kill() does not kill the process tree ;(
                     // Nor does .CloseMainWindow() as people have claimed, hence the hand rolled process tree killer - WTF M$ ;(
                     KillProcessAndChildren(_process.Id);
                 }
-
+                reader.Append(_process.StandardOutput.ReadToEnd());
+                //_process.OutputDataReceived -= a;
                 _process.Close();
             }
             return true;
         }
-
         #region Overrides of NativeActivity<string>
 
         #endregion

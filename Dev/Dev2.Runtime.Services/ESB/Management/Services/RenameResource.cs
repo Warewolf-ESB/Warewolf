@@ -38,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var res = new ExecuteMessage {HasError = false};
 
-                string resourceID = null;
+                string resourceId = null;
                 string newName = null;
                 if(values == null)
                 {
@@ -49,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ResourceID", out tmp);
                 if (tmp != null)
                 {
-                    resourceID = tmp.ToString();
+                    resourceId = tmp.ToString();
                 }
                 values.TryGetValue("NewName", out tmp);
                 if(tmp != null)
@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     newName = tmp.ToString();
                 }
 
-                if(resourceID == null)
+                if(resourceId == null)
                 {
                     throw new InvalidDataContractException("No value provided for ResourceID parameter.");
                 }
@@ -67,8 +67,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
 
                 Guid id;
-                Guid.TryParse(resourceID, out id);
-                Dev2Logger.Log.Info(String.Format( "Rename Resource. ResourceId:{0} NewName:{1}",resourceID,newName));
+                Guid.TryParse(resourceId, out id);
+                Dev2Logger.Log.Info(String.Format( "Rename Resource. ResourceId:{0} NewName:{1}",resourceId,newName));
                 var saveToWorkSpaceResult = ResourceCatalog.Instance.RenameResource(theWorkspace.ID, id, newName);
                 if (saveToWorkSpaceResult.Status == ExecStatus.Success)
                 {
@@ -98,13 +98,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService();
-            newDs.Name = HandlesType();
-            newDs.DataListSpecification = "<DataList><ResourceID ColumnIODirection=\"Input\"/><NewName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
-            ServiceAction sa = new ServiceAction();
-            sa.Name = HandlesType();
-            sa.ActionType = enActionType.InvokeManagementDynamicService;
-            sa.SourceMethod = HandlesType();
+            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><NewName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
             return newDs;

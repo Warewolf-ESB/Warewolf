@@ -51,7 +51,7 @@ namespace Dev2.Studio.UI.Tests
         public void StudioTooling_StudioToolingUITest_CanToolsDisplay_IconIsVisible()
         {
             // Open the Workflow
-            ExplorerUIMap.DoubleClickWorkflow("AllTools", "Mocake");
+            ExplorerUIMap.DoubleClickWorkflow("AllTools", "UI Test Resources");
             UITestControl theTab = TabManagerUIMap.GetActiveTab();
 
             // Assert all the icons are visible

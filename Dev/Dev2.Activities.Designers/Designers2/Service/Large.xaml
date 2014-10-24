@@ -79,7 +79,9 @@
                                    Height="Auto"
                                    Margin="0"
                                    BorderThickness="1"
-                                   Visibility="{Binding DataMappingViewModel.Inputs.Count, Converter={StaticResource IntToVisibilityConverter}}">
+                                   Visibility="{Binding DataMappingViewModel.Inputs.Count, Converter={StaticResource IntToVisibilityConverter}}"
+                                   RowStyle="{StaticResource ActivityGridRowStyle}"
+                                   LoadingRow="DataGrid_LoadingRow">
 
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 
@@ -204,7 +206,9 @@
                                    Height="Auto"
                                    Margin="0"
                                    BorderThickness="1,0,1,1"
-                                   Visibility="{Binding DataMappingViewModel.Outputs.Count, Converter={StaticResource IntToVisibilityConverter}}">
+                                   Visibility="{Binding DataMappingViewModel.Outputs.Count, Converter={StaticResource IntToVisibilityConverter}}"
+                                   RowStyle="{StaticResource ActivityGridRowStyle}"
+                                   LoadingRow="DataGrid_LoadingRow">
 
                 <!-- DO NOT override ItemsPanel - doing so causes column sizing issues on first drop -->
 

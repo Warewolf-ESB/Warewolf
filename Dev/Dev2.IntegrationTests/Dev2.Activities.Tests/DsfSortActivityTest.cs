@@ -23,9 +23,9 @@ namespace Dev2.Integration.Tests.Dev2.Activities.Tests
     public class DsfSortActivityTest
     {
         private readonly string _webserverUri = ServerSettings.WebserverURI;
-        const string SortBackwardsWorkflow = "INTEGRATION TEST SERVICES/SortBackwardsTest";
-        const string SortForwardsWorkflow = "INTEGRATION TEST SERVICES/SortForwardsTest";
-        const string SortDateTimeWorkflow = "INTEGRATION TEST SERVICES/SortActivity_DateSort";
+        const string SortBackwardsWorkflow = "Integration Test Resources/SortBackwardsTest";
+        const string SortForwardsWorkflow = "Integration Test Resources/SortForwardsTest";
+        const string SortDateTimeWorkflow = "Integration Test Resources/SortActivity_DateSort";
         /// <summary>
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.

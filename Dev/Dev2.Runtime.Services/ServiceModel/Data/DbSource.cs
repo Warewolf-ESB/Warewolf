@@ -12,6 +12,7 @@
 
 using System;
 using System.Linq;
+using System.Text;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -73,6 +74,19 @@ namespace Dev2.Runtime.ServiceModel.Data
 // ReSharper restore InconsistentNaming
 
         public string Password { get; set; }
+
+        public new string DataList
+        {
+            get
+            {
+                var stringBuilder = base.DataList;
+                return stringBuilder != null ? stringBuilder.ToString() : null;
+            }
+            set
+            {
+                base.DataList = value.ToStringBuilder();
+            }
+        }
 
         #endregion
 

@@ -30,6 +30,9 @@ namespace Dev2.Activities.Designers2.Copy
             ValidateUserNameAndPassword();
             ValidateDestinationUsernameAndPassword();
             ValidateInputAndOutputPaths();
+
         }
+
+
     }
 }

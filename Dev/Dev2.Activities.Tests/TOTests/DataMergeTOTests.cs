@@ -170,6 +170,20 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        [Owner("Robin van den Heever")]
+        [TestCategory("DataMergeDTO_GetRuleSet")]
+        public void DataMergeDTO_GetRuleSetOutputVariable_ExpressionIsInvalid_ValidateRulesReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var dto = new DataMergeDTO { InputVariable = "[[ddd&]]", MergeType = DataMergeDTO.MergeTypeNone, Alignment = "Right", At = "1", Padding = " " };
+
+            //------------Execute Test---------------------------
+            Verify_RuleSet(dto, "Input", "Variable name [[ddd&]] contains invalid character(s)");
+
+        }
+
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DataMergeDTO_IsEmpty")]
         public void DataMergeDTO_IsEmpty_PropertiesAreNotEmpty_False()

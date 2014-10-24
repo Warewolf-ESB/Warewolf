@@ -37,7 +37,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
 
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "INTEGRATION TEST SERVICES/WebServiceTest");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/WebServiceTest");
 
             const string expected = @"<result>PASS</result>";
 
@@ -54,7 +54,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
             var id = Guid.NewGuid();
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "TEST/11365_WebService");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/11365_WebService");
 
             //------------Execute Test---------------------------
             TestHelper.PostDataToWebserverAsRemoteAgent(postData, id);
@@ -75,7 +75,7 @@ namespace Dev2.Integration.Tests.Dev2.Application.Server.Tests.Bpm_unit_tests
         {
             var id = Guid.NewGuid();
             //------------Setup for test--------------------------
-            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "TEST/11365AltSyntax");
+            string postData = String.Format("{0}{1}", ServerSettings.WebserverURI, "Integration Test Resources/11365AltSyntax");
 
             //------------Execute Test---------------------------
             TestHelper.PostDataToWebserverAsRemoteAgent(postData, id);

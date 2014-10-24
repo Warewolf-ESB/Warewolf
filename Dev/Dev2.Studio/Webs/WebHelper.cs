@@ -9,7 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using Dev2.Common.Common;
 using Dev2.Data.SystemTemplates.Models;
 using Dev2.Webs.Callbacks;
 
@@ -23,7 +23,7 @@ namespace Dev2.Webs
             // Remove naughty chars...
             string tmp = callBackHandler.ModelData;
             // remove the silly Choose... from the string
-            tmp = Dev2DecisionStack.RemoveDummyOptionsFromModel(tmp);
+            tmp = Dev2DecisionStack.RemoveDummyOptionsFromModel(tmp.ToStringBuilder());
             // remove [[]], &, !
             tmp = Dev2DecisionStack.RemoveNaughtyCharsFromModel(tmp);
             return tmp;

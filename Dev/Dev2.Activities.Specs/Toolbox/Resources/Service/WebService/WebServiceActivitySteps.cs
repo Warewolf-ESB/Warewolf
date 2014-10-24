@@ -31,8 +31,8 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Service.WebService
         [Given(@"I have the Get Cities Webservice")]
         public void GivenIHaveTheGetCitiesWebservice()
         {
-            var webSourceXML = XmlResource.Fetch("Google_Address_Lookup");
-            var webSource = new WebSource(webSourceXML);
+            var webSourceXml = XmlResource.Fetch("Google_Address_Lookup");
+            var webSource = new WebSource(webSourceXml);
             var webService = new Runtime.ServiceModel.Data.WebService { Source = webSource, RequestUrl = webSource.DefaultQuery };
             ErrorResultTO errors;
             WebServices.ExecuteRequest(webService, false, out errors);
@@ -72,20 +72,19 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Service.WebService
             ResourceCatalog.Instance.SaveResource(Guid.Empty, webService);
             var shape = compiler.ShapeDev2DefinitionsToDataList(webService.OutputSpecification, enDev2ArgumentType.Output, false, out errors);
 
-            var dataListID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "", shape, out errors);
+            var dataListId = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), "", shape, out errors);
             var dataObj = new Mock<IDSFDataObject>();
             dataObj.SetupAllProperties();
-            dataObj.Setup(d => d.DataListID).Returns(dataListID);
+            dataObj.Setup(d => d.DataListID).Returns(dataListId);
             dataObj.Setup(d => d.ResourceID).Returns(webService.ResourceID);
             dataObj.Setup(d => d.ServiceName).Returns(webService.ResourceName);
             dataObj.Setup(d => d.ParentThreadID).Returns(9);
             dataObj.Setup(d => d.WorkspaceID).Returns(Guid.Empty);
             dataObj.Setup(d => d.IsDebugMode()).Returns(true);
 
-            var webServiceActivity = new DsfWebserviceActivity();
-            webServiceActivity.OutputMapping = webService.OutputSpecification;
-            ExecutionId = dataListID;
-            CurrentDl = shape;
+            var webServiceActivity = new DsfWebserviceActivity { OutputMapping = webService.OutputSpecification };
+            ExecutionId = dataListId;
+            CurrentDl = shape.ToString();
             TestData = "";
             TestStartNode = new FlowStep
             {

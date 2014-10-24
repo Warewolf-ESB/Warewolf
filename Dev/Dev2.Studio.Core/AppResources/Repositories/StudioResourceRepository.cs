@@ -335,6 +335,7 @@ namespace Dev2.AppResources.Repositories
         public void RenameFolder(IExplorerItemModel item, string newName)
         {
 
+
             VerifyArgument.IsNotNull("item", item);
             VerifyArgument.IsNotNullOrWhitespace("newName", newName);
             Dev2Logger.Log.Info(String.Format("Rename Folder Resource: {0} New name :{1} Id:{2}", item.DisplayName, newName, item.EnvironmentId));
@@ -506,7 +507,7 @@ namespace Dev2.AppResources.Repositories
             {
                 if(item.ResourceType == ResourceType.ServerSource)
                 {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Server, ResourceModelEqualityComparer.Current, true);
+                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
                 }
                 else if(item.ResourceType >= ResourceType.DbSource)
                 {
@@ -776,7 +777,6 @@ namespace Dev2.AppResources.Repositories
                 ResourceType = item.ResourceType,
                 ResourceId = item.ResourceId,
                 Permissions = item.Permissions,
-                //Permissions = environmentModel == null || environmentModel.IsLocalHost || environmentModel.AuthorizationService == null ? item.Permissions : environmentModel.AuthorizationService.GetResourcePermissions(item.ResourceId),
                 ResourcePath = item.ResourcePath,
                 VersionInfo = item.VersionInfo
             };

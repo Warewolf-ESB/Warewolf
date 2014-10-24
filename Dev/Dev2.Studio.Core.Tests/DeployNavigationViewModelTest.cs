@@ -15,6 +15,7 @@ using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Communication;
+using Dev2.ConnectionHelpers;
 using Dev2.Core.Tests.Utils;
 using Dev2.Models;
 using Dev2.Services.Security;
@@ -22,6 +23,7 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Core.AppResources.Enums;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core.Messages;
+using Dev2.Threading;
 using Dev2.Util;
 using Dev2.ViewModels.Deploy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -233,6 +235,8 @@ namespace Dev2.Core.Tests
 
         #region Refresh Environments Tests
 
+
+
         #endregion
 
         [TestMethod]
@@ -433,7 +437,7 @@ namespace Dev2.Core.Tests
         DeployNavigationViewModel CreateViewModel(IEnvironmentRepository environmentRepository, Mock<IResourceRepository> mockResourceRepository)
         {
             StudioResourceRepository studioResourceRepository = BuildExplorerItems(mockResourceRepository.Object);
-            var navigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, environmentRepository, studioResourceRepository, _target);
+            var navigationViewModel = new DeployNavigationViewModel(new Mock<IEventAggregator>().Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, environmentRepository, studioResourceRepository, _target, new Mock<IConnectControlSingleton>().Object);
             return navigationViewModel;
         }
 
@@ -458,6 +462,39 @@ namespace Dev2.Core.Tests
 
 
         }
+
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("EnvironmentTreeViewModel_Disconnect")]
+        [TestMethod]
+        public void DeployNavigationViewModel_RefreshCommand_CallsConnectControlRefresh()
+        {
+            // base case
+            Init(false, true);
+         
+            PrivateObject pvt = new PrivateObject(_vm);
+            var con = new Mock<IConnectControlSingleton>();
+            pvt.SetField("_connectControlSingleton", con.Object);
+            _vm.RefreshMenuCommand.Execute(null);
+            con.Verify(a => a.Refresh(_vm.Environment.ID),Times.Once());
+
+
+        }
+
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("DeployNavigationViewMode_Update")]
+        [TestMethod]
+        public void DeployNavigationViewMode_Update_FiltersAndCallsStudio()
+        {
+            // base case
+            Init(false, true);
+            var studio = new Mock<IStudioResourceRepository>();
+            PrivateObject p = new PrivateObject(_vm, new PrivateType( typeof(NavigationViewModelBase)));
+            p.SetField("_studioResourceRepository", studio.Object);
+            _vm.Update();
+           studio.Verify(a=>a.Load(It.IsAny<Guid>(),It.IsAny<IAsyncWorker>()));
+
+        }
+
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("EnvironmentTreeViewModel_Disconnect")]
         [TestMethod]

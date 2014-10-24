@@ -18,6 +18,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Security.Principal;
 using ActivityUnitTests;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -142,6 +143,31 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("DsfActivity")]
+        public void DsfActivity_ExecutionError_ShouldBeInErrors()
+        {
+            //------------Setup for test--------------------------
+            var resourceID = Guid.NewGuid();
+            DsfActivity act = new DsfErrorActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = new InArgument<Guid>(resourceID) };
+            var mockAutorizationService = new Mock<IAuthorizationService>();
+            mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
+            act.AuthorizationService = mockAutorizationService.Object;
+            List<DebugItem> inRes;
+            List<DebugItem> outRes;
+            //------------Execute Test---------------------------
+            var result = CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
+                                                               "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes, new Mock<IPrincipal>().Object);
+
+
+            var compiler = DataListFactory.CreateDataListCompiler();
+            var errors = compiler.FetchErrors(result.DataListID);
+            DataListRemoval(result.DataListID);
+            //------------Assert Results-------------------------
+            StringAssert.Contains(errors, "This is an error");
+        }
+
+        [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("DsfActivity_OnExecute")]
         public void DsfActivity_OnExecute_WhenRemoteExecutionInLocalContext_ExpectEnviromentIDRemainsRemoteAndOverrideSetToTrue()
@@ -169,7 +195,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<DataList></DataList>";
             User = new Mock<IPrincipal>().Object;
             Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl.ToStringBuilder(), out errors);
             var result = ExecuteProcess(null, true, null, false, true, false, environmentID) as IDSFDataObject;
 
             // ReSharper disable PossibleNullReferenceException
@@ -208,7 +234,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             CurrentDl = "<DataList></DataList>";
             User = new Mock<IPrincipal>().Object;
             Compiler = DataListFactory.CreateDataListCompiler();
-            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl, out errors);
+            ExecutionId = Compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), TestData, CurrentDl.ToStringBuilder(), out errors);
             var result = ExecuteProcess(null, true, null, false, true, false, environmentID) as IDSFDataObject;
 
             // ReSharper disable PossibleNullReferenceException
@@ -307,8 +333,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             act.UpdateDebugParentID(dataObject);
             Assert.AreNotEqual(originalGuid.ToString(), act.UniqueID);
             Assert.AreEqual(act.GetWorkSurfaceMappingId(), originalGuid);
-
-
         }
+    }
+
+    public class DsfErrorActivity : DsfActivity
+    {
+        #region Overrides of DsfActivity
+
+        protected override Guid ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors)
+        {
+            tmpErrors = new ErrorResultTO();
+            tmpErrors.AddError("This is an error");
+            return Guid.NewGuid();
+        }
+
+        #endregion
     }
 }

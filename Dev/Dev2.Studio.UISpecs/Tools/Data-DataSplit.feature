@@ -16,8 +16,8 @@ Scenario: Data Split Large view Invalid Variables Expected Validation on Done Bu
 	Given I double click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Split (1)(DataSplitDesigner)"
 	#BuG12561 Passing Invalid Recordset Variable in String To Split Field And Checking Validation on Done
 	Given I type "[[rec@(1).a]]" in "WORKSURFACE,Data Split (1)(DataSplitDesigner),LargeViewContent,UI__SourceStringtxt_AutoID"
-	#And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Split (1)(DataSplitDesigner),DoneButton"
-	#Given "WORKSURFACE,UI_Error0_AutoID" is visible
+	And I click "WORKFLOWDESIGNER,Unsaved 1(FlowchartDesigner),Data Split (1)(DataSplitDesigner),DoneButton"
+	Given "WORKSURFACE,UI_Error0_AutoID" is visible
 	Given I type "[[rec(1).a]]" in "WORKSURFACE,Data Split (1)(DataSplitDesigner),LargeViewContent,UI__SourceStringtxt_AutoID"
 	And I send "{TAB}" to ""
 	#Checking Recordset Variable Appeared In Variable List

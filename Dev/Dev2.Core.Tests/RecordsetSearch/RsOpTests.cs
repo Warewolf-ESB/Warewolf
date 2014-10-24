@@ -11,7 +11,9 @@
 
 
 using System.IO;
+using System.Text;
 using Dev2.BussinessLogic;
+using Dev2.Common.Common;
 
 #region Usings
 
@@ -34,7 +36,7 @@ namespace Dev2.Tests.RecordsetSearch
     [ExcludeFromCodeCoverage]
     public class RsOpTests
     {
-        const string DlShape = "<Xml><Recset><Field1/></Recset><Result><res/></Result></Xml>";
+        readonly StringBuilder DlShape = new StringBuilder("<Xml><Recset><Field1/></Recset><Result><res/></Result></Xml>");
 
         /// <summary>
         ///     Gets or sets the test context which provides
@@ -54,7 +56,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "", "", "[[Result().res]]", false);
@@ -75,7 +77,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "", "", "[[Result().res]]", false, true);
@@ -96,7 +98,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "", "", "[[Result().res]]", false);
@@ -116,7 +118,7 @@ namespace Dev2.Tests.RecordsetSearch
             var dlc = DataListFactory.CreateDataListCompiler();
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), string.Empty.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("", "Contains", "", "", "[[Result().res]]", false);
@@ -135,7 +137,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mrs Mo</Field1></Recset><Recset><Field1>Mr Bob</Field1></Recset><Recset><Field1>Mrs Smith</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "Mrs", "", "", false);
@@ -156,7 +158,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mrs Mo</Field1></Recset><Recset><Field1>Mr Bob</Field1></Recset><Recset><Field1>Mrs Smith</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "Mrs", "", "", false, true);
@@ -177,7 +179,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mrs Mo</Field1></Recset><Recset><Field1>Mrs Bob</Field1></Recset><Recset><Field1>Mrs Smith</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset()]]", "Contains", "Mrs", "", "", false, true);
@@ -198,7 +200,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mo Cake test</Field1></Recset><Recset><Field1>Mr Bob TEST</Field1></Recset><Recset><Field1>Mrs Smith Test</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Contains", "test", "", "[[Result().res]]", true);
             var op = new RsOpContains();
@@ -218,7 +220,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mo Cake test</Field1></Recset><Recset><Field1>Mr Bob TEST</Field1></Recset><Recset><Field1>Mrs Smith Test</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Contains", "test", "", "[[Result().res]]", true, true);
             var op = new RsOpContains();
@@ -238,7 +240,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mo Cake test</Field1></Recset><Recset><Field1>Mr Bob test</Field1></Recset><Recset><Field1>Mrs Smith test</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Contains", "test", "", "[[Result().res]]", true, true);
             var op = new RsOpContains();
@@ -258,7 +260,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mo Cake test 1</Field1></Recset><Recset><Field1>Mr Bob 1 TEST</Field1></Recset><Recset><Field1>Mrs Smith Tes1t</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "T", "", "[[Result().res]]", false);
@@ -279,7 +281,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mo Cake test 1</Field1></Recset><Recset><Field1>Mr Bob 1 TEST</Field1></Recset><Recset><Field1>Mrs Smith Tes1t</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "T", "", "[[Result().res]]", false, true);
@@ -300,7 +302,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mo Cake test</Field1></Recset><Recset><Field1>Mr Bob 1 TEST</Field1></Recset><Recset><Field1>Mrs Smith Tes1t</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "T", "", "[[Result().res]]", false, true);
@@ -321,7 +323,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mo Cake tes1t</Field1></Recset><Recset><Field1>Mr Bob 1 TEST</Field1></Recset><Recset><Field1>Mrs Smith Tes1t</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "t", "", "[[Result().res]]", true);
@@ -342,7 +344,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mo Cake tes1t</Field1></Recset><Recset><Field1>Mr Bob 1 TEST</Field1></Recset><Recset><Field1>Mrs Smith Tes1t</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "t", "", "[[Result().res]]", true, true);
@@ -363,7 +365,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mo Cake tes1t</Field1></Recset><Recset><Field1>Mr Bob 1 TESt</Field1></Recset><Recset><Field1>Mrs Smith Tes1t</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Ends With", "t", "", "[[Result().res]]", true, true);
@@ -384,7 +386,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mo Cake tes1t</Field1></Recset><Recset><Field1>1</Field1></Recset><Recset><Field1>Mrs Smith Tes1t</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equals", "1", "", "[[Result().res]]", false);
@@ -405,7 +407,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>Mo Cake tes1t</Field1></Recset><Recset><Field1>1</Field1></Recset><Recset><Field1>Mrs Smith Tes1t</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equals", "1", "", "[[Result().res]]", false, true);
@@ -426,7 +428,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>1</Field1></Recset><Recset><Field1>1</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equals", "1", "", "[[Result().res]]", false, true);
@@ -447,7 +449,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>testdata1</Field1></Recset><Recset><Field1>testData1</Field1></Recset><Recset><Field1>Mrs Smith Tes1t</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equal", "testdata1", "", "[[Result().res]]", true);
@@ -468,7 +470,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>testdata1</Field1></Recset><Recset><Field1>testData1</Field1></Recset><Recset><Field1>Mrs Smith Tes1t</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equal", "testdata1", "", "[[Result().res]]", true, true);
@@ -489,7 +491,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>testdata1</Field1></Recset><Recset><Field1>testdata1</Field1></Recset><Recset><Field1>testdata1</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Equal", "testdata1", "", "[[Result().res]]", true, true);
@@ -510,7 +512,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>33</Field1></Recset><Recset><Field1>32</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">", "32", "", "[[Result().res]]", false);
@@ -531,7 +533,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>33</Field1></Recset><Recset><Field1>32</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">", "32", "", "[[Result().res]]", false, true);
@@ -552,7 +554,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>35</Field1></Recset><Recset><Field1>33</Field1></Recset><Recset><Field1>34</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">", "32", "", "[[Result().res]]", false, true);
@@ -573,7 +575,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>25</Field1></Recset><Recset><Field1>32</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">=", "25", "", "[[Result().res]]", false);
@@ -594,7 +596,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>25</Field1></Recset><Recset><Field1>32</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">=", "25", "", "[[Result().res]]", false, true);
@@ -615,7 +617,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>26</Field1></Recset><Recset><Field1>25</Field1></Recset><Recset><Field1>32</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", ">=", "25", "", "[[Result().res]]", false, true);
@@ -634,7 +636,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>1abc</Field1></Recset><Recset><Field1>25</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Alphanumeric", "", "", "[[Result().res]]", false);
@@ -653,7 +655,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>1abc</Field1></Recset><Recset><Field1>25</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Alphanumeric", "", "", "[[Result().res]]", false, true);
@@ -672,7 +674,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>1abc</Field1></Recset><Recset><Field1>ab25</Field1></Recset><Recset><Field1>a1a</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Alphanumeric", "", "", "[[Result().res]]", false, true);
@@ -691,7 +693,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<=", "48", "", "[[Result().res]]", false);
@@ -710,7 +712,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<=", "48", "", "[[Result().res]]", false, true);
@@ -729,7 +731,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>44</Field1></Recset><Recset><Field1>48</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<=", "48", "", "[[Result().res]]", false, true);
@@ -748,7 +750,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>2013-01-01</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
@@ -767,7 +769,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>2013-01-01</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false, true);
@@ -786,7 +788,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>2013-01-01</Field1></Recset><Recset><Field1>2013-01-01</Field1></Recset><Recset><Field1>2013-01-01</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false, true);
@@ -805,7 +807,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>2013-13-13</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
@@ -824,7 +826,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>13-01-2013</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
@@ -843,7 +845,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = "<DataList><Recset><Field1>02.25.2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
@@ -862,7 +864,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>02\25\2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
@@ -881,7 +883,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>02/25/2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
@@ -900,7 +902,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>02 25 2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
@@ -919,7 +921,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>02252011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
@@ -938,7 +940,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>02-25-2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Date", "", "", "[[Result().res]]", false);
@@ -957,7 +959,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>02-25-2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Date", "", "", "[[Result().res]]", false);
@@ -976,7 +978,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>02-25-2011</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Date", "", "", "[[Result().res]]", false, true);
@@ -995,7 +997,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>aad</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Date", "", "", "[[Result().res]]", false, true);
@@ -1014,7 +1016,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail@test.co.za</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Email", "", "", "[[Result().res]]", false);
@@ -1033,7 +1035,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail@test.co.za</Field1></Recset><Recset><Field1>55</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Email", "", "", "[[Result().res]]", false, true);
@@ -1052,7 +1054,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail@test.co.za</Field1></Recset><Recset><Field1>wrongEmail@test.com</Field1></Recset><Recset><Field1>wrongEmail@test1.co.za</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Email", "", "", "[[Result().res]]", false, true);
@@ -1071,7 +1073,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail@test.co.za</Field1></Recset><Recset><Field1>wrongEmail@test!.co.za</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Email", "", "", "[[Result().res]]", false);
@@ -1090,7 +1092,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Email", "", "", "[[Result().res]]", false);
@@ -1109,7 +1111,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Email", "", "", "[[Result().res]]", false);
@@ -1128,7 +1130,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false);
@@ -1147,7 +1149,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false, true);
@@ -1166,7 +1168,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>2</Field1></Recset><Recset><Field1>3</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false, true);
@@ -1185,7 +1187,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail@testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false);
@@ -1204,7 +1206,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail1testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Numeric", "", "", "[[Result().res]]", false);
@@ -1223,7 +1225,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail1testcoza</Field1></Recset><Recset><Field1></Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Numeric", "", "", "[[Result().res]]", false);
@@ -1242,7 +1244,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail1testcoza</Field1></Recset><Recset><Field1>1</Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Numeric", "", "", "[[Result().res]]", false, true);
@@ -1261,7 +1263,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmail1testcoza</Field1></Recset><Recset><Field1>aa</Field1></Recset><Recset><Field1>1a</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Numeric", "", "", "[[Result().res]]", false, true);
@@ -1280,7 +1282,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmailtestcoza</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false);
@@ -1299,7 +1301,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmailtestcoza</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>1a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false, true);
@@ -1318,7 +1320,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>wrongEmailtestcoza</Field1></Recset><Recset><Field1>aaa</Field1></Recset><Recset><Field1>a</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false, true);
@@ -1337,7 +1339,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>!@#@#</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Text", "", "", "[[Result().res]]", false);
@@ -1356,7 +1358,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>!@#@#</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Text", "", "", "[[Result().res]]", false);
@@ -1375,7 +1377,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>!@#@#</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Text", "", "", "[[Result().res]]", false, true);
@@ -1394,7 +1396,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>44</Field1></Recset><Recset><Field1>12</Field1></Recset><Recset><Field1>55</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Text", "", "", "[[Result().res]]", false, true);
@@ -1413,7 +1415,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1><xml/></Field1></Recset><Recset><Field1><x><a/></x></Field1></Recset><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is XML", "", "", "[[Result().res]]", false);
@@ -1432,7 +1434,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1><xml/></Field1></Recset><Recset><Field1><x><a/></x></Field1></Recset><Recset><Field1>a</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is XML", "", "", "[[Result().res]]", false, true);
@@ -1451,7 +1453,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1><xml/></Field1></Recset><Recset><Field1><x><a/></x></Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is XML", "", "", "[[Result().res]]", false, true);
@@ -1470,7 +1472,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1><x/></Field1></Recset><Recset><Field1>s</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not XML", "", "", "[[Result().res]]", false);
@@ -1489,7 +1491,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1><x/></Field1></Recset><Recset><Field1>s</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not XML", "", "", "[[Result().res]]", false, true);
@@ -1508,7 +1510,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>a</Field1></Recset><Recset><Field1>s</Field1></Recset><Recset><Field1>a1</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not XML", "", "", "[[Result().res]]", false, true);
@@ -1527,7 +1529,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>123</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<", "48", "", "[[Result().res]]", false);
@@ -1546,7 +1548,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>123</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<", "48", "", "[[Result().res]]", false, true);
@@ -1565,7 +1567,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>23</Field1></Recset><Recset><Field1>21</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "<", "48", "", "[[Result().res]]", false, true);
@@ -1584,7 +1586,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>123a</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "^[0-9]*$", "", "[[Result().res]]", false);
@@ -1603,7 +1605,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>123a</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "^[0-9]*$", "", "[[Result().res]]", false, true);
@@ -1622,7 +1624,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "^[0-9]*$", "", "[[Result().res]]", false, true);
@@ -1641,7 +1643,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>123a</Field1></Recset><Recset><Field1>a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Regex", "NotRegexExpression", "", "[[Result().res]]", false);
@@ -1660,7 +1662,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>41</Field1></Recset><Recset><Field1>1243a</Field1></Recset><Recset><Field1>4a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "4", "", "[[Result().res]]", false);
@@ -1680,7 +1682,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>41</Field1></Recset><Recset><Field1>1243a</Field1></Recset><Recset><Field1>4a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "4", "", "[[Result().res]]", false, true);
@@ -1700,7 +1702,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>41</Field1></Recset><Recset><Field1>4243a</Field1></Recset><Recset><Field1>4a1</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "4", "", "[[Result().res]]", false, true);
@@ -1719,7 +1721,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>test 41</Field1></Recset><Recset><Field1>1test243a</Field1></Recset><Recset><Field1>4a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "test", "", "[[Result().res]]", false);
@@ -1739,7 +1741,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>test 41</Field1></Recset><Recset><Field1>1test243a</Field1></Recset><Recset><Field1>4a1</Field1></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset><Recset><Field1/></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "test", "", "[[Result().res]]", false, true);
@@ -1758,7 +1760,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>test 41</Field1></Recset><Recset><Field1>test243a</Field1></Recset><Recset><Field1>test4a1</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Starts With", "test", "", "[[Result().res]]", false, true);
@@ -1785,7 +1787,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>50</Field1></Recset><Recset><Field1>100</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, false, "25", "75");
@@ -1812,7 +1814,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>50</Field1></Recset><Recset><Field1>100</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "25", "75");
@@ -1839,7 +1841,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, false, "10/11/2013", "10/22/2013");
@@ -1866,7 +1868,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10/22/2013");
@@ -1894,7 +1896,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10");
@@ -1920,7 +1922,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>5</Field1></Recset><Recset><Field1>54</Field1></Recset><Recset><Field1>11</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Between", "", "", "[[Result().res]]", false, true, "10", "10/11/2013");
@@ -1949,7 +1951,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>50</Field1></Recset><Recset><Field1>100</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, false, "25", "75");
@@ -1976,7 +1978,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>1</Field1></Recset><Recset><Field1>50</Field1></Recset><Recset><Field1>100</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "25", "75");
@@ -2003,7 +2005,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, false, "10/11/2013", "10/22/2013");
@@ -2030,7 +2032,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10/22/2013");
@@ -2058,7 +2060,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>10/10/2013</Field1></Recset><Recset><Field1>10/17/2013</Field1></Recset><Recset><Field1>10/24/2013</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "10/11/2013", "10");
@@ -2084,7 +2086,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>5</Field1></Recset><Recset><Field1>54</Field1></Recset><Recset><Field1>11</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Between", "", "", "[[Result().res]]", false, true, "10", "10/11/2013");
@@ -2113,7 +2115,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>10110101</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Binary", "", "", "[[Result().res]]", false);
@@ -2139,7 +2141,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>10110101</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Binary", "", "", "[[Result().res]]", false, true);
@@ -2169,7 +2171,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>10110101</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Binary", "", "", "[[Result().res]]", false);
@@ -2195,7 +2197,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>10110101</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Binary", "", "", "[[Result().res]]", false, true);
@@ -2225,7 +2227,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>77617265776f6c66</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Hex", "", "", "[[Result().res]]", false);
@@ -2251,7 +2253,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>77617265776f6c66</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Is Hex", "", "", "[[Result().res]]", false, true);
@@ -2281,7 +2283,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>77617265776f6c66</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Hex", "", "", "[[Result().res]]", false);
@@ -2307,7 +2309,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>77617265776f6c66</Field1></Recset><Recset><Field1>test</Field1></Recset><Recset><Field1>data</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Hex", "", "", "[[Result().res]]", false, true);
@@ -2337,7 +2339,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Base64", "", "", "[[Result().res]]", false);
@@ -2363,7 +2365,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Base64", "", "", "[[Result().res]]", false, true);
@@ -2393,7 +2395,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't End With", "=", "", "[[Result().res]]", false);
@@ -2419,7 +2421,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't End With", "=", "", "[[Result().res]]", false, true);
@@ -2449,7 +2451,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't Start With", "d", "", "[[Result().res]]", false);
@@ -2475,7 +2477,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>d2FyZXdvbGY=</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Doesn't Start With", "d", "", "[[Result().res]]", false, true);
@@ -2505,7 +2507,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>999.999.999.999</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Regex", @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", "", "[[Result().res]]", false);
@@ -2531,7 +2533,7 @@ namespace Dev2.Tests.RecordsetSearch
             const string data = @"<DataList><Recset><Field1>999.999.999.999</Field1></Recset><Recset><Field1>yay</Field1></Recset><Recset><Field1>wow</Field1></Recset></DataList>";
 
             ErrorResultTO tmpErrors;
-            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data, DlShape, out tmpErrors);
+            var dlID = dlc.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML), data.ToStringBuilder(), DlShape, out tmpErrors);
             var bdl = dlc.FetchBinaryDataList(dlID, out tmpErrors);
 
             IRecsetSearch props = DataListFactory.CreateSearchTO("[[Recset().Field1]]", "Not Regex", @"\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b", "", "[[Result().res]]", false, true);

@@ -9,7 +9,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
@@ -32,16 +31,17 @@ using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Communication;
 using Dev2.ConnectionHelpers;
+using Dev2.Data.ServiceModel.Messages;
 using Dev2.Diagnostics.Debug;
 using Dev2.Explorer;
 using Dev2.ExtMethods;
 using Dev2.Messages;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Events;
+using Dev2.Services.Security;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
-using Microsoft.AspNet.SignalR.Client.Hubs;
 using ServiceStack.Messaging.Rcon;
 
 namespace Dev2.Network
@@ -83,7 +83,8 @@ namespace Dev2.Network
             HubConnection.Error += OnHubConnectionError;
             HubConnection.Closed += HubConnectionOnClosed;
             HubConnection.StateChanged += HubConnectionStateChanged;
-
+            //HubConnection.TraceLevel = TraceLevels.All;
+            //HubConnection.TraceWriter = new Dev2LoggingTextWriter();
             InitializeEsbProxy();
             _asyncWorker = worker;
 
@@ -91,80 +92,6 @@ namespace Dev2.Network
 
 
 
-        void SetupPrincipal()
-        {
-            var networkCredential = HubConnection.Credentials as NetworkCredential;
-            IPrincipal principal = ClaimsPrincipal.Current;
-            if(networkCredential != null)
-            {
-                var domainName = networkCredential.Domain;
-                var items = networkCredential.UserName.Split('\\');
-                var userName = networkCredential.UserName;
-                if(items.Length == 1)
-                {
-                    domainName = AppServerUri.Host;
-                }
-                if(items.Length == 2)
-                {
-                    domainName = items[0];
-                    userName = items[1];
-                }
-                if(!String.IsNullOrEmpty(userName))
-                {
-                    NTAccount acct;
-                    UserPrincipal userPrincipal = null;
-                    SecurityIdentifier id;
-                    PrincipalContext context;
-                    try
-                    {
-                        acct = new NTAccount(domainName, userName);
-                        id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
-                        context = new PrincipalContext(domainName.ToLower() == Environment.MachineName.ToLower() ? ContextType.Machine : ContextType.Domain);
-                        userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
-                    }
-                    catch(Exception e)
-                    {
-                        Dev2Logger.Log.Error("Getting NTAccount", e);
-                    }
-                    try
-                    {
-                        if(userPrincipal == null)
-                        {
-                            domainName = Environment.UserDomainName;
-                            acct = new NTAccount(domainName, userName);
-                            id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
-                            context = new PrincipalContext(domainName.ToLower() == Environment.MachineName.ToLower() ? ContextType.Machine : ContextType.Domain);
-                            userPrincipal = UserPrincipal.FindByIdentity(context, IdentityType.Sid, id.Value);
-                        }
-
-                        if(userPrincipal != null)
-                        {
-                            if(userPrincipal.UserPrincipalName != null)
-                            {
-                                var identity = new WindowsIdentity(userPrincipal.UserPrincipalName);
-                                principal = new WindowsPrincipal(identity);
-                            }
-                            else
-                            {
-                                Impersonator.RunAs(userPrincipal.DisplayName, domainName, networkCredential.Password, () =>
-                                {
-                                    var windowsIdentity = WindowsIdentity.GetCurrent();
-                                    if(windowsIdentity != null)
-                                    {
-                                        principal = new WindowsPrincipal(windowsIdentity);
-                                    }
-                                });
-                            }
-                        }
-                    }
-                    catch(Exception e)
-                    {
-                        Dev2Logger.Log.Error("Getting NTAccount", e);
-                    }
-                }
-            }
-            Principal = principal;
-        }
 
         public IPrincipal Principal { get; set; }
 
@@ -177,11 +104,7 @@ namespace Dev2.Network
             if(AuthenticationType == AuthenticationType.Public)
             {
                 Principal = null;
-            }
-            else
-            {
-                SetupPrincipal();
-            }
+            }           
         }
 
         public bool IsLocalHost { get { return DisplayName == "localhost"; } }
@@ -192,6 +115,7 @@ namespace Dev2.Network
             {
                 EsbProxy = HubConnection.CreateHubProxy("esb");
                 EsbProxy.On<string>("SendMemo", OnMemoReceived);
+                EsbProxy.On<string>("ReceiveResourcesAffectedMemo", OnReceiveResourcesAffectedMemo);
                 EsbProxy.On<string>("SendPermissionsMemo", OnPermissionsMemoReceived);
                 EsbProxy.On<string>("SendDebugState", OnDebugStateReceived);
                 EsbProxy.On<Guid>("SendWorkspaceID", OnWorkspaceIdReceived);
@@ -199,6 +123,16 @@ namespace Dev2.Network
                 EsbProxy.On<string>("ItemUpdatedMessage", OnItemUpdatedMessageReceived);
                 EsbProxy.On<string>("ItemDeletedMessage", OnItemDeletedMessageReceived);
                 EsbProxy.On<string>("ItemAddedMessage", OnItemAddedMessageReceived);
+            }
+        }
+
+        public Action<Guid, CompileMessageList> ReceivedResourceAffectedMessage {get;set;}
+        void OnReceiveResourcesAffectedMemo(string objString)
+        {
+            var obj = _serializer.Deserialize<CompileMessageList>(objString);
+            if (ReceivedResourceAffectedMessage != null)
+            {
+                ReceivedResourceAffectedMessage(obj.ServiceID,obj);
             }
         }
 
@@ -495,7 +429,7 @@ namespace Dev2.Network
             {
                 // When we connect against group A with Administrator perms, and we remove all permissions, a 403 will be thrown. 
                 // Handle it more gracefully ;)
-                ServerEvents.PublishObject(obj);
+                RaisePermissionsModified(obj.ModifiedPermissions);
             }
             catch(Exception e)
             {
@@ -566,6 +500,16 @@ namespace Dev2.Network
             if(PermissionsChanged != null)
             {
                 PermissionsChanged(this, EventArgs.Empty);
+            }
+        } 
+        
+        public event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
+
+        void RaisePermissionsModified(List<WindowsGroupPermission> args)
+        {
+            if (PermissionsModified != null)
+            {
+                PermissionsModified(this, args);
             }
         }
 

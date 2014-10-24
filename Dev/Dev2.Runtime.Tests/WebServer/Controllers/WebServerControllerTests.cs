@@ -181,50 +181,6 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServerController_Bookmark")]
-        public void WebServerController_Bookmark_Post_InvokesWebPostRequestHandler()
-        {
-            //------------Setup for test--------------------------
-            var requestVariables = new NameValueCollection
-            {
-                { "servicename", "HelloWorld" },
-                { "instanceid", "inst" },
-                { "bookmark", "bmk" }
-            };
-            var controller = new TestWebServerController(HttpMethod.Post);
-
-            //------------Bookmark Test---------------------------
-            controller.BookmarkWorkflow("HelloWorld", "inst", "bmk");
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(typeof(WebPostRequestHandler), controller.ProcessRequestHandlerType);
-            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServerController_Bookmark")]
-        public void WebServerController_Bookmark_Get_InvokesWebPostRequestHandler()
-        {
-            //------------Setup for test--------------------------
-            var requestVariables = new NameValueCollection
-            {
-                { "servicename", "HelloWorld" },
-                { "instanceid", "inst" },
-                { "bookmark", "bmk" }
-            };
-            var controller = new TestWebServerController(HttpMethod.Get);
-
-            //------------Bookmark Test---------------------------
-            controller.BookmarkWorkflow("HelloWorld", "inst", "bmk");
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(typeof(WebGetRequestHandler), controller.ProcessRequestHandlerType);
-            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerController_ProcessRequest")]
         public void WebServerController_ProcessRequest_UserIsNull_Unauthorized()
         {

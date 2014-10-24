@@ -10,13 +10,16 @@
 */
 
 
+using System;
 using System.Net;
+using System.Threading.Tasks;
 
 namespace Dev2.Webs.Callbacks
 {
     public interface INetworkHelper
     {
         bool HasConnection(string uri);
+        Task<bool> HasConnectionAsync(string uri);
     }
 
     public class NetworkHelper : INetworkHelper
@@ -35,6 +38,24 @@ namespace Dev2.Webs.Callbacks
             {
                 return false;
             }
+        }
+        
+        public async Task<bool> HasConnectionAsync(string uri)
+        {
+            try
+            {
+                Uri theUri;
+                Uri.TryCreate(uri, UriKind.RelativeOrAbsolute, out theUri);
+                using (var client = new WebClient())
+                {
+                    await client.OpenReadTaskAsync(uri);
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

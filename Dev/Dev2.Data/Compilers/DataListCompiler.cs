@@ -100,7 +100,7 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <param name="withData"></param>
         /// <returns></returns>
-        public string GenerateWizardDataListFromDefs(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool withData = false)
+        public StringBuilder GenerateWizardDataListFromDefs(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool withData = false)
         {
             IList<IDev2Definition> defs;
             IList<IDev2Definition> wizdefs = new List<IDev2Definition>();
@@ -134,7 +134,7 @@ namespace Dev2.DataList.Contract
         /// <param name="pushToServer">if set to <c>true</c> [push to server].</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public string GenerateDataListFromDefs(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors)
+        public StringBuilder GenerateDataListFromDefs(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors)
         {
             IList<IDev2Definition> defs = new List<IDev2Definition>();
 
@@ -158,16 +158,16 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <param name="withData"></param>
         /// <returns></returns>
-        public string GenerateDataListFromDefs(IList<IDev2Definition> definitions, bool pushToServer, out ErrorResultTO errors, bool withData = false)
+        public StringBuilder GenerateDataListFromDefs(IList<IDev2Definition> definitions, bool pushToServer, out ErrorResultTO errors, bool withData = false)
         {
             errors = new ErrorResultTO();
-            string dataList = GenerateDataListFromDefs(definitions, withData);
-            string result;
+            var dataList = GenerateDataListFromDefs(definitions, withData);
+            StringBuilder result;
 
             if(pushToServer)
             {
                 byte[] data = new byte[0];
-                result = _svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._XML), data, dataList, out errors).ToString();
+                result = new StringBuilder(_svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._XML), data, dataList, out errors).ToString());
             }
             else
             {
@@ -186,16 +186,16 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
         /// <returns></returns>
-        public string ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool flipGeneration = false)
+        public StringBuilder ShapeDev2DefinitionsToDataList(string definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors, bool flipGeneration = false)
         {
-            string dataList = ShapeDefinitionsToDataList(definitions, defType, out errors, flipGeneration);
-            string result;
+            var dataList = ShapeDefinitionsToDataList(definitions, defType, out errors, flipGeneration);
+            StringBuilder result;
 
             if(pushToServer)
             {
                 //  Push to server and return GUID
                 byte[] data = new byte[0];
-                result = _svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._XML), data, dataList, out errors).ToString();
+                result = new StringBuilder(_svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._XML), data, dataList, out errors).ToString());
             }
             else
             {
@@ -214,23 +214,23 @@ namespace Dev2.DataList.Contract
         /// <param name="pushToServer"></param>
         /// <param name="errors"></param>
         /// <returns></returns>
-        public string ShapeDev2DefinitionsToDataList(IList<IDev2Definition> definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors)
+        public StringBuilder ShapeDev2DefinitionsToDataList(IList<IDev2Definition> definitions, enDev2ArgumentType defType, bool pushToServer, out ErrorResultTO errors)
         {
 
             ErrorResultTO allErrors = new ErrorResultTO();
-            string dataList = DataListUtil.ShapeDefinitionsToDataList(definitions, defType, out errors);
+            var dataList = DataListUtil.ShapeDefinitionsToDataList(definitions, defType, out errors);
             allErrors.MergeErrors(errors);
             errors.ClearErrors();
 
             // ReSharper disable RedundantAssignment
-            string result = GlobalConstants.NullDataListID.ToString();
+            StringBuilder result = new StringBuilder(GlobalConstants.NullDataListID.ToString());
             // ReSharper restore RedundantAssignment
 
             if(pushToServer)
             {
                 //  Push to server and return GUID
                 byte[] data = new byte[0];
-                result = _svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._XML), data, dataList, out errors).ToString();
+                result = new StringBuilder(_svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._XML), data, dataList, out errors).ToString());
             }
             else
             {
@@ -459,9 +459,9 @@ namespace Dev2.DataList.Contract
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid ConvertTo(DataListFormat typeOf, string payload, string shape, out ErrorResultTO errors)
+        public Guid ConvertTo(DataListFormat typeOf, StringBuilder payload, StringBuilder shape, out ErrorResultTO errors)
         {
-            byte[] data = Encoding.UTF8.GetBytes(payload);
+            byte[] data = Encoding.UTF8.GetBytes(payload.ToString());
             return _svrCompiler.ConvertTo(null, typeOf, data, shape, out errors);
         }
 
@@ -473,7 +473,7 @@ namespace Dev2.DataList.Contract
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid ConvertTo(DataListFormat typeOf, byte[] payload, string shape, out ErrorResultTO errors)
+        public Guid ConvertTo(DataListFormat typeOf, byte[] payload, StringBuilder shape, out ErrorResultTO errors)
         {
             return _svrCompiler.ConvertTo(null, typeOf, payload, shape, out errors);
         }
@@ -486,7 +486,7 @@ namespace Dev2.DataList.Contract
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid ConvertTo(DataListFormat typeOf, object payload, string shape, out ErrorResultTO errors)
+        public Guid ConvertTo(DataListFormat typeOf, object payload, StringBuilder shape, out ErrorResultTO errors)
         {
             return _svrCompiler.ConvertTo(null, typeOf, payload, shape, out errors);
         }
@@ -499,9 +499,9 @@ namespace Dev2.DataList.Contract
         /// <param name="shape">The shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public Guid ConvertAndOnlyMapInputs(DataListFormat typeOf, string payload, string shape, out ErrorResultTO errors)
+        public Guid ConvertAndOnlyMapInputs(DataListFormat typeOf, StringBuilder payload, StringBuilder shape, out ErrorResultTO errors)
         {
-            byte[] data = Encoding.UTF8.GetBytes(payload);
+            byte[] data = Encoding.UTF8.GetBytes(payload.ToString());
             return _svrCompiler.ConvertAndOnlyMapInputs(null, typeOf, data, shape, out errors);
         }
 
@@ -563,7 +563,7 @@ namespace Dev2.DataList.Contract
         /// <param name="depth">The depth.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public string ConvertFrom(Guid curDlid, DataListFormat typeOf, enTranslationDepth depth, out ErrorResultTO errors)
+        public StringBuilder ConvertFrom(Guid curDlid, DataListFormat typeOf, enTranslationDepth depth, out ErrorResultTO errors)
         {
 
             DataListTranslatedPayloadTO tmp = _svrCompiler.ConvertFrom(null, curDlid, depth, typeOf, out errors);
@@ -573,7 +573,7 @@ namespace Dev2.DataList.Contract
                 return tmp.FetchAsString();
             }
 
-            return string.Empty;
+            return new StringBuilder();
         }
 
         /// <summary>
@@ -584,7 +584,7 @@ namespace Dev2.DataList.Contract
         /// <param name="filterShape">The filter shape.</param>
         /// <param name="errors">The errors.</param>
         /// <returns></returns>
-        public string ConvertAndFilter(Guid curDlid, DataListFormat typeOf, string filterShape, out ErrorResultTO errors)
+        public StringBuilder ConvertAndFilter(Guid curDlid, DataListFormat typeOf, StringBuilder filterShape, out ErrorResultTO errors)
         {
             return _svrCompiler.ConvertAndFilter(null, curDlid, filterShape, typeOf, out errors);
         }
@@ -600,10 +600,10 @@ namespace Dev2.DataList.Contract
         /// <typeparam name="T"></typeparam>
         /// <param name="payload">The payload.</param>
         /// <returns></returns>
-        public T ConvertFromJsonToModel<T>(string payload)
+        public T ConvertFromJsonToModel<T>(StringBuilder payload)
         {
 
-            T obj = JsonConvert.DeserializeObject<T>(payload);
+            T obj = JsonConvert.DeserializeObject<T>(payload.ToString());
 
             return obj;
         }
@@ -614,9 +614,9 @@ namespace Dev2.DataList.Contract
         /// <typeparam name="T"></typeparam>
         /// <param name="payload">The payload.</param>
         /// <returns></returns>
-        public string ConvertModelToJson<T>(T payload)
+        public StringBuilder ConvertModelToJson<T>(T payload)
         {
-            string result = JsonConvert.SerializeObject(payload);
+            var result = new StringBuilder(JsonConvert.SerializeObject(payload));
 
             return result;
         }
@@ -644,7 +644,7 @@ namespace Dev2.DataList.Contract
         public Guid PushSystemModelToDataList<T>(Guid dlID, T model, out ErrorResultTO errors)
         {
             // Serialize the model first ;)
-            string jsonModel = ConvertModelToJson(model);
+            var jsonModel = ConvertModelToJson(model);
             ErrorResultTO allErrors = new ErrorResultTO();
 
             // Create a new DL if need be
@@ -657,7 +657,7 @@ namespace Dev2.DataList.Contract
                 errors.ClearErrors();
             }
 
-            UpsertSystemTag(pushID, enSystemTag.SystemModel, jsonModel, out errors);
+            UpsertSystemTag(pushID, enSystemTag.SystemModel, jsonModel.ToString(), out errors);
             allErrors.MergeErrors(errors);
 
             errors = allErrors;
@@ -683,7 +683,7 @@ namespace Dev2.DataList.Contract
 
                 if(!String.IsNullOrEmpty(modelData))
                 {
-                    obj = ConvertFromJsonToModel<T>(modelData);
+                    obj = ConvertFromJsonToModel<T>(new StringBuilder(modelData));
                 }
             }
             else
@@ -865,15 +865,15 @@ namespace Dev2.DataList.Contract
                 throw new XmlException("Inputs/Outputs tags were not found in the service definition");
             }
 
-            string inputDl = GenerateWizardDataListFromDefs(inputs, enDev2ArgumentType.Input, false, out errors);
+            var inputDl = GenerateWizardDataListFromDefs(inputs, enDev2ArgumentType.Input, false, out errors);
 
-            string outputDl = GenerateWizardDataListFromDefs(outputs, enDev2ArgumentType.Output, false, out errors);
+            var outputDl = GenerateWizardDataListFromDefs(outputs, enDev2ArgumentType.Output, false, out errors);
 
             Guid inputDlID = ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty, inputDl, out errors);
             Guid outputDlID = ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_XML), string.Empty, outputDl, out errors);
             Guid mergedDlID = Merge(inputDlID, outputDlID, enDataListMergeTypes.Union, enTranslationDepth.Shape, true, out errors);
-            string result = ConvertFrom(mergedDlID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
-            return result;
+            var result = ConvertFrom(mergedDlID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Shape, out errors);
+            return result.ToString();
         }
 
         /// <summary>
@@ -889,7 +889,8 @@ namespace Dev2.DataList.Contract
         {
             IBinaryDataList newDl = Dev2BinaryDataListFactory.CreateDataList();
             ErrorResultTO errors;
-            Guid dlID = ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dataList, dataList, out errors);
+            var dataListStringBuilder = new StringBuilder(dataList);
+            Guid dlID = ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), dataListStringBuilder, dataListStringBuilder, out errors);
             if(!errors.HasErrors())
             {
                 IBinaryDataList dl = FetchBinaryDataList(dlID, out errors);
@@ -918,7 +919,7 @@ namespace Dev2.DataList.Contract
                         }
                     }
                     Guid newDlId = PushBinaryDataList(newDl.UID, newDl, out errors);
-                    dataList = ConvertFrom(newDlId, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Shape, out errors);
+                    dataList = ConvertFrom(newDlId, DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), enTranslationDepth.Shape, out errors).ToString();
                 }
                 else
                 {
@@ -1123,7 +1124,7 @@ namespace Dev2.DataList.Contract
         /// <param name="defs">The defs.</param>
         /// <param name="withData">if set to <c>true</c> [with data].</param>
         /// <returns></returns>
-        private string GenerateDataListFromDefs(IList<IDev2Definition> defs, bool withData = false)
+        private StringBuilder GenerateDataListFromDefs(IList<IDev2Definition> defs, bool withData = false)
         {
             return DataListUtil.GenerateDataListFromDefs(defs, withData);
         }
@@ -1136,7 +1137,7 @@ namespace Dev2.DataList.Contract
         /// <param name="errors">The errors.</param>
         /// <param name="flipGeneration">if set to <c>true</c> [flip generation].</param>
         /// <returns></returns>
-        private string ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false)
+        private StringBuilder ShapeDefinitionsToDataList(string arguments, enDev2ArgumentType typeOf, out ErrorResultTO errors, bool flipGeneration = false)
         {
             return DataListUtil.ShapeDefinitionsToDataList(arguments, typeOf, out errors, flipGeneration);
         }

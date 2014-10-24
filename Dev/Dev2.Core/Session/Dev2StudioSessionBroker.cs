@@ -18,6 +18,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Xml.Serialization;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.Enums;
 using Dev2.DataList.Contract;
 using Dev2.DataList.Contract.Binary_Objects;
@@ -89,10 +90,10 @@ namespace Dev2.Session
             {
 
                 var convertData = tmp.XmlData;
-                var mergeGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(convertData), to.DataList ?? "", out errors);
-                tmp.XmlData = svrCompiler.ConvertFrom(null, mergeGuid, enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), out errors).FetchAsString();
+                var mergeGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(convertData), new StringBuilder(to.DataList), out errors);
+                tmp.XmlData = svrCompiler.ConvertFrom(null, mergeGuid, enTranslationDepth.Data, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), out errors).FetchAsString().ToString();
                 to.XmlData = tmp.RememberInputs
-                                 ? (tmp.XmlData ?? "<DataList></DataList>")
+                                 ? (tmp.XmlData)
                                  : (to.XmlData ?? "<DataList></DataList>");
 
                 to.BinaryDataList = svrCompiler.FetchBinaryDataList(null, mergeGuid, out errors);
@@ -104,7 +105,7 @@ namespace Dev2.Session
                                  ? (to.DataList ?? "<DataList></DataList>")
                                  : (to.XmlData ?? "<DataList></DataList>");
 
-                var createGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(to.XmlData), to.DataList, out errors);
+                var createGuid = svrCompiler.ConvertTo(null, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), Encoding.UTF8.GetBytes(to.XmlData), new StringBuilder(to.DataList), out errors);
 
                 to.BinaryDataList = to.BinaryDataList = svrCompiler.FetchBinaryDataList(null, createGuid, out errors);
             }
@@ -184,7 +185,7 @@ namespace Dev2.Session
                     bf.Serialize(ms, datalist);
 
                     ErrorResultTO errors;
-                    Guid pushID = compiler.ConvertTo(BinaryFormat, ms.ToArray(), string.Empty, out errors);
+                    Guid pushID = compiler.ConvertTo(BinaryFormat, ms.ToArray(), new StringBuilder(), out errors);
 
                     if(errors.HasErrors())
                     {
@@ -193,7 +194,7 @@ namespace Dev2.Session
                     else
                     {
                         // now extract into XML
-                        result = compiler.ConvertFrom(pushID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Data, out errors);
+                        result = compiler.ConvertFrom(pushID, DataListFormat.CreateFormat(GlobalConstants._Studio_XML), enTranslationDepth.Data, out errors).ToString();
                         if(errors.HasErrors())
                         {
                             error = errors.FetchErrors()[0];
@@ -218,8 +219,8 @@ namespace Dev2.Session
                 ErrorResultTO errors;
 
 
-                Guid resultID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), data,
-                                                    targetShape, out errors);
+                Guid resultID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), data.ToStringBuilder(),
+                                                    new StringBuilder(targetShape), out errors);
                 if(errors.HasErrors())
                 {
                     error = errors.FetchErrors()[0]; // take the first error ;)
@@ -241,7 +242,7 @@ namespace Dev2.Session
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            return compiler.ConvertFrom(binaryDataList.UID, DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only), enTranslationDepth.Data, out errors);
+            return compiler.ConvertFrom(binaryDataList.UID, DataListFormat.CreateFormat(GlobalConstants._XML_Inputs_Only), enTranslationDepth.Data, out errors).ToString();
         }
 
         #region Private Method

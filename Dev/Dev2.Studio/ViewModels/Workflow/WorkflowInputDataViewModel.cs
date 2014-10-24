@@ -18,6 +18,7 @@ using System.Threading;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Enums;
 using Dev2.Data.Interfaces;
@@ -491,7 +492,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             var compiler = DataListFactory.CreateDataListCompiler();
             ErrorResultTO errors;
-            var dl = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), string.Empty, DebugTo.DataList ?? "<Datalist></Datalist>", out errors);
+            var dl = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), string.Empty.ToStringBuilder(), DebugTo.DataList.ToStringBuilder() ?? "<Datalist></Datalist>".ToStringBuilder(), out errors);
             DataList = compiler.FetchBinaryDataList(dl, out errors);
             // For some damn reason this does not always bind like it should! ;)
             Thread.Sleep(150);
@@ -513,7 +514,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var dataListString = compiler.ConvertFrom(dlId, DataListFormat.CreateFormat(GlobalConstants._Studio_Debug_XML), enTranslationDepth.Data, out errors);
             try
             {
-                XmlData = XElement.Parse(dataListString).ToString();
+                XmlData = XElement.Parse(dataListString.ToString()).ToString();
             }
             catch(Exception)
             {

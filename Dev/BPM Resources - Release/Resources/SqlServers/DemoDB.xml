@@ -1,5 +1,5 @@
 
-<Source ID="563f2eed-21a1-4921-9dc5-61ebcb1b92cd" Version="1.0" Name="DemoDB" ResourceType="DbSource" ServerType="SqlDatabase" Type="Unknown" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=DemoDB;Integrated Security=SSPI;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+<Source ID="563f2eed-21a1-4921-9dc5-61ebcb1b92cd" Version="1.0" Name="DemoDB" ResourceType="DbSource" ServerType="SqlDatabase" Type="Unknown" ConnectionString="Data Source=RSAKLFSVRGENDEV,1433;Initial Catalog=DemoDB;Integrated Security=SSPI;" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" ServerVersion="0.4.2.2">
   <DisplayName>DemoDB</DisplayName>
   <Category>SqlServers\DemoDB</Category>
   <AuthorRoles>
@@ -29,9 +29,9 @@
           <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" />
         </Transforms>
         <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <DigestValue>L0ko8rMJl/t+EP+OYI8CSvVWGWM=</DigestValue>
+        <DigestValue>DhLHV868b4HUAF5f4ZGUY+yRDsY=</DigestValue>
       </Reference>
     </SignedInfo>
-    <SignatureValue>YwCOBF3lDrBST/XsRoJRU22eolgPv0jQrz3dwZsEe8rSszTzuaDYz0XA9/WaICilppAOs9C6DurXoiJKF1gaqHNdIQz7CG5G+uF+y2ZlIJsotCWpDgrpBrJJyeQY+sT+1ssa7UJ5BKjcdvPGpz1XOmCWQ5V7dV8Le+nNlnbVlbM=</SignatureValue>
+    <SignatureValue>iHijdUlkf+QWgt6jCYAqB4D44N+g1n2GY3cHIOkLAaBhWPgc6QufV+My/9Jm9Xa5GARnIdi/Uj8VxDwGSiRi2y3fZdzdU5eS/chfAYu2LjOK5U46Ot90aypJx7kYkdhLfORdbkyzAkeN1Pn9S2wHDXCFOGC5tldjl1h0cdRYjGg=</SignatureValue>
   </Signature>
 </Source>

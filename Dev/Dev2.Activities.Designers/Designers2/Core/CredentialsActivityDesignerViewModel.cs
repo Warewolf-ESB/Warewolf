@@ -15,7 +15,8 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Providers.Errors;
+using Dev2.Providers.Validation.Rules;
+using Dev2.Studio.Core;
 using Dev2.Validation;
 
 namespace Dev2.Activities.Designers2.Core
@@ -93,27 +94,39 @@ namespace Dev2.Activities.Designers2.Core
         void ValidateUserNameAndPassword(string userNameValue, string userNameLabel, Action onUserNameError, string passwordValue, string passwordLabel, Action onPasswordError)
         {
             var errors = new List<IActionableErrorInfo>();
-
-            string userName;
-            errors.AddError(userNameValue.TryParseVariables(out userName, onUserNameError));
-
+            
+            RuleSet credentialUserRuleSet = new RuleSet();
+            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => userNameValue, DataListSingleton.ActiveDataList.Resource.DataList);
+            credentialUserRuleSet.Add(isValidExpressionRule);
+            errors.AddRange(credentialUserRuleSet.ValidateRules(userNameLabel, onUserNameError));
+            RuleSet credentialPasswordRuleSet = new RuleSet();
+            isValidExpressionRule = new IsValidExpressionRule(() => passwordValue, DataListSingleton.ActiveDataList.Resource.DataList);
+            credentialPasswordRuleSet.Add(isValidExpressionRule);
+            errors.AddRange(credentialPasswordRuleSet.ValidateRules(passwordLabel, onPasswordError));
             if(errors.Count == 0)
             {
-                string password;
-                errors.AddError(passwordValue.TryParseVariables(out password, onPasswordError));
-
-                if(!string.IsNullOrWhiteSpace(userName))
+                IsStringEmptyOrWhiteSpaceRule isStringEmptyOrWhiteSpaceRuleUserName = new IsStringEmptyOrWhiteSpaceRule(() => userNameValue)
                 {
-                    if(string.IsNullOrWhiteSpace(password))
-                    {
-                        errors.Add(new ActionableErrorInfo(onPasswordError) { ErrorType = ErrorType.Critical, Message = passwordLabel + " must have a value" });
-                    }
+                    LabelText = userNameLabel, 
+                    DoError = onUserNameError
+                };
+                var userNameBlankError = isStringEmptyOrWhiteSpaceRuleUserName.Check();
+                var isStringEmptyOrWhiteSpaceRulePassword = new IsStringEmptyOrWhiteSpaceRule(() => passwordValue)
+                {
+                    LabelText = passwordLabel, 
+                    DoError = onPasswordError
+                };
+                var passwordBlankError = isStringEmptyOrWhiteSpaceRulePassword.Check();
+
+                if (userNameBlankError == null && passwordBlankError != null)
+                {
+                    errors.Add(passwordBlankError);
                 }
                 else
                 {
-                    if(!string.IsNullOrWhiteSpace(password))
+                    if (passwordBlankError == null && userNameBlankError != null)
                     {
-                        errors.Add(new ActionableErrorInfo(onUserNameError) { ErrorType = ErrorType.Critical, Message = userNameLabel + " must have a value" });
+                        errors.Add(userNameBlankError);
                     }
                 }
             }

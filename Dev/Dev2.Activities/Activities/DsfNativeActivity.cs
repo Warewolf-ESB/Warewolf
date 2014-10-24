@@ -468,35 +468,49 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             if(stateType == StateType.Before)
             {
-                // Bug 8595 - Juries
-                var type = GetType();
-                var instance = Activator.CreateInstance(type);
-                var activity = instance as Activity;
-                if(activity != null)
+                if (_debugState == null)
                 {
-                    _debugState.Name = activity.DisplayName;
-
-                }
-                var act = instance as DsfActivity;
-                //End Bug 8595
-                try
-                {
-                    Copy(GetDebugInputs(dataList), _debugState.Inputs);
-                }
-                catch(DebugCopyException err)
-                {
-                    Dev2Logger.Log.Error("DispatchDebugState", err);
-                    _debugState.ErrorMessage = err.Message;
-                    _debugState.HasError = true;
-                    _debugState.Inputs.Add(err.Item);
+                    InitializeDebugState(stateType, dataObject, remoteID, false, "");
                 }
 
-                if(dataObject.RemoteServiceType == "Workflow" && act != null && !_debugState.HasError)
+                if (_debugState != null)
                 {
-                    var debugItem = new DebugItem();
-                    var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Value, Label = "Execute workflow asynchronously: ", Value = dataObject.RunWorkflowAsync ? "True" : "False" };
-                    debugItem.Add(debugItemResult);
-                    _debugState.Inputs.Add(debugItem);
+                    // Bug 8595 - Juries
+                    var type = GetType();
+                    var instance = Activator.CreateInstance(type);
+                    var activity = instance as Activity;
+                    if (activity != null)
+                    {
+                        _debugState.Name = activity.DisplayName;
+
+                    }
+                    var act = instance as DsfActivity;
+                    //End Bug 8595
+                    try
+                    {
+                        Copy(GetDebugInputs(dataList), _debugState.Inputs);
+                    }
+                    catch (Exception err)
+                    {
+                        Dev2Logger.Log.Error("DispatchDebugState", err);
+                        AddErrorToDataList(err, compiler, dataObject);
+                        var errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                        _debugState.ErrorMessage = errorMessage;
+                        _debugState.HasError = true;
+                        var debugError = err as DebugCopyException;
+                        if (debugError != null)
+                        {
+                            _debugState.Inputs.Add(debugError.Item);
+                        }
+                    }
+
+                    if (dataObject.RemoteServiceType == "Workflow" && act != null && !_debugState.HasError)
+                    {
+                        var debugItem = new DebugItem();
+                        var debugItemResult = new DebugItemResult { Type = DebugItemResultType.Value, Label = "Execute workflow asynchronously: ", Value = dataObject.RunWorkflowAsync ? "True" : "False" };
+                        debugItem.Add(debugItemResult);
+                        _debugState.Inputs.Add(debugItem);
+                    }
                 }
             }
             else
@@ -539,7 +553,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     catch(Exception e)
                     {
                         Dev2Logger.Log.Error("Debug Dispatch Error", e);
-                        _debugState.ErrorMessage = e.Message;
+                        AddErrorToDataList(e,compiler,dataObject);
+                        errorMessage = compiler.FetchErrors(dataObject.DataListID);
+                        _debugState.ErrorMessage = errorMessage;
                         _debugState.HasError = true;
                     }
                 }
@@ -591,6 +607,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     _debugState = null;
                 }
             }
+        }
+
+        void AddErrorToDataList(Exception err, IDataListCompiler compiler, IDSFDataObject dataObject)
+        {
+            var errorString = err.Message;
+            var errorResultTO = new ErrorResultTO();
+            errorResultTO.AddError(errorString);
+            compiler.UpsertSystemTag(dataObject.DataListID, enSystemTag.Dev2Error, errorResultTO.MakeUserReady(), out errorsTo);
         }
 
         protected void InitializeDebug(IDSFDataObject dataObject)

@@ -218,13 +218,14 @@ namespace Dev2.Models
             get { return _displayName; }
             set
             {
+                bool renamed = true;
                 if(!String.IsNullOrEmpty(_displayName)
                     && ResourceType != ResourceType.Server
                     && Children.All(model => model.DisplayName != value))
                 {
-                    Rename(value);
+                    renamed= Rename(value);
                 }
-                _displayName = value;
+               if(renamed)  _displayName = value;
                 IsRenaming = false;
                 OnPropertyChanged();
             }
@@ -1256,11 +1257,24 @@ namespace Dev2.Models
             }
         }
 
-        private void Rename(string newName)
+        private string GetRenamePath(string existingPath, string newName)
+        {
+            if (!existingPath.Contains("\\"))
+                return newName;
+            return  existingPath.Substring(0, 1+existingPath.LastIndexOf('\\')) + newName;
+        }
+
+        private bool Rename(string newName)
         {
             var environmentModel = EnvironmentRepository.Instance.FindSingle(model => model.ID == EnvironmentId);
             if(ResourceType == ResourceType.Folder)
             {
+                var itemExists = null != _studioResourceRepository.FindItem(a => a.ResourceType == ResourceType.Folder && a.ResourcePath == GetRenamePath(ResourcePath, newName));
+                if ((Children.Count == 0) && itemExists)
+                {
+                    EventPublishers.Aggregator.Publish(new DisplayMessageBoxMessage("Error Renaming Folder", "You are not allowed to Rename an empty folder to an existing folder name", MessageBoxImage.Warning));
+                    return false;
+                }
                 _studioResourceRepository.RenameFolder(this, newName);
             }
             else
@@ -1292,6 +1306,7 @@ namespace Dev2.Models
                         }
                     }
                 }
+            return true;
         }
 
         public void RefreshName(string newName)
@@ -1444,9 +1459,10 @@ namespace Dev2.Models
         /// <param name="updateParent">
         ///     if set to <c>true</c> [update parent].
         /// </param>
+        /// <param name="calcStats"></param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        public void SetIsChecked(bool? value, bool updateChildren, bool updateParent)
+        public void SetIsChecked(bool? value, bool updateChildren, bool updateParent, bool calcStats=true)
         {
             var preState = _isChecked;
             if(value == _isChecked)
@@ -1466,16 +1482,17 @@ namespace Dev2.Models
             _isChecked = value;
 
             UpdateChildren(updateChildren);
-            UpdateParent(updateParent);
+
 
             // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("IsChecked");
             // ReSharper restore ExplicitCallerInfoArgument           
-            CheckStateChangedArgs checkStateChangedArgs = new CheckStateChangedArgs(preState.GetValueOrDefault(false), value.GetValueOrDefault(false), ResourceId, ResourceType);
+            CheckStateChangedArgs checkStateChangedArgs = new CheckStateChangedArgs(preState.GetValueOrDefault(false), value.GetValueOrDefault(false), ResourceId, ResourceType, (ResourceType == ResourceType.Folder || ResourceType == ResourceType.Server || (ResourcePath==null|| (!ResourcePath.Contains("\\"))))&&calcStats );
             if(OnCheckedStateChangedAction != null)
             {
                 OnCheckedStateChangedAction.Invoke(checkStateChangedArgs);
             }
+            UpdateParent(updateParent);
         }
 
         void UpdateParent(bool updateParent)
@@ -1483,6 +1500,10 @@ namespace Dev2.Models
             if(updateParent && Parent != null)
             {
                 Parent.VerifyCheckState();
+                if (OnCheckedStateChangedAction != null)
+                {
+                    OnCheckedStateChangedAction.Invoke(new CheckStateChangedArgs(false,false,ResourceId,ResourceType,true));
+                }
             }
         }
 
@@ -1494,7 +1515,7 @@ namespace Dev2.Models
             }
             foreach(var c in Children)
             {
-                c.SetIsChecked(_isChecked, true, false);
+                c.SetIsChecked(_isChecked, true, false,false);
             }
         }
 
@@ -1536,16 +1557,17 @@ namespace Dev2.Models
         public bool NewState { get; set; }
         public Guid ResourceId { get; set; }
         public ResourceType ResourceType { get; set; }
-
+        public bool UpdateStats { get; set; }
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
-        public CheckStateChangedArgs(bool previousState, bool newState, Guid resourceId, ResourceType resourceType)
+        public CheckStateChangedArgs(bool previousState, bool newState, Guid resourceId, ResourceType resourceType , bool updateStats)
         {
             PreviousState = previousState;
             NewState = newState;
             ResourceId = resourceId;
             ResourceType = resourceType;
+            UpdateStats = updateStats;
         }
     }
 }

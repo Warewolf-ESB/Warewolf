@@ -19,10 +19,10 @@ using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
+using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
 using Dev2.Models;
-using Dev2.Providers.Logs;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Core.InterfaceImplementors;
@@ -35,6 +35,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
+using ServiceStack.Common.Extensions;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -42,7 +43,6 @@ namespace Dev2.Studio.ViewModels.Deploy
 // ReSharper restore CheckNamespace
 {
     public class DeployViewModel : BaseWorkSurfaceViewModel,
-        IHandle<UpdateDeployMessage>,
         IHandle<SelectItemInDeployMessage>,
         IHandle<EnvironmentDeletedMessage>
     {
@@ -85,11 +85,12 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
         }
 
-        public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, IConnectControlViewModel sourceConnectControlVm, IConnectControlViewModel destinationConnectControlVm, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null)
+        public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, IConnectControlViewModel sourceConnectControlVm, IConnectControlViewModel destinationConnectControlVm, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null,IConnectControlSingleton connectControlSingleton = null)
             : base(eventAggregator)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-
+            if(connectControlSingleton == null)
+                connectControlSingleton = ConnectControlSingleton.Instance;
             if(environmentID.HasValue)
             {
                 _initialItemEnvironmentID = environmentID.Value;
@@ -97,7 +98,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             _initialItemResourceID = resourceID.GetValueOrDefault(Guid.Empty);
             DestinationServerHasDropped = false;
             StudioResourceRepository = studioResourceRepository;
-            Initialize(asyncWorker, serverProvider, environmentRepository, eventAggregator, deployStatsCalculator);
+            Initialize(asyncWorker, serverProvider, environmentRepository, eventAggregator, connectControlSingleton, deployStatsCalculator);
             SourceConnectControlViewModel = sourceConnectControlVm ?? new ConnectControlViewModel(ChangeSourceServer, "Source Server:", false);
             TargetConnectControlViewModel = destinationConnectControlVm ?? new ConnectControlViewModel(ChangeDestinationServer, "Destination Server:", false);
             TargetConnectControlViewModel.SetTargetEnvironment();
@@ -307,6 +308,7 @@ namespace Dev2.Studio.ViewModels.Deploy
             }
         }
 
+
         public DeployNavigationViewModel Source
         {
             get
@@ -432,6 +434,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                     NotifyOfPropertyChange(() => ServersAreNotTheSame);
                 }
                 Target.Environment = _selectedDestinationServer;
+                CalculateStats();
             }
         }
 
@@ -439,13 +442,18 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
             NotifyOfPropertyChange(() => SelectedDestinationServer);
             DestinationServerHasDropped = !SelectedDestinationServer.IsConnected;
+            if(args.IsConnected && SelectedSourceServer.IsConnected)
+            {
+               
+            }
+            
         }
 
         #endregion
 
         #region Private Methods
 
-        private void Initialize(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IDeployStatsCalculator deployStatsCalculator = null)
+        private void Initialize(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IConnectControlSingleton connectControl, IDeployStatsCalculator deployStatsCalculator = null)
         {
             EnvironmentRepository = environmentRepository;
 
@@ -455,8 +463,8 @@ namespace Dev2.Studio.ViewModels.Deploy
             _targetStats = new ObservableCollection<DeployStatsTO>();
             _sourceStats = new ObservableCollection<DeployStatsTO>();
 
-            Target = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, StudioResourceRepository, true);
-            Source = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, StudioResourceRepository, false);
+            Target = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, StudioResourceRepository, true, connectControl);
+            Source = new DeployNavigationViewModel(eventAggregator, asyncWorker, environmentRepository, StudioResourceRepository, false, connectControl);
 
             SetupPredicates();
             SetupCommands();
@@ -486,17 +494,8 @@ namespace Dev2.Studio.ViewModels.Deploy
                     }
                 }
             }
+            if (checkStateChangedArgs != null && checkStateChangedArgs.UpdateStats)
             CalculateStats();
-        }
-
-        /// <summary>
-        /// Refreshes the resources for all environments
-        /// </summary>
-        private void RefreshEnvironments()
-        {
-            Source.RefreshEnvironment();
-            Target.RefreshEnvironment();
-
         }
 
         /// <summary>
@@ -874,12 +873,6 @@ namespace Dev2.Studio.ViewModels.Deploy
         #endregion Dispose Handling
 
         #region IHandle
-
-        public void Handle(UpdateDeployMessage message)
-        {
-            Dev2Logger.Log.Info(message.GetType().Name);
-            RefreshEnvironments();
-        }
 
         public void Handle(SelectItemInDeployMessage message)
         {

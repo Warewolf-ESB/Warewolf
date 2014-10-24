@@ -237,6 +237,9 @@ Scenario: Execute a foreach over an activity for range 0 to 0
 	| * in Range | 0    | 0  |
 
 Scenario: Execute a foreach over an activity for range 1 to 5
+	Given There is a recordset in the datalist with this shape
+	| rs             | value |
+	| [[rs().field]] | 1     |
 	And I have selected the foreach type as "InRange" from 1 to 5
 	And the underlying dropped activity is a(n) "Activity"
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
@@ -255,6 +258,9 @@ Scenario: Execute a foreach over an activity for range 1 to 5
 	| * in Range | 1    | 5  |
 
 Scenario: Execute a foreach over an activity for range 9 to 10
+	Given There is a recordset in the datalist with this shape
+	| rs             | value |
+	| [[rs().field]] | 1     |
 	And I have selected the foreach type as "InRange" from 9 to 10
 	And the underlying dropped activity is a(n) "Activity"
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
@@ -270,6 +276,9 @@ Scenario: Execute a foreach over an activity for range 9 to 10
 	| * in Range | 9    | 10 |
 
 Scenario: Execute a foreach over an activity with Csv Indexes 1,2,3
+	Given There is a recordset in the datalist with this shape
+	| rs             | value |
+	| [[rs().field]] | 1     |
 	And I have selected the foreach type as "InCSV" as "1,2,3"
 	And the underlying dropped activity is a(n) "Activity"
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
@@ -288,6 +297,9 @@ Scenario: Execute a foreach over an activity with Csv Indexes 1,2,3
 	| * in CSV | 1,2,3       |
 
 Scenario: Execute a foreach over an activity with Csv Indexes 2,4,6
+	Given There is a recordset in the datalist with this shape
+	| rs             | value |
+	| [[rs().field]] | 1     |
 	And I have selected the foreach type as "InCSV" as "2,4,6"
 	And the underlying dropped activity is a(n) "Activity"
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
@@ -304,6 +316,9 @@ Scenario: Execute a foreach over an activity with Csv Indexes 2,4,6
 	| * in CSV | 2,4,6       |
 
 Scenario: Execute a foreach over an activity with csv index 2
+	Given There is a recordset in the datalist with this shape
+	| rs             | value |
+	| [[rs().field]] | 1     |
 	And I have selected the foreach type as "InCSV" as "2"
 	And the underlying dropped activity is a(n) "Activity"
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
@@ -318,6 +333,9 @@ Scenario: Execute a foreach over an activity with csv index 2
 	| * in CSV | 2           |
 
 Scenario: Execute a foreach over an activity with number of executions equals 0
+	Given There is a recordset in the datalist with this shape
+	| rs             | value |
+	| [[rs().field]] | 1     |
 	And I have selected the foreach type as "NumOfExecution" as "0"
 	And the underlying dropped activity is a(n) "Activity"
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
@@ -330,6 +348,9 @@ Scenario: Execute a foreach over an activity with number of executions equals 0
 	| No. of Executes | 0      |
 
 Scenario: Execute a foreach over an activity with number of executions equals 1
+	Given There is a recordset in the datalist with this shape
+	| rs             | value |
+	| [[rs().field]] | 1     |
 	And I have selected the foreach type as "NumOfExecution" as "1"
 	And the underlying dropped activity is a(n) "Activity"
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
@@ -344,6 +365,9 @@ Scenario: Execute a foreach over an activity with number of executions equals 1
 	| No. of Executes | 1      |
 
 Scenario: Execute a foreach over an activity with number of executions equals 8
+	Given There is a recordset in the datalist with this shape
+	| rs             | value |
+	| [[rs().field]] | 1     |
 	And I have selected the foreach type as "NumOfExecution" as "8"
 	And the underlying dropped activity is a(n) "Activity"
 	And I Map the input recordset "[[rs(*).field]]" to "[[test(*).data]]"
