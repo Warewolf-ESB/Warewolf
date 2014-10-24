@@ -11,61 +11,79 @@ Scenario: Testing Example Workflows
 	
 	# Utility - Tools
 	And I click "EXPLORERFILTERCLEARBUTTON"
-	And I send "Utility" to "EXPLORERFILTER"
+	And I send "Utility - Comment" to "EXPLORERFILTER"
     And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Comment_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Comment_AutoID"
 	Then "WORKFLOWDESIGNER,Utility - Comment(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
 	
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Date and Time Difference" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Date and Time Difference_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Date and Time Difference_AutoID"
 	Then "WORKFLOWDESIGNER,Utility - Date and Time Difference(FlowchartDesigner)" is visible within "10" seconds
     And I send "{F6}" to ""
 	And all tabs are closed
 	
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Utility - Date and Time" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Date and Time_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Date and Time_AutoID"
 	Then "WORKFLOWDESIGNER,Utility - Date and Time(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
 	
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Utility - Calculate" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Calculate_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Calculate_AutoID"
 	Then "WORKFLOWDESIGNER,Utility - Calculate(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
 	
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Utility - Format Number" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Format Number_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Format Number_AutoID"
 	Then "WORKFLOWDESIGNER,Utility - Format Number(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
 	
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Utility - Random" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Random_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Random_AutoID"
 	Then "WORKFLOWDESIGNER,Utility - Random(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
 	
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Utility - System Information" to "EXPLORERFILTER"
     And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - System Information_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Utility - System Information_AutoID"
 	Then "WORKFLOWDESIGNER,Utility - System Information(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
    	
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Utility - Web Request" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Web Request_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Web Request_AutoID"
 	Then "WORKFLOWDESIGNER,Utility - Web Request(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
    	
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Utility - XPath" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - XPath_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - XPath_AutoID"
 	Then "WORKFLOWDESIGNER,Utility - XPath(FlowchartDesigner)" is visible within "10" seconds
 	And I send "{F6}" to ""
 	And all tabs are closed
 	
+	And I click "EXPLORERFILTERCLEARBUTTON"
+	And I send "Utility - Assign" to "EXPLORERFILTER"
 	And I click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Assign_AutoID"
 	And I double click "EXPLORERFOLDERS,UI_Examples_AutoID,UI_Utility - Assign_AutoID"
 	Then "WORKFLOWDESIGNER,Utility - Assign(FlowchartDesigner)" is visible within "10" seconds
