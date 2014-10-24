@@ -141,7 +141,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
         }
 
+        // ReSharper disable TooManyDependencies
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
+            // ReSharper restore TooManyDependencies
             : this(eventPublisher, resource, workflowHelper,
                 CustomContainer.Get<IPopupController>(), createDesigner)
         {
@@ -149,7 +151,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         // BUG 9304 - 2013.05.08 - TWR - Added IWorkflowHelper parameter to facilitate testing
         // TODO Can we please not overload constructors for testing purposes. Need to systematically get rid of singletons.
+        // ReSharper disable TooManyDependencies
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, bool createDesigner = true, bool liteInit = false)
+            // ReSharper restore TooManyDependencies
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
@@ -180,7 +184,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (!string.IsNullOrEmpty(contextualResourceModel.DataList))
             {
+                // ReSharper disable MaximumChainedReferences
                 _originalDataList = contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
+                // ReSharper restore MaximumChainedReferences
             }
         }
 
@@ -398,7 +404,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         #region Private Methods
 
+        // ReSharper disable MethodTooLong
+        // ReSharper disable ExcessiveIndentation
         protected List<ModelItem> PerformAddItems(List<ModelItem> addedItems)
+            // ReSharper restore ExcessiveIndentation
+            // ReSharper restore MethodTooLong
         {
             for (int i = 0; i < addedItems.Count(); i++)
             {
@@ -482,7 +492,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             return addedItems;
         }
 
+        // ReSharper disable MethodTooLong
         protected void InitializeFlowStep(ModelItem mi)
+            // ReSharper restore MethodTooLong
         {
             ModelProperty modelProperty = mi.Properties["Action"];
             if (modelProperty != null && modelProperty.ComputedValue is DsfWebPageActivity)
@@ -1176,10 +1188,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected virtual ModelItem GetSelectedModelItem(Guid itemId, Guid parentId)
         {
             var modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
+            // ReSharper disable MaximumChainedReferences
             var selectedModelItem = (from mi in modelItems
                                      let instanceID = ModelItemUtils.GetUniqueID(mi)
                                      where instanceID == itemId || instanceID == parentId
                                      select mi).FirstOrDefault();
+            // ReSharper restore MaximumChainedReferences
 
             if (selectedModelItem == null)
             {
