@@ -1083,6 +1083,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\SplashImage_New_2014.jpg" />
     <Resource Include="Images\EmailSource-32.png" />
     <Resource Include="Images\PluginSource-32.png" />
     <Resource Include="Images\WebSource-32.png" />
@@ -1223,7 +1224,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Images\WarewolfLogoMedRes.png" />
-    <Resource Include="Images\SplashPage.png" />
     <Resource Include="Images\Resize_Grip.png" />
     <Resource Include="Warewolf.ico" />
     <Content Include="Help\debugplay.png">
