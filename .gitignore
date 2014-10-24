@@ -1,16 +1,16 @@
-﻿################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
-################################################################################
+﻿####################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio 2014.
+####################################################################################
 # Folders
-################################################################################
+####################################################################################
 /Dev/Dev2.Server/bin/x86/Debug
 /Dev/Dev2.Server/bin/Debug/Workspaces
 /Dev/TestResults
 /TestResults
 /bin
-################################################################################
+####################################################################################
 # These release workflows must be stored in "/Dev/BPM Resources - Release/Resources" ONLY!
-################################################################################
+####################################################################################
 /Dev/Dev2.Server/bin/Debug/Resources/DB Services/FetchPlayers.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Control Flow - Decision.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Examples/Control Flow - Sequence.xml
@@ -83,11 +83,10 @@
 /Dev/Dev2.Server/bin/Debug/Resources/Sample Project/WarewolfShoppingCartDB.xml
 /Dev/Dev2.Server/bin/Debug/Resources/SqlServers/DemoDB.xml
 /Dev/Dev2.Server/bin/Debug/Resources/Hello World.xml
-################################################################################
+####################################################################################
 # Build Output Files
-################################################################################
+####################################################################################
 /Dev/Dev2.AcceptanceTesting.v12.suo
-/Dev/IntegrationTests.v12.suo
 /Dev/Server.v12.suo
 /Dev/Dev2.UI.Tests.v12.suo
 /Dev/Studio.v12.suo
@@ -7107,3 +7106,4 @@
 /Dev/Dev2.Studio.Core.Tests/obj/x86/Debug/build.force
 /Dev/Dev2.Activities.Designers/obj/x86/Debug/TempPE/Designers2.Core.Help.HelpTextResources.Designer.cs.dll
 /Dev/Dev2.Studio.UISpecs/obj/Debug/build.force
+/Dev/Dev2.CodedUI.SpecGenerator/obj/Debug
