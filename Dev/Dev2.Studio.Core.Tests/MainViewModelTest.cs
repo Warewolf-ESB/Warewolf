@@ -739,6 +739,7 @@ namespace Dev2.Core.Tests
         {
             CreateFullExportsAndVm();
             WindowManager.Setup(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null)).Verifiable();
+           
             MainViewModel.DisplayAboutDialogueCommand.Execute(null);
             WindowManager.Verify(w => w.ShowDialog(It.IsAny<IDialogueViewModel>(), null, null), Times.Once());
         }

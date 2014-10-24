@@ -19,6 +19,7 @@ using Caliburn.Micro;
 using Dev2.AppResources.DependencyInjection.EqualityComparers;
 using Dev2.AppResources.Repositories;
 using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.ConnectionHelpers;
 using Dev2.CustomControls.Connections;
 using Dev2.Instrumentation;
@@ -35,7 +36,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Dev2.ViewModels.Deploy;
 using Dev2.Views.Deploy;
-using ServiceStack.Common.Extensions;
 
 // ReSharper disable InconsistentNaming
 // ReSharper disable CheckNamespace
@@ -85,7 +85,9 @@ namespace Dev2.Studio.ViewModels.Deploy
         {
         }
 
+        // ReSharper disable TooManyDependencies
         public DeployViewModel(IAsyncWorker asyncWorker, IEnvironmentModelProvider serverProvider, IEnvironmentRepository environmentRepository, IEventAggregator eventAggregator, IStudioResourceRepository studioResourceRepository, IConnectControlViewModel sourceConnectControlVm, IConnectControlViewModel destinationConnectControlVm, IDeployStatsCalculator deployStatsCalculator = null, Guid? resourceID = null, Guid? environmentID = null,IConnectControlSingleton connectControlSingleton = null)
+            // ReSharper restore TooManyDependencies
             : base(eventAggregator)
         {
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
@@ -593,7 +595,7 @@ namespace Dev2.Studio.ViewModels.Deploy
                     {
                         if(resourceTreeViewModel != null)
                         {
-                            IEnumerable<IExplorerItemModel> checkedITems = resourceTreeViewModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false));
+                            IEnumerable<IExplorerItemModel> checkedITems = resourceTreeViewModel.Descendants().Where(model => model.IsChecked.GetValueOrDefault(false)&& model.ResourceType != ResourceType.Folder);
                             selectedResourcesTreeViewModels.AddRange(checkedITems);
                         }
                     }
@@ -821,6 +823,11 @@ namespace Dev2.Studio.ViewModels.Deploy
                 // Setting the SelectedSourceServer will run the LoadSourceEnvironment method, 
                 // which takes care of selecting and expanding the correct node
                 //
+                if(SourceConnectControlViewModel != null)
+                {
+                    SourceConnectControlViewModel.UpdateActiveEnvironment(environment,false);
+                    SourceConnectControlViewModel.SetTargetEnvironment();
+                }
                 SelectedSourceServer = server;
             }
         }
@@ -879,7 +886,19 @@ namespace Dev2.Studio.ViewModels.Deploy
             Dev2Logger.Log.Info(message.GetType().Name);
             _initialItemResourceID = message.ResourceID;
             _initialItemEnvironmentID = message.EnvironmentID;
+            SourceConnectControlViewModel.SetTargetEnvironment();
+
             SelectSourceServerFromInitialValue();
+            var root = Source.ExplorerItemModels.FirstOrDefault();
+            if (root != null)
+            {
+                var resourceTreeViewModels = root.Descendants().First(a => a.ResourceId == message.ResourceID);
+
+                if (resourceTreeViewModels != null)
+                {
+                    resourceTreeViewModels.IsChecked = true;
+                }
+            }
         }
 
         public void Handle(EnvironmentDeletedMessage message)
