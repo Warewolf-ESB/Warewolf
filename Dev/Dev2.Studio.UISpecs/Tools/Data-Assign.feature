@@ -18,7 +18,7 @@ Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDr
 	Given I type "myvar" in "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID,UI_TextBox_AutoID"
 	And I send "{TAB}" to ""
 	Given "VARIABLESCALAR,UI_Variable_myvar_AutoID,UI_NameTextBox_AutoID" is visible within "2" seconds
-	And I send "=[[rec(1).set]]+1" to ""
+	Given I type "=[[rec(1).set]]+1" in "WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallViewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID,UI__Row1_FieldValue_AutoID"
 	And I send "{TAB}" to ""
 	And I send "5{TAB}" to ""
 	And I send "[[5]]{TAB}" to ""
@@ -39,18 +39,18 @@ Scenario: AssignCheckVariableAddBadVariableLargeViewValidationErrorSmallViewNoDr
 	Then "VARIABLESCALAR,UI_Variable_newvar_AutoID" is visible within "1" seconds
 	When I click "WORKSURFACE,Assign (2)(MultiAssignDesigner),DoneButton"
 	Then "WORKSURFACE,Assign (2)(MultiAssignDesigner),SmallViewContent" is visible
-	#NoDrillDownInForEach [Check that after drop Start is still visible ]
-	When I double click "TOOLBOX,PART_SearchBox"
-	And I send "Each" to ""
-	And I click point "40,10" on "TOOLFOREACH"
-	And I drag "TOOLFOREACH" to point "40,400" on "WORKSURFACE"
-	And I drag "WORKSURFACE,Assign (2)(MultiAssignDesigner)" to point "130,80" on "WORKSURFACE,For Each(ForeachDesigner)"
-	Then "WORKSURFACE,StartSymbol" is visible within "1" seconds
-	And "WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Assign (2)(MultiAssignDesigner)" is visible
+	##NoDrillDownInForEach [Check that after drop Start is still visible ]
+	#When I double click "TOOLBOX,PART_SearchBox"
+	#And I send "Each" to ""
+	#And I click point "40,10" on "TOOLFOREACH"
+	#And I drag "TOOLFOREACH" to point "40,400" on "WORKSURFACE"
+	#And I drag "WORKSURFACE,Assign (2)(MultiAssignDesigner),DisplayNameBox" to point "130,80" on "WORKSURFACE,For Each(ForeachDesigner)"
+	#Then "WORKSURFACE,StartSymbol" is visible within "1" seconds
+	#And "WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Assign (2)(MultiAssignDesigner)" is visible
 		
 
 #Bug 17468
-Scenario: Assign Tool large view Validation Messages
+Scenario: Testing Assign Tool large view Validation Messages for Incorrect Variable
 	Given I have Warewolf running
 	And all tabs are closed
 	And I click "EXPLORERFILTERCLEARBUTTON"
@@ -77,3 +77,5 @@ Scenario: Assign Tool large view Validation Messages
 	Then "WORKSURFACE,Assign (2)(MultiAssignDesigner),SmallViewContent" is visible
 
 	
+
+

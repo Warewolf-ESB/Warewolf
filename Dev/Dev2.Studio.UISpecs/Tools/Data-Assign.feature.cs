@@ -109,7 +109,9 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.Given("\"VARIABLESCALAR,UI_Variable_myvar_AutoID,UI_NameTextBox_AutoID\" is visible within" +
                     " \"2\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
- testRunner.And("I send \"=[[rec(1).set]]+1\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.Given("I type \"=[[rec(1).set]]+1\" in \"WORKSURFACE,Assign (1)(MultiAssignDesigner),SmallV" +
+                    "iewContent,SmallDataGrid,UI_ActivityGridRow_0_AutoID,UI__Row1_FieldValue_AutoID\"" +
+                    "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 22
  testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 23
@@ -143,32 +145,16 @@ this.ScenarioSetup(scenarioInfo);
  testRunner.When("I click \"WORKSURFACE,Assign (2)(MultiAssignDesigner),DoneButton\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 41
  testRunner.Then("\"WORKSURFACE,Assign (2)(MultiAssignDesigner),SmallViewContent\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 43
- testRunner.When("I double click \"TOOLBOX,PART_SearchBox\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 44
- testRunner.And("I send \"Each\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 45
- testRunner.And("I click point \"40,10\" on \"TOOLFOREACH\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 46
- testRunner.And("I drag \"TOOLFOREACH\" to point \"40,400\" on \"WORKSURFACE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 47
- testRunner.And("I drag \"WORKSURFACE,Assign (2)(MultiAssignDesigner)\" to point \"130,80\" on \"WORKSU" +
-                    "RFACE,For Each(ForeachDesigner)\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 48
- testRunner.Then("\"WORKSURFACE,StartSymbol\" is visible within \"1\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 49
- testRunner.And("\"WORKSURFACE,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Assi" +
-                    "gn (2)(MultiAssignDesigner)\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Assign Tool large view Validation Messages")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Testing Assign Tool large view Validation Messages for Incorrect Variable")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Data-Assign")]
-        public virtual void AssignToolLargeViewValidationMessages()
+        public virtual void TestingAssignToolLargeViewValidationMessagesForIncorrectVariable()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Assign Tool large view Validation Messages", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testing Assign Tool large view Validation Messages for Incorrect Variable", ((string[])(null)));
 #line 53
 this.ScenarioSetup(scenarioInfo);
 #line 54
