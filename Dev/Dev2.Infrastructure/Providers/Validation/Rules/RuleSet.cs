@@ -11,6 +11,7 @@
 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -18,7 +19,7 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 
 namespace Dev2.Providers.Validation.Rules
 {
-    public class RuleSet : IRuleSet
+    public class RuleSet : IRuleSet, IEnumerable
     {
         public RuleSet(IEnumerable<RuleBase> rules = null)
         {
@@ -63,6 +64,11 @@ namespace Dev2.Providers.Validation.Rules
                 }
             }
             return result;
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return null;
         }
     }
 }
