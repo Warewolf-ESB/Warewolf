@@ -139,7 +139,8 @@
                                 MinWidth="106"
                                 FilterType="RecordsetsOnly"
                                 attachedProperties2:WizardEngineAttachedProperties.DontOpenWizard="True"
-                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}">
+                                AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_ForEachNumberTextbox_AutoID}"
+                                ToolTip="{x:Static help:HelpTextResources.ForEachToolTipValue}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.ForEachHelpValue}"
                                      DataContext="{Binding}" />

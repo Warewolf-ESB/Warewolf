@@ -507,8 +507,8 @@ na</value>
 To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record.</value>
   </data>
   <data name="DataMergeToolTipPadding" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record.</value>
+    <value>If Index is being used and there is extra space between the data supplied and the number of index characters, you can specify what makes up the padding e.g. 0 for numbers or blank space for text.
+</value>
   </data>
   <data name="DataMergeToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
@@ -723,16 +723,9 @@ Allowed:
 [[Recordset().Field]]</value>
   </data>
   <data name="CalculateToolTipFx" xml:space="preserve">
-    <value>Only variables go in here.
-Returns the formatted number.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.
-
-Allowed:
-[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To perform a calculation, put the calculation in here in BODMAS format.
+There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.</value>
   </data>
   <data name="CalculateToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
@@ -1035,10 +1028,7 @@ Data
   <data name="WriteFileHelpMethod" xml:space="preserve">
     <value>Overwrite will replace the file contents with the new content.
 Append Top puts the new content at the beginning of the file.
-Append Bottom will add the new content to the end of the file.
-
-Allowed:
-How should the contents be written to the file?</value>
+Append Bottom will add the new content to the end of the file.</value>
   </data>
   <data name="WriteFileHelpPassword" xml:space="preserve">
     <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
@@ -1078,9 +1068,9 @@ To write content to a file, put the full path and file name in here.
 You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="WriteFileToolTipMethod" xml:space="preserve">
-    <value>"Overwrite will replace the file contents with the new content.
+    <value>Overwrite will replace the file contents with the new content.
 Append Top puts the new content at the beginning of the file.
-Append Bottom will add the new content to the end of the file."</value>
+Append Bottom will add the new content to the end of the file.</value>
   </data>
   <data name="WriteFileToolTipPassword" xml:space="preserve">
     <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
@@ -1433,10 +1423,10 @@ Data
 [[Recordset().Field]]</value>
   </data>
   <data name="EmailHelpMailSource" xml:space="preserve">
-    <value>Select a preconfigured email source or ""New Email Source..."" to add a new one.
+    <value>Select a preconfigured email source or "New Email Source..." to add a new one.
 
 Allowed:
-Select a preconfigured email source or ""New Email Source..."" to add a new one.</value>
+Select a preconfigured email source or "New Email Source..." to add a new one.</value>
   </data>
   <data name="EmailHelpPassword" xml:space="preserve">
     <value>Enter the password, if there is one, for the account you are sending from.
@@ -1506,7 +1496,7 @@ If you leave it blank, the account used to setup the Email Source will be used.<
     <value>Select a preconfigured email source or "New Email Source..." to add a new one.</value>
   </data>
   <data name="EmailToolTipPassword" xml:space="preserve">
-    <value>Select a preconfigured email source or "New Email Source..." to add a new one.</value>
+    <value>Enter the password, if there is one, for the account you are sending from.</value>
   </data>
   <data name="EmailToolTipResult" xml:space="preserve">
     <value>Only variables go in here.
@@ -1959,13 +1949,16 @@ If you do not want a field mapped, blank out this field.</value>
     <value>Specify the Recordset you would like to copy the information to. This is the destination recordset.</value>
   </data>
   <data name="CountHelpRecordset" xml:space="preserve">
-    <value>[[Customer(2).ID]],
+    <value>To Count the number of records/indexes in a recordset, put the recordset name in here. E.g. [[Customer()]]
 
 Allowed:
 [[Recordset()]]</value>
   </data>
   <data name="CountHelpResult" xml:space="preserve">
-    <value>[[Customer(3).ID]].
+    <value>Only variables go in here.
+Returns a number specifying how many records/indexes are in the recordset.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset() will add a new record and (*) will assign every record.
 
 Allowed:
 [[Scalar]]  
@@ -1974,10 +1967,13 @@ Allowed:
 [[Recordset().Field]]</value>
   </data>
   <data name="CountToolTipRecordset" xml:space="preserve">
-    <value />
+    <value>To Count the number of records/indexes in a recordset, put the name in here.</value>
   </data>
   <data name="CountToolTipResult" xml:space="preserve">
-    <value />
+    <value>Only variables go in here. 
+Returns a number specifying how many records/indexes are in the recordset.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset() will add a new record and (*) will assign every record.</value>
   </data>
   <data name="CreateJSONHelpInput" xml:space="preserve">
     <value>You can use [[Scalar]] as well as [[Recordset().Fields]].</value>
@@ -2002,7 +1998,7 @@ Allowed:
 Integer:- "String" : integer where "String" is the Name field and integer is the Input field value. Note: Integers do not have decimal places. 
 Object:- "ObjectName":{"key":"value",...}
 where "ObjectName" is the Name field and key is the Input variables name and value is the value of the variable. You can use (*) notation as well as comma separated values to build this Object.
-Array:- "ArrayName"":["val1","val2"...]
+Array:- "ArrayName":["val1","val2"...]
 where"ArrayName" is the Name field and val1, val2 etc. are either recordset fields or scalars. You can use (*) notation as well as comma separated values to build this Array. 
 Boolean:- "String" : true/false where "String" is the Name field and true/false is the Boolean Input field value. 
  String:- "String" : "Value" where "String" is the Name field and "Value" is the Input field value. 
@@ -2423,13 +2419,13 @@ You can use a sequence tool with other activities inside it to execute a number 
     <value>To have all conditions met then select this check box.</value>
   </data>
   <data name="LengthHelpRecordset" xml:space="preserve">
-    <value>* in Range allows you to input a range of indexes.
+    <value>To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]]
 
 Allowed:
 [[Recordset()]]</value>
   </data>
   <data name="LengthHelpResult" xml:space="preserve">
-    <value>* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
+    <value>Only variables go in here. Returns a number specifying the highest index / max index in the recordset.
 
 Allowed:
 [[Scalar]]  
@@ -2438,10 +2434,10 @@ Allowed:
 [[Recordset().Field]]</value>
   </data>
   <data name="LengthToolTipRecordset" xml:space="preserve">
-    <value>* in Range allows you to input a range of indexes.</value>
+    <value>To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]]</value>
   </data>
   <data name="LengthToolTipResult" xml:space="preserve">
-    <value>* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.</value>
+    <value>Only variables go in here. Returns a number specifying the highest index / max index in the recordset.</value>
   </data>
   <data name="NativeActivityHelpCallthiswebservice" xml:space="preserve">
     <value>If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
@@ -2989,13 +2985,13 @@ Data
 [[Recordset().Field]]"</value>
   </data>
   <data name="DateTimeDifferenceHelpOutputType" xml:space="preserve">
-    <value>"Select the unit of time to output the difference in.
+    <value>Select the unit of time to output the difference in.
 
 Allowed:
-na"</value>
+na</value>
   </data>
   <data name="DateTimeDifferenceHelpResult" xml:space="preserve">
-    <value>"Only variables go in here.
+    <value>Only variables go in here.
 Returns the difference in time between the two date times.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.
@@ -3012,9 +3008,9 @@ To find the difference in time between two date times, put the first date time i
 Leaving this field blank will give you the system date time.</value>
   </data>
   <data name="DateTimeDifferenceToolTipDatetime2" xml:space="preserve">
-    <value>"Any variable and/or data goes in here.
+    <value>Any variable and/or data goes in here.
 To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
-Leaving this field blank will give you the system date time."</value>
+Leaving this field blank will give you the system date time.</value>
   </data>
   <data name="DateTimeDifferenceToolTipInputFormat" xml:space="preserve">
     <value>Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.

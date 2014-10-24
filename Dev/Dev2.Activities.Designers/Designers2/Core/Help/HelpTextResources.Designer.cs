@@ -296,16 +296,9 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Only variables go in here.
-        ///Returns the formatted number.
-        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
-        ///Using recordset () will add a new record and (*) will assign every record.
-        ///
-        ///Allowed:
-        ///[[Scalar]]  
-        ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[Recordset().Field]].
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
+        ///To perform a calculation, put the calculation in here in BODMAS format.
+        ///There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset..
         /// </summary>
         public static string CalculateToolTipFx {
             get {
@@ -816,7 +809,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [[Customer(2).ID]],
+        ///   Looks up a localized string similar to To Count the number of records/indexes in a recordset, put the recordset name in here. E.g. [[Customer()]]
         ///
         ///Allowed:
         ///[[Recordset()]].
@@ -828,7 +821,10 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [[Customer(3).ID]].
+        ///   Looks up a localized string similar to Only variables go in here.
+        ///Returns a number specifying how many records/indexes are in the recordset.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset() will add a new record and (*) will assign every record.
         ///
         ///Allowed:
         ///[[Scalar]]  
@@ -843,7 +839,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to To Count the number of records/indexes in a recordset, put the name in here..
         /// </summary>
         public static string CountToolTipRecordset {
             get {
@@ -852,7 +848,10 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Only variables go in here. 
+        ///Returns a number specifying how many records/indexes are in the recordset.
+        ///You can use [[Scalar]] as well as [[Recordset().Fields]].
+        ///Using recordset() will add a new record and (*) will assign every record..
         /// </summary>
         public static string CountToolTipResult {
             get {
@@ -980,7 +979,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///   Looks up a localized string similar to Number:- &quot;String&quot; : number where &quot;String&quot; is the Name field and number is the Input field value. Note: Numbers can have decimal places. 
         ///Integer:- &quot;String&quot; : integer where &quot;String&quot; is the Name field and integer is the Input field value. Note: Integers do not have decimal places. 
         ///Object:- &quot;ObjectName&quot;:{&quot;key&quot;:&quot;value&quot;,...}
-        ///where &quot;ObjectName&quot; is the Name field and key is the Input variables name and value is the value of the variable. You can use (*) notation as well as comma separated values to build this Obj [rest of string was truncated]&quot;;.
+        ///where &quot;ObjectName&quot; is the Name field and key is the Input variables name and value is the value of the variable. You can use (*) notation as well as comma separated values to build this  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CreateJSONHelpType {
             get {
@@ -1022,7 +1021,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///   Looks up a localized string similar to Number:- &quot;String&quot; : number where &quot;String&quot; is the Name field and number is the Input field value. Note: Numbers can have decimal places. 
         ///Integer:- &quot;String&quot; : integer where &quot;String&quot; is the Name field and integer is the Input field value. Note: Integers do not have decimal places. 
         ///Object:- &quot;ObjectName&quot;:{&quot;key&quot;:&quot;value&quot;,...}
-        ///where &quot;ObjectName&quot; is the Name field and key is the Input variables name and value is the value of the variable. You can use (*) notation as well as comma separated values to build this Obj [rest of string was truncated]&quot;;.
+        ///where &quot;ObjectName&quot; is the Name field and key is the Input variables name and value is the value of the variable. You can use (*) notation as well as comma separated values to build this  [rest of string was truncated]&quot;;.
         /// </summary>
         public static string CreateJSONToolTipType {
             get {
@@ -1197,8 +1196,8 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Any variable and/or data goes in here.
-        ///To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record..
+        ///   Looks up a localized string similar to If Index is being used and there is extra space between the data supplied and the number of index characters, you can specify what makes up the padding e.g. 0 for numbers or blank space for text.
+        ///.
         /// </summary>
         public static string DataMergeToolTipPadding {
             get {
@@ -1512,10 +1511,10 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Select the unit of time to output the difference in.
+        ///   Looks up a localized string similar to Select the unit of time to output the difference in.
         ///
         ///Allowed:
-        ///na&quot;.
+        ///na.
         /// </summary>
         public static string DateTimeDifferenceHelpOutputType {
             get {
@@ -1524,7 +1523,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Only variables go in here.
+        ///   Looks up a localized string similar to Only variables go in here.
         ///Returns the difference in time between the two date times.
         ///You can use [[Scalar]] as well as [[Recordset().Fields]].
         ///Using recordset () will add a new record and (*) will assign every record.
@@ -1553,9 +1552,9 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Any variable and/or data goes in here.
+        ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
-        ///Leaving this field blank will give you the system date time.&quot;.
+        ///Leaving this field blank will give you the system date time..
         /// </summary>
         public static string DateTimeDifferenceToolTipDatetime2 {
             get {
@@ -2143,10 +2142,10 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured email source or &quot;&quot;New Email Source...&quot;&quot; to add a new one.
+        ///   Looks up a localized string similar to Select a preconfigured email source or &quot;New Email Source...&quot; to add a new one.
         ///
         ///Allowed:
-        ///Select a preconfigured email source or &quot;&quot;New Email Source...&quot;&quot; to add a new one..
+        ///Select a preconfigured email source or &quot;New Email Source...&quot; to add a new one..
         /// </summary>
         public static string EmailHelpMailSource {
             get {
@@ -2291,7 +2290,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select a preconfigured email source or &quot;New Email Source...&quot; to add a new one..
+        ///   Looks up a localized string similar to Enter the password, if there is one, for the account you are sending from..
         /// </summary>
         public static string EmailToolTipPassword {
             get {
@@ -2679,7 +2678,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachHelpForEachType {
             get {
@@ -2710,7 +2709,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///* in Range allows you to input a range of indexes.
         ///* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
         ///* in Recordset will execute every index in the given recordset.
-        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... [rest of string was truncated]&quot;;.
+        ///* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1, [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ForEachToolTipForEachType {
             get {
@@ -2981,7 +2980,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to * in Range allows you to input a range of indexes.
+        ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]]
         ///
         ///Allowed:
         ///[[Recordset()]].
@@ -2993,7 +2992,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to * in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
+        ///   Looks up a localized string similar to Only variables go in here. Returns a number specifying the highest index / max index in the recordset.
         ///
         ///Allowed:
         ///[[Scalar]]  
@@ -3008,7 +3007,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to * in Range allows you to input a range of indexes..
+        ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]].
         /// </summary>
         public static string LengthToolTipRecordset {
             get {
@@ -3017,7 +3016,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to * in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9..
+        ///   Looks up a localized string similar to Only variables go in here. Returns a number specifying the highest index / max index in the recordset..
         /// </summary>
         public static string LengthToolTipResult {
             get {
@@ -4376,7 +4375,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).F [rest of string was truncated]&quot;;.
         /// </summary>
         public static string ServiceHelpInput {
             get {
@@ -4549,8 +4548,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   
-        ///[[ [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).Fiel [rest of string was truncated]&quot;;.
         /// </summary>
         public static string SQLBulkInsertHelpInputData {
             get {
@@ -4876,7 +4874,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///ReadUncommitted:- Volatile data can be read and modified during the transaction.
         ///RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
         ///Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
-        ///Snapshot: [rest of string was truncated]&quot;;.
+        ///Snap [rest of string was truncated]&quot;;.
         /// </summary>
         public static string TransactionHelpIsolationLevel {
             get {
@@ -4943,7 +4941,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///ReadUncommitted:- Volatile data can be read and modified during the transaction.
         ///RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
         ///Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
-        ///Snapshot: [rest of string was truncated]&quot;;.
+        ///Snap [rest of string was truncated]&quot;;.
         /// </summary>
         public static string TransactionToolTipIsolationLevel {
             get {
@@ -5395,7 +5393,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         ///Data   
         ///[[Scalar]]   
         ///[[Recordset(n).Field]]   
-        ///[[Recordset(*).Field]]   [rest of string was truncated]&quot;;.
+        ///[[Recordset(*).F [rest of string was truncated]&quot;;.
         /// </summary>
         public static string WorkflowServiceHelpInput {
             get {
@@ -5492,10 +5490,7 @@ namespace Dev2.Activities.Designers2.Core.Help {
         /// <summary>
         ///   Looks up a localized string similar to Overwrite will replace the file contents with the new content.
         ///Append Top puts the new content at the beginning of the file.
-        ///Append Bottom will add the new content to the end of the file.
-        ///
-        ///Allowed:
-        ///How should the contents be written to the file?.
+        ///Append Bottom will add the new content to the end of the file..
         /// </summary>
         public static string WriteFileHelpMethod {
             get {
@@ -5575,9 +5570,9 @@ namespace Dev2.Activities.Designers2.Core.Help {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &quot;Overwrite will replace the file contents with the new content.
+        ///   Looks up a localized string similar to Overwrite will replace the file contents with the new content.
         ///Append Top puts the new content at the beginning of the file.
-        ///Append Bottom will add the new content to the end of the file.&quot;.
+        ///Append Bottom will add the new content to the end of the file..
         /// </summary>
         public static string WriteFileToolTipMethod {
             get {
