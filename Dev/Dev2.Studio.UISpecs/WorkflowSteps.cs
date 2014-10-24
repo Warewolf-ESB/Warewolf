@@ -370,6 +370,18 @@ namespace Dev2.Studio.UI.Specs
             Bootstrap.DeleteService(resourceName);
         }
 
+        [Given(@"""(.*)"" is not in the explorer")]
+        [Then(@"""(.*)"" is not in the explorer")]
+        [When(@"""(.*)"" is not in the explorer")]
+        public void ThenIsNotInTheExplorer(string resourceName)
+        {
+            if(ExplorerUIMap.ValidateHasResource(resourceName))
+            {
+                ExplorerUIMap.RightClickDeleteResource(resourceName, "UNASSIGNED", "localhost");
+                Bootstrap.DeleteService(resourceName);
+            }
+        }
+
         [Given(@"a new tab is created")]
         [Then(@"a new tab is created")]
         [When(@"a new tab is created")]
@@ -727,9 +739,21 @@ namespace Dev2.Studio.UI.Specs
         public void GivenIStartServerAsWithPassword(string userName, string password)
         {
             TabManagerUIMap.CloseAllTabs();
-            Bootstrap.Teardown(true);
+            Bootstrap.Teardown();
             Playback.Cleanup();
             RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.ServerLocation);
+            Playback.Initialize();
+        }
+
+        [Given(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        [Then(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        [When(@"I start Studio as ""(.*)"" with password ""(.*)""")]
+        public void GivenIStartStudioAsWithPassword(string userName, string password)
+        {
+            TabManagerUIMap.CloseAllTabs();
+            Bootstrap.Teardown(true);
+            Playback.Cleanup();
+            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation);
             Playback.Initialize();
         }
 
@@ -771,19 +795,6 @@ namespace Dev2.Studio.UI.Specs
             proc.Start();
             Playback.Wait(Bootstrap.WaitMs);
         }
-
-        [Given(@"I start Studio as ""(.*)"" with password ""(.*)""")]
-        [Then(@"I start Studio as ""(.*)"" with password ""(.*)""")]
-        [When(@"I start Studio as ""(.*)"" with password ""(.*)""")]
-        public void GivenIStartStudioAsWithPassword(string userName, string password)
-        {
-            TabManagerUIMap.CloseAllTabs();
-            Bootstrap.Teardown(true);
-            Playback.Cleanup();
-            RunSpecifiedFileWithUserNameAndPassword(userName, password, Bootstrap.StudioLocation);
-            Playback.Initialize();
-        }
-
 
         [When(@"I drag ""(.*)"" onto ""(.*)""")]
         [Given(@"I drag ""(.*)"" onto ""(.*)""")]
@@ -904,23 +915,14 @@ namespace Dev2.Studio.UI.Specs
                     }
 
                     var isInvisible = control.State.HasFlag(ControlStates.Invisible);
-
-
                 }
             }
             catch(Exception)
             {
                 once = false;
-                
             }
-
-               Assert.IsTrue(once);
-      
-            }
-
-
-    
-        
+            Assert.IsTrue(once);
+        }
 
         [Given(@"""(.*)"" is invisible within ""(.*)"" seconds")]
         [Then(@"""(.*)"" is invisible within ""(.*)"" seconds")]
