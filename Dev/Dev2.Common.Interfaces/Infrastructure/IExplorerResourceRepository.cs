@@ -27,6 +27,10 @@ namespace Dev2.Common.Interfaces.Infrastructure
         IExplorerRepositoryResult AddItem(IExplorerItem itemToRename, Guid workSpaceId);
         IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid empty);
     }
+    public interface IClientExplorerResourceRepository:IExplorerResourceRepository
+    {
+        string GetServerVersion();
+    }
 
     public interface IExplorerRepositoryResult
     {

@@ -253,6 +253,10 @@
                                           Command="{Binding DeleteVersionCommand}"
                                           Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisConverter}}"
                                           AutomationProperties.AutomationId ="UI_DeleteVersionContextMenuItem_AutoID" />
+                                <MenuItem Header="Server Version"
+                                          Command="{Binding ServerVersionCommand}"
+                                          Visibility="{Binding IsServerVersionVisible, Converter={StaticResource BoolToVisConverter}}"
+                                          AutomationProperties.AutomationId ="UI_ViewServerVersionContextMenuItem_AutoID" />
                             </ContextMenu>
                         </Border.ContextMenu>
 

@@ -195,6 +195,7 @@
     <Compile Include="ConnectionHelpers\ConnectControlSingletonTests.cs" />
     <Compile Include="CustomContainerTests.cs" />
     <Compile Include="DeployNavigationViewModelTest.cs" />
+    <Compile Include="DialogFactoryTests.cs" />
     <Compile Include="Dialogs\ProgressDialogViewModelTests.cs" />
     <Compile Include="Dock\ContentPaneFactoryTests.cs" />
     <Compile Include="Helpers\TestProgressFileDownloaderTests.cs">

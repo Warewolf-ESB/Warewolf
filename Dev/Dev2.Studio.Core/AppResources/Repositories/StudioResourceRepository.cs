@@ -100,7 +100,7 @@ namespace Dev2.AppResources.Repositories
 
         public Func<Guid> GetCurrentEnvironment = () => EnvironmentRepository.Instance.ActiveEnvironment.ID;
 
-        public Func<Guid, IExplorerResourceRepository> GetExplorerProxy = environmentId =>
+        public Func<Guid, IClientExplorerResourceRepository> GetExplorerProxy = environmentId =>
         {
             var environmentModel = EnvironmentRepository.Instance.Get(environmentId);
             var connection = environmentModel.Connection;
@@ -261,7 +261,9 @@ namespace Dev2.AppResources.Repositories
             var server = FindItem(a => a.EnvironmentId == environmentGuid && a.ResourceType == ResourceType.Server);
             if(server != null)
             {
+                // ReSharper disable MaximumChainedReferences
                 server.Descendants().Where(a => a.ResourceType == ResourceType.Folder).ToList().ForEach(a =>
+                    // ReSharper restore MaximumChainedReferences
                     {
 
                         a.Permissions = modifiedPermissions;
@@ -660,7 +662,9 @@ namespace Dev2.AppResources.Repositories
             {
                 return null;
             }
+            // ReSharper disable MaximumChainedReferences
             root.Children = root.Children.Where(a => FilterRec(filter, a) != null || filter(a)).ToObservableCollection();
+            // ReSharper restore MaximumChainedReferences
             return root;
         }
 
@@ -735,7 +739,7 @@ namespace Dev2.AppResources.Repositories
         {
             if(explorerItemModel.Children != null)
             {
-                foreach(ExplorerItemModel child in explorerItemModel.Children)
+                foreach(var child in explorerItemModel.Children)
                 {
                     child.Parent = explorerItemModel;
                     child.EnvironmentId = enviromentId;
@@ -935,6 +939,19 @@ namespace Dev2.AppResources.Repositories
             if(parent != null && parent.Children.Count > 0)
             {
                 ShowVersionHistory(environmentId, resourceId);
+            }
+        }
+
+        public string GetServerVersion(Guid environmentId)
+        {
+            try
+            {
+                return GetExplorerProxy(environmentId).GetServerVersion();
+            }
+            catch (Exception)
+            {
+
+                return "Less than 0.4.19.1";
             }
         }
     }

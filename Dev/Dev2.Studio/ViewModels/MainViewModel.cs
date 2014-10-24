@@ -625,7 +625,8 @@ namespace Dev2.Studio.ViewModels
 
         private void DisplayAboutDialogue()
         {
-            WindowManager.ShowDialog(DialogViewModelFactory.CreateAboutDialog());
+            var factory = CustomContainer.Get<DialogViewModelFactory>();
+            WindowManager.ShowDialog(factory.CreateAboutDialog());
         }
 
         // Write CodedUI Test Because of Silly Chicken affect ;)

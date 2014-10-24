@@ -19,10 +19,12 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Input;
+using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
@@ -55,7 +57,7 @@ namespace Dev2.Models
         ICommand _debugCommand;
         ICommand _connectCommand;
         ICommand _disconnectCommand;
-
+        ICommand _serverVersionCommand; 
         bool _isExplorerExpanded;
         bool _isResourcePickerExpanded;
         bool _isDeploySourceExpanded;
@@ -259,6 +261,7 @@ namespace Dev2.Models
         {
             get
             {
+                // ReSharper disable once MaximumChainedReferences
                 return _children.Where(c => c.ResourceType != ResourceType.Version && c.ResourceType != ResourceType.Message).ToList();
             }
         }
@@ -436,6 +439,12 @@ namespace Dev2.Models
                 OnPropertyChanged();
             }
         }
+        public bool IsServerVersionVisible
+        {
+            get { return ResourceType == ResourceType.Server; }
+        }
+
+
 
         public IVersionInfo VersionInfo
         {
@@ -884,6 +893,32 @@ namespace Dev2.Models
                 return _disconnectCommand ?? (_disconnectCommand = disconnectCommand);
             }
         }
+
+        public ICommand ServerVersionCommand
+        {
+            get
+            {
+                return _serverVersionCommand ?? (_serverVersionCommand = new DelegateCommand(p => ShowServerVersionAbout()));
+            }
+        }
+
+        void ShowServerVersionAbout()
+        {
+            var factory = CustomContainer.Get<IDialogViewModelFactory>();
+            WindowManager.ShowDialog(factory.CreateServerAboutDialog(_studioResourceRepository.GetServerVersion(EnvironmentId)));
+        }
+        public IWindowManager WindowManager
+        {
+            get
+            {
+                return _windowManager?? (_windowManager = new WindowManager());
+                
+            }
+            set
+            {
+                _windowManager = value;
+            }
+        }
         public bool? IsChecked
         {
             get
@@ -1039,7 +1074,7 @@ namespace Dev2.Models
         private int GetChildrenCount()
         {
             int total = 0;
-            foreach(ExplorerItemModel explorerItemModel in Children)
+            foreach(var explorerItemModel in Children)
             {
                 if(explorerItemModel.ResourceType != ResourceType.Version &&
                    explorerItemModel.ResourceType != ResourceType.Message)
@@ -1328,11 +1363,13 @@ namespace Dev2.Models
                     var xaml = resource.WorkflowXaml;
                     if(xaml != null)
                     {
+                        // ReSharper disable MaximumChainedReferences
                         resource.WorkflowXaml = xaml
                             .Replace("x:Class=\"" + resource.ResourceName, "x:Class=\"" + newName)
                             .Replace("Name=\"" + resource.ResourceName, "Name=\"" + newName)
                             .Replace("ToolboxFriendlyName=\"" + resource.ResourceName, "ToolboxFriendlyName=\"" + newName)
                             .Replace("DisplayName=\"" + resource.ResourceName, "DisplayName=\"" + newName);
+                        // ReSharper restore MaximumChainedReferences
                     }
                 }
             }
@@ -1521,6 +1558,8 @@ namespace Dev2.Models
 
         public static Action<CheckStateChangedArgs> OnCheckedStateChangedAction;
         public static Action<bool> OnRenameChangedAction;
+        IWindowManager _windowManager;
+
         /// <summary>
         ///     Verifies the state of the IsChecked property by taking the childrens IsChecked State into account
         /// </summary>
@@ -1561,7 +1600,9 @@ namespace Dev2.Models
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
+        // ReSharper disable TooManyDependencies
         public CheckStateChangedArgs(bool previousState, bool newState, Guid resourceId, ResourceType resourceType , bool updateStats)
+            // ReSharper restore TooManyDependencies
         {
             PreviousState = previousState;
             NewState = newState;

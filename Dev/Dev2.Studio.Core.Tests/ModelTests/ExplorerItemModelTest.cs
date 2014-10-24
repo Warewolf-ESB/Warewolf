@@ -9,14 +9,13 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Activities.Statements;
 using System.Windows;
-using System.Windows.Media;
 using Caliburn.Micro;
 using Dev2.Activities;
 using Dev2.AppResources.Repositories;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Studio;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
@@ -113,7 +112,9 @@ namespace Dev2.Core.Tests.ModelTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExplorerItemModel_Clone")]
+        // ReSharper disable MethodTooLong
         public void ExplorerItemModel_Clone_ReturnsNewObjectWithAllPropertiesSet()
+        
         {
             //------------Setup for test--------------------------
             var connectControlSingleton = new Mock<IConnectControlSingleton>().Object;
@@ -194,6 +195,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
+            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
             Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
         }
 
@@ -235,6 +237,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
+            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
             Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
         }
 
@@ -274,6 +277,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
+            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
             Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
         }
 
@@ -313,6 +317,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
+            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
             Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
         }
 
@@ -352,6 +357,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
+            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
             Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
         }
 
@@ -390,6 +396,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
+            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
             Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
         }
 
@@ -429,6 +436,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
+            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
             Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
         }
 
@@ -468,6 +476,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
+            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
             Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
         }
 
@@ -507,6 +516,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
+            Assert.AreEqual(false, explorerItemModel.IsServerVersionVisible);
             Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
         }
 
@@ -585,6 +595,7 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(false, explorerItemModel.IsResourcePickerExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeploySourceExpanded);
             Assert.AreEqual(false, explorerItemModel.IsDeployTargetExpanded);
+            Assert.AreEqual(true, explorerItemModel.IsServerVersionVisible);
             Assert.AreEqual("Show Version History", explorerItemModel.ToggleVersionHistoryHeader);
         }
 
@@ -664,6 +675,38 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.IsNotNull(actualResourceInvoked);
             Assert.AreEqual(resourceId, actualResourceInvoked.ID);
         }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("ExplorerItemModel_ShowServerVersion")]
+        public void ExplorerItemModel_ShowServerVersion_ShowVersionCallsStudioRepo()
+        {
+         
+            var mockResourceRepository = new Mock<IResourceRepository>();
+            var resourceId = Guid.NewGuid();
+            var envID = Guid.Empty;
+
+            var mockResourceModel = new Mock<IResourceModel>();
+            Mock<IEnvironmentModel> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            GetEnvironmentRepository(mockEnvironment);
+            var manager = new Mock<IWindowManager>();
+            const string displayName = "localhost";
+            ExplorerItemModel resourceItem;
+            var studioRepo = new Mock<IStudioResourceRepository>();
+            
+            var serverItem = SetupExplorerItemModelWithFolderAndOneChild(displayName, envID, resourceId, new Mock<IConnectControlSingleton>().Object, out resourceItem,studioRepo);
+            studioRepo.Setup(a => a.GetServerVersion(serverItem.EnvironmentId)).Returns("1.2.3.4");
+            serverItem.WindowManager = manager.Object;
+            var dialogFactory = new Mock<IDialogViewModelFactory>();
+            var dialog = new Mock<IDialogueViewModel>();
+            dialogFactory.Setup(a => a.CreateServerAboutDialog("1.2.3.4")).Returns(dialog.Object);
+            CustomContainer.Register(dialogFactory.Object);
+            serverItem.ServerVersionCommand.Execute(null);
+            manager.Verify(a=>a.ShowDialog(dialog.Object,null,null));
+            dialogFactory.Verify(a => a.CreateServerAboutDialog("1.2.3.4"));
+
+        }
+
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -769,9 +812,12 @@ namespace Dev2.Core.Tests.ModelTests
 
             IExplorerItemModel outvalue;
             var studioResourceRepo = new Mock<IStudioResourceRepository>();
+            // ReSharper disable MaximumChainedReferences
             studioResourceRepo.Setup(s => s.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()))
                 .Returns((StringBuilder)null)
+               
                 .Verifiable();
+            // ReSharper restore MaximumChainedReferences
             var worker = new Mock<IAsyncWorker>();
             var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.Empty, Guid.NewGuid(), out outvalue, studioResourceRepo.Object, worker.Object, new Mock<IConnectControlSingleton>().Object);
             explorerItemModel.ResourceType = ResourceType.Version;
@@ -811,9 +857,12 @@ namespace Dev2.Core.Tests.ModelTests
 
             IExplorerItemModel outvalue;
             var studioResourceRepo = new Mock<IStudioResourceRepository>();
+            // ReSharper disable MaximumChainedReferences
             studioResourceRepo.Setup(s => s.GetVersion(It.IsAny<IVersionInfo>(), It.IsAny<Guid>()))
                 .Returns(new StringBuilder("Hail HTML5"))
+
                 .Verifiable();
+            // ReSharper restore MaximumChainedReferences
             var worker = new Mock<IAsyncWorker>();
             var explorerItemModel = SetupExplorerItemModelWithFolderAndOneChild("bob", Guid.Empty, Guid.NewGuid(), out outvalue, studioResourceRepo.Object, worker.Object, new Mock<IConnectControlSingleton>().Object);
             explorerItemModel.ResourceType = ResourceType.Version;
@@ -2432,7 +2481,9 @@ namespace Dev2.Core.Tests.ModelTests
             mockEnvironment.Setup(model => model.ID).Returns(envID);
             GetEnvironmentRepository(mockEnvironment);
 
+            // ReSharper disable MaximumChainedReferences
             mockStudioRepository.Setup(repository => repository.Load(envID, It.IsAny<IAsyncWorker>())).Verifiable();
+            // ReSharper restore MaximumChainedReferences
 
             const string displayName = "localhost";
             ExplorerItemModel resourceItem;
@@ -3790,8 +3841,10 @@ namespace Dev2.Core.Tests.ModelTests
         {
             //------------Setup for test--------------------------
             var studioResourceRepository = new Mock<IStudioResourceRepository>();
+            // ReSharper disable MaximumChainedReferences
             studioResourceRepository.Setup(s => s.ShowVersionHistory(It.IsAny<Guid>(), It.IsAny<Guid>()))
                 .Verifiable();
+            
             var explorerItemModel = new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, studioResourceRepository.Object)
             {
                 ResourceType = ResourceType.Message,
@@ -4347,9 +4400,11 @@ namespace Dev2.Core.Tests.ModelTests
             Assert.AreEqual(result, serverItem.CanCreateNewFolder);
         }
 
-        static ExplorerItemModel SetupExplorerItemModelWithFolderAndOneChild(string displayName, Guid envID, Guid resourceId, IConnectControlSingleton connectControlSingleton, out ExplorerItemModel resourceItem)
+        static ExplorerItemModel SetupExplorerItemModelWithFolderAndOneChild(string displayName, Guid envID, Guid resourceId, IConnectControlSingleton connectControlSingleton, out ExplorerItemModel resourceItem,Mock<IStudioResourceRepository> studioRepo =null)
         {
-            var serverItem = new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object)
+            if(studioRepo == null)
+                studioRepo = new Mock<IStudioResourceRepository>();
+            var serverItem = new ExplorerItemModel(connectControlSingleton, studioRepo.Object)
             {
                 ResourceType = ResourceType.Server,
                 DisplayName = displayName,
@@ -4357,7 +4412,7 @@ namespace Dev2.Core.Tests.ModelTests
                 Permissions = Permissions.Administrator,
                 EnvironmentId = envID
             };
-            var folderItem = new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object)
+            var folderItem = new ExplorerItemModel(connectControlSingleton, studioRepo.Object)
             {
                 ResourceType = ResourceType.Folder,
                 DisplayName = Guid.NewGuid().ToString(),
@@ -4367,7 +4422,7 @@ namespace Dev2.Core.Tests.ModelTests
                 Parent = serverItem
             };
 
-            resourceItem = new ExplorerItemModel(connectControlSingleton, new Mock<IStudioResourceRepository>().Object)
+            resourceItem = new ExplorerItemModel(connectControlSingleton, studioRepo.Object)
             {
                 ResourceType = ResourceType.WorkflowService,
                 DisplayName = Guid.NewGuid().ToString(),
@@ -4532,4 +4587,5 @@ namespace Dev2.Core.Tests.ModelTests
         }
 
     }
-}
+}    // ReSharper restore MethodTooLong
+// ReSharper restore MaximumChainedReferences

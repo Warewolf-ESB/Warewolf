@@ -79,10 +79,13 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_Load_CallsServiceLoad()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
+     
+            // ReSharper disable MaximumChainedReferences
             mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()))
                                           .Returns(new ServerExplorerItem { DisplayName = "some name" })
                                           .Verifiable();
+           
 
             var mockVersionRepository = new Mock<IVersionRepository>();
 
@@ -111,7 +114,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_Load_ServiceCallReturnsData_ExplorerItemsModelsIsBuilt()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()))
                                           .Returns(GetTestData());
             var mockVersionRepository = new Mock<IVersionRepository>();
@@ -145,7 +148,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_Load_ServiceCallReturnsNoData_ExplorerItemsHasNoData()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()));
             var mockVersionRepository = new Mock<IVersionRepository>();
             SetupEnvironmentRepo(Guid.Empty);
@@ -170,7 +173,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_AddItem_ItemIsNull_ThrowsException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             SetupEnvironmentRepo(Guid.Empty);
             var repository = new StudioResourceRepository(GetTestData(), Guid.Empty, _invoke)
@@ -189,7 +192,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_AddItem_ItemNotAttachedToParent_ThrowsException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             SetupEnvironmentRepo(Guid.Empty);
             var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
@@ -217,7 +220,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_AddItem_AttachedToParent_AddCalledOnServer()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.AddItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                 .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"));
             var mockVersionRepository = new Mock<IVersionRepository>();
@@ -253,7 +256,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_Filter_NullString_ReturnsSourceItems()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var explorerItem = GetTestData();
             SetupEnvironmentRepo(Guid.Empty);
             var mockVersionRepository = new Mock<IVersionRepository>();
@@ -276,7 +279,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_Filter_String_ReturnsMatchingItems()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var explorerItem = GetTestData();
             SetupEnvironmentRepo(Guid.Empty);
             var mockVersionRepository = new Mock<IVersionRepository>();
@@ -304,7 +307,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_FilterDialog_String_ReturnsMatchingItems()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var explorerItem = GetTestData();
             SetupEnvironmentRepo(Guid.Empty);
             var mockVersionRepository = new Mock<IVersionRepository>();
@@ -331,7 +334,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_Filter_NullAfterFilter_ReturnsOriginalCollection()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var explorerItem = GetTestData();
             SetupEnvironmentRepo(Guid.Empty);
             var mockVersionRepository = new Mock<IVersionRepository>();
@@ -358,7 +361,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_FilterDialog_NullAfterFilter_ReturnsOriginalCollection()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var explorerItem = GetTestData();
             SetupEnvironmentRepo(Guid.Empty);
             var mockVersionRepository = new Mock<IVersionRepository>();
@@ -385,7 +388,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_Filter_String_Multiple_ReturnsMatchingItems()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var explorerItem = GetTestData();
             SetupEnvironmentRepo(Guid.Empty);
             var mockVersionRepository = new Mock<IVersionRepository>();
@@ -410,7 +413,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_FilterDialog_String_Multiple_ReturnsMatchingItems()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var explorerItem = GetTestData();
             SetupEnvironmentRepo(Guid.Empty);
             var mockVersionRepository = new Mock<IVersionRepository>();
@@ -437,7 +440,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_AddItem_CallsServiceAddItem()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.AddItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -461,7 +464,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_AddItem_ServiceReturnsAndError_ThrowsAnException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.AddItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Fail, "Just Failed"));
             SetupEnvironmentRepo(Guid.Empty);
@@ -482,7 +485,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_AddItem_ServiceThrowsAnException_ReThrowsAnException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.AddItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Throws(new Exception("Something really bad happened, reboot your PC or risk a Harddrive crash"));
             SetupEnvironmentRepo(Guid.Empty);
@@ -502,7 +505,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_DeleteFolder_HasWorkflow_WorkflowIsRemoved()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"));
 
@@ -527,7 +530,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var _propertyChangedCalled = false;
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -565,7 +568,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_DeleteFolder_ResourceIdDoesnotExists_DoesNothing()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>())).Verifiable();
 
             var environmentId = Guid.NewGuid();
@@ -588,7 +591,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_DeleteFolder_EnvironmentIdDoesnotExists_ThrowsException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>())).Verifiable();
 
             var environmentId = Guid.NewGuid();
@@ -610,7 +613,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_DeleteFolder_ItemIsNotOnExplorerItemModels_DoesNotCallsDeleteOnService()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>())).Verifiable();
 
             var environmentId = Guid.NewGuid();
@@ -634,7 +637,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_DeleteFolder_ItemIsOnExplorerItemModels_CallsDeleteOnService()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -662,7 +665,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_DeleteFolder_DeleteServiceReturnsAnError_ThrowsAnException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Fail, "Just Failed"));
 
@@ -688,7 +691,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_DeleteFolder_DeleteServiceThrowsAndException_ReThrowsAnException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Throws(new Exception("Something really bad happened, reboot your PC or risk a Harddrive crash"));
             var environmentId = Guid.NewGuid();
@@ -724,7 +727,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var _propertyChangedCalled = false;
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -767,7 +770,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var _propertyChangedCalled = false;
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -811,7 +814,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var _propertyChangedCalled = false;
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -855,7 +858,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var _propertyChangedCalled = false;
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -898,7 +901,7 @@ namespace Dev2.Core.Tests.Repositories
         {
             //------------Setup for test--------------------------
             var _propertyChangedCalled = false;
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -1022,7 +1025,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_Connect_EnvironmentNotFound_ThrowsException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var repository = new StudioResourceRepository(null, Guid.Empty, _invoke)
                 {
@@ -1041,7 +1044,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_Connect_EnvironmentNodeExists_CallsServiceLoad()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()))
                                           .Returns(new ServerExplorerItem())
                                           .Verifiable();
@@ -1082,7 +1085,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_Connect_EnvironmentNodeExists_CallsServiceLoad_DoesNotDuplicateServer()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()))
                                           .Returns(new ServerExplorerItem())
                                           .Verifiable();
@@ -1117,7 +1120,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_Connect_ServiceCallReturnsData_ExplorerItemsModelsIsBuilt()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.Load(It.IsAny<Guid>()))
                                           .Returns(GetTestData());
 
@@ -1158,7 +1161,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RenameItem_ItemIsOnExplorerItemModelsAndHasNewNameParam_CallsRenameItemOnService()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -1185,7 +1188,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RenameItem_ItemIsOnExplorerItemModelsAndHasSameNameParam_DoesntCallRenameItemOnService()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -1213,7 +1216,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RenameItem_ServiceReturnsAndError_ThrowsAndException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Fail, "Just Failed"));
 
@@ -1238,7 +1241,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RenameItem_ServiceThrowsAnException_ReThrowsAndException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Throws(new Exception("Something really bad happened, reboot your PC or risk a Harddrive crash"));
 
@@ -1265,7 +1268,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RenameItem_ItemIsOnExplorerItemModelsAndNewNameParamIsEmpty_ThrowsException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                          .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                          .Verifiable();
@@ -1318,7 +1321,7 @@ namespace Dev2.Core.Tests.Repositories
         {
 
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -1362,7 +1365,7 @@ namespace Dev2.Core.Tests.Repositories
         {
 
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -1406,7 +1409,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_MoveItem_RenameFail_PublishesDisplayMessage()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Fail, "Success"))
                                           .Verifiable();
@@ -1470,7 +1473,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RenameFolder_ItemIsOnExplorerItemModelsAndHasNewNameParam_CallsRenameItemOnService()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -1507,7 +1510,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RenameFolder_RenameFail_PublishesDisplayMessage()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Fail, "Success"))
                                           .Verifiable();
@@ -1553,7 +1556,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RenameFolder_ItemIsOnExplorerItemModelsAndHasSameNameParam_DoesntCallRenameItemOnService()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -1581,7 +1584,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RenameFolder_ServiceReturnsAndError_ThrowsAndException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Fail, "Just Failed"));
 
@@ -1606,7 +1609,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RenameFolder_ServiceThrowsAnException_ReThrowsAndException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Throws(new Exception("Something really bad happened, reboot your PC or risk a Harddrive crash"));
 
@@ -1633,7 +1636,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RenameFolder_ItemIsOnExplorerItemModelsAndNewNameParamIsEmpty_ThrowsException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                          .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                          .Verifiable();
@@ -1672,7 +1675,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_FindItemByID_ItemExists_ShouldReturnItem()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>())).Verifiable();
 
             var environmentId = Guid.NewGuid();
@@ -1697,7 +1700,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_FindItemByID_ItemDoesNotExist_ShouldReturnNull()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
 
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
@@ -1721,7 +1724,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_FindItem_FuncMatchesItem_ReturnsItemMatchingPredicate()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
 
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
@@ -1746,7 +1749,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_FindItem_FuncDoesNotMatchItem_ReturnsNull()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
 
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
@@ -1770,7 +1773,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_FindItem_NullFunc_ReturnsNull()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
 
             var environmentId = Guid.NewGuid();
             var workflowId = Guid.NewGuid();
@@ -1793,7 +1796,7 @@ namespace Dev2.Core.Tests.Repositories
         [TestCategory("StudioResourceRepository_UpdateItem")]
         public void StudioResourceRepository_UpdateItem_ExpectSuccessfulUpdate()
         {
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             mockExplorerResourceRepository.Setup(m => m.RenameItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>()))
                                           .Returns(new ExplorerRepositoryResult(ExecStatus.Success, "Success"))
                                           .Verifiable();
@@ -1861,7 +1864,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_ItemAddedMessageHandler_ItemNotFoundInResourceRepo_Service_AddedSuccessfully()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
                 {
@@ -1901,7 +1904,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_ItemAddedMessageHandler_ItemIsFolder_AddedSuccessfully()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
                 {
@@ -1944,7 +1947,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_ItemAddedMessageHandler_ItemNotFoundInResourceRepo_Source_AddedSuccessfully()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
                 {
@@ -1984,7 +1987,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_ItemAddedMessageHandler_ItemNotFoundInResourceRepo_Workflow_AddedSuccessfully()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
                 {
@@ -2024,7 +2027,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_ItemAddedMessageHandler_ParentExistsOnTree_AddedSuccessfully()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
                 {
@@ -2066,7 +2069,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_MoveItem_ParentExistsOnTree_AddedSuccessfully()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
@@ -2097,8 +2100,8 @@ namespace Dev2.Core.Tests.Repositories
                 {
                     ResourcePath = "dave",
                     DisplayName = "dave\bob",
-                    Children = new ObservableCollection<IExplorerItemModel>() { new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, studioResourceRepository) },
-                    Parent = new ExplorerItemModel() { Children = new ObservableCollection<IExplorerItemModel>() }
+                    Children = new ObservableCollection<IExplorerItemModel> { new ExplorerItemModel(new Mock<IConnectControlSingleton>().Object, studioResourceRepository) },
+                    Parent = new ExplorerItemModel { Children = new ObservableCollection<IExplorerItemModel>() }
                 };
             Assert.AreEqual(itemToMove.Children.Count, 1);
             studioResourceRepository.MoveItem(itemToMove, "bob");
@@ -2113,7 +2116,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_ItemAddedMessageHandler_ItemNotServerNode_AddedSuccessfully()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
@@ -2157,7 +2160,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_ItemAddedMessageHandler_ParentDoesNotExistsOnTree_NotAdded()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
@@ -2198,7 +2201,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_UpdateRootAndFoldersPermissions_SetPermissionsToView_ExplorerItemsAreUpdatedToView()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
@@ -2441,7 +2444,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_ShowVersionHistory_CallsGetVersionFromProxy()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             mockVersionRepository.Setup(m => m.GetVersions(It.IsAny<Guid>())).Verifiable();
             SetupEnvironmentRepo(Guid.Empty);
@@ -2463,7 +2466,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_ShowVersionHistory_TwoItemsReturned_ItemsAttachedToParent()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var v1 = new Mock<IVersionInfo>();
             v1.Setup(v => v.VersionNumber).Returns("1");
             var v2 = new Mock<IVersionInfo>();
@@ -2506,7 +2509,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_ShowVersionHistory_NoItemsReturned_InfoItemAttachedToParent()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             mockVersionRepository.Setup(m => m.GetVersions(It.IsAny<Guid>())).Returns(new List<IExplorerItem>());
 
@@ -2542,7 +2545,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_HideHistory_ClearsChildren()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
            
             var superWFId = Guid.NewGuid();
@@ -2582,7 +2585,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RollbackTo_VersionIsNull_ThrowsException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
@@ -2609,7 +2612,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_RollbackTo_TwoItemsReturned_ItemsAttachedToParent()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var v1 = new Mock<IVersionInfo>();
             v1.Setup(v => v.VersionNumber).Returns("1");
             var v2 = new Mock<IVersionInfo>();
@@ -2674,7 +2677,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_DeleteVersion_VersionIsNull_ThrowsException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
@@ -2696,12 +2699,74 @@ namespace Dev2.Core.Tests.Repositories
         }
 
         [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("StudioResourceRepository_GetServerVersion")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void StudioResourceRepository_GetServerVersion_CallsProxy()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.WorkflowService,
+                DisplayName = "SuperWF",
+                ResourceId = Guid.NewGuid(),
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
+            };
+
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+            var env = Guid.NewGuid();
+            mockExplorerResourceRepository.Setup(a => a.GetServerVersion()).Returns("bob");
+            //------------Execute Test---------------------------
+            Assert.AreEqual("bob",repo.GetServerVersion(env));
+            mockExplorerResourceRepository.Verify(a=>a.GetServerVersion());
+        }
+
+                [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("StudioResourceRepository_GetServerVersion")]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void StudioResourceRepository_GetServerVersion_CallsProxy_ReturnsDefault_IfError()
+        {
+            //------------Setup for test--------------------------
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
+            var mockVersionRepository = new Mock<IVersionRepository>();
+            var parent = new ServerExplorerItem
+            {
+                ResourceType = ResourceType.WorkflowService,
+                DisplayName = "SuperWF",
+                ResourceId = Guid.NewGuid(),
+                Permissions = Permissions.Contribute,
+                ResourcePath = "MANFOLDER\\APRIL WORK\\SUB FOLDER"
+            };
+
+            var repo = new StudioResourceRepository(parent, Guid.Empty, _invoke)
+            {
+                GetVersionProxy = id => mockVersionRepository.Object,
+                GetExplorerProxy = id => mockExplorerResourceRepository.Object,
+                GetCurrentEnvironment = () => Guid.Empty
+            };
+            var env = Guid.NewGuid();
+            mockExplorerResourceRepository.Setup(a => a.GetServerVersion()).Throws(new Exception());
+            //------------Execute Test---------------------------
+            Assert.AreEqual("Less than 0.4.19.1", repo.GetServerVersion(env));
+            mockExplorerResourceRepository.Verify(a=>a.GetServerVersion());
+        }
+
+        [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("StudioResourceRepository_DeleteVersion")]
         public void StudioResourceRepository_DeleteVersion_TwoItemsReturned_ItemsAttachedToParent()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var v1 = new Mock<IVersionInfo>();
             v1.Setup(v => v.VersionNumber).Returns("1");
@@ -2759,7 +2824,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_GetVersion_VersionIsNull_ThrowsException()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             var parent = new ServerExplorerItem
             {
@@ -2786,7 +2851,7 @@ namespace Dev2.Core.Tests.Repositories
         public void StudioResourceRepository_GetVersion_CallsVersionOnTheProxy()
         {
             //------------Setup for test--------------------------
-            var mockExplorerResourceRepository = new Mock<IExplorerResourceRepository>();
+            var mockExplorerResourceRepository = new Mock<IClientExplorerResourceRepository>();
             var mockVersionRepository = new Mock<IVersionRepository>();
             mockVersionRepository.Setup(m => m.GetVersion(It.IsAny<IVersionInfo>())).Verifiable();
             var superWFId = Guid.NewGuid();
@@ -2879,3 +2944,4 @@ namespace Dev2.Core.Tests.Repositories
         }
     }
 }
+// ReSharper restore MaximumChainedReferences
