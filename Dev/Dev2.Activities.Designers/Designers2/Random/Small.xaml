@@ -43,7 +43,8 @@
                   ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                   SelectedValue="{Binding Path=SelectedRandomType,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                   ItemsSource="{Binding RandomTypes}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Wherecbx_AutoID}">
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Wherecbx_AutoID}"
+                  ToolTip="{x:Static help:HelpTextResources.RandomToolTipType}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.RandomHelpType}"
                                  DataContext="{Binding}" />
@@ -115,7 +116,8 @@
                                     DefaultText="To" 
                                     Text="{Binding ModelItem.To,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                     Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
-                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Lengthstxt_AutoID}">
+                                    AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Lengthstxt_AutoID}"
+                                    ToolTip="{x:Static help:HelpTextResources.RandomToolTipRangeTo}">
                 <i:Interaction.Behaviors>
                     <help:HelpSetter Text="{x:Static help:HelpTextResources.RandomHelpRangeTo}"
                                      DataContext="{Binding}" />
