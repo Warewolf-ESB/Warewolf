@@ -551,16 +551,14 @@ namespace Dev2.Runtime.Hosting
                 {
                     throw new ArgumentNullException("resourceXml");
                 }
-                
+
                 var workspaceLock = GetWorkspaceLock(workspaceID);
                 lock(workspaceLock)
                 {
                     var xml = resourceXml.ToXElement();
 
                     var resource = new Resource(xml);
-                    if (ResourceCatalog.Instance.GetResourceList(GlobalConstants.ServerWorkspaceID).Any(a => a.ResourcePath== resource.ResourcePath && a.ResourceID != resource.ResourceID))
-                    throw new Exception("Invalid Resource Name");
-                     Dev2Logger.Log.Info("Save Resource." + resource);
+                    Dev2Logger.Log.Info("Save Resource." + resource);
                     _versioningRepository.StoreVersion(resource, user, reason, workspaceID);
 
                     resource.UpgradeXml(xml, resource);

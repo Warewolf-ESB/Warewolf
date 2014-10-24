@@ -56,7 +56,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 xml.Save(Path.Combine(sourcesPath, "HostSecurityProviderServerSigned.xml"));
 
                 var testResources = new Dev2.Runtime.ServiceModel.Resources();
-                var actual = testResources.Paths(workspaceID);
+                var actual = testResources.Paths("", workspaceID, Guid.Empty);
                 Assert.AreEqual("[\"Integration Test Services\\\\Calculate_RecordSet_Subtract\"]", actual);
             }
             finally
@@ -78,7 +78,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void SourcesWithNullArgsExpectedReturnsEmptyList()
         {
             var resources = new Dev2.Runtime.ServiceModel.Resources();
-            var result = resources.Sources(null, Guid.Empty);
+            var result = resources.Sources(null, Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
 
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void SourcesWithInvalidArgsExpectedReturnsEmptyList()
         {
             var resources = new Dev2.Runtime.ServiceModel.Resources();
-            var result = resources.Sources("xxxx", Guid.Empty);
+            var result = resources.Sources("xxxx", Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
 
@@ -111,7 +111,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
-                var result = resources.Sources("{\"resourceType\":\"" + ResourceType.DbSource + "\"}", workspaceID);
+                var result = resources.Sources("{\"resourceType\":\"" + ResourceType.DbSource + "\"}", workspaceID, Guid.Empty);
 
                 Assert.AreEqual(ExpectedCount / Modulo, result.Count);
             }
@@ -148,7 +148,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
                 var resources = new Dev2.Runtime.ServiceModel.Resources();
-                var result = resources.Services(ResourceType.WorkflowService.ToString(), workspaceID);
+                var result = resources.Services(ResourceType.WorkflowService.ToString(), workspaceID, Guid.Empty);
 
                 Assert.AreEqual(ExpectedCount / Modulo, result.Count);
             }
@@ -165,7 +165,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void ServicesWithNullArgsExpectedReturnsEmptyList()
         {
             var resources = new Dev2.Runtime.ServiceModel.Resources();
-            var result = resources.Services(null, Guid.Empty);
+            var result = resources.Services(null, Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
 
@@ -173,7 +173,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void ServicesWithInvalidArgsExpectedReturnsEmptyList()
         {
             var resources = new Dev2.Runtime.ServiceModel.Resources();
-            var result = resources.Services("xxxx", Guid.Empty);
+            var result = resources.Services("xxxx", Guid.Empty, Guid.Empty);
             Assert.AreEqual(0, result.Count);
         }
         #endregion
@@ -186,7 +186,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var resources = new Dev2.Runtime.ServiceModel.Resources();
             //------------Execute Test---------------------------
-            var result = resources.DataListInputVariables(null, Guid.Empty);
+            var result = resources.DataListInputVariables(null, Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.AreEqual("", result);
         }
@@ -197,7 +197,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var resources = new Dev2.Runtime.ServiceModel.Resources();
             //------------Execute Test---------------------------
-            var result = resources.DataListInputVariables("xxxx", Guid.Empty);
+            var result = resources.DataListInputVariables("xxxx", Guid.Empty, Guid.Empty);
             //------------Assert Results-------------------------
             Assert.AreEqual("", result);
         }
@@ -226,7 +226,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourcePath.Value);
                 Assert.IsNotNull(resource);
                 //------------Execute Test---------------------------
-                var dataListInputVariables = resources.DataListInputVariables(resource.ResourceID.ToString(), workspaceID);
+                var dataListInputVariables = resources.DataListInputVariables(resource.ResourceID.ToString(), workspaceID, Guid.Empty);
                 //------------Assert Results-------------------------
                 StringAssert.Contains(dataListInputVariables, "inputScalar");
                 StringAssert.Contains(dataListInputVariables, "bothScalar");
@@ -265,7 +265,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 var resource = ResourceCatalog.Instance.GetResource(workspaceID, resourcePath.Value);
                 Assert.IsNotNull(resource);
                 //------------Execute Test---------------------------
-                var dataListInputVariables = resources.DataListInputVariables(resource.ResourceID.ToString(), workspaceID);
+                var dataListInputVariables = resources.DataListInputVariables(resource.ResourceID.ToString(), workspaceID, Guid.Empty);
                 //------------Assert Results-------------------------
                 Assert.IsTrue(string.IsNullOrEmpty(dataListInputVariables));
             }
@@ -319,7 +319,6 @@ namespace Dev2.Tests.Runtime.ServiceModel
                             resource.ResourcePath = ResourceType.PluginService + "\\" + resource.ResourceName;
                             resource.ResourceType = ResourceType.PluginService;
                             break;
-        
                     }
                     ResourceCatalog.Instance.SaveResource(workspaceID, resource);
                 }
@@ -327,7 +326,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 const string ExpectedJson = "{\"Names\":[\"My Name 1\",\"My Name 4\",\"My Name 7\"],\"Paths\":[\"DbService\"]}";
 
                 //Run PathsAndNames
-                var actualJson = resources.PathsAndNames("DbService", workspaceID);
+                var actualJson = resources.PathsAndNames("DbService", workspaceID, Guid.Empty);
 
                 //Assert CorrectListReturned
                 Assert.AreEqual(ExpectedJson, actualJson, "Incorrect list of names and paths for workflow services");
@@ -341,68 +340,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             }
         }
 
-        [TestMethod]
-        [TestCategory("Resources_PathsAndNames")]
-        [Description("Correct list of folder names returned for workflow type service")]
-        [Owner("Leon Rajindrapersadh")]
-        // ReSharper disable InconsistentNaming
-        public void Resources_UnitTest_PluginPathsAndNames_WorkflowServicesAreIncluded()
-        // ReSharper restore InconsistentNaming
-        {
-            //Isolate PathsAndNames for workflows as a functional unit
-            var workspaceID = Guid.NewGuid();
-            var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            try
-            {
-                const int Modulo = 4;
-                const int TotalResourceCount = 9;
-                for (var i = 0; i < TotalResourceCount; i++)
-                {
-                    var resource = new Resource
-                    {
-                        ResourceID = Guid.NewGuid(),
-                        ResourceName = string.Format("My Name {0}", i),
-                        ResourcePath = string.Format("My Path {0}\\{1}", i, string.Format("My Name {0}", i))
-                    };
 
-                    switch (i % Modulo)
-                    {
-                        case 0:
-                            resource.ResourcePath = ResourceType.WorkflowService + "\\" + resource.ResourceName;
-                            resource.ResourceType = ResourceType.WorkflowService;
-                            break;
-                        case 1:
-                            resource.ResourcePath = ResourceType.DbService + "\\" + resource.ResourceName;
-                            resource.ResourceType = ResourceType.DbService;
-                            break;
-                        case 2:
-                            resource.ResourcePath = ResourceType.PluginService + "\\" + resource.ResourceName;
-                            resource.ResourceType = ResourceType.PluginService;
-                            break;
-                        case 3:
-                            resource.ResourcePath = ResourceType.ServerSource + "\\" + resource.ResourceName;
-                            resource.ResourceType = ResourceType.ServerSource;
-                            break;
-                    }
-                    ResourceCatalog.Instance.SaveResource(workspaceID, resource);
-                }
-                var resources = new Dev2.Runtime.ServiceModel.Resources();
-                const string ExpectedJson = "{\"Names\":[\"My Name 3\",\"My Name 7\"],\"Paths\":[\"ServerSource\"]}";
-
-                //Run PathsAndNames
-                var actualJson = resources.PathsAndNames("ServerSource", workspaceID);
-
-                //Assert CorrectListReturned
-                Assert.AreEqual(ExpectedJson, actualJson, "Incorrect list of names and paths for workflow services");
-            }
-            finally
-            {
-                if (Directory.Exists(workspacePath))
-                {
-                    DirectoryHelper.CleanUp(workspacePath);
-                }
-            }
-        }
         #endregion
     }
 }
