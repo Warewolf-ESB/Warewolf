@@ -79,6 +79,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="Dev2ActionCollectionTest.cs" />
     <Compile Include="Dev2ActionTest.cs" />
     <Compile Include="Dev2RepetitiionPatternTest.cs" />

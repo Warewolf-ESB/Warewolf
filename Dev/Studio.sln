@@ -15,6 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Core.Tests", "Dev2.Cor
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9BD7DD42-D245-449E-84F9-DBD97A5A7002}"
 	ProjectSection(SolutionItems) = preProject
+		AssemblyCommonInfo.cs = AssemblyCommonInfo.cs
 		Parallel.testsettings = Parallel.testsettings
 		Studio.vsmdi = Studio.vsmdi
 		TestSettings\X86ExecutionPlatform.testsettings = TestSettings\X86ExecutionPlatform.testsettings

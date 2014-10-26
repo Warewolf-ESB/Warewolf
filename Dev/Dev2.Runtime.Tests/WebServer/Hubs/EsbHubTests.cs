@@ -9,21 +9,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
+using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using Dev2.Common.Interfaces.Communication;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
-using Dev2.Data.Enums;
 using Dev2.Data.ServiceModel.Messages;
 using Dev2.Explorer;
-using Dev2.Runtime.Hosting;
 using Dev2.Runtime.WebServer.Hubs;
 using Microsoft.AspNet.SignalR.Hubs;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
 
 namespace Dev2.Tests.Runtime.WebServer.Hubs
 {
@@ -31,23 +28,6 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
     // ReSharper disable InconsistentNaming
     public class EsbHubTests
     {
-        /// <summary>
-        /// Valid server created, access servers account provider with auto account creation turned off. Manually created a new account,
-        /// Expect a non null account given the correct username
-        /// </summary>
-        [TestMethod]
-        public void StudioNetworkServerObservesMessagesFromCompileMessageRepo()
-        {
-            var server = new MockEsbHub();
-            var message = new CompileMessageTO { ServiceID = Guid.NewGuid(), ServiceName = "Test Service", MessageType = CompileMessageType.ResourceSaved };
-
-            //exe
-            CompileMessageRepo.Instance.AddMessage(Guid.NewGuid(), new[] { message });
-
-            var memo = (DesignValidationMemo)server.WriteEventProviderMemos[0];
-
-            Assert.IsNotNull(memo);
-        }
 
         [TestMethod]
         [TestCategory("StudioNetworkServerUnitTest")]
@@ -60,7 +40,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             var message = new CompileMessageTO { UniqueID = Guid.NewGuid(), ServiceID = Guid.NewGuid(), WorkspaceID = Guid.NewGuid(), MessageType = CompileMessageType.MappingChange, MessagePayload = "Test Error Message", ServiceName = "Test Service" };
 
             //exe
-            server.TestOnCompilerMessageReceived(new[] { message });
+            server.TestOnCompilerMessageReceived(new ICompileMessageTO[] { message });
 
             //asserts
             Assert.AreEqual(2, server.WriteEventProviderMemos.Count);
@@ -92,7 +72,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             var message = new CompileMessageTO { ServiceID = Guid.NewGuid(), WorkspaceID = Guid.NewGuid(), MessageType = CompileMessageType.ResourceSaved, ServiceName = "Test Service" };
 
             //exe
-            server.TestOnCompilerMessageReceived(new[] { message });
+            server.TestOnCompilerMessageReceived(new ICompileMessageTO[] { message });
 
 
             //asserts
@@ -116,10 +96,8 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             hub.Clients = mockClients.Object;
             dynamic all = new ExpandoObject();
             bool messagePublished = false;
-            string actualString = "";
             all.ItemAddedMessage = new Action<string>(serialisedItem =>
             {
-                actualString = serialisedItem;
                 messagePublished = true;
             });
             mockClients.Setup(m => m.All).Returns((ExpandoObject)all);

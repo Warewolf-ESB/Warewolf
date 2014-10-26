@@ -2026,9 +2026,7 @@ Scenario: Workflow Assign and Find Record index tool with two variables in reult
 	  And the 'Record' in Workflow 'WFWithAssignandFindRecordindex' debug outputs as   
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |
-	  And the 'FindRecord0' in WorkFlow 'WFWithAssignandFindRecordindex' debug inputs as 
-	  | #           |                         | # |   |          |  | And | Require All Fields To Match | Require All Matches To Be True |
-	
+
 #
 
 #Bug 12180, 
@@ -3366,32 +3364,32 @@ Scenario: Executing workflow of different versions
 
 
 
-#Bug 12050
-Scenario Outline: Workflow with 2 Assigns testing variable that hasn't been assigned
-      Given I have a workflow "WFTOTestBlanvValues"
-	  And "WFTOTestBlanvValues" contains an Assign "Record1" as
-      | variable  | value    |
-      | [[Value]] | Warewolf | 
-	  And "WFTOTestBlanvValues" contains an Assign "Record2" as
-      | variable    | value   |
-      | [[rec().a]] | '<Val>' |
-	  When "WFTOTestBlanvValues" is executed
-	  Then the workflow execution has "AN" error
-	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
-	  | # | Variable    | New Value |
-	  | 1 | [[Value]] = | Warewolf  | 
-	  And the 'Record1' in Workflow 'WFTOTestBlanvValues' debug outputs as   
-	  | # |                          |
-	  | 1 | [[Value]]    =  Warewolf |
-	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
-	  | # | Variable      | New Value |
-	  | 1 | [[rec().a]] = | <Val> =   |
-	  And the 'Record2' in Workflow 'WFTOTestBlanvValues' debug outputs as   
-	  | # |                |
-	  | 1 | [[rec(1).a]] = |
-Examples: 
-     | No | Val            |
-     | 1  | [[Value1]]Tezt |
+#Bug 18263
+#Scenario Outline: Workflow with 2 Assigns testing variable that hasn't been assigned
+#      Given I have a workflow "WFTOTestBlanvValues"
+#	  And "WFTOTestBlanvValues" contains an Assign "Record1" as
+#      | variable  | value    |
+#      | [[Value]] | Warewolf | 
+#	  And "WFTOTestBlanvValues" contains an Assign "Record2" as
+#      | variable    | value   |
+#      | [[rec().a]] | '<Val>' |
+#	  When "WFTOTestBlanvValues" is executed
+#	  Then the workflow execution has "AN" error
+#	  And the 'Record1' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
+#	  | # | Variable    | New Value |
+#	  | 1 | [[Value]] = | Warewolf  | 
+#	  And the 'Record1' in Workflow 'WFTOTestBlanvValues' debug outputs as   
+#	  | # |                          |
+#	  | 1 | [[Value]]    =  Warewolf |
+#	  And the 'Record2' in WorkFlow 'WFTOTestBlanvValues' debug inputs as 
+#	  | # | Variable      | New Value |
+#	  | 1 | [[rec().a]] = | <Val> =   |
+#	  And the 'Record2' in Workflow 'WFTOTestBlanvValues' debug outputs as   
+#	  | # |                |
+#	  | 1 | [[rec(1).a]] = |
+#Examples: 
+#     | No | Val            |
+#     | 1  | [[Value1]]Tezt |
     # | 2  | [[Value1]]     |
 
 #18263
@@ -4811,19 +4809,19 @@ Scenario: Executing Control Flow - Switch example workflow
 	
 
 Scenario: Executing Workflow Service and Decision tool expected bubling out error in workflow service
-	  Given I have a workflow "Utility - Assign"
-	  And "Utility - Assign Test" contains "Utility - Assign" from server "localhost" with mapping as
+	  Given I have a workflow "Utility - Assign WF"
+	  And "Utility - Assign WF" contains "Utility - Assign" from server "localhost" with mapping as
 	  | Input to Service | From Variable | Output from Service | To Variable        |
-	  |                  |               | [[rec(*).set]]      | [[rec().set]]      |
-	  |                  |               | [[hero(*).pushups]] | [[hero().pushups]] |
-	  |                  |               | [[hero(*).name]]    | [[hero().name]]    |
-	  When "Utility - Assign Test" is executed
+	  |                  |               | rec(*).set      | [[myrec().set]]      |
+	  |                  |               | hero(*).pushups | [[thehero().pushups]] |
+	  |                  |               | hero(*).name    | [[thehero().name]]    |
+	  When "Utility - Assign WF" is executed
 	  Then the workflow execution has "NO" error
-	  And the 'Utility - Assign' in Workflow 'Utility - Assign' debug outputs as    
+	  And the 'Utility - Assign' in Workflow 'Utility - Assign WF' debug outputs as    
 	  |                                                                   |
-	  | [[rec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
-	  | [[hero(1).pushups]] = All of them.                                |
-	  | [[hero(1).name]] =   Chuck Norris                                 |
+	  | [[myrec(1).set]] =    Bart Simpson: I WILL NOT INSTIGATE REVOLUTION |
+	  | [[thehero(1).pushups]] = All of them.                                |
+	  | [[thehero(1).name]] =   Chuck Norris                                 |
 	
 #Bug - 17484	  
 Scenario: Error from workflow service is expected to buble out

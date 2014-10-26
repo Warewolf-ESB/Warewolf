@@ -507,7 +507,7 @@ namespace Dev2.AppResources.Repositories
             {
                 if(item.ResourceType == ResourceType.ServerSource)
                 {
-                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Server, ResourceModelEqualityComparer.Current, true);
+                    resourceRepository.ReloadResource(item.ResourceId, Studio.Core.AppResources.Enums.ResourceType.Source, ResourceModelEqualityComparer.Current, true);
                 }
                 else if(item.ResourceType >= ResourceType.DbSource)
                 {
@@ -777,7 +777,6 @@ namespace Dev2.AppResources.Repositories
                 ResourceType = item.ResourceType,
                 ResourceId = item.ResourceId,
                 Permissions = item.Permissions,
-                //Permissions = environmentModel == null || environmentModel.IsLocalHost || environmentModel.AuthorizationService == null ? item.Permissions : environmentModel.AuthorizationService.GetResourcePermissions(item.ResourceId),
                 ResourcePath = item.ResourcePath,
                 VersionInfo = item.VersionInfo
             };

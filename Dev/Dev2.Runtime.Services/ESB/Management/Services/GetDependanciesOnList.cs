@@ -1,4 +1,4 @@
-
+﻿
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -139,14 +139,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             if(resource != null)
             {
                 var dependencies = resource.Dependencies;
+
                 if(dependencies != null)
                 {
 // ReSharper disable ImplicitlyCapturedClosure
                     dependencies.ForEach(c =>
 // ReSharper restore ImplicitlyCapturedClosure
                     {
+                       
                         if(c.ResourceID != Guid.Empty)
                         {
+                      
                             results.Add(c.ResourceID.ToString());
                         }
                     });

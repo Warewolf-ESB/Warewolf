@@ -184,9 +184,10 @@ namespace Dev2.Models
         /// <param name="updateParent">
         ///     if set to <c>true</c> [update parent].
         /// </param>
+        /// <param name="calcStats"></param>
         /// <author>Jurie.smit</author>
         /// <date>2013/01/23</date>
-        void SetIsChecked(bool? value, bool updateChildren, bool updateParent);
+        void SetIsChecked(bool? value, bool updateChildren, bool updateParent,bool calcStats=true);
 
         /// <summary>
         ///     Verifies the state of the IsChecked property by taking the childrens IsChecked State into account

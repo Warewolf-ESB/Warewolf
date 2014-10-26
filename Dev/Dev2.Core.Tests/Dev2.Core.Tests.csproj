@@ -136,6 +136,9 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="ConverterTests\Base\BaseConvertTest.cs" />
     <Compile Include="ConverterTests\Case\CaseConverterTests.cs" />
     <Compile Include="ConverterTests\DateTimeTests\DateTimeComparerTests.cs" />

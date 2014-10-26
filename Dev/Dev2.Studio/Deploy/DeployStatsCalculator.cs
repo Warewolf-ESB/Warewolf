@@ -158,7 +158,8 @@ namespace Dev2.Studio.Deploy
         {
             var vm = node;
             if(vm == null || !vm.IsChecked.GetValueOrDefault(false)) return false;
-
+            if (node.ResourceType == ResourceType.Server || node.ResourceType == ResourceType.Folder)
+                return false;
             return targetEnvironment != null && targetEnvironment.ResourceRepository != null &&
                    targetEnvironment.ResourceRepository.All().All(r => r.ID != vm.ResourceId);
         }

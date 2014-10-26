@@ -61,7 +61,8 @@
                                         IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding Path=SourceName}">
+                            <Label>
+                                <TextBlock Text="{Binding Path=SourceName}"></TextBlock>
                             </Label>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
@@ -83,7 +84,8 @@
                                         IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <Label Content="{Binding Path=DestinationName}">
+                            <Label>
+                                <TextBlock Text="{Binding Path=DestinationName}"></TextBlock>
                             </Label>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

@@ -469,9 +469,18 @@ namespace Dev2.Studio.UI.Tests.Extensions
             var editControl = control as WpfEdit;
             var textControl = control as WpfText;
 
+
             if(editControl == null && textControl == null)
-            {
-                throw new Exception("This is not text control");
+            {      
+                var children = control.GetChildren();
+                if(children.Count == 1){
+                    editControl = children[0] as WpfEdit;
+                    textControl = children[0] as WpfText;
+                }
+                if (editControl == null && textControl == null)
+                {
+                    throw new Exception("This is not text control");
+                }
             }
 
             var point = control.GetPointToClick();

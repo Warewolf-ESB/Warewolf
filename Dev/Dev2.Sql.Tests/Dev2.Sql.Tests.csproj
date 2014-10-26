@@ -83,6 +83,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
     <Compile Include="ExtensiosnTests.cs" />
     <Compile Include="SqlServerTests.cs" />
     <Compile Include="ServiceMethodTests.cs" />

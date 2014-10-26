@@ -210,7 +210,8 @@ namespace Dev2.Runtime.ESB.Control
             var compiler = DataListFactory.CreateDataListCompiler();
 
             var principle = Thread.CurrentPrincipal;
-            Dev2Logger.Log.Info("EXECUTION USER CONTEXT IS [ " + principle.Identity.Name + " ] FOR SERVICE [ " + dataObject.ServiceName + " ]");
+            var name = principle.Identity.Name;
+            Dev2Logger.Log.Info("EXECUTION USER CONTEXT IS [ " + name + " ] FOR SERVICE [ " + dataObject.ServiceName + " ]");
 
             // If no DLID, we need to make it based upon the request ;)
             if(dataObject.DataListID == GlobalConstants.NullDataListID)
@@ -345,10 +346,13 @@ namespace Dev2.Runtime.ESB.Control
                         _doNotWipeDataList = true;
                         SetRemoteExecutionDataList(dataObject, executionContainer);
                     }
+                    
                     executionContainer.InstanceOutputDefinition = outputDefs;
                     result = executionContainer.Execute(out invokeErrors);
                     errors.MergeErrors(invokeErrors);
-
+                    string errorString = compiler.FetchErrors(dataObject.DataListID, true);
+                    invokeErrors = ErrorResultTO.MakeErrorResultFromDataListString(errorString);
+                    errors.MergeErrors(invokeErrors);
                     // If Web-service or Plugin, skip the final shaping junk ;)
                     if(SubExecutionRequiresShape(workspaceId, dataObject.ServiceName))
                     {
@@ -650,7 +654,7 @@ namespace Dev2.Runtime.ESB.Control
 
             // force all items to exist in the DL ;)
             theShape = FindServiceShape(workspaceId, dataObject.ResourceID);
-            var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), string.Empty, theShape, out invokeErrors);
+            var innerDatalistID = compiler.ConvertTo(DataListFormat.CreateFormat(GlobalConstants._XML_Without_SystemTags), new StringBuilder(), theShape, out invokeErrors);
             errors.MergeErrors(invokeErrors);
 
             // Add left to right
