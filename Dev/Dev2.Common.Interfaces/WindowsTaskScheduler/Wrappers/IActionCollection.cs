@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,8 +17,6 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 {
     public interface IActionCollection : IEnumerable<IAction>, IDisposable, IWrappedObject<ActionCollection>
     {
-
-
         /// <summary>
         ///     Gets the number of actions in the collection.
         /// </summary>

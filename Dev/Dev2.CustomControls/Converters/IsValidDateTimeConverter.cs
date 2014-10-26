@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -20,9 +19,9 @@ namespace Dev2.CustomControls.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value is DateTime)
+            if (value is DateTime)
             {
-                var dt = (DateTime)value;
+                var dt = (DateTime) value;
                 return dt != DateTime.MinValue;
             }
             return false;

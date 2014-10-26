@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,9 +11,10 @@
 
 namespace Dev2.Common.Interfaces.Data
 {
-    public interface IDev2Definition {
-
+    public interface IDev2Definition
+    {
         #region Properties
+
         string Name { get; }
 
         string MapsTo { get; }
@@ -38,4 +38,3 @@ namespace Dev2.Common.Interfaces.Data
         #endregion
     }
 }
-

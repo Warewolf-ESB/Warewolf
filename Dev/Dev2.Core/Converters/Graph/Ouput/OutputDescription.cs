@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,9 +17,9 @@ using Dev2.Common.Interfaces.Core.Graph;
 namespace Unlimited.Framework.Converters.Graph.Ouput
 {
     /// <summary>
-    /// Stores the information necessary for an implementation of IOutputFormatter to format data coming form a source
+    ///     Stores the information necessary for an implementation of IOutputFormatter to format data coming form a source
     /// </summary>
-    [DataContract(Name="OutputDescription")]
+    [DataContract(Name = "OutputDescription")]
     [Serializable]
     public class OutputDescription : IOutputDescription
     {
@@ -36,7 +35,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
         #region Properties
 
-        [DataMember(Name="Format")]
+        [DataMember(Name = "Format")]
         public OutputFormats Format { get; set; }
 
         [DataMember(Name = "DataSourceShapes")]

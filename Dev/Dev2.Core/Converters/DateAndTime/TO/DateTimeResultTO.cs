@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,7 +21,8 @@ namespace Dev2.Converters.DateAndTime.TO
 
         public DateTimeResultTO()
         {
-            TimeZone = new TimeZoneTO(TimeZoneInfo.Local.StandardName, TimeZoneInfo.Local.StandardName, TimeZoneInfo.Local.DisplayName);
+            TimeZone = new TimeZoneTO(TimeZoneInfo.Local.StandardName, TimeZoneInfo.Local.StandardName,
+                TimeZoneInfo.Local.DisplayName);
         }
 
         #endregion Constructors
@@ -120,7 +120,7 @@ namespace Dev2.Converters.DateAndTime.TO
 
                 if (DaysOfWeek != 0)
                 {
-                    DateTime tmpDate = new DateTime(Years, Months, Days);
+                    var tmpDate = new DateTime(Years, Months, Days);
                     Days = tmpDate.AddDays(DaysOfWeek - DateTimeParser.GetDayOfWeekInt(tmpDate.DayOfWeek)).Day;
                 }
             }

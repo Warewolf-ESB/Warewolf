@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -21,6 +20,6 @@ namespace Dev2.Common.Interfaces.Infrastructure.Providers.Errors
         string StackTrace { get; set; }
         ErrorType ErrorType { get; set; }
         FixType FixType { get; set; }
-        string FixData { get; set; } 
+        string FixData { get; set; }
     }
 }

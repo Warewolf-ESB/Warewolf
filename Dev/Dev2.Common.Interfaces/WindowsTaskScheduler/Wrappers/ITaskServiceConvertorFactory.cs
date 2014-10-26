@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,6 +11,7 @@
 
 using System;
 using Microsoft.Win32.TaskScheduler;
+using Action = Microsoft.Win32.TaskScheduler.Action;
 
 namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 {
@@ -40,10 +40,10 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 
         IRepetitionPattern CreateRepetitionPattern(RepetitionPattern repetitionPattern);
 
-        IAction CreateAction(Microsoft.Win32.TaskScheduler.Action action);
+        IAction CreateAction(Action action);
 
         IDev2TaskService CreateTaskService(string targetServer, string userName, string accountDomain, string password,
-                                           bool forceV1);
+            bool forceV1);
 
         TaskService CreateTaskService();
 

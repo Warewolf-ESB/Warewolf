@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -16,12 +15,12 @@ using System.Text;
 namespace Dev2.Common.Interfaces.Communication
 {
     /// <summary>
-    /// Describes a serializer
+    ///     Describes a serializer
     /// </summary>
     public interface ISerializer
     {
         /// <summary>
-        /// Serializes the specified object.
+        ///     Serializes the specified object.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj">The object.</param>
@@ -29,7 +28,7 @@ namespace Dev2.Common.Interfaces.Communication
         string Serialize<T>(T obj);
 
         /// <summary>
-        /// Deserializes the specified object.
+        ///     Deserializes the specified object.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="obj">The object.</param>
@@ -37,7 +36,7 @@ namespace Dev2.Common.Interfaces.Communication
         T Deserialize<T>(string obj);
 
         /// <summary>
-        /// Deserializes the specified object.
+        ///     Deserializes the specified object.
         /// </summary>
         /// <param name="obj">The object.</param>
         /// <param name="type">The type.</param>
@@ -45,7 +44,7 @@ namespace Dev2.Common.Interfaces.Communication
         object Deserialize(string obj, Type type);
 
         /// <summary>
-        /// Deserializes the specified message via a stream.
+        ///     Deserializes the specified message via a stream.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="message">The message.</param>

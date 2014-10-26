@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -44,17 +43,17 @@ using WPF.JoshSmith.Panels;
 namespace Dev2.CustomControls.Panels
 {
     /// <summary>
-    /// This panel extends ConceptualPanel by ensuring that its conceptual children are also "logical" children.  
-    /// Because certain things like property inheritance and resource resolution work through the logical
-    /// tree, this allows the disconnected visuals to be connected to the panel's ancestor tree
-    /// in a logical manner without being part of it's visual tree. 
+    ///     This panel extends ConceptualPanel by ensuring that its conceptual children are also "logical" children.
+    ///     Because certain things like property inheritance and resource resolution work through the logical
+    ///     tree, this allows the disconnected visuals to be connected to the panel's ancestor tree
+    ///     in a logical manner without being part of it's visual tree.
     /// </summary>
     public abstract class LogicalPanel : ConceptualPanel
     {
         /// <summary>
-        /// Adds the child element to the logical tree.
+        ///     Adds the child element to the logical tree.
         /// </summary>
-        protected sealed override void OnChildAdded(UIElement child)
+        protected override sealed void OnChildAdded(UIElement child)
         {
             // if the child does not have a logical parent, assume the role
             if (LogicalTreeHelper.GetParent(child) == null)
@@ -65,9 +64,9 @@ namespace Dev2.CustomControls.Panels
         }
 
         /// <summary>
-        /// Removes the child element from the logical tree.
+        ///     Removes the child element from the logical tree.
         /// </summary>
-        protected sealed override void OnChildRemoved(UIElement child)
+        protected override sealed void OnChildRemoved(UIElement child)
         {
             // if this panel is the logical parent, remove that relationship
 // ReSharper disable PossibleUnintendedReferenceComparison
@@ -80,9 +79,9 @@ namespace Dev2.CustomControls.Panels
         }
 
         /// <summary>
-        /// This class uses the OnLogicalChildrenChanged method to provide notification to descendants 
-        /// when its logical children change.  Note that this is intentionally
-        /// similar to the OnVisualChildrenChanged approach supported by all visuals.
+        ///     This class uses the OnLogicalChildrenChanged method to provide notification to descendants
+        ///     when its logical children change.  Note that this is intentionally
+        ///     similar to the OnVisualChildrenChanged approach supported by all visuals.
         /// </summary>
         /// <param name="childAdded"></param>
         /// <param name="childRemoved"></param>

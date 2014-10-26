@@ -104,7 +104,7 @@ namespace Dev2.Common.Common
                         len = (sb.Length - startIdx);
                     }
 
-                    var bytes = encoding.GetBytes(sb.Substring(startIdx, len));
+                    byte[] bytes = encoding.GetBytes(sb.Substring(startIdx, len));
                     fs.Write(bytes, 0, bytes.Length);
                     startIdx += len;
                 }
@@ -186,7 +186,7 @@ namespace Dev2.Common.Common
                     len = (sb.Length - startIdx);
                 }
 
-                var bytes = encoding.GetBytes(sb.Substring(startIdx, len));
+                byte[] bytes = encoding.GetBytes(sb.Substring(startIdx, len));
                 ms.Write(bytes, 0, bytes.Length);
 
                 startIdx += len;
@@ -393,7 +393,7 @@ namespace Dev2.Common.Common
 
             int tagLength = searchTagStart.Length;
             startIndex += tagLength;
-            var endIdx = sb.IndexOf(searchTagEnd, startIndex, false);
+            int endIdx = sb.IndexOf(searchTagEnd, startIndex, false);
             int length = endIdx - startIndex;
 
             return sb.Substring(startIndex, length);

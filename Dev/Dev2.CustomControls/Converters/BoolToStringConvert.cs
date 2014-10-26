@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -18,10 +17,9 @@ namespace Dev2.CustomControls.Converters
 {
     public class BoolToStringConvert : IValueConverter
     {
-
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool? isSuccessful = value as bool?;
+            var isSuccessful = value as bool?;
             if (isSuccessful.HasValue)
             {
                 return isSuccessful.Value ? "Success" : "Failure";

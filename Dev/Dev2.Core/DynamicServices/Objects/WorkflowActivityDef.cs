@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -17,7 +16,6 @@ namespace Dev2.DynamicServices
 {
     public class WorkflowActivityDef : DynamicServiceObjectBase
     {
-
         public WorkflowActivityDef()
         {
             ObjectType = enDynamicServiceObjectType.WorkflowActivity;
@@ -35,17 +33,17 @@ namespace Dev2.DynamicServices
         {
             base.Compile();
 
-            if(string.IsNullOrEmpty(Name))
+            if (string.IsNullOrEmpty(Name))
             {
                 WriteCompileError(Resources.CompilerError_MissingActivityName);
             }
 
-            if(Service == null)
+            if (Service == null)
             {
                 WriteCompileError(Resources.CompilerError_ServiceNotFound);
             }
 
-            if(string.IsNullOrEmpty(IconPath))
+            if (string.IsNullOrEmpty(IconPath))
             {
                 WriteCompileError(Resources.CompilerError_MissingIconPath);
             }
