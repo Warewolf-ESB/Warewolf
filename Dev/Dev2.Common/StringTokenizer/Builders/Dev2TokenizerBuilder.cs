@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -14,16 +13,15 @@ using System.Collections.Generic;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 
 // ReSharper disable CheckNamespace
+
 namespace Dev2.Common
 {
     public class Dev2TokenizerBuilder
     {
-
+        private readonly IList<IDev2SplitOp> _ops = new List<IDev2SplitOp>();
         public string ToTokenize { get; set; }
 
         public bool ReverseOrder { get; set; }
-
-        private readonly IList<IDev2SplitOp> _ops = new List<IDev2SplitOp>();
 
         public void AddIndexOp(int index)
         {
@@ -42,13 +40,12 @@ namespace Dev2.Common
 
         public IDev2Tokenizer Generate()
         {
-
-            if(string.IsNullOrEmpty(ToTokenize))
+            if (string.IsNullOrEmpty(ToTokenize))
             {
                 throw new TokenizeError("Null or empty tokenize string!");
             }
 
-            if(_ops.Count <= 0)
+            if (_ops.Count <= 0)
             {
                 throw new TokenizeError("Cant find anything to split on!");
             }

@@ -1,4 +1,3 @@
-
 /*
 *  Warewolf - The Easy Service Bus
 *  Copyright 2014 by Warewolf Ltd <alpha@warewolf.io>
@@ -22,10 +21,6 @@ namespace Dev2.Common.Common
             VariableName = variableName;
         }
 
-        public string VariableName
-        {
-            get;
-            set;
-        }
+        public string VariableName { get; set; }
     }
 }
