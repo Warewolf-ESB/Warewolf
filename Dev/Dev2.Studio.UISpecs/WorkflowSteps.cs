@@ -132,6 +132,10 @@ namespace Dev2.Studio.UI.Specs
         static readonly string SecurityPublicDeployTo = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerDeployToPermissions_Row_1_Cell_AutoID,UI_Public_DeployToPermissionCheckBox_AutoID";
         static readonly string SecurityPublicDeployFrom = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerDeployFromPermissions_Row_1_Cell_AutoID,UI_Public_DeployFromPermissionCheckBox_AutoID";
         static readonly string SecurityPublic = "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid,UI_ServerPermissionsGrid_Row_1_AutoID,UI_ServerDeployFromPermissions_Row_1_Cell_AutoID,UI_Public_DeployFromPermissionCheckBox_AutoID";
+        static readonly string SecurityResourcePickerSearch = "ACTIVETAB,UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID";
+        static readonly string SecurityResourcePickerFilterClear = "ACTIVETAB,UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID";
+        
+
 
         //Deploy Tab
         static readonly string DeploySource = "UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,DeployUserControl,SourceNavigationView,UI_ExplorerTree_AutoID";

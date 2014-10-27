@@ -4,18 +4,18 @@
 	I want to be able to setup permissions for my server
 	
 Background: 
-	#Given I click "EXPLORER,UI_localhost_AutoID"
-	#Given I click "RIBBONSETTINGS"   
-	#And "SECURITYPUBLICDEPLOYTO" is unchecked
-    #And "SECURITYPUBLICDEPLOYFROM" is unchecked       
-    #And "SECURITYPUBLICADMINISTRATOR" is unchecked  
-    #And "SECURITYPUBLICVIEW" is unchecked
-    #And "SECURITYPUBLICEXECUTE" is unchecked
-	#And "SECURITYPUBLICCONTRIBUTE" is unchecked
-    #And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
-	#And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
-	#And I click "SECURITYSAVE" 
-	#Given all tabs are closed
+	Given I click "EXPLORER,UI_localhost_AutoID"
+	Given I click "RIBBONSETTINGS"   
+	And "SECURITYPUBLICDEPLOYTO" is unchecked
+    And "SECURITYPUBLICDEPLOYFROM" is unchecked       
+    And "SECURITYPUBLICADMINISTRATOR" is unchecked  
+    And "SECURITYPUBLICVIEW" is unchecked
+    And "SECURITYPUBLICEXECUTE" is unchecked
+	And "SECURITYPUBLICCONTRIBUTE" is unchecked
+    And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
+	And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
+	And I click "SECURITYSAVE" 
+	Given all tabs are closed
 
 Scenario: Testing Different Server Permissions For Public
        Given all tabs are closed
@@ -351,18 +351,6 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
        Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is visible
 #End Test - 3
  
- 
-Scenario: Remote
-       Given I click "SETTINGSRESOURECESELECT"
-       And I send "{TAB}{TAB}" to ""
-	   And I send "Decision Testing" to ""
-	   And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
-	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
-	   And I send "{TAB}" to ""
-	   And I send "UI Testing Group" to ""
-       And I click "SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID"
-
-
 
  Scenario: Testing Setiings Tab Duplicate Resource Permissions HelP Text
         #SecuritySettingsUiTestsAdd10ResourcesMakeSureScrollBarIsThere
@@ -376,6 +364,7 @@ Scenario: Remote
 	   And I send "Decision Testing" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I wait for "3" seconds
 	   And I send "{TAB}" to ""
 	   And I send "UI Testing Group" to ""
        And I click "SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID"
@@ -466,6 +455,7 @@ Scenario: Remote
 	   And I send "Decision Testing" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I wait for "3" seconds
 	   And I send "{TAB}" to ""
 	   And I send "UI Testing Group" to ""
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_10_AutoID,UI__ContributePermissionCheckBox_AutoID"
@@ -482,6 +472,8 @@ Scenario: Remote
 	   And I click "SECURITYRESOURCEHELP"
 	   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set specific"
 	   
+
+
 
 Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
 		Given I click "EXPLORER,UI_localhost_AutoID" 
@@ -646,7 +638,7 @@ Scenario: Connected To Remote Server As Administrator And Expected Admin Rights
 	Given I click "ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_DestinationServercbx_AutoID_RemAdmin"
     Then "DEPLOYDESTINATION,UI_DestinationServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID_AutoID,UI_Unautherized_DeployToText_AutoID" is not visible
 
-
+	
 
 
 
