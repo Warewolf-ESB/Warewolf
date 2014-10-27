@@ -476,7 +476,7 @@ Scenario: Remote
 	   #Deleting Duplicate Row and Checking ScrollBar
        Given I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_0_AutoID,UI_AddRemovebtn_AutoID"
 	   And I click "SECURITYSAVE"
-	   Checking Help Text for Server Permissions and Resource Permissions
+	   #Checking Help Text for Server Permissions and Resource Permissions
 	   Given I click "SECURITYSERVERHELP"
 	   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set server"
 	   And I click "SECURITYRESOURCEHELP"
