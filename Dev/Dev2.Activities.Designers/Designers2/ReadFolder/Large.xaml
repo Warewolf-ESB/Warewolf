@@ -88,8 +88,7 @@
                Content="Read" />
         <StackPanel Grid.Column="1"
                     Orientation="Horizontal"
-                    Grid.Row="1"
-                    ToolTip="{x:Static help:HelpTextResources.ReadFolderToolTipRead}">
+                    Grid.Row="1">
             <RadioButton Margin="2,0"
                          IsChecked="{Binding Path=ModelItem.IsFilesSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">Files</RadioButton>
             <RadioButton Margin="2,0"

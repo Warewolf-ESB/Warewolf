@@ -49,10 +49,10 @@
                                     WrapInBrackets="True"
                                     Text="{Binding ModelItem.OnErrorVariable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
-                                    ToolTip="{x:Static help:HelpTextResources.NativeActivityToolTipPuterrorinthisvariable}"
+                                    ToolTip="{x:Static help:HelpTextResources.OnErrorToolTipVariable}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Variable_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.NativeActivityHelpPuterrorinthisvariable}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.OnErrorHelpVariable}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="OnErrorVariable"
@@ -71,10 +71,10 @@
                                     WrapInBrackets="False"
                                     Text="{Binding ModelItem.OnErrorWorkflow, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                     Style="{StaticResource ActivityMapppingIntellisenseTextBoxStyle}"
-                                    ToolTip="{x:Static help:HelpTextResources.NativeActivityToolTipCallthiswebservice}"
+                                    ToolTip="{x:Static help:HelpTextResources.OnErrorToolTipWorkflow}"
                                     AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Workflow_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.NativeActivityHelpCallthiswebservice}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.OnErrorHelpWorkflow}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="OnErrorWorkflow"
@@ -89,10 +89,10 @@
                       Margin="-3,0,0,0"
                       Content="End this workflow"
                       IsChecked="{Binding ModelItem.IsEndedOnError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                      ToolTip="{x:Static help:HelpTextResources.NativeActivityToolTipEndtheworkflow}"
+                      ToolTip="{x:Static help:HelpTextResources.OnErrorToolTipIsEnded}"
                       AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_IsEnded_AutoID}">
                 <i:Interaction.Behaviors>
-                    <help:HelpSetter Text="{x:Static help:HelpTextResources.NativeActivityHelpEndtheworkflow}"
+                    <help:HelpSetter Text="{x:Static help:HelpTextResources.OnErrorHelpIsEnded}"
                                      DataContext="{Binding}" />
                     <errors:ErrorsSetter Source="{Binding}"
                                          SourcePropertyName="IsEndedOnError"

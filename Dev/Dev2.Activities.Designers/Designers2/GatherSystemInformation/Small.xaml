@@ -66,10 +66,10 @@
                                                     DefaultText="{Binding WatermarkTextVariable}"
                                                     WrapInBrackets="True"
                                                     Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    ToolTip="{x:Static help:HelpTextResources.SystemInformationToolTipResult}"
+                                                    ToolTip="{x:Static help:HelpTextResources.GatherSystemInformationToolTipResult}"
                                                     Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SystemInformationHelpResult}"
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.GatherSystemInformationHelpResult}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="Result"
@@ -110,11 +110,9 @@
                                       Margin="0"
                                       ItemsSource="{Binding DataContext.ItemsList, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}"
                                       Text="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                      SelectedValue="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
-                                      ToolTip="{x:Static help:HelpTextResources.SystemInformationToolTipSysInfoType}">
-                                      
-                                    <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.SystemInformationHelpSysInfoType}"
+                                      SelectedValue="{Binding EnTypeOfSystemInformation,Converter={StaticResource EnumDiscriptionToStringConverter},Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.GatherSystemInformationHelpSysInfoType}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="EnTypeOfSystemInformation"

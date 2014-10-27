@@ -99,10 +99,9 @@
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsFieldNameFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                     Text="{Binding FieldName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                    ToolTip="{x:Static help:HelpTextResources.AssignToolTipVariable}">
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.AssignHelpVariable}"
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.MultiAssignVariableHelpText}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FieldName"
@@ -151,10 +150,9 @@
                                                     Converter={StaticResource ModelTextConverter}, ConverterParameter=True, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
                                                     attachedProperties:FocusSetter.IsFocused="{Binding IsFieldValueFocused, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
                                                     IntellisenseProvider="{StaticResource CalculateCompositeIntellisenseProvider}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
-                                                    ToolTip="{x:Static help:HelpTextResources.AssignToolTipNewValue}">
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
                                 <i:Interaction.Behaviors>
-                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.AssignHelpNewValue}"
+                                    <help:HelpSetter Text="{x:Static help:HelpTextResources.MultiAssignNewValueHelpText}"
                                                      DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"
                                                          SourcePropertyName="FieldValue"
