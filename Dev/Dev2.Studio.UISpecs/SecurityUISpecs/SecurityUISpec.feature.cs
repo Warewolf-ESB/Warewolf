@@ -72,32 +72,6 @@ namespace Dev2.Studio.UI.Specs.SecurityUISpecs
         public virtual void FeatureBackground()
         {
 #line 6
-#line 7
-   testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 8
-   testRunner.Given("I click \"RIBBONSETTINGS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 9
-   testRunner.And("\"SECURITYPUBLICDEPLOYTO\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 10
-      testRunner.And("\"SECURITYPUBLICDEPLOYFROM\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
-      testRunner.And("\"SECURITYPUBLICADMINISTRATOR\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
-      testRunner.And("\"SECURITYPUBLICVIEW\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
-      testRunner.And("\"SECURITYPUBLICEXECUTE\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
-   testRunner.And("\"SECURITYPUBLICCONTRIBUTE\" is unchecked", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 15
-      testRunner.And("I clear table \"ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermiss" +
-                    "ionsDataGrid\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 16
-   testRunner.And("I clear table \"ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermi" +
-                    "ssionsDataGrid\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 17
-   testRunner.And("I click \"SECURITYSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 18
-   testRunner.Given("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
         
@@ -762,191 +736,274 @@ this.FeatureBackground();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Remote")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Security")]
+        public virtual void Remote()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Remote", ((string[])(null)));
+#line 355
+this.ScenarioSetup(scenarioInfo);
+#line 6
+this.FeatureBackground();
+#line 356
+       testRunner.Given("I click \"SETTINGSRESOURECESELECT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 357
+       testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 358
+    testRunner.And("I send \"Decision Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 359
+    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Dec" +
+                    "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 360
+    testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 361
+    testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 362
+    testRunner.And("I send \"UI Testing Group\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 363
+       testRunner.And("I click \"SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Testing Setiings Tab Duplicate Resource Permissions HelP Text")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Security")]
         public virtual void TestingSetiingsTabDuplicateResourcePermissionsHelPText()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Testing Setiings Tab Duplicate Resource Permissions HelP Text", ((string[])(null)));
-#line 355
+#line 367
  this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 359
-       testRunner.Given("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 360
-       testRunner.And("I click \"RIBBONSETTINGS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 362
-       testRunner.Given("I click \"SETTINGSRESOURECESELECT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 363
-       testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Dec" +
-                    "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 364
-    testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 365
-    testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 366
-    testRunner.And("I send \"UI Testing Group\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 367
-       testRunner.And("I click \"SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 369
-    testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_1_AutoID,UI__AddResourceButto" +
-                    "n_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 370
-    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Jav" +
-                    "ascript Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 371
-    testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+       testRunner.Given("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 372
-    testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 373
-    testRunner.And("I send \"Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("I click \"RIBBONSETTINGS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 374
-    testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_1_AutoID,UI__ContributePermis" +
-                    "sionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.Given("I click \"SETTINGSRESOURECESELECT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 375
+       testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 376
-    testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_2_AutoID,UI__AddResourceButto" +
-                    "n_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I send \"Decision Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 377
-    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_File and Folder - Unz" +
-                    "ip_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Dec" +
+                    "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 378
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 379
     testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 380
-    testRunner.And("I send \"Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+    testRunner.And("I send \"UI Testing Group\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 381
-    testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_2_AutoID,UI__ContributePermis" +
-                    "sionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+       testRunner.And("I click \"SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 383
-    testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_3_AutoID,UI__AddResourceButto" +
+    testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_1_AutoID,UI__AddResourceButto" +
                     "n_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 384
+       testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 385
+    testRunner.And("I send \"Javascript Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 386
+    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Jav" +
+                    "ascript Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 387
+    testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 388
+    testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 389
+    testRunner.And("I send \"Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 390
+    testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_1_AutoID,UI__ContributePermis" +
+                    "sionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 392
+    testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_2_AutoID,UI__AddResourceButto" +
+                    "n_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 393
+    testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 394
+    testRunner.And("I send \"File and Folder - Unzip\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 395
+    testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_File and Folder - Unz" +
+                    "ip_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 396
+    testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 397
+    testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 398
+    testRunner.And("I send \"Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 399
+    testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_2_AutoID,UI__ContributePermis" +
+                    "sionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 401
+    testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_3_AutoID,UI__AddResourceButto" +
+                    "n_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 402
+    testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 403
+    testRunner.And("I send \"File and Folder - Write File\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 404
     testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_File and Folder - Wri" +
                     "te File_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 385
+#line 405
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 386
+#line 406
     testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 387
+#line 407
     testRunner.And("I send \"Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 388
+#line 408
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_3_AutoID,UI__ContributePermis" +
                     "sionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 390
+#line 410
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_4_AutoID,UI__AddResourceButto" +
                     "n_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 391
+#line 411
+    testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 412
+    testRunner.And("I send \"Recordset - Count Records\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 413
     testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Recordset - Count Rec" +
                     "ords_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 392
+#line 414
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 393
+#line 415
     testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 394
+#line 416
     testRunner.And("I send \"Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 395
+#line 417
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_4_AutoID,UI__ContributePermis" +
                     "sionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 397
+#line 419
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_5_AutoID,UI__AddResourceButto" +
                     "n_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 398
+#line 420
+    testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 421
+    testRunner.And("I send \"Recordset - Find Records\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 422
     testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Recordset - Find Reco" +
                     "rds_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 399
+#line 423
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 400
+#line 424
     testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 401
+#line 425
     testRunner.And("I send \"Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 402
+#line 426
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_5_AutoID,UI__ContributePermis" +
                     "sionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 404
+#line 428
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_6_AutoID,UI__AddResourceButto" +
                     "n_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 405
+#line 429
+    testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 430
+    testRunner.And("I send \"Recordset - Records Length\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 431
     testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records L" +
                     "ength_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 406
+#line 432
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 407
+#line 433
     testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 408
+#line 434
     testRunner.And("I send \"Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 409
+#line 435
     testRunner.Given("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_6_AutoID,UI__ExecutePermissio" +
                     "nCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 411
+#line 437
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_7_AutoID,UI__AddResourceButto" +
                     "n_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 412
+#line 438
+    testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 439
+    testRunner.And("I send \"Recordset - SQL Bulk Insert\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 440
     testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Recordset - SQL Bulk " +
                     "Insert_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 413
+#line 441
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 414
+#line 442
     testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 415
+#line 443
     testRunner.And("I send \"Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 416
+#line 444
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_7_AutoID,UI__ContributePermis" +
                     "sionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 418
+#line 446
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_8_AutoID,UI__AddResourceButto" +
                     "n_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 419
+#line 447
+    testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 448
+    testRunner.And("I send \"Recordset - Unique Records\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 449
     testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Recordset - Unique Re" +
                     "cords_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 420
+#line 450
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 421
+#line 451
     testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 422
+#line 452
     testRunner.And("I send \"Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 423
+#line 453
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_8_AutoID,UI__ContributePermis" +
                     "sionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 425
+#line 455
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_9_AutoID,UI__AddResourceButto" +
                     "n_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 426
+#line 456
+    testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 457
+    testRunner.And("I send \"Scripting - CMD Line\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 458
     testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Scripting - CMD Line_" +
                     "AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 427
+#line 459
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 428
+#line 460
     testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 429
+#line 461
     testRunner.And("I send \"Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 430
+#line 462
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_9_AutoID,UI__ContributePermis" +
                     "sionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 432
+#line 464
     testRunner.Given("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_10_AutoID,UI__AddResourceButt" +
                     "on_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 433
+#line 465
+    testRunner.And("I send \"{TAB}{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 466
+    testRunner.And("I send \"Decision Testing\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 467
     testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Dec" +
                     "ision Testing_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 434
+#line 468
     testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 435
+#line 469
     testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 436
+#line 470
     testRunner.And("I send \"UI Testing Group\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 437
+#line 471
     testRunner.And("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_10_AutoID,UI__ContributePermi" +
                     "ssionCheckBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 439
+#line 473
        testRunner.And("I click \"SECURITYSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 441
+#line 475
     testRunner.Given("\"SETTINGSTAB,UI_Errors_AutoID\" contains text \"There are duplicate permissions\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 443
+#line 477
        testRunner.Given("I click \"SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_0_AutoID,UI_AddRemovebtn_Auto" +
                     "ID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 444
+#line 478
     testRunner.And("I click \"SECURITYSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 480
+    testRunner.Given("I click \"SECURITYSERVERHELP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 481
+    testRunner.Given("\"SETTINGSTAB,UI_HelpText_AutoID\" contains text \"To set server\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 482
+    testRunner.And("I click \"SECURITYRESOURCEHELP\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 483
+    testRunner.Given("\"SETTINGSTAB,UI_HelpText_AutoID\" contains text \"To set specific\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -957,29 +1014,29 @@ this.FeatureBackground();
         public virtual void RemoteWorkflowWithDifferentPermissionedItemsInIt()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("RemoteWorkflowWithDifferentPermissionedItemsInIt", ((string[])(null)));
-#line 452
+#line 486
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 453
+#line 487
   testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 455
+#line 489
   testRunner.And("I click \"RIBBONSETTINGS\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 456
+#line 490
   testRunner.Given("I click \"SETTINGSRESOURECESELECT\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 457
+#line 491
         testRunner.And("I double click \"RESOURCEPICKERFOLDERS,UI_MO_AutoID,UI_TestForEachOutput_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 458
+#line 492
      testRunner.Given("I click \"UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 459
+#line 493
      testRunner.And("I send \"{TAB}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 460
+#line 494
      testRunner.And("I send \"Public\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 461
+#line 495
   testRunner.And("I click \"SECURITYPUBLICVIEW\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 462
+#line 496
   testRunner.And("I click \"SECURITYPUBLICEXECUTE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 463
+#line 497
   testRunner.And("I click \"SECURITYSAVE\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
@@ -992,37 +1049,37 @@ this.FeatureBackground();
                         "Public",
                         "",
                         ""});
-#line 465
+#line 499
   testRunner.And("I create a new remote connection \"REM\" as", ((string)(null)), table3, "And ");
-#line 469
+#line 503
         testRunner.And("I send \"NewForEachNestedForEachTest\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 470
+#line 504
   testRunner.And("I double click \"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_INTEGRATION TE" +
                     "ST SERVICES_AutoID,UI_NewForEachNestedForEachTest_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 471
+#line 505
   testRunner.And(@"I click point ""240,10"" on ""ACTIVETAB,Dev2.Studio.ViewModels.WorkSurface.WorkSurfaceContextViewModel,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,NewForEachNestedForEachTest(FlowchartDesigner),For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,For Each(ForeachDesigner),SmallViewContent,UI__DropPoint_AutoID,Mo\TestForEachOutput(ServiceDesigner)""", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 472
+#line 506
   testRunner.Given("\"UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabManager_AutoID,UI_WorkflowDesigne" +
                     "r_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,T" +
                     "estForEachOutput(FlowchartDesigner)\" is invisible within \"5\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 473
+#line 507
   testRunner.And("I double click \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 474
+#line 508
   testRunner.And("I send \"{DELETE}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 475
+#line 509
   testRunner.When("I click \"EXPLORERFILTERREFRESHBUTTON\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 476
+#line 510
   testRunner.And("I send \"NewForEachNestedForEachTest\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 477
+#line 511
      testRunner.Then("\"EXPLORERFOLDERS,UI_INTEGRATION TEST SERVICES_AutoID,UI_NewForEachNestedForEachTe" +
                     "st_AutoID\" is visible within \"3\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 478
+#line 512
   testRunner.And("I double click \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 479
+#line 513
   testRunner.And("I send \"{DELETE}\" to \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 480
+#line 514
   testRunner.And("I send \"TestForEachOutput\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 481
+#line 515
      testRunner.Then("\"EXPLORER,UI_REM (http://localhost:3142/)_AutoID,UI_MO_AutoID,UI_TestForEachOutpu" +
                     "t_AutoID,UI_NotAutherized_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
@@ -1035,15 +1092,15 @@ this.FeatureBackground();
         public virtual void ConnectedToRemoteServerAsAdministratorAndExpectedAdminRights()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Connected To Remote Server As Administrator And Expected Admin Rights", ((string[])(null)));
-#line 582
+#line 616
 this.ScenarioSetup(scenarioInfo);
 #line 6
 this.FeatureBackground();
-#line 583
+#line 617
  testRunner.Given("I have Warewolf running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 584
+#line 618
  testRunner.And("all tabs are closed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 585
+#line 619
  testRunner.Given("I click \"EXPLORER,UI_localhost_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
             TechTalk.SpecFlow.Table table4 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1056,60 +1113,60 @@ this.FeatureBackground();
                         "User",
                         "Administrator",
                         ""});
-#line 587
+#line 621
     testRunner.Given("I create a new remote connection \"RemAdmin\" as", ((string)(null)), table4, "Given ");
-#line 590
+#line 624
  testRunner.Given("I click \"EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 592
+#line 626
     testRunner.Then("\"RIBBONNEWENDPOINT\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 593
+#line 627
  testRunner.Then("\"RIBBONSAVE\" is disabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 594
+#line 628
  testRunner.Then("\"RIBBONDEPLOY\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 595
+#line 629
  testRunner.Then("\"RIBBONNEWDATABASECONNECTOR\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 596
+#line 630
  testRunner.Then("\"RIBBONNEWPLUGINCONNECTOR\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 597
+#line 631
  testRunner.Then("\"RIBBONSETTINGS\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 598
+#line 632
  testRunner.Then("\"RIBBONNEWWEBCONNECTOR\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 599
+#line 633
  testRunner.Then("\"RIBBONSCHEDULE\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 601
+#line 635
  testRunner.Given("I send \"Utility - Assign\" to \"EXPLORERFILTER\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 602
+#line 636
  testRunner.Given("\"EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID,UI_Examples_AutoID,UI_Utilit" +
                     "y - Assign_AutoID,UI_CanEdit_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 603
+#line 637
  testRunner.Given("\"EXPLORER,UI_RemAdmin (http://tst7x64w:3142/)_AutoID,UI_Examples_AutoID,UI_Utilit" +
                     "y - Assign_AutoID,UI_CanExecute_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 605
+#line 639
  testRunner.Then("I click \"RIBBONDEPLOY\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 606
+#line 640
  testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServerc" +
                     "bx_AutoID_RemAdmin\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 607
+#line 641
  testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_SourceServercbx_AutoID,U_UI_SourceServerc" +
                     "bx_AutoID_RemAdmin\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 608
+#line 642
  testRunner.Then("\"DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID_AutoID,U" +
                     "I_Unautherized_DeployFrom_AutoID\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 609
+#line 643
  testRunner.Given("I send \"Utility - Assign\" to \"UI_DocManager_AutoID,UI_SplitPane_AutoID,UI_TabMana" +
                     "ger_AutoID,DeployUserControl,SourceNavigationView,UI_DatalistFilterTextBox_AutoI" +
                     "D,UI_TextBox_AutoID\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 610
+#line 644
  testRunner.Then("I click \"DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID_" +
                     "AutoID,UI_SourceServer_UI_Examples_AutoID_AutoID,Expander\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 611
+#line 645
  testRunner.Then("\"DEPLOYSOURCE,UI_SourceServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoID_AutoID,U" +
                     "I_SourceServer_UI_Examples_AutoID_AutoID,UI_SourceServer_UI_Utility - Assign_Aut" +
                     "oID_AutoID\" is visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 612
+#line 646
  testRunner.Given("I click \"ACTIVETAB,DeployUserControl,UI_DestinationServercbx_AutoID,U_UI_Destinat" +
                     "ionServercbx_AutoID_RemAdmin\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 613
+#line 647
     testRunner.Then("\"DEPLOYDESTINATION,UI_DestinationServer_UI_RemAdmin (http://tst7x64w:3142/)_AutoI" +
                     "D_AutoID,UI_Unautherized_DeployToText_AutoID\" is not visible", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden

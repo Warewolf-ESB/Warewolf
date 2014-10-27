@@ -4,18 +4,18 @@
 	I want to be able to setup permissions for my server
 	
 Background: 
-	  Given I click "EXPLORER,UI_localhost_AutoID"
-	  Given I click "RIBBONSETTINGS"   
-	  And "SECURITYPUBLICDEPLOYTO" is unchecked
-      And "SECURITYPUBLICDEPLOYFROM" is unchecked       
-      And "SECURITYPUBLICADMINISTRATOR" is unchecked  
-      And "SECURITYPUBLICVIEW" is unchecked
-      And "SECURITYPUBLICEXECUTE" is unchecked
-	  And "SECURITYPUBLICCONTRIBUTE" is unchecked
-      And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
-	  And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
-	  And I click "SECURITYSAVE" 
-	  Given all tabs are closed
+	#Given I click "EXPLORER,UI_localhost_AutoID"
+	#Given I click "RIBBONSETTINGS"   
+	#And "SECURITYPUBLICDEPLOYTO" is unchecked
+    #And "SECURITYPUBLICDEPLOYFROM" is unchecked       
+    #And "SECURITYPUBLICADMINISTRATOR" is unchecked  
+    #And "SECURITYPUBLICVIEW" is unchecked
+    #And "SECURITYPUBLICEXECUTE" is unchecked
+	#And "SECURITYPUBLICCONTRIBUTE" is unchecked
+    #And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ServerPermissionsDataGrid" 
+	#And I clear table "ACTIVETAB,UI_SettingsView_AutoID,SecurityViewContent,ResourcePermissionsDataGrid" 
+	#And I click "SECURITYSAVE" 
+	#Given all tabs are closed
 
 Scenario: Testing Different Server Permissions For Public
        Given all tabs are closed
@@ -351,22 +351,38 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
        Then "DEPLOYSOURCE,UI_Unautherized_DeployFrom_AutoID" is visible
 #End Test - 3
  
+ 
+Scenario: Remote
+       Given I click "SETTINGSRESOURECESELECT"
+       And I send "{TAB}{TAB}" to ""
+	   And I send "Decision Testing" to ""
+	   And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
+	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
+	   And I send "{TAB}" to ""
+	   And I send "UI Testing Group" to ""
+       And I click "SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID"
+
+
 
  Scenario: Testing Setiings Tab Duplicate Resource Permissions HelP Text
         #SecuritySettingsUiTestsAdd10ResourcesMakeSureScrollBarIsThere
         #SecuritySettingsUiTestsAddResourcesAndRelatedPriviledgesResourcesAreAddedSuccessfullyAndSaveButtonDisabled
-        #SecuritySettingsUiTestsOpenHelpAdornersHelpAdornersOpenedAndClosedSuccessfully
+       # #SecuritySettingsUiTestsOpenHelpAdornersHelpAdornersOpenedAndClosedSuccessfully
        Given all tabs are closed
        And I click "RIBBONSETTINGS" 
 	   #Adding Resource Permissions Row1
        Given I click "SETTINGSRESOURECESELECT"
-       And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
+       And I send "{TAB}{TAB}" to ""
+	   And I send "Decision Testing" to ""
+	   And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
 	   And I send "UI Testing Group" to ""
        And I click "SETTINGSRESOURCEROW1,UI__ContributePermissionCheckBox_AutoID"
 	   #Adding Resource Permissions Row2
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_1_AutoID,UI__AddResourceButton_AutoID"
+       And I send "{TAB}{TAB}" to ""
+	   And I send "Javascript Testing" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Javascript Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
@@ -374,6 +390,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_1_AutoID,UI__ContributePermissionCheckBox_AutoID"
 	   #Adding Resource Permissions Row3
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_2_AutoID,UI__AddResourceButton_AutoID"
+	   And I send "{TAB}{TAB}" to ""
+	   And I send "File and Folder - Unzip" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_File and Folder - Unzip_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
@@ -381,6 +399,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_2_AutoID,UI__ContributePermissionCheckBox_AutoID"
 	   #Adding Resource Permissions Row4
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_3_AutoID,UI__AddResourceButton_AutoID"
+	   And I send "{TAB}{TAB}" to ""
+	   And I send "File and Folder - Write File" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_File and Folder - Write File_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
@@ -388,6 +408,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_3_AutoID,UI__ContributePermissionCheckBox_AutoID"
 	   #Adding Resource Permissions Row5
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_4_AutoID,UI__AddResourceButton_AutoID"
+	   And I send "{TAB}{TAB}" to ""
+	   And I send "Recordset - Count Records" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Recordset - Count Records_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
@@ -395,6 +417,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_4_AutoID,UI__ContributePermissionCheckBox_AutoID"
 	   #Adding Resource Permissions Row6
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_5_AutoID,UI__AddResourceButton_AutoID"
+	   And I send "{TAB}{TAB}" to ""
+	   And I send "Recordset - Find Records" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Recordset - Find Records_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
@@ -402,6 +426,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_5_AutoID,UI__ContributePermissionCheckBox_AutoID"
 	   #Adding Resource Permissions Row7
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_6_AutoID,UI__AddResourceButton_AutoID"
+	   And I send "{TAB}{TAB}" to ""
+	   And I send "Recordset - Records Length" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Recordset - Records Length_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
@@ -409,6 +435,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   Given I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_6_AutoID,UI__ExecutePermissionCheckBox_AutoID"
 	   #Adding Resource Permissions Row8
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_7_AutoID,UI__AddResourceButton_AutoID"
+	   And I send "{TAB}{TAB}" to ""
+	   And I send "Recordset - SQL Bulk Insert" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Recordset - SQL Bulk Insert_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
@@ -416,6 +444,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_7_AutoID,UI__ContributePermissionCheckBox_AutoID"
 	   #Adding Resource Permissions Row9
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_8_AutoID,UI__AddResourceButton_AutoID"
+	   And I send "{TAB}{TAB}" to ""
+	   And I send "Recordset - Unique Records" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Recordset - Unique Records_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
@@ -423,6 +453,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_8_AutoID,UI__ContributePermissionCheckBox_AutoID"
 	   #Adding Resource Permissions Row10
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_9_AutoID,UI__AddResourceButton_AutoID"
+	   And I send "{TAB}{TAB}" to ""
+	   And I send "Scripting - CMD Line" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Scripting - CMD Line_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
@@ -430,6 +462,8 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
 	   And I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_9_AutoID,UI__ContributePermissionCheckBox_AutoID"
 	   #Adding Resource Permissions Row11
 	   Given I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_10_AutoID,UI__AddResourceButton_AutoID"
+	   And I send "{TAB}{TAB}" to ""
+	   And I send "Decision Testing" to ""
 	   And I double click "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID,UI_Decision Testing_AutoID"
 	   Given I click "UI_SelectServiceWindow_AutoID,UI_SelectServiceOKButton_AutoID"
 	   And I send "{TAB}" to ""
@@ -443,11 +477,11 @@ Scenario: Testing Server Permission And Resource permission for Specific Group
        Given I click "SETTINGSADDRESOURCE,UI_PermissionsGrid_Row_0_AutoID,UI_AddRemovebtn_AutoID"
 	   And I click "SECURITYSAVE"
 	   #Checking Help Text for Server Permissions and Resource Permissions
-	   #Given I click "SECURITYSERVERHELP"
-	   #Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set server"
-	   #And I click "SECURITYRESOURCEHELP"
-	   #Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set specific"
-	   #
+	   Given I click "SECURITYSERVERHELP"
+	   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set server"
+	   And I click "SECURITYRESOURCEHELP"
+	   Given "SETTINGSTAB,UI_HelpText_AutoID" contains text "To set specific"
+	   
 
 Scenario: RemoteWorkflowWithDifferentPermissionedItemsInIt
 		Given I click "EXPLORER,UI_localhost_AutoID" 
