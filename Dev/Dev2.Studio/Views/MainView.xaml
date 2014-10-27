@@ -329,7 +329,7 @@
                                             AutomationProperties.AutomationId="UI_RibbonHomeTabWorkflowBtn_AutoID">
                                             <Grid>
                                                 <Image Style="{StaticResource ImageStyleRibbon}"
-                                                   Source="{StaticResource Workflow-32}"
+                                                   Source="{StaticResource NewWorkFlow}"
                                                    ToolTip="New Workflow (Ctrl+W)"
                                                    />
                                                 <Image Style="{StaticResource AuthNoneIconRibbonStyle}"
