@@ -31,6 +31,10 @@ namespace Dev2.Runtime.ServiceModel
 {
     public class Resources : ExceptionManager
     {
+        /*
+         * !!!!! Important. Donot cleanup resharper violations here. Accessed by webs. If you change names remove methods, eth then the webs break.
+         * 
+         */
         #region Static RootFolders/Elements
 
         public static volatile Dictionary<ResourceType, string> RootFolders = new Dictionary<ResourceType, string>
