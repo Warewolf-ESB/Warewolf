@@ -219,7 +219,7 @@
                   Margin="-4,0,0,0"
                   Content="Overwrite"
                   IsChecked="{Binding Path=ModelItem.Overwrite, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  ToolTip="{x:Static help:HelpTextResources.UnzipToolTipForceoverwrite}">
+                  ToolTip="{x:Static help:HelpTextResources.UnzipHelpForceoverwrite}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.UnzipHelpForceoverwrite}"
                                  DataContext="{Binding}" />
