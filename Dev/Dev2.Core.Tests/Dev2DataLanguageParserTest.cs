@@ -10,6 +10,7 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Data.Enums;
@@ -128,7 +129,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             var dev2LanuageParser = new Dev2DataLanguageParser();
             PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
-            var cache = p.GetStaticField("_expressionCache") as Dictionary<string, IList<IIntellisenseResult>>;
+            var cache = p.GetStaticField("_expressionCache") as ConcurrentDictionary<string, IList<IIntellisenseResult>>;
 
             Assert.IsNotNull(cache);
             cache.Clear();
@@ -158,7 +159,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             var dev2LanuageParser = new Dev2DataLanguageParser();
             PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
-            var cache = p.GetStaticField("_payloadCache") as Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
+            var cache = p.GetStaticField("_payloadCache") as ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
 
             Assert.IsNotNull(cache);
             cache.Clear();
@@ -186,7 +187,7 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
-            var cache = p.GetStaticField("_payloadCache") as Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
+            var cache = p.GetStaticField("_payloadCache") as ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>>;
             if(cache != null)
             {
                 cache.Clear();
@@ -214,7 +215,7 @@ namespace Dev2.Tests
             const string payload = "[[rec().val]]";
   
             PrivateType p = new PrivateType(typeof(Dev2DataLanguageParser));
-            var cache = p.GetStaticField("_expressionCache") as Dictionary<string, IList<IIntellisenseResult>>;
+            var cache = p.GetStaticField("_expressionCache") as ConcurrentDictionary<string, IList<IIntellisenseResult>>;
             Assert.IsNotNull(cache);
             cache.Clear();
             Assert.AreEqual(cache.Count, 0);
@@ -234,7 +235,8 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             var dev2LanuageParser = new Dev2DataLanguageParser();
-            Dictionary<string,string> data = new Dictionary<string, string> { { "a", "b" } };
+            ConcurrentDictionary<string, string> data = new ConcurrentDictionary<string, string> ();
+            data.TryAdd("a", "b");
 
             try
             {
@@ -258,7 +260,8 @@ namespace Dev2.Tests
         {
             //------------Setup for test--------------------------
             var dev2LanuageParser = new Dev2DataLanguageParser();
-            Dictionary<string, string> data = new Dictionary<string, string> { { "a", "b" } };
+            ConcurrentDictionary<string, string> data = new ConcurrentDictionary<string, string> ();
+            data.TryAdd("a", "b");
 
             dev2LanuageParser.WrapAndClear(() => "bob", data);
 

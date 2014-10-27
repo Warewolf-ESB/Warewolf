@@ -11,6 +11,7 @@
 
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -33,8 +34,8 @@ namespace Dev2.Data.Parsers
     {
         private const string CdataStart = "<![CDATA[";
         private const string CdataEnd = "]]>";
-        private static volatile Dictionary<Tuple<string, string>, IList<IIntellisenseResult>> _payloadCache = new Dictionary<Tuple<string, string>, IList<IIntellisenseResult>>(1000);
-        private static volatile Dictionary<string, IList<IIntellisenseResult>> _expressionCache = new Dictionary<string, IList<IIntellisenseResult>>(1000);
+        private static volatile ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>> _payloadCache = new ConcurrentDictionary<Tuple<string, string>, IList<IIntellisenseResult>>();
+        private static volatile ConcurrentDictionary<string, IList<IIntellisenseResult>> _expressionCache = new ConcurrentDictionary<string, IList<IIntellisenseResult>>();
 
 
         #region Public Methods
@@ -64,7 +65,13 @@ namespace Dev2.Data.Parsers
 
                IList<IIntellisenseResult> result = PartsGeneration(expression, dataListParts, true);
                if (result != null && canCache && !(result.Any(a => a.Type == enIntellisenseResultType.Error)))
-                   _expressionCache.Add(expression, result);
+                   try
+                   {
+                       _expressionCache.TryAdd(expression, result);
+                   }
+                   // ReSharper disable once EmptyGeneralCatchClause
+                   catch { }
+                   
                return result;
            }, _expressionCache);
         }
@@ -96,14 +103,19 @@ namespace Dev2.Data.Parsers
 
                 IList<IIntellisenseResult> result = PartsGeneration(payload, parts, addCompleteParts, isFromIntellisense);
                 if (result != null && result.Count > 0 && !(result.Any(a => a.Type == enIntellisenseResultType.Error)))
-                    _payloadCache.Add(key, result);
+                    try
+                    {
+                        _payloadCache.TryAdd(key, result);
+                    }
+                        // ReSharper disable once EmptyGeneralCatchClause
+                    catch { }
                 return result;
             }, _payloadCache);
 
         }
 
         // ReSharper disable once InconsistentNaming
-        public T WrapAndClear<T, U>(Func<T> runFunc, Dictionary<U, T> clearIfException)
+        public T WrapAndClear<T, U>(Func<T> runFunc, ConcurrentDictionary<U, T> clearIfException)
         {
             try
             {
