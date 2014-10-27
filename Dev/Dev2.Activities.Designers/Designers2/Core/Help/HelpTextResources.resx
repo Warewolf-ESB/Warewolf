@@ -126,67 +126,11 @@
   <data name="CommentInputText" xml:space="preserve">
     <value>The comment entered here will not effect the workflow. This text will be visible in the debug output if this comment is included as a step in the workflow.</value>
   </data>
-  <data name="CountRecordsetFromRecordsetHelpText" xml:space="preserve">
-    <value>Simply enter the name of the recordset that you want to count in. eg
-[[MyRecordset()]]</value>
-  </data>
-  <data name="CountRecordsResultHelpText" xml:space="preserve">
-    <value>Only variables in [[Scalar]] or [[Recordset(*).Field]] format. If you use a recordset and do not specify an index/row number, a new record will be added.</value>
-  </data>
-  <data name="DateTimeAddTimeHelpText" xml:space="preserve">
-    <value>Put a positive or negative number here to add or subtract from the input date time.
-Leave this field blank if you do not want to change the date time.</value>
-  </data>
-  <data name="DateTimeInputFormatHelpText" xml:space="preserve">
-    <value>Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-Leaving this field blank will assume the system date time format.
-To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
-  </data>
-  <data name="DateTimeInputHelpText" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To format a date time, or to add/subtract from a date time, put it in here.
-Leaving this field blank will give you the system date time.</value>
-  </data>
-  <data name="DateTimeOutputFormatHelpText" xml:space="preserve">
-    <value>Describe the format you would like the date time to be returned in.
-Leaving this field blank will assume the same as the Input Format.
-To include text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an output format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
-  </data>
-  <data name="DateTimeResultHelpText" xml:space="preserve">
-    <value>Only variables go in here.
-Returns the formatted and/or added/subtracted date time.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
-  <data name="FindRecordsFieldsToSearchHelpText" xml:space="preserve">
-    <value>To find the indexes/rows that match certain criteria, put the comma separated list of fields to search in here. e.g. [[Customer().Name]], [[Customer().Prename]], [[Customer().Surname]]</value>
-  </data>
-  <data name="FindRecordsSearchTypeHelpText" xml:space="preserve">
-    <value>Select the type of information you want to match on.</value>
-  </data>
-  <data name="FindRecordsMatchHelpText" xml:space="preserve">
-    <value>Select the match data to find.</value>
-  </data>
-  <data name="FindRecordsResultHelpText" xml:space="preserve">
-    <value>Only variables go in here.
-Returns the indexes of the successful matches.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.
-If there are multiple results and a scalar is used, then each result will be separated with a comma.</value>
-  </data>
-  <data name="MultiAssignNewValueHelpText" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To assign a value to a variable, put the value in here.
-If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]</value>
-  </data>
-  <data name="MultiAssignVariableHelpText" xml:space="preserve">
-    <value>Only variables go in here.
-To assign a value to a variable, put the variable here.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
   <data name="DataSplitHelpProcessDirection" xml:space="preserve">
-    <value>Default direction to process is forward or left to right (reading direction). Selecting Backwards will process from the end of the data (right) to the beginning (left).</value>
+    <value>Default direction to process is forward or left to right (reading direction). Selecting Backwards will process from the end of the data (right) to the beginning (left).
+
+Allowed:
+Which direction would you like to process in?</value>
   </data>
   <data name="BaseConvertResultHelpText" xml:space="preserve">
     <value>The variable where the result will be output to.</value>
@@ -231,74 +175,32 @@ This is a variable from an input field. Use comma-separated values for each inde
 Preview (scalar field - including indexed recordsets and ())
 This is a variable from an input field. Put some test info in and click the Preview button to test your result.</value>
   </data>
-  <data name="WebRequestHeaderHelpText" xml:space="preserve">
-    <value>To supply additional header information in your get request, put the header info in here.</value>
-  </data>
-  <data name="WebRequestResultHelpText" xml:space="preserve">
-    <value>Only a single variable goes in here.
-Returnes the response text of the web get request.</value>
-  </data>
-  <data name="WebRequestURIHelpText" xml:space="preserve">
-    <value>Any data or variable can go in here.
-To traverse an retrieve the raw response from a webpage, enter it in here.</value>
-  </data>
-  <data name="DateTimeAddTimeTypeHelpText" xml:space="preserve">
-    <value>Select the unit of time to add or subtract. This is ignored if the unit is blank or 0.</value>
-  </data>
-  <data name="SqlBulkInsertHelpInputColumn" xml:space="preserve">
-    <value>To bulk insert data into a table, put the data to insert in here.
-Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
-A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
-To quickly change the input data, press the Quick Variable Input button and ammend the mappings as necessary.</value>
-  </data>
-  <data name="SqlBulkInsertHelpResult" xml:space="preserve">
-    <value>Only variables go in here.
-Returns Success or the record numbers with errors.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
-  <data name="SqlBulkInsertHelpBatchSize" xml:space="preserve">
-    <value>The number of rows you would like to insert at a time.
-The default is 0 which will do everything in 1 batch.
-If you specify 50, then 50 rows will be bulk inserted at a time.</value>
-  </data>
-  <data name="SqlBulkInsertHelpCheckConstraints" xml:space="preserve">
-    <value>Check constraints while data is being inserted. By default, constraints are not checked.</value>
-  </data>
-  <data name="SqlBulkInsertHelpDatabase" xml:space="preserve">
-    <value>Select a preconfigured database source or "New Database Source..." to add a new one.</value>
-  </data>
-  <data name="SqlBulkInsertHelpFireTriggers" xml:space="preserve">
-    <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.</value>
-  </data>
-  <data name="SqlBulkInsertHelpKeepIdentity" xml:space="preserve">
-    <value>Preserve source identity values. When not specified, identity values are assigned by the destination.</value>
-  </data>
-  <data name="SqlBulkInsertHelpKeepTableLock" xml:space="preserve">
-    <value>Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used.</value>
-  </data>
-  <data name="SqlBulkInsertHelpTableName" xml:space="preserve">
-    <value>Select a table to perform the bulk insert into.
-If the table schema has changed or recently added to the source, click the refresh button.</value>
-  </data>
   <data name="SqlBulkInsertHelpTimeout" xml:space="preserve">
     <value>The number of seconds you would like the operation to complete in.
 All batches in total must complete within this time period.
 The default is 0 which will be no time constraint.
 If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.
-Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted.</value>
-  </data>
-  <data name="SqlBulkInsertHelpUseInternalTransaction" xml:space="preserve">
-    <value>When specified, each batch of the bulk-copy operation will occur within a transaction.</value>
-  </data>
-  <data name="SqlBulkInsertToolTipBatchSize" xml:space="preserve">
-    <value>Number
+Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted.
+
+Allowed:
+Number
 [[Scalar]]   
 [[Recordset(n).Field]]      
 [[Recordset().Field]]</value>
   </data>
+  <data name="SqlBulkInsertHelpUseInternalTransaction" xml:space="preserve">
+    <value>When specified, each batch of the bulk-copy operation will occur within a transaction.
+
+Allowed:
+When specified, each batch of the bulk-copy operation will occur within a transaction.</value>
+  </data>
+  <data name="SqlBulkInsertToolTipBatchSize" xml:space="preserve">
+    <value>The number of rows you would like to insert at a time.
+The default is 0 which will do everything in 1 batch.
+If you specify 50, then 50 rows will be bulk inserted at a time.</value>
+  </data>
   <data name="SqlBulkInsertToolTipCheckConstraints" xml:space="preserve">
-    <value>Check constraints while data is being inserted.</value>
+    <value>Check constraints while data is being inserted. By default, constraints are not checked.</value>
   </data>
   <data name="SqlBulkInsertToolTipDatabase" xml:space="preserve">
     <value>Select a preconfigured database source or "New Database Source..." to add a new one.</value>
@@ -307,983 +209,1093 @@ Note, the timeout is purely for the actual SQL connection and not the preparatio
     <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.</value>
   </data>
   <data name="SqlBulkInsertToolTipInputColumn" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>To bulk insert data into a table, put the data to insert in here.
+Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
+A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
+To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary.</value>
   </data>
   <data name="SqlBulkInsertToolTipKeepIdentity" xml:space="preserve">
-    <value>Preserve source identity values.</value>
+    <value>Preserve source identity values. When not specified, identity values are assigned by the destination.</value>
   </data>
   <data name="SqlBulkInsertToolTipKeepTableLock" xml:space="preserve">
-    <value>Obtain a bulk update lock for the duration of the bulk copy operation.</value>
+    <value>Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used.</value>
   </data>
   <data name="SqlBulkInsertToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="SqlBulkInsertToolTipTableName" xml:space="preserve">
-    <value>Select a table to perform the bulk insert into.</value>
+    <value>Only variables go in here.
+Returns Success or the record numbers with errors.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="SqlBulkInsertToolTipTimeout" xml:space="preserve">
-    <value>Number
-[[Scalar]]   
-[[Recordset(n).Field]]      
-[[Recordset().Field]]</value>
+    <value>The number of seconds you would like the operation to complete in.
+All batches in total must complete within this time period.
+The default is 0 which will be no time constraint.
+If you specify 30, then 30 seconds will be allowed for the entire operation to complete before timing out.
+Note, the timeout is purely for the actual SQL connection and not the preparation of the data to be inserted.</value>
   </data>
   <data name="SqlBulkInsertToolTipUseInternalTransaction" xml:space="preserve">
     <value>When specified, each batch of the bulk-copy operation will occur within a transaction.</value>
   </data>
-  <data name="String" xml:space="preserve">
-    <value>To bulk insert data into a table, put the data to insert in here.</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value>Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.</value>
-  </data>
-  <data name="String2" xml:space="preserve">
-    <value>NOTE: A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.</value>
-  </data>
-  <data name="OnErrorHelpIsEnded" xml:space="preserve">
-    <value>To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 
-If you have also called a web service / Warewolf workflow, that will finish executing first.
-If the workflow is nested, the calling workflow will resume.</value>
-  </data>
-  <data name="OnErrorHelpVariable" xml:space="preserve">
-    <value>If an error occurs the error message will be placed into this variable as well the result variable.
-If left empty the result will still be placed in the result variable.</value>
-  </data>
-  <data name="OnErrorHelpWorkflow" xml:space="preserve">
-    <value>If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
-E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]]</value>
-  </data>
-  <data name="OnErrorToolTipIsEnded" xml:space="preserve">
-    <value>Ends the executing workflow at this point</value>
-  </data>
-  <data name="OnErrorToolTipVariable" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="OnErrorToolTipWorkflow" xml:space="preserve">
-    <value>Data   
+  <data name="BaseConversionHelpBaseInput" xml:space="preserve">
+    <value>Any variable and data goes in here.
+To convert Text, Hex, Binary and Base64, put the data to be converted in here.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="SortRecordsHelpSortField" xml:space="preserve">
-    <value>To Sort a recordset enter the field in the recordset you would like to sort on.
-To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort.</value>
-  </data>
-  <data name="SortRecordsHelpSortOrderType" xml:space="preserve">
-    <value>Select the order of the sorting.
-Forward will go 1-9 then a-Z.
-Backward will go Z-a then 9-1.</value>
-  </data>
-  <data name="SortRecordsToolTipSortField" xml:space="preserve">
-    <value>[[Recordset().Field]]</value>
-  </data>
-  <data name="BaseConversionHelpBaseInput" xml:space="preserve">
-    <value>Any variable and data goes in here.
-To convert Text, Hex, Binary and Base64, put the data to be converted in here.</value>
-  </data>
   <data name="BaseConversionHelpFromType" xml:space="preserve">
     <value>Select the type of data you are converting from.
-e.g. If the data is Binary and you would like Text, then select Binary here.</value>
+e.g. If the data is Binary and you would like Text, then select Binary here.
+
+Allowed:
+na</value>
   </data>
   <data name="BaseConversionHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the converted data into a separate variable.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="BaseConversionHelpToType" xml:space="preserve">
     <value>Select the type of data you are converting to.
-e.g. If the data is Binary and you would like Text, then select Text here.</value>
+e.g. If the data is Binary and you would like Text, then select Text here.
+
+Allowed:
+na</value>
   </data>
   <data name="BaseConversionToolTipBaseInput" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and data goes in here.
+To convert Text, Hex, Binary and Base64, put the data to be converted in here.</value>
   </data>
   <data name="BaseConversionToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns the converted data into a separate variable.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="CaseConversionHelpConvertToCaseType" xml:space="preserve">
-    <value>Select the type of conversion you would like to make.</value>
+    <value>Select the type of conversion you would like to make.
+
+
+Allowed:
+na</value>
   </data>
   <data name="CaseConversionHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the converted data.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
-  <data name="CaseConversionHelpTextInput" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To convert the case of some text, put the variable containing the text here.</value>
-  </data>
-  <data name="CaseConversionToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="CaseConversionToolTipTextInput" xml:space="preserve">
-    <value>Data   
+  <data name="CaseConversionHelpTextInput" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To convert the case of some text, put the variable containing the text here.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="CopyHelpDestination" xml:space="preserve">
+  <data name="CaseConversionToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the converted data.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="CaseConversionToolTipTextInput" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-Put the full path of the destination you are copying to here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
+To convert the case of some text, put the variable containing the text here.</value>
   </data>
   <data name="CopyHelpFileFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To copy a file or folder, put the full path and file or folder name here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
-  </data>
-  <data name="CopyHelpSourcePassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="CopyHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or will be blank depending on the success of the Copy action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
-  <data name="CopyHelpSourceUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="CopyToolHelpForceOverwrite" xml:space="preserve">
-    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="CopyToolTipDestination" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are copying to here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="CopyToolTipFileFolder" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To copy a file or folder, put the full path and file or folder name here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
-  <data name="CopyToolTipForceOverwrite" xml:space="preserve">
-    <value>If it exists already, force an overwrite</value>
+  <data name="CopyToolTipForceoverwrite" xml:space="preserve">
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
   </data>
   <data name="CopyToolTipPassword" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="CopyToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Copy action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="CopyToolTipUsername" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="CreateHelpFileFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To create a file or folder, put the full path and file or folder name here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="CreateHelpForceOverWrite" xml:space="preserve">
-    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.
+
+Allowed:
+If it exists already, force an overwrite</value>
   </data>
   <data name="CreateHelpPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="CreateHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or will be blank depending on the success of the Create action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="CreateHelpUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="CreateToolTipFileFolder" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To create a file or folder, put the full path and file or folder name here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="CreateToolTipForceOverWrite" xml:space="preserve">
-    <value>If it exists already, force an overwrite</value>
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
   </data>
   <data name="CreateToolTipPassword" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="CreateToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Create action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="CreateToolTipUsername" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="DataMergeHelpAlignType" xml:space="preserve">
     <value>For Index you can specify if your data is aligned to the right or left.
-E.g. Text is normally left and numbers normally right.</value>
+E.g. Text is normally left and numbers normally right.
+
+Allowed:
+na</value>
   </data>
   <data name="DataMergeHelpInput" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record.</value>
+To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="DataMergeHelpPadding" xml:space="preserve">
-    <value>If Index is being used and there is extra space between the data supplied and the number of index characters, you can specify what makes up the padding e.g. 0 for numbers or blank space for text.</value>
+    <value>If Index is being used and there is extra space between the data supplied and the number of index characters, you can specify what makes up the padding e.g. 0 for numbers or blank space for text.
+
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="DataMergeHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the merged string.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="DataMergeHelpUsing" xml:space="preserve">
     <value>For Index use the number of characters that this merge will use. It will either trim if too little, or pad if too much.
 For Char put any characters or combination of characters you would like.
-Not applicable to New Line or Tab</value>
+Not applicable to New Line or Tab
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="DataMergeHelpWithType" xml:space="preserve">
-    <value>Select the type of merge you would like between each piece of merged data, if any.</value>
+    <value>Select the type of merge you would like between each piece of merged data, if any.
+
+
+Allowed:
+na</value>
   </data>
   <data name="DataMergeToolTipInput" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record.</value>
   </data>
   <data name="DataMergeToolTipPadding" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To join two or more pieces of data together list them in the order you would like them joined. If you use recordset (*) notation, the list will be repeated for every record.</value>
   </data>
   <data name="DataMergeToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns the merged string.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="DataMergeToolTipUsing" xml:space="preserve">
-    <value>Data   
+    <value>For Index use the number of characters that this merge will use. It will either trim if too little, or pad if too much.
+For Char put any characters or combination of characters you would like.
+Not applicable to New Line or Tab</value>
+  </data>
+  <data name="DataSplitHelpEscape" xml:space="preserve">
+    <value>If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by / or some other characters.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="DataSplitHelpEscape" xml:space="preserve">
-    <value>If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by / or some other characters.</value>
-  </data>
   <data name="DataSplitHelpInclude" xml:space="preserve">
-    <value>If you would like the data or item you are splitting on to be included in the result data, select this checkbox.</value>
+    <value>If you would like the data or item you are splitting on to be included in the result data, select this checkbox.
+
+Allowed:
+Include the information you are splitting on?</value>
   </data>
   <data name="DataSplitHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the split data in the pattern as described by the results.
 The variable pattern will be repeated until the end of the input data.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="DataSplitHelpString" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To split a value into one or more variables, put the value in here.
-You can process entire file content or just trim the white space from a variable.</value>
+You can process entire file content or just trim the white space from a variable.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="DataSplitHelpUsing" xml:space="preserve">
     <value>For Index use the number of characters that this split will use. 
 For Char put any characters or combination of characters you would like.
-Not applicable to New Line, Tab or End</value>
+Not applicable to New Line, Tab or End
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="DataSplitHelpWithType" xml:space="preserve">
-    <value>Select where you would like to split the data.</value>
+    <value>Select where you would like to split the data.
+
+Allowed:
+na</value>
   </data>
   <data name="DataSplitToolTipEscape" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>If there is an occurrence or an item being split on, that should not be split on, it will be preceded with this character. e.g., a comma separated file might have a comma in a name, so don’t split on it if it is preceded by / or some other characters.</value>
   </data>
   <data name="DataSplitToolTipInclude" xml:space="preserve">
-    <value>Include the information you are splitting on?</value>
-  </data>
-  <data name="DataSplitToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>If you would like the data or item you are splitting on to be included in the result data, select this checkbox.</value>
   </data>
   <data name="DataSplitToolTipString" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To split a value into one or more variables, put the value in here.
+You can process entire file content or just trim the white space from a variable.</value>
   </data>
   <data name="DataSplitToolTipUsing" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For Index use the number of characters that this split will use. 
+For Char put any characters or combination of characters you would like.
+Not applicable to New Line, Tab or End</value>
   </data>
   <data name="FindIndexHelpCharacters" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-Put  the index of the string you are looking for in here.</value>
+Put  the index of the string you are looking for in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="FindIndexHelpDirectiontype" xml:space="preserve">
-    <value>Select the direction to search in.</value>
+    <value>Select the direction to search in.
+
+Allowed:
+na</value>
   </data>
   <data name="FindIndexHelpIndexType" xml:space="preserve">
-    <value>Select which index(es) you would like found.</value>
+    <value>Select which index(es) you would like found.
+
+Allowed:
+na</value>
   </data>
   <data name="FindIndexHelpInField" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-To find the character index(es) of a string inside another string, put the string to be searched here.</value>
+To find the character index(es) of a string inside another string, put the string to be searched here.
+
+Allowed:
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="FindIndexHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the index(es) of the found string.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated.</value>
+Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="FindIndexToolTipCharacters" xml:space="preserve">
-    <value>Data   
+    <value>Any variable and/or data goes in here.
+Put  the index of the string you are looking for in here.</value>
+  </data>
+  <data name="FindIndexToolTipInField" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To find the character index(es) of a string inside another string, put the string to be searched here.</value>
+  </data>
+  <data name="FindIndexToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the index(es) of the found string.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record. If you are finding All Occurrences and using a scalar, the results will be comma separated.</value>
+  </data>
+  <data name="ReplaceHelpFind" xml:space="preserve">
+    <value>Put the information you are looking for in here.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="FindIndexToolTipInField" xml:space="preserve">
-    <value>[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="FindIndexToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
+  <data name="ReplaceHelpReplaceWith" xml:space="preserve">
+    <value>Put the replacement information in here.
+
+Allowed:
+Data   
+[[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
-  </data>
-  <data name="ReplaceHelpFind" xml:space="preserve">
-    <value>Put the information you are looking for in here.</value>
-  </data>
-  <data name="ReplaceHelpInField" xml:space="preserve">
-    <value>Only variables go in here.
-To search and replace a string, put the variable containing the string to search in here.</value>
-  </data>
-  <data name="ReplaceHelpReplaceWith" xml:space="preserve">
-    <value>Put the replacement information in here.</value>
   </data>
   <data name="ReplaceHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the count of the number of replacements.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ReplaceToolTipFind" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="ReplaceToolTipInField" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Put the information you are looking for in here.</value>
   </data>
   <data name="ReplaceToolTipReplaceWith" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Put the replacement information in here.</value>
   </data>
   <data name="ReplaceToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="CountRecordsHelpRecordset" xml:space="preserve">
-    <value>To Count the number of records/indexes in a recordset, put the recordset name in here. E.g. [[Customer()]]</value>
-  </data>
-  <data name="CountRecordsHelpResult" xml:space="preserve">
-    <value>Only variables go in here. Returns a number specifying how many records/indexes are in the recordset.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
-  <data name="CountRecordsToolTipRecordset" xml:space="preserve">
-    <value>[[Recordset()]]</value>
-  </data>
-  <data name="CountRecordsToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="DeleteRecordsHelpRecords" xml:space="preserve">
-    <value>To Delete a record in a recordset, put the recordset name in here with the index you would like to remove. e.g. [[Customers(7)]] will remove the record at index 7. [[Customers(*)]] will delete all the data in the recordset. This is recommended when working with large amounts of data that is no longer needed.</value>
-  </data>
-  <data name="DeleteRecordsHelpResult" xml:space="preserve">
     <value>Only variables go in here.
-Returns the Success or Failure of the delete action. e.g. Deleting index 8 where it does not exist will result in Failure.
+Returns the count of the number of replacements.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
-  <data name="DeleteRecordsToolTipRecords" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="DeleteRecordsToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="UniqueRecordsHelpInField" xml:space="preserve">
-    <value>To identify unique information in a recordset, put the comma separated fields that need to be unique in here.</value>
-  </data>
-  <data name="UniqueRecordsHelpResult" xml:space="preserve">
-    <value>Returns the unique combinations into the variables specified. If there are multiple fields being returned, there should be multiple Results fields specified. Use a comma to separate the variables.</value>
-  </data>
-  <data name="UniqueRecordsHelpReturnField" xml:space="preserve">
-    <value>Which fields from the recordset would you like returned when a Unique combination is found? Use a comma separated list of the fields.
-Where multiple rows are the same, the first one will be deemed Unique.</value>
-  </data>
-  <data name="UniqueRecordsToolTipInField" xml:space="preserve">
-    <value>[[Recordset().Field]]</value>
-  </data>
-  <data name="UniqueRecordsToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="UniqueRecordsToolTipReturnField" xml:space="preserve">
-    <value>[[Recordset().Field]]</value>
   </data>
   <data name="CalculateHelpFx" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To perform a calculation, put the calculation in here in BODMAS format.
-There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.</value>
+There are many supporting functions like average() and sum() that can be used with recordsets e.g. Sum([[staff(*).salaries]]) will sum all the salaries fields of the staff recordset.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="CalculateHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the formatted number.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="CalculateToolTipFx" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
+    <value>Only variables go in here.
+Returns the formatted number.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
   <data name="CalculateToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="FormatNumberHelpDecimalToShow" xml:space="preserve">
-    <value>How many decimals should be returned as a factor of 10? e.g. 3 will show 0.000 and negative 3 (-3) will show 15000 as 15.</value>
+    <value>Only variables go in here.
+Returns the formatted number.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="FormatNumberHelpNumber" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-To format a number, put the number in here.</value>
+To format a number, put the number in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="FormatNumberHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the formatted number.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="FormatNumberHelpRoundType" xml:space="preserve">
     <value>How would you like to round the number?
 None: No rounding is done
 Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down
 Up: 1-9 all round up
-Down: 1-9 all round down</value>
+Down: 1-9 all round down
+
+Allowed:
+na</value>
   </data>
   <data name="FormatNumberHelpRoundValue" xml:space="preserve">
-    <value>At what point in the number should the rounding be done as a factor of 10? e.g. 3 will round to 3 decimal places and negative 3 (-3) will round to the nearest thousand.</value>
-  </data>
-  <data name="FormatNumberToolTipDecimalToShow" xml:space="preserve">
-    <value>Data   
+    <value>At what point in the number should the rounding be done as a factor of 10? e.g. 3 will round to 3 decimal places and negative 3 (-3) will round to the nearest thousand.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
   <data name="FormatNumberToolTipNumber" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To format a number, put the number in here.</value>
   </data>
   <data name="FormatNumberToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns the formatted number.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="FormatNumberToolTipRoundvalue" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>At what point in the number should the rounding be done as a factor of 10? e.g. 3 will round to 3 decimal places and negative 3 (-3) will round to the nearest thousand.</value>
   </data>
   <data name="ServiceHelpInput" xml:space="preserve">
     <value>Insert the input data for this service. It will be mapped to the input field listed in the To Service column. If the input is a Recordset field then you can use (*) to pass all the recordset fields into the workflow service. e.g. [[my(*).recs]] -&gt; input().records
 You can also put multiple fields into one field with other text much like the assign tool.
-By default similar matches from the variable list are used where possible.</value>
+By default similar matches from the variable list are used where possible.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ServiceHelpOutput" xml:space="preserve">
     <value>Only variables go in here.
 Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ServiceToolTipInput" xml:space="preserve">
-    <value>Data   
+    <value>Insert the input data for this service. It will be mapped to the input field listed in the To Service column. 
+You can also put multiple fields into one field with other text much like the assign tool.
+By default similar matches from the variable list are used where possible.</value>
+  </data>
+  <data name="ServiceToolTipOutput" xml:space="preserve">
+    <value>Only variables go in here.
+Insert the variable that you want the output from the service to be mapped into. By default similar matches from the variable list are used where possible.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="MoveHelpDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are moving to here.
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="ServiceToolTipOutput" xml:space="preserve">
-    <value>[[Scalar]]  
+  <data name="MoveHelpFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To Move a file or folder, put the full path and file or folder name to move in here.
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="MoveHelpDestination" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-Put the full path of the destination you are moving to here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
-  </data>
-  <data name="MoveHelpFileFolder" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To Move a file or folder, put the full path and file or folder name to move in here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
-  </data>
   <data name="MoveHelpForceoverwrite" xml:space="preserve">
-    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
-  </data>
-  <data name="MoveHelpSourcePassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.
+
+Allowed:
+If it exists already, force an overwrite</value>
   </data>
   <data name="MoveHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or will be blank depending on the success of the Move action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
-  <data name="MoveHelpSourceUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="MoveToolTipDestination" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are moving to here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="MoveToolTipFileFolder" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To Move a file or folder, put the full path and file or folder name to move in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="MoveToolTipForceoverwrite" xml:space="preserve">
-    <value>If it exists already, force an overwrite</value>
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
   </data>
   <data name="MoveToolTipPassword" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="MoveToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Move action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="MoveToolTipUsername" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="DeleteHelpFileFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To Delete a file or folder, put the full path and file or folder name to delete in here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="DeleteHelpPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="DeleteHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or Failure depending on the success of the Delete action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="DeleteHelpUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="DeleteToolTipFileFolder" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To Delete a file or folder, put the full path and file or folder name to delete in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="DeleteToolTipPassword" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="DeleteToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns Success or Failure depending on the success of the Delete action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="DeleteToolTipUsername" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="ReadFileHelpFilename" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To read the content of a file, put the full path and file name in here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ReadFileHelpPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ReadFileHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the content of the file.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ReadFileHelpUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ReadFileToolTipFilename" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To read the content of a file, put the full path and file name in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ReadFileToolTipPassword" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="ReadFileToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns the content of the file.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="ReadFileToolTipUsername" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="WriteFileHelpContent" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-Put the contents you want written to the file in here.</value>
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="WriteFileHelpFilename" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To write content to a file, put the full path and file name in here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="WriteFileHelpMethod" xml:space="preserve">
     <value>Overwrite will replace the file contents with the new content.
 Append Top puts the new content at the beginning of the file.
-Append Bottom will add the new content to the end of the file.</value>
+Append Bottom will add the new content to the end of the file.
+
+Allowed:
+How should the contents be written to the file?</value>
   </data>
   <data name="WriteFileHelpPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="WriteFileHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or will be blank depending on the success of the Write action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="WriteFileHelpUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="WriteFileToolTipContent" xml:space="preserve">
-    <value>Data   
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
   <data name="WriteFileToolTipFilename" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To write content to a file, put the full path and file name in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="WriteFileToolTipMethod" xml:space="preserve">
-    <value>How should the contents be written to the file?</value>
+    <value>"Overwrite will replace the file contents with the new content.
+Append Top puts the new content at the beginning of the file.
+Append Bottom will add the new content to the end of the file."</value>
   </data>
   <data name="WriteFileToolTipPassword" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="WriteFileToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Write action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="WriteFileToolTipUsername" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="ReadFolderHelpFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To read the content of a folder, put the full path in here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ReadFolderHelpPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ReadFolderHelpRead" xml:space="preserve">
     <value>Files will only return files.
 Folders will only return folders.
-Files and Folders will return everything.</value>
+Files and Folders will return everything.
+
+Allowed:
+What do you want to read?</value>
   </data>
   <data name="ReadFolderHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the content of the folder specified. Each item found will be returned as a separate result so this tool is best used with a recordset.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ReadFolderHelpUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ReadFolderToolTipFolder" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To read the content of a folder, put the full path in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="ReadFolderToolTipPassword" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Password of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="ReadFolderToolTipRead" xml:space="preserve">
-    <value>What do you want to read?</value>
+    <value>Files will only return files.
+Folders will only return folders.
+Files and Folders will return everything.</value>
   </data>
   <data name="ReadFolderToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns the content of the folder specified. Each item found will be returned as a separate result so this tool is best used with a recordset.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="ReadFolderToolTipUsername" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Username of an account with permission to perform this action. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="RenameHelpFileFolder" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To rename a file or folder, put the full path and file or folder name in here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="RenameHelpForceoverwrite" xml:space="preserve">
-    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.
+
+Allowed:
+If it exists already, force an overwrite</value>
   </data>
   <data name="RenameHelpNewName" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 Put the full path and new name of the resource here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
-  </data>
-  <data name="RenameHelpSourcePassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="RenameHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or will be blank depending on the success of the Rename action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
-  <data name="RenameHelpSourceUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="RenameToolTipFileFolder" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To rename a file or folder, put the full path and file or folder name in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="RenameToolTipForceoverwrite" xml:space="preserve">
-    <value>If it exists already, force an overwrite</value>
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.</value>
   </data>
   <data name="RenameToolTipNewName" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+Put the full path and new name of the resource here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="RenameToolTipPassword" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="RenameToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Rename action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="RenameToolTipUsername" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="UnzipHelpDestination" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 Put the full path of the destination you are unzipping to here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="UnzipHelpForceoverwrite" xml:space="preserve">
-    <value>If a file or folder already exists, you can force a new one to overwrite the old one.</value>
-  </data>
-  <data name="UnzipHelpSourcePassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
+    <value>If a file or folder already exists, you can force a new one to overwrite the old one.
+
+Allowed:
+If it exists already, force an overwrite</value>
   </data>
   <data name="UnzipHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns Success or will be blank depending on the success of the Unzip action.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
-  <data name="UnzipHelpSourceUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="UnzipHelpZipname" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To unzip a file, put the full path and zip file name in here.
-You can use File System, URI, FTP or FTPS forma</value>
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="UnzipToolTipDestination" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are unzipping to here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
   </data>
   <data name="UnzipToolTipForceoverwrite" xml:space="preserve">
-    <value>If it exists already, force an overwrite</value>
+    <value>If a file or folder already exists, you can force a new one to overwrite the old one.</value>
   </data>
   <data name="UnzipToolTipPassword" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="UnzipToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Unzip action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="UnzipToolTipUsername" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
   </data>
   <data name="UnzipToolTipZipname" xml:space="preserve">
     <value>Any variable and/or data goes in here.
@@ -1295,494 +1307,424 @@ You can use File System, URI, SFTP, FTP or FTPS format.</value>
 None creates the new file with the content and adds no compression - fastest.
 Partial attempts some compression.
 Normal will apply standard compression.
-Max will compress the zipped file as much as possible - slowest.</value>
+Max will compress the zipped file as much as possible - slowest.
+
+Allowed:
+na</value>
   </data>
   <data name="ZipHelpDestination" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-Put the full path and name of the newly created zipped file here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
-  </data>
-  <data name="ZipHelpFileFolder" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To zip a file or folder, put the full path of what you want zipped in here.
-You can use File System, URI, SFTP, FTP or FTPS format.</value>
-  </data>
-  <data name="ZipHelpSourcePassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="ZipHelpResult" xml:space="preserve">
-    <value>Only variables go in here.
-Returns Success or will be blank depending on the success of the Zip action.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
-  <data name="ZipHelpSourceUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="ZipToolTipDestination" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="ZipToolTipFileFolder" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="ZipToolTipPassword" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="ZipToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="ZipToolTipUsername" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="CommandLineHelpCMD" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored.</value>
-  </data>
-  <data name="CommandLineHelpPriorityType" xml:space="preserve">
-    <value>The process priority for execution. Very helpful for long running processes that need/don’t need to be resource intensive.</value>
-  </data>
-  <data name="CommandLineHelpResult" xml:space="preserve">
-    <value>Returns the output of the execution if any. Varies depending on what was executed.</value>
-  </data>
-  <data name="CommandLineToolTipCMD" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="CommandLineToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="CommentHelpComment" xml:space="preserve">
-    <value>Comments do not execute and are place holders for fututre services or tools or simply to leave commenty inside the workflow.
-You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output.</value>
-  </data>
-  <data name="SequenceHelpSeqence" xml:space="preserve">
-    <value>To execute a set of Activities in sequence put them in the order you want them executed.
-To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.
-Error handling operates as a catch all for all items in the sequence.</value>
-  </data>
-  <data name="SequenceTooltipSeqence" xml:space="preserve">
-    <value>Add to or edit the sequence.</value>
-  </data>
-  <data name="CommentToolTipComment" xml:space="preserve">
-    <value>Notes and comments will not be executed at run time but will show up in the debug output.</value>
-  </data>
-  <data name="DateTimeDifferenceHelpDateTime1" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
-Leaving this field blank will give you the system date time.</value>
-  </data>
-  <data name="DateTimeDifferenceHelpDateTime2" xml:space="preserve">
-    <value>Any variable and/or data goes in here.
-To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
-Leaving this field blank will give you the system date time.</value>
-  </data>
-  <data name="DateTimeDifferenceHelpInputFormat" xml:space="preserve">
-    <value>Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-Leaving this field blank will assume the system date time format.
-To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
-  </data>
-  <data name="DateTimeDifferenceHelpOutputType" xml:space="preserve">
-    <value>Select the unit of time to output the difference in.</value>
-  </data>
-  <data name="DateTimeDifferenceHelpResult" xml:space="preserve">
-    <value>Only variables go in here.
-Returns the difference in time between the two date times.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
-  </data>
-  <data name="DateTimeDifferenceToolTipDateTime1" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="DateTimeDifferenceToolTipDateTime2" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="DateTimeDifferenceToolTipInputFormat" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="DateTimeDifferenceToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="EmailHelpAttachments" xml:space="preserve">
-    <value>Enter the path to the attachments you want to send separated by a semicolon ;</value>
-  </data>
-  <data name="EmailHelpBcc" xml:space="preserve">
-    <value>List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;
-If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
-  </data>
-  <data name="EmailHelpBody" xml:space="preserve">
-    <value>The main body of the email goes in here.</value>
-  </data>
-  <data name="EmailHelpCc" xml:space="preserve">
-    <value>List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;
-If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
-  </data>
-  <data name="EmailHelpFromAddress" xml:space="preserve">
-    <value>Any data or variable can go in here.
-To send an email, enter the email address of the account you want to send from.
-If you are on a domain, you still need to provide the email address of the account you are sending from.
-If you leave it blank, the account used to setup the Email Source will be used.</value>
-  </data>
-  <data name="EmailHelpMailSource" xml:space="preserve">
-    <value>Select a preconfigured email source or "New Email Source..." to add a new one.</value>
-  </data>
-  <data name="EmailHelpPassword" xml:space="preserve">
-    <value>Enter the password, if there is one, for the account you are sending from.</value>
-  </data>
-  <data name="EmailHelpPriorityType" xml:space="preserve">
-    <value>Select the message priority.</value>
-  </data>
-  <data name="EmailHelpResult" xml:space="preserve">
-    <value>Only variables go in here.
-Returns Success or Failure depending on the success of the send action.</value>
-  </data>
-  <data name="EmailHelpSubject" xml:space="preserve">
-    <value>Enter the subject for your email.</value>
-  </data>
-  <data name="EmailHelpTo" xml:space="preserve">
-    <value>List the email addresses you want to send to separated by a semicolon ;
-If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
-  </data>
-  <data name="EmailToolTipBcc" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="EmailToolTipBody" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
+Put the full path of the destination you are unzipping to here.
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
 Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="EmailToolTipCc" xml:space="preserve">
-    <value>Data   
+  <data name="ZipHelpFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To zip a file or folder, put the full path of what you want zipped in here.
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="EmailToolTipFromAddress" xml:space="preserve">
-    <value>Data   
+  <data name="ZipHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Zip action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ZipToolTipDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are unzipping to here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="ZipToolTipFileFolder" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To zip a file or folder, put the full path of what you want zipped in here.
+You can use File System, URI, SFTP, FTP or FTPS format.</value>
+  </data>
+  <data name="ZipToolTipPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="ZipToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or will be blank depending on the success of the Zip action.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="ZipToolTipUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
+  </data>
+  <data name="CommentHelpComment" xml:space="preserve">
+    <value>Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.
+You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output.
+
+Allowed:
+Notes and comments will not be executed at run time but will show up in the debug output.</value>
+  </data>
+  <data name="CommentToolTipComment" xml:space="preserve">
+    <value>Comments do not execute and are place holders for future services or tools or simply to leave commentary inside the workflow.
+You can connect comments into the process flow and they will simply be skipped during execution. However, they will appear in the debug output.</value>
+  </data>
+  <data name="EmailHelpAttachments" xml:space="preserve">
+    <value>Enter the path to the attachments you want to send separated by a semicolon ;
+
+Allowed:
+</value>
+  </data>
+  <data name="EmailHelpBcc" xml:space="preserve">
+    <value>List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
+  </data>
+  <data name="EmailHelpBody" xml:space="preserve">
+    <value>The main body of the email goes in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailHelpCc" xml:space="preserve">
+    <value>List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailHelpFromAddress" xml:space="preserve">
+    <value>Any data or variable can go in here.
+To send an email, enter the email address of the account you want to send from.
+If you are on a domain, you still need to provide the email address of the account you are sending from.
+If you leave it blank, the account used to setup the Email Source will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailHelpMailSource" xml:space="preserve">
+    <value>Select a preconfigured email source or ""New Email Source..."" to add a new one.
+
+Allowed:
+Select a preconfigured email source or ""New Email Source..."" to add a new one.</value>
+  </data>
+  <data name="EmailHelpPassword" xml:space="preserve">
+    <value>Enter the password, if there is one, for the account you are sending from.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailHelpPriorityType" xml:space="preserve">
+    <value>Select the message priority.
+
+Allowed:
+na</value>
+  </data>
+  <data name="EmailHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or Failure depending on the success of the send action.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailHelpSubject" xml:space="preserve">
+    <value>Enter the subject for your email.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailHelpTo" xml:space="preserve">
+    <value>List the email addresses you want to send to separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="EmailToolTipBcc" xml:space="preserve">
+    <value>List the email addresses you want to blind carbon copy on the email you are sending separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
+  </data>
+  <data name="EmailToolTipBody" xml:space="preserve">
+    <value>The main body of the email goes in here.</value>
+  </data>
+  <data name="EmailToolTipCc" xml:space="preserve">
+    <value>List the email addresses you want to carbon copy on the email you are sending separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
+  </data>
+  <data name="EmailToolTipFromAddress" xml:space="preserve">
+    <value>Any data or variable can go in here.
+To send an email, enter the email address of the account you want to send from.
+If you are on a domain, you still need to provide the email address of the account you are sending from.
+If you leave it blank, the account used to setup the Email Source will be used.</value>
   </data>
   <data name="EmailToolTipMailSource" xml:space="preserve">
     <value>Select a preconfigured email source or "New Email Source..." to add a new one.</value>
   </data>
   <data name="EmailToolTipPassword" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Select a preconfigured email source or "New Email Source..." to add a new one.</value>
   </data>
   <data name="EmailToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns Success or Failure depending on the success of the send action.</value>
   </data>
   <data name="EmailToolTipSubject" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Enter the subject for your email.</value>
   </data>
   <data name="EmailToolTipTo" xml:space="preserve">
-    <value>Data   
+    <value>List the email addresses you want to send to separated by a semicolon ;
+If you are on a domain, you still need to provide the email address of the account you are sending to.</value>
+  </data>
+  <data name="RandomHelpLength" xml:space="preserve">
+    <value>Determines the character length to generate.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="RandomHelpLength" xml:space="preserve">
-    <value>Determines the character length to generate.</value>
-  </data>
   <data name="RandomHelpRangeFrom" xml:space="preserve">
-    <value>To generate a random number put the lowest/smallest number you would like in here.</value>
+    <value>To generate a random number put the lowest/smallest number you would like in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="RandomHelpRangeTo" xml:space="preserve">
-    <value>To generate a random number put the highest/largest number you would like in here.</value>
+    <value>To generate a random number put the highest/largest number you would like in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="RandomHelpResult" xml:space="preserve">
     <value>Only variables go in here.
 Returns the randomly generated result.
 You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.</value>
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="RandomHelpType" xml:space="preserve">
     <value>The type of random information to generate.
 Letters: Alphabetical letters only.
 Numbers: Numbers only.
 Letters and Numbers: A random combination of letters and numbers.
-GUID: A randomly generated Globally Unique Identifier.</value>
+GUID: A randomly generated Globally Unique Identifier.
+
+Allowed:
+na</value>
   </data>
   <data name="RandomToolTipLength" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Determines the character length to generate.</value>
   </data>
   <data name="RandomToolTipRangeFrom" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>To generate a random number put the lowest/smallest number you would like in here.</value>
   </data>
   <data name="RandomToolTipRangeTo" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>To generate a random number put the highest/largest number you would like in here.</value>
   </data>
   <data name="RandomToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns the randomly generated result.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="ScriptingHelpLanguageType" xml:space="preserve">
-    <value>What type of scripting language do you want to use?</value>
+    <value>What type of scripting language do you want to use?
+
+Allowed:
+na</value>
   </data>
   <data name="ScriptingHelpResult" xml:space="preserve">
     <value>Only variables go in here.
-Returns the output of the script, if any.</value>
+Returns the output of the script, if any.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ScriptingHelpScript" xml:space="preserve">
     <value>Any variable and/or data goes in here.
-To run a programming script, put the script you want to execute in here.</value>
+To run a programming script, put the script you want to execute in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="ScriptingToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Only variables go in here.
+Returns the output of the script, if any.</value>
   </data>
   <data name="ScriptingToolTipScript" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any variable and/or data goes in here.
+To run a programming script, put the script you want to execute in here.</value>
   </data>
   <data name="ForEachHelpForEachType" xml:space="preserve">
-    <value>Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+    <value>Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
 [[Customer(2).ID]],
 [[Customer(3).ID]].
 * in Range allows you to input a range of indexes.
 * in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
 * in Recordset will execute every index in the given recordset.
-No. of executions will execute the activity a given number of times.</value>
+* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... up to the number you specify.
+No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full.
+
+Allowed:
+na</value>
   </data>
   <data name="ForEachHelpValue" xml:space="preserve">
-    <value>Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
-[[Customer(2).ID]],
-[[Customer(3).ID]].
-* in Range allows you to input a range of indexes.
-* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
-* in Recordset will execute every index in the given recordset.
-No. of executions will execute the activity a given number of times.</value>
-  </data>
-  <data name="ForEachToolTipValue" xml:space="preserve">
-    <value>Data   
+    <value>Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
-  <data name="GatherSystemInformationHelpResult" xml:space="preserve">
-    <value>Only variables go in here.
-Returns the type of system information selected.</value>
-  </data>
-  <data name="GatherSystemInformationHelpSysInfoType" xml:space="preserve">
-    <value>Select the type of system information you would like to use.</value>
-  </data>
-  <data name="GatherSystemInformationToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="XPathHelpResult" xml:space="preserve">
-    <value>Only variables go in here.
-Returns the result of the Xpath expression.
-You can use [[Scalar]] as well as [[Recordset().Fields]].
-Using recordset () will add a new record and (*) will assign every record.
-Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined.</value>
+  <data name="ForEachToolTipValue" xml:space="preserve">
+    <value>Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],</value>
   </data>
   <data name="XPathHelpXML" xml:space="preserve">
     <value>Any data or variable can go in here.
-To traverse an XML document and return information from it, enter the raw XML in here.</value>
+To traverse an XML document and return information from it, enter the raw XML in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
   <data name="XPathHelpXPath" xml:space="preserve">
-    <value>Xpath notation describing the route to the data in the XML input.</value>
-  </data>
-  <data name="XPathToolTipResult" xml:space="preserve">
-    <value>[[Scalar]]  
+    <value>Xpath notation describing the route to the data in the XML input.
+
+Allowed:
+Data   
+[[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
   <data name="XPathToolTipXML" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Any data or variable can go in here.
+To traverse an XML document and return information from it, enter the raw XML in here.</value>
   </data>
   <data name="XPathToolTipXPath" xml:space="preserve">
-    <value>Data   
-[[Scalar]]   
-[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
+    <value>Xpath notation describing the route to the data in the XML input.</value>
   </data>
   <data name="UnzipHelpArchivePassword" xml:space="preserve">
     <value>Specify the password needed to open the zip file here.
-Leaving the Archive Password blank will result in no password being used to open the file.</value>
-  </data>
-  <data name="UnzipToolTipArchivePassword" xml:space="preserve">
-    <value>Data   
+Leaving the Archive Password blank will result in no archive password being used to open the file.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
+  </data>
+  <data name="UnzipToolTipArchivePassword" xml:space="preserve">
+    <value>Specify the password needed to open the zip file here.
+Leaving the Archive Password blank will result in no archive password being used to open the file.</value>
   </data>
   <data name="ZipHelpArchivePassword" xml:space="preserve">
     <value>Specify the password needed to open the zip file here.
-Leaving the Archive Password blank will result in no password being required to open the file.</value>
-  </data>
-  <data name="ZipHelpForceoverwrite" xml:space="preserve">
-    <value>If a file already exists, you can force a new one to overwrite the old one.</value>
-  </data>
-  <data name="ZipToolTipArchivePassword" xml:space="preserve">
-    <value>Data   
+Leaving the Archive Password blank will result in no password being required to open the file.
+
+Allowed:
+Data   
 [[Scalar]]   
 [[Recordset(n).Field]]   
 [[Recordset(*).Field]]   
 [[Recordset().Field]]</value>
   </data>
+  <data name="ZipHelpForceoverwrite" xml:space="preserve">
+    <value>If a file already exists, you can force a new one to overwrite the old one.
+
+Allowed:
+If it exists already, force an overwrite</value>
+  </data>
+  <data name="ZipToolTipArchivePassword" xml:space="preserve">
+    <value>Specify the password needed to open the zip file here.
+Leaving the Archive Password blank will result in no password being required to open the file.</value>
+  </data>
   <data name="ZipToolTipForceoverwrite" xml:space="preserve">
-    <value>If it exists already, force an overwrite</value>
-  </data>
-  <data name="MoveHelpDestinationPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="MoveHelpDestinationUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="ZipHelpDestinationPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="ZipHelpDestinationUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="CopyHelpDestinationPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="CopyHelpDestinationUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="RenameHelpDestinationPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="RenameHelpDestinationUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="UnzipHelpDestinationPassword" xml:space="preserve">
-    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="UnzipHelpDestinationUsername" xml:space="preserve">
-    <value>For protected resources, specify the Username of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.</value>
-  </data>
-  <data name="SqlBulkInsertHelpIgnoreBlankRows" xml:space="preserve">
-    <value>Blank records will not be added to the SQL table.</value>
-  </data>
-  <data name="SqlBulkInsertToolTipIgnoreBlankRows" xml:space="preserve">
-    <value>Blank rows will be ignored</value>
-  </data>
-  <data name="FindRecordsFromHelpText" xml:space="preserve">
-    <value>The value that the search will start at, this must be a number, date or time and must be the same type as the "To" type.</value>
-  </data>
-  <data name="FindRecordsToHelpText" xml:space="preserve">
-    <value>The value that the search will end at, this must be a number, date or time and must be the same type as the "From" type.</value>
+    <value>If a file already exists, you can force a new one to overwrite the old one.</value>
   </data>
   <data name="DataSplitHelpSkipBlankRows" xml:space="preserve">
-    <value>For file processing you can skip rows in the file that are blank. This saves you having to remove them afterwards.</value>
+    <value>For file processing you can skip rows in the file that are blank. This saves you having to remove them afterwards.
+
+Allowed:
+Blank rows will be ignored</value>
   </data>
   <data name="DataSplitToolTipProcessDirection" xml:space="preserve">
-    <value>Which direction would you like to process in?</value>
+    <value>Default direction to process is forward or left to right (reading direction). Selecting Backwards will process from the end of the data (right) to the beginning (left).</value>
   </data>
   <data name="DataSplitToolTipSkipBlankRows" xml:space="preserve">
-    <value>Blank rows will be ignored</value>
-  </data>
-  <data name="FindRecordsInFieldsToolTip" xml:space="preserve">
-    <value>[[Recordset(n).Field]]   
-[[Recordset(*).Field]]   
-[[Recordset().Field]]</value>
-  </data>
-  <data name="FindRecordsRequireAllFieldsToMatchHelpText" xml:space="preserve">
-    <value>Will only return rows where each field specified meets the match criteria if selected.</value>
-  </data>
-  <data name="FindRecordsRequireAllFieldsToMatchToolTip" xml:space="preserve">
-    <value>Should all the fields match?</value>
-  </data>
-  <data name="FindRecordsRequireAllMatchesTrueHelpText" xml:space="preserve">
-    <value>Will only return rows that match all of the criteria if selected.</value>
-  </data>
-  <data name="FindRecordsRequireAllMatchesTrueToolTip" xml:space="preserve">
-    <value>Should each criteria be met?</value>
+    <value>For file processing you can skip rows in the file that are blank. This saves you having to remove them afterwards.</value>
   </data>
   <data name="SchedulerSettingsHelpTextHistoryRecords" xml:space="preserve">
     <value>To prevent redundant data being kept the system will clean up old schedule results. To specify how many results to keep, put a whole number in here.</value>
@@ -1851,10 +1793,1413 @@ To see the result of the workflow execution, select the history record and then 
   </data>
   <data name="ServiceHelpRunWorkflowAsync" xml:space="preserve">
     <value>Selecting this checkbox will cause the workflow to execute as "Fire and Forget". This will free up the parent workflow to continue without waiting for a response from the nested workflow.
-Warning: Any data returned from this workflow will not be mapped back and will therefore not be available for use.</value>
+Warning: Any data returned from this workflow will not be mapped back and will therefore not be available for use.
+
+Allowed:
+</value>
   </data>
   <data name="SchedulerSettingsHelpTextSettingsView" xml:space="preserve">
     <value>To schedule a workflow execution, setup the trigger you want to use  and the workflow you want to execute.
 Warewolf leverages Windows Task Scheduler and the schedules can be viewed there as well.</value>
+  </data>
+  <data name="AssignHelpNewValue" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To assign a value to a variable, put the value in here.
+If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]
+[[Recordset(*).Field]]
+[[Recordset().Field]]
+= fx</value>
+  </data>
+  <data name="AssignHelpVariable" xml:space="preserve">
+    <value>Only variables go in here.
+To assign a value to a variable, put the variable here.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="AssignToolTipNewValue" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To assign a value to a variable, put the value in here.
+If you put an = as the first character, it will turn into a calculation e.g. =[[qty]]*[[price]]</value>
+  </data>
+  <data name="AssignToolTipVariable" xml:space="preserve">
+    <value>Only variables go in here.
+To assign a value to a variable, put the variable here.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="BaseConversionToolTipFromtype" xml:space="preserve">
+    <value>Select the type of data you are converting from.
+e.g. If the data is Binary and you would like Text, then select Binary here.</value>
+  </data>
+  <data name="BaseConversionToolTipTotype" xml:space="preserve">
+    <value>Select the type of data you are converting to.
+e.g. If the data is Binary and you would like Text, then select Text here.</value>
+  </data>
+  <data name="CaseConversionToolTipConvertToCasetype" xml:space="preserve">
+    <value>Select the type of conversion you would like to make.
+</value>
+  </data>
+  <data name="CMDLineHelpCMD" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CMDLineHelpPrioritytype" xml:space="preserve">
+    <value>The process priority for execution. Very helpful for long running processes that need/don’t need to be resource intensive.
+
+Allowed:
+na</value>
+  </data>
+  <data name="CMDLineToolTipCMD" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To execute a command line action or actions, enter them in here. Acts like a batch file. Any user driven task will simply be ignored.</value>
+  </data>
+  <data name="CMDLineToolTipPrioritytype" xml:space="preserve">
+    <value>The process priority for execution. Very helpful for long running processes that need/don’t need to be resource intensive.</value>
+  </data>
+  <data name="CMDLineToolTipResult" xml:space="preserve">
+    <value>Returns the output of the execution if any. Varies depending on what was executed.</value>
+  </data>
+  <data name="CopyHelpForceoverwrite" xml:space="preserve">
+    <value>If the file or folder already exists, you can force a new one to overwrite the old one.
+
+Allowed:
+If it exists already, force an overwrite</value>
+  </data>
+  <data name="CopyRecordsHelpCopyRecordsType" xml:space="preserve">
+    <value>Sets the way in which indexes will be specified to copy.
+Every Index will copy every row to the specified To recordset.
+Indexes in Range lets you copy a batch of indexes to another recordset.
+Indexes in CSV lets you specify all the indexes you would like copied, in comma separated format. The Find Record Index tool outputs to CSV if a scalar is used.
+
+Allowed:
+na</value>
+  </data>
+  <data name="CopyRecordsHelpCopyRecordsTypeInput" xml:space="preserve">
+    <value>Sets the way in which indexes will be specified to copy.
+Every Index will copy every row to the specified To recordset.
+Indexes in Range lets you copy a batch of indexes to another recordset.
+Indexes in CSV lets you specify all the indexes you would like copied, in comma separated format. The Find Record Index tool outputs to CSV if a scalar is used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CopyRecordsHelpFrom" xml:space="preserve">
+    <value>Specify the Recordset you would like to copy the information from.
+
+Allowed:
+[[Recordset()]]</value>
+  </data>
+  <data name="CopyRecordsHelpRecordsetFieldMapping" xml:space="preserve">
+    <value>To copy or move a record field value from one recordset to another, put the destination recordset field in here. To the left is the field you are copying from.
+The recordset names must all match the one specified in the To box.
+If you do not want a field mapped, blank out this field.
+
+Allowed:
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CopyRecordsHelpRemoveoriginalrowaftercopy" xml:space="preserve">
+    <value>Selecting this checkbox will split the recordset into two recordsets.
+
+Allowed:
+To move the rows rather than copy, select this check box.</value>
+  </data>
+  <data name="CopyRecordsHelpTo" xml:space="preserve">
+    <value>Specify the Recordset you would like to copy the information to. This is the destination recordset.
+
+Allowed:
+[[Recordset()]]</value>
+  </data>
+  <data name="CopyRecordsToolTipCopyRecordsType" xml:space="preserve">
+    <value>Sets the way in which indexes will be specified to copy.
+Every Index will copy every row to the specified To recordset.
+Indexes in Range lets you copy a batch of indexes to another recordset.
+Indexes in CSV lets you specify all the indexes you would like copied, in comma separated format. The Find Record Index tool outputs to CSV if a scalar is used.</value>
+  </data>
+  <data name="CopyRecordsToolTipCopyRecordsTypeInput" xml:space="preserve">
+    <value>Sets the way in which indexes will be specified to copy.
+Every Index will copy every row to the specified To recordset.
+Indexes in Range lets you copy a batch of indexes to another recordset.
+Indexes in CSV lets you specify all the indexes you would like copied, in comma separated format. The Find Record Index tool outputs to CSV if a scalar is used.</value>
+  </data>
+  <data name="CopyRecordsToolTipFrom" xml:space="preserve">
+    <value>Specify the Recordset you would like to copy the information from.</value>
+  </data>
+  <data name="CopyRecordsToolTipRecordsetFieldMapping" xml:space="preserve">
+    <value>To copy or move a record field value from one recordset to another, put the destination recordset field in here. To the left is the field you are copying from.
+The recordset names must all match the one specified in the To box.
+If you do not want a field mapped, blank out this field.</value>
+  </data>
+  <data name="CopyRecordsToolTipRemoveoriginalrowaftercopy" xml:space="preserve">
+    <value>Selecting this checkbox will split the recordset into two recordsets.</value>
+  </data>
+  <data name="CopyRecordsToolTipTo" xml:space="preserve">
+    <value>Specify the Recordset you would like to copy the information to. This is the destination recordset.</value>
+  </data>
+  <data name="CountHelpRecordset" xml:space="preserve">
+    <value>[[Customer(2).ID]],
+
+Allowed:
+[[Recordset()]]</value>
+  </data>
+  <data name="CountHelpResult" xml:space="preserve">
+    <value>[[Customer(3).ID]].
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CountToolTipRecordset" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CountToolTipResult" xml:space="preserve">
+    <value />
+  </data>
+  <data name="CreateJSONHelpInput" xml:space="preserve">
+    <value>You can use [[Scalar]] as well as [[Recordset().Fields]].</value>
+  </data>
+  <data name="CreateJSONHelpName" xml:space="preserve">
+    <value>Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="CreateJSONHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the inputs in JSON format.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CreateJSONHelpType" xml:space="preserve">
+    <value>Number:- "String" : number where "String" is the Name field and number is the Input field value. Note: Numbers can have decimal places. 
+Integer:- "String" : integer where "String" is the Name field and integer is the Input field value. Note: Integers do not have decimal places. 
+Object:- "ObjectName":{"key":"value",...}
+where "ObjectName" is the Name field and key is the Input variables name and value is the value of the variable. You can use (*) notation as well as comma separated values to build this Object.
+Array:- "ArrayName"":["val1","val2"...]
+where"ArrayName" is the Name field and val1, val2 etc. are either recordset fields or scalars. You can use (*) notation as well as comma separated values to build this Array. 
+Boolean:- "String" : true/false where "String" is the Name field and true/false is the Boolean Input field value. 
+ String:- "String" : "Value" where "String" is the Name field and "Value" is the Input field value. 
+
+Allowed:
+What type of JSON data do you want to create?</value>
+  </data>
+  <data name="CreateJSONToolTipInput" xml:space="preserve">
+    <value>This field will be converted to JSON data. You can add multiple fields by using a comma. This allows you to create Arrays and Objects from multiple fields in a recordset. To use an entire recordset simply leave off the field name e.g. Recordset(*)</value>
+  </data>
+  <data name="CreateJSONToolTipName" xml:space="preserve">
+    <value>This field will be converted to JSON data. To name a key pair, object or array, put the name you want to use in here.</value>
+  </data>
+  <data name="CreateJSONToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the inputs in JSON format.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="CreateJSONToolTipType" xml:space="preserve">
+    <value>Number:- "String" : number where "String" is the Name field and number is the Input field value. Note: Numbers can have decimal places. 
+Integer:- "String" : integer where "String" is the Name field and integer is the Input field value. Note: Integers do not have decimal places. 
+Object:- "ObjectName":{"key":"value",...}
+where "ObjectName" is the Name field and key is the Input variables name and value is the value of the variable. You can use (*) notation as well as comma separated values to build this Object.
+Array:- "ArrayName"":["val1","val2"...]
+where "ArrayName" is the Name field and val1, val2 etc. are either recordset fields or scalars. You can use (*) notation as well as comma separated values to build this Array. 
+Boolean:- "String" : true/false where "String" is the Name field and true/false is the Boolean Input field value. 
+ String:- "String" : "Value" where "String" is the Name field and "Value" is the Input field value. </value>
+  </data>
+  <data name="DataMergeToolTipAlignType" xml:space="preserve">
+    <value>For Index you can specify if your data is aligned to the right or left.
+E.g. Text is normally left and numbers normally right.</value>
+  </data>
+  <data name="DataMergeToolTipWithtype" xml:space="preserve">
+    <value>Select the type of merge you would like between each piece of merged data, if any.
+</value>
+  </data>
+  <data name="DataSplitHelpResults" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the split data in the pattern as described by the results.
+The variable pattern will be repeated until the end of the input data.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DataSplitToolTipResults" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the split data in the pattern as described by the results.
+The variable pattern will be repeated until the end of the input data.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="DataSplitToolTipWithtype" xml:space="preserve">
+    <value>Select where you would like to split the data.</value>
+  </data>
+  <data name="DateTimeHelpAddtime" xml:space="preserve">
+    <value>Put a positive or negative number here to add or subtract from the input date time.
+Leave this field blank if you do not want to change the date time.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeHelpDatetime" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To format a date time, or to add/subtract from a date time, put it in here.
+Leaving this field blank will give you the system date time.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeHelpInputformat" xml:space="preserve">
+    <value>Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
+Leaving this field blank will assume the system date time format.
+To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.' 
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeHelpOutputformat" xml:space="preserve">
+    <value>Describe the format you would like the date time to be returned in.
+Leaving this field blank will assume the same as the Input Format.
+To include text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an output format of 'Time is now' 24hr 'hours and' min 'minutes.' 
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the formatted and/or added/subtracted date time.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeHelpTimeType" xml:space="preserve">
+    <value>Select the unit of time to add or subtract. This is ignored if the unit is blank or 0.
+
+Allowed:
+na</value>
+  </data>
+  <data name="DateTimeToolTipAddtime" xml:space="preserve">
+    <value>Put a positive or negative number here to add or subtract from the input date time.
+Leave this field blank if you do not want to change the date time.</value>
+  </data>
+  <data name="DateTimeToolTipDatetime" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To format a date time, or to add/subtract from a date time, put it in here.
+Leaving this field blank will give you the system date time.</value>
+  </data>
+  <data name="DateTimeToolTipInputformat" xml:space="preserve">
+    <value>Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
+Leaving this field blank will assume the system date time format.
+To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
+  </data>
+  <data name="DateTimeToolTipOutputformat" xml:space="preserve">
+    <value>Describe the format you would like the date time to be returned in.
+Leaving this field blank will assume the same as the Input Format.
+To include text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an output format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
+  </data>
+  <data name="DateTimeToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the formatted and/or added/subtracted date time.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="DateTimeToolTipTimeType" xml:space="preserve">
+    <value>Select the unit of time to add or subtract. This is ignored if the unit is blank or 0.</value>
+  </data>
+  <data name="DelayHelpTime" xml:space="preserve">
+    <value>To delay execution or pause the workflow, select the time part you want to pause by and then the amount of time. 
+E.g. 6 minutes. 
+A blank Time field will default to 0 and not cause any delay.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DelayHelpType" xml:space="preserve">
+    <value>To delay execution or pause the workflow, select the time part you want to pause by and then the amount of time. 
+E.g. 6 minutes. 
+A blank Time field will default to 0 and not cause any delay.
+
+Allowed:
+na</value>
+  </data>
+  <data name="DelayToolTipTime" xml:space="preserve">
+    <value>To delay execution or pause the workflow, select the time part you want to pause by and then the amount of time. 
+E.g. 6 minutes. 
+A blank Time field will default to 0 and not cause any delay.</value>
+  </data>
+  <data name="DelayToolTipType" xml:space="preserve">
+    <value>To delay execution or pause the workflow, select the time part you want to pause by and then the amount of time. 
+E.g. 6 minutes. 
+A blank Time field will default to 0 and not cause any delay.</value>
+  </data>
+  <data name="DeleteHelpRecords" xml:space="preserve">
+    <value>* in Recordset will execute every index in the given recordset.
+
+Allowed:
+[[Recordset(n)]]   
+[[Recordset(*)]]   
+[[Recordset()]]</value>
+  </data>
+  <data name="DeleteToolTipRecords" xml:space="preserve">
+    <value>* in Recordset will execute every index in the given recordset.</value>
+  </data>
+  <data name="DoWhileHelp" xml:space="preserve">
+    <value>To execute an activity until certain conditions are met, enter the conditions to check for. You can add multiple conditions and require them all to be true or  just one to be true before stopping execution.
+You can use a sequence tool with other activities inside it to execute a number of activities every time.
+
+Allowed:
+</value>
+  </data>
+  <data name="DoWhileHelpInputfield" xml:space="preserve">
+    <value>To execute an activity until certain conditions are met, enter the conditions to check for.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DoWhileHelpMatch" xml:space="preserve">
+    <value>See Find (Recordset) tool in the application
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DoWhileHelpMatchType" xml:space="preserve">
+    <value>Select the type of information you want to match on.
+
+Allowed:
+na</value>
+  </data>
+  <data name="DoWhileHelpRequirealltobetrue" xml:space="preserve">
+    <value>To continue execution until all conditions are met, select this check box.
+
+Allowed:
+</value>
+  </data>
+  <data name="DoWhileToolTip" xml:space="preserve">
+    <value>To execute an activity until certain conditions are met, enter the conditions to check for. You can add multiple conditions and require them all to be true or  just one to be true before stopping execution.
+You can use a sequence tool with other activities inside it to execute a number of activities every time.</value>
+  </data>
+  <data name="DoWhileToolTipInputfield" xml:space="preserve">
+    <value>To execute an activity until certain conditions are met, enter the conditions to check for.</value>
+  </data>
+  <data name="DoWhileToolTipMatch" xml:space="preserve">
+    <value>See Find (Recordset) tool in the application</value>
+  </data>
+  <data name="DoWhileToolTipMatchType" xml:space="preserve">
+    <value>Select the type of information you want to match on.</value>
+  </data>
+  <data name="DoWhileToolTipRequirealltobetrue" xml:space="preserve">
+    <value>To continue execution until all conditions are met, select this check box.</value>
+  </data>
+  <data name="EmailToolTipAttachments" xml:space="preserve">
+    <value>Enter the path to the attachments you want to send separated by a semicolon ;</value>
+  </data>
+  <data name="EmailToolTipPriorityType" xml:space="preserve">
+    <value>Select the message priority.</value>
+  </data>
+  <data name="FindHelpInFields" xml:space="preserve">
+    <value>No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full.
+
+Allowed:
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="FindHelpLookForMatchType" xml:space="preserve">
+    <value>Select the type of information you want to match on.
+
+Allowed:
+na</value>
+  </data>
+  <data name="FindHelpMatch" xml:space="preserve">
+    <value>See in tool
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="FindHelpRequireAllFieldsToMatch" xml:space="preserve">
+    <value>Will only return rows where each field specified meets the match criteria if selected.
+
+Allowed:
+Should all the fields match?</value>
+  </data>
+  <data name="FindHelpRequireAllMatchesToBeTrue" xml:space="preserve">
+    <value>Will only return rows that match all of the criteria if selected.
+
+Allowed:
+Should each criteria be met?</value>
+  </data>
+  <data name="FindHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the indexes of the successful matches.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+If there are multiple results and a scalar is used, then each result will be separated with a comma.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="FindIndexToolTipDirectionType" xml:space="preserve">
+    <value>Select the direction to search in.</value>
+  </data>
+  <data name="FindIndexToolTipIndexType" xml:space="preserve">
+    <value>Select which index(es) you would like found.</value>
+  </data>
+  <data name="FindToolTipInFields" xml:space="preserve">
+    <value>No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full.</value>
+  </data>
+  <data name="FindToolTipLookForMatchType" xml:space="preserve">
+    <value>Select the type of information you want to match on.</value>
+  </data>
+  <data name="FindToolTipMatch" xml:space="preserve">
+    <value>See in tool</value>
+  </data>
+  <data name="FindToolTipRequireAllFieldsToMatch" xml:space="preserve">
+    <value>Will only return rows where each field specified meets the match criteria if selected.</value>
+  </data>
+  <data name="FindToolTipRequireAllMatchesToBeTrue" xml:space="preserve">
+    <value>Will only return rows that match all of the criteria if selected.</value>
+  </data>
+  <data name="FindToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the indexes of the successful matches.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+If there are multiple results and a scalar is used, then each result will be separated with a comma.</value>
+  </data>
+  <data name="ForEachToolTipForEachType" xml:space="preserve">
+    <value>Generaly Replaces the * in the activity with the relevant index. e.g. If 1-3 is provided then [[Customer(*).ID]] will execute as [[Customer(1).ID]],
+[[Customer(2).ID]],
+[[Customer(3).ID]].
+* in Range allows you to input a range of indexes.
+* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
+* in Recordset will execute every index in the given recordset.
+* in Executes will execute the activity a given number of times and replace the * with the number of times it has executed e.g. 1,2,3... up to the number you specify.
+No Subs. Execution WILL NOT substitute * with anything. The inner item(s) will execute given number of times in full.</value>
+  </data>
+  <data name="FormatNumberHelpDecimalsToShow" xml:space="preserve">
+    <value>How many decimals should be returned as a factor of 10? e.g. 3 will show 0.000 and negative 3 (-3) will show 15000 as 15.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="FormatNumberToolTipDecimalsToShow" xml:space="preserve">
+    <value>How many decimals should be returned as a factor of 10? e.g. 3 will show 0.000 and negative 3 (-3) will show 15000 as 15.</value>
+  </data>
+  <data name="FormatNumberToolTipRoundType" xml:space="preserve">
+    <value>How would you like to round the number?
+None: No rounding is done
+Normal: 5,6,7,8,9 round up &amp; 1,2,3,4 round down
+Up: 1-9 all round up
+Down: 1-9 all round down</value>
+  </data>
+  <data name="IfThenHelp" xml:space="preserve">
+    <value>To execute a particular activity rather than another if a statement is true, then set the conditions and place the relevant activity in the relevant box. 
+You can add multiple conditions and require them all to be true or just one to be true.
+You can use a sequence tool with other activities inside it to execute a number of activities.
+
+Allowed:
+</value>
+  </data>
+  <data name="IfThenHelpInputfield" xml:space="preserve">
+    <value>To execute a particular activity rather than another if a statement is true, then set the input for the statement here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="IfThenHelpMatch" xml:space="preserve">
+    <value>See Find (Recordset) tool in the application
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="IfThenHelpMatchType" xml:space="preserve">
+    <value>Select the type of information you want to match on.
+
+Allowed:
+na</value>
+  </data>
+  <data name="IfThenHelpRequirealltobetrue" xml:space="preserve">
+    <value>To have all conditions met then select this check box.
+
+Allowed:
+</value>
+  </data>
+  <data name="IfThenToolTip" xml:space="preserve">
+    <value>To execute a particular activity rather than another if a statement is true, then set the conditions and place the relevant activity in the relevant box. 
+You can add multiple conditions and require them all to be true or just one to be true.
+You can use a sequence tool with other activities inside it to execute a number of activities.</value>
+  </data>
+  <data name="IfThenToolTipInputfield" xml:space="preserve">
+    <value>To execute a particular activity rather than another if a statement is true, then set the input for the statement here.</value>
+  </data>
+  <data name="IfThenToolTipMatch" xml:space="preserve">
+    <value>See Find (Recordset) tool in the application</value>
+  </data>
+  <data name="IfThenToolTipMatchType" xml:space="preserve">
+    <value>Select the type of information you want to match on.</value>
+  </data>
+  <data name="IfThenToolTipRequirealltobetrue" xml:space="preserve">
+    <value>To have all conditions met then select this check box.</value>
+  </data>
+  <data name="LengthHelpRecordset" xml:space="preserve">
+    <value>* in Range allows you to input a range of indexes.
+
+Allowed:
+[[Recordset()]]</value>
+  </data>
+  <data name="LengthHelpResult" xml:space="preserve">
+    <value>* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="LengthToolTipRecordset" xml:space="preserve">
+    <value>* in Range allows you to input a range of indexes.</value>
+  </data>
+  <data name="LengthToolTipResult" xml:space="preserve">
+    <value>* in CSV allows a specific set of indexes to be specified e.g. 1,5,7,9.</value>
+  </data>
+  <data name="NativeActivityHelpCallthiswebservice" xml:space="preserve">
+    <value>If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
+E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]]
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="NativeActivityHelpEndtheworkflow" xml:space="preserve">
+    <value>To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 
+If you have also called a web service / Warewolf workflow, that will finish executing first.
+If the workflow is nested, the calling workflow will resume.
+
+Allowed:
+Ends the executing workflow at this point</value>
+  </data>
+  <data name="NativeActivityHelpPuterrorinthisvariable" xml:space="preserve">
+    <value>If an error occurs the error message will be placed into this variable as well the result variable.
+If left empty the result will still be placed in the result variable.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="NativeActivityToolTipCallthiswebservice" xml:space="preserve">
+    <value>If an error occurs you can execute a web service / Warewolf workflow to log the error that occurred.
+E.g. http://ServerName:3142/Services/LogErrors?Severity=1&amp;Error=[[ErrorMsg]]</value>
+  </data>
+  <data name="NativeActivityToolTipEndtheworkflow" xml:space="preserve">
+    <value>To end the workflow if an error has occurred at this point, make sure the checkbox is selected. 
+If you have also called a web service / Warewolf workflow, that will finish executing first.
+If the workflow is nested, the calling workflow will resume.</value>
+  </data>
+  <data name="NativeActivityToolTipPuterrorinthisvariable" xml:space="preserve">
+    <value>If an error occurs the error message will be placed into this variable as well the result variable.
+If left empty the result will still be placed in the result variable.</value>
+  </data>
+  <data name="ParallelForEachHelp" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ParallelForEachHelpForEachType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ParallelForEachToolTip" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ParallelForEachToolTipForEachType" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ParallelHelp" xml:space="preserve">
+    <value>To execute a number of Activities at the same time, drop them into the Parallel tool.
+Execution of the workflow will continue when all the channels have completed.
+The error handling is a catch all for any process inside the parallel execution.
+
+Allowed:
+</value>
+  </data>
+  <data name="ParallelToolTip" xml:space="preserve">
+    <value>To execute a number of Activities at the same time, drop them into the Parallel tool.
+Execution of the workflow will continue when all the channels have completed.
+The error handling is a catch all for any process inside the parallel execution.</value>
+  </data>
+  <data name="RandomToolTipType" xml:space="preserve">
+    <value>The type of random information to generate.
+Letters: Alphabetical letters only.
+Numbers: Numbers only.
+Letters and Numbers: A random combination of letters and numbers.
+GUID: A randomly generated Globally Unique Identifier.</value>
+  </data>
+  <data name="ReplaceHelpInFields" xml:space="preserve">
+    <value>Only variables go in here.
+To search and replace a string, put the variable containing the string to search in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ReplaceToolTipInFields" xml:space="preserve">
+    <value>Only variables go in here.
+To search and replace a string, put the variable containing the string to search in here.</value>
+  </data>
+  <data name="RulesHelp" xml:space="preserve">
+    <value>To add a rule, enter the rule name in the Default input and hit enter or double click a rule to edit.
+You can drag and drop the rules to change their execution order.
+Rules will be processed in the order listed. If a Rule is found to be True, that flow arm will be executed.
+
+Allowed:
+Add to or edit the rules list.</value>
+  </data>
+  <data name="RulesToolTip" xml:space="preserve">
+    <value>To add a rule, enter the rule name in the Default input and hit enter or double click a rule to edit.
+You can drag and drop the rules to change their execution order.
+Rules will be processed in the order listed. If a Rule is found to be True, that flow arm will be executed.</value>
+  </data>
+  <data name="ScriptingToolTipLanguageType" xml:space="preserve">
+    <value>What type of scripting language do you want to use?</value>
+  </data>
+  <data name="SequenceHelpSequence" xml:space="preserve">
+    <value>To execute a set of Activities in sequence put them in the order you want them executed.
+To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.
+Error handling operates as a catch all for all items in the sequence.</value>
+  </data>
+  <data name="SequenceTooltipSequence" xml:space="preserve">
+    <value>To execute a set of Activities in sequence put them in the order you want them executed.
+To execute more than one item in a loop construct etc. put the activities in a sequence first and then put the sequence into the loop construct.
+Error handling operates as a catch all for all items in the sequence.</value>
+  </data>
+  <data name="SortHelpSortField" xml:space="preserve">
+    <value>To Sort a recordset enter the field in the recordset you would like to sort on.
+To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort.
+
+Allowed:
+[[Recordset().Field]]</value>
+  </data>
+  <data name="SortHelpSortOrderType" xml:space="preserve">
+    <value>Select the order of the sorting.
+Forward will go 1-9 then a-Z.
+Backward will go Z-a then 9-1.
+
+Allowed:
+na</value>
+  </data>
+  <data name="SortToolTipSortField" xml:space="preserve">
+    <value>To Sort a recordset enter the field in the recordset you would like to sort on.
+To sort on more than one field, perform the sort action for each field you would like to sort on, ending with the priority sort.</value>
+  </data>
+  <data name="SortToolTipSortOrderType" xml:space="preserve">
+    <value>Select the order of the sorting.
+Forward will go 1-9 then a-Z.
+Backward will go Z-a then 9-1.</value>
+  </data>
+  <data name="SQLBulkInsertHelpInputData" xml:space="preserve">
+    <value>To bulk insert data into a table, put the data to insert in here.
+Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
+A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
+To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="SQLBulkInsertHelpSkipblankrows" xml:space="preserve">
+    <value>Blank records will not be added to the SQL table.
+
+Allowed:
+Blank rows will be ignored</value>
+  </data>
+  <data name="SQLBulkInsertHelpTable" xml:space="preserve">
+    <value>Select a table to perform the bulk insert into.
+If the table schema has changed or recently added to the source, click the refresh button.
+
+Allowed:
+Select a table to perform the bulk insert into.</value>
+  </data>
+  <data name="SQLBulkInsertHelpTablelock" xml:space="preserve">
+    <value>Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used.
+
+Allowed:
+Obtain a bulk update lock for the duration of the bulk copy operation.</value>
+  </data>
+  <data name="SQLBulkInsertToolTipInputData" xml:space="preserve">
+    <value>To bulk insert data into a table, put the data to insert in here.
+Using recordset (*) notation will put the entire recordset in and is the normal usage scenario for large data inserts to SQL.
+A single Recordset will yield the best performance. Do not mix, scalars and/or different recordsets for optimum performance.
+To quickly change the input data, press the Quick Variable Input button and amend the mappings as necessary.</value>
+  </data>
+  <data name="SQLBulkInsertToolTipSkipblankrows" xml:space="preserve">
+    <value>Blank records will not be added to the SQL table.</value>
+  </data>
+  <data name="SQLBulkInsertToolTipTable" xml:space="preserve">
+    <value>Select a table to perform the bulk insert into.
+If the table schema has changed or recently added to the source, click the refresh button.</value>
+  </data>
+  <data name="SQLBulkInsertToolTipTablelock" xml:space="preserve">
+    <value>Obtain a bulk update lock for the duration of the bulk copy operation. When not specified, row locks are used.</value>
+  </data>
+  <data name="SystemInformationHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the type of system information selected.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="SystemInformationHelpSysInfoType" xml:space="preserve">
+    <value>Select the type of system information you would like to use.
+
+Allowed:
+na</value>
+  </data>
+  <data name="SystemInformationToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the type of system information selected.</value>
+  </data>
+  <data name="SystemInformationToolTipSysInfoType" xml:space="preserve">
+    <value>Select the type of system information you would like to use.</value>
+  </data>
+  <data name="TransactionHelp" xml:space="preserve">
+    <value>To run an activity or sequence of activities in a transaction, drop it on here.
+Transactions WILL NOT be honored across servers and must be part of the Windows transaction scope.
+
+Allowed:
+Drop a sequence or activity here to have it execute in a transaction.</value>
+  </data>
+  <data name="TransactionHelpIsolationLevel" xml:space="preserve">
+    <value>Chaos:- The pending changes from more highly isolated transactions cannot be overwritten.
+ReadCommitted:- Volatile data cannot be read during the transaction, but can be modified.
+ReadUncommitted:- Volatile data can be read and modified during the transaction.
+RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
+Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
+Snapshot:- Volatile data can be read. Before a transaction modifies data, it verifies if another transaction has changed the data after it was initially read. If the data has been updated, an error is raised. This allows a transaction to get to the previously committed value of the data.
+
+Allowed:
+How isolated should the transaction be?</value>
+  </data>
+  <data name="TransactionHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns "Success" if the transaction completed without error.
+Returns "Fail" if transaction completed with an error.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="TransactionHelpTimeoutTime" xml:space="preserve">
+    <value>To create a timeout on the transaction, enter the time part and amount in here. 
+0 or blank will not timeout.
+
+Allowed:
+How long before timing out?</value>
+  </data>
+  <data name="TransactionHelpTimeoutType" xml:space="preserve">
+    <value>To create a timeout on the transaction, enter the time part and amount in here. 
+0 or blank will not timeout.
+
+Allowed:
+Timepart for the timeout</value>
+  </data>
+  <data name="TransactionToolTip" xml:space="preserve">
+    <value>To run an activity or sequence of activities in a transaction, drop it on here.
+Transactions WILL NOT be honored across servers and must be part of the Windows transaction scope.</value>
+  </data>
+  <data name="TransactionToolTipIsolationLevel" xml:space="preserve">
+    <value>Chaos:- The pending changes from more highly isolated transactions cannot be overwritten.
+ReadCommitted:- Volatile data cannot be read during the transaction, but can be modified.
+ReadUncommitted:- Volatile data can be read and modified during the transaction.
+RepeatableRead:- Volatile data can be read but not modified during the transaction. New data can be added during the transaction.
+Serializable:- Volatile data can be read but not modified, and no new data can be added during the transaction.
+Snapshot:- Volatile data can be read. Before a transaction modifies data, it verifies if another transaction has changed the data after it was initially read. If the data has been updated, an error is raised. This allows a transaction to get to the previously committed value of the data.</value>
+  </data>
+  <data name="TransactionToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns "Success" if the transaction completed without error.
+Returns "Fail" if transaction completed with an error.</value>
+  </data>
+  <data name="TransactionToolTipTimeoutTime" xml:space="preserve">
+    <value>To create a timeout on the transaction, enter the time part and amount in here. 
+0 or blank will not timeout.</value>
+  </data>
+  <data name="TransactionToolTipTimeoutType" xml:space="preserve">
+    <value>To create a timeout on the transaction, enter the time part and amount in here. 
+0 or blank will not timeout.</value>
+  </data>
+  <data name="UniqueHelpInFields" xml:space="preserve">
+    <value>To identify unique information in a recordset, put the comma separated fields that need to be unique in here. 
+
+Allowed:
+[[Recordset().Field]]</value>
+  </data>
+  <data name="UniqueHelpResults" xml:space="preserve">
+    <value>Returns the unique combinations into the variables specified. If there are multiple fields being returned, there should be multiple Results fields specified. Use a comma to separate the variables.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="UniqueToolTipInFields" xml:space="preserve">
+    <value>To identify unique information in a recordset, put the comma separated fields that need to be unique in here.</value>
+  </data>
+  <data name="UniqueToolTipResults" xml:space="preserve">
+    <value>Returns the unique combinations into the variables specified. If there are multiple fields being returned, there should be multiple Results fields specified. Use a comma to separate the variables.</value>
+  </data>
+  <data name="UniqueToolTipReturnFields" xml:space="preserve">
+    <value>Which fields from the recordset would you like returned when a Unique combination is found? Use a comma separated list of the fields.
+Where multiple rows are the same, the first one will be deemed Unique.</value>
+  </data>
+  <data name="WebRequestHelpHeader" xml:space="preserve">
+    <value>To supply additional header information in your get request, put the header info in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WebRequestHelpResult" xml:space="preserve">
+    <value>Only a single variable goes in here.
+Returns the response text of the web get request.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WebRequestHelpURL" xml:space="preserve">
+    <value>Any data or variable can go in here.
+To traverse and retrieve the raw response from a webpage, enter it in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WebRequestToolTipHeader" xml:space="preserve">
+    <value>To supply additional header information in your get request, put the header info in here.</value>
+  </data>
+  <data name="WebRequestToolTipResult" xml:space="preserve">
+    <value>Only a single variable goes in here.
+Returns the response text of the web get request.</value>
+  </data>
+  <data name="WebRequestToolTipURL" xml:space="preserve">
+    <value>Any data or variable can go in here.
+To traverse and retrieve the raw response from a webpage, enter it in here.</value>
+  </data>
+  <data name="WorkerServiceHelpInput" xml:space="preserve">
+    <value>Insert the input data for this service. It will be mapped to the input field listed in the To Service column. 
+You can also put multiple fields into one field with other text much like the assign tool.
+By default similar matches from the variable list are used where possible.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WorkerServiceHelpOutput" xml:space="preserve">
+    <value>Only variables go in here.
+Insert the variable that you want the output from the service to be mapped into. By default similar matches from the variable list are used where possible.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WorkerServiceToolTipInput" xml:space="preserve">
+    <value>Insert the input data for this service. It will be mapped to the input field listed in the To Service column. 
+You can also put multiple fields into one field with other text much like the assign tool.
+By default similar matches from the variable list are used where possible.</value>
+  </data>
+  <data name="WorkerServiceToolTipOutput" xml:space="preserve">
+    <value>Only variables go in here.
+Insert the variable that you want the output from the service to be mapped into. By default similar matches from the variable list are used where possible.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="WorkflowServiceHelpExecuteworkflowasynchronously" xml:space="preserve">
+    <value>Selecting this checkbox will cause the workflow to execute as ""Fire and Forget"". This will free up the parent workflow to continue without waiting for a response from the nested workflow.
+Warning: Any data returned from this workflow will not be mapped back and will therefore not be available for use.
+
+Allowed:
+</value>
+  </data>
+  <data name="WorkflowServiceHelpInput" xml:space="preserve">
+    <value>Insert the input data for this service. It will be mapped to the input field listed in the To Service column. If the input is a Recordset field then you can use (*) to pass all the recordset fields into the workflow service. e.g. [[my(*).recs]] -&gt; input().records
+You can also put multiple fields into one field with other text much like the assign tool.
+By default similar matches from the variable list are used where possible.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WorkflowServiceHelpOutput" xml:space="preserve">
+    <value>Only variables go in here.
+Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WorkflowServiceToolTipExecuteworkflowasynchronously" xml:space="preserve">
+    <value>Selecting this checkbox will cause the workflow to execute as ""Fire and Forget"". This will free up the parent workflow to continue without waiting for a response from the nested workflow.
+Warning: Any data returned from this workflow will not be mapped back and will therefore not be available for use.</value>
+  </data>
+  <data name="WorkflowServiceToolTipInput" xml:space="preserve">
+    <value>Insert the input data for this service. It will be mapped to the input field listed in the To Service column. If the input is a Recordset field then you can use (*) to pass all the recordset fields into the workflow service. e.g. [[my(*).recs]] -&gt; input().records
+You can also put multiple fields into one field with other text much like the assign tool.
+By default similar matches from the variable list are used where possible.</value>
+  </data>
+  <data name="WorkflowServiceToolTipOutput" xml:space="preserve">
+    <value>Only variables go in here.
+Insert the variable that you want the output of the workflow to be mapped into. By default similar matches from the variable list are used where possible.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="WriteFileHelpContents" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the contents you want written to the file in here.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="WriteFileToolTipContents" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the contents you want written to the file in here.</value>
+  </data>
+  <data name="XpathHelpResults" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the result of the Xpath expression.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="XpathToolTipResults" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the result of the Xpath expression.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+Each Xpath expression returned will be added to the result recordset in a new record or comma separated list if a scalar variable is defined.</value>
+  </data>
+  <data name="ZipToolTipCompressiontype" xml:space="preserve">
+    <value>The system will try and match your zipping requirements as far as possible.
+None creates the new file with the content and adds no compression - fastest.
+Partial attempts some compression.
+Normal will apply standard compression.
+Max will compress the zipped file as much as possible - slowest.</value>
+  </data>
+  <data name="CMDLineHelpResult" xml:space="preserve">
+    <value>Returns the output of the execution if any. Varies depending on what was executed.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CopyHelpDestination" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+Put the full path of the destination you are copying to here.
+You can use File System, URI, SFTP, FTP or FTPS format.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CopyHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="CopyHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeDifferenceHelpDatetime1" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
+Leaving this field blank will give you the system date time.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeDifferenceHelpDatetime2" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
+Leaving this field blank will give you the system date time.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeDifferenceHelpInputFormat" xml:space="preserve">
+    <value>Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
+Leaving this field blank will assume the system date time format.
+To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.' 
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]"</value>
+  </data>
+  <data name="DateTimeDifferenceHelpOutputType" xml:space="preserve">
+    <value>"Select the unit of time to output the difference in.
+
+Allowed:
+na"</value>
+  </data>
+  <data name="DateTimeDifferenceHelpResult" xml:space="preserve">
+    <value>"Only variables go in here.
+Returns the difference in time between the two date times.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipDatetime1" xml:space="preserve">
+    <value>Any variable and/or data goes in here.
+To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
+Leaving this field blank will give you the system date time.</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipDatetime2" xml:space="preserve">
+    <value>"Any variable and/or data goes in here.
+To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
+Leaving this field blank will give you the system date time."</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipInputFormat" xml:space="preserve">
+    <value>Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
+Leaving this field blank will assume the system date time format.
+To escape text or non-date information use 'around the text you want to escape'. e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipOutputType" xml:space="preserve">
+    <value>Select the unit of time to output the difference in.</value>
+  </data>
+  <data name="DateTimeDifferenceToolTipResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns the difference in time between the two date times.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.</value>
+  </data>
+  <data name="FindHelpFrom" xml:space="preserve">
+    <value>The value that the search will start at, this must be a number, date or time and must be the same type as the "To" type.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="FindHelpTo" xml:space="preserve">
+    <value>The value that the search will end at, this must be a number, date or time and must be the same type as the "From" type.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="FindRecordsFromHelpText" xml:space="preserve">
+    <value>The value that the search will start at, this must be a number, date or time and must be the same type as the "To" type.</value>
+  </data>
+  <data name="FindRecordsToHelpText" xml:space="preserve">
+    <value>The value that the search will end at, this must be a number, date or time and must be the same type as the "From" type.</value>
+  </data>
+  <data name="FindToolTipFrom" xml:space="preserve">
+    <value>The value that the search will start at, this must be a number, date or time and must be the same type as the "To" type.</value>
+  </data>
+  <data name="FindToolTipTo" xml:space="preserve">
+    <value>The value that the search will end at, this must be a number, date or time and must be the same type as the "From" type.</value>
+  </data>
+  <data name="MoveHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="MoveHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RenameHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="RenameHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="SQLBulkInsertHelpBatchSize" xml:space="preserve">
+    <value>The number of rows you would like to insert at a time.
+The default is 0 which will do everything in 1 batch.
+If you specify 50, then 50 rows will be bulk inserted at a time.
+
+Allowed:
+Number
+[[Scalar]]   
+[[Recordset(n).Field]]      
+[[Recordset().Field]]</value>
+  </data>
+  <data name="SQLBulkInsertHelpCheckConstraints" xml:space="preserve">
+    <value>Check constraints while data is being inserted. By default, constraints are not checked.
+
+Allowed:
+Check constraints while data is being inserted.</value>
+  </data>
+  <data name="SQLBulkInsertHelpDatabase" xml:space="preserve">
+    <value>Select a preconfigured database source or "New Database Source..." to add a new one.
+
+Allowed:
+Select a preconfigured database source or "New Database Source..." to add a new one.</value>
+  </data>
+  <data name="SQLBulkInsertHelpFiretriggers" xml:space="preserve">
+    <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.
+
+Allowed:
+When specified, cause the server to fire the insert triggers for the rows being inserted into the database.</value>
+  </data>
+  <data name="SQLBulkInsertHelpKeepidentity" xml:space="preserve">
+    <value>Preserve source identity values. When not specified, identity values are assigned by the destination.
+
+Allowed:
+Preserve source identity values.</value>
+  </data>
+  <data name="SQLBulkInsertHelpResult" xml:space="preserve">
+    <value>Only variables go in here.
+Returns Success or the record numbers with errors.
+You can use [[Scalar]] as well as [[Recordset().Fields]].
+Using recordset () will add a new record and (*) will assign every record.
+
+Allowed:
+[[Scalar]]  
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="String1SQLBulkInsertHelpFiretriggers" xml:space="preserve">
+    <value>When specified, cause the server to fire the insert triggers for the rows being inserted into the database.
+
+Allowed:
+When specified, cause the server to fire the insert triggers for the rows being inserted into the database.</value>
+  </data>
+  <data name="UniqueHelpReturnFields" xml:space="preserve">
+    <value>Which fields from the recordset would you like returned when a Unique combination is found? Use a comma separated list of the fields.
+Where multiple rows are the same, the first one will be deemed Unique.
+
+Allowed:
+[[Recordset().Field]]</value>
+  </data>
+  <data name="UnzipHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="UnzipHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ZipHelpPassword" xml:space="preserve">
+    <value>For protected resources, specify the Password of an account with permission to access the destination. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
+  </data>
+  <data name="ZipHelpUsername" xml:space="preserve">
+    <value>For protected resources, specify the Username of an account with permission to access the source. By default the account running Warewolf Server.exe service will be used.
+
+Allowed:
+Data   
+[[Scalar]]   
+[[Recordset(n).Field]]   
+[[Recordset(*).Field]]   
+[[Recordset().Field]]</value>
   </data>
 </root>
