@@ -104,7 +104,7 @@
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsUserNameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_UserNametxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpSourceUsername}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpUsername}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Username"
@@ -127,7 +127,7 @@
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_Passwordtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpSourcePassword}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpPassword}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Password"
@@ -183,7 +183,7 @@
                                 attachedProperties:FocusSetter.IsFocused="{Binding IsDestinationUsernameFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_DestinationUsernametxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpDestinationUsername}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpUsername}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DestinationUsername"
@@ -206,7 +206,7 @@
                      attachedProperties:PasswordBoxAssistant.BoundPassword="{Binding Path=ModelItem.DestinationPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_DestinationPasswordtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpDestinationPassword}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpPassword}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.DestinationPassword"
@@ -266,7 +266,8 @@
                   ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
                   ItemsSource="{Binding CompressionRatioList}"
                   SelectedValue="{Binding SelectedCompressionRatioDescription, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SelectedCompressionType_AutoID}">
+                  AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SelectedCompressionType_AutoID}"
+                  ToolTip="{x:Static help:HelpTextResources.ZipToolTipCompressiontype}">
             <i:Interaction.Behaviors>
                 <help:HelpSetter Text="{x:Static help:HelpTextResources.ZipHelpCompressionType}"
                                  DataContext="{Binding}" />

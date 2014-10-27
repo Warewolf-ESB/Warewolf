@@ -631,7 +631,7 @@ namespace Dev2.UI
         private object _cachedState;
         private readonly List<Key> _wrapInBracketKey = new List<Key> { Key.F6, Key.F7 };
         readonly ToolTip _toolTip;
-
+        private string _defaultToolTip;
         private bool _forcedOpen;
         private bool _fromPopup;
 
@@ -687,10 +687,11 @@ namespace Dev2.UI
         {
             base.OnInitialized(e);
             _toolTip.ToolTipOpening += ToolTip_ToolTipOpening;
-            ToolTip = _toolTip;
+            _defaultToolTip = (string)ToolTip;
             _toolTip.Placement = PlacementMode.Right;
             _toolTip.PlacementTarget = this;
             EnsureIntellisenseProvider();
+            EnsureIntellisenseResults(Text, true, IntellisenseDesiredResultSet.Default);
         }
 
         // ReSharper disable InconsistentNaming
@@ -1120,7 +1121,7 @@ namespace Dev2.UI
                                 description = description + ttValueBuilder + ttErrorBuilder;
                             }
 
-                            _toolTip.Content = description;
+                            _toolTip.Content = string.IsNullOrEmpty(description) ? _defaultToolTip : description;
                             _toolTip.IsOpen = _forcedOpen = true;
                             ToolTip = _toolTip;
                         }
@@ -1149,7 +1150,6 @@ namespace Dev2.UI
                     }
                     else
                     {
-                        var ttValueBuilder = new StringBuilder();
                         var ttErrorBuilder = new StringBuilder();
                         var hasError = false;
                         var errorCount = 0;
@@ -1192,8 +1192,9 @@ namespace Dev2.UI
                         _lastResultHasError = hasError;
                         _fromPopup = false;
 
-                        _toolTip.Content = _lastResultHasError ? ttErrorBuilder.ToString()
-                                               : ttValueBuilder.ToString();
+                        string errorText = ttErrorBuilder.ToString();
+                        _toolTip.Content = string.IsNullOrEmpty(errorText) ? _defaultToolTip : errorText;
+
                         ToolTip = _toolTip;
 
                         if(_forcedOpen)
