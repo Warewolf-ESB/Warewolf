@@ -41,13 +41,13 @@
             DefaultText="[[Recordset().Field]]"
             FilterType="RecordsetFields"
             WrapInBrackets="True"
-            ToolTip="{x:Static help:HelpTextResources.SortRecordsToolTipSortField}"
+            ToolTip="{x:Static help:HelpTextResources.SortToolTipSortField}"
             Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
             Text="{Binding Path=ModelItem.SortField, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
                                 Converter={StaticResource ModelTextConverter}, ConverterParameter=True}"
             AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SortFieldtxt_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SortRecordsHelpSortField}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SortHelpSortField}"
                     DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                     SourcePropertyName="SortField"
@@ -67,9 +67,10 @@
             ItemContainerStyle="{StaticResource ActivityComboBoxItemStyle}"
             SelectedValue="{Binding SelectedSelectedSort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             ItemsSource="{Binding SortOrderTypes}"
-            AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SortOrdercbx_AutoID}">
+            AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_SortOrdercbx_AutoID}"
+            ToolTip="{x:Static help:HelpTextResources.SortToolTipSortOrderType}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.SortRecordsHelpSortOrderType}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.SortHelpSortOrderType}"
                     DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                     SourcePropertyName="SelectedSelectedSort"

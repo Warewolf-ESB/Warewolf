@@ -43,13 +43,13 @@
                                 AllowUserInsertLine="False" 
                                  DefaultText="[[Rec().F1]],[[Rec().F2]]" 
                                 FilterType="RecordsetFields"
-                                ToolTip="{x:Static help:HelpTextResources.UniqueRecordsToolTipInField}"
+                                ToolTip="{x:Static help:HelpTextResources.UniqueToolTipInFields}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                  Text="{Binding ModelItem.InFields,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtInFields_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.UniqueRecordsHelpInField}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.UniqueHelpInFields}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName=" ModelItem.InFields"
@@ -65,7 +65,7 @@
         <ui:IntellisenseTextBox Grid.Row="1"
                                 Grid.Column="1"
                                 DefaultText="[[Rec().F3]]" 
-                                ToolTip="{x:Static help:HelpTextResources.UniqueRecordsToolTipReturnField}"
+                                ToolTip="{x:Static help:HelpTextResources.UniqueToolTipReturnFields}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                 Text="{Binding ModelItem.ResultFields,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -73,7 +73,7 @@
                                 AllowMultilinePaste="False" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtReturnFields_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.UniqueRecordsHelpReturnField}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.UniqueHelpReturnFields}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.ResultFields"
@@ -89,7 +89,7 @@
         <ui:IntellisenseTextBox Grid.Row="2"
                                 Grid.Column="1"
                                  DefaultText="[[New().F1]]" 
-                                ToolTip="{x:Static help:HelpTextResources.UniqueRecordsToolTipResult}"
+                                ToolTip="{x:Static help:HelpTextResources.UniqueToolTipResults}"
                                 WrapInBrackets="True"
                                 Style="{StaticResource ActivityIntellisenseTextBoxStyle}"
                                  Text="{Binding ModelItem.Result,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
@@ -97,7 +97,7 @@
                                 AllowMultilinePaste="False" 
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_txtResults_AutoID}">
             <i:Interaction.Behaviors>
-                <help:HelpSetter Text="{x:Static help:HelpTextResources.UniqueRecordsHelpResult}"
+                <help:HelpSetter Text="{x:Static help:HelpTextResources.UniqueHelpResults}"
                                  DataContext="{Binding}" />
                 <errors:ErrorsSetter Source="{Binding}"
                                      SourcePropertyName="ModelItem.Result"
