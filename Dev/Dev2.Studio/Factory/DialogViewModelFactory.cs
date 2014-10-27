@@ -18,21 +18,21 @@ using Dev2.Studio.ViewModels.Administration;
 // ReSharper disable CheckNamespace
 namespace Dev2.Studio.Factory
 {
-    public  class DialogViewModelFactory : IDialogViewModelFactory
+    public class DialogViewModelFactory:IDialogViewModelFactory
     {
         public Action<IDialogueViewModel, string, string> SetupDialogAction
         {
             get;
             set;
         }
-        public Action<IDialogueViewModel, string, string,string> SetupServerDialogAction
+        public Action<IDialogueViewModel, string, string, string> SetupServerDialogAction
         {
             get;
             set;
         }
         public DialogViewModelFactory()
         {
-            SetupDialogAction = (dialogueViewModel,ver,packUri)=>dialogueViewModel.SetupDialogue(StringResources.About_Header_Text,
+            SetupDialogAction = (dialogueViewModel, ver, packUri) => dialogueViewModel.SetupDialogue(StringResources.About_Header_Text,
                                             String.Format(StringResources.About_Content, ver,
                                                           ver), packUri,
                                             StringResources.About_Description_Header, StringResources.EULA_Link, StringResources.EULA_Text);
@@ -41,7 +41,7 @@ namespace Dev2.Studio.Factory
                                                           version), packUri,
                                             StringResources.About_Description_Header, StringResources.EULA_Link, StringResources.EULA_Text);
         }
-        public  IDialogueViewModel CreateAboutDialog()
+        public IDialogueViewModel CreateAboutDialog()
         {
             IDialogueViewModel dialogueViewModel = new DialogueViewModel();
             string packUri = StringResources.Warewolf_Logo;
@@ -52,14 +52,18 @@ namespace Dev2.Studio.Factory
             return dialogueViewModel;
         }
 
-        public  IDialogueViewModel CreateServerAboutDialog(string serverVersion)
+        public IDialogueViewModel CreateServerAboutDialog(string serverVersion)
         {
             IDialogueViewModel dialogueViewModel = new DialogueViewModel();
             string packUri = StringResources.Warewolf_Logo;
 
             var ver = VersionInfo.FetchVersionInfo();
-            SetupServerDialogAction(dialogueViewModel, ver, packUri,serverVersion);
+            SetupServerDialogAction(dialogueViewModel, ver, packUri, serverVersion);
             return dialogueViewModel;
         }
+
+
     }
 }
+
+

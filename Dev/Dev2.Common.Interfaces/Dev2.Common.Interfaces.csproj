@@ -197,7 +197,7 @@
     <Compile Include="Studio\Core\Activities\IServiceXmlTranslator.cs" />
     <Compile Include="Studio\Core\IAutoMappingOutputAction.cs" />
     <Compile Include="Studio\IDialogueViewModel.cs" />
-    <Compile Include="Studio\IDialogViewModelFactory.cs" />
+    <Compile Include="Studio\IdialogViewModelFactory.cs" />
     <Compile Include="UndoFramework\IAction.cs" />
     <Compile Include="UndoFramework\IActionHistory.cs" />
     <Compile Include="UndoFramework\IMultiAction.cs" />
