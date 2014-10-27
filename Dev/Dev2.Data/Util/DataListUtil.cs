@@ -1309,29 +1309,6 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        /// <summary>
-        /// Determines whether [has resume tags already] [the specified shaped data list].
-        /// </summary>
-        /// <param name="shapedDataList">The shaped data list.</param>
-        /// <returns>
-        ///   <c>true</c> if [has resume tags already] [the specified shaped data list]; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool HasResumeTagsAlready(XmlDocument shapedDataList)
-        {
-            bool result = true;
-            // check for current resume region, if present, ignore addition
-            var tmp = shapedDataList.GetElementsByTagName(enSystemTag.Dev2ResumeData.ToString());
-            if(tmp.Count == 0)
-            {
-                tmp = shapedDataList.GetElementsByTagName(enSystemTag.Resumption.ToString());
-                if(tmp.Count == 0)
-                {
-                    result = false;
-                }
-            }
-
-            return result;
-        }
 
 
         /// <summary>

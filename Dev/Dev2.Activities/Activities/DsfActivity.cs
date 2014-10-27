@@ -461,19 +461,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             ErrorResultTO errors;
             invokeErrors = new ErrorResultTO();
             // Strip System Tags
-
-            compiler.UpsertSystemTag(executionId, enSystemTag.InstanceId, string.Empty, out errors);
-            invokeErrors.MergeErrors(errors);
-
-            compiler.UpsertSystemTag(executionId, enSystemTag.Bookmark, string.Empty, out errors);
-            invokeErrors.MergeErrors(errors);
-
-            compiler.UpsertSystemTag(executionId, enSystemTag.ParentWorkflowInstanceId, string.Empty, out errors);
-            invokeErrors.MergeErrors(errors);
-
-            compiler.UpsertSystemTag(executionId, enSystemTag.ParentServiceName, string.Empty, out errors);
-            invokeErrors.MergeErrors(errors);
-
+            
             compiler.UpsertSystemTag(executionId, enSystemTag.ParentWorkflowInstanceId, workflowId, out errors);
             invokeErrors.MergeErrors(errors);
         }
