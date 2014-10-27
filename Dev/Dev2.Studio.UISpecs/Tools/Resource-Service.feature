@@ -15,8 +15,10 @@ Scenario: Drag Service to design surface and checking Workflows are not showing 
 	#Dragging Service Tool to Design Surface
 	Given I drag "TOOLSERVICES" onto "ACTIVETAB,UI_WorkflowDesigner_AutoID,UserControl_1,scrollViewer,ActivityTypeDesigner,WorkflowItemPresenter,StartSymbol"
 	#Checking WORKFLOW resources is invisible in Service resource picker
-	And "RESOURCEPICKERFOLDERS,UI_BARNEY_AutoID" is invisible within "2" seconds
-    And I send "Control" to "UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID"
+	And I send "Decision Testing" to "UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_TextBox_AutoID"
+	And "RESOURCEPICKERFOLDERS,UI_Integration Test Resources_AutoID" is invisible within "2" seconds
+    And I click "UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID,UI_FilterButton_AutoID"
+	And I send "Control" to "UI_SelectServiceWindow_AutoID,UI_NavigationViewUserControl_AutoID,UI_DatalistFilterTextBox_AutoID"
 	Then "RESOURCEPICKERFOLDERS,UI_Examples_AutoID,UI_Control Flow - Decision_AutoID" is invisible within "2" seconds
 	Given I click "TOOLWORKFLOWRISOURCEPICKFILTER"
 	#Selecting Service in Resource Picker
